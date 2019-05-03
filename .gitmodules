@@ -25,9 +25,6 @@
 [submodule "3rdparty/sqlite"]
 	path = 3rdparty/sqlite
 	url = https://github.com/sqlite/sqlite.git
-[submodule "3rdparty/boost"]
-	path = 3rdparty/boost
-	url = https://github.com/boostorg/boost.git
 [submodule "3rdparty/bullet3"]
 	path = 3rdparty/bullet3
 	url = https://github.com/bulletphysics/bullet3.git
