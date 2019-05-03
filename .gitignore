@@ -31,5 +31,8 @@
 *.out
 *.app
 
+# Directory
+.idea/
 /target
 /3rdparty/build
+/cmake-build-debug
