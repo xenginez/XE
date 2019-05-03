@@ -1,0 +1,34 @@
+/*!
+ * \file   Alloc.h
+ *
+ * \author ZhengYuanQing
+ * \date   2019/1/10
+ * \email  zhengyuanqing.95@gmail.com
+ *
+ */
+#ifndef __ALLOC_H__21A506C1_52E7_444B_86B0_4D35EEDDC537
+#define __ALLOC_H__21A506C1_52E7_444B_86B0_4D35EEDDC537
+
+#include "Type.h"
+
+BEG_XE_NAMESPACE
+
+class MEMORY_API Alloc : public XE::Singleton< Alloc >
+{
+public:
+	Alloc();
+
+	~Alloc();
+
+public:
+	static void * allocate( XE::uint64 size );
+
+	static void * reallocate( void * ptr, XE::uint64 size );
+
+	static void deallocate( void * ptr );
+
+};
+
+END_XE_NAMESAPCE
+
+#endif // __ALLOC_H__21A506C1_52E7_444B_86B0_4D35EEDDC537

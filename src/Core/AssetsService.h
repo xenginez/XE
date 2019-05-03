@@ -1,0 +1,61 @@
+/*!
+ * \file   AssetsService.h
+ *
+ * \author ZhengYuanQing
+ * \date   2019/03/13
+ * \email  zhengyuanqing.95@gmail.com
+ *
+ */
+#ifndef __ASSETSSERVICE_H__68A7444E_AF99_4A9A_804F_B524B90E80EC
+#define __ASSETSSERVICE_H__68A7444E_AF99_4A9A_804F_B524B90E80EC
+
+#include "Type.h"
+
+BEG_XE_NAMESPACE
+
+class CORE_API AssetsService : public IAssetsService
+{
+	OBJECT( AssetsService, IAssetsService )
+
+private:
+	struct Private;
+
+public:
+	static constexpr float AssetCacheTime = 60.0f; // 1 minutes
+
+public:
+	AssetsService();
+
+	~AssetsService();
+
+public:
+	virtual bool Startup() override;
+
+	virtual void Update() override;
+
+	virtual void Clearup() override;
+
+public:
+	virtual PrefabPtr Load( const String& val ) override;
+
+	virtual PrefabPtr AsynLoad( const String& val ) override;
+
+	virtual void Unload( const String& val ) override;
+
+protected:
+	virtual ObjectPtr GetAsset( const String& val ) const override;
+
+	virtual AssetStatus GetAssetStatus( const String& val ) const override;
+
+private:
+	void LoadAsset( const String& val );
+
+	void UnloadAsset( const String& val );
+
+private:
+	Private * _p;
+};
+
+END_XE_NAMESAPCE
+
+#endif // __ASSETSSERVICE_H__68A7444E_AF99_4A9A_804F_B524B90E80EC

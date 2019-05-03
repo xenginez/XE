@@ -1,0 +1,72 @@
+/*!
+ * \file   Component.h
+ *
+ * \author ZhengYuanQing
+ * \date   2019/1/10
+ * \email  zhengyuanqing.95@gmail.com
+ *
+ */
+#ifndef __COMPONENT_H__42D4DE3A_B463_45F4_9181_C554B1A57D9E
+#define __COMPONENT_H__42D4DE3A_B463_45F4_9181_C554B1A57D9E
+
+#include "Type.h"
+
+BEG_XE_NAMESPACE
+
+class WORLD_API Component : public Object
+{
+	OBJECT( Component, Object )
+
+	friend class GameObject;
+
+public:
+	Component();
+
+	virtual ~Component();
+
+public:
+	const String& GetName() const;
+
+	ComponentHandle GetHandle() const;
+
+	GameObjectPtr GetGameObject() const;
+
+public:
+	bool GetUpdate() const;
+
+	void SetUpdate( bool val );
+
+	bool GetEnabled() const;
+
+	void SetEnabled( bool val );
+
+	bool GetDestroy() const;
+
+	void SetDestroy( bool val );
+
+protected:
+	virtual void Startup();
+
+	virtual void Update( float dt );
+
+	virtual void Clearup();
+
+protected:
+	virtual void OnStartup();
+
+	virtual void OnUpdate( float dt );
+
+	virtual void OnClearup();
+
+public:
+	String _Name;
+	bool _Update;
+	bool _Enabled;
+	bool _Destroy;
+	ComponentHandle _Handle;
+	GameObjectWPtr _GameObject;
+};
+
+END_XE_NAMESAPCE
+
+#endif // __COMPONENT_H__42D4DE3A_B463_45F4_9181_C554B1A57D9E

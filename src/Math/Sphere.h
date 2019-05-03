@@ -1,0 +1,69 @@
+/*!
+ * \file   Sphere.h
+ *
+ * \author ZhengYuanQing
+ * \date   2019/01/23
+ * \email  zhengyuanqing.95@gmail.com
+ *
+ */
+#ifndef __SPHERE_H__06E9A06D_DAE8_4648_8E21_51748C5A3BC7
+#define __SPHERE_H__06E9A06D_DAE8_4648_8E21_51748C5A3BC7
+
+#include "Vec3.h"
+
+BEG_XE_NAMESPACE
+
+class MATH_API Sphere
+{
+public:
+	static const Sphere Zero;
+
+public:
+	Vec3 center;
+	float radius;
+
+public:
+	Sphere();
+
+	Sphere( const Sphere& val );
+
+	Sphere( const Vec3&center, float radius );
+
+public:
+	Sphere& operator=( const Sphere & val );
+
+	bool operator ==( const Sphere& val ) const;
+
+	bool operator !=( const Sphere& val ) const;
+
+public:
+	bool Contains( const Vec3& val ) const;
+
+public:
+	bool Intersect( const OBB& val ) const;
+
+	bool Intersect( const AABB& val ) const;
+
+	bool Intersect( const Line& val ) const;
+
+	bool Intersect( const Plane& val ) const;
+
+	bool Intersect( const Sphere& val ) const;
+
+	bool Intersect( const Frustum& val ) const;
+
+	std::pair<bool, float> Intersect( const Ray& ray, bool discardInside = true ) const;
+
+public:
+	void Merge( const Vec3& val );
+
+	void Merge( const Sphere& val );
+
+public:
+	void Transform( const Mat4& val );
+};
+DECL_META_CLASS( MATH_API, Sphere );
+
+END_XE_NAMESAPCE
+
+#endif // __SPHERE_H__06E9A06D_DAE8_4648_8E21_51748C5A3BC7
