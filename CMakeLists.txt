@@ -2,12 +2,13 @@ cmake_minimum_required(VERSION 3.13)
 
 project(XE)
 
+set(CMAKE_CXX_STANDARD 17)
+
 set(BUILD_SHARED_LIBS ON)
 
-set(LIBRARY_OUTPUT_PATH  ${CMAKE_CURRENT_SOURCE_DIR}/target/bin)
-set(EXECUTABLE_OUTPUT_PATH  ${CMAKE_CURRENT_SOURCE_DIR}/target/bin)
+set(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/target/bin)
 
-set(CMAKE_CXX_STANDARD 17)
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/target/bin)
 
 include_directories(
 		${CMAKE_CURRENT_SOURCE_DIR}/src
@@ -15,7 +16,9 @@ include_directories(
 )
 
 link_directories(
-		${CMAKE_CURRENT_SOURCE_DIR}/target/bin)
+		${CMAKE_CURRENT_SOURCE_DIR}/target/bin
+		${THIRDPARTY_LIBRARY_PATH}
+)
 
 add_subdirectory(src)
 
@@ -31,59 +34,39 @@ set(XE_3RDPARTY_LIBRARIES
 		BulletDynamics
 		BulletInverseDynamics
 		BulletSoftBody
-
 		DebugUtils
 		Detour
 		DetourCrowd
 		DetourTileCache
 		LinearMath
 		Recast
-
 		openal
-
 		Zipper
-
 		pugixml
-
 		sqlite3
-
 		tbb
 		tbbmalloc
 		tbbmalloc_proxy
-
-#		bxRelease
-#		bgfxRelease
-#		bimgRelease
-#		bimg_decodeRelease
-#		bimg_encodeRelease
-#		fcppRelease
-#		glsl-optimizerRelease
-#		glslangRelease
-#		spirv-crossRelease
-#		spirv-optRelease
-
 		bgfx-shared-libRelease
-
-		boost_filesystem
 		)
 
-add_dependencies(Memory Base )
-add_dependencies(Reflect Base Memory )
-add_dependencies(Utils Base Memory Reflect )
-add_dependencies(Math Base Memory Reflect Utils )
-add_dependencies(Interface Base Memory Reflect Utils Math )
-add_dependencies(Audio Base Memory Reflect Utils Math Interface )
-add_dependencies(Physics Base Memory Reflect Utils Math Interface )
-add_dependencies(Graphics Base Memory Reflect Utils Math Interface )
-add_dependencies(Animation Base Memory Reflect Utils Math Interface )
-add_dependencies(Navigation Base Memory Reflect Utils Math Interface )
-add_dependencies(GUI Base Memory Reflect Utils Math Interface Graphics )
-add_dependencies(AI Base Memory Reflect Utils Math Interface )
-add_dependencies(World Base Memory Reflect Utils Math Interface )
-add_dependencies(Behavior Base Memory Reflect Utils Math Interface Audio Physics Animation Navigation AI World )
-add_dependencies(Render Base Memory Reflect Utils Math Interface Graphics World )
-add_dependencies(Core Base Memory Reflect Utils Math Interface Audio Physics Graphics Animation Navigation GUI AI World Behavior Render )
-add_dependencies(XE Base Memory Reflect Utils Math Interface Audio Physics Graphics Animation Navigation GUI AI World Behavior Render Core )
+add_dependencies(Memory Base)
+add_dependencies(Reflect Base Memory)
+add_dependencies(Utils Base Memory Reflect)
+add_dependencies(Math Base Memory Reflect Utils)
+add_dependencies(Interface Base Memory Reflect Utils Math)
+add_dependencies(Audio Base Memory Reflect Utils Math Interface)
+add_dependencies(Physics Base Memory Reflect Utils Math Interface)
+add_dependencies(Graphics Base Memory Reflect Utils Math Interface)
+add_dependencies(Animation Base Memory Reflect Utils Math Interface)
+add_dependencies(Navigation Base Memory Reflect Utils Math Interface)
+add_dependencies(GUI Base Memory Reflect Utils Math Interface Graphics)
+add_dependencies(AI Base Memory Reflect Utils Math Interface)
+add_dependencies(World Base Memory Reflect Utils Math Interface)
+add_dependencies(Behavior Base Memory Reflect Utils Math Interface Audio Physics Animation Navigation AI World)
+add_dependencies(Render Base Memory Reflect Utils Math Interface Graphics World)
+add_dependencies(Core Base Memory Reflect Utils Math Interface Audio Physics Graphics Animation Navigation GUI AI World Behavior Render)
+add_dependencies(XE Base Memory Reflect Utils Math Interface Audio Physics Graphics Animation Navigation GUI AI World Behavior Render Core)
 
 target_link_libraries(Base
 		${XE_3RDPARTY_LIBRARIES})
