@@ -13,7 +13,9 @@
 
 BEG_XE_NAMESPACE
 
-class AUDIO_API AudioSourceComponent : public SceneComponent
+DECL_PTR(AudioSound);
+
+class BEHAVIOR_API AudioSourceComponent : public SceneComponent
 {
 	OBJECT( AudioSourceComponent, SceneComponent )
 

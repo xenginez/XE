@@ -2,6 +2,8 @@
 
 #include <AL/al.h>
 
+#include <Audio/Audio.h>
+
 USING_XE
 
 BEGIN_META( AudioListenerComponent )

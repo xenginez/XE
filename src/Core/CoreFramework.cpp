@@ -8,6 +8,7 @@
 #include "AudioService.h"
 #include "ThreadService.h"
 #include "PluginService.h"
+#include "InputService.h"
 
 #include "AssetsService.h"
 
@@ -170,22 +171,22 @@ XE::Language XE::CoreFramework::GetSystemLanguage() const
 
 std::filesystem::path XE::CoreFramework::GetPluginPath() const
 {
-	return GetApplicationPath() / "Plugins";
+	return GetApplicationPath() / "plugin";
 }
 
 std::filesystem::path XE::CoreFramework::GetAssetsPath() const
 {
-	return GetApplicationPath() / "Assets";
+	return GetApplicationPath().parent_path() / "assets";
 }
 
 std::filesystem::path XE::CoreFramework::GetUserDataPath() const
 {
-	return GetApplicationPath() / "Userdata";
+	return GetApplicationPath().parent_path() / "data";
 }
 
 std::filesystem::path XE::CoreFramework::GetApplicationPath() const
 {
-	return std::filesystem::current_path();
+	return std::filesystem::absolute(std::filesystem::current_path());
 }
 
 void XE::CoreFramework::Prepare()
@@ -198,13 +199,13 @@ void XE::CoreFramework::Prepare()
 	_p->_Services.push_back(make_shared < AudioService >());
 	_p->_Services.push_back(make_shared < ThreadService >());
 	_p->_Services.push_back(make_shared < PluginService >());
-// 	_p->_Services.push_back( make_shared <InputService>() );
+	_p->_Services.push_back(make_shared < InputService >());
 // 	_p->_Services.push_back( make_shared <RenderService>() );
 // 	_p->_Services.push_back( make_shared <GUIService>() );
 // 	_p->_Services.push_back( make_shared <PhysicsService>() );
 	_p->_Services.push_back(make_shared < AssetsService >());
-// 	_p->_Services.push_back( make_shared <WorldService>() );
 // 	_p->_Services.push_back( make_shared <NavigationService>() );
+// 	_p->_Services.push_back( make_shared <WorldService>() );
 	
 	for( auto it : _p->_Services )
 	{
@@ -218,12 +219,12 @@ void XE::CoreFramework::Startup()
 	
 	_p->_Language = Platform::get_default_language();
 	
-	for( XE::uint64 i = 0; i < _p->_Services.size(); ++i )
+	for( auto &_Service : _p->_Services )
 	{
-		if( !_p->_Services[i]->Startup())
+		if( !_Service->Startup())
 		{
-			_p->_Services[i]->Clearup();
-			_p->_Services[i] = nullptr;
+			_Service->Clearup();
+			_Service = nullptr;
 		}
 	}
 }
@@ -232,7 +233,7 @@ void XE::CoreFramework::Update()
 {
 	while( !_p->_Exit )
 	{
-		for( auto service : _p->_Services )
+		for( const auto &service : _p->_Services )
 		{
 			if( service != nullptr )
 			{

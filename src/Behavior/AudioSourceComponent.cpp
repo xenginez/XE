@@ -1,8 +1,8 @@
 #include "AudioSourceComponent.h"
 
-#include "AudioSound.h"
-
 #include <AL/al.h>
+
+#include <Audio/Audio.h>
 
 USING_XE
 

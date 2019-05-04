@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class AUDIO_API AudioListenerComponent : public SceneComponent
+class BEHAVIOR_API AudioListenerComponent : public SceneComponent
 {
 	OBJECT( AudioListenerComponent, SceneComponent )
 

@@ -1,6 +1,6 @@
-#include <Physics/PhysicsComponent.h>
-
 #include "PhysicsComponent.h"
+
+#include <Physics/Physics.h>
 
 USING_XE
 

@@ -1,6 +1,6 @@
 #include "ConfigService.h"
 
-#include <pugixml.hpp>
+#include <pugixml/pugixml.hpp>
 
 USING_XE
 

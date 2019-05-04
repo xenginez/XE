@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class PHYSICS_API PhysicsComponent : public BehaviorComponent
+class BEHAVIOR_API PhysicsComponent : public BehaviorComponent
 {
 	OBJECT( PhysicsComponent, BehaviorComponent )
 public:
