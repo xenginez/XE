@@ -63,7 +63,6 @@ public:
 	SkinnedMesh();
 
 	~SkinnedMesh();
-
 };
 
 END_XE_NAMESAPCE
