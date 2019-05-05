@@ -39,6 +39,8 @@
 #if PLATFORM_OS == OS_MAC
 #include <boost/filesystem.hpp>
 namespace std{namespace filesystem = boost::filesystem;}
+#else
+#include <filesystem>	
 #endif
 
 #ifdef BASE_EXPORT
