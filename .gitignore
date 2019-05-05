@@ -32,6 +32,7 @@
 *.app
 
 # Directory
+.vs/
 .idea/
 /target/asset
 /target/bin
