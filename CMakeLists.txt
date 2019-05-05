@@ -4,6 +4,26 @@ project(XE)
 
 set(CMAKE_CXX_STANDARD 17)
 
+if (CMAKE_SYSTEM_NAME MATCHES "Linux")
+    set(XE_PLATFORM_PATH linux)
+	message("linux")
+elseif (CMAKE_SYSTEM_NAME MATCHES "Windows")
+    set(XE_PLATFORM_PATH win)
+	message("win")
+elseif (CMAKE_SYSTEM_NAME MATCHES "IOS")
+    set(XE_PLATFORM_PATH ios)
+	message("ios")
+elseif (CMAKE_SYSTEM_NAME MATCHES "Android")
+    set(XE_PLATFORM_PATH android)
+	message("android")
+elseif (CMAKE_SYSTEM_NAME MATCHES "MAC")
+    set(XE_PLATFORM_PATH mac)
+	message("mac")
+else ()
+    set(XE_PLATFORM_PATH linux)
+	message("other")
+endif ()
+
 set(BUILD_SHARED_LIBS ON)
 
 set(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/target/bin)
@@ -16,8 +36,7 @@ include_directories(
 )
 
 link_directories(
-		${CMAKE_CURRENT_SOURCE_DIR}/target/bin
-		${THIRDPARTY_LIBRARY_PATH}
+		${CMAKE_CURRENT_SOURCE_DIR}/target/lib/${XE_PLATFORM_PATH}
 )
 
 add_subdirectory(src)
@@ -40,14 +59,16 @@ set(XE_3RDPARTY_LIBRARIES
 		DetourTileCache
 		LinearMath
 		Recast
-		openal
-		Zipper
+		OpenAL32
 		pugixml
 		sqlite3
 		tbb
 		tbbmalloc
 		tbbmalloc_proxy
-		bgfx-shared-libRelease
+		bx
+		bgfx
+		bimg
+		bimg_decode
 		)
 
 add_dependencies(Memory Base)

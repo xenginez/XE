@@ -170,7 +170,7 @@ namespace std
 		typedef XE::String second_argument_type;
 		typedef bool result_type;
 
-		constexpr bool operator()( const XE::String& _Left, const XE::String& _Right ) const
+		bool operator()( const XE::String& _Left, const XE::String& _Right ) const
 		{
 			return ( _Left.ToCString() == _Right.ToCString() );
 		}
