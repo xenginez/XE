@@ -33,6 +33,8 @@
 
 # Directory
 .idea/
-/target
+/target/asset
+/target/bin
+/target/data
 /3rdparty/build
 /cmake-build-debug
