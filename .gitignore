@@ -11,31 +11,13 @@
 *.gch
 *.pch
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
 # Fortran module files
 *.mod
 *.smod
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
-
 # Directory
 .vs/
 .idea/
-/target/asset
-/target/bin
-/target/data
-/3rdparty/build
+/target/asset/
+/target/data/
 /cmake-build-debug
