@@ -5,23 +5,32 @@ project(XE)
 set(CMAKE_CXX_STANDARD 17)
 
 if (CMAKE_SYSTEM_NAME MATCHES "Linux")
-    set(XE_PLATFORM_PATH linux)
+	set(XE_PLATFORM_PATH linux)
 	message("linux")
 elseif (CMAKE_SYSTEM_NAME MATCHES "Windows")
-    set(XE_PLATFORM_PATH win)
+	set(XE_PLATFORM_PATH win)
 	message("win")
 elseif (CMAKE_SYSTEM_NAME MATCHES "IOS")
-    set(XE_PLATFORM_PATH ios)
+	set(XE_PLATFORM_PATH ios)
 	message("ios")
 elseif (CMAKE_SYSTEM_NAME MATCHES "Android")
-    set(XE_PLATFORM_PATH android)
+	set(XE_PLATFORM_PATH android)
 	message("android")
 elseif (CMAKE_SYSTEM_NAME MATCHES "MAC")
-    set(XE_PLATFORM_PATH mac)
+	set(XE_PLATFORM_PATH mac)
+	message("mac")
+elseif (CMAKE_SYSTEM_NAME MATCHES "Darwin")
+	set(XE_PLATFORM_PATH mac)
 	message("mac")
 else ()
-    set(XE_PLATFORM_PATH linux)
-	message("other")
+	set(XE_PLATFORM_PATH linux)
+	message(${CMAKE_SYSTEM_NAME} " Other")
+endif ()
+
+if (CMAKE_BUILD_TYPE MATCHES "Debug")
+	set(XE_BUILD_TYPE debug)
+else ()
+	set(XE_BUILD_TYPE release)
 endif ()
 
 set(BUILD_SHARED_LIBS ON)
@@ -36,40 +45,94 @@ include_directories(
 )
 
 link_directories(
-		${CMAKE_CURRENT_SOURCE_DIR}/target/lib/${XE_PLATFORM_PATH}
+		${CMAKE_CURRENT_SOURCE_DIR}/target/lib/${XE_PLATFORM_PATH}/${XE_BUILD_TYPE}
+		${CMAKE_CURRENT_SOURCE_DIR}/target/bin/${XE_PLATFORM_PATH}/${XE_BUILD_TYPE}
 )
 
 add_subdirectory(src)
 
 
-set(XE_3RDPARTY_LIBRARIES
-		Bullet2FileLoader
-		Bullet3Collision
-		Bullet3Common
-		Bullet3Dynamics
-		Bullet3Geometry
-		Bullet3OpenCL_clew
-		BulletCollision
-		BulletDynamics
-		BulletInverseDynamics
-		BulletSoftBody
-		DebugUtils
-		Detour
-		DetourCrowd
-		DetourTileCache
-		LinearMath
-		Recast
-		OpenAL32
-		pugixml
-		sqlite3
-		tbb
-		tbbmalloc
-		tbbmalloc_proxy
-		bx
-		bgfx
-		bimg
-		bimg_decode
-		)
+if (CMAKE_BUILD_TYPE MATCHES "Debug")
+	set(XE_3RDPARTY_LIBRARIES
+			Bullet2FileLoader
+			BulletInverseDynamicsUtils
+			Bullet3Collision
+			BulletRobotics
+			Bullet3Common
+			BulletSoftBody
+			Bullet3Dynamics
+			BulletWorldImporter
+			Bullet3Geometry
+			BulletXmlWorldImporter
+			Bullet3OpenCL_clew
+			ConvexDecomposition
+			BulletCollision
+			GIMPACTUtils
+			BulletDynamics
+			HACD
+			BulletFileLoader
+			LinearMath
+			BulletInverseDynamics
+
+			DebugUtils
+			DetourCrowd
+			Recast
+			Detour
+			DetourTileCache
+
+			OpenAL32
+			pugixml
+			sqlite3
+			tbb_debug
+			tbbmalloc_debug
+			tbbmalloc_proxy_debug
+			bxDebug
+			bgfxDebug
+			bimgDebug
+			bimg_decodeDebug
+			Zipper-static
+			)
+else ()
+	set(XE_3RDPARTY_LIBRARIES
+			Bullet2FileLoader
+			BulletInverseDynamicsUtils
+			Bullet3Collision
+			BulletRobotics
+			Bullet3Common
+			BulletSoftBody
+			Bullet3Dynamics
+			BulletWorldImporter
+			Bullet3Geometry
+			BulletXmlWorldImporter
+			Bullet3OpenCL_clew
+			ConvexDecomposition
+			BulletCollision
+			GIMPACTUtils
+			BulletDynamics
+			HACD
+			BulletFileLoader
+			LinearMath
+			BulletInverseDynamics
+
+			DebugUtils
+			DetourCrowd
+			Recast
+			Detour
+			DetourTileCache
+
+			OpenAL32
+			pugixml
+			sqlite3
+			tbb
+			tbbmalloc
+			tbbmalloc_proxy
+			bxRelease
+			bgfxRelease
+			bimgRelease
+			bimg_decodeRelease
+			Zipper-static
+			)
+endif ()
 
 add_dependencies(Memory Base)
 add_dependencies(Reflect Base Memory)
