@@ -31,7 +31,6 @@
 *.exe
 *.out
 *.app
-XE
 
 # Directory
 .vs/
