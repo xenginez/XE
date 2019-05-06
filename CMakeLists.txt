@@ -41,10 +41,6 @@ else ()
 	message(FATAL_ERROR ${CMAKE_SYSTEM_NAME}" Other")
 endif ()
 
-message("${TBB_SUFFIX}")
-message("${BGFX_SUFFIX}")
-message("${BULLET_SUFFIX}")
-
 set(BUILD_SHARED_LIBS ON)
 
 set(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/target/bin/${XE_BUILD_TYPE})
@@ -64,45 +60,45 @@ link_directories(
 add_subdirectory(src)
 
 
-	set(XE_3RDPARTY_LIBRARIES
-			Bullet2FileLoader${BULLET_SUFFIX}
-			BulletInverseDynamicsUtils${BULLET_SUFFIX}
-			Bullet3Collision${BULLET_SUFFIX}
-			BulletRobotics${BULLET_SUFFIX}
-			Bullet3Common${BULLET_SUFFIX}
-			BulletSoftBody${BULLET_SUFFIX}
-			Bullet3Dynamics${BULLET_SUFFIX}
-			BulletWorldImporter${BULLET_SUFFIX}
-			Bullet3Geometry${BULLET_SUFFIX}
-			BulletXmlWorldImporter${BULLET_SUFFIX}
-			Bullet3OpenCL_clew${BULLET_SUFFIX}
-			ConvexDecomposition${BULLET_SUFFIX}
-			BulletCollision${BULLET_SUFFIX}
-			GIMPACTUtils${BULLET_SUFFIX}
-			BulletDynamics${BULLET_SUFFIX}
-			HACD${BULLET_SUFFIX}
-			BulletFileLoader${BULLET_SUFFIX}
-			LinearMath${BULLET_SUFFIX}
-			BulletInverseDynamics${BULLET_SUFFIX}
+set(XE_3RDPARTY_LIBRARIES
+		Bullet2FileLoader${BULLET_SUFFIX}
+		BulletInverseDynamicsUtils${BULLET_SUFFIX}
+		Bullet3Collision${BULLET_SUFFIX}
+		BulletRobotics${BULLET_SUFFIX}
+		Bullet3Common${BULLET_SUFFIX}
+		BulletSoftBody${BULLET_SUFFIX}
+		Bullet3Dynamics${BULLET_SUFFIX}
+		BulletWorldImporter${BULLET_SUFFIX}
+		Bullet3Geometry${BULLET_SUFFIX}
+		BulletXmlWorldImporter${BULLET_SUFFIX}
+		Bullet3OpenCL_clew${BULLET_SUFFIX}
+		ConvexDecomposition${BULLET_SUFFIX}
+		BulletCollision${BULLET_SUFFIX}
+		GIMPACTUtils${BULLET_SUFFIX}
+		BulletDynamics${BULLET_SUFFIX}
+		HACD${BULLET_SUFFIX}
+		BulletFileLoader${BULLET_SUFFIX}
+		LinearMath${BULLET_SUFFIX}
+		BulletInverseDynamics${BULLET_SUFFIX}
 
-			DebugUtils
-			DetourCrowd
-			Recast
-			Detour
-			DetourTileCache
+		DebugUtils
+		DetourCrowd
+		Recast
+		Detour
+		DetourTileCache
 
-			OpenAL32
-			pugixml
-			sqlite3
-			tbb${TBB_SUFFIX}
-			tbbmalloc${TBB_SUFFIX}
-			tbbmalloc_proxy${TBB_SUFFIX}
-			bx${BGFX_SUFFIX}
-			bgfx${BGFX_SUFFIX}
-			bimg${BGFX_SUFFIX}
-			bimg_decode${BGFX_SUFFIX}
-			libZipper-static
-			)
+		OpenAL32
+		pugixml
+		sqlite3
+		tbb${TBB_SUFFIX}
+		tbbmalloc${TBB_SUFFIX}
+		tbbmalloc_proxy${TBB_SUFFIX}
+		bx${BGFX_SUFFIX}
+		bgfx${BGFX_SUFFIX}
+		bimg${BGFX_SUFFIX}
+		bimg_decode${BGFX_SUFFIX}
+		libZipper-static
+		)
 
 add_dependencies(Memory Base)
 add_dependencies(Reflect Base Memory)
