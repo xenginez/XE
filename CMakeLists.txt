@@ -6,38 +6,50 @@ set(CMAKE_CXX_STANDARD 17)
 
 if (CMAKE_SYSTEM_NAME MATCHES "Linux")
 	set(XE_PLATFORM_PATH linux)
-	message("linux")
 elseif (CMAKE_SYSTEM_NAME MATCHES "Windows")
 	set(XE_PLATFORM_PATH win)
-	message("win")
+	if (CMAKE_BUILD_TYPE MATCHES "Debug")
+		set(XE_BUILD_TYPE debug)
+		set(TBB_SUFFIX _debug)
+		set(BGFX_SUFFIX Debug)
+		set(BULLET_SUFFIX _Debug)
+	else ()
+		set(XE_BUILD_TYPE release)
+		set(TBB_SUFFIX)
+		set(BGFX_SUFFIX Release)
+		set(BULLET_SUFFIX)
+	endif ()
 elseif (CMAKE_SYSTEM_NAME MATCHES "IOS")
 	set(XE_PLATFORM_PATH ios)
-	message("ios")
 elseif (CMAKE_SYSTEM_NAME MATCHES "Android")
 	set(XE_PLATFORM_PATH android)
-	message("android")
-elseif (CMAKE_SYSTEM_NAME MATCHES "MAC")
-	set(XE_PLATFORM_PATH mac)
-	message("mac")
 elseif (CMAKE_SYSTEM_NAME MATCHES "Darwin")
 	set(XE_PLATFORM_PATH mac)
-	message("mac")
+	if (CMAKE_BUILD_TYPE MATCHES "Debug")
+		set(XE_BUILD_TYPE debug)
+		set(TBB_SUFFIX _debug)
+		set(BGFX_SUFFIX Debug)
+		set(BULLET_SUFFIX)
+	else ()
+		set(XE_BUILD_TYPE release)
+		set(TBB_SUFFIX)
+		set(BGFX_SUFFIX Release)
+		set(BULLET_SUFFIX)
+	endif ()
 else ()
 	set(XE_PLATFORM_PATH linux)
-	message(${CMAKE_SYSTEM_NAME} " Other")
+	message(FATAL_ERROR ${CMAKE_SYSTEM_NAME}" Other")
 endif ()
 
-if (CMAKE_BUILD_TYPE MATCHES "Debug")
-	set(XE_BUILD_TYPE debug)
-else ()
-	set(XE_BUILD_TYPE release)
-endif ()
+message("${TBB_SUFFIX}")
+message("${BGFX_SUFFIX}")
+message("${BULLET_SUFFIX}")
 
 set(BUILD_SHARED_LIBS ON)
 
-set(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/target/bin)
+set(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/target/bin/${XE_BUILD_TYPE})
 
-set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/target/bin)
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/target/bin/${XE_BUILD_TYPE})
 
 include_directories(
 		${CMAKE_CURRENT_SOURCE_DIR}/src
@@ -45,34 +57,33 @@ include_directories(
 )
 
 link_directories(
-		${CMAKE_CURRENT_SOURCE_DIR}/target/lib/${XE_PLATFORM_PATH}/${XE_BUILD_TYPE}
 		${CMAKE_CURRENT_SOURCE_DIR}/target/bin/${XE_PLATFORM_PATH}/${XE_BUILD_TYPE}
+		${CMAKE_CURRENT_SOURCE_DIR}/target/lib/${XE_PLATFORM_PATH}/${XE_BUILD_TYPE}
 )
 
 add_subdirectory(src)
 
 
-if (CMAKE_BUILD_TYPE MATCHES "Debug")
 	set(XE_3RDPARTY_LIBRARIES
-			Bullet2FileLoader
-			BulletInverseDynamicsUtils
-			Bullet3Collision
-			BulletRobotics
-			Bullet3Common
-			BulletSoftBody
-			Bullet3Dynamics
-			BulletWorldImporter
-			Bullet3Geometry
-			BulletXmlWorldImporter
-			Bullet3OpenCL_clew
-			ConvexDecomposition
-			BulletCollision
-			GIMPACTUtils
-			BulletDynamics
-			HACD
-			BulletFileLoader
-			LinearMath
-			BulletInverseDynamics
+			Bullet2FileLoader${BULLET_SUFFIX}
+			BulletInverseDynamicsUtils${BULLET_SUFFIX}
+			Bullet3Collision${BULLET_SUFFIX}
+			BulletRobotics${BULLET_SUFFIX}
+			Bullet3Common${BULLET_SUFFIX}
+			BulletSoftBody${BULLET_SUFFIX}
+			Bullet3Dynamics${BULLET_SUFFIX}
+			BulletWorldImporter${BULLET_SUFFIX}
+			Bullet3Geometry${BULLET_SUFFIX}
+			BulletXmlWorldImporter${BULLET_SUFFIX}
+			Bullet3OpenCL_clew${BULLET_SUFFIX}
+			ConvexDecomposition${BULLET_SUFFIX}
+			BulletCollision${BULLET_SUFFIX}
+			GIMPACTUtils${BULLET_SUFFIX}
+			BulletDynamics${BULLET_SUFFIX}
+			HACD${BULLET_SUFFIX}
+			BulletFileLoader${BULLET_SUFFIX}
+			LinearMath${BULLET_SUFFIX}
+			BulletInverseDynamics${BULLET_SUFFIX}
 
 			DebugUtils
 			DetourCrowd
@@ -83,56 +94,15 @@ if (CMAKE_BUILD_TYPE MATCHES "Debug")
 			OpenAL32
 			pugixml
 			sqlite3
-			tbb_debug
-			tbbmalloc_debug
-			tbbmalloc_proxy_debug
-			bxDebug
-			bgfxDebug
-			bimgDebug
-			bimg_decodeDebug
-			Zipper-static
+			tbb${TBB_SUFFIX}
+			tbbmalloc${TBB_SUFFIX}
+			tbbmalloc_proxy${TBB_SUFFIX}
+			bx${BGFX_SUFFIX}
+			bgfx${BGFX_SUFFIX}
+			bimg${BGFX_SUFFIX}
+			bimg_decode${BGFX_SUFFIX}
+			libZipper-static
 			)
-else ()
-	set(XE_3RDPARTY_LIBRARIES
-			Bullet2FileLoader
-			BulletInverseDynamicsUtils
-			Bullet3Collision
-			BulletRobotics
-			Bullet3Common
-			BulletSoftBody
-			Bullet3Dynamics
-			BulletWorldImporter
-			Bullet3Geometry
-			BulletXmlWorldImporter
-			Bullet3OpenCL_clew
-			ConvexDecomposition
-			BulletCollision
-			GIMPACTUtils
-			BulletDynamics
-			HACD
-			BulletFileLoader
-			LinearMath
-			BulletInverseDynamics
-
-			DebugUtils
-			DetourCrowd
-			Recast
-			Detour
-			DetourTileCache
-
-			OpenAL32
-			pugixml
-			sqlite3
-			tbb
-			tbbmalloc
-			tbbmalloc_proxy
-			bxRelease
-			bgfxRelease
-			bimgRelease
-			bimg_decodeRelease
-			Zipper-static
-			)
-endif ()
 
 add_dependencies(Memory Base)
 add_dependencies(Reflect Base Memory)
