@@ -47,15 +47,15 @@ XE::DynamicMesh::~DynamicMesh()
 
 }
 
-BEGIN_META( SkinnedMesh )
+BEGIN_META( SkeletonMesh )
 END_META()
 
-XE::SkinnedMesh::SkinnedMesh()
+XE::SkeletonMesh::SkeletonMesh()
 {
 
 }
 
-XE::SkinnedMesh::~SkinnedMesh()
+XE::SkeletonMesh::~SkeletonMesh()
 {
 
 }

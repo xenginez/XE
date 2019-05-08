@@ -87,11 +87,17 @@ DECL_PTR(StaticMesh);
 
 DECL_PTR(DynamicMesh);
 
-DECL_PTR(SkinnedMesh);
+DECL_PTR(SkeletonMesh);
 
 DECL_PTR(Model);
 
 DECL_PTR(Material);
+
+DECL_PTR(Bone);
+
+DECL_PTR(Joint);
+
+DECL_PTR(Skeleton);
 
 
 enum class FormatSearchFlags
@@ -134,117 +140,6 @@ enum class MeshStatus
 enum class MeshCreateOrigin
 {
 	BOTTOM, CENTER, TOP
-};
-
-
-
-class GRAPHICS_API VertexInfluence
-{
-public:
-	float Weight;
-	uint32 VertexIndex;
-};
-
-class GRAPHICS_API BoneInfluence
-{
-public:
-	String Name;
-	Mat4 Transform;
-	Array < VertexInfluence > Influences;
-};
-
-class GRAPHICS_API VertexData
-{
-public:
-	uint32 Origin;
-	int32 Palette;
-	Array < float > Weights;
-	Array < uint32 > Influences;
-};
-
-class GRAPHICS_API SkinBindData
-{
-public:
-	SkinBindData();
-	
-	~SkinBindData();
-
-public:
-	void AddBone( const BoneInfluence &bone );
-	
-	void RemoveEmptyBones();
-	
-	void
-	BuildVertexTable( std::uint32_t vertex_count, const std::vector < std::uint32_t > &vertex_remap, Array < VertexData > &table );
-	
-	void RemapVertices( const std::vector < std::uint32_t > &remap );
-	
-	const Array < BoneInfluence > &GetBones() const;
-	
-	Array < BoneInfluence > &GetBones();
-	
-	bool HasBones() const;
-	
-	const BoneInfluence * FindBoneById( const String &id ) const;
-	
-	void ClearVertexInfluences();
-	
-	void Clear();
-
-private:
-	Array < BoneInfluence > _Bones;
-};
-
-class GRAPHICS_API BonePalette
-{
-public:
-	using BoneIndexMap = Map < XE::uint32, XE::uint32 >;
-
-public:
-	BonePalette();
-	
-	BonePalette( XE::uint32 val );
-	
-	BonePalette( const BonePalette &val );
-	
-	~BonePalette();
-
-public:
-	Array < XE::Mat4 >
-	GetSkinningMatrices( const Array < Mat4 > &node_transforms, const SkinBindData &bind_data, bool compute_inverse_transpose ) const;
-	
-	void
-	ComputePaletteFit( BoneIndexMap &input, XE::int32 &current_space, XE::int32 &common_bones, XE::int32 &additional_bones );
-	
-	void AssignBones( BoneIndexMap &bones, Array < XE::uint32 > &faces );
-	
-	void AssignBones( const Array < XE::uint32 > &bones );
-	
-	XE::uint32 TranslateBoneToPalette( XE::uint32 bone_index ) const;
-	
-	XE::int32 GetMaximumBlendIndex() const;
-	
-	XE::uint32 GetMaximumSize() const;
-	
-	XE::uint32 GetDataGroup() const;
-	
-	Array < XE::uint32 > &GetInfluencedFaces();
-	
-	const Array < XE::uint32 > &GetBones() const;
-	
-	void SetMaximumBlendIndex( int index );
-	
-	void SetDataGroup( XE::uint32 group );
-	
-	void ClearInfluencedFaces();
-
-private:
-	XE::uint32 _MaxSize;
-	BoneIndexMap _BonesLut;
-	XE::uint32 _DataGroupID;
-	XE::int32 _MaxBlendIndex;
-	Array < XE::uint32 > _Bones;
-	Array < XE::uint32 > _Faces;
 };
 
 

@@ -55,14 +55,14 @@ public:
 	~DynamicMesh();
 };
 
-class GRAPHICS_API SkinnedMesh : public Mesh
+class GRAPHICS_API SkeletonMesh : public Mesh
 {
-	OBJECT( SkinnedMesh, Mesh )
+	OBJECT( SkeletonMesh, Mesh )
 
 public:
-	SkinnedMesh();
+	SkeletonMesh();
 
-	~SkinnedMesh();
+	~SkeletonMesh();
 };
 
 END_XE_NAMESAPCE
