@@ -95,8 +95,6 @@ DECL_PTR(Material);
 
 DECL_PTR(Bone);
 
-DECL_PTR(Joint);
-
 DECL_PTR(Skeleton);
 
 

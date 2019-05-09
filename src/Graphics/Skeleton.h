@@ -21,16 +21,17 @@ public:
 	Bone();
 	
 	~Bone() override;
-};
-
-class GRAPHICS_API Joint : public XE::Object
-{
-	OBJECT( Joint, Object )
 
 public:
-	Joint();
+	String _Name;
 	
-	~Joint() override;
+	XE::uint64 _Parent;
+	Array < XE::uint64 > _Children;
+	
+	Vec3 _Scale;
+	Vec3 _Position;
+	Quat _Rotation;
+	Mat4 _WorldTransform;
 };
 
 class GRAPHICS_API Skeleton : public XE::Object
@@ -43,8 +44,22 @@ public:
 	~Skeleton() override;
 
 public:
-	Array < BonePtr > _Bones;
-	Array < JointPtr > _Joints;
+	XE::uint64 GetBoneCount() const;
+	
+	XE::uint64 GetRootBoneIndex() const;
+	
+	XE::uint64 GetBoneIndexFromName( const String &val ) const;
+
+public:
+	Bone * GetBone( XE::uint64 val );
+	
+	Bone * GetBoneFromName( const String &val );
+	
+	const Array < Bone > &GetBones() const;
+
+public:
+	XE::uint64 _RootBone;
+	Array < Bone > _Bones;
 };
 
 END_XE_NAMESAPCE

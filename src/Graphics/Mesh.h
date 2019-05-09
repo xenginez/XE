@@ -63,6 +63,9 @@ public:
 	SkeletonMesh();
 
 	~SkeletonMesh();
+
+private:
+	SkeletonPtr _Skeleton;
 };
 
 END_XE_NAMESAPCE
