@@ -13,7 +13,7 @@ BEGIN_META(Bone)
 END_META()
 
 XE::Bone::Bone()
-		:_Parent(0), _Scale(Vec3::One), _Position(Vec3::Zero), _Rotation(Quat::Identity)
+	:_Parent(static_cast<uint64>(-1)), _Scale(Vec3::One), _Position(Vec3::Zero), _Rotation(Quat::Identity)
 {
 
 }

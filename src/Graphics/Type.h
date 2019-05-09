@@ -140,6 +140,26 @@ enum class MeshCreateOrigin
 	BOTTOM, CENTER, TOP
 };
 
+class GRAPHICS_API BoneWeight
+{
+public:
+	BoneWeight();
+	
+	~BoneWeight();
+	
+public:
+	XE::uint64 Index;
+	float Weight0;
+	float Weight1;
+	float Weight2;
+	float Weight3;
+	XE::uint32 Bone0;
+	XE::uint32 Bone1;
+	XE::uint32 Bone2;
+	XE::uint32 Bone3;
+};
+DECL_META_CLASS(GRAPHICS_API, BoneWeight);
+
 
 // DECL_HANDLE( RENDER_API, View );
 // DECL_HANDLE( RENDER_API, DynamicIndexBuffer );

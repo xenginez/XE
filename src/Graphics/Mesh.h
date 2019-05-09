@@ -66,6 +66,7 @@ public:
 
 private:
 	SkeletonPtr _Skeleton;
+	Array < BoneWeight > _Weights;
 };
 
 END_XE_NAMESAPCE
