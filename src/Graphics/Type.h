@@ -87,8 +87,6 @@ DECL_PTR(Model);
 
 DECL_PTR(Material);
 
-DECL_PTR(Bone);
-
 DECL_PTR(Skeleton);
 
 
@@ -117,21 +115,6 @@ enum class ProjectionMode
 enum class CullType
 {
 	NONE, CLOCKWISE, COUNTER_CLOCKWISE,
-};
-
-enum class TriangleFlags
-{
-	NONE, DEGENERATE,
-};
-
-enum class MeshStatus
-{
-	NOT_PREPARED, PREPARING, PREPARED
-};
-
-enum class MeshCreateOrigin
-{
-	BOTTOM, CENTER, TOP
 };
 
 

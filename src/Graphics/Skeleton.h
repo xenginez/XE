@@ -34,24 +34,24 @@ public:
 	Mat4 _WorldTransform;
 };
 
-class GRAPHICS_API Weight
+class GRAPHICS_API VertexWeight
 {
-	OBJECT(Weight)
+	OBJECT(VertexWeight)
 
 public:
-	Weight();
+	VertexWeight();
 	
-	~Weight();
+	~VertexWeight();
 
 public:
 	float Weight0;
 	float Weight1;
 	float Weight2;
 	float Weight3;
-	XE::uint32 Bone0;
-	XE::uint32 Bone1;
-	XE::uint32 Bone2;
-	XE::uint32 Bone3;
+	XE::uint64 Bone0;
+	XE::uint64 Bone1;
+	XE::uint64 Bone2;
+	XE::uint64 Bone3;
 };
 
 class GRAPHICS_API Skeleton : public XE::Object
@@ -64,28 +64,75 @@ public:
 	~Skeleton() override;
 
 public:
+	XE::uint64 GetRootBone() const;
+	
 	XE::uint64 GetBoneCount() const;
 	
-	XE::uint64 GetRootBoneIndex() const;
-	
-	XE::uint64 GetBoneIndexFromName( const String &val ) const;
-
-public:
-	Bone * GetBone( XE::uint64 val );
-	
-	Bone * GetBoneFromName( const String &val );
-	
 	const Array < Bone > &GetBones() const;
+	
+	const String &GetBoneName( XE::uint64 val ) const;
+	
+	XE::uint64 GetBoneIndex( const String &val ) const;
+	
+	const XE::Vec3 &GetBoneLocalScale( XE::uint64 bone ) const;
+	
+	void SetBoneLocalScale( XE::uint64 bone, const XE::Vec3 &val );
+	
+	const XE::Vec3 &GetBoneLocalPosition( XE::uint64 bone ) const;
+	
+	void SetBoneLocalPosition( XE::uint64 bone, const XE::Vec3 &val );
+	
+	const XE::Quat &GetBoneLocalRotation( XE::uint64 bone ) const;
+	
+	void SetBoneLocalRotation( XE::uint64 bone, const XE::Quat &val );
+	
+	const XE::Mat4 &GetBoneWorldTransform( XE::uint64 bone ) const;
+	
+	void SetBoneWorldTransform( XE::uint64 bone, const XE::Mat4 &val );
+	
+	const Array < XE::uint64 > &GetBoneChildren( XE::uint64 val ) const;
 
 public:
-	Weight * GetWeight( XE::uint64 val );
+	XE::uint64 GetVertexWeightCount() const;
 	
-	const Array < Weight > &GetWeights() const;
+	const Array < VertexWeight > &GetVertexWeights() const;
 	
+	float GetVertexWeight0( XE::uint64 val ) const;
+	
+	void SetVertexWeight0( XE::uint64 vertex, float val );
+	
+	float GetVertexWeight1( XE::uint64 val ) const;
+	
+	void SetVertexWeight1( XE::uint64 vertex, float val );
+	
+	float GetVertexWeight2( XE::uint64 val ) const;
+	
+	void SetVertexWeight2( XE::uint64 vertex, float val );
+	
+	float GetVertexWeight3( XE::uint64 val ) const;
+	
+	void SetVertexWeight3( XE::uint64 vertex, float val );
+	
+	XE::uint64 GetVertexWeightBone0( XE::uint64 val ) const;
+	
+	void SetVertexWeightBone0( XE::uint64 vertex, XE::uint64 val );
+	
+	XE::uint64 GetVertexWeightBone1( XE::uint64 val ) const;
+	
+	void SetVertexWeightBone1( XE::uint64 vertex, XE::uint64 val );
+	
+	XE::uint64 GetVertexWeightBone2( XE::uint64 val ) const;
+	
+	void SetVertexWeightBone2( XE::uint64 vertex, XE::uint64 val );
+	
+	XE::uint64 GetVertexWeightBone3( XE::uint64 val ) const;
+	
+	void SetVertexWeightBone3( XE::uint64 vertex, XE::uint64 val );
+
 public:
 	XE::uint64 _RootBone;
 	Array < Bone > _Bones;
-	Array < Weight > _Weight;
+	Array < VertexWeight > _Weight;
 };
 
 END_XE_NAMESAPCE
