@@ -45,12 +45,12 @@ void XE::Model::SetMesh( XE::MeshPtr val, XE::uint64 lod )
 	_Mesh[lod] = std::move(val);
 }
 
-XE::MaterialPtr XE::Model::GetMaterial( XE::uint64 lod ) const
+XE::MaterialPtr XE::Model::GetMaterial() const
 {
-	return _Material[lod];
+	return _Material;
 }
 
-void XE::Model::SetMaterial( XE::MaterialPtr val, XE::uint64 lod )
+void XE::Model::SetMaterial( XE::MaterialPtr val )
 {
-	_Material[lod] = std::move(val);
+	_Material = std::move(val);
 }

@@ -35,40 +35,6 @@ public:
 	VertexBufferHandle _VertexBuffer;
 };
 
-class GRAPHICS_API StaticMesh : public Mesh
-{
-	OBJECT( StaticMesh, Mesh )
-
-public:
-	StaticMesh();
-
-	~StaticMesh();
-};
-
-class GRAPHICS_API DynamicMesh : public Mesh
-{
-	OBJECT( DynamicMesh, Mesh )
-
-public:
-	DynamicMesh();
-
-	~DynamicMesh();
-};
-
-class GRAPHICS_API SkeletonMesh : public Mesh
-{
-	OBJECT( SkeletonMesh, Mesh )
-
-public:
-	SkeletonMesh();
-
-	~SkeletonMesh();
-
-private:
-	SkeletonPtr _Skeleton;
-	Array < BoneWeight > _Weights;
-};
-
 END_XE_NAMESAPCE
 
 #endif // __MESH_H__4E34786E_911B_4D68_95AE_5016D3DC3B8F

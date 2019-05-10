@@ -13,7 +13,7 @@ BEGIN_META(Bone)
 END_META()
 
 XE::Bone::Bone()
-	:_Parent(static_cast<uint64>(-1)), _Scale(Vec3::One), _Position(Vec3::Zero), _Rotation(Quat::Identity)
+		:_Parent(static_cast<uint64>(-1)), _Scale(Vec3::One), _Position(Vec3::Zero), _Rotation(Quat::Identity)
 {
 
 }
@@ -23,7 +23,40 @@ XE::Bone::~Bone()
 
 }
 
+BEGIN_META(Weight)
+		type->Property("Weight0", &Weight::Weight0);
+		type->Property("Weight1", &Weight::Weight1);
+		type->Property("Weight2", &Weight::Weight2);
+		type->Property("Weight3", &Weight::Weight3);
+		type->Property("Bone0", &Weight::Bone0);
+		type->Property("Bone1", &Weight::Bone1);
+		type->Property("Bone2", &Weight::Bone2);
+		type->Property("Bone3", &Weight::Bone3);
+END_META()
+
+XE::Weight::Weight()
+		:Weight0(0),
+		Weight1(0),
+		Weight2(0),
+		Weight3(0),
+		Bone0(static_cast<uint32>(-1)),
+		Bone1(static_cast<uint32>(-1)),
+		Bone2(static_cast<uint32>(-1)),
+		Bone3(static_cast<uint32>(-1))
+{
+
+}
+
+XE::Weight::~Weight()
+{
+
+}
+
+
 BEGIN_META(Skeleton)
+		type->Property("Bones", &Skeleton::_Bones);
+		type->Property("Weight", &Skeleton::_Weight);
+		type->Property("RootBone", &Skeleton::_RootBone);
 END_META()
 
 XE::Skeleton::Skeleton()
@@ -78,4 +111,16 @@ XE::Bone * XE::Skeleton::GetBoneFromName( const XE::String &val )
 const XE::Array < XE::Bone > &XE::Skeleton::GetBones() const
 {
 	return _Bones;
+}
+
+XE::Weight * XE::Skeleton::GetWeight( XE::uint64 val )
+{
+	XE_ASSERT(val < _Weight.size());
+	
+	return &_Weight[val];
+}
+
+const XE::Array < Weight > &XE::Skeleton::GetWeights() const
+{
+	return _Weight;
 }

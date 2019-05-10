@@ -36,15 +36,15 @@ public:
 
 	void SetMesh( MeshPtr val, XE::uint64 lod );
 
-	MaterialPtr GetMaterial( XE::uint64 lod ) const;
+	MaterialPtr GetMaterial() const;
 
-	void SetMaterial( MaterialPtr val, XE::uint64 lod );
+	void SetMaterial( MaterialPtr val );
 
 private:
 	LOD _LOD;
 	Mat4 _Transform;
 	Array<MeshPtr> _Mesh;
-	Array<MaterialPtr> _Material;
+	MaterialPtr _Material;
 };
 
 END_XE_NAMESAPCE
