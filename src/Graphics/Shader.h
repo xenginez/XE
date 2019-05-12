@@ -13,8 +13,10 @@
 
 BEG_XE_NAMESPACE
 
-class GRAPHICS_API Shader : public std::enable_shared_from_this<Shader>
+class GRAPHICS_API Shader : public XE::Object
 {
+	OBJECT(Shader, Object);
+	
 public:
 	Shader();
 

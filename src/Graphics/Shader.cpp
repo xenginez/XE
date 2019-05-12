@@ -5,6 +5,9 @@
 
 USING_XE
 
+BEGIN_META(Shader)
+END_META()
+
 XE::Shader::Shader()
 {
 

@@ -4,6 +4,9 @@
 
 USING_XE
 
+BEGIN_META(VertexBuffer)
+END_META()
+
 XE::VertexBuffer::VertexBuffer()
 {
 

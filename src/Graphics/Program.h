@@ -13,8 +13,10 @@
 
 BEG_XE_NAMESPACE
 
-class GRAPHICS_API Program : public std::enable_shared_from_this<Program>
+class GRAPHICS_API Program : public XE::Object
 {
+	OBJECT(Program, Object)
+	
 public:
 	Program();
 

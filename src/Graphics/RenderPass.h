@@ -13,9 +13,13 @@
 
 BEG_XE_NAMESPACE
 
-class GRAPHICS_API RenderPass : public std::enable_shared_from_this<RenderPass>
+class GRAPHICS_API RenderPass : public XE::Object
 {
+	OBJECT(RenderPass, Object)
+	
 public:
+	RenderPass();
+	
 	RenderPass( const String& n );
 
 	~RenderPass();

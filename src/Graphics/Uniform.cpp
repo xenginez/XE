@@ -4,6 +4,9 @@
 
 USING_XE
 
+BEGIN_META(Uniform)
+END_META()
+
 XE::Uniform::Uniform()
 {
 

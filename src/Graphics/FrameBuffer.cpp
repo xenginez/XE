@@ -5,6 +5,9 @@
 
 USING_XE
 
+BEGIN_META(FrameBuffer)
+END_META()
+
 XE::FrameBuffer::FrameBuffer()
 	:_CacheWidth( 0 ), _CacheHeight( 0 ), _BBRatio( BackbufferRatio::Equal )
 {

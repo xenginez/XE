@@ -13,8 +13,10 @@
 
 BEG_XE_NAMESPACE
 
-class GRAPHICS_API VertexBuffer : public std::enable_shared_from_this<VertexBuffer>
+class GRAPHICS_API VertexBuffer : public XE::Object
 {
+	OBJECT(VertexBuffer, Object)
+	
 public:
 	VertexBuffer();
 

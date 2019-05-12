@@ -13,8 +13,10 @@
 
 BEG_XE_NAMESPACE
 
-class GRAPHICS_API Uniform : public std::enable_shared_from_this<Uniform>
+class GRAPHICS_API Uniform : public XE::Object
 {
+	OBJECT(Uniform, Object)
+	
 public:
 	Uniform();
 

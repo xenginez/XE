@@ -13,8 +13,10 @@
 
 BEG_XE_NAMESPACE
 
-class GRAPHICS_API IndexBuffer : public std::enable_shared_from_this<IndexBuffer>
+class GRAPHICS_API IndexBuffer : public XE::Object
 {
+	OBJECT(IndexBuffer, Object)
+	
 public:
 	IndexBuffer();
 

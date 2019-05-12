@@ -13,8 +13,10 @@
 
 BEG_XE_NAMESPACE
 
-class GRAPHICS_API Texture : public std::enable_shared_from_this<Texture>
+class GRAPHICS_API Texture : public XE::Object
 {
+	OBJECT(Texture, Object)
+	
 public:
 	Texture();
 

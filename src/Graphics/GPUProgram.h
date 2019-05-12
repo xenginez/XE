@@ -13,9 +13,13 @@
 
 BEG_XE_NAMESPACE
 
-class GRAPHICS_API GPUProgram
+class GRAPHICS_API GPUProgram : public XE::Object
 {
+	OBJECT(GPUProgram, Object)
+	
 public:
+	GPUProgram();
+	
 	GPUProgram( ShaderPtr compute_shader );
 
 	GPUProgram( ShaderPtr vertex_shader, ShaderPtr fragment_shader );

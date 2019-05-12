@@ -51,152 +51,152 @@ void XE::Material::SetCullType( XE::CullType val )
 	_CullType = val;
 }
 
-const Color &Material::GetBaseColor() const
+const Color &XE::Material::GetBaseColor() const
 {
 	return _BaseColor;
 }
 
-void Material::SetBaseColor( const Color &val )
+void XE::Material::SetBaseColor( const Color &val )
 {
 	_BaseColor = val;
 }
 
-const Color &Material::GetEmissiveColor() const
+const Color &XE::Material::GetEmissiveColor() const
 {
 	return _EmissiveColor;
 }
 
-void Material::SetEmissiveColor( const Color &val )
+void XE::Material::SetEmissiveColor( const Color &val )
 {
 	_EmissiveColor = val;
 }
 
-const Color &Material::GetSubsurfaceColor() const
+const Color &XE::Material::GetSubsurfaceColor() const
 {
 	return _SubsurfaceColor;
 }
 
-void Material::SetSubsurfaceColor( const Color &val )
+void XE::Material::SetSubsurfaceColor( const Color &val )
 {
 	_SubsurfaceColor = val;
 }
 
-const Vec2 &Material::GetTiling() const
+const Vec2 &XE::Material::GetTiling() const
 {
 	return _Tiling;
 }
 
-void Material::SetTiling( const Vec2 &val )
+void XE::Material::SetTiling( const Vec2 &val )
 {
 	_Tiling = val;
 }
 
-const Vec2 &Material::GetDitherThreshold() const
+const Vec2 &XE::Material::GetDitherThreshold() const
 {
 	return _DitherThreshold;
 }
 
-void Material::SetDitherThreshold( const Vec2 &val )
+void XE::Material::SetDitherThreshold( const Vec2 &val )
 {
 	_DitherThreshold = val;
 }
 
-const Vec4 &Material::GetSurfaceData() const
+const Vec4 &XE::Material::GetSurfaceData() const
 {
 	return _SurfaceData;
 }
 
-void Material::SetSurfaceData( const Vec4 &val )
+void XE::Material::SetSurfaceData( const Vec4 &val )
 {
 	_SurfaceData = val;
 }
 
-float Material::GetRoughness() const
+float XE::Material::GetRoughness() const
 {
 	return _SurfaceData.x;
 }
 
-void Material::SetRoughness( float val )
+void XE::Material::SetRoughness( float val )
 {
 	_SurfaceData.x = val;
 }
 
-float Material::GetMetalness() const
+float XE::Material::GetMetalness() const
 {
 	return _SurfaceData.y;
 }
 
-void Material::SetMetalness( float val )
+void XE::Material::SetMetalness( float val )
 {
 	_SurfaceData.y = val;
 }
 
-float Material::GetBumpiness() const
+float XE::Material::GetBumpiness() const
 {
 	return _SurfaceData.z;
 }
 
-void Material::SetBumpiness( float val )
+void XE::Material::SetBumpiness( float val )
 {
 	_SurfaceData.z = val;
 }
 
-float Material::GetAlphaTest() const
+float XE::Material::GetAlphaTest() const
 {
 	return _SurfaceData.w;
 }
 
-void Material::SetAlphaTest( float val )
+void XE::Material::SetAlphaTest( float val )
 {
 	_SurfaceData.w = val;
 }
 
-TexturePtr Material::GetAOTexture() const
+TexturePtr XE::Material::GetAOTexture() const
 {
 	return _AOTexture;
 }
 
-void Material::SetAOTexture( const TexturePtr &val )
+void XE::Material::SetAOTexture( const TexturePtr &val )
 {
 	_AOTexture = val;
 }
 
-TexturePtr Material::GetAlbedoTexture() const
+TexturePtr XE::Material::GetAlbedoTexture() const
 {
 	return _AlbedoTexture;
 }
 
-void Material::SetAlbedoTexture( const TexturePtr &val )
+void XE::Material::SetAlbedoTexture( const TexturePtr &val )
 {
 	_AlbedoTexture = val;
 }
 
-TexturePtr Material::GetNormalTexture() const
+TexturePtr XE::Material::GetNormalTexture() const
 {
 	return _NormalTexture;
 }
 
-void Material::SetNormalTexture( const TexturePtr &val )
+void XE::Material::SetNormalTexture( const TexturePtr &val )
 {
 	_NormalTexture = val;
 }
 
-TexturePtr Material::GetRoughnessTexture() const
+TexturePtr XE::Material::GetRoughnessTexture() const
 {
 	return _RoughnessTexture;
 }
 
-void Material::SetRoughnessTexture( const TexturePtr &val )
+void XE::Material::SetRoughnessTexture( const TexturePtr &val )
 {
 	_RoughnessTexture = val;
 }
 
-TexturePtr Material::GetMetalnessTexture() const
+TexturePtr XE::Material::GetMetalnessTexture() const
 {
 	return _MetalnessTexture;
 }
 
-void Material::SetMetalnessTexture( const TexturePtr &val )
+void XE::Material::SetMetalnessTexture( const TexturePtr &val )
 {
 	_MetalnessTexture = val;
 }

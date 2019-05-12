@@ -7,6 +7,9 @@
 
 USING_XE
 
+BEGIN_META(RenderPass)
+END_META()
+
 ViewHandle& get_counter()
 {
 	static ViewHandle id = 0;
@@ -24,6 +27,11 @@ ViewHandle generate_id()
 	ViewHandle idx = counter++;
 
 	return idx;
+}
+
+XE::RenderPass::RenderPass()
+{
+
 }
 
 XE::RenderPass::RenderPass( const String& n )

@@ -6,6 +6,9 @@
 
 USING_XE
 
+BEGIN_META(RenderView)
+END_META()
+
 XE::TexturePtr XE::RenderView::GetTexture( const String& id, XE::uint64 _width, XE::uint64 _height, bool _hasMips, uint16 _numLayers, TextureFormat _format, uint64 _flags, const MemoryView * _mem /*= nullptr */ )
 {
 	TextureKey key;

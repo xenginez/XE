@@ -4,6 +4,9 @@
 
 USING_XE
 
+BEGIN_META(IndexBuffer)
+END_META()
+
 XE::IndexBuffer::IndexBuffer()
 {
 

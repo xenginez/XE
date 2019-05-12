@@ -13,8 +13,10 @@
 
 BEG_XE_NAMESPACE
 
-class GRAPHICS_API RenderView : public std::enable_shared_from_this<RenderView>
+class GRAPHICS_API RenderView : public XE::Object
 {
+	OBJECT(RenderView, Object)
+	
 public:
 	TexturePtr GetTexture( const String& id, XE::uint64 _width, XE::uint64 _height, bool _hasMips, uint16 _numLayers, TextureFormat _format, uint64 _flags, const MemoryView * _mem = nullptr );
 

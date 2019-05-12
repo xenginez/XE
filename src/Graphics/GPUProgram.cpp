@@ -6,6 +6,14 @@
 
 USING_XE
 
+BEGIN_META(GPUProgram)
+END_META()
+
+XE::GPUProgram::GPUProgram()
+{
+
+}
+
 XE::GPUProgram::GPUProgram( ShaderPtr compute_shader )
 {
 	attach_shader( compute_shader );

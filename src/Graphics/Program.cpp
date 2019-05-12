@@ -8,6 +8,9 @@
 
 USING_XE
 
+BEGIN_META(Program)
+END_META()
+
 XE::Program::Program()
 {
 

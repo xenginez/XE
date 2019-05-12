@@ -4,6 +4,9 @@
 
 USING_XE
 
+BEGIN_META(Texture)
+END_META()
+
 XE::Texture::Texture()
 {
 

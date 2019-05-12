@@ -16,7 +16,7 @@
 		#undef LIB_NAME
 	#endif // LIB_NAME
 #else
-#ifdef LIB_NAME
-#undef LIB_NAME
-#endif // LIB_NAME
+	#ifdef LIB_NAME
+		#undef LIB_NAME
+	#endif // LIB_NAME
 #endif

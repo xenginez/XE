@@ -13,8 +13,10 @@
 
 BEG_XE_NAMESPACE
 
-class GRAPHICS_API FrameBuffer : public std::enable_shared_from_this<FrameBuffer>
+class GRAPHICS_API FrameBuffer : public XE::Object
 {
+	OBJECT(FrameBuffer, Object)
+	
 public:
 	struct FBOAttachment
 	{
