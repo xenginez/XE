@@ -2,7 +2,7 @@
 
 USING_XE
 
-BEGIN_META( IConfigService )
+BEGIN_META(IConfigService)
 END_META()
 
 XE::IConfigService::IConfigService()
@@ -15,122 +15,146 @@ XE::IConfigService::~IConfigService()
 
 }
 
-bool IConfigService::GetBool( const std::string& key ) const
+bool IConfigService::GetBool( const String &key, bool def ) const
 {
-	return GetValue( key ) == "true";
+	String s = GetValue(key);
+	
+	return s == "" ? def : s == "true";
 }
 
-void IConfigService::SetBool( const std::string& key, bool val )
+void IConfigService::SetBool( const String &key, bool val )
 {
-	SetValue( key, val ? "true" : "false" );
+	SetValue(key, val ? "true" : "false");
 }
 
-int8 IConfigService::GetInt8( const std::string& key ) const
+int8 IConfigService::GetInt8( const String &key, int8 def ) const
 {
-	return std::stoi( GetValue( key ) );
+	String s = GetValue(key);
+	
+	return s == "" ? def : std::stoi(s);
 }
 
-void IConfigService::SetInt8( const std::string& key, int8 val )
+void IConfigService::SetInt8( const String &key, int8 val )
 {
-	SetValue( key, std::to_string( val ) );
+	SetValue(key, std::to_string(val));
 }
 
-int16 IConfigService::GetInt16( const std::string& key ) const
+int16 IConfigService::GetInt16( const String &key, int16 def ) const
 {
-	return std::stoi( GetValue( key ) );
+	String s = GetValue(key);
+	
+	return s == "" ? def : std::stoi(s);
 }
 
-void IConfigService::SetInt16( const std::string& key, int16 val )
+void IConfigService::SetInt16( const String &key, int16 val )
 {
-	SetValue( key, std::to_string( val ) );
+	SetValue(key, std::to_string(val));
 }
 
-int32 IConfigService::GetInt32( const std::string& key ) const
+int32 IConfigService::GetInt32( const String &key, int32 def ) const
 {
-	return std::stoi( GetValue( key ) );
+	String s = GetValue(key);
+	
+	return s == "" ? def : std::stoi(s);
 }
 
-void IConfigService::SetInt32( const std::string& key, int32 val )
+void IConfigService::SetInt32( const String &key, int32 val )
 {
-	SetValue( key, std::to_string( val ) );
+	SetValue(key, std::to_string(val));
 }
 
-int64 IConfigService::GetInt64( const std::string& key ) const
+int64 IConfigService::GetInt64( const String &key, int64 def ) const
 {
-	return std::stoll( GetValue( key ) );
+	String s = GetValue(key);
+	
+	return s == "" ? def : std::stoll(s);
 }
 
-void IConfigService::SetInt64( const std::string& key, int64 val )
+void IConfigService::SetInt64( const String &key, int64 val )
 {
-	SetValue( key, std::to_string( val ) );
+	SetValue(key, std::to_string(val));
 }
 
-uint8 IConfigService::GetUInt8( const std::string& key ) const
+uint8 IConfigService::GetUInt8( const String &key, uint8 def ) const
 {
-	return (uint8)std::stoul( GetValue( key ) );
+	String s = GetValue(key);
+	
+	return s == "" ? def : ( uint8 ) std::stoul(s);
 }
 
-void IConfigService::SetUInt8( const std::string& key, uint8 val )
+void IConfigService::SetUInt8( const String &key, uint8 val )
 {
-	SetValue( key, std::to_string( val ) );
+	SetValue(key, std::to_string(val));
 }
 
-uint16 IConfigService::GetUInt16( const std::string& key ) const
+uint16 IConfigService::GetUInt16( const String &key, uint16 def ) const
 {
-	return (uint16)std::stoul( GetValue( key ) );
+	String s = GetValue(key);
+	
+	return s == "" ? def : ( uint16 ) std::stoul(s);
 }
 
-void IConfigService::SetUInt16( const std::string& key, uint16 val )
+void IConfigService::SetUInt16( const String &key, uint16 val )
 {
-	SetValue( key, std::to_string( val ) );
+	SetValue(key, std::to_string(val));
 }
 
-uint32 IConfigService::GetUInt32( const std::string& key ) const
+uint32 IConfigService::GetUInt32( const String &key, uint32 def ) const
 {
-	return std::stoul( GetValue( key ) );
+	String s = GetValue(key);
+	
+	return s == "" ? def : std::stoul(s);
 }
 
-void IConfigService::SetUInt32( const std::string& key, uint32 val )
+void IConfigService::SetUInt32( const String &key, uint32 val )
 {
-	SetValue( key, std::to_string( val ) );
+	SetValue(key, std::to_string(val));
 }
 
-uint64 IConfigService::GetUInt64( const std::string& key ) const
+uint64 IConfigService::GetUInt64( const String &key, uint64 def ) const
 {
-	return std::stoull( GetValue( key ) );
+	String s = GetValue(key);
+	
+	return s == "" ? def : std::stoull(s);
 }
 
-void IConfigService::SetUInt64( const std::string& key, uint64 val )
+void IConfigService::SetUInt64( const String &key, uint64 val )
 {
-	SetValue( key, std::to_string( val ) );
+	SetValue(key, std::to_string(val));
 }
 
-float IConfigService::GetFloat( const std::string& key ) const
+float IConfigService::GetFloat( const String &key, float def ) const
 {
-	return std::stof( GetValue( key ) );
+	String s = GetValue(key);
+	
+	return s == "" ? def : std::stof(s);
 }
 
-void IConfigService::SetFloat( const std::string& key, float val )
+void IConfigService::SetFloat( const String &key, float val )
 {
-	SetValue( key, std::to_string( val ) );
+	SetValue(key, std::to_string(val));
 }
 
-double IConfigService::GetDouble( const std::string& key ) const
+double IConfigService::GetDouble( const String &key, double def ) const
 {
-	return std::stod( GetValue( key ) );
+	String s = GetValue(key);
+	
+	return s == "" ? def : std::stod(s);
 }
 
-void IConfigService::SetDouble( const std::string& key, double val )
+void IConfigService::SetDouble( const String &key, double val )
 {
-	SetValue( key, std::to_string( val ) );
+	SetValue(key, std::to_string(val));
 }
 
-std::string IConfigService::GetString( const std::string& key ) const
+String IConfigService::GetString( const String &key, const String &def ) const
 {
-	return GetValue( key );
+	String s = GetValue(key);
+	
+	return s == "" ? def : s;
 }
 
-void IConfigService::SetString( const std::string& key, const std::string& val ) const
+void IConfigService::SetString( const String &key, const String &val ) const
 {
-	SetValue( key, val );
+	SetValue(key, val);
 }

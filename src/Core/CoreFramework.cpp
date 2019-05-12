@@ -19,8 +19,7 @@ END_META()
 
 struct XE::CoreFramework::Private
 {
-	bool _Exit;
-	Language _Language;
+	bool _Exit = false;
 	Array < IServicePtr > _Services;
 };
 
@@ -118,7 +117,7 @@ XE::ILocalizationServicePtr XE::CoreFramework::GetLocalizationService() const
 	return SP_CAST < ILocalizationService >(_p->_Services[0]);
 }
 
-XE::IServicePtr XE::CoreFramework::GetService( const IMetaClassPtr val ) const
+XE::IServicePtr XE::CoreFramework::GetService( IMetaClassPtr val ) const
 {
 	for( auto it = _p->_Services.rbegin(); it != _p->_Services.rend(); ++it )
 	{
@@ -166,7 +165,7 @@ void XE::CoreFramework::UnregisterService( IMetaClassPtr val )
 
 XE::Language XE::CoreFramework::GetSystemLanguage() const
 {
-	return _p->_Language;
+	return Platform::get_default_language();
 }
 
 std::filesystem::path XE::CoreFramework::GetPluginPath() const
@@ -207,7 +206,7 @@ void XE::CoreFramework::Prepare()
 // 	_p->_Services.push_back( make_shared <NavigationService>() );
 // 	_p->_Services.push_back( make_shared <WorldService>() );
 	
-	for( auto it : _p->_Services )
+	for( auto &it : _p->_Services )
 	{
 		it->SetFramework(this);
 	}
@@ -217,14 +216,14 @@ void XE::CoreFramework::Startup()
 {
 	_p->_Exit = false;
 	
-	_p->_Language = Platform::get_default_language();
-	
-	for( auto &_Service : _p->_Services )
+	for( auto &service : _p->_Services )
 	{
-		if( !_Service->Startup())
+		if( !service->Startup())
 		{
-			_Service->Clearup();
-			_Service = nullptr;
+			XE_LOG(LoggerLevel::Error, "startup %1 error!", service->GetMetaClass()->GetFullName());
+			
+			service->Clearup();
+			service = nullptr;
 		}
 	}
 }
@@ -233,7 +232,7 @@ void XE::CoreFramework::Update()
 {
 	while( !_p->_Exit )
 	{
-		for( const auto &service : _p->_Services )
+		for( auto &service : _p->_Services )
 		{
 			if( service != nullptr )
 			{
@@ -245,11 +244,11 @@ void XE::CoreFramework::Update()
 
 void XE::CoreFramework::Clearup()
 {
-	for( auto it = _p->_Services.rbegin(); it != _p->_Services.rend(); ++it )
+	for( auto &service : _p->_Services )
 	{
-		if(( *it ) != nullptr )
+		if( service != nullptr )
 		{
-			( *it )->Clearup();
+			service->Clearup();
 		}
 	}
 	

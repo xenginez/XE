@@ -9,13 +9,13 @@ END_META()
 
 struct ConfigService::Private
 {
-	std::map < std::string, std::string > Values;
+	std::map < String, String > Values;
 };
 
 XE::ConfigService::ConfigService()
 		:_p(new Private)
 {
-
+	
 }
 
 XE::ConfigService::~ConfigService()
@@ -34,8 +34,8 @@ bool XE::ConfigService::Startup()
 		auto set = node.node().select_nodes("item");
 		for( auto it : set )
 		{
-			std::string key = it.node().attribute("name").value();
-			std::string val = it.node().attribute("value").value();
+			String key = it.node().attribute("name").value();
+			String val = it.node().attribute("value").value();
 			
 			_p->Values.insert({ key, val });
 		}
@@ -46,7 +46,7 @@ bool XE::ConfigService::Startup()
 
 void XE::ConfigService::Update()
 {
-
+	
 }
 
 void XE::ConfigService::Clearup()
@@ -60,14 +60,14 @@ void XE::ConfigService::Clearup()
 	{
 		auto item = node.append_child("item");
 		
-		item.append_attribute("name").set_value(it.first.c_str());
-		item.append_attribute("value").set_value(it.first.c_str());
+		item.append_attribute("name").set_value(it.first.ToCString());
+		item.append_attribute("value").set_value(it.first.ToCString());
 	}
 	
 	doc.save_file(path.string().c_str());
 }
 
-std::string XE::ConfigService::GetValue( const std::string &key ) const
+String XE::ConfigService::GetValue( const String &key ) const
 {
 	auto it = _p->Values.find(key);
 	
@@ -79,7 +79,7 @@ std::string XE::ConfigService::GetValue( const std::string &key ) const
 	return "";
 }
 
-void XE::ConfigService::SetValue( const std::string &key, const std::string &val ) const
+void XE::ConfigService::SetValue( const String &key, const String &val ) const
 {
 	_p->Values[key] = val;
 }

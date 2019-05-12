@@ -23,19 +23,19 @@ private:
 public:
 	ConfigService();
 
-	~ConfigService();
+	~ConfigService() override;
 
 public:
-	virtual bool Startup() override;
+	bool Startup() override;
 
-	virtual void Update() override;
+	void Update() override;
 
-	virtual void Clearup() override;
+	void Clearup() override;
 
 protected:
-	virtual std::string GetValue( const std::string& key ) const override;
+	String GetValue( const String& key ) const override;
 
-	virtual void SetValue( const std::string& key, const std::string& val ) const override;
+	void SetValue( const String& key, const String& val ) const override;
 
 private:
 	Private * _p;

@@ -37,6 +37,9 @@ public:
 
 	virtual void Save( Archive &val ) const;
 
+public:
+	String tr( const String& val ) const;
+	
 private:
 	IFrameworkPtr _Framework;
 };

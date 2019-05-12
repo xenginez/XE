@@ -19,62 +19,62 @@ class INTERFACE_API IConfigService : public IService
 
 public:
 	IConfigService();
-
-	virtual ~IConfigService();
+	
+	~IConfigService() override;
 
 public:
-	bool GetBool( const std::string& key ) const;
+	void SetBool( const String& key, bool val );
+	
+	bool GetBool( const String& key, bool def = false ) const;
 
-	void SetBool( const std::string& key, bool val );
+	void SetInt8( const String& key, int8 val );
+	
+	int8 GetInt8( const String& key, int8 def = 0 ) const;
 
-	int8 GetInt8( const std::string& key ) const;
+	void SetInt16( const String& key, int16 val );
+	
+	int16 GetInt16( const String& key, int16 def = 0 ) const;
 
-	void SetInt8( const std::string& key, int8 val );
+	void SetInt32( const String& key, int32 val );
+	
+	int32 GetInt32( const String& key, int32 def = 0 ) const;
 
-	int16 GetInt16( const std::string& key ) const;
+	void SetInt64( const String& key, int64 val );
+	
+	int64 GetInt64( const String& key, int64 def = 0 ) const;
 
-	void SetInt16( const std::string& key, int16 val );
+	void  SetUInt8( const String& key, uint8 val );
+	
+	uint8  GetUInt8( const String& key, uint8 def = 0 ) const;
 
-	int32 GetInt32( const std::string& key ) const;
+	void SetUInt16( const String& key, uint16 val );
+	
+	uint16 GetUInt16( const String& key, uint16 def = 0 ) const;
 
-	void SetInt32( const std::string& key, int32 val );
+	void SetUInt32( const String& key, uint32 val );
+	
+	uint32 GetUInt32( const String& key, uint32 def = 0 ) const;
 
-	int64 GetInt64( const std::string& key ) const;
+	void SetUInt64( const String& key, uint64 val );
+	
+	uint64 GetUInt64( const String& key, uint64 def = 0 ) const;
 
-	void SetInt64( const std::string& key, int64 val );
+	void SetFloat( const String& key, float val );
+	
+	float GetFloat( const String& key, float def = 0.0f ) const;
 
-	uint8  GetUInt8( const std::string& key ) const;
+	void SetDouble( const String& key, double val );
+	
+	double GetDouble( const String& key, double def = 0.0 ) const;
 
-	void  SetUInt8( const std::string& key, uint8 val );
-
-	uint16 GetUInt16( const std::string& key ) const;
-
-	void SetUInt16( const std::string& key, uint16 val );
-
-	uint32 GetUInt32( const std::string& key ) const;
-
-	void SetUInt32( const std::string& key, uint32 val );
-
-	uint64 GetUInt64( const std::string& key ) const;
-
-	void SetUInt64( const std::string& key, uint64 val );
-
-	float GetFloat( const std::string& key ) const;
-
-	void SetFloat( const std::string& key, float val );
-
-	double GetDouble( const std::string& key ) const;
-
-	void SetDouble( const std::string& key, double val );
-
-	std::string GetString( const std::string& key ) const;
-
-	void SetString( const std::string& key, const std::string& val ) const;
+	void SetString( const String& key, const String& val ) const;
+	
+	String GetString( const String& key, const String& def = "" ) const;
 
 protected:
-	virtual std::string GetValue( const std::string& key ) const = 0;
+	virtual String GetValue( const String& key ) const = 0;
 
-	virtual void SetValue( const std::string& key, const std::string& val ) const = 0;
+	virtual void SetValue( const String& key, const String& val ) const = 0;
 
 };
 

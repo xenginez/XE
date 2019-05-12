@@ -29,50 +29,50 @@ public:
 	virtual int Exec() override;
 
 public:
-	virtual IGUIServicePtr GetGUIService() const override;
+	IGUIServicePtr GetGUIService() const override;
 
-	virtual ITimerServicePtr GetTimerService() const override;
+	ITimerServicePtr GetTimerService() const override;
 
-	virtual IEventServicePtr GetEventService() const override;
+	IEventServicePtr GetEventService() const override;
 
-	virtual IInputServicePtr GetInputService() const override;
+	IInputServicePtr GetInputService() const override;
 
-	virtual IAudioServicePtr GetAudioService() const override;
+	IAudioServicePtr GetAudioService() const override;
 
-	virtual IWorldServicePtr GetWorldService() const override;
+	IWorldServicePtr GetWorldService() const override;
 
-	virtual IPluginServicePtr GetPluginService() const override;
+	IPluginServicePtr GetPluginService() const override;
 
-	virtual IThreadServicePtr GetThreadService() const override;
+	IThreadServicePtr GetThreadService() const override;
 
-	virtual IAssetsServicePtr GetAssetsService() const override;
+	IAssetsServicePtr GetAssetsService() const override;
 
-	virtual IConfigServicePtr GetConfigService() const override;
+	IConfigServicePtr GetConfigService() const override;
 
-	virtual ILoggerServicePtr GetLoggerService() const override;
+	ILoggerServicePtr GetLoggerService() const override;
 
-	virtual IRenderServicePtr GetRenderService() const override;
+	IRenderServicePtr GetRenderService() const override;
 
-	virtual IPhysicsServicePtr GetPhysicsService() const override;
+	IPhysicsServicePtr GetPhysicsService() const override;
 
-	virtual ILocalizationServicePtr GetLocalizationService() const override;
+	ILocalizationServicePtr GetLocalizationService() const override;
 
-	virtual IServicePtr GetService( const IMetaClassPtr val ) const override;
+	IServicePtr GetService( IMetaClassPtr val ) const override;
 
-	virtual bool RegisterService( IMetaClassPtr val ) override;
+	bool RegisterService( IMetaClassPtr val ) override;
 
-	virtual void UnregisterService( IMetaClassPtr val ) override;
+	void UnregisterService( IMetaClassPtr val ) override;
 
 public:
-	virtual Language GetSystemLanguage() const override;
+	Language GetSystemLanguage() const override;
 	
-	virtual std::filesystem::path GetPluginPath() const override;
+	std::filesystem::path GetPluginPath() const override;
 
-	virtual std::filesystem::path GetAssetsPath() const override;
+	std::filesystem::path GetAssetsPath() const override;
 
-	virtual std::filesystem::path GetUserDataPath() const override;
+	std::filesystem::path GetUserDataPath() const override;
 
-	virtual std::filesystem::path GetApplicationPath() const override;
+	std::filesystem::path GetApplicationPath() const override;
 
 private:
 	void Prepare();
