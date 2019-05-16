@@ -15,7 +15,6 @@
 #include "CRC32.h"
 #include "BASE64.h"
 #include "Handle.h"
-#include "Window.h"
 #include "Library.h"
 #include "Platform.h"
 #include "Profiler.h"

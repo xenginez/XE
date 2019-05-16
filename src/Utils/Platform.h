@@ -16,13 +16,6 @@ BEG_XE_NAMESPACE
 class UTILS_API Platform
 {
 public:
-	static uint64 dlopen( const String& name );
-
-	static void * dlsym( uint64 handle, const String& name );
-
-	static bool dlclose( uint64 handle );
-
-public:
 	static Language get_default_language();
 
 };

@@ -21,7 +21,10 @@ public:
 	Renderer();
 	
 	~Renderer() override;
+
+public:
 	
+
 };
 
 END_XE_NAMESAPCE

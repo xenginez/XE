@@ -4,6 +4,53 @@
 
 USING_XE
 
+
+#if PLATFORM_OS == OS_WINDOWS
+#include <Windows.h>
+
+uint64 dlopen( const String& name )
+{
+	return reinterpret_cast<uint64>( ::LoadLibrary( (name.ToStdString() + ".dll").c_str() ) );
+}
+
+void * dlsym( uint64 handle, const String& name )
+{
+	return ::GetProcAddress( reinterpret_cast<HMODULE>( handle ), name.ToCString() );
+}
+
+bool dlclose( uint64 handle )
+{
+	return ::FreeLibrary( reinterpret_cast<HMODULE>( handle ) );
+}
+#else
+#include <dlfcn.h>
+
+#if PLATFORM_OS == OS_IOS || PLATFORM_OS == OS_MAC
+#define LIB_EXT ".dylib"
+#else
+#define LIB_EXT ".so"
+#endif
+
+namespace XE
+{
+	uint64 dlopen( const String &val )
+	{
+		return reinterpret_cast<uint64>(::dlopen(( val.ToStdString() + LIB_EXT ).c_str(), RTLD_NOW));
+	}
+	
+	void * dlsym( uint64 handle, const String &val )
+	{
+		return ::dlsym(reinterpret_cast<void *>(handle), val.ToCString());
+	}
+	
+	bool dlclose( uint64 handle )
+	{
+		return static_cast<bool>(::dlclose(( void * ) handle));
+	}
+}
+
+#endif
+
 struct XE::Library::Private
 {
 	Array < Pair < uint64, String > > Librarys;
@@ -20,7 +67,7 @@ XE::Library::~Library()
 {
 	for( const auto &lib : _p->Librarys )
 	{
-		Platform::dlclose(lib.first);
+		XE::dlclose(lib.first);
 	}
 	
 	delete _p;
@@ -38,7 +85,7 @@ XE::uint64 XE::Library::Open( const String &val )
 	
 	for( const auto &it : This()->_p->SearchPaths )
 	{
-		auto h = Platform::dlopen(( it / val.ToCString()).string());
+		auto h = XE::dlopen(( it / val.ToCString()).string());
 		if( h != 0 )
 		{
 			This()->_p->Librarys.push_back(std::make_pair(h, val));
@@ -53,7 +100,7 @@ void * XE::Library::Symbol( uint64 index, const String &name )
 {
 	if( auto lib = This()->_p->Librarys[index].first )
 	{
-		return Platform::dlsym(lib, name);
+		return XE::dlsym(lib, name);
 	}
 	
 	return nullptr;
@@ -63,7 +110,7 @@ void XE::Library::Close( uint64 index )
 {
 	if( auto lib = This()->_p->Librarys[index].first )
 	{
-		Platform::dlclose(lib);
+		XE::dlclose(lib);
 		
 		This()->_p->Librarys[index].first = 0;
 		This()->_p->Librarys[index].second = "";

@@ -5,22 +5,6 @@
 
 USING_XE
 
-
-uint64 XE::Platform::dlopen( const String& name )
-{
-	return reinterpret_cast<uint64>( ::LoadLibrary( (name.ToStdString() + ".dll").c_str() ) );
-}
-
-void * XE::Platform::dlsym( uint64 handle, const String& name )
-{
-	return ::GetProcAddress( reinterpret_cast<HMODULE>( handle ), name.ToCString() );
-}
-
-bool XE::Platform::dlclose( uint64 handle )
-{
-	return ::FreeLibrary( reinterpret_cast<HMODULE>( handle ) );
-}
-
 XE::Language Platform::get_default_language()
 {
 	LANGID id = GetSystemDefaultLangID();
