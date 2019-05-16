@@ -66,7 +66,8 @@ add_dependencies(Math Base Memory Reflect Utils)
 add_dependencies(Interface Base Memory Reflect Utils Math)
 add_dependencies(Audio Base Memory Reflect Utils Math Interface)
 add_dependencies(Physics Base Memory Reflect Utils Math Interface)
-add_dependencies(Graphics Base Memory Reflect Utils Math Interface)
+add_dependencies(RHI Base Memory Reflect Utils Math Interface)
+add_dependencies(Graphics Base Memory Reflect Utils Math Interface RHI)
 add_dependencies(Animation Base Memory Reflect Utils Math Interface)
 add_dependencies(Navigation Base Memory Reflect Utils Math Interface)
 add_dependencies(GUI Base Memory Reflect Utils Math Interface Graphics)
@@ -132,13 +133,12 @@ target_link_libraries(Physics
 		BulletInverseDynamics${BULLET_SUFFIX}
 		)
 
-target_link_libraries(Graphics
+target_link_libraries(RHI
 		Interface
+		)
 
-		bx${BGFX_SUFFIX}
-		bgfx${BGFX_SUFFIX}
-		bimg${BGFX_SUFFIX}
-		bimg_decode${BGFX_SUFFIX}
+target_link_libraries(Graphics
+		RHI
 		)
 
 target_link_libraries(Animation
