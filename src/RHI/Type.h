@@ -12,12 +12,20 @@
 #include "Global.h"
 
 BEG_XE_NAMESPACE
-	
-DECL_HANDLE(RHI_API, Shader);
+
+DECL_HANDLE(RHI_API, Sampler);
+
+DECL_HANDLE(RHI_API, IndexBuffer);
+DECL_HANDLE(RHI_API, VertexBuffer);
+DECL_HANDLE(RHI_API, ComputeBuffer);
+DECL_HANDLE(RHI_API, ConstantBuffer);
+DECL_HANDLE(RHI_API, DepthStencilBuffer);
+
 DECL_HANDLE(RHI_API, HullShader);
 DECL_HANDLE(RHI_API, PixelShader);
 DECL_HANDLE(RHI_API, VertexShader);
 DECL_HANDLE(RHI_API, DomainShader);
+DECL_HANDLE(RHI_API, ComputeShader);
 DECL_HANDLE(RHI_API, TessellationShader);
 
 DECL_HANDLE(RHI_API, Texture);
