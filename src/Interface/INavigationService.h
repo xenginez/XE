@@ -20,7 +20,7 @@ class INTERFACE_API INavigationService : public IService
 public:
 	INavigationService();
 
-	~INavigationService();
+	~INavigationService() override;
 };
 
 END_XE_NAMESAPCE

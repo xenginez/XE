@@ -103,7 +103,7 @@ XE::PrefabPtr XE::AssetsService::Load( const String &val )
 		LoadAsset(val);
 	}
 	
-	return XE::make_shared < Prefab >(XE_THIS(IAssetsService), val);
+	return CreatePrefab(val);
 }
 
 XE::PrefabPtr XE::AssetsService::AsynLoad( const String &val )
@@ -115,7 +115,7 @@ XE::PrefabPtr XE::AssetsService::AsynLoad( const String &val )
 		_p->_Assets.insert(std::make_pair(val, std::make_tuple(AssetStatus::Loading, nullptr, GetFramework()->GetTimerService()->GetTime())));
 	}
 	
-	return XE::make_shared < Prefab >(XE_THIS(IAssetsService), val);
+	return CreatePrefab(val);
 }
 
 void XE::AssetsService::Unload( const String &val )
@@ -152,7 +152,7 @@ void XE::AssetsService::LoadAsset( const String &val )
 		auto it = _p->_Directorys.find(val);
 		if( it != _p->_Directorys.end())
 		{
-			for( auto dep : it->second.Dependent )
+			for( const auto &dep : it->second.Dependent )
 			{
 				LoadAsset(dep);
 			}

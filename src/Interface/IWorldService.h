@@ -20,7 +20,7 @@ class INTERFACE_API IWorldService : public IService
 public:
 	IWorldService();
 
-	virtual ~IWorldService();
+	~IWorldService() override;
 
 public:
 

@@ -23,32 +23,32 @@ private:
 public:
 	ThreadService();
 
-	~ThreadService();
+	~ThreadService() override;
 
 public:
-	virtual bool Startup() override;
+	bool Startup() override;
 
-	virtual void Update() override;
+	void Update() override;
 
-	virtual void Clearup() override;
-
-public:
-	virtual TID GetIOThread() const override;
-
-	virtual TID GetMainThread() const override;
-
-	virtual TID GetGameThread() const override;
-
-	virtual TID GetRenderThread() const override;
-
-	virtual TID GetPhysicsThread() const override;
-
-	virtual TID GetNavigationThread() const override;
-
-	virtual TID GetWorkThread( XE::uint64 val ) const override;
+	void Clearup() override;
 
 public:
-	virtual bool RegisterTask( TaskType task, TID tid = std::this_thread::get_id(), ThreadPriority pri = ThreadPriority::NORM ) override;
+	TID GetIOThread() const override;
+
+	TID GetMainThread() const override;
+
+	TID GetGameThread() const override;
+
+	TID GetRenderThread() const override;
+
+	TID GetPhysicsThread() const override;
+
+	TID GetNavigationThread() const override;
+
+	TID GetWorkThread( XE::uint64 val ) const override;
+
+public:
+	bool RegisterTask( TaskType task, TID tid = std::this_thread::get_id(), ThreadPriority pri = ThreadPriority::NORM ) override;
 
 private:
 	Private * _p;

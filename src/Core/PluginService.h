@@ -23,19 +23,19 @@ private:
 public:
 	PluginService();
 	
-	~PluginService();
+	~PluginService() override;
 
 public:
-	virtual bool Startup() override;
+	bool Startup() override;
 	
-	virtual void Update() override;
+	void Update() override;
 	
-	virtual void Clearup() override;
+	void Clearup() override;
 
 public:
-	virtual void RegisterPlugin( const std::filesystem::path &val ) override;
+	void RegisterPlugin( const std::filesystem::path &val ) override;
 	
-	virtual void UnregisterPlugin( const String &val ) override;
+	void UnregisterPlugin( const String &val ) override;
 
 private:
 	void IteratorDirectory( Array < std::filesystem::path >& list, const std::filesystem::path &val ) const;

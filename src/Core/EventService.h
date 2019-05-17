@@ -23,26 +23,26 @@ private:
 public:
 	EventService();
 
-	~EventService();
+	~EventService() override;
 
 public:
-	virtual bool Startup() override;
+	bool Startup() override;
 
-	virtual void Update() override;
+	void Update() override;
 
-	virtual void Clearup() override;
-
-public:
-	virtual void PostEvent( EventPtr val ) override;
-
-	virtual void PostEvent( XE::uint64 frame, EventPtr val ) override;
-
-	virtual void PostEvent( float dt, EventPtr val ) override;
+	void Clearup() override;
 
 public:
-	virtual XE::uint64 RegisterListener( uint32 event, ListenerType listener ) override;
+	void PostEvent( EventPtr val ) override;
 
-	virtual void UnregisterListener( uint32 event, XE::uint64 index ) override;
+	void PostEvent( XE::uint64 frame, EventPtr val ) override;
+
+	void PostEvent( float dt, EventPtr val ) override;
+
+public:
+	XE::uint64 RegisterListener( uint32 event, ListenerType listener ) override;
+
+	void UnregisterListener( uint32 event, XE::uint64 index ) override;
 
 private:
 	void ProcessTimeEvent();

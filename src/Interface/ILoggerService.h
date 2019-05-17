@@ -34,7 +34,7 @@ public:
 public:
 	ILoggerService();
 
-	virtual ~ILoggerService();
+	~ILoggerService() override;
 
 public:
 	virtual void Log( LoggerLevel level, const String& file, XE::uint64 line, const String& text ) = 0;

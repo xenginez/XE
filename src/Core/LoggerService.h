@@ -23,22 +23,22 @@ private:
 public:
 	LoggerService();
 
-	~LoggerService();
+	~LoggerService() override;
 
 public:
-	virtual bool Startup() override;
+	bool Startup() override;
 
-	virtual void Update() override;
+	void Update() override;
 
-	virtual void Clearup() override;
-
-public:
-	virtual void Log( LoggerLevel level, const String& file, XE::uint64 line, const String& text ) override;
+	void Clearup() override;
 
 public:
-	virtual XE::uint64 RegisterListener( ListenerType listener ) override;
+	void Log( LoggerLevel level, const String& file, XE::uint64 line, const String& text ) override;
 
-	virtual void UnregisterListener( XE::uint64 index ) override;
+public:
+	XE::uint64 RegisterListener( ListenerType listener ) override;
+
+	void UnregisterListener( XE::uint64 index ) override;
 
 private:
 	Private * _p;

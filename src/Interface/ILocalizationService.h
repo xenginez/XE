@@ -20,7 +20,7 @@ class INTERFACE_API ILocalizationService : public IService
 public:
 	ILocalizationService();
 
-	virtual ~ILocalizationService();
+	~ILocalizationService() override;
 
 public:
 	virtual Language GetCurrentLanguage() const = 0;

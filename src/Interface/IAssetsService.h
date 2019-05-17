@@ -22,7 +22,7 @@ class INTERFACE_API IAssetsService : public IService
 public:
 	IAssetsService();
 
-	virtual ~IAssetsService();
+	~IAssetsService() override;
 
 public:
 	virtual PrefabPtr Load( const String& val ) = 0;
@@ -36,6 +36,9 @@ protected:
 
 	virtual AssetStatus GetAssetStatus( const String& val ) const = 0;
 
+protected:
+	PrefabPtr CreatePrefab( const String& val ) const;
+	
 };
 
 END_XE_NAMESAPCE

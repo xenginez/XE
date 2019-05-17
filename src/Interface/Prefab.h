@@ -13,26 +13,22 @@
 
 BEG_XE_NAMESPACE
 
-class INTERFACE_API Prefab : public Object
+class INTERFACE_API Prefab
 {
-	OBJECT( Prefab, Object )
+	friend class IAssetsService;
 
-public:
-	Prefab();
-
+private:
 	Prefab( IAssetsServicePtr val, const String& link );
-
-	~Prefab();
 
 public:
 	ObjectPtr GetClone() const;
 
-	ObjectPtr GetReference() const;
+	ObjectCPtr GetReference() const;
 
 public:
-	AssetStatus GetStatus() const;
-
 	const String& GetLink() const;
+	
+	AssetStatus GetStatus() const;
 
 public:
 	template< typename T > std::shared_ptr<T> GetCloneT() const
@@ -40,9 +36,9 @@ public:
 		return DP_CAST<T>( GetClone() );
 	}
 
-	template< typename T > std::shared_ptr<T> GetReferenceT() const
+	template< typename T > std::shared_ptr<const T> GetReferenceT() const
 	{
-		return DP_CAST<T>( GetReference() );
+		return DP_CAST<const T>( GetReference() );
 	}
 
 private:

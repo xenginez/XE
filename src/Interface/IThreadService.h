@@ -23,7 +23,7 @@ public:
 public:
 	IThreadService();
 
-	virtual ~IThreadService();
+	~IThreadService() override;
 
 public:
 	virtual TID GetIOThread() const = 0;

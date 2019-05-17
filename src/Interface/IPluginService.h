@@ -44,7 +44,7 @@ class INTERFACE_API IPluginService : public IService
 public:
 	IPluginService();
 
-	~IPluginService();
+	~IPluginService() override;
 
 public:
 	virtual void RegisterPlugin( const std::filesystem::path& val ) = 0;

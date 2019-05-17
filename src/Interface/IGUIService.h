@@ -20,7 +20,7 @@ class INTERFACE_API IGUIService : public IService
 public:
 	IGUIService();
 
-	~IGUIService();
+	~IGUIService() override;
 
 public:
 	virtual XE::uint64 GetWidth() const = 0;

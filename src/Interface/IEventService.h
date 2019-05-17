@@ -39,7 +39,7 @@ public:
 public:
 	IEventService();
 
-	virtual ~IEventService();
+	~IEventService() override;
 
 public:
 	virtual void PostEvent( EventPtr val ) = 0;

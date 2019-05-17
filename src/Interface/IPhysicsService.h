@@ -20,7 +20,7 @@ class INTERFACE_API IPhysicsService : public IService
 public:
 	IPhysicsService();
 
-	virtual ~IPhysicsService();
+	~IPhysicsService() override;
 
 };
 

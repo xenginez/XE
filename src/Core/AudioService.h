@@ -20,14 +20,14 @@ class CORE_API AudioService : public IAudioService
 public:
 	AudioService();
 
-	~AudioService();
+	~AudioService() override;
 
 public:
-	virtual bool Startup() override;
+	bool Startup() override;
 
-	virtual void Update() override;
+	void Update() override;
 
-	virtual void Clearup() override;
+	void Clearup() override;
 
 };
 

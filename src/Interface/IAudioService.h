@@ -20,7 +20,7 @@ class INTERFACE_API IAudioService : public IService
 public:
 	IAudioService();
 
-	virtual ~IAudioService();
+	~IAudioService() override;
 
 };
 

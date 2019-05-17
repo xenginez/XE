@@ -48,7 +48,7 @@ class INTERFACE_API IInputService : public IService
 public:
 	IInputService();
 
-	virtual ~IInputService();
+	~IInputService() override;
 
 public:
 	virtual int32 GetPov( const String& val ) const = 0;

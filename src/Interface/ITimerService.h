@@ -20,7 +20,7 @@ class INTERFACE_API ITimerService : public IService
 public:
 	ITimerService();
 
-	virtual ~ITimerService();
+	~ITimerService() override;
 
 public:
 	virtual void Pause() = 0;

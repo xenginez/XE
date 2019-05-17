@@ -20,7 +20,7 @@ class INTERFACE_API IRenderService : public IService
 public:
 	IRenderService();
 
-	virtual ~IRenderService();
+	~IRenderService() override;
 
 public:
 };

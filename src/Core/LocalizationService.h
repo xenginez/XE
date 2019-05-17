@@ -23,22 +23,22 @@ private:
 public:
 	LocalizationService();
 
-	~LocalizationService();
+	~LocalizationService() override;
 
 public:
-	virtual bool Startup() override;
+	bool Startup() override;
 
-	virtual void Update() override;
+	void Update() override;
 
-	virtual void Clearup() override;
-
-public:
-	virtual Language GetCurrentLanguage() const override;
-
-	virtual void SetCurrentLanguage( Language val ) override;
+	void Clearup() override;
 
 public:
-	virtual String LocalizedString( const String& val ) const override;
+	Language GetCurrentLanguage() const override;
+
+	void SetCurrentLanguage( Language val ) override;
+
+public:
+	String LocalizedString( const String& val ) const override;
 
 private:
 	void UpdateLocalized();

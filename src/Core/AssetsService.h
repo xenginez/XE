@@ -26,26 +26,26 @@ public:
 public:
 	AssetsService();
 
-	~AssetsService();
+	~AssetsService() override;
 
 public:
-	virtual bool Startup() override;
+	bool Startup() override;
 
-	virtual void Update() override;
+	void Update() override;
 
-	virtual void Clearup() override;
+	void Clearup() override;
 
 public:
-	virtual PrefabPtr Load( const String& val ) override;
+	PrefabPtr Load( const String& val ) override;
 
-	virtual PrefabPtr AsynLoad( const String& val ) override;
+	PrefabPtr AsynLoad( const String& val ) override;
 
-	virtual void Unload( const String& val ) override;
+	void Unload( const String& val ) override;
 
 protected:
-	virtual ObjectPtr GetAsset( const String& val ) const override;
+	ObjectPtr GetAsset( const String& val ) const override;
 
-	virtual AssetStatus GetAssetStatus( const String& val ) const override;
+	AssetStatus GetAssetStatus( const String& val ) const override;
 
 private:
 	void LoadAsset( const String& val );

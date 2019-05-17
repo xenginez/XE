@@ -1,9 +1,3 @@
-[submodule "3rdparty/bgfx/bx"]
-	path = 3rdparty/bgfx/bx
-	url = https://github.com/bkaradzic/bx.git
-[submodule "3rdparty/bgfx/bimg"]
-	path = 3rdparty/bgfx/bimg
-	url = https://github.com/bkaradzic/bimg.git
 [submodule "3rdparty/zipper"]
 	path = 3rdparty/zipper
 	url = https://github.com/sebastiandev/zipper.git
@@ -13,9 +7,6 @@
 [submodule "3rdparty/pugixml"]
 	path = 3rdparty/pugixml
 	url = https://github.com/zeux/pugixml.git
-[submodule "3rdparty/bgfx/bgfx"]
-	path = 3rdparty/bgfx/bgfx
-	url = https://github.com/bkaradzic/bgfx.git
 [submodule "3rdparty/recastnavigation"]
 	path = 3rdparty/recastnavigation
 	url = https://github.com/recastnavigation/recastnavigation.git

@@ -23,35 +23,35 @@ private:
 public:
 	InputService();
 
-	~InputService();
+	~InputService() override;
 
 public:
-	virtual bool Startup() override;
+	bool Startup() override;
 
-	virtual void Update() override;
+	void Update() override;
 
-	virtual void Clearup() override;
-
-public:
-	virtual int32 GetPov( const String& val ) const override;
-
-	virtual float GetAxis( const String& val ) const override;
-
-	virtual int32 GetButton( const String& val ) const override;
-
-	virtual Variant GetValue( const String& val ) const override;
+	void Clearup() override;
 
 public:
-	virtual int32 GetPov( KeyCode val ) const override;
+	int32 GetPov( const String& val ) const override;
 
-	virtual float GetAxis( KeyCode val ) const override;
+	float GetAxis( const String& val ) const override;
 
-	virtual int32 GetButton( KeyCode val ) const override;
+	int32 GetButton( const String& val ) const override;
 
-	virtual Variant GetValue( KeyCode val ) const override;
+	Variant GetValue( const String& val ) const override;
+
+public:
+	int32 GetPov( KeyCode val ) const override;
+
+	float GetAxis( KeyCode val ) const override;
+
+	int32 GetButton( KeyCode val ) const override;
+
+	Variant GetValue( KeyCode val ) const override;
 
 protected:
-	virtual void SetValue( const String& code, const Variant& val ) override;
+	void SetValue( const String& code, const Variant& val ) override;
 
 private:
 	String GetKeycodeString( KeyCode val ) const;

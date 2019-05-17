@@ -31,6 +31,5 @@ elseif (CMAKE_SYSTEM_NAME MATCHES "Darwin")
 			COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/depend/bin/${XE_PLATFORM_PATH}/${XE_BUILD_TYPE}/libtbb${TBB_SUFFIX}.dylib" "${CMAKE_SOURCE_DIR}/target/bin"
 			COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/depend/bin/${XE_PLATFORM_PATH}/${XE_BUILD_TYPE}/libtbbmalloc${TBB_SUFFIX}.dylib" "${CMAKE_SOURCE_DIR}/target/bin"
 			COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/depend/bin/${XE_PLATFORM_PATH}/${XE_BUILD_TYPE}/libtbbmalloc_proxy${TBB_SUFFIX}.dylib" "${CMAKE_SOURCE_DIR}/target/bin"
-			COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/depend/bin/${XE_PLATFORM_PATH}/${XE_BUILD_TYPE}/libbgfx-shared-lib${BGFX_SUFFIX}.dylib" "${CMAKE_SOURCE_DIR}/target/bin"
 			)
 endif ()

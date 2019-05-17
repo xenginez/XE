@@ -20,7 +20,7 @@ class INTERFACE_API IService : public Object
 public:
 	IService();
 
-	virtual ~IService();
+	~IService() override;
 
 public:
 	IFrameworkPtr GetFramework() const;
@@ -35,7 +35,7 @@ public:
 	virtual void Clearup() = 0;
 
 public:
-	virtual ObjectPtr Clone() const override;
+	ObjectPtr Clone() const override;
 
 private:
 	IFrameworkPtr _Framework;
