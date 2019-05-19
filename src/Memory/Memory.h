@@ -12,6 +12,7 @@
 #include "Alloc.h"
 #include "FrameAlloc.h"
 #include "Allocator.hpp"
+#include "MemoryView.hpp"
 #include "FrameAllocator.hpp"
 #include "ObjectAllocator.hpp"
 

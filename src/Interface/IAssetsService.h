@@ -37,7 +37,7 @@ protected:
 	virtual AssetStatus GetAssetStatus( const String& val ) const = 0;
 
 protected:
-	PrefabPtr CreatePrefab( const String& val ) const;
+	PrefabPtr CreatePrefab( const String& val );
 	
 };
 

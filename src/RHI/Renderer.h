@@ -70,41 +70,41 @@ public:
 	virtual String GetWindowTitle( const WindowHandle &handle ) = 0;
 	
 	virtual void SetWindowTitle( const WindowHandle &handle, const String &title ) = 0;
-	
+
 public:
-	virtual IndexBufferHandle CreateIndexBuffer( const Array < uint8 > &val ) = 0;
+	virtual IndexBufferHandle CreateIndexBuffer( const MemoryView &val ) = 0;
 	
-	virtual VertexBufferHandle CreateVertexBuffer( const Array < uint8 > &val ) = 0;
+	virtual VertexBufferHandle CreateVertexBuffer( const MemoryView &val ) = 0;
 	
 	virtual DynamicIndexBufferHandle CreateDynamicIndexBuffer( uint64 size ) = 0;
 	
 	virtual DynamicVertexBufferHandle CreateDynamicVertexBuffer( uint64 size ) = 0;
 	
-	virtual DynamicIndexBufferHandle CreateDynamicIndexBuffer( const Array < uint8 > &val ) = 0;
+	virtual DynamicIndexBufferHandle CreateDynamicIndexBuffer( const MemoryView &val ) = 0;
 	
-	virtual DynamicVertexBufferHandle CreateDynamicVertexBuffer( const Array < uint8 > &val ) = 0;
+	virtual DynamicVertexBufferHandle CreateDynamicVertexBuffer( const MemoryView &val ) = 0;
 	
-	virtual HullShaderHandle CreateHullShader( const Array < uint8 > &val ) = 0;
+	virtual HullShaderHandle CreateHullShader( const MemoryView &val ) = 0;
 	
 	virtual HullShaderHandle CreateHullShader( const std::filesystem::path &val ) = 0;
 	
-	virtual PixelShaderHandle CreatePixelShader( const Array < uint8 > &val ) = 0;
+	virtual PixelShaderHandle CreatePixelShader( const MemoryView &val ) = 0;
 	
 	virtual PixelShaderHandle CreatePixelShader( const std::filesystem::path &val ) = 0;
 	
-	virtual VertexShaderHandle CreateVertexShader( const Array < uint8 > &val ) = 0;
+	virtual VertexShaderHandle CreateVertexShader( const MemoryView &val ) = 0;
 	
 	virtual VertexShaderHandle CreateVertexShader( const std::filesystem::path &val ) = 0;
 	
-	virtual DomainShaderHandle CreateDomainShader( const Array < uint8 > &val ) = 0;
+	virtual DomainShaderHandle CreateDomainShader( const MemoryView &val ) = 0;
 	
 	virtual DomainShaderHandle CreateDomainShader( const std::filesystem::path &val ) = 0;
 	
-	virtual ComputeShaderHandle CreateComputeShader( const Array < uint8 > &val ) = 0;
+	virtual ComputeShaderHandle CreateComputeShader( const MemoryView &val ) = 0;
 	
 	virtual ComputeShaderHandle CreateComputeShader( const std::filesystem::path &val ) = 0;
 	
-	virtual TessellationShaderHandle CreateTessellationShader( const Array < uint8 > &val ) = 0;
+	virtual TessellationShaderHandle CreateTessellationShader( const MemoryView &val ) = 0;
 	
 	virtual TessellationShaderHandle CreateTessellationShader( const std::filesystem::path &val ) = 0;
 	
@@ -112,7 +112,7 @@ public:
 	
 	virtual ProgramHandle CreateProgram( const VertexShaderHandle &vs, const PixelShaderHandle &ps ) = 0;
 	
-	virtual UniformHandle CreateUniform( const ProgramHandle& program, const String& val ) = 0;
+	virtual UniformHandle CreateUniform( const ProgramHandle &program, const String &val ) = 0;
 	
 	virtual TextureHandle CreateTexture2D( const Vec2 &size, uint16 mips, uint16 players, TextureFormat format ) = 0;
 	
