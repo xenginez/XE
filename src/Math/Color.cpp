@@ -4,11 +4,11 @@
 
 USING_XE
 
-BEGIN_META( Color )
-type->Property( "r", &Color::r );
-type->Property( "g", &Color::g );
-type->Property( "b", &Color::b );
-type->Property( "a", &Color::a );
+BEGIN_META(Color)
+		type->Property("r", &Color::r);
+		type->Property("g", &Color::g);
+		type->Property("b", &Color::b);
+		type->Property("a", &Color::a);
 END_META()
 
 
@@ -32,24 +32,30 @@ const XE::Color XE::Color::LightGray = { 0xc0c0c0 };
 
 
 XE::Color::Color()
-	:r( 0 ), g( 0 ), b( 0 ), a( 0 )
+		:r(0), g(0), b(0), a(0)
 {
 }
 
 XE::Color::Color( uint32 val )
-	: r( ( ( val & 0xFF000000 ) >> 24 ) / 255.0f ), g( ( ( val & 0x00FF0000 ) >> 16 ) / 255.0f ), b( ( ( val & 0x0000FF00 ) >> 8 ) / 255.0f ), a( ( ( val & 0x000000FF ) >> 0 ) / 255.0f )
+		:hex(val)
 {
 
 }
 
-XE::Color::Color( const Color& val )
-	: r( val.r ), g( val.g ), b( val.b ), a( val.a )
+XE::Color::Color( const Color &val )
+		:r(val.r), g(val.g), b(val.b), a(val.a)
 {
 
 }
 
-XE::Color::Color( float r, float g, float b, float a /*= 1.0f */ )
-	: r( r ), g( g ), b( b ), a( a )
+XE::Color::Color( const FColor &val )
+		:r(val.r * 255), g(val.g * 255), b(val.b * 255), a(val.a * 255)
+{
+
+}
+
+XE::Color::Color( uint8 r, uint8 g, uint8 b, uint8 a /*= 1 */ )
+		:r(r), g(g), b(b), a(a)
 {
 
 }
@@ -60,145 +66,272 @@ XE::Color::~Color()
 
 XE::uint32 XE::Color::GetHex() const
 {
-	return ( uint32( r * 255 ) << 24 ) | ( uint32( g * 255 ) << 16 ) | ( uint32( b * 255 ) << 8 ) | ( uint32( a * 255 ) << 0 );
+	return hex;
 }
 
 void XE::Color::SetHex( uint32 val )
 {
-	r = ( ( val & 0xFF000000 ) >> 24 ) / 255.0f;
-	g = ( ( val & 0x00FF0000 ) >> 16 ) / 255.0f;
-	b = ( ( val & 0x0000FF00 ) >> 8 ) / 255.0f;
-	a = ( ( val & 0x000000FF ) >> 0 ) / 255.0f;
+	hex = val;
 }
 
-XE::uint8 XE::Color::GetR() const
+Color Color::Lerp( const Color &val1, const Color &val2, uint8 val )
 {
-	return (uint8)( r * 255 );
+	return val1 * ( 255 - val ) + val2 * val;
 }
 
-void XE::Color::SetR( uint8 val )
-{
-	r = val / 255.0f;
-}
-
-XE::uint8 XE::Color::GetG() const
-{
-	return (uint8)( g * 255 );
-}
-
-void XE::Color::SetG( uint8 val )
-{
-	g = val / 255.0f;
-}
-
-XE::uint8 XE::Color::GetB() const
-{
-	return (uint8)( b * 255 );
-}
-
-void XE::Color::SetB( uint8 val )
-{
-	b = val / 255.0f;
-}
-
-XE::uint8 XE::Color::GetA() const
-{
-	return (uint8)( a * 255 );
-}
-
-void XE::Color::SetA( uint8 val )
-{
-	a = val / 255.0f;
-}
-
-Color Color::Lerp( const Color& val1, const Color& val2, float val )
-{
-	return val1 * ( 1.0f - val ) + val2 * val;
-}
-
-bool Color::operator!=( const Color& val ) const
+bool Color::operator !=( const Color &val ) const
 {
 	return GetHex() != val.GetHex();
 }
 
-bool Color::operator==( const Color& val ) const
+bool Color::operator ==( const Color &val ) const
 {
 	return GetHex() == val.GetHex();
 }
 
-Color Color::operator*( const Color& val ) const
+Color Color::operator *( const Color &val ) const
 {
-	return Color( r * val.r, g * val.g, b * val.b, a * val.a );
+	return Color(r * val.r, g * val.g, b * val.b, a * val.a);
 }
 
-Color Color::operator*( float val ) const
+Color Color::operator *( uint8 val ) const
 {
-	return *this * Color( val, val, val, val );
+	return ( *this ) * Color(uint8(val * 255), uint8(val * 255), uint8(val * 255), uint8(val * 255));
 }
 
-Color Color::operator-( const Color& val ) const
+Color Color::operator -( const Color &val ) const
 {
-	return Color( Mathf::Clamp( r - val.r, 0.0f, 1.0f ), Mathf::Clamp( g - val.g, 0.0f, 1.0f ), Mathf::Clamp( b - val.b, 0.0f, 1.0f ), Mathf::Clamp( a - val.a, 0.0f, 1.0f ) );
+	return Color(r - val.r, g - val.g, b - val.b, a - val.a);
 }
 
-Color Color::operator+( const Color& val ) const
+Color Color::operator +( const Color &val ) const
 {
-	return Color( Mathf::Clamp( r + val.r, 0.0f, 1.0f ), Mathf::Clamp( g + val.g, 0.0f, 1.0f ), Mathf::Clamp( b + val.b, 0.0f, 1.0f ), Mathf::Clamp( a + val.a, 0.0f, 1.0f ) );
+	return Color(r + val.r, g + val.g, b + val.b, a + val.a);
 }
 
-Color& Color::operator*=( const Color& val )
+Color &Color::operator *=( const Color &val )
 {
 	r *= val.r;
 	g *= val.g;
 	b *= val.b;
 	a *= val.a;
-
+	
 	return *this;
 }
 
-Color& Color::operator*=( float val )
+Color &Color::operator *=( uint8 val )
 {
-	assert( val > -1.0f && val <= 1.0f && "" );
-
 	r *= val;
 	g *= val;
 	b *= val;
 	a *= val;
-
+	
 	return *this;
 }
 
-Color& Color::operator-=( const Color& val )
+Color &Color::operator -=( const Color &val )
 {
-	r = Mathf::Clamp( r - val.r, 0.0f, 1.0f );
-	g = Mathf::Clamp( g - val.g, 0.0f, 1.0f );
-	b = Mathf::Clamp( b - val.b, 0.0f, 1.0f );
-	a = Mathf::Clamp( a - val.a, 0.0f, 1.0f );
-
+	r = r - val.r;
+	g = g - val.g;
+	b = b - val.b;
+	a = a - val.a;
+	
 	return *this;
 }
 
-Color& Color::operator+=( const Color& val )
+Color &Color::operator +=( const Color &val )
 {
-	r = Mathf::Clamp( r + val.r, 0.0f, 1.0f );
-	g = Mathf::Clamp( g + val.g, 0.0f, 1.0f );
-	b = Mathf::Clamp( b + val.b, 0.0f, 1.0f );
-	a = Mathf::Clamp( a + val.a, 0.0f, 1.0f );
-
+	r = r + val.r;
+	g = g + val.g;
+	b = b + val.b;
+	a = a + val.a;
+	
 	return *this;
 }
 
-Color& Color::operator=( const Color& val )
+Color &Color::operator =( const Color &val )
 {
 	r = val.r;
 	g = val.g;
 	b = val.b;
 	a = val.a;
-
+	
 	return *this;
 }
 
-XE::Color operator*( float a, const Color& b )
+XE::Color operator *( float a, const Color &b )
+{
+	return b * a;
+}
+
+
+BEGIN_META(FColor)
+		type->Property("r", &FColor::r);
+		type->Property("g", &FColor::g);
+		type->Property("b", &FColor::b);
+		type->Property("a", &FColor::a);
+END_META()
+
+
+const XE::FColor XE::FColor::White = { 0xffffff };
+const XE::FColor XE::FColor::Black = { 0x000000 };
+const XE::FColor XE::FColor::Red = { 0xff0000 };
+const XE::FColor XE::FColor::DarkRed = { 0x800000 };
+const XE::FColor XE::FColor::Green = { 0x00ff00 };
+const XE::FColor XE::FColor::DarkGreen = { 0x008000 };
+const XE::FColor XE::FColor::Blue = { 0x0000ff };
+const XE::FColor XE::FColor::DarkBlue = { 0x000080 };
+const XE::FColor XE::FColor::Cyan = { 0x00ffff };
+const XE::FColor XE::FColor::DarkCyan = { 0x008080 };
+const XE::FColor XE::FColor::Magenta = { 0xff00ff };
+const XE::FColor XE::FColor::DarkMagenta = { 0x800080 };
+const XE::FColor XE::FColor::Yellow = { 0xffff00 };
+const XE::FColor XE::FColor::DarkYellow = { 0x808000 };
+const XE::FColor XE::FColor::Gray = { 0xa0a0a4 };
+const XE::FColor XE::FColor::DarkGray = { 0x808080 };
+const XE::FColor XE::FColor::LightGray = { 0xc0c0c0 };
+
+
+XE::FColor::FColor()
+		:r(0), g(0), b(0), a(0)
+{
+}
+
+XE::FColor::FColor( uint32 val )
+		:r((( val & 0xFF000000 ) >> 24 ) / 255.0f),
+		g((( val & 0x00FF0000 ) >> 16 ) / 255.0f),
+		b((( val & 0x0000FF00 ) >> 8 ) / 255.0f),
+		a((( val & 0x000000FF ) >> 0 ) / 255.0f)
+{
+
+}
+
+FColor::FColor( const Color &val )
+		:r(val.r / 255.0f), g(val.g / 255.0f), b(val.b / 255.0f), a(val.a / 255.0f)
+{
+
+}
+
+XE::FColor::FColor( const FColor &val )
+		:r(val.r), g(val.g), b(val.b), a(val.a)
+{
+
+}
+
+XE::FColor::FColor( float r, float g, float b, float a /*= 1.0f */ )
+		:r(r), g(g), b(b), a(a)
+{
+
+}
+
+XE::FColor::~FColor()
+{
+}
+
+XE::uint32 XE::FColor::GetHex() const
+{
+	return ( uint32(r * 255.0f) << 24 ) | ( uint32(g * 255.0f) << 16 ) | ( uint32(b * 255.0f) << 8 ) |
+		   ( uint32(a * 255.0f) << 0 );
+}
+
+void XE::FColor::SetHex( uint32 val )
+{
+	r = uint8(( val & 0xFF000000 ) >> 24) / 255.0f;
+	g = uint8(( val & 0x00FF0000 ) >> 16) / 255.0f;
+	b = uint8(( val & 0x0000FF00 ) >> 8) / 255.0f;
+	a = uint8(( val & 0x000000FF ) >> 0) / 255.0f;
+}
+
+FColor FColor::Lerp( const FColor &val1, const FColor &val2, float val )
+{
+	return val1 * ( 1.0f - val ) + val2 * val;
+}
+
+bool FColor::operator !=( const FColor &val ) const
+{
+	return ( Mathf::Abs(r - val.r) > Mathf::Epsilon ) && ( Mathf::Abs(g - val.g) > Mathf::Epsilon ) &&
+		   ( Mathf::Abs(b - val.b) > Mathf::Epsilon ) && ( Mathf::Abs(a - val.a) > Mathf::Epsilon );
+}
+
+bool FColor::operator ==( const FColor &val ) const
+{
+	return ( Mathf::Abs(r - val.r) <= Mathf::Epsilon ) && ( Mathf::Abs(g - val.g) <= Mathf::Epsilon ) &&
+		   ( Mathf::Abs(b - val.b) <= Mathf::Epsilon ) && ( Mathf::Abs(a - val.a) <= Mathf::Epsilon );
+}
+
+FColor FColor::operator *( const FColor &val ) const
+{
+	return FColor(r * val.r, g * val.g, b * val.b, a * val.a);
+}
+
+FColor FColor::operator *( float val ) const
+{
+	return *this * FColor(val, val, val, val);
+}
+
+FColor FColor::operator -( const FColor &val ) const
+{
+	return FColor(Mathf::Clamp(r - val.r, 0.0f, 1.0f), Mathf::Clamp(g - val.g, 0.0f, 1.0f), Mathf::Clamp(
+			b - val.b, 0.0f, 1.0f), Mathf::Clamp(a - val.a, 0.0f, 1.0f));
+}
+
+FColor FColor::operator +( const FColor &val ) const
+{
+	return FColor(Mathf::Clamp(r + val.r, 0.0f, 1.0f), Mathf::Clamp(g + val.g, 0.0f, 1.0f), Mathf::Clamp(
+			b + val.b, 0.0f, 1.0f), Mathf::Clamp(a + val.a, 0.0f, 1.0f));
+}
+
+FColor &FColor::operator *=( const FColor &val )
+{
+	r *= val.r;
+	g *= val.g;
+	b *= val.b;
+	a *= val.a;
+	
+	return *this;
+}
+
+FColor &FColor::operator *=( float val )
+{
+	r *= val;
+	g *= val;
+	b *= val;
+	a *= val;
+	
+	return *this;
+}
+
+FColor &FColor::operator -=( const FColor &val )
+{
+	r = Mathf::Clamp(r - val.r, 0.0f, 1.0f);
+	g = Mathf::Clamp(g - val.g, 0.0f, 1.0f);
+	b = Mathf::Clamp(b - val.b, 0.0f, 1.0f);
+	a = Mathf::Clamp(a - val.a, 0.0f, 1.0f);
+	
+	return *this;
+}
+
+FColor &FColor::operator +=( const FColor &val )
+{
+	r = Mathf::Clamp(r + val.r, 0.0f, 1.0f);
+	g = Mathf::Clamp(g + val.g, 0.0f, 1.0f);
+	b = Mathf::Clamp(b + val.b, 0.0f, 1.0f);
+	a = Mathf::Clamp(a + val.a, 0.0f, 1.0f);
+	
+	return *this;
+}
+
+FColor &FColor::operator =( const FColor &val )
+{
+	r = val.r;
+	g = val.g;
+	b = val.b;
+	a = val.a;
+	
+	return *this;
+}
+
+XE::FColor operator *( float a, const FColor &b )
 {
 	return b * a;
 }

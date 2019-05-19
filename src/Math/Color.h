@@ -39,10 +39,11 @@ public:
 	{
 		struct
 		{
-			float r, g, b, a;
+			uint8 r, g, b, a;
 		};
-
-		float d[4];
+		
+		uint8 d[4];
+		uint32 hex;
 	};
 
 public:
@@ -51,15 +52,17 @@ public:
 	Color( uint32 val );
 
 	Color( const Color& val );
+	
+	Color( const FColor& val );
 
-	Color( float r, float g, float b, float a = 1.0f );
+	Color( uint8 r, uint8 g, uint8 b, uint8 a = 1 );
 
 	~Color();
 
 public:
 	Color& operator=( const Color& val );
 
-	Color& operator *=( float val );
+	Color& operator *=( uint8 val );
 
 	Color& operator *=( const Color& val );
 
@@ -67,7 +70,7 @@ public:
 
 	Color& operator -=( const Color& val );
 
-	Color operator *( float val ) const;
+	Color operator *( uint8 val ) const;
 
 	Color operator *( const Color& val ) const;
 
@@ -87,26 +90,91 @@ public:
 
 	void SetHex( uint32 val );
 
-	uint8 GetR() const;
-
-	void SetR( uint8 val );
-
-	uint8 GetG() const;
-
-	void SetG( uint8 val );
-
-	uint8 GetB() const;
-
-	void SetB( uint8 val );
-
-	uint8 GetA() const;
-
-	void SetA( uint8 val );
-
 public:
-	static Color Lerp( const Color& val1, const Color& val2, float val );
+	static Color Lerp( const Color& val1, const Color& val2, uint8 val );
 };
 DECL_META_CLASS( MATH_API, Color );
+
+class MATH_API FColor
+{
+public:
+	static const FColor White;
+	static const FColor Black;
+	static const FColor Red;
+	static const FColor DarkRed;
+	static const FColor Green;
+	static const FColor DarkGreen;
+	static const FColor Blue;
+	static const FColor DarkBlue;
+	static const FColor Cyan;
+	static const FColor DarkCyan;
+	static const FColor Magenta;
+	static const FColor DarkMagenta;
+	static const FColor Yellow;
+	static const FColor DarkYellow;
+	static const FColor Gray;
+	static const FColor DarkGray;
+	static const FColor LightGray;
+
+public:
+	union
+	{
+		struct
+		{
+			float r, g, b, a;
+		};
+		
+		float d[4];
+	};
+
+public:
+	FColor();
+	
+	FColor( uint32 val );
+	
+	FColor( const Color& val );
+	
+	FColor( const FColor& val );
+	
+	FColor( float r, float g, float b, float a = 1.0f );
+	
+	~FColor();
+
+public:
+	FColor& operator=( const FColor& val );
+	
+	FColor& operator *=( float val );
+	
+	FColor& operator *=( const FColor& val );
+	
+	FColor& operator +=( const FColor& val );
+	
+	FColor& operator -=( const FColor& val );
+	
+	FColor operator *( float val ) const;
+	
+	FColor operator *( const FColor& val ) const;
+	
+	FColor operator +( const FColor& val ) const;
+	
+	FColor operator -( const FColor& val ) const;
+	
+	bool operator ==( const FColor& val ) const;
+	
+	bool operator !=( const FColor& val ) const;
+
+public:
+	friend FColor operator *( float a, const FColor& b );
+
+public:
+	uint32 GetHex() const;
+	
+	void SetHex( uint32 val );
+
+public:
+	static FColor Lerp( const FColor& val1, const FColor& val2, float val );
+};
+DECL_META_CLASS( MATH_API, FColor );
 
 END_XE_NAMESAPCE
 

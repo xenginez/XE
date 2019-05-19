@@ -23,6 +23,7 @@ class Mat4;
 class Rect;
 
 class Color;
+class FColor;
 
 class Ray;
 class OBB;
