@@ -13,6 +13,7 @@
 #include "FrameAlloc.h"
 #include "Allocator.hpp"
 #include "FrameAllocator.hpp"
+#include "ObjectAllocator.hpp"
 
 
 #define DECL_PTR( TYPE ) \
