@@ -4,7 +4,7 @@
 
 USING_XE
 
-BEGIN_META( OBB );
+BEG_META( OBB );
 type->Property( "center", &OBB::center );
 type->Property( "extent", &OBB::extent );
 type->Property( "rotation", &OBB::rotation );

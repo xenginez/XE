@@ -4,7 +4,7 @@
 
 USING_XE
 
-BEGIN_META( SubNode )
+BEG_META( SubNode )
 type->Property( "SubAI", &SubNode::_SubAI );
 END_META()
 

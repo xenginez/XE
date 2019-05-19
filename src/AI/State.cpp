@@ -2,7 +2,7 @@
 
 USING_XE
 
-BEGIN_META( State )
+BEG_META( State )
 type->Property( "Conditions", &State::_Conditions );
 END_META()
 

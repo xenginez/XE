@@ -4,7 +4,7 @@
 
 USING_XE
 
-BEGIN_META( ActionNode )
+BEG_META( ActionNode )
 END_META()
 
 XE::ActionNode::ActionNode()

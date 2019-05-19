@@ -4,7 +4,7 @@
 
 USING_XE
 
-BEGIN_META( BTDecoratorNode )
+BEG_META( BTDecoratorNode )
 type->Property( "Child", &BTDecoratorNode::_Child );
 END_META()
 
@@ -67,7 +67,7 @@ void XE::BTDecoratorNode::OnClearup()
 	_Node = nullptr;
 }
 
-BEGIN_META( BTRepeatNode )
+BEG_META( BTRepeatNode )
 type->Property( "Count", &BTRepeatNode::_Count );
 END_META()
 
@@ -121,7 +121,7 @@ void XE::BTRepeatNode::OnUpdate( float dt )
 	}
 }
 
-BEGIN_META( BTSuccessNode )
+BEG_META( BTSuccessNode )
 END_META()
 
 XE::BTSuccessNode::BTSuccessNode()
@@ -165,7 +165,7 @@ void XE::BTSuccessNode::OnUpdate( float dt )
 	}
 }
 
-BEGIN_META( BTFailureNode )
+BEG_META( BTFailureNode )
 END_META()
 
 XE::BTFailureNode::BTFailureNode()
@@ -208,7 +208,7 @@ void XE::BTFailureNode::OnUpdate( float dt )
 	}
 }
 
-BEGIN_META( BTReversedNode )
+BEG_META( BTReversedNode )
 END_META()
 
 XE::BTReversedNode::BTReversedNode()
@@ -255,7 +255,7 @@ void XE::BTReversedNode::OnUpdate( float dt )
 	}
 }
 
-BEGIN_META( BTDelayNode )
+BEG_META( BTDelayNode )
 type->Property( "DetlaTime", &BTDelayNode::_DetlaTime );
 END_META()
 

@@ -2,7 +2,7 @@
 
 USING_XE
 
-BEGIN_META( TimerService )
+BEG_META( TimerService )
 END_META()
 
 struct TimerService::Private

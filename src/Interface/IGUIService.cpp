@@ -2,7 +2,7 @@
 
 USING_XE
 
-BEGIN_META( IGUIService )
+BEG_META( IGUIService )
 END_META()
 
 XE::IGUIService::IGUIService()

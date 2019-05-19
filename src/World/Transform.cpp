@@ -2,7 +2,7 @@
 
 USING_XE
 
-BEGIN_META( Transform )
+BEG_META( Transform )
 type->Property( "Parent", &Transform::_Parent, IMetaProperty::NoDesign | IMetaProperty::NoClone | IMetaProperty::NoSerialize );
 type->Property( "WorldScale", &Transform::GetWorldScale, &Transform::SetWorldScale, IMetaProperty::NoDesign | IMetaProperty::NoClone | IMetaProperty::NoSerialize );
 type->Property( "WorldPosition", &Transform::GetWorldPosition, &Transform::SetWorldPosition, IMetaProperty::NoDesign | IMetaProperty::NoClone | IMetaProperty::NoSerialize );

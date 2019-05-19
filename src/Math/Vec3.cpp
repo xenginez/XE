@@ -4,7 +4,7 @@
 
 USING_XE
 
-BEGIN_META( Vec3 )
+BEG_META( Vec3 )
 type->Property( "x", &Vec3::x );
 type->Property( "y", &Vec3::y );
 type->Property( "z", &Vec3::z );

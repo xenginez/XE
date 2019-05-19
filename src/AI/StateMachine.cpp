@@ -5,7 +5,7 @@
 
 USING_XE
 
-BEGIN_META( StateMachine )
+BEG_META( StateMachine )
 type->Property( "Root", &StateMachine::_Root );
 type->Property( "States", &StateMachine::_States );
 END_META()

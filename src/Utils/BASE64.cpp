@@ -2,7 +2,7 @@
 
 USING_XE
 
-BEGIN_META( BASE64 )
+BEG_META( BASE64 )
 END_META()
 
 const char BASE64::_base64_encode_table[65] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";

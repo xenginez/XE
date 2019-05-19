@@ -2,7 +2,7 @@
 
 USING_XE
 
-BEGIN_META( BlackBoard )
+BEG_META( BlackBoard )
 type->Property( "Keys", &BlackBoard::_Keys );
 END_META()
 

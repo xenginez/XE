@@ -18,7 +18,7 @@ XE::IFrameworkPtr XE::IPlugin::GetFramework() const
 	return _Framework;
 }
 
-BEGIN_META( IPluginService )
+BEG_META( IPluginService )
 END_META()
 
 XE::IPluginService::IPluginService()

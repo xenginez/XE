@@ -2,7 +2,7 @@
 
 USING_XE
 
-BEGIN_META(Image)
+BEG_META(Image)
 END_META()
 
 XE::Image::Image()

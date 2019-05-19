@@ -2,7 +2,7 @@
 
 USING_XE
 
-BEGIN_META( ILocalizationService )
+BEG_META( ILocalizationService )
 END_META()
 
 XE::ILocalizationService::ILocalizationService()

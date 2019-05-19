@@ -4,7 +4,7 @@
 
 USING_XE
 
-BEGIN_META( BTCompositeNode )
+BEG_META( BTCompositeNode )
 type->Property( "Children", &BTCompositeNode::_Children );
 END_META()
 
@@ -48,7 +48,7 @@ void XE::BTCompositeNode::OnClearup()
 	Super::OnClearup();
 }
 
-BEGIN_META( BTSequenceNode )
+BEG_META( BTSequenceNode )
 END_META()
 
 XE::BTSequenceNode::BTSequenceNode()
@@ -99,7 +99,7 @@ void XE::BTSequenceNode::OnUpdate( float dt )
 	}
 }
 
-BEGIN_META( BTSelectorNode )
+BEG_META( BTSelectorNode )
 END_META()
 
 XE::BTSelectorNode::BTSelectorNode()
@@ -157,7 +157,7 @@ void XE::BTSelectorNode::OnUpdate( float dt )
 	}
 }
 
-BEGIN_META( BTParallelNode )
+BEG_META( BTParallelNode )
 END_META()
 
 XE::BTParallelNode::BTParallelNode()

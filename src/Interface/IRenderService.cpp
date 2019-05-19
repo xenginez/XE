@@ -2,7 +2,7 @@
 
 USING_XE
 
-BEGIN_META( IRenderService )
+BEG_META( IRenderService )
 END_META()
 
 XE::IRenderService::IRenderService()

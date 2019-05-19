@@ -13,7 +13,7 @@
 
 USING_XE
 
-BEGIN_META( ThreadService )
+BEG_META( ThreadService )
 END_META()
 
 struct XEPTask

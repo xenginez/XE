@@ -4,7 +4,7 @@
 
 USING_XE
 
-BEGIN_META( Rect )
+BEG_META( Rect )
 END_META()
 
 const XE::Rect XE::Rect::Zero = { 0, 0, 0, 0 };

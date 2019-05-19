@@ -6,7 +6,7 @@
 
 USING_XE
 
-BEGIN_META( AudioListenerComponent )
+BEG_META( AudioListenerComponent )
 END_META()
 
 XE::AudioListenerComponent::AudioListenerComponent()

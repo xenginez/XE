@@ -2,7 +2,7 @@
 
 USING_XE
 
-BEGIN_META( Mathf )
+BEG_META( Mathf )
 type->Property( "Pi", &Mathf::Pi );
 type->Property( "Pi2", &Mathf::Pi2 );
 type->Property( "Pi4", &Mathf::Pi4 );

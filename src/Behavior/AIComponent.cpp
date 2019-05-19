@@ -2,7 +2,7 @@
 
 USING_XE
 
-BEGIN_META( AIComponent )
+BEG_META( AIComponent )
 type->Property( "AIModules", &AIComponent::_AIModules );
 END_META()
 

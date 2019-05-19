@@ -4,7 +4,7 @@
 
 USING_XE
 
-BEGIN_META( SubState )
+BEG_META( SubState )
 type->Property( "SubAI", &SubState::_SubAI );
 END_META()
 

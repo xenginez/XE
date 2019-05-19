@@ -2,7 +2,7 @@
 
 USING_XE
 
-BEGIN_META(LOD)
+BEG_META(LOD)
 		type->Property("LODs", &LOD::GetLODs, &LOD::SetLODs, IMetaProperty::NoDesign);
 END_META()
 

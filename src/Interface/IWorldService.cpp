@@ -2,7 +2,7 @@
 
 USING_XE
 
-BEGIN_META( IWorldService )
+BEG_META( IWorldService )
 END_META()
 
 XE::IWorldService::IWorldService()

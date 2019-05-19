@@ -2,7 +2,7 @@
 
 USING_XE
 
-BEGIN_META(IConfigService)
+BEG_META(IConfigService)
 END_META()
 
 XE::IConfigService::IConfigService()

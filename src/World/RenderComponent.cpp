@@ -4,7 +4,7 @@
 
 USING_XE
 
-BEGIN_META( RenderComponent )
+BEG_META( RenderComponent )
 END_META()
 
 XE::RenderComponent::RenderComponent()

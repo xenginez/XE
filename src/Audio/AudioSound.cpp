@@ -4,7 +4,7 @@
 
 USING_XE
 
-BEGIN_META( AudioSound )
+BEG_META( AudioSound )
 type->Property( "Name", &AudioSound::_Name );
 type->Property( "Duration", &AudioSound::_Duration );
 type->Property( "Channels", &AudioSound::_Channels );

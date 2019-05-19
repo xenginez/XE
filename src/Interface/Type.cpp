@@ -4,7 +4,7 @@
 
 USING_XE
 
-BEGIN_META( KeyCode )
+BEG_META( KeyCode )
 type->Value( "None", KeyCode::None );
 type->Value( "Backspace", KeyCode::Backspace );
 type->Value( "Delete", KeyCode::Delete );
@@ -694,7 +694,7 @@ type->Value( "Joystick8Pov18", KeyCode::Joystick8Pov18 );
 type->Value( "Joystick8Pov19", KeyCode::Joystick8Pov19 );
 END_META()
 
-BEGIN_META( LoggerLevel )
+BEG_META( LoggerLevel )
 type->Value( "Error", LoggerLevel::Error );
 type->Value( "Warning", LoggerLevel::Warning );
 type->Value( "Message", LoggerLevel::Message );
@@ -721,13 +721,13 @@ type->Value( "Level19", LoggerLevel::Level19 );
 type->Value( "Level20", LoggerLevel::Level20 );
 END_META()
 
-BEGIN_META( AssetStatus )
+BEG_META( AssetStatus )
 type->Value( "Undefined", AssetStatus::Undefined );
 type->Value( "Loading", AssetStatus::Loading );
 type->Value( "Ready", AssetStatus::Ready );
 END_META()
 
-BEGIN_META( ThreadPriority )
+BEG_META( ThreadPriority )
 type->Value( "MAX", ThreadPriority::MAX );
 type->Value( "NORM", ThreadPriority::NORM );
 type->Value( "MIN", ThreadPriority::MIN );

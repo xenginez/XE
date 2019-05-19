@@ -2,7 +2,7 @@
 
 USING_XE
 
-BEGIN_META( Frustum )
+BEG_META( Frustum )
 type->Property( "top", &Frustum::top );
 type->Property( "bottom", &Frustum::bottom );
 type->Property( "left", &Frustum::left );

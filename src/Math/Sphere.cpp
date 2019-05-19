@@ -7,7 +7,7 @@
 
 USING_XE
 
-BEGIN_META( Sphere )
+BEG_META( Sphere )
 type->Property( "center", &Sphere::center );
 type->Property( "radius", &Sphere::radius );
 END_META()

@@ -4,7 +4,7 @@
 
 USING_XE
 
-BEGIN_META( Quat )
+BEG_META( Quat )
 type->Property( "x", &Quat::x );
 type->Property( "y", &Quat::y );
 type->Property( "z", &Quat::z );

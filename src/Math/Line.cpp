@@ -4,7 +4,7 @@
 
 USING_XE
 
-BEGIN_META( Line )
+BEG_META( Line )
 type->Property( "start", &Line::start );
 type->Property( "end", &Line::end );
 END_META()

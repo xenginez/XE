@@ -2,7 +2,7 @@
 
 USING_XE
 
-BEGIN_META( IInputControl )
+BEG_META( IInputControl )
 END_META()
 
 XE::IInputControl::IInputControl()
@@ -20,7 +20,7 @@ void XE::IInputControl::SetValue( const String& code, const Variant& val )
 	_InputService->SetValue( code, val );
 }
 
-BEGIN_META( IInputService )
+BEG_META( IInputService )
 END_META()
 
 XE::IInputService::IInputService()

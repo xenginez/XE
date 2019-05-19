@@ -4,7 +4,7 @@
 
 USING_XE
 
-BEGIN_META(AssetsService)
+BEG_META(AssetsService)
 END_META()
 
 class XEPAsset
@@ -18,7 +18,7 @@ public:
 
 DECL_META_CLASS(CORE_API, XEPAsset);
 
-BEGIN_META(XEPAsset)
+BEG_META(XEPAsset)
 		type->Property("Name", &XEPAsset::Name);
 		type->Property("Beg", &XEPAsset::Beg);
 		type->Property("End", &XEPAsset::End);
@@ -51,7 +51,7 @@ XE::AssetsService::~AssetsService()
 
 bool XE::AssetsService::Startup()
 {
-	std::ifstream ifs(( GetFramework()->GetAssetsPath() / "Directory" ).string(), std::ios::binary);
+	std::ifstream ifs(( GetFramework()->GetAssetsPath() / "directory" ).string(), std::ios::binary);
 	if( ifs.is_open())
 	{
 		ArchiveLoad Load(ifs);
@@ -94,7 +94,7 @@ void XE::AssetsService::Clearup()
 	_p->_Directorys.clear();
 }
 
-XE::PrefabPtr XE::AssetsService::Load( const String &val )
+XE::Prefab XE::AssetsService::Load( const String &val )
 {
 	auto obj = GetAsset(val);
 	if( obj == nullptr )
@@ -106,7 +106,7 @@ XE::PrefabPtr XE::AssetsService::Load( const String &val )
 	return CreatePrefab(val);
 }
 
-XE::PrefabPtr XE::AssetsService::AsynLoad( const String &val )
+XE::Prefab XE::AssetsService::AsynLoad( const String &val )
 {
 	auto obj = GetAsset(val);
 	if( obj == nullptr )

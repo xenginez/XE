@@ -2,7 +2,7 @@
 
 USING_XE
 
-BEGIN_META( LightComponent )
+BEG_META( LightComponent )
 END_META()
 
 XE::LightComponent::LightComponent()

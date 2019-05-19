@@ -2,7 +2,7 @@
 
 USING_XE
 
-BEGIN_META( ParticleComponent )
+BEG_META( ParticleComponent )
 END_META()
 
 XE::ParticleComponent::ParticleComponent()

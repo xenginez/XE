@@ -4,7 +4,7 @@ XE::IFrameworkPtr XE::IFramework::_CurrentFramework = nullptr;
 
 USING_XE
 
-BEGIN_META( IFramework )
+BEG_META( IFramework )
 END_META()
 
 IFramework::IFramework()

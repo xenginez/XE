@@ -2,7 +2,7 @@
 
 USING_XE
 
-BEGIN_META( IPhysicsService )
+BEG_META( IPhysicsService )
 END_META()
 
 XE::IPhysicsService::IPhysicsService()

@@ -4,7 +4,7 @@
 
 USING_XE
 
-BEGIN_META( Mat4 )
+BEG_META( Mat4 )
 type->Property( "m00", &Mat4::m00 );
 type->Property( "m01", &Mat4::m01 );
 type->Property( "m02", &Mat4::m02 );

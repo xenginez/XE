@@ -5,7 +5,7 @@
 
 USING_XE
 
-BEGIN_META( AudioService )
+BEG_META( AudioService )
 END_META()
 
 XE::AudioService::AudioService()

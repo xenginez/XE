@@ -2,7 +2,7 @@
 
 USING_XE
 
-BEGIN_META( MeshComponent )
+BEG_META( MeshComponent )
 END_META()
 
 XE::MeshComponent::MeshComponent()

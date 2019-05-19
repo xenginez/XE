@@ -2,7 +2,7 @@
 
 USING_XE
 
-BEGIN_META( Layer )
+BEG_META( Layer )
 type->Property( "Value", &Layer::Value );
 END_META()
 

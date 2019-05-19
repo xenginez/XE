@@ -5,7 +5,7 @@
 
 USING_XE
 
-BEGIN_META( BTActionNode )
+BEG_META( BTActionNode )
 END_META()
 
 XE::BTActionNode::BTActionNode()

@@ -2,7 +2,7 @@
 
 USING_XE
 
-BEGIN_META( DecalComponent )
+BEG_META( DecalComponent )
 END_META()
 
 XE::DecalComponent::DecalComponent()

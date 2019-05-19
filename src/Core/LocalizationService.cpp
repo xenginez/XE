@@ -2,7 +2,7 @@
 
 USING_XE
 
-BEGIN_META( LocalizationService )
+BEG_META( LocalizationService )
 END_META()
 
 struct LocalizationService::Private

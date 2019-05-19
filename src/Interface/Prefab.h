@@ -13,9 +13,11 @@
 
 BEG_XE_NAMESPACE
 
-class INTERFACE_API Prefab : public std::enable_shared_from_this< Prefab >
+class INTERFACE_API Prefab
 {
-public:
+	friend class IAssetsService;
+
+private:
 	Prefab( IAssetsServicePtr val, const String& link );
 
 public:

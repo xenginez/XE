@@ -4,7 +4,7 @@
 
 USING_XE
 
-BEGIN_META( Event )
+BEG_META( Event )
 type->Property( "id", &Event::id );
 type->Property( "ignore", &Event::ignore );
 type->Property( "parameter", &Event::parameter );
@@ -22,7 +22,7 @@ XE::Event::Event( uint64 id, const Variant& parameter /*= Variant() */ )
 
 }
 
-BEGIN_META( IEventService )
+BEG_META( IEventService )
 END_META()
 
 XE::IEventService::IEventService()

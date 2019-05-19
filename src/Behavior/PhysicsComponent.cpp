@@ -4,7 +4,7 @@
 
 USING_XE
 
-BEGIN_META( PhysicsComponent )
+BEG_META( PhysicsComponent )
 END_META()
 
 XE::PhysicsComponent::PhysicsComponent()

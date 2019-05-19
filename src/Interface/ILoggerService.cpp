@@ -2,7 +2,7 @@
 
 USING_XE
 
-BEGIN_META( ILoggerService )
+BEG_META( ILoggerService )
 type->Method( "Log", &ILoggerService::Log );
 END_META()
 

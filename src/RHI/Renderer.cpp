@@ -2,7 +2,7 @@
 
 USING_XE
 
-BEGIN_META(Renderer)
+BEG_META(Renderer)
 END_META()
 
 XE::Renderer::Renderer()

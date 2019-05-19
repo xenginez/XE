@@ -4,7 +4,7 @@
 
 USING_XE
 
-BEGIN_META( DecoratorNode )
+BEG_META( DecoratorNode )
 type->Property( "Child", &DecoratorNode::_Child );
 END_META()
 
@@ -67,7 +67,7 @@ void XE::DecoratorNode::OnClearup()
 	_Node = nullptr;
 }
 
-BEGIN_META( RepeatNode )
+BEG_META( RepeatNode )
 type->Property( "Count", &RepeatNode::_Count );
 END_META()
 
@@ -121,7 +121,7 @@ void XE::RepeatNode::OnUpdate( float dt )
 	}
 }
 
-BEGIN_META( SuccessNode )
+BEG_META( SuccessNode )
 END_META()
 
 XE::SuccessNode::SuccessNode()
@@ -165,7 +165,7 @@ void XE::SuccessNode::OnUpdate( float dt )
 	}
 }
 
-BEGIN_META( FailureNode )
+BEG_META( FailureNode )
 END_META()
 
 XE::FailureNode::FailureNode()
@@ -208,7 +208,7 @@ void XE::FailureNode::OnUpdate( float dt )
 	}
 }
 
-BEGIN_META( ReversedNode )
+BEG_META( ReversedNode )
 END_META()
 
 XE::ReversedNode::ReversedNode()
@@ -255,7 +255,7 @@ void XE::ReversedNode::OnUpdate( float dt )
 	}
 }
 
-BEGIN_META( DelayNode )
+BEG_META( DelayNode )
 type->Property( "DetlaTime", &DelayNode::_DetlaTime );
 END_META()
 

@@ -9,7 +9,7 @@
 
 USING_XE
 
-BEGIN_META( GameObject )
+BEG_META( GameObject )
 type->Property( "Name", &GameObject::_Name );
 type->Property( "Handle", &GameObject::_Handle, IMetaProperty::NoDesign | IMetaProperty::NoClone );
 type->Property( "Enabled", &GameObject::_Enabled );

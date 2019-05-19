@@ -2,7 +2,7 @@
 
 USING_XE
 
-BEGIN_META(Language)
+BEG_META(Language)
 		type->Value("ENGLISH", Language::ENGLISH);
 		type->Value("CHINESESIMPLIFIED", Language::CHINESESIMPLIFIED);
 		type->Value("CHINESETRADITIONAL", Language::CHINESETRADITIONAL);
@@ -48,7 +48,7 @@ BEGIN_META(Language)
 END_META()
 
 
-BEGIN_META(WindowFlags)
+BEG_META(WindowFlags)
 		type->Value("FULLSCREEN", WindowFlags::FULLSCREEN);
 		type->Value("SHOWN", WindowFlags::SHOWN);
 		type->Value("HIDDEN", WindowFlags::HIDDEN);

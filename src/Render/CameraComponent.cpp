@@ -2,7 +2,7 @@
 
 USING_XE
 
-BEGIN_META( CameraComponent )
+BEG_META( CameraComponent )
 END_META()
 
 XE::CameraComponent::CameraComponent()

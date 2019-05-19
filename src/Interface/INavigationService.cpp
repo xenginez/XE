@@ -2,7 +2,7 @@
 
 USING_XE
 
-BEGIN_META( INavigationService )
+BEG_META( INavigationService )
 END_META()
 
 XE::INavigationService::INavigationService()

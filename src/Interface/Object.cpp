@@ -5,7 +5,7 @@
 
 USING_XE
 
-BEGIN_META(Object)
+BEG_META(Object)
 END_META()
 
 XE::Object::Object()

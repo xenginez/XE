@@ -2,7 +2,7 @@
 
 USING_XE
 
-BEGIN_META( SpotLightComponent )
+BEG_META( SpotLightComponent )
 END_META()
 
 XE::SpotLightComponent::SpotLightComponent()

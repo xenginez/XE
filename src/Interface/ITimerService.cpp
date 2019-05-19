@@ -2,7 +2,7 @@
 
 USING_XE
 
-BEGIN_META( ITimerService )
+BEG_META( ITimerService )
 END_META()
 
 XE::ITimerService::ITimerService()

@@ -5,7 +5,7 @@
 
 USING_XE
 
-BEGIN_META( Node )
+BEG_META( Node )
 type->Property( "PreCondition", &Node::_PreCondition );
 type->Property( "ConditionStatus", &Node::_ConditionStatus );
 END_META()

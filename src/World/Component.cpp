@@ -4,7 +4,7 @@
 
 USING_XE
 
-BEGIN_META( Component )
+BEG_META( Component )
 type->Property( "Name", &Component::_Name );
 type->Property( "Handle", &Component::_Handle, IMetaProperty::NoDesign | IMetaProperty::NoClone );
 type->Property( "Enabled", &Component::_Enabled );

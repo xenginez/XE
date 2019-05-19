@@ -2,5 +2,5 @@
 
 USING_XE
 
-BEGIN_META( ObstacleHandle )
+BEG_META( ObstacleHandle )
 END_META()

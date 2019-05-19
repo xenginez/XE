@@ -4,7 +4,7 @@
 
 USING_XE
 
-BEGIN_META( SceneComponent )
+BEG_META( SceneComponent )
 type->Property( "Transform", &SceneComponent::_Transform );
 type->Property( "Parent", &SceneComponent::_ParentHandle, IMetaProperty::NoDesign );
 type->Property( "Children", &SceneComponent::_ChildrenHandle, IMetaProperty::NoDesign );

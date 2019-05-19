@@ -2,7 +2,7 @@
 
 USING_XE
 
-BEGIN_META( BillboardComponent )
+BEG_META( BillboardComponent )
 END_META()
 
 XE::BillboardComponent::BillboardComponent()

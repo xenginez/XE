@@ -4,7 +4,7 @@
 
 USING_XE
 
-BEGIN_META( CompositeNode )
+BEG_META( CompositeNode )
 type->Property( "Children", &CompositeNode::_Children );
 END_META()
 
@@ -48,7 +48,7 @@ void XE::CompositeNode::OnClearup()
 	Super::OnClearup();
 }
 
-BEGIN_META( SequenceNode )
+BEG_META( SequenceNode )
 END_META()
 
 XE::SequenceNode::SequenceNode()
@@ -99,7 +99,7 @@ void XE::SequenceNode::OnUpdate( float dt )
 	}
 }
 
-BEGIN_META( SelectorNode )
+BEG_META( SelectorNode )
 END_META()
 
 XE::SelectorNode::SelectorNode()
@@ -157,7 +157,7 @@ void XE::SelectorNode::OnUpdate( float dt )
 	}
 }
 
-BEGIN_META( ParallelNode )
+BEG_META( ParallelNode )
 END_META()
 
 XE::ParallelNode::ParallelNode()

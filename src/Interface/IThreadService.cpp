@@ -2,7 +2,7 @@
 
 USING_XE
 
-BEGIN_META( IThreadService )
+BEG_META( IThreadService )
 END_META()
 
 XE::IThreadService::IThreadService()

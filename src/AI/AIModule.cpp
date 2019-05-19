@@ -2,7 +2,7 @@
 
 USING_XE
 
-BEGIN_META( AIModule )
+BEG_META( AIModule )
 END_META()
 
 XE::AIModule::AIModule()

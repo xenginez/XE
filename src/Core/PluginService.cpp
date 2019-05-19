@@ -4,7 +4,7 @@
 
 USING_XE
 
-BEGIN_META(PluginService)
+BEG_META(PluginService)
 END_META()
 
 struct XEPPluginInfo

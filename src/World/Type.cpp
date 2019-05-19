@@ -2,15 +2,15 @@
 
 USING_XE
 
-BEGIN_META( GameObjectType )
+BEG_META( GameObjectType )
 type->Value( "STATIC", GameObjectType::STATIC );
 type->Value( "DYNAMIC", GameObjectType::DYNAMIC );
 END_META()
 
 
 
-BEGIN_META( GameObjectHandle )
+BEG_META( GameObjectHandle )
 END_META()
 
-BEGIN_META( ComponentHandle )
+BEG_META( ComponentHandle )
 END_META()

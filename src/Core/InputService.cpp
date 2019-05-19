@@ -2,7 +2,7 @@
 
 USING_XE
 
-BEGIN_META( InputService )
+BEG_META( InputService )
 END_META()
 
 class XEPInputAction
@@ -14,7 +14,7 @@ public:
 	Array<KeyCode> Keys;
 };
 DECL_PTR( XEPInputAction );
-BEGIN_META( XEPInputAction )
+BEG_META( XEPInputAction )
 type->Property( "Name", &XEPInputAction::Name );
 type->Property( "Keys", &XEPInputAction::Keys );
 END_META()

@@ -7,7 +7,7 @@
 
 USING_XE
 
-BEGIN_META( Ray )
+BEG_META( Ray )
 type->Property( "origin", &Ray::origin );
 type->Property( "direction", &Ray::direction );
 END_META()

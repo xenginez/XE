@@ -14,7 +14,7 @@
 
 USING_XE
 
-BEGIN_META(CoreFramework)
+BEG_META(CoreFramework)
 END_META()
 
 struct XE::CoreFramework::Private

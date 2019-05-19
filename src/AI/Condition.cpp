@@ -2,7 +2,7 @@
 
 USING_XE
 
-BEGIN_META( Condition )
+BEG_META( Condition )
 END_META()
 
 XE::Condition::Condition()

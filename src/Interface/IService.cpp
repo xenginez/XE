@@ -2,7 +2,7 @@
 
 USING_XE
 
-BEGIN_META( IService )
+BEG_META( IService )
 END_META()
 
 XE::IService::IService()

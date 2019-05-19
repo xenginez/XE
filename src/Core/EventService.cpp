@@ -6,7 +6,7 @@
 
 USING_XE
 
-BEGIN_META( EventService )
+BEG_META( EventService )
 END_META()
 
 struct XEPTimeEvent

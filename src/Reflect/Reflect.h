@@ -33,7 +33,7 @@
 
 #define OVERLOAD(TYPE, FUNC) (TYPE)&FUNC
 
-#define BEGIN_META(CLASS) \
+#define BEG_META(CLASS) \
 template<>\
 struct XE::MetaDataCollector<CLASS>\
 {\
@@ -50,6 +50,8 @@ struct XE::MetaDataCollector<CLASS>\
         ActiveSingleton< MetaDataCollector<ThisType> >::Register(); \
 	} \
 };
+
+#define IMPLEMENT_META(CLASS) BEG_META(CLASS) END_META()
 
 #define DECL_META_ENUM(_DLL_EXPORT, ENUM) \
 template<> struct _DLL_EXPORT XE::EnumID<ENUM> \

@@ -7,7 +7,7 @@
 
 USING_XE
 
-BEGIN_META( AABB )
+BEG_META( AABB )
 type->Property( "min", &AABB::min );
 type->Property( "max", &AABB::max );
 END_META()

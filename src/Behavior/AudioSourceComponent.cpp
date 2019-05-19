@@ -6,7 +6,7 @@
 
 USING_XE
 
-BEGIN_META( AudioSourceComponent )
+BEG_META( AudioSourceComponent )
 type->Method( "Play", &AudioSourceComponent::Play );
 type->Method( "Stop", &AudioSourceComponent::Stop );
 type->Method( "Pause", &AudioSourceComponent::Pause );

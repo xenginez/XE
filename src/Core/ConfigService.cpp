@@ -4,7 +4,7 @@
 
 USING_XE
 
-BEGIN_META(ConfigService)
+BEG_META(ConfigService)
 END_META()
 
 struct ConfigService::Private

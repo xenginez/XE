@@ -4,7 +4,7 @@
 
 USING_XE
 
-BEGIN_META( WorldObject )
+BEG_META( WorldObject )
 type->Property( "Name", &WorldObject::_Name );
 type->Property( "GameObjects", &WorldObject::_AllGameObjects );
 END_META()

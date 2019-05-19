@@ -4,7 +4,7 @@
 
 USING_XE
 
-BEGIN_META(Color)
+BEG_META(Color)
 		type->Property("r", &Color::r);
 		type->Property("g", &Color::g);
 		type->Property("b", &Color::b);
@@ -165,7 +165,7 @@ XE::Color operator *( float a, const Color &b )
 }
 
 
-BEGIN_META(FColor)
+BEG_META(FColor)
 		type->Property("r", &FColor::r);
 		type->Property("g", &FColor::g);
 		type->Property("b", &FColor::b);

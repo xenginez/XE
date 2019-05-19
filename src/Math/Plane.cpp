@@ -7,7 +7,7 @@
 
 USING_XE
 
-BEGIN_META( Plane )
+BEG_META( Plane )
 type->Property( "normal", &Plane::normal );
 type->Property( "distance", &Plane::distance );
 END_META()
