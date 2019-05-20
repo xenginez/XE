@@ -34,6 +34,12 @@ DECL_HANDLE(RHI_API, DomainShader);
 DECL_HANDLE(RHI_API, ComputeShader);
 DECL_HANDLE(RHI_API, TessellationShader);
 
+DECL_HANDLE(RHI_API, BlendState);
+DECL_HANDLE(RHI_API, InputLayout);
+DECL_HANDLE(RHI_API, DepthStencilState);
+DECL_HANDLE(RHI_API, ComputePipelineState);
+DECL_HANDLE(RHI_API, GriaphicsPipelineState);
+
 DECL_HANDLE(RHI_API, Texture);
 DECL_HANDLE(RHI_API, Sampler);
 DECL_HANDLE(RHI_API, Uniform);
