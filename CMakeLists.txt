@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.13)
 project(XE)
 
 set(CMAKE_CXX_STANDARD 17)
+SET(CMAKE_CONFIGURATION_TYPES "Debug;Release")
 
 if (CMAKE_SYSTEM_NAME MATCHES "Linux")
 	set(XE_PLATFORM_PATH linux)
