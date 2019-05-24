@@ -32,7 +32,7 @@ DECL_HANDLE(RHI_API, PixelShader);
 DECL_HANDLE(RHI_API, VertexShader);
 DECL_HANDLE(RHI_API, DomainShader);
 DECL_HANDLE(RHI_API, ComputeShader);
-DECL_HANDLE(RHI_API, TessellationShader);
+DECL_HANDLE(RHI_API, GeometryShader);
 
 DECL_HANDLE(RHI_API, BlendState);
 DECL_HANDLE(RHI_API, InputLayout);
