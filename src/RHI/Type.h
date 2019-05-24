@@ -35,7 +35,7 @@ DECL_HANDLE(RHI_API, ComputeShader);
 DECL_HANDLE(RHI_API, TessellationShader);
 
 DECL_HANDLE(RHI_API, BlendState);
-DECL_HANDLE(RHI_API, InputLayout);
+DECL_HANDLE(RHI_API, RasterizerState);
 DECL_HANDLE(RHI_API, DepthStencilState);
 DECL_HANDLE(RHI_API, ComputePipelineState);
 DECL_HANDLE(RHI_API, GriaphicsPipelineState);
@@ -87,14 +87,14 @@ DECL_META_ENUM(RHI_API, AccessType);
 
 enum class CompareType
 {
-	LESS,    		/// enable depth test, less.
-	LEQUAL,  		/// enable depth test, less or equal.
-	EQUAL,   		/// enable depth test, equal.
-	GEQUAL,  		/// enable depth test, greater or equal.
-	GREATER, 		/// enable depth test, greater.
-	NOTEQUAL,		/// enable depth test, not equal.
-	NEVER,   		/// enable depth test, never.
-	ALWAYS,  		/// enable depth test, always.
+	LESS,
+	LEQUAL,
+	EQUAL,
+	GEQUAL,
+	GREATER,
+	NOTEQUAL,
+	NEVER,
+	ALWAYS,
 };
 DECL_META_ENUM(RHI_API, CompareType);
 

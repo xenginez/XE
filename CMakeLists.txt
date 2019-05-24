@@ -71,7 +71,7 @@ add_dependencies(GUI Base Memory Reflect Utils Math Interface Graphics)
 add_dependencies(AI Base Memory Reflect Utils Math Interface)
 add_dependencies(World Base Memory Reflect Utils Math Interface)
 add_dependencies(Behavior Base Memory Reflect Utils Math Interface Audio Physics Animation Navigation AI World)
-add_dependencies(Render Base Memory Reflect Utils Math Interface Graphics World)
+add_dependencies(Render Base Memory Reflect Utils Math Interface Graphics World GUI)
 add_dependencies(Core Base Memory Reflect Utils Math Interface Audio Physics Graphics Animation Navigation GUI AI World Behavior Render)
 add_dependencies(XE Base Memory Reflect Utils Math Interface Audio Physics Graphics Animation Navigation GUI AI World Behavior Render Core)
 
@@ -164,7 +164,7 @@ target_link_libraries(Behavior
 		Audio Physics Animation Navigation AI World)
 
 target_link_libraries(Render
-		Graphics World)
+		Graphics World GUI)
 
 target_link_libraries(Core
 		Behavior Render GUI
