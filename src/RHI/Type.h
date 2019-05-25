@@ -80,10 +80,18 @@ DECL_HANDLE(RHI_API, InputLayout);
 DECL_HANDLE(RHI_API, OcclusionQuery);
 
 
+enum class FillType
+{
+	WIRTEFRAME,
+	SOLID,
+};
+DECL_META_ENUM(RHI_API, FillType);
+
 enum class CullType
 {
-	CW,
-	CCW,
+	NONE,
+	FRONT,
+	BACK,
 };
 DECL_META_ENUM(RHI_API, CullType);
 
