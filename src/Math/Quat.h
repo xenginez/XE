@@ -22,8 +22,8 @@ public:
 public:
 	union
 	{
-		struct { float x, y, z, w; };
-		float d[4];
+		struct { XE::float32 x, y, z, w; };
+		XE::float32 d[4];
 	};
 
 public:
@@ -31,18 +31,18 @@ public:
 
 	Quat( const Quat& val );
 
-	Quat( float x, float y, float z, float w );
+	Quat( XE::float32 x, XE::float32 y, XE::float32 z, XE::float32 w );
 
 public:
 	Quat& operator=( const Quat& val );
 
 public:
-	float& operator[]( XE::uint64 val )
+	XE::float32& operator[]( XE::uint64 val )
 	{
 		return d[val];
 	}
 
-	float operator[]( XE::uint64 val ) const
+	XE::float32 operator[]( XE::uint64 val ) const
 	{
 		return d[val];
 	}

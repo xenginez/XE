@@ -121,12 +121,12 @@ String& String::operator+=( const String& val )
 	return *this;
 }
 
-String& String::operator+=( double val )
+String& String::operator+=( XE::float64 val )
 {
 	return *this += std::to_string( val );
 }
 
-String& String::operator+=( float val )
+String& String::operator+=( XE::float32 val )
 {
 	return *this += std::to_string( val );
 }
@@ -191,12 +191,12 @@ String String::operator+( const char * val ) const
 	return ToStdString() + val;
 }
 
-String String::operator+( double val ) const
+String String::operator+( XE::float64 val ) const
 {
 	return *this + std::to_string( val );
 }
 
-String String::operator+( float val ) const
+String String::operator+( XE::float32 val ) const
 {
 	return *this + std::to_string( val );
 }
@@ -447,12 +447,12 @@ String operator+( XE::uint64 val1, const String& val2 )
 	return String() + val1 + val2;
 }
 
-String operator+( float val1, const String& val2 )
+String operator+( XE::float32 val1, const String& val2 )
 {
 	return String() + val1 + val2;
 }
 
-String operator+( double val1, const String& val2 )
+String operator+( XE::float64 val1, const String& val2 )
 {
 	return String() + val1 + val2;
 }

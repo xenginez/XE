@@ -37,7 +37,7 @@ public:
 
 	void PostEvent( XE::uint64 frame, EventPtr val ) override;
 
-	void PostEvent( float dt, EventPtr val ) override;
+	void PostEvent( XE::float32 dt, EventPtr val ) override;
 
 public:
 	XE::uint64 RegisterListener( uint32 event, ListenerType listener ) override;

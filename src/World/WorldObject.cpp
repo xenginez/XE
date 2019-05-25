@@ -96,7 +96,7 @@ void XE::WorldObject::Startup()
 	}
 }
 
-void XE::WorldObject::Update( float dt )
+void XE::WorldObject::Update( XE::float32 dt )
 {
 	for ( XE::uint64 i = 0; i < _AllGameObjects.size(); ++i )
 	{

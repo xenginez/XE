@@ -342,20 +342,20 @@ template<> struct REFLECT_API ClassID< uint64 >
 	}
 };
 
-template<> struct REFLECT_API ClassID< float >
+template<> struct REFLECT_API ClassID< XE::float32 >
 {
-	static IMetaClassPtr Get( const float * val = nullptr )
+	static IMetaClassPtr Get( const XE::float32 * val = nullptr )
 	{
-		static auto meta = XE::make_shared< CXXMetaFundamental<float> >( "float" );
+		static auto meta = XE::make_shared< CXXMetaFundamental<XE::float32> >( "XE::float32" );
 		return meta;
 	}
 };
 
-template<> struct REFLECT_API ClassID< double >
+template<> struct REFLECT_API ClassID< XE::float64 >
 {
-	static IMetaClassPtr Get( const double * val = nullptr )
+	static IMetaClassPtr Get( const XE::float64 * val = nullptr )
 	{
-		static auto meta = XE::make_shared< CXXMetaFundamental<uint64> >( "double" );
+		static auto meta = XE::make_shared< CXXMetaFundamental<uint64> >( "XE::float64" );
 		return meta;
 	}
 };

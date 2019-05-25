@@ -59,13 +59,13 @@ public:
 	
 	uint64 GetUInt64( const String& key, uint64 def = 0 ) const;
 
-	void SetFloat( const String& key, float val );
+	void SetFloat32( const String& key, XE::float32 val );
 	
-	float GetFloat( const String& key, float def = 0.0f ) const;
+	XE::float32 GetFloat32( const String& key, XE::float32 def = 0.0f ) const;
 
-	void SetDouble( const String& key, double val );
+	void SetFloat64( const String& key, XE::float64 val );
 	
-	double GetDouble( const String& key, double def = 0.0 ) const;
+	XE::float64 GetFloat64( const String& key, XE::float64 def = 0.0 ) const;
 
 	void SetString( const String& key, const String& val ) const;
 	

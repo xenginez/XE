@@ -120,8 +120,8 @@ public:
 		UnionData( uint16 u16 ) :u16( u16 ) {}
 		UnionData( uint32 u32 ) :u32( u32 ) {}
 		UnionData( uint64 u64 ) :u64( u64 ) {}
-		UnionData( float  f ) :f( f ) {}
-		UnionData( double d ) :d( d ) {}
+		UnionData( XE::float32  f ) :f( f ) {}
+		UnionData( XE::float64 d ) :d( d ) {}
 		UnionData( void * p ) :p( p ) {}
 		UnionData( PrivatePtr * pp ) :pp( pp ) {}
 		UnionData( std::shared_ptr<void> * sp ) :sp( sp ) {}
@@ -135,8 +135,8 @@ public:
 		uint16 u16;
 		uint32 u32;
 		uint64 u64;
-		float  f;
-		double d;
+		XE::float32  f;
+		XE::float64 d;
 		void * p;
 		PrivatePtr * pp;
 		std::shared_ptr<void> * sp;
@@ -165,9 +165,9 @@ public:
 
 	Variant( uint64 val );
 
-	Variant( float val );
+	Variant( XE::float32 val );
 
-	Variant( double val );
+	Variant( XE::float64 val );
 
 	Variant( const Variant & val );
 

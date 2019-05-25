@@ -62,16 +62,16 @@ XE::Reflection::Reflection()
 
 	RegisterMetaInfo( MetaID<std::nullptr_t>::Get() );
 	RegisterMetaInfo( MetaID<bool>::Get() );
-	RegisterMetaInfo( MetaID<int8>::Get() );
-	RegisterMetaInfo( MetaID<int16>::Get() );
-	RegisterMetaInfo( MetaID<int32>::Get() );
-	RegisterMetaInfo( MetaID<int64>::Get() );
-	RegisterMetaInfo( MetaID<uint8>::Get() );
-	RegisterMetaInfo( MetaID<uint16>::Get() );
-	RegisterMetaInfo( MetaID<uint32>::Get() );
-	RegisterMetaInfo( MetaID<uint64>::Get() );
-	RegisterMetaInfo( MetaID<float>::Get() );
-	RegisterMetaInfo( MetaID<double>::Get() );
+	RegisterMetaInfo( MetaID<XE::int8>::Get() );
+	RegisterMetaInfo( MetaID<XE::int16>::Get() );
+	RegisterMetaInfo( MetaID<XE::int32>::Get() );
+	RegisterMetaInfo( MetaID<XE::int64>::Get() );
+	RegisterMetaInfo( MetaID<XE::uint8>::Get() );
+	RegisterMetaInfo( MetaID<XE::uint16>::Get() );
+	RegisterMetaInfo( MetaID<XE::uint32>::Get() );
+	RegisterMetaInfo( MetaID<XE::uint64>::Get() );
+	RegisterMetaInfo( MetaID<XE::float32>::Get() );
+	RegisterMetaInfo( MetaID<XE::float64>::Get() );
 	RegisterMetaInfo( MetaID<String>::Get() );
 	RegisterMetaInfo( MetaID<VariantList>::Get() );
 	RegisterMetaInfo( MetaID<VariantDeque>::Get() );

@@ -1,39 +1,39 @@
 #define Swizzle( a, x, y, z, w) ( _mm_shuffle_ps( a, a, _MM_SHUFFLE( x, y, z, w ) ) )
 
-float XE::SIMD::X( XE::SIMD::simd_t a )
+XE::float32 XE::SIMD::X( XE::SIMD::simd_t a )
 {
 	return _mm_cvtss_f32( a );
 }
 
-float XE::SIMD::Y( XE::SIMD::simd_t a )
+XE::float32 XE::SIMD::Y( XE::SIMD::simd_t a )
 {
 	const XE::SIMD::simd_t yyyy = Swizzle( a, 1, 1, 1, 1 );
 	return _mm_cvtss_f32( yyyy );
 }
 
-float XE::SIMD::Z( XE::SIMD::simd_t a )
+XE::float32 XE::SIMD::Z( XE::SIMD::simd_t a )
 {
 	const XE::SIMD::simd_t zzzz = Swizzle( a, 2, 2, 2, 2 );
 	return _mm_cvtss_f32( zzzz );
 }
 
-float XE::SIMD::W( XE::SIMD::simd_t a )
+XE::float32 XE::SIMD::W( XE::SIMD::simd_t a )
 {
 	const XE::SIMD::simd_t wwww = Swizzle( a, 3, 3, 3, 3 );
 	return _mm_cvtss_f32( wwww );
 }
 
-void XE::SIMD::Stream( float * ptr, XE::SIMD::simd_t a )
+void XE::SIMD::Stream( XE::float32 * ptr, XE::SIMD::simd_t a )
 {
 	_mm_stream_ps( ptr, a );
 }
 
-XE::SIMD::simd_t XE::SIMD::Load( const float * ptr )
+XE::SIMD::simd_t XE::SIMD::Load( const XE::float32 * ptr )
 {
 	return _mm_load_ps( ptr );
 }
 
-XE::SIMD::simd_t XE::SIMD::Load( float x, float y, float z, float w )
+XE::SIMD::simd_t XE::SIMD::Load( XE::float32 x, XE::float32 y, XE::float32 z, XE::float32 w )
 {
 	return _mm_set_ps( w, z, y, x );
 }

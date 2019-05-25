@@ -200,7 +200,7 @@ void XE::SceneComponent::Startup()
 	}
 }
 
-void XE::SceneComponent::Update( float dt )
+void XE::SceneComponent::Update( XE::float32 dt )
 {
 	if ( _Enabled == false || _Update == false )
 	{

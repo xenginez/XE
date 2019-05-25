@@ -25,7 +25,7 @@ public:
 public:
 	const String& GetName() const;
 
-	float GetDuration() const;
+	XE::float32 GetDuration() const;
 
 	uint32 GetChannels() const;
 
@@ -47,7 +47,7 @@ private:
 
 private:
 	String _Name;
-	float _Duration;
+	XE::float32 _Duration;
 	uint32 _Channels;
 	uint32 _SampleRate;
 	uint8 _BytesPerSample;

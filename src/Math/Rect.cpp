@@ -27,7 +27,7 @@ XE::Rect::Rect( const Vec2& min, const Vec2& max )
 
 }
 
-XE::Rect::Rect( float x, float y, float w, float h )
+XE::Rect::Rect( XE::float32 x, XE::float32 y, XE::float32 w, XE::float32 h )
 	: x( x ), y( y ), width( w ), height( h )
 {
 
@@ -67,11 +67,11 @@ bool XE::Rect::contains( const Vec2& val ) const
 
 bool XE::Rect::overlaps( const Rect& val ) const
 {
-	float otherRight = val.x + val.width;
-	float myRight = x + width;
+	XE::float32 otherRight = val.x + val.width;
+	XE::float32 myRight = x + width;
 
-	float otherBottom = val.y + val.height;
-	float myBottom = y + height;
+	XE::float32 otherBottom = val.y + val.height;
+	XE::float32 myBottom = y + height;
 
 	if ( x < otherRight && myRight > val.x && y < otherBottom && myBottom > val.y )
 	{
@@ -83,11 +83,11 @@ bool XE::Rect::overlaps( const Rect& val ) const
 
 void XE::Rect::clip( const Rect& val )
 {
-	float newLeft = Mathf::Max( x, val.x );
-	float newTop = Mathf::Max( y, val.y );
+	XE::float32 newLeft = Mathf::Max( x, val.x );
+	XE::float32 newTop = Mathf::Max( y, val.y );
 
-	float newRight = Mathf::Min( x + width, val.x + val.width );
-	float newBottom = Mathf::Min( y + height, val.y + val.height );
+	XE::float32 newRight = Mathf::Min( x + width, val.x + val.width );
+	XE::float32 newBottom = Mathf::Min( y + height, val.y + val.height );
 
 	x = newLeft;
 	y = newTop;
@@ -97,10 +97,10 @@ void XE::Rect::clip( const Rect& val )
 
 void XE::Rect::encapsulate( const Rect& val )
 {
-	float myRight = x + width;
-	float myBottom = y + height;
-	float otherRight = val.x + val.width;
-	float otherBottom = val.y + val.height;
+	XE::float32 myRight = x + width;
+	XE::float32 myBottom = y + height;
+	XE::float32 otherRight = val.x + val.width;
+	XE::float32 otherBottom = val.y + val.height;
 
 	if ( val.x < x )
 		x = val.x;
@@ -130,10 +130,10 @@ void XE::Rect::Transform( const Mat4& val )
 	for ( uint32 i = 0; i < 4; i++ )
 		verts[i] = val * verts[i];
 
-	float minX = std::numeric_limits<float>::max();
-	float maxX = std::numeric_limits<float>::min();
-	float minY = std::numeric_limits<float>::max();
-	float maxY = std::numeric_limits<float>::min();
+	XE::float32 minX = std::numeric_limits<XE::float32>::max();
+	XE::float32 maxX = std::numeric_limits<XE::float32>::min();
+	XE::float32 minY = std::numeric_limits<XE::float32>::max();
+	XE::float32 maxY = std::numeric_limits<XE::float32>::min();
 
 	for ( uint32 i = 0; i < 4; i++ )
 	{

@@ -146,9 +146,9 @@ public:
 
 	virtual void Serialize( uint64 * ptr ) = 0;
 
-	virtual void Serialize( float * ptr ) = 0;
+	virtual void Serialize( XE::float32 * ptr ) = 0;
 
-	virtual void Serialize( double * ptr ) = 0;
+	virtual void Serialize( XE::float64 * ptr ) = 0;
 
 	virtual void Serialize( void * ptr, XE::uint64 size ) = 0;
 
@@ -183,9 +183,9 @@ public:
 
 	virtual void Serialize( uint64 * ptr ) override;
 
-	virtual void Serialize( float * ptr ) override;
+	virtual void Serialize( XE::float32 * ptr ) override;
 
-	virtual void Serialize( double * ptr ) override;
+	virtual void Serialize( XE::float64 * ptr ) override;
 
 	virtual void Serialize( void * ptr, XE::uint64 size ) override;
 
@@ -220,9 +220,9 @@ public:
 
 	virtual void Serialize( uint64 * ptr ) override;
 
-	virtual void Serialize( float * ptr ) override;
+	virtual void Serialize( XE::float32 * ptr ) override;
 
-	virtual void Serialize( double * ptr ) override;
+	virtual void Serialize( XE::float64 * ptr ) override;
 
 	virtual void Serialize( void * ptr, XE::uint64 size ) override;
 

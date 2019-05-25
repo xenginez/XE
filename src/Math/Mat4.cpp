@@ -35,7 +35,7 @@ Mat4::Mat4()
 {
 }
 
-Mat4::Mat4( float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23, float m30, float m31, float m32, float m33 )
+Mat4::Mat4( XE::float32 m00, XE::float32 m01, XE::float32 m02, XE::float32 m03, XE::float32 m10, XE::float32 m11, XE::float32 m12, XE::float32 m13, XE::float32 m20, XE::float32 m21, XE::float32 m22, XE::float32 m23, XE::float32 m30, XE::float32 m31, XE::float32 m32, XE::float32 m33 )
 	:m00( m00 ), m01( m01 ), m02( m02 ), m03( m03 )
 	, m10( m10 ), m11( m11 ), m12( m12 ), m13( m13 )
 	, m20( m20 ), m21( m21 ), m22( m22 ), m23( m23 )

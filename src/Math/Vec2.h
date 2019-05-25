@@ -23,32 +23,32 @@ public:
 public:
 	union
 	{
-		float d[2];
-		struct { float x, y; };
+		XE::float32 d[2];
+		struct { XE::float32 x, y; };
 	};
 
 public:
 	Vec2();
 
-	Vec2( float val );
+	Vec2( XE::float32 val );
 
 	Vec2( const Vec2& val );
 
-	Vec2( float x, float y );
+	Vec2( XE::float32 x, XE::float32 y );
 
 public:
-	Vec2& operator=( float val );
+	Vec2& operator=( XE::float32 val );
 
 	Vec2& operator=( const Vec2& val );
 
 public:
-	float& operator[]( XE::uint64 val )
+	XE::float32& operator[]( XE::uint64 val )
 	{
 		XE_ASSERT( val < 2 );
 		return d[val];
 	}
 
-	float operator[]( XE::uint64 val ) const
+	XE::float32 operator[]( XE::uint64 val ) const
 	{
 		XE_ASSERT( val < 2 );
 		return d[val];

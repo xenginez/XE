@@ -35,7 +35,7 @@ public:
 public:
 	int32 GetPov( const String& val ) const override;
 
-	float GetAxis( const String& val ) const override;
+	XE::float32 GetAxis( const String& val ) const override;
 
 	int32 GetButton( const String& val ) const override;
 
@@ -44,7 +44,7 @@ public:
 public:
 	int32 GetPov( KeyCode val ) const override;
 
-	float GetAxis( KeyCode val ) const override;
+	XE::float32 GetAxis( KeyCode val ) const override;
 
 	int32 GetButton( KeyCode val ) const override;
 

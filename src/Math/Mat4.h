@@ -24,19 +24,19 @@ public:
 	{
 		struct
 		{
-			float m00, m01, m02, m03;
-			float m10, m11, m12, m13;
-			float m20, m21, m22, m23;
-			float m30, m31, m32, m33;
+			XE::float32 m00, m01, m02, m03;
+			XE::float32 m10, m11, m12, m13;
+			XE::float32 m20, m21, m22, m23;
+			XE::float32 m30, m31, m32, m33;
 		};
-		float d[16];
-		float m[4][4];
+		XE::float32 d[16];
+		XE::float32 m[4][4];
 	};
 
 public:
 	Mat4();
 
-	Mat4( float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23, float m30, float m31, float m32, float m33 );
+	Mat4( XE::float32 m00, XE::float32 m01, XE::float32 m02, XE::float32 m03, XE::float32 m10, XE::float32 m11, XE::float32 m12, XE::float32 m13, XE::float32 m20, XE::float32 m21, XE::float32 m22, XE::float32 m23, XE::float32 m30, XE::float32 m31, XE::float32 m32, XE::float32 m33 );
 
 	Mat4( const Mat3& val );
 
@@ -48,13 +48,13 @@ public:
 	Mat4& operator = ( const Mat4& val );
 
 public:
-	float * operator []( XE::uint64 val )
+	XE::float32 * operator []( XE::uint64 val )
 	{
 		XE_ASSERT( val < 4 );
 		return m[val];
 	}
 
-	const float * operator []( XE::uint64 val ) const
+	const XE::float32 * operator []( XE::uint64 val ) const
 	{
 		XE_ASSERT( val < 4 );
 		return m[val];

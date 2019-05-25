@@ -50,9 +50,9 @@ public:
 
 	String& operator += ( uint64 val );
 
-	String& operator += ( float  val );
+	String& operator += ( XE::float32  val );
 
-	String& operator += ( double val );
+	String& operator += ( XE::float64 val );
 
 	String& operator += ( const char * val );
 
@@ -78,9 +78,9 @@ public:
 
 	String operator + ( uint64 val ) const;
 
-	String operator + ( float  val ) const;
+	String operator + ( XE::float32  val ) const;
 
-	String operator + ( double val ) const;
+	String operator + ( XE::float64 val ) const;
 
 	String operator + ( const char * val ) const;
 
@@ -210,8 +210,8 @@ BASE_API XE::String operator + ( XE::uint8  val1, const XE::String& val2 );
 BASE_API XE::String operator + ( XE::uint16 val1, const XE::String& val2 );
 BASE_API XE::String operator + ( XE::uint32 val1, const XE::String& val2 );
 BASE_API XE::String operator + ( XE::uint64 val1, const XE::String& val2 );
-BASE_API XE::String operator + ( float  val1, const XE::String& val2 );
-BASE_API XE::String operator + ( double val1, const XE::String& val2 );
+BASE_API XE::String operator + ( XE::float32  val1, const XE::String& val2 );
+BASE_API XE::String operator + ( XE::float64 val1, const XE::String& val2 );
 BASE_API XE::String operator + ( const char * val1, const XE::String& val2 );
 BASE_API XE::String operator + ( const std::string& val1, const XE::String& val2 );
 

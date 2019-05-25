@@ -32,24 +32,24 @@ public:
 	bool operator !=( const Ray& val ) const;
 
 public:
-	Vec3 GetPoint( float val ) const;
+	Vec3 GetPoint( XE::float32 val ) const;
 
 public:
-	std::pair<bool, float> Intersect( const OBB& val ) const;
+	std::pair<bool, XE::float32> Intersect( const OBB& val ) const;
 
-	std::pair<bool, float> Intersect( const AABB& val ) const;
+	std::pair<bool, XE::float32> Intersect( const AABB& val ) const;
 
-	std::pair<bool, float> Intersect( const Line& val ) const;
+	std::pair<bool, XE::float32> Intersect( const Line& val ) const;
 
-	std::pair<bool, float> Intersect( const Plane& val ) const;
+	std::pair<bool, XE::float32> Intersect( const Plane& val ) const;
 
-	std::pair<bool, float> Intersect( const Sphere& val ) const;
+	std::pair<bool, XE::float32> Intersect( const Sphere& val ) const;
 
-	std::pair<bool, float> Intersect( const Frustum& val ) const;
+	std::pair<bool, XE::float32> Intersect( const Frustum& val ) const;
 
-	std::pair<bool, float> Intersect( const Ray& ray, bool discardInside = true ) const;
+	std::pair<bool, XE::float32> Intersect( const Ray& ray, bool discardInside = true ) const;
 
-	std::pair<bool, float> Intersect( const Vec3& a, const Vec3& b, const Vec3& c, const Vec3& normal, bool positiveSide = true, bool negativeSide = true ) const;
+	std::pair<bool, XE::float32> Intersect( const Vec3& a, const Vec3& b, const Vec3& c, const Vec3& normal, bool positiveSide = true, bool negativeSide = true ) const;
 
 public:
 	void Transform( const Mat4& val );

@@ -157,9 +157,9 @@ void XE::ArchiveLoad::Serialize( uint64 * ptr )
 	}
 }
 
-void XE::ArchiveLoad::Serialize( float * ptr )
+void XE::ArchiveLoad::Serialize( XE::float32 * ptr )
 {
-	_Stream.read( (char *)ptr, sizeof( float ) );
+	_Stream.read( (char *)ptr, sizeof( XE::float32 ) );
 
 	if ( _IsConvert )
 	{
@@ -170,9 +170,9 @@ void XE::ArchiveLoad::Serialize( float * ptr )
 	}
 }
 
-void XE::ArchiveLoad::Serialize( double * ptr )
+void XE::ArchiveLoad::Serialize( XE::float64 * ptr )
 {
-	_Stream.read( (char *)ptr, sizeof( double ) );
+	_Stream.read( (char *)ptr, sizeof( XE::float64 ) );
 
 	if ( _IsConvert )
 	{
@@ -252,14 +252,14 @@ void XE::ArchiveSave::Serialize( uint64 * ptr )
 	_Stream.write( (const char *)ptr, sizeof( uint64 ) );
 }
 
-void XE::ArchiveSave::Serialize( float * ptr )
+void XE::ArchiveSave::Serialize( XE::float32 * ptr )
 {
-	_Stream.write( (const char *)ptr, sizeof( float ) );
+	_Stream.write( (const char *)ptr, sizeof( XE::float32 ) );
 }
 
-void XE::ArchiveSave::Serialize( double * ptr )
+void XE::ArchiveSave::Serialize( XE::float64 * ptr )
 {
-	_Stream.write( (const char *)ptr, sizeof( double ) );
+	_Stream.write( (const char *)ptr, sizeof( XE::float64 ) );
 }
 
 void XE::ArchiveSave::Serialize( void * ptr, XE::uint64 size )

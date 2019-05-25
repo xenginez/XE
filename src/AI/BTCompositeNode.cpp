@@ -69,7 +69,7 @@ void XE::BTSequenceNode::OnStartup()
 	_Current = 0;
 }
 
-void XE::BTSequenceNode::OnUpdate( float dt )
+void XE::BTSequenceNode::OnUpdate( XE::float32 dt )
 {
 	Super::OnUpdate( dt );
 
@@ -120,7 +120,7 @@ void XE::BTSelectorNode::OnStartup()
 	_Current = 0;
 }
 
-void XE::BTSelectorNode::OnUpdate( float dt )
+void XE::BTSelectorNode::OnUpdate( XE::float32 dt )
 {
 	Super::OnUpdate( dt );
 
@@ -170,7 +170,7 @@ XE::BTParallelNode::~BTParallelNode()
 
 }
 
-void XE::BTParallelNode::OnUpdate( float dt )
+void XE::BTParallelNode::OnUpdate( XE::float32 dt )
 {
 	Super::OnUpdate( dt );
 

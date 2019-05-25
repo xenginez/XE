@@ -12,8 +12,8 @@ END_META()
 struct XEPTimeEvent
 {
 	EventPtr _Event;
-	float _Duration;
-	float _StartTime;
+	XE::float32 _Duration;
+	XE::float32 _StartTime;
 };
 template<> struct std::less<XEPTimeEvent>
 {
@@ -116,7 +116,7 @@ void XE::EventService::PostEvent( XE::uint64 frame, EventPtr val )
 	_p->_FrameEvents.push( std::move( evt ) );
 }
 
-void XE::EventService::PostEvent( float dt, EventPtr val )
+void XE::EventService::PostEvent( XE::float32 dt, EventPtr val )
 {
 	XEPTimeEvent evt;
 	evt._Event = val;

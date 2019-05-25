@@ -27,23 +27,23 @@ public:
 #if SIMD_TYPE == SIMD_SSE
 	using simd_t = __m128;
 #else
-	using simd_t = float32x4_t;
+	using simd_t = XE::float3232x4_t;
 #endif
 
 public:
-	static inline float X( simd_t a );
+	static inline XE::float32 X( simd_t a );
 
-	static inline float Y( simd_t a );
+	static inline XE::float32 Y( simd_t a );
 
-	static inline float Z( simd_t a );
+	static inline XE::float32 Z( simd_t a );
 
-	static inline float W( simd_t a );
+	static inline XE::float32 W( simd_t a );
 
-	static inline void Stream( float * ptr, simd_t a );
+	static inline void Stream( XE::float32 * ptr, simd_t a );
 
-	static inline simd_t Load( const float * ptr );
+	static inline simd_t Load( const XE::float32 * ptr );
 
-	static inline simd_t Load( float x, float y, float z, float w );
+	static inline simd_t Load( XE::float32 x, XE::float32 y, XE::float32 z, XE::float32 w );
 
 	static inline simd_t Zero();
 

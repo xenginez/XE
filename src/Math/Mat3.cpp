@@ -25,7 +25,7 @@ Mat3::Mat3()
 {
 }
 
-Mat3::Mat3( float m00, float m01, float m02, float m10, float m11, float m12, float m20, float m21, float m22 )
+Mat3::Mat3( XE::float32 m00, XE::float32 m01, XE::float32 m02, XE::float32 m10, XE::float32 m11, XE::float32 m12, XE::float32 m20, XE::float32 m21, XE::float32 m22 )
 	:m00( m00 ), m01( m01 ), m02( m02 ), m10( m10 ), m11( m11 ), m12( m12 ), m20( m20 ), m21( m21 ), m22( m22 )
 {
 
@@ -33,18 +33,18 @@ Mat3::Mat3( float m00, float m01, float m02, float m10, float m11, float m12, fl
 
 Mat3::Mat3( const Quat& val )
 {
-	float x = val.x * 2.0f;
-	float y = val.y * 2.0f;
-	float z = val.z * 2.0f;
-	float xx = val.x * x;
-	float yy = val.y * y;
-	float zz = val.z * z;
-	float xy = val.x * y;
-	float xz = val.x * z;
-	float yz = val.y * z;
-	float wx = val.w * x;
-	float wy = val.w * y;
-	float wz = val.w * z;
+	XE::float32 x = val.x * 2.0f;
+	XE::float32 y = val.y * 2.0f;
+	XE::float32 z = val.z * 2.0f;
+	XE::float32 xx = val.x * x;
+	XE::float32 yy = val.y * y;
+	XE::float32 zz = val.z * z;
+	XE::float32 xy = val.x * y;
+	XE::float32 xz = val.x * z;
+	XE::float32 yz = val.y * z;
+	XE::float32 wx = val.w * x;
+	XE::float32 wy = val.w * y;
+	XE::float32 wz = val.w * z;
 
 	d[0] = 1.0f - ( yy + zz );
 	d[1] = xy + wz;

@@ -35,14 +35,14 @@ public:
 public:
 	void Startup();
 
-	void Update( float dt );
+	void Update( XE::float32 dt );
 
 	void Clearup();
 
 protected:
 	virtual void OnStartup();
 
-	virtual void OnUpdate( float dt );
+	virtual void OnUpdate( XE::float32 dt );
 
 	virtual void OnClearup();
 

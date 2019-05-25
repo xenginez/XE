@@ -19,7 +19,7 @@ XE::AudioListenerComponent::~AudioListenerComponent()
 
 }
 
-void XE::AudioListenerComponent::OnUpdate( float dt )
+void XE::AudioListenerComponent::OnUpdate( XE::float32 dt )
 {
 	Super::OnUpdate( dt );
 
@@ -30,6 +30,6 @@ void XE::AudioListenerComponent::OnUpdate( float dt )
 
 	Vec3 forward = GetTransform()->GetWorldForward();
 	Vec3 up = GetTransform()->GetWorldUp();
-	float buf[6] = { forward.x, forward.y, forward.z, up.x, up.y, up.z };
+	XE::float32 buf[6] = { forward.x, forward.y, forward.z, up.x, up.y, up.z };
 	AL_CHECK( alListenerfv( AL_ORIENTATION, buf ) );
 }

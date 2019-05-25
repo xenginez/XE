@@ -125,14 +125,14 @@ XE::Variant::Variant( uint64 val )
 
 }
 
-XE::Variant::Variant( float val )
-	: _Data( val ), _Meta( MetaID<float>::Get() ), _Flag( FUNDAMENTAL )
+XE::Variant::Variant( XE::float32 val )
+	: _Data( val ), _Meta( MetaID<XE::float32>::Get() ), _Flag( FUNDAMENTAL )
 {
 
 }
 
-XE::Variant::Variant( double val )
-	: _Data( val ), _Meta( MetaID<double>::Get() ), _Flag( FUNDAMENTAL )
+XE::Variant::Variant( XE::float64 val )
+	: _Data( val ), _Meta( MetaID<XE::float64>::Get() ), _Flag( FUNDAMENTAL )
 {
 
 }
@@ -292,11 +292,11 @@ void * XE::Variant::ToPointer() const
 		{
 			return (void*)( &( _Data.u64 ) );
 		}
-		else if ( _Meta == MetaID<float>::Get() )
+		else if ( _Meta == MetaID<XE::float32>::Get() )
 		{
 			return (void*)( &( _Data.f ) );
 		}
-		else if ( _Meta == MetaID<double>::Get() )
+		else if ( _Meta == MetaID<XE::float64>::Get() )
 		{
 			return (void*)( &( _Data.d ) );
 		}

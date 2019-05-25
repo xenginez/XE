@@ -19,10 +19,10 @@ public:
 	static const Rect Zero;
 
 public:
-	float x;
-	float y;
-	float width;
-	float height;
+	XE::float32 x;
+	XE::float32 y;
+	XE::float32 width;
+	XE::float32 height;
 
 public:
 	Rect();
@@ -31,7 +31,7 @@ public:
 
 	Rect( const Vec2& min, const Vec2& max );
 
-	Rect( float x, float y, float w, float h );
+	Rect( XE::float32 x, XE::float32 y, XE::float32 w, XE::float32 h );
 
 public:
 	Rect& operator=( const Rect& val );

@@ -36,45 +36,45 @@ void XE::LOD::SetLODCount( XE::uint64 val )
 	}
 }
 
-float XE::LOD::GetLowerDistance( XE::uint64 lod )
+XE::float32 XE::LOD::GetLowerDistance( XE::uint64 lod )
 {
 	XE_ASSERT(lod < _Lods.size());
 	
 	return _Lods[lod].first;
 }
 
-void XE::LOD::SetLowerDistance( XE::uint64 lod, float val )
+void XE::LOD::SetLowerDistance( XE::uint64 lod, XE::float32 val )
 {
 	XE_ASSERT(lod < _Lods.size());
 	
 	_Lods[lod].first = val;
 }
 
-float XE::LOD::GetUpperDistance( XE::uint64 lod )
+XE::float32 XE::LOD::GetUpperDistance( XE::uint64 lod )
 {
 	XE_ASSERT(lod < _Lods.size());
 	
 	return _Lods[lod].second;
 }
 
-void XE::LOD::SetUpperDistance( XE::uint64 lod, float val )
+void XE::LOD::SetUpperDistance( XE::uint64 lod, XE::float32 val )
 {
 	XE_ASSERT(lod < _Lods.size());
 	
 	_Lods[lod].second = val;
 }
 
-const XE::Array < XE::Pair < float, float>> &XE::LOD::GetLODs() const
+const XE::Array < XE::Pair < XE::float32, XE::float32>> &XE::LOD::GetLODs() const
 {
 	return _Lods;
 }
 
-void XE::LOD::SetLODs( const Array < Pair < float, float>> &val )
+void XE::LOD::SetLODs( const Array < Pair < XE::float32, XE::float32>> &val )
 {
 	_Lods = val;
 }
 
-XE::uint64 LOD::GetLODLimits( float val ) const
+XE::uint64 LOD::GetLODLimits( XE::float32 val ) const
 {
 	for( int i = 0; i < _Lods.size(); ++i )
 	{

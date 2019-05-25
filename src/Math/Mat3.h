@@ -24,18 +24,18 @@ public:
 	{
 		struct
 		{
-			float m00, m01, m02;
-			float m10, m11, m12;
-			float m20, m21, m22;
+			XE::float32 m00, m01, m02;
+			XE::float32 m10, m11, m12;
+			XE::float32 m20, m21, m22;
 		};
-		float d[9];
-		float m[3][3];
+		XE::float32 d[9];
+		XE::float32 m[3][3];
 	};
 
 public:
 	Mat3();
 
-	Mat3( float m00, float m01, float m02, float m10, float m11, float m12, float m20, float m21, float m22 );
+	Mat3( XE::float32 m00, XE::float32 m01, XE::float32 m02, XE::float32 m10, XE::float32 m11, XE::float32 m12, XE::float32 m20, XE::float32 m21, XE::float32 m22 );
 
 	Mat3( const Quat& val );
 
@@ -47,13 +47,13 @@ public:
 	Mat3& operator = ( const Mat3& val );
 
 public:
-	float * operator []( XE::uint64 val )
+	XE::float32 * operator []( XE::uint64 val )
 	{
 		XE_ASSERT( val < 3 );
 		return m[val];
 	}
 
-	const float * operator []( XE::uint64 val ) const
+	const XE::float32 * operator []( XE::uint64 val ) const
 	{
 		XE_ASSERT( val < 3 );
 		return m[val];

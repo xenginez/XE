@@ -32,7 +32,7 @@ const XE::String& XE::AudioSound::GetName() const
 	return _Name;
 }
 
-float XE::AudioSound::GetDuration() const
+XE::float32 XE::AudioSound::GetDuration() const
 {
 	return _Duration;
 }

@@ -23,7 +23,7 @@ public:
 	~AudioListenerComponent();
 
 protected:
-	virtual void OnUpdate( float dt ) override;
+	virtual void OnUpdate( XE::float32 dt ) override;
 
 };
 

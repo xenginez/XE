@@ -43,7 +43,7 @@ public:
 public:
 	Half();
 
-	Half( float val );
+	Half( XE::float32 val );
 
 	Half( uint16 val );
 
@@ -52,25 +52,25 @@ public:
 	~Half();
 
 public:
-	Half& operator=( float val );
+	Half& operator=( XE::float32 val );
 
 	Half& operator=( const Half& val );
 
 public:
-	operator float() const;
+	operator XE::float32() const;
 
 public:
-	bool operator<( float val ) const;
+	bool operator<( XE::float32 val ) const;
 
-	bool operator>( float val ) const;
+	bool operator>( XE::float32 val ) const;
 
-	bool operator<=( float val ) const;
+	bool operator<=( XE::float32 val ) const;
 
-	bool operator>=( float val ) const;
+	bool operator>=( XE::float32 val ) const;
 
-	bool operator==( float val ) const;
+	bool operator==( XE::float32 val ) const;
 
-	bool operator!=( float val ) const;
+	bool operator!=( XE::float32 val ) const;
 
 	bool operator<( const Half& val ) const;
 
@@ -85,22 +85,22 @@ public:
 	bool operator!=( const Half& val ) const;
 
 private:
-	void Set( float val );
+	void Set( XE::float32 val );
 };
 DECL_META_CLASS( MATH_API, Half );
 
 END_XE_NAMESAPCE
 
-bool operator<( float val1, const XE::Half& val2 );
+bool operator<( XE::float32 val1, const XE::Half& val2 );
 
-bool operator>( float val1, const XE::Half& val2 );
+bool operator>( XE::float32 val1, const XE::Half& val2 );
 
-bool operator<=( float val1, const XE::Half& val2 );
+bool operator<=( XE::float32 val1, const XE::Half& val2 );
 
-bool operator>=( float val1, const XE::Half& val2 );
+bool operator>=( XE::float32 val1, const XE::Half& val2 );
 
-bool operator==( float val1, const XE::Half& val2 );
+bool operator==( XE::float32 val1, const XE::Half& val2 );
 
-bool operator!=( float val1, const XE::Half& val2 );
+bool operator!=( XE::float32 val1, const XE::Half& val2 );
 
 #endif // __HALF_H__A3198368_5080_4B3C_9DD7_867156762D19

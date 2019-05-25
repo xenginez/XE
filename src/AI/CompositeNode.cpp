@@ -69,7 +69,7 @@ void XE::SequenceNode::OnStartup()
 	_Current = 0;
 }
 
-void XE::SequenceNode::OnUpdate( float dt )
+void XE::SequenceNode::OnUpdate( XE::float32 dt )
 {
 	Super::OnUpdate( dt );
 
@@ -120,7 +120,7 @@ void XE::SelectorNode::OnStartup()
 	_Current = 0;
 }
 
-void XE::SelectorNode::OnUpdate( float dt )
+void XE::SelectorNode::OnUpdate( XE::float32 dt )
 {
 	Super::OnUpdate( dt );
 
@@ -170,7 +170,7 @@ XE::ParallelNode::~ParallelNode()
 
 }
 
-void XE::ParallelNode::OnUpdate( float dt )
+void XE::ParallelNode::OnUpdate( XE::float32 dt )
 {
 	Super::OnUpdate( dt );
 

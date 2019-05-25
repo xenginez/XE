@@ -91,14 +91,14 @@ XE::int32 XE::InputService::GetPov( KeyCode val ) const
 	return GetValue( val ).Value<int32>();
 }
 
-float XE::InputService::GetAxis( const String& val ) const
+XE::float32 XE::InputService::GetAxis( const String& val ) const
 {
-	return GetValue( val ).Value<float>();
+	return GetValue( val ).Value<XE::float32>();
 }
 
-float XE::InputService::GetAxis( KeyCode val ) const
+XE::float32 XE::InputService::GetAxis( KeyCode val ) const
 {
-	return GetValue( val ).Value<float>();
+	return GetValue( val ).Value<XE::float32>();
 }
 
 XE::int32 XE::InputService::GetButton( const String& val ) const

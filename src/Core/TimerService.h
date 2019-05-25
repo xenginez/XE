@@ -43,20 +43,20 @@ public:
 	XE::uint64 GetFrameCount() const override;
 
 public:
-	float GetTimeScale() const override;
+	XE::float32 GetTimeScale() const override;
 
-	void SetTimeScale( float val ) override;
+	void SetTimeScale( XE::float32 val ) override;
 
 public:
-	float GetTime() const override;
+	XE::float32 GetTime() const override;
 
-	float GetDeltaTime() const override;
+	XE::float32 GetDeltaTime() const override;
 
-	float GetFixedDeltaTime() const override;
+	XE::float32 GetFixedDeltaTime() const override;
 
-	float GetUnscaleDeltaTime() const override;
+	XE::float32 GetUnscaleDeltaTime() const override;
 
-	float GetUnscaleFixedDeltaTime() const override;
+	XE::float32 GetUnscaleFixedDeltaTime() const override;
 
 private:
 	Private * _p;

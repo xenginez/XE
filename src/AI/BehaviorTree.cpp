@@ -22,7 +22,7 @@ void XE::BehaviorTree::Startup()
 	}
 }
 
-void XE::BehaviorTree::Update( float dt )
+void XE::BehaviorTree::Update( XE::float32 dt )
 {
 	NodePtr root = _Nodes[_Root.GetValue()];
 

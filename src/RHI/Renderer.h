@@ -104,9 +104,9 @@ public:
 	
 	virtual ComputeShaderHandle CreateComputeShader( const std::filesystem::path &val ) = 0;
 	
-	virtual TessellationShaderHandle CreateTessellationShader( const MemoryView &val ) = 0;
+	virtual GeometryShaderHandle CreateGeometryShader( const MemoryView &val ) = 0;
 	
-	virtual TessellationShaderHandle CreateTessellationShader( const std::filesystem::path &val ) = 0;
+	virtual GeometryShaderHandle CreateGeometryShader( const std::filesystem::path &val ) = 0;
 	
 	virtual ProgramHandle CreateProgram( const ComputeShaderHandle &cs ) = 0;
 	
