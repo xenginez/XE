@@ -16,6 +16,37 @@ BEG_XE_NAMESPACE
 DECL_PTR(Image);
 DECL_PTR(Renderer);
 
+DECL_PTR(FrameBuffer);
+DECL_PTR(IndexBuffer);
+DECL_PTR(VertexBuffer);
+DECL_PTR(ComputeBuffer);
+DECL_PTR(ConstantBuffer);
+DECL_PTR(DepthStencilBuffer);
+DECL_PTR(DynamicIndexBuffer);
+DECL_PTR(DynamicVertexBuffer);
+
+DECL_PTR(HullShader);
+DECL_PTR(PixelShader);
+DECL_PTR(VertexShader);
+DECL_PTR(DomainShader);
+DECL_PTR(ComputeShader);
+DECL_PTR(GeometryShader);
+
+DECL_PTR(BlendState);
+DECL_PTR(RasterizerState);
+DECL_PTR(DepthStencilState);
+DECL_PTR(ComputePipelineState);
+DECL_PTR(GraphicsPipelineState);
+
+DECL_PTR(Texture);
+DECL_PTR(Sampler);
+DECL_PTR(Uniform);
+DECL_PTR(Program);
+DECL_PTR(Viewport);
+DECL_PTR(InputLayout);
+DECL_PTR(OcclusionQuery);
+
+
 DECL_HANDLE(RHI_API, Window);
 
 DECL_HANDLE(RHI_API, FrameBuffer);
@@ -38,13 +69,14 @@ DECL_HANDLE(RHI_API, BlendState);
 DECL_HANDLE(RHI_API, RasterizerState);
 DECL_HANDLE(RHI_API, DepthStencilState);
 DECL_HANDLE(RHI_API, ComputePipelineState);
-DECL_HANDLE(RHI_API, GriaphicsPipelineState);
+DECL_HANDLE(RHI_API, GraphicsPipelineState);
 
 DECL_HANDLE(RHI_API, Texture);
 DECL_HANDLE(RHI_API, Sampler);
 DECL_HANDLE(RHI_API, Uniform);
 DECL_HANDLE(RHI_API, Program);
 DECL_HANDLE(RHI_API, Viewport);
+DECL_HANDLE(RHI_API, InputLayout);
 DECL_HANDLE(RHI_API, OcclusionQuery);
 
 
@@ -263,7 +295,7 @@ enum class SamplerAddressType
 };
 DECL_META_ENUM(RHI_API, SamplerAddressType);
 
-enum class BlendFunction
+enum class BlendFactor
 {
 	ZERO,						/// 0, 0, 0, 0
 	ONE,						/// 1, 1, 1, 1
@@ -279,9 +311,9 @@ enum class BlendFunction
 	FACTOR,						/// Blend factor
 	INV_FACTOR,					/// 1-Blend factor
 };
-DECL_META_ENUM(RHI_API, BlendFunction);
+DECL_META_ENUM(RHI_API, BlendFactor);
 
-enum class BlendEquation
+enum class BlendOperation
 {
 	ADD,
 	SUB,
@@ -289,7 +321,7 @@ enum class BlendEquation
 	MIN,
 	MAX,
 };
-DECL_META_ENUM(RHI_API, BlendEquation);
+DECL_META_ENUM(RHI_API, BlendOperation);
 
 enum class StencilOperation
 {
