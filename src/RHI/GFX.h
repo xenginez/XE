@@ -6,21 +6,21 @@
  * \email   zhengyuanqing.95@gmail.com
  *
  */
-#ifndef __RENDERER_H__110C5558_6667_4730_BB09_61799EF40CE0
-#define __RENDERER_H__110C5558_6667_4730_BB09_61799EF40CE0
+#ifndef __GFX_H__110C5558_6667_4730_BB09_61799EF40CE0
+#define __GFX_H__110C5558_6667_4730_BB09_61799EF40CE0
 
 #include "Type.h"
 
 BEG_XE_NAMESPACE
 
-class RHI_API Renderer : public XE::Object
+class RHI_API GFX : public XE::Object
 {
-	OBJECT(Renderer, Object)
+	OBJECT(GFX, Object)
 	
 public:
-	Renderer();
+	GFX();
 	
-	~Renderer() override;
+	~GFX() override;
 
 public:
 	virtual void Startup() = 0;
@@ -108,11 +108,7 @@ public:
 	
 	virtual GeometryShaderHandle CreateGeometryShader( const std::filesystem::path &val ) = 0;
 	
-	virtual ProgramHandle CreateProgram( const ComputeShaderHandle &cs ) = 0;
-	
-	virtual ProgramHandle CreateProgram( const VertexShaderHandle &vs, const PixelShaderHandle &ps ) = 0;
-	
-	virtual UniformHandle CreateUniform( const ProgramHandle &program, const String &val ) = 0;
+	virtual UniformHandle CreateUniform( const String &val ) = 0;
 	
 	virtual TextureHandle CreateTexture2D( const Vec2 &size, uint16 mips, uint16 players, TextureFormat format ) = 0;
 	
@@ -129,4 +125,4 @@ public:
 
 END_XE_NAMESAPCE
 
-#endif //__RENDERER_H__110C5558_6667_4730_BB09_61799EF40CE0
+#endif //__GFX_H__110C5558_6667_4730_BB09_61799EF40CE0

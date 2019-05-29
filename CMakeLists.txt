@@ -49,6 +49,10 @@ include_directories(
 		${CMAKE_CURRENT_SOURCE_DIR}/depend/include
 )
 
+if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
+	include_directories(/usr/local/include)
+endif ()
+
 link_directories(
 		${CMAKE_CURRENT_SOURCE_DIR}/depend/bin/${XE_PLATFORM_PATH}/${XE_BUILD_TYPE}
 		${CMAKE_CURRENT_SOURCE_DIR}/depend/lib/${XE_PLATFORM_PATH}/${XE_BUILD_TYPE}
