@@ -2,27 +2,28 @@
 
 USING_XE
 
-XE::ProfilerTrack::ProfilerTrack( const String& file, XE::uint64 line, const String& function )
-	: _Item( Profiler::Begin( file, line, function ) )
+XE::ProfilerTrack::ProfilerTrack(const String& file, XE::uint64 line, const String& function)
+	: _Item(Profiler::Begin(file, line, function))
 {
 
 }
 
-XE::ProfilerTrack::ProfilerTrack( ProfilerTrack &&val )
-	: _Item( val._Item )
+XE::ProfilerTrack::ProfilerTrack(ProfilerTrack &&val)
+	: _Item(val._Item)
 {
 
 }
 
-XE::ProfilerTrack& XE::ProfilerTrack::operator=( ProfilerTrack &&val )
+XE::ProfilerTrack& XE::ProfilerTrack::operator=(ProfilerTrack &&val)
 {
-	_Item = val._Item;
+	std::swap(_Item, val._Item);
+
 	return *this;
 }
 
 XE::ProfilerTrack::~ProfilerTrack()
 {
-	Profiler::End( _Item );
+	Profiler::End(_Item);
 }
 
 
@@ -31,8 +32,8 @@ struct XE::Profiler::Private
 	using FramePair = Pair< ProfilerFramePtr, Stack<ProfilerItem *> >;
 
 	std::mutex Lock;
-	Array<ListenerType> Callback;
 	UnorderedMap< std::thread::id, FramePair > Frames;
+	UnorderedMap< std::thread::id, Array<ListenerType> > Callbacks;
 };
 
 
@@ -47,77 +48,98 @@ XE::Profiler::~Profiler()
 	delete _p;
 }
 
-XE::ProfilerItem * XE::Profiler::Begin( const String& file, XE::uint64 line, const String& function )
+void Profiler::Beg()
 {
 	auto id = std::this_thread::get_id();
 
-	auto it = This()->_p->Frames.find( id );
+	auto it = This()->_p->Frames.find(id);
 
-	if ( it == This()->_p->Frames.end() || it->second.first == nullptr )
+	XE_ASSERT(it == This()->_p->Frames.end());
+
+	ProfilerFramePtr frame = make_shared<ProfilerFrame>();
+	frame->TID = id;
+	This()->_p->Frames[id] = std::make_pair(frame, Stack<ProfilerItem*>());
+}
+
+void Profiler::End()
+{
+	auto id = std::this_thread::get_id();
+
+	auto it = This()->_p->Frames.find(id);
+
+	XE_ASSERT(it != This()->_p->Frames.end());
+
+	auto rit = _p->Callbacks.find(id);
+	if (rit != _p.Callbacks.end())
 	{
-		ProfilerFramePtr frame = make_shared<ProfilerFrame>();
-		frame->TID = id;
-		This()->_p->Frames[id] = std::make_pair( frame, Stack<ProfilerItem*>() );
+		for (XE::uint64 i = 0; i < rit.second.size(); ++i)
+		{
+			if (rit.second[i])
+			{
+				rit.second[i](it->second.first);
+			}
+		}
 	}
+
+	This()->_p->Frames.erase(it);
+}
+
+XE::ProfilerItem * XE::Profiler::Begin(const String& file, XE::uint64 line, const String& function)
+{
+	auto id = std::this_thread::get_id();
+
+	auto it = This()->_p->Frames.find(id);
+
+	XE_ASSERT(it != This()->_p->Frames.end());
 
 	ProfilerItem * item = nullptr;
 	if (it->second.second.empty())
 	{
-		item = &( it->second.first->Children.emplace_back( ProfilerItem() ) );
+		item = &(it->second.first->Children.emplace_back(ProfilerItem()));
 	}
 	else
 	{
 		item = it->second.second.top();
-		item = &( item->Children.emplace_back( ProfilerItem() ) );
+		item = &(item->Children.emplace_back(ProfilerItem()));
 	}
 
 	item->File = file;
 	item->Line = line;
 	item->Function = function;
 	item->StartTime = std::chrono::system_clock::now();
-	it->second.second.push( item );
+	it->second.second.push(item);
 	return item;
 }
 
-void XE::Profiler::End( ProfilerItem * val )
+void XE::Profiler::End(ProfilerItem * val)
 {
 	val->StopTime = std::chrono::system_clock::now();
 
+	auto it = This()->_p->Frames.find(std::this_thread::get_id());
 
-	auto it = This()->_p->Frames.find( std::this_thread::get_id() );
-
-	XE_ASSERT( it != This()->_p->Frames.end() );
+	XE_ASSERT(it != This()->_p->Frames.end());
 
 	it->second.second.pop();
-
-	if ( it->second.second.empty() )
-	{
-		for ( XE::uint64 i = 0; i < This()->_p->Callback.size(); ++i )
-		{
-			if ( This()->_p->Callback[i] )
-			{
-				This()->_p->Callback[i]( it->second.first );
-			}
-		}
-
-		it->second.first = nullptr;
-	}
 }
 
-XE::uint64 XE::Profiler::RegisterListener( ListenerType val )
+XE::uint64 XE::Profiler::RegisterListener(ListenerType val)
 {
-	std::lock_guard<std::mutex> lock( This()->_p->Lock );
+	auto id = std::this_thread::get_id();
 
-	This()->_p->Callback.push_back( val );
+	std::lock_guard<std::mutex> lock(This()->_p->Lock);
 
-	return This()->_p->Callback.size() - 1;
+	This()->_p->Callbacks[id].push_back(val);
+
+	return This()->_p->Callbacks[id].size() - 1;
 }
 
-void XE::Profiler::UnregisterListener( XE::uint64 val )
+void XE::Profiler::UnregisterListener(XE::uint64 val)
 {
-	XE_ASSERT( val < This()->_p->Callback.size() );
+	auto id = std::this_thread::get_id();
 
-	std::lock_guard<std::mutex> lock( This()->_p->Lock );
+	XE_ASSERT(val < This()->_p->Callbacks[id].size());
 
-	This()->_p->Callback[val] = nullptr;
+	std::lock_guard<std::mutex> lock(This()->_p->Lock);
+
+	This()->_p->Callbacks[id][val] = nullptr;
 }

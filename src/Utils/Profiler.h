@@ -64,15 +64,20 @@ public:
 
 	~Profiler();
 
+public:
+	static void Beg();
+
+	static void End();
+
+public:
+	static XE::uint64 RegisterListener(ListenerType val, std::thread::id tid = std::this_thread::get_id());
+
+	static void UnregisterListener(XE::uint64 val);
+
 private:
 	static ProfilerItem * Begin( const String& file, XE::uint64 line, const String& function );
 
 	static void End( ProfilerItem * val );
-
-public:
-	static XE::uint64 RegisterListener( ListenerType val );
-
-	static void UnregisterListener( XE::uint64 val );
 
 private:
 	Private * _p;

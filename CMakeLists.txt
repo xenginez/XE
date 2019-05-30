@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.12)
 
 project(XE)
 
@@ -64,11 +64,11 @@ add_dependencies(Memory Base)
 add_dependencies(Reflect Base Memory)
 add_dependencies(Utils Base Memory Reflect)
 add_dependencies(Math Base Memory Reflect Utils)
-add_dependencies(Interface Base Memory Reflect Utils Math)
+add_dependencies(RHI Base Memory Reflect Utils Math)
+add_dependencies(Interface Base Memory Reflect Utils Math RHI)
 add_dependencies(Audio Base Memory Reflect Utils Math Interface)
 add_dependencies(Physics Base Memory Reflect Utils Math Interface)
-add_dependencies(RHI Base Memory Reflect Utils Math Interface)
-add_dependencies(Graphics Base Memory Reflect Utils Math Interface RHI)
+add_dependencies(Graphics Base Memory Reflect Utils Math Interface)
 add_dependencies(Animation Base Memory Reflect Utils Math Interface)
 add_dependencies(Navigation Base Memory Reflect Utils Math Interface)
 add_dependencies(GUI Base Memory Reflect Utils Math Interface Graphics)
@@ -101,8 +101,12 @@ target_link_libraries(Utils
 target_link_libraries(Math
 		Utils)
 
+target_link_libraries(RHI
+		Math)
+		
 target_link_libraries(Interface
-		Utils Math)
+		RHI
+		)
 
 target_link_libraries(Audio
 		Interface
@@ -134,12 +138,8 @@ target_link_libraries(Physics
 		BulletInverseDynamics${BULLET_SUFFIX}
 		)
 
-target_link_libraries(RHI
-		Interface
-		)
-
 target_link_libraries(Graphics
-		RHI
+		Interface
 		)
 
 target_link_libraries(Animation
