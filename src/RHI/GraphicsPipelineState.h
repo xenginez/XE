@@ -58,9 +58,9 @@ private:
 
 	void SetDepthStencilState(XE::DepthStencilStatePtr val);
 
-	XE::InputLayoutPtr GetInputLayout() const;
-
-	void SetInputLayout(XE::InputLayoutPtr val);
+//	XE::InputLayoutPtr GetInputLayout() const;
+//
+//	void SetInputLayout(XE::InputLayoutPtr val);
 
 	XE::TopologyType GetPrimitiveTopology() const;
 
@@ -97,7 +97,7 @@ private:
 	RasterizerStatePtr _RasterizerState;
 	DepthStencilStatePtr _DepthStencilState;
 
-	InputLayoutPtr _InputLayout;
+//	InputLayoutPtr _InputLayout;
 	TopologyType _PrimitiveTopology;
 
 	TextureFormat _RenderTargetFormat;

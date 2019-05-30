@@ -100,15 +100,15 @@ void XE::GraphicsPipelineState::SetDepthStencilState(XE::DepthStencilStatePtr va
 	_DepthStencilState = val;
 }
 
-XE::InputLayoutPtr XE::GraphicsPipelineState::GetInputLayout() const
-{
-	return _InputLayout;
-}
-
-void XE::GraphicsPipelineState::SetInputLayout(XE::InputLayoutPtr val)
-{
-	_InputLayout = val;
-}
+//XE::InputLayoutPtr XE::GraphicsPipelineState::GetInputLayout() const
+//{
+//	return _InputLayout;
+//}
+//
+//void XE::GraphicsPipelineState::SetInputLayout(XE::InputLayoutPtr val)
+//{
+//	_InputLayout = val;
+//}
 
 XE::TopologyType XE::GraphicsPipelineState::GetPrimitiveTopology() const
 {
