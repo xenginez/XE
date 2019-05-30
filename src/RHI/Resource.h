@@ -13,14 +13,14 @@
 
 BEG_XE_NAMESPACE
 
-class RHI_API Resource : public XE::Object
+class RHI_API Resource
 {
-	OBJECT(Resource, Object)
+	OBJECT(Resource)
 
 public:
 	Resource();
 
-	~Resource() override;
+	virtual ~Resource();
 
 public:
 	virtual bool PreInit() = 0;
