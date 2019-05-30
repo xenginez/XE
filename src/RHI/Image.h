@@ -13,14 +13,14 @@
 
 BEG_XE_NAMESPACE
 
-class RHI_API Image : public XE::Object
+class RHI_API Image
 {
-	OBJECT(Image, Object)
+	OBJECT(Image)
 	
 public:
 	Image();
 	
-	~Image() override;
+	~Image();
 };
 
 END_XE_NAMESAPCE

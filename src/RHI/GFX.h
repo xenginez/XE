@@ -13,14 +13,14 @@
 
 BEG_XE_NAMESPACE
 
-class RHI_API GFX : public XE::Object
+class RHI_API GFX
 {
-	OBJECT(GFX, Object)
+	OBJECT(GFX)
 	
 public:
 	GFX();
 	
-	~GFX() override;
+	virtual ~GFX();
 
 public:
 	virtual void Startup() = 0;

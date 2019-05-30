@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.13)
 
 project(XE)
 
@@ -66,18 +66,18 @@ add_dependencies(Utils Base Memory Reflect)
 add_dependencies(Math Base Memory Reflect Utils)
 add_dependencies(RHI Base Memory Reflect Utils Math)
 add_dependencies(Interface Base Memory Reflect Utils Math RHI)
-add_dependencies(Audio Base Memory Reflect Utils Math Interface)
-add_dependencies(Physics Base Memory Reflect Utils Math Interface)
-add_dependencies(Graphics Base Memory Reflect Utils Math Interface)
-add_dependencies(Animation Base Memory Reflect Utils Math Interface)
-add_dependencies(Navigation Base Memory Reflect Utils Math Interface)
-add_dependencies(GUI Base Memory Reflect Utils Math Interface Graphics)
-add_dependencies(AI Base Memory Reflect Utils Math Interface)
-add_dependencies(World Base Memory Reflect Utils Math Interface)
-add_dependencies(Behavior Base Memory Reflect Utils Math Interface Audio Physics Animation Navigation AI World)
-add_dependencies(Render Base Memory Reflect Utils Math Interface Graphics World GUI)
-add_dependencies(Core Base Memory Reflect Utils Math Interface Audio Physics Graphics Animation Navigation GUI AI World Behavior Render)
-add_dependencies(XE Base Memory Reflect Utils Math Interface Audio Physics Graphics Animation Navigation GUI AI World Behavior Render Core)
+add_dependencies(Audio Base Memory Reflect Utils Math RHI Interface)
+add_dependencies(Physics Base Memory Reflect Utils Math RHI Interface)
+add_dependencies(Graphics Base Memory Reflect Utils Math RHI Interface)
+add_dependencies(Animation Base Memory Reflect Utils Math RHI Interface)
+add_dependencies(Navigation Base Memory Reflect Utils Math RHI Interface)
+add_dependencies(GUI Base Memory Reflect Utils Math RHI Interface Graphics)
+add_dependencies(AI Base Memory Reflect Utils Math RHI Interface)
+add_dependencies(World Base Memory Reflect Utils Math RHI Interface)
+add_dependencies(Behavior Base Memory Reflect Utils Math RHI Interface Audio Physics Animation Navigation AI World)
+add_dependencies(Render Base Memory Reflect Utils Math RHI Interface Graphics World GUI)
+add_dependencies(Core Base Memory Reflect Utils Math RHI Interface Audio Physics Graphics Animation Navigation GUI AI World Behavior Render)
+add_dependencies(XE Base Memory Reflect Utils Math RHI Interface Audio Physics Graphics Animation Navigation GUI AI World Behavior Render Core)
 
 target_link_libraries(Base
 
@@ -103,10 +103,9 @@ target_link_libraries(Math
 
 target_link_libraries(RHI
 		Math)
-		
+
 target_link_libraries(Interface
-		RHI
-		)
+		RHI)
 
 target_link_libraries(Audio
 		Interface
@@ -139,8 +138,7 @@ target_link_libraries(Physics
 		)
 
 target_link_libraries(Graphics
-		Interface
-		)
+		Interface)
 
 target_link_libraries(Animation
 		Interface)

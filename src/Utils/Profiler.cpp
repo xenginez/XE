@@ -69,14 +69,14 @@ void Profiler::End()
 
 	XE_ASSERT(it != This()->_p->Frames.end());
 
-	auto rit = _p->Callbacks.find(id);
-	if (rit != _p.Callbacks.end())
+	auto rit = This()->_p->Callbacks.find(id);
+	if (rit != This()->_p->Callbacks.end())
 	{
-		for (XE::uint64 i = 0; i < rit.second.size(); ++i)
+		for (auto & reg : rit->second)
 		{
-			if (rit.second[i])
+			if (reg)
 			{
-				rit.second[i](it->second.first);
+				reg(it->second.first);
 			}
 		}
 	}
@@ -122,15 +122,13 @@ void XE::Profiler::End(ProfilerItem * val)
 	it->second.second.pop();
 }
 
-XE::uint64 XE::Profiler::RegisterListener(ListenerType val)
+XE::uint64 Profiler::RegisterListener( Profiler::ListenerType val, std::thread::id tid )
 {
-	auto id = std::this_thread::get_id();
-
 	std::lock_guard<std::mutex> lock(This()->_p->Lock);
 
-	This()->_p->Callbacks[id].push_back(val);
+	This()->_p->Callbacks[tid].push_back(val);
 
-	return This()->_p->Callbacks[id].size() - 1;
+	return This()->_p->Callbacks[tid].size() - 1;
 }
 
 void XE::Profiler::UnregisterListener(XE::uint64 val)

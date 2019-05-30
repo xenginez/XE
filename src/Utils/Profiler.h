@@ -47,7 +47,6 @@ private:
 	ProfilerItem * _Item;
 };
 
-
 class UTILS_API Profiler : public XE::Singleton< Profiler >
 {
 private:
