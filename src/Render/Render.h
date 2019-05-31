@@ -42,8 +42,6 @@
 #include "SpotLightComponent.h"
 #include "BillboardComponent.h"
 #include "PointLightComponent.h"
-#include "StaticMeshComponent.h"
-#include "SkinnedMeshComponent.h"
 #include "DirectionalLightComponent.h"
 
 #endif // __RENDER_H__D87E83EA_7AC7_4BE0_A5B3_A3C721ED83B5
