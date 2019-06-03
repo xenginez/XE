@@ -26,9 +26,9 @@ public:
 	ComputePipelineStateHandle GetHandle() const;
 
 public:
-	ComputeShaderPtr GetCS() const;
+	ComputeShaderPtr GetComputeShader() const;
 
-	void SetCS(ComputeShaderPtr val);
+	void SetComputeShader(ComputeShaderPtr val);
 
 private:
 	ComputeShaderPtr _CS;

@@ -58,33 +58,21 @@ private:
 
 	void SetDepthStencilState(XE::DepthStencilStatePtr val);
 
-//	XE::InputLayoutPtr GetInputLayout() const;
-//
-//	void SetInputLayout(XE::InputLayoutPtr val);
+	XE::InputLayoutPtr GetInputLayout() const;
+
+	void SetInputLayout(XE::InputLayoutPtr val);
 
 	XE::TopologyType GetPrimitiveTopology() const;
 
 	void SetPrimitiveTopology(XE::TopologyType val);
 
-	XE::TextureFormat GetRenderTargetFormat() const;
-
-	void SetRenderTargetFormat(XE::TextureFormat val);
-
-	XE::TextureFormat GetDepthStencilFormat() const;
-
-	void SetDepthStencilFormat(XE::TextureFormat val);
-
 	uint32 GetSampleMask() const;
 
 	void SetSampleMask(uint32 val);
 
-	uint8 GetSampleCount() const;
+	FrameBufferPtr GetFrameBuffer() const;
 
-	void SetSampleCount(uint8 val);
-
-	uint8 GetSampleQuality() const;
-
-	void SetSampleQuality(uint8 val);
+	void SetFrameBuffer(const FrameBufferPtr &val);
 
 private:
 	HullShaderPtr _HS;
@@ -97,14 +85,13 @@ private:
 	RasterizerStatePtr _RasterizerState;
 	DepthStencilStatePtr _DepthStencilState;
 
-//	InputLayoutPtr _InputLayout;
+	InputLayoutPtr _InputLayout;
 	TopologyType _PrimitiveTopology;
 
-	TextureFormat _RenderTargetFormat;
-	TextureFormat _DepthStencilFormat;
 	uint32 _SampleMask;
-	uint8 _SampleCount;
-	uint8 _SampleQuality;
+
+	FrameBufferPtr _FBO;
+
 	GraphicsPipelineStateHandle _Handle;
 };
 

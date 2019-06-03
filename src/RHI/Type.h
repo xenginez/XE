@@ -16,6 +16,7 @@ BEG_XE_NAMESPACE
 DECL_PTR(GFX);
 DECL_PTR(Image);
 
+DECL_PTR(Buffer);
 DECL_PTR(FrameBuffer);
 DECL_PTR(IndexBuffer);
 DECL_PTR(VertexBuffer);
@@ -43,11 +44,14 @@ DECL_PTR(Texture);
 DECL_PTR(Sampler);
 DECL_PTR(Uniform);
 DECL_PTR(Viewport);
+DECL_PTR(Inputlayout);
+DECL_PTR(RenderTarget);
 DECL_PTR(OcclusionQuery);
 
 
 DECL_HANDLE(RHI_API, Window);
 
+DECL_HANDLE(RHI_API, Buffer);
 DECL_HANDLE(RHI_API, FrameBuffer);
 DECL_HANDLE(RHI_API, IndexBuffer);
 DECL_HANDLE(RHI_API, VertexBuffer);
@@ -75,6 +79,8 @@ DECL_HANDLE(RHI_API, Texture);
 DECL_HANDLE(RHI_API, Sampler);
 DECL_HANDLE(RHI_API, Uniform);
 DECL_HANDLE(RHI_API, Viewport);
+DECL_HANDLE(RHI_API, Inputlayout);
+DECL_HANDLE(RHI_API, RenderTarget);
 DECL_HANDLE(RHI_API, OcclusionQuery);
 
 
@@ -117,7 +123,8 @@ DECL_META_ENUM(RHI_API, TopologyType);
 
 enum class AccessType
 {
-	READ = 1,
+	NONE = 0,
+	READ,
 	WIRTE,
 	READWIRTE,
 };

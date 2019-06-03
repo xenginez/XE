@@ -48,21 +48,37 @@ public:
 
 	void SetStencilWriteMask(uint8 val);
 
-	XE::CompareType GetStencilFunc() const;
+	XE::CompareType GetStencilFrontFunc() const;
 
-	void SetStencilFunc(XE::CompareType val);
+	void SetStencilFrontFunc(XE::CompareType val);
 
-	XE::StencilOperation GetStencilFailOp() const;
+	XE::StencilOperation GetStencilFrontFailOp() const;
 
-	void SetStencilFailOp(XE::StencilOperation val);
+	void SetStencilFrontFailOp(XE::StencilOperation val);
 
-	XE::StencilOperation GetStencilPassOp() const;
+	XE::StencilOperation GetStencilFrontPassOp() const;
 
-	void SetStencilPassOp(XE::StencilOperation val);
+	void SetStencilFrontPassOp(XE::StencilOperation val);
 
-	XE::StencilOperation GetStencilDepthFailOp() const;
+	XE::StencilOperation GetStencilFrontDepthFailOp() const;
 
-	void SetStencilDepthFailOp(XE::StencilOperation val);
+	void SetStencilFrontDepthFailOp(XE::StencilOperation val);
+
+	XE::CompareType GetStencilBackFunc() const;
+
+	void SetStencilBackFunc(XE::CompareType val);
+
+	XE::StencilOperation GetStencilBackFailOp() const;
+
+	void SetStencilBackFailOp(XE::StencilOperation val);
+
+	XE::StencilOperation GetStencilBackPassOp() const;
+
+	void SetStencilBackPassOp(XE::StencilOperation val);
+
+	XE::StencilOperation GetStencilBackDepthFailOp() const;
+
+	void SetStencilBackDepthFailOp(XE::StencilOperation val);
 
 private:
 	DepthStencilStateHandle _Handle;
@@ -73,10 +89,16 @@ private:
 	bool _StencilEnable;
 	uint8 _StencilReadMask;
 	uint8 _StencilWriteMask;
-	CompareType _StencilFunc;
-	StencilOperation _StencilFailOp;
-	StencilOperation _StencilPassOp;
-	StencilOperation _StencilDepthFailOp;
+
+	CompareType _StencilFrontFunc;
+	StencilOperation _StencilFrontFailOp;
+	StencilOperation _StencilFrontPassOp;
+	StencilOperation _StencilFrontDepthFailOp;
+
+	CompareType _StencilBackFunc;
+	StencilOperation _StencilBackFailOp;
+	StencilOperation _StencilBackPassOp;
+	StencilOperation _StencilBackDepthFailOp;
 };
 
 END_XE_NAMESAPCE

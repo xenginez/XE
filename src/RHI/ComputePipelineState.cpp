@@ -20,12 +20,12 @@ XE::ComputePipelineStateHandle XE::ComputePipelineState::GetHandle() const
 	return _Handle;
 }
 
-XE::ComputeShaderPtr XE::ComputePipelineState::GetCS() const
+XE::ComputeShaderPtr XE::ComputePipelineState::GetComputeShader() const
 {
 	return _CS;
 }
 
-void XE::ComputePipelineState::SetCS(ComputeShaderPtr val)
+void XE::ComputePipelineState::SetComputeShader(ComputeShaderPtr val)
 {
 	_CS = val;
 }

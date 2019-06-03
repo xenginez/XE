@@ -25,7 +25,31 @@ public:
 public:
 	BlendStateHandle GetHandle() const;
 
+public:
+        Vec4 GetBlendFactor() const;
+
+        void SetBlendFactor(const Vec4 &BlendFactor);
+
+        bool GetEnableIndependentBlend() const;
+
+        void SetEnableIndependentBlend(bool val);
+
+        bool GetAlphaToCoverageEnabled() const;
+
+        void SetAlphaToCoverageEnabled(bool val);
+
+        uint64 GetRenderTargetCount() const;
+
+        RenderTargetPtr GetRenderTarget(uint64 index) const;
+
+        void SetRenderTarget(uint64 index, const RenderTargetPtr &RenderTargets);
+
 private:
+        Vec4 _BlendFactor;
+        bool _EnableIndependentBlend;
+        bool _AlphaToCoverageEnabled;
+        Array<RenderTargetPtr> _RenderTargets;
+
 	BlendStateHandle _Handle;
 };
 

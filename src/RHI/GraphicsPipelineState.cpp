@@ -100,15 +100,15 @@ void XE::GraphicsPipelineState::SetDepthStencilState(XE::DepthStencilStatePtr va
 	_DepthStencilState = val;
 }
 
-//XE::InputLayoutPtr XE::GraphicsPipelineState::GetInputLayout() const
-//{
-//	return _InputLayout;
-//}
-//
-//void XE::GraphicsPipelineState::SetInputLayout(XE::InputLayoutPtr val)
-//{
-//	_InputLayout = val;
-//}
+XE::InputLayoutPtr XE::GraphicsPipelineState::GetInputLayout() const
+{
+	return _InputLayout;
+}
+
+void XE::GraphicsPipelineState::SetInputLayout(XE::InputLayoutPtr val)
+{
+	_InputLayout = val;
+}
 
 XE::TopologyType XE::GraphicsPipelineState::GetPrimitiveTopology() const
 {
@@ -118,26 +118,6 @@ XE::TopologyType XE::GraphicsPipelineState::GetPrimitiveTopology() const
 void XE::GraphicsPipelineState::SetPrimitiveTopology(XE::TopologyType val)
 {
 	_PrimitiveTopology = val;
-}
-
-XE::TextureFormat XE::GraphicsPipelineState::GetRenderTargetFormat() const
-{
-	return _RenderTargetFormat;
-}
-
-void XE::GraphicsPipelineState::SetRenderTargetFormat(XE::TextureFormat val)
-{
-	_RenderTargetFormat = val;
-}
-
-XE::TextureFormat XE::GraphicsPipelineState::GetDepthStencilFormat() const
-{
-	return _DepthStencilFormat;
-}
-
-void XE::GraphicsPipelineState::SetDepthStencilFormat(XE::TextureFormat val)
-{
-	_DepthStencilFormat = val;
 }
 
 uint32 XE::GraphicsPipelineState::GetSampleMask() const
@@ -150,22 +130,12 @@ void XE::GraphicsPipelineState::SetSampleMask(uint32 val)
 	_SampleMask = val;
 }
 
-uint8 XE::GraphicsPipelineState::GetSampleCount() const
+FrameBufferPtr GraphicsPipelineState::GetFrameBuffer() const
 {
-	return _SampleCount;
+    return _FBO;
 }
 
-void XE::GraphicsPipelineState::SetSampleCount(uint8 val)
+void GraphicsPipelineState::SetFrameBuffer(const FrameBufferPtr &val)
 {
-	_SampleCount = val;
-}
-
-uint8 XE::GraphicsPipelineState::GetSampleQuality() const
-{
-	return _SampleQuality;
-}
-
-void XE::GraphicsPipelineState::SetSampleQuality(uint8 val)
-{
-	_SampleQuality = val;
+    _FBO = val;
 }

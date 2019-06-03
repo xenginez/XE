@@ -75,42 +75,83 @@ void XE::DepthStencilState::SetStencilWriteMask(uint8 val)
 	_StencilWriteMask = val;
 }
 
-XE::CompareType XE::DepthStencilState::GetStencilFunc() const
+XE::CompareType XE::DepthStencilState::GetStencilFrontFunc() const
 {
-	return _StencilFunc;
+	return _StencilFrontFunc;
 }
 
-void XE::DepthStencilState::SetStencilFunc(XE::CompareType val)
+void XE::DepthStencilState::SetStencilFrontFunc(XE::CompareType val)
 {
-	_StencilFunc = val;
+	_StencilFrontFunc = val;
 }
 
-XE::StencilOperation XE::DepthStencilState::GetStencilFailOp() const
+XE::StencilOperation XE::DepthStencilState::GetStencilFrontFailOp() const
 {
-	return _StencilFailOp;
+	return _StencilFrontFailOp;
 }
 
-void XE::DepthStencilState::SetStencilFailOp(XE::StencilOperation val)
+void XE::DepthStencilState::SetStencilFrontFailOp(XE::StencilOperation val)
 {
-	_StencilFailOp = val;
+	_StencilFrontFailOp = val;
 }
 
-XE::StencilOperation XE::DepthStencilState::GetStencilPassOp() const
+XE::StencilOperation XE::DepthStencilState::GetStencilFrontPassOp() const
 {
-	return _StencilPassOp;
+	return _StencilFrontPassOp;
 }
 
-void XE::DepthStencilState::SetStencilPassOp(XE::StencilOperation val)
+void XE::DepthStencilState::SetStencilFrontPassOp(XE::StencilOperation val)
 {
-	_StencilPassOp = val;
+	_StencilFrontPassOp = val;
 }
 
-XE::StencilOperation XE::DepthStencilState::GetStencilDepthFailOp() const
+XE::StencilOperation XE::DepthStencilState::GetStencilFrontDepthFailOp() const
 {
-	return _StencilDepthFailOp;
+	return _StencilFrontDepthFailOp;
 }
 
-void XE::DepthStencilState::SetStencilDepthFailOp(XE::StencilOperation val)
+void XE::DepthStencilState::SetStencilFrontDepthFailOp(XE::StencilOperation val)
 {
-	_StencilDepthFailOp = val;
+	_StencilFrontDepthFailOp = val;
+}
+
+
+XE::CompareType XE::DepthStencilState::GetStencilBackFunc() const
+{
+	return _StencilBackFunc;
+}
+
+void XE::DepthStencilState::SetStencilBackFunc(XE::CompareType val)
+{
+	_StencilBackFunc = val;
+}
+
+XE::StencilOperation XE::DepthStencilState::GetStencilBackFailOp() const
+{
+	return _StencilBackFailOp;
+}
+
+void XE::DepthStencilState::SetStencilBackFailOp(XE::StencilOperation val)
+{
+	_StencilBackFailOp = val;
+}
+
+XE::StencilOperation XE::DepthStencilState::GetStencilBackPassOp() const
+{
+	return _StencilBackPassOp;
+}
+
+void XE::DepthStencilState::SetStencilBackPassOp(XE::StencilOperation val)
+{
+	_StencilBackPassOp = val;
+}
+
+XE::StencilOperation XE::DepthStencilState::GetStencilBackDepthFailOp() const
+{
+	return _StencilBackDepthFailOp;
+}
+
+void XE::DepthStencilState::SetStencilBackDepthFailOp(XE::StencilOperation val)
+{
+	_StencilBackDepthFailOp = val;
 }
