@@ -9,16 +9,18 @@
 #ifndef __BUFFER_H__D9EB5BDB_5A01_4C5C_8262_008E86007DFD
 #define __BUFFER_H__D9EB5BDB_5A01_4C5C_8262_008E86007DFD
 
-#include "Type.h"
+#include "Resource.h"
 
 BEG_XE_NAMESPACE
 
-class RHI_API Buffer
+class RHI_API Buffer : public Resource
 {
+	OBJECT(Buffer, Resource)
+	
 public:
     Buffer();
 
-    ~Buffer();
+    ~Buffer() override;
 
 public:
     BufferHandle GetHandle() const;
@@ -27,8 +29,6 @@ public:
     MemoryView Map(AccessType val);
 
     void Unmap();
-
-    void UpdateData(MemoryView val);
 
     uint64 GetSize() const;
 
@@ -43,6 +43,6 @@ private:
     BufferHandle _Handle;
 };
 
-END_XE_NAMESPACE
+END_XE_NAMESAPCE
 
 #endif // __BUFFER_H__D9EB5BDB_5A01_4C5C_8262_008E86007DFD

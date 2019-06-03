@@ -9,12 +9,22 @@
 #ifndef __COMPUTEBUFFER_H__F4D4602F_2026_496B_B457_3ED949376D95
 #define __COMPUTEBUFFER_H__F4D4602F_2026_496B_B457_3ED949376D95
 
-class ComputeBuffer
+#include "Buffer.h"
+
+BEG_XE_NAMESPACE
+
+class RHI_API ComputeBuffer : public Buffer
 {
+	OBJECT(ComputeBuffer, Buffer)
+	
 public:
 	ComputeBuffer();
 	
-	~ComputeBuffer();
+	~ComputeBuffer() override;
+	
+	
 };
+
+END_XE_NAMESAPCE
 
 #endif //__COMPUTEBUFFER_H__F4D4602F_2026_496B_B457_3ED949376D95

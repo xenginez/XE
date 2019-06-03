@@ -20,42 +20,47 @@ XE::BlendStateHandle XE::BlendState::GetHandle() const
 	return _Handle;
 }
 
-Vec4 BlendState::BlendFactor() const
+Vec4 BlendState::GetBlendFactor() const
 {
     return _BlendFactor;
 }
 
-void BlendState::setBlendFactor(const Vec4 &BlendFactor)
+void BlendState::SetBlendFactor(const Vec4 &val)
 {
-    _BlendFactor = BlendFactor;
+    _BlendFactor = val;
 }
 
-bool BlendState::EnableIndependentBlend() const
+bool BlendState::GetEnableIndependentBlend() const
 {
     return _EnableIndependentBlend;
 }
 
-void BlendState::setEnableIndependentBlend(bool EnableIndependentBlend)
+void BlendState::SetEnableIndependentBlend(bool val)
 {
-    _EnableIndependentBlend = EnableIndependentBlend;
+    _EnableIndependentBlend = val;
 }
 
-bool BlendState::AlphaToCoverageEnabled() const
+bool BlendState::GetAlphaToCoverageEnabled() const
 {
     return _AlphaToCoverageEnabled;
 }
 
-void BlendState::setAlphaToCoverageEnabled(bool AlphaToCoverageEnabled)
+void BlendState::SetAlphaToCoverageEnabled(bool val)
 {
-    _AlphaToCoverageEnabled = AlphaToCoverageEnabled;
+    _AlphaToCoverageEnabled = val;
 }
 
-Array<RenderTargetPtr> BlendState::RenderTargets() const
+uint64 BlendState::GetRenderTargetCount() const
 {
-    return _RenderTargets;
+	return _RenderTargets.size();
 }
 
-void BlendState::setRenderTargets(const Array<RenderTargetPtr> &RenderTargets)
+RenderTargetPtr BlendState::GetRenderTarget( uint64 index ) const
 {
-    _RenderTargets = RenderTargets;
+	return _RenderTargets[index];
+}
+
+void BlendState::SetRenderTarget( uint64 index, const RenderTargetPtr &val )
+{
+	_RenderTargets[index] = val;
 }

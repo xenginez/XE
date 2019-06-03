@@ -44,7 +44,7 @@ DECL_PTR(Texture);
 DECL_PTR(Sampler);
 DECL_PTR(Uniform);
 DECL_PTR(Viewport);
-DECL_PTR(Inputlayout);
+DECL_PTR(InputLayout);
 DECL_PTR(RenderTarget);
 DECL_PTR(OcclusionQuery);
 
@@ -79,7 +79,7 @@ DECL_HANDLE(RHI_API, Texture);
 DECL_HANDLE(RHI_API, Sampler);
 DECL_HANDLE(RHI_API, Uniform);
 DECL_HANDLE(RHI_API, Viewport);
-DECL_HANDLE(RHI_API, Inputlayout);
+DECL_HANDLE(RHI_API, InputLayout);
 DECL_HANDLE(RHI_API, RenderTarget);
 DECL_HANDLE(RHI_API, OcclusionQuery);
 

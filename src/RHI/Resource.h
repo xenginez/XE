@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class RHI_API Resource
+class RHI_API Resource : public std::enable_shared_from_this<Resource>
 {
 	OBJECT(Resource)
 

@@ -16,7 +16,12 @@ BEG_XE_NAMESPACE
 class MemoryView
 {
 public:
-	MemoryView( std::intptr_t data, uint64 size )
+	MemoryView()
+	:_Size(0), _Data(nullptr)
+	{
+	}
+	
+	MemoryView( uint8 * data, uint64 size )
 			:_Size(size), _Data(data)
 	{
 	}
@@ -27,14 +32,14 @@ public:
 		return _Size;
 	}
 	
-	const std::intptr_t Data() const
+	void * Data() const
 	{
 		return _Data;
 	}
 
 private:
 	uint64 _Size;
-	const std::intptr_t _Data;
+	uint8 * _Data;
 	
 };
 
