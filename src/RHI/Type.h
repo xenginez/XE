@@ -192,6 +192,49 @@ enum class TextureType
 };
 DECL_META_ENUM(RHI_API, TextureType);
 
+enum class LayoutFormat
+{
+	INT8,
+	INT16,
+	INT32,
+	INT64,
+	UINT8,
+	UINT16,
+	UINT32,
+	UINT64,
+	FLOAT16,
+	FLOAT32,
+	FLOAT64,
+	VEC2,
+	VEC3,
+	VEC4,
+	QUAT,
+	RECT,
+	MAT3,
+	MAT4,
+	COLOR,
+	
+	POSITION,
+	NORMAL,
+	TANGENT,
+	BITANGENT,
+	COLOR0,
+	COLOR1,
+	COLOR2,
+	COLOR3,
+	INDICES,
+	WEIGHT,
+	TEXCOORD0,
+	TEXCOORD1,
+	TEXCOORD2,
+	TEXCOORD3,
+	TEXCOORD4,
+	TEXCOORD5,
+	TEXCOORD6,
+	TEXCOORD7,
+};
+DECL_META_ENUM(RHI_API, LayoutFormat);
+
 enum class TextureFormat
 {
 	///       RGBA16S
@@ -359,6 +402,6 @@ enum class StencilOperation
 };
 DECL_META_ENUM(RHI_API, StencilOperation);
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #endif //__TYPE_H__6580A518_948A_4162_A63F_E02DCC393EC9

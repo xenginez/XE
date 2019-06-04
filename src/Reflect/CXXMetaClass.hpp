@@ -580,6 +580,6 @@ template<typename ... Types> struct ClassID< std::multimap<Types...> >
 };
 
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #endif // __CXXMETACLASS_HPP__B0EBC0E5_97E9_4A1F_B8EE_EF87D334D01A

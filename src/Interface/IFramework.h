@@ -84,6 +84,6 @@ private:
 	static IFrameworkPtr _CurrentFramework;
 };
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #endif // __IFRAMEWORK_H__AC5510E9_4F81_40B9_A67D_ACE4846F1A57

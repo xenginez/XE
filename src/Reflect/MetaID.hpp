@@ -84,6 +84,6 @@ template< typename T > struct TypeID
 
 };
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #endif // __METAID_HPP__4D612830_3D3B_42A0_9441_7CECA63594CB

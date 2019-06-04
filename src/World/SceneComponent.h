@@ -103,6 +103,6 @@ private:
 	Array< ComponentHandle > _ChildrenHandle;
 };
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #endif // __SCENETREECOMPONENT_H__D96EDC7D_216F_47EE_ACC2_31541C5B31C7

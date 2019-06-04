@@ -89,7 +89,7 @@ private:
 };
 DECL_META_CLASS( MATH_API, Half );
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 bool operator<( XE::float32 val1, const XE::Half& val2 );
 

@@ -46,6 +46,6 @@ private:
 	IAssetsServicePtr _Service;
 };
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #endif // __PREFAB_H__A6AEEDC5_FCE5_4139_8B44_6A57BEB2DD7F

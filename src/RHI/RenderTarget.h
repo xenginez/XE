@@ -9,16 +9,18 @@
 #ifndef __RENDERTARGET_H__E417A3B2_CAFF_4125_990A_87B4D2CA876D
 #define __RENDERTARGET_H__E417A3B2_CAFF_4125_990A_87B4D2CA876D
 
-#include "Type.h"
+#include "Resource.h"
 
 BEG_XE_NAMESPACE
 
-class RHI_API RenderTarget
+class RHI_API RenderTarget : Resource
 {
+	OBJECT(RenderTarget, Resource)
+	
 public:
     RenderTarget();
 
-    ~RenderTarget();
+    ~RenderTarget() override;
 
 public:
     RenderTargetHandle Handle() const;
@@ -28,7 +30,7 @@ public:
 
     void SetWriteRed(bool WriteRed);
 
-    bool WriteGreen() const;
+    bool GetWriteGreen() const;
 
     void SetWriteGreen(bool WriteGreen);
 

@@ -101,6 +101,6 @@ private:
 	StencilOperation _StencilBackDepthFailOp;
 };
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #endif // __DEPTHSTENCILSTATE_H__A830F9AA_F350_4085_B15B_11ADC272BF77

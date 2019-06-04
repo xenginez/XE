@@ -52,6 +52,6 @@ private:
 	Array< Pair<ConditionPtr, StateHandle> > _Conditions;
 };
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #endif // __STATE_H__0F576F56_4DD5_458C_8B62_10766BAE42AF

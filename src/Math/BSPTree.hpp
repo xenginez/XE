@@ -19,6 +19,6 @@ template< typename _Ty, typename _Alloc = XE::Allocator<_Ty> > class BSPTree
 public:
 };
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #endif // __BSPTREE_HPP__5FC3B99D_DE01_46AD_A347_2E12E2E13650

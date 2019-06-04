@@ -52,6 +52,6 @@ private:
 	ParameterType _Parameter;
 };
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #endif // __IMETAMETHOD_H__154D0025_BEE1_4DFB_AC1F_4739AFB4B34F

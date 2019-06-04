@@ -44,6 +44,6 @@ private:
 	IFrameworkPtr _Framework;
 };
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #endif // __OBJECT_H__E9308405_DB33_49CC_953A_8011B015CAA9

@@ -155,7 +155,7 @@ private:
 	const std::string * _String;
 };
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 namespace std
 {

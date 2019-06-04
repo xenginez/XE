@@ -62,7 +62,7 @@ public:
 };
 DECL_META_CLASS( UTILS_API, Layer );
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 
 bool operator ||( XE::uint64 val1, const XE::Layer& val2 );

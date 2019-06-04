@@ -156,6 +156,6 @@ template< typename T > struct RawPointer< const std::shared_ptr<T> >
 	}
 };
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #endif // __TYPE_H__B9857ED9_F6EE_4A0A_8E87_0DAA433A5E40

@@ -59,6 +59,6 @@ private:
 	UnorderedMap< uint64, GameObjectPtr > _GameObjectMap;
 };
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #endif // __WORLDOBJECT_H__F419FF88_F84C_4C18_AC3A_D1660070EABD

@@ -20,7 +20,7 @@ DECL_PTR( AudioListenerComponent );
 
 void openal_check_error( const String& file, XE::uint64 line, const String& expr );
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #define AL_CHECK(EXPR) EXPR; openal_check_error(__FILE__, __LINE__, #EXPR)
 

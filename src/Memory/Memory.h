@@ -29,7 +29,7 @@ template< typename Ty, typename ... Types > std::shared_ptr<Ty> make_shared( Typ
 	return std::allocate_shared<Ty>( _alloc, args... );
 }
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #define CP_CAST std::const_pointer_cast
 #define SP_CAST std::static_pointer_cast

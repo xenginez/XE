@@ -24,6 +24,6 @@ private:
 	NonCopyable& operator =( const NonCopyable& ) = delete;
 };
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #endif // __NONCOPYABLE_HPP__51063BED_9A8D_4E17_8341_3300C518CD58

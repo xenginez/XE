@@ -148,7 +148,7 @@ template< typename T > struct VariantCast<Handle<T>>
 	}
 };
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 template< typename T > bool operator<( XE::uint64 left, XE::Handle< T > right )
 {

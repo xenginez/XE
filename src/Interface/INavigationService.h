@@ -23,6 +23,6 @@ public:
 	~INavigationService() override;
 };
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #endif // __INAVIGATIONSERVICE_H__D91CFCA9_BDF3_4CDF_B51C_77FAC3CEDAD3

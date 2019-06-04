@@ -31,6 +31,6 @@ public:
 	virtual String LocalizedString( const String& val ) const = 0;
 };
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #endif // __ILOCALIZATIONSERVICE_H__518B05CA_E9A3_47B1_8AA8_5417C4BA813F

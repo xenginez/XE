@@ -72,6 +72,6 @@ protected:
 	virtual void SetValue( const String& code, const Variant& val ) = 0;
 };
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #endif // __IINPUTSERVICE_H__C8BF1C9C_DABC_4831_9A86_582C71F3DF2C

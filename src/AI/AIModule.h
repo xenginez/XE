@@ -38,6 +38,6 @@ private:
 	GameObjectWPtr _GameObject;
 };
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #endif // __AIMODULE_H__A590ED03_BAEC_4291_90B5_DBFC9EB9A475

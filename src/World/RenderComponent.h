@@ -35,6 +35,6 @@ protected:
 	virtual void OnRender();
 };
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #endif // __RENDERCOMPONENT_H__C324655A_7B4F_47F9_B71D_94616F6C9FFE

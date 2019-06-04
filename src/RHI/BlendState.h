@@ -53,6 +53,6 @@ private:
 	BlendStateHandle _Handle;
 };
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #endif // __BLENDSTATE_H__796DF817_62A3_4D30_A394_2EA0B9934725

@@ -41,6 +41,6 @@ private:
 	IFrameworkPtr _Framework;
 };
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #endif // __ISERVICE_H__963670C3_A42A_4D62_844E_62A87B29D0D6

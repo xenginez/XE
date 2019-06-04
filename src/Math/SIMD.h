@@ -107,7 +107,7 @@ public:
 	
 };
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #if SIMD_TYPE == SIMD_SSE
 #include "SIMD_SSE.inc"

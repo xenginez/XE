@@ -38,6 +38,6 @@ private:
 	Array< Pair<String, int64> > _Values;
 };
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #endif // __IMETAENUM_H__08B9D60C_CE48_4913_BE61_A217F8BFF289

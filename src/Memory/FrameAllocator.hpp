@@ -143,6 +143,6 @@ template< typename K, typename V >
 using FUnorderedMultiMap = std::unordered_multimap<K, V, std::hash<K>, std::equal_to<K>, FrameAllocator<Pair<const K, V>>>;
 
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #endif // __FRAMEALLOCATOR_HPP__3B6E4D83_1935_40C5_A6F1_AECAB432DDB6

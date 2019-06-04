@@ -49,6 +49,6 @@ template< typename ... Types >ParameterType MakeParameterType()
 	return ret;
 }
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #endif // __PARAMETERTYPE_HPP__DD6460A4_04AB_4F79_8A04_4C4CF356BDC4

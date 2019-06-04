@@ -64,6 +64,6 @@ private:
 	Private * _p;
 };
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #endif // __ORDER_H__F15EE138_6173_4905_9684_08685B5F706A

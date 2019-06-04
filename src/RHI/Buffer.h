@@ -43,6 +43,6 @@ private:
     BufferHandle _Handle;
 };
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #endif // __BUFFER_H__D9EB5BDB_5A01_4C5C_8262_008E86007DFD

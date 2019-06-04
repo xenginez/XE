@@ -35,6 +35,6 @@ public:
 	virtual const char * What() const;
 };
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #endif // __EXCEPTION_H__F46ED19F_D50F_495C_9BD6_1ADAFEBA5700

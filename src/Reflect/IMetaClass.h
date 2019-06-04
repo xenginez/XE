@@ -74,6 +74,6 @@ private:
 	Array< IMetaClassPtr > _DerivedClasses;
 };
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #endif // __IMETACLASS_H__0775C1BF_63EA_4CCE_84ED_90EBF29B082B

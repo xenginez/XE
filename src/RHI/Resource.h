@@ -26,6 +26,6 @@ public:
 	virtual bool PreInit() = 0;
 };
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #endif // __RESOURCE_H__B97CEE0F_82C7_4B34_A226_3C364B80F5D8

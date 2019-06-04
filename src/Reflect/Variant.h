@@ -452,6 +452,6 @@ template<> struct VariantCast<Variant>
 	}
 };
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #endif // __VARIANT_H__87E44F7B_D250_41E0_AEEE_7D7ECB2AAF35

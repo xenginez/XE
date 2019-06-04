@@ -42,6 +42,6 @@ public:
 	std::vector< NodePtr > _Nodes;
 };
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #endif // __BEHAVIORTREE_H__26CB8C79_ABF7_4B28_ADE3_283D2FF378F8

@@ -60,6 +60,6 @@ private:
 	BehaviorTree * _BehaviorTree;
 };
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #endif // __NODE_H__4E15E329_D9A1_4F5D_B63A_CA4079844C18

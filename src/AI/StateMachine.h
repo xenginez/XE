@@ -35,6 +35,6 @@ private:
 	Array< StatePtr > _States;
 };
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #endif // __STATEMACHINE_H__3DD22731_F659_468F_92EE_F7E7F88C3CFE

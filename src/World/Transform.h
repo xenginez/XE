@@ -87,6 +87,6 @@ private:
 	Transform * _Parent;
 };
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #endif // __TRANSFORM_H__DFB3978B_761A_420E_BAF2_744EFD19CCA3

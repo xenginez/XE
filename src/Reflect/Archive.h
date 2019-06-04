@@ -376,6 +376,6 @@ template<> struct Serializable<Variant>
 	}
 };
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #endif // __ARCHIVE_H__2AE531B5_C127_4A0B_A947_6B304A884EAA

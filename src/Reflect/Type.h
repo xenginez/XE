@@ -85,6 +85,6 @@ template< typename T > struct MetaDataCollector;
 
 IMetaTypePtr REFLECT_API GetReclectionType( const String& val );
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #endif // __TYPE_H__69A9E04E_44A6_4DEE_B145_845B7E13E31C

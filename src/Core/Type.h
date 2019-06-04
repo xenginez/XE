@@ -29,6 +29,6 @@ DECL_PTR( NavigationService );
 DECL_PTR( LocalizationService );
 class CoreFramework;  using CoreFrameworkPtr = CoreFramework * ;
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #endif // __TYPE_H__14214677_E236_47F9_92B5_48295B609787

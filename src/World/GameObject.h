@@ -112,6 +112,6 @@ private:
 	std::vector< ComponentPtr > _Components;
 };
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #endif // __GAMEOBJECT_H__ECCC67A6_5AD3_4306_8C14_915D53744BBA

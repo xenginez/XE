@@ -22,6 +22,6 @@ public:
 	~PhysicsComponent() override;
 };
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #endif // __PHYSICSCOMPONENT_H__06889AFB_D509_4C0A_AB26_53F551A07B0B

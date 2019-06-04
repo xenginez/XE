@@ -36,6 +36,6 @@ private:
 	std::atomic<uint8 *> _end;
 };
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #endif // __FRAMEALLOC_H__D71366DB_92AD_48B0_8FBB_E64EB203564D

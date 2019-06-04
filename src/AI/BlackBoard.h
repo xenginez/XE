@@ -39,6 +39,6 @@ private:
 	Map<String, Variant> _Keys;
 };
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #endif // __BLACKBOARD_H__969FD98B_F332_4E99_8B0B_745F2A23B795

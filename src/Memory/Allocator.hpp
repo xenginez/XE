@@ -144,6 +144,6 @@ using UnorderedMultiSet = std::unordered_multiset<T, std::hash<T>, std::equal_to
 template< typename K, typename V >
 using UnorderedMultiMap = std::unordered_multimap<K, V, std::hash<K>, std::equal_to<K>, Allocator<Pair<const K, V>>>;
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 #endif // __ALLOCATOR_HPP__56D93152_EEB6_4E08_8F6B_DA7B642407F0

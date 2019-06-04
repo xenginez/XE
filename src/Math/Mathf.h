@@ -1522,7 +1522,7 @@ public:
 };
 DECL_META_CLASS( MATH_API, Mathf );
 
-END_XE_NAMESAPCE
+END_XE_NAMESPACE
 
 
 inline XE::Vec2 operator -( const XE::Vec2 & val )
