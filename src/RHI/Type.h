@@ -15,6 +15,7 @@ BEG_XE_NAMESPACE
 
 DECL_PTR(GFX);
 DECL_PTR(Image);
+DECL_PTR(Camera);
 
 DECL_PTR(Buffer);
 DECL_PTR(FrameBuffer);
@@ -27,6 +28,7 @@ DECL_PTR(DepthStencilBuffer);
 DECL_PTR(DynamicIndexBuffer);
 DECL_PTR(DynamicVertexBuffer);
 
+DECL_PTR(Shader);
 DECL_PTR(HullShader);
 DECL_PTR(PixelShader);
 DECL_PTR(VertexShader);
@@ -62,6 +64,7 @@ DECL_HANDLE(RHI_API, DepthStencilBuffer);
 DECL_HANDLE(RHI_API, DynamicIndexBuffer);
 DECL_HANDLE(RHI_API, DynamicVertexBuffer);
 
+DECL_HANDLE(RHI_API, Shader);
 DECL_HANDLE(RHI_API, HullShader);
 DECL_HANDLE(RHI_API, PixelShader);
 DECL_HANDLE(RHI_API, VertexShader);

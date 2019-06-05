@@ -16,9 +16,37 @@ BEG_XE_NAMESPACE
 class RHI_API InputLayout
 {
 public:
+	struct Element
+	{
+		String Name;
+		uint32 Offset;
+		LayoutFormat Format;
+	};
+
+public:
 	InputLayout();
 	
 	~InputLayout();
+
+public:
+	InputLayout &Add( const String &name, uint32 offset, LayoutFormat format );
+
+public:
+	uint32 ElementCount() const;
+	
+	Element &GetElement( uint32 val );
+	
+	const Element &GetElement( uint32 val ) const;
+	
+	const Array < Element > &GetElements() const;
+
+public:
+	Element &operator []( uint32 val );
+	
+	const Element &operator []( uint32 val ) const;
+
+private:
+	Array < Element > _Elements;
 };
 
 END_XE_NAMESPACE

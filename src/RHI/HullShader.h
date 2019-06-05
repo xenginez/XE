@@ -9,12 +9,20 @@
 #ifndef __HULLSHADER_H__6A2085E6_816B_41FD_83A0_350E1E0F879D
 #define __HULLSHADER_H__6A2085E6_816B_41FD_83A0_350E1E0F879D
 
-class HullShader
+#include "Shader.h"
+
+BEG_XE_NAMESPACE
+
+class RHI_API HullShader : public Shader
 {
+	OBJECT(HullShader, Shader)
+	
 public:
 	HullShader();
 	
-	~HullShader();
+	~HullShader() override;
 };
+
+END_XE_NAMESPACE
 
 #endif //__HULLSHADER_H__6A2085E6_816B_41FD_83A0_350E1E0F879D

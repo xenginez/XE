@@ -26,7 +26,7 @@ public:
     ShaderHandle GetHandle() const;
 
 public:
-    const Variant& GetVariable( const String& val ) const;
+    Variant GetVariable( const String& val ) const;
 
     void SetVariable( const String& name, const Variant& val );
 
