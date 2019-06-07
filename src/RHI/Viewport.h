@@ -43,13 +43,8 @@ public:
 	
 	void SetRect( const Rect &rect );
 	
-	const CameraPtr &GetCamera() const;
-	
-	void SetCamera( const CameraPtr &camera );
-
 private:
 	Rect _Rect;
-	CameraPtr _Camera;
 };
 
 END_XE_NAMESPACE

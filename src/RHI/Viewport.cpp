@@ -64,13 +64,3 @@ void XE::Viewport::SetRect( const XE::Rect &val )
 {
 	_Rect = val;
 }
-
-const XE::CameraPtr &XE::Viewport::GetCamera() const
-{
-	return _Camera;
-}
-
-void XE::Viewport::SetCamera( const XE::CameraPtr &val )
-{
-	_Camera = val;
-}

@@ -14,7 +14,6 @@
 #include "GFX.h"
 #include "Image.h"
 #include "Fence.h"
-#include "Camera.h"
 #include "Sampler.h"
 #include "Uniform.h"
 #include "Viewport.h"

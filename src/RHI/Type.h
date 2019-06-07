@@ -15,7 +15,6 @@ BEG_XE_NAMESPACE
 
 DECL_PTR(GFX);
 DECL_PTR(Image);
-DECL_PTR(Camera);
 
 DECL_PTR(Buffer);
 DECL_PTR(FrameBuffer);
