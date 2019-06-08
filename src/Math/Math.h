@@ -11,7 +11,8 @@
 
 #include "Mathf.h"
 
-#include "Half.h"
+#include "float16.h"
+
 #include "Vec2.h"
 #include "Vec3.h"
 #include "Vec4.h"
@@ -33,6 +34,5 @@
 
 #include "KDTree.hpp"
 #include "BSPTree.hpp"
-
 
 #endif // __MATH_H__84AFAF0A_10EA_491F_8BD6_28A8543AE1CF

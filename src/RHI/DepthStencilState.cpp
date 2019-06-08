@@ -10,9 +10,9 @@ XE::DepthStencilState::DepthStencilState()
 
 }
 
-XE::DepthStencilStateHandle XE::DepthStencilState::GetHandle() const
+DepthStencilState::~DepthStencilState()
 {
-	return _Handle;
+	
 }
 
 bool XE::DepthStencilState::GetDepthEnable() const

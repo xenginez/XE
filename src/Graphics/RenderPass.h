@@ -6,15 +6,23 @@
  * \email   zhengyuanqing.95@gmail.com
  *
  */
-#ifndef __XE_RENDERPASS_H__
-#define __XE_RENDERPASS_H__
+#ifndef __RENDERPASS_H__5D759133_C173_4B1A_8C1B_DFCF71280154
+#define __RENDERPASS_H__5D759133_C173_4B1A_8C1B_DFCF71280154
 
-class RenderPass
+#include "Type.h"
+
+BEG_XE_NAMESPACE
+
+class GRAPHICS_API RenderPass : public Object
 {
+	OBJECT(RenderPass, Object)
+	
 public:
 	RenderPass();
 	
-	~RenderPass();
+	~RenderPass() override;
 };
 
-#endif //__XE_RENDERPASS_H__
+END_XE_NAMESPACE
+
+#endif //__RENDERPASS_H__5D759133_C173_4B1A_8C1B_DFCF71280154

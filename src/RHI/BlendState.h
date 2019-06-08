@@ -13,17 +13,14 @@
 
 BEG_XE_NAMESPACE
 
-class RHI_API BlendState : public Resource
+class RHI_API BlendState : public std::enable_shared_from_this<BlendState>
 {
-	OBJECT(BlendState, Resource)
+	OBJECT(BlendState)
 
 public:
 	BlendState();
 	
-	~BlendState() override;
-
-public:
-	BlendStateHandle GetHandle() const;
+	~BlendState();
 
 public:
 	Vec4 GetBlendFactor() const;
@@ -49,8 +46,6 @@ private:
 	bool _EnableIndependentBlend;
 	bool _AlphaToCoverageEnabled;
 	Array < RenderTargetPtr > _RenderTargets;
-	
-	BlendStateHandle _Handle;
 };
 
 END_XE_NAMESPACE

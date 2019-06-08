@@ -13,14 +13,14 @@
 
 BEG_XE_NAMESPACE
 
-class RHI_API RasterizerState : public Resource
+class RHI_API RasterizerState : public std::enable_shared_from_this<RasterizerState>
 {
-	OBJECT(RasterizerState, Resource)
+	OBJECT(RasterizerState)
 
 public:
 	RasterizerState();
 
-	~RasterizerState() override;
+	~RasterizerState();
 
 public:
 	XE::FillType GetFillMode() const;

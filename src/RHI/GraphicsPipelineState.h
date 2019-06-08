@@ -13,17 +13,14 @@
 
 BEG_XE_NAMESPACE
 
-class RHI_API GraphicsPipelineState : public Resource
+class RHI_API GraphicsPipelineState : public std::enable_shared_from_this<GraphicsPipelineState>
 {
-	OBJECT(GraphicsPipelineState, Resource)
+	OBJECT(GraphicsPipelineState)
 
 public:
 	GraphicsPipelineState();
 
-	~GraphicsPipelineState() override;
-
-public:
-	GraphicsPipelineStateHandle GetHandle() const;
+	~GraphicsPipelineState();
 
 private:
 	XE::HullShaderPtr GetHS() const;
@@ -91,8 +88,6 @@ private:
 	uint32 _SampleMask;
 
 	FrameBufferPtr _FBO;
-
-	GraphicsPipelineStateHandle _Handle;
 };
 
 END_XE_NAMESPACE

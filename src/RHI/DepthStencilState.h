@@ -13,15 +13,14 @@
 
 BEG_XE_NAMESPACE
 
-class RHI_API DepthStencilState : public Resource
+class RHI_API DepthStencilState : public std::enable_shared_from_this<DepthStencilState>
 {
-	OBJECT(DepthStencilState, Resource)
+	OBJECT(DepthStencilState)
 
 public:
 	DepthStencilState();
 
-public:
-	XE::DepthStencilStateHandle GetHandle() const;
+	~DepthStencilState();
 
 public:
 	bool GetDepthEnable() const;
@@ -81,8 +80,6 @@ public:
 	void SetStencilBackDepthFailOp(XE::StencilOperation val);
 
 private:
-	DepthStencilStateHandle _Handle;
-
 	bool _DepthEnable;
 	bool _DepthWriteEnable;
 	CompareType _DepthFunc;

@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class Half;
+class float16;
 class Vec2;
 class Vec3;
 class Vec4;

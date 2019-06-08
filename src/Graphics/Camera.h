@@ -9,20 +9,18 @@
 #ifndef __CAMERA_H__AE26235A_1006_46EE_AF0E_2DD0626772A0
 #define __CAMERA_H__AE26235A_1006_46EE_AF0E_2DD0626772A0
 
-#include "RHI/Type.h"
+#include "Type.h"
 
 BEG_XE_NAMESPACE
 
-class RHI_API Camera : public std::enable_shared_from_this<Camera>
+class RHI_API Camera : public Object
 {
-	OBJECT(Camera)
+	OBJECT(Camera, Object)
 	
 public:
 	Camera();
 	
-	virtual ~Camera();
-
-private:
+	~Camera() override;
 
 };
 

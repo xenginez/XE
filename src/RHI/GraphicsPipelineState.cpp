@@ -15,11 +15,6 @@ XE::GraphicsPipelineState::~GraphicsPipelineState()
 
 }
 
-XE::GraphicsPipelineStateHandle XE::GraphicsPipelineState::GetHandle() const
-{
-	return _Handle;
-}
-
 XE::HullShaderPtr XE::GraphicsPipelineState::GetHS() const
 {
 	return _HS;

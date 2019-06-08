@@ -15,11 +15,6 @@ XE::ComputePipelineState::~ComputePipelineState()
 
 }
 
-XE::ComputePipelineStateHandle XE::ComputePipelineState::GetHandle() const
-{
-	return _Handle;
-}
-
 XE::ComputeShaderPtr XE::ComputePipelineState::GetComputeShader() const
 {
 	return _CS;

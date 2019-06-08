@@ -13,17 +13,14 @@
 
 BEG_XE_NAMESPACE
 
-class RHI_API ComputePipelineState : public Resource
+class RHI_API ComputePipelineState : public std::enable_shared_from_this<ComputePipelineState>
 {
-	OBJECT(ComputePipelineState, Resource)
+	OBJECT(ComputePipelineState)
 
 public:
 	ComputePipelineState();
 
-	~ComputePipelineState() override;
-
-public:
-	ComputePipelineStateHandle GetHandle() const;
+	~ComputePipelineState();
 
 public:
 	ComputeShaderPtr GetComputeShader() const;
@@ -32,8 +29,6 @@ public:
 
 private:
 	ComputeShaderPtr _CS;
-
-	ComputePipelineStateHandle _Handle;
 };
 
 END_XE_NAMESPACE

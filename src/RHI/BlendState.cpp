@@ -15,11 +15,6 @@ XE::BlendState::~BlendState()
 
 }
 
-XE::BlendStateHandle XE::BlendState::GetHandle() const
-{
-	return _Handle;
-}
-
 Vec4 BlendState::GetBlendFactor() const
 {
     return _BlendFactor;

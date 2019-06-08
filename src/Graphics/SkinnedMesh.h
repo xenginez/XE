@@ -6,15 +6,23 @@
  * \email   zhengyuanqing.95@gmail.com
  *
  */
-#ifndef __XE_SKINNEDMESH_H__
-#define __XE_SKINNEDMESH_H__
+#ifndef __SKINNEDMESH_H__5E8D3F1A_5765_42C1_9164_F9AA6CCFC9CB
+#define __SKINNEDMESH_H__5E8D3F1A_5765_42C1_9164_F9AA6CCFC9CB
 
-class SkinnedMesh
+#include "Mesh.h"
+
+BEG_XE_NAMESPACE
+
+class GRAPHICS_API SkinnedMesh : public Mesh
 {
+	OBJECT(SkinnedMesh, Mesh)
+	
 public:
 	SkinnedMesh();
 	
-	~SkinnedMesh();
+	~SkinnedMesh() override;
 };
 
-#endif //__XE_SKINNEDMESH_H__
+END_XE_NAMESPACE
+
+#endif //__SKINNEDMESH_H__5E8D3F1A_5765_42C1_9164_F9AA6CCFC9CB

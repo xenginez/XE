@@ -6,15 +6,23 @@
  * \email   zhengyuanqing.95@gmail.com
  *
  */
-#ifndef __XE_RENDERER_H__
-#define __XE_RENDERER_H__
+#ifndef __RENDERER_H__E2EF5FD6_6A10_4754_86CC_3EA007879A4F
+#define __RENDERER_H__E2EF5FD6_6A10_4754_86CC_3EA007879A4F
 
-class Renderer
+#include "Type.h"
+
+BEG_XE_NAMESPACE
+
+class GRAPHICS_API Renderer : public Object
 {
+	OBJECT(Renderer, Object)
+	
 public:
 	Renderer();
 	
-	~Renderer();
+	~Renderer() override;
 };
 
-#endif //__XE_RENDERER_H__
+END_XE_NAMESPACE
+
+#endif //__RENDERER_H__E2EF5FD6_6A10_4754_86CC_3EA007879A4F

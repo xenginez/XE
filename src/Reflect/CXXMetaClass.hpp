@@ -346,7 +346,7 @@ template<> struct REFLECT_API ClassID< XE::float32 >
 {
 	static IMetaClassPtr Get( const XE::float32 * val = nullptr )
 	{
-		static auto meta = XE::make_shared< CXXMetaFundamental<XE::float32> >( "XE::float32" );
+		static auto meta = XE::make_shared< CXXMetaFundamental<XE::float32> >( "float32" );
 		return meta;
 	}
 };
@@ -355,7 +355,7 @@ template<> struct REFLECT_API ClassID< XE::float64 >
 {
 	static IMetaClassPtr Get( const XE::float64 * val = nullptr )
 	{
-		static auto meta = XE::make_shared< CXXMetaFundamental<uint64> >( "XE::float64" );
+		static auto meta = XE::make_shared< CXXMetaFundamental<uint64> >( "float64" );
 		return meta;
 	}
 };
