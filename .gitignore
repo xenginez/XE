@@ -35,5 +35,6 @@
 # Directory
 /.vs
 /.idea
+/build
 /target
 /cmake-build-debug
