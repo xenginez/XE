@@ -13,21 +13,19 @@
 
 BEG_XE_NAMESPACE
 
-class RHI_API Fence : public Resource
+class RHI_API Fence : public std::enable_shared_from_this<Fence>
 {
-	OBJECT(Fence, Resource)
+	OBJECT(Fence)
 
 public:
 	Fence();
 	
-	~Fence() override;
+	~Fence();
 
 public:
 	uint64 GetValue() const;
 	
 	void ResetValue( uint64 val );
-	
-	
 };
 
 END_XE_NAMESPACE
