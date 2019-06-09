@@ -13,9 +13,6 @@
 [submodule "3rdparty/tbb"]
 	path = 3rdparty/tbb
 	url = https://github.com/intel/tbb.git
-[submodule "3rdparty/sqlite"]
-	path = 3rdparty/sqlite
-	url = https://github.com/sqlite/sqlite.git
 [submodule "3rdparty/bullet3"]
 	path = 3rdparty/bullet3
 	url = https://github.com/bulletphysics/bullet3.git
