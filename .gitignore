@@ -34,6 +34,7 @@
 
 # Directory
 /.vs
+/out
 /.idea
 /build
 /target
