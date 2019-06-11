@@ -23,19 +23,19 @@ public:
 	~Library();
 
 public:
-	static uint64 Open( const String& name );
+	static XE::uint64 Open( const String& name );
 
 	template< typename T >
-	static T SymbolT( uint64 index, const String& name )
+	static T SymbolT( XE::uint64 index, const String& name )
 	{
 		return reinterpret_cast<T>( Symbol( index, name ) );
 	}
 
-	static void * Symbol( uint64 index, const String& name );
+	static void * Symbol( XE::uint64 index, const String& name );
 
-	static void Close( uint64 index );
+	static void Close( XE::uint64 index );
 
-	static String Name( uint64 index );
+	static String Name( XE::uint64 index );
 
 	static void InsertSearchPath( const std::filesystem::path& val );
 

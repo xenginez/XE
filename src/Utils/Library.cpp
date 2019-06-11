@@ -8,17 +8,17 @@ USING_XE
 #if PLATFORM_OS == OS_WINDOWS
 #include <Windows.h>
 
-uint64 dlopen( const String& name )
+XE::uint64 dlopen( const String& name )
 {
-	return reinterpret_cast<uint64>( ::LoadLibrary( (name.ToStdString() + ".dll").c_str() ) );
+	return reinterpret_cast<XE::uint64>( ::LoadLibrary( (name.ToStdString() + ".dll").c_str() ) );
 }
 
-void * dlsym( uint64 handle, const String& name )
+void * dlsym( XE::uint64 handle, const String& name )
 {
 	return ::GetProcAddress( reinterpret_cast<HMODULE>( handle ), name.ToCString() );
 }
 
-bool dlclose( uint64 handle )
+bool dlclose( XE::uint64 handle )
 {
 	return ::FreeLibrary( reinterpret_cast<HMODULE>( handle ) );
 }
@@ -33,17 +33,17 @@ bool dlclose( uint64 handle )
 
 namespace XE
 {
-	uint64 dlopen( const String &val )
+	XE::uint64 dlopen( const String &val )
 	{
-		return reinterpret_cast<uint64>(::dlopen(( val.ToStdString() + LIB_EXT ).c_str(), RTLD_NOW));
+		return reinterpret_cast<XE::uint64>(::dlopen(( val.ToStdString() + LIB_EXT ).c_str(), RTLD_NOW));
 	}
 	
-	void * dlsym( uint64 handle, const String &val )
+	void * dlsym( XE::uint64 handle, const String &val )
 	{
 		return ::dlsym(reinterpret_cast<void *>(handle), val.ToCString());
 	}
 	
-	bool dlclose( uint64 handle )
+	bool dlclose( XE::uint64 handle )
 	{
 		return static_cast<bool>(::dlclose(( void * ) handle));
 	}
@@ -53,7 +53,7 @@ namespace XE
 
 struct XE::Library::Private
 {
-	Array < Pair < uint64, String > > Librarys;
+	Array < Pair < XE::uint64, String > > Librarys;
 	Array < std::filesystem::path > SearchPaths;
 };
 
@@ -79,7 +79,7 @@ XE::uint64 XE::Library::Open( const String &val )
 	{
 		if( This()->_p->Librarys[i].second == val )
 		{
-			return static_cast<uint64>(i);
+			return static_cast<XE::uint64>(i);
 		}
 	}
 	
@@ -96,7 +96,7 @@ XE::uint64 XE::Library::Open( const String &val )
 	return 0;
 }
 
-void * XE::Library::Symbol( uint64 index, const String &name )
+void * XE::Library::Symbol( XE::uint64 index, const String &name )
 {
 	if( auto lib = This()->_p->Librarys[index].first )
 	{
@@ -106,7 +106,7 @@ void * XE::Library::Symbol( uint64 index, const String &name )
 	return nullptr;
 }
 
-void XE::Library::Close( uint64 index )
+void XE::Library::Close( XE::uint64 index )
 {
 	if( auto lib = This()->_p->Librarys[index].first )
 	{
@@ -117,7 +117,7 @@ void XE::Library::Close( uint64 index )
 	}
 }
 
-XE::String XE::Library::Name( uint64 index )
+XE::String XE::Library::Name( XE::uint64 index )
 {
 	return This()->_p->Librarys[index].second;
 }

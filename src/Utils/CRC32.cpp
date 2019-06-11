@@ -52,7 +52,7 @@ static unsigned int crc32_table[] = {
    0xb40bbe37, 0xc30c8ea1, 0x5a05df1b, 0x2d02ef8d
 };
 
-uint32 CRC32::GetCRC32( uint32 salt, const uint8 * src, XE::uint64 size )
+XE::uint32 CRC32::GetCRC32( XE::uint32 salt, const XE::uint8 * src, XE::uint64 size )
 {
 	salt ^= ~0;
 
@@ -64,9 +64,9 @@ uint32 CRC32::GetCRC32( uint32 salt, const uint8 * src, XE::uint64 size )
 	return salt ^ ( ~0U );
 }
 
-uint32 XE::CRC32::GetCRC32( const uint8 * src, XE::uint64 size )
+XE::uint32 XE::CRC32::GetCRC32( const XE::uint8 * src, XE::uint64 size )
 {
-	uint32 salt = 0;
+	XE::uint32 salt = 0;
 
 	while ( size-- )
 	{

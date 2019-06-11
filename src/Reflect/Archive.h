@@ -21,7 +21,7 @@ template< typename T > struct Serializable;
 class REFLECT_API Archive : public NonCopyable
 {
 public:
-	static constexpr uint64 Version = ( ( (uint64)1 ) << 48 ) | ( ( (uint64)1 ) << 32 ) | ( ( (uint64)1 ) << 16 ) | ( ( (uint64)1 ) << 0 );
+	static constexpr XE::uint64 Version = ( ( (XE::uint64)1 ) << 48 ) | ( ( (XE::uint64)1 ) << 32 ) | ( ( (XE::uint64)1 ) << 16 ) | ( ( (XE::uint64)1 ) << 0 );
 
 protected:
 	Archive( ArchiveType val );
@@ -29,12 +29,12 @@ protected:
 	virtual ~Archive();
 
 public:
-	uint64 GetVersion() const;
+	XE::uint64 GetVersion() const;
 
 	ArchiveType GetType() const;
 
 protected:
-	void SetVersion( uint64 val );
+	void SetVersion( XE::uint64 val );
 
 public:
 	template< typename T > Archive& operator&( T &val )
@@ -130,21 +130,21 @@ public:
 public:
 	virtual void Serialize( bool * ptr ) = 0;
 
-	virtual void Serialize( int8 * ptr ) = 0;
+	virtual void Serialize( XE::int8 * ptr ) = 0;
 
-	virtual void Serialize( int16 * ptr ) = 0;
+	virtual void Serialize( XE::int16 * ptr ) = 0;
 
-	virtual void Serialize( int32 * ptr ) = 0;
+	virtual void Serialize( XE::int32 * ptr ) = 0;
 
-	virtual void Serialize( int64 * ptr ) = 0;
+	virtual void Serialize( XE::int64 * ptr ) = 0;
 
-	virtual void Serialize( uint8 * ptr ) = 0;
+	virtual void Serialize( XE::uint8 * ptr ) = 0;
 
-	virtual void Serialize( uint16 * ptr ) = 0;
+	virtual void Serialize( XE::uint16 * ptr ) = 0;
 
-	virtual void Serialize( uint32 * ptr ) = 0;
+	virtual void Serialize( XE::uint32 * ptr ) = 0;
 
-	virtual void Serialize( uint64 * ptr ) = 0;
+	virtual void Serialize( XE::uint64 * ptr ) = 0;
 
 	virtual void Serialize( XE::float32 * ptr ) = 0;
 
@@ -153,7 +153,7 @@ public:
 	virtual void Serialize( void * ptr, XE::uint64 size ) = 0;
 
 private:
-	uint64 _Version;
+	XE::uint64 _Version;
 	ArchiveType _Type;
 };
 
@@ -167,21 +167,21 @@ public:
 public:
 	virtual void Serialize( bool * ptr ) override;
 
-	virtual void Serialize( int8 * ptr ) override;
+	virtual void Serialize( XE::int8 * ptr ) override;
 
-	virtual void Serialize( int16 * ptr ) override;
+	virtual void Serialize( XE::int16 * ptr ) override;
 
-	virtual void Serialize( int32 * ptr ) override;
+	virtual void Serialize( XE::int32 * ptr ) override;
 
-	virtual void Serialize( int64 * ptr ) override;
+	virtual void Serialize( XE::int64 * ptr ) override;
 
-	virtual void Serialize( uint8 * ptr ) override;
+	virtual void Serialize( XE::uint8 * ptr ) override;
 
-	virtual void Serialize( uint16 * ptr ) override;
+	virtual void Serialize( XE::uint16 * ptr ) override;
 
-	virtual void Serialize( uint32 * ptr ) override;
+	virtual void Serialize( XE::uint32 * ptr ) override;
 
-	virtual void Serialize( uint64 * ptr ) override;
+	virtual void Serialize( XE::uint64 * ptr ) override;
 
 	virtual void Serialize( XE::float32 * ptr ) override;
 
@@ -204,21 +204,21 @@ public:
 public:
 	virtual void Serialize( bool * ptr ) override;
 
-	virtual void Serialize( int8 * ptr ) override;
+	virtual void Serialize( XE::int8 * ptr ) override;
 
-	virtual void Serialize( int16 * ptr ) override;
+	virtual void Serialize( XE::int16 * ptr ) override;
 
-	virtual void Serialize( int32 * ptr ) override;
+	virtual void Serialize( XE::int32 * ptr ) override;
 
-	virtual void Serialize( int64 * ptr ) override;
+	virtual void Serialize( XE::int64 * ptr ) override;
 
-	virtual void Serialize( uint8 * ptr ) override;
+	virtual void Serialize( XE::uint8 * ptr ) override;
 
-	virtual void Serialize( uint16 * ptr ) override;
+	virtual void Serialize( XE::uint16 * ptr ) override;
 
-	virtual void Serialize( uint32 * ptr ) override;
+	virtual void Serialize( XE::uint32 * ptr ) override;
 
-	virtual void Serialize( uint64 * ptr ) override;
+	virtual void Serialize( XE::uint64 * ptr ) override;
 
 	virtual void Serialize( XE::float32 * ptr ) override;
 
@@ -349,8 +349,8 @@ template<> struct Serializable<Variant>
 		std::string meta_name;
 		Serializable<std::string>::Load( arc, meta_name );
 
-		uint64 flag;
-		arc.Serialize( &flag, sizeof( uint64 ) );
+		XE::uint64 flag;
+		arc.Serialize( &flag, sizeof( XE::uint64 ) );
 
 		if ( IMetaTypePtr meta = GetReclectionType( meta_name ) )
 		{
@@ -366,8 +366,8 @@ template<> struct Serializable<Variant>
 		std::string meta_name = val.GetMeta()->GetFullName().ToStdString();
 		Serializable<std::string>::Save( arc, meta_name );
 
-		uint64 flag = val.GetFlag();
-		arc.Serialize( &flag, sizeof( uint64 ) );
+		XE::uint64 flag = val.GetFlag();
+		arc.Serialize( &flag, sizeof( XE::uint64 ) );
 
 		if ( auto e = SP_CAST<IMetaType>( val.GetMeta() ) )
 		{

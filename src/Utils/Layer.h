@@ -16,23 +16,23 @@ BEG_XE_NAMESPACE
 class UTILS_API Layer
 {
 public:
-	static constexpr uint64 Default = 1;
+	static constexpr XE::uint64 Default = 1;
 
 public:
 	Layer();
 
-	Layer( uint64 val );
+	Layer( XE::uint64 val );
 
 	Layer( const Layer& val );
 
 	~Layer();
 
 public:
-	Layer& operator=( uint64 val );
+	Layer& operator=( XE::uint64 val );
 
-	Layer& operator |=( uint64 val );
+	Layer& operator |=( XE::uint64 val );
 
-	Layer& operator &=( uint64 val );
+	Layer& operator &=( XE::uint64 val );
 
 	Layer& operator=( const Layer& val );
 
@@ -41,13 +41,13 @@ public:
 	Layer& operator &=( const Layer& val );
 
 public:
-	bool operator ||( uint64 val ) const;
+	bool operator ||( XE::uint64 val ) const;
 
-	bool operator &&( uint64 val ) const;
+	bool operator &&( XE::uint64 val ) const;
 
-	bool operator ==( uint64 val ) const;
+	bool operator ==( XE::uint64 val ) const;
 
-	bool operator !=( uint64 val ) const;
+	bool operator !=( XE::uint64 val ) const;
 
 	bool operator ||( const Layer& val ) const;
 
@@ -58,7 +58,7 @@ public:
 	bool operator !=( const Layer& val ) const;
 
 public:
-	uint64 Value;
+	XE::uint64 Value;
 };
 DECL_META_CLASS( UTILS_API, Layer );
 

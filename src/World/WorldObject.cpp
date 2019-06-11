@@ -41,7 +41,7 @@ void XE::WorldObject::SetFramework( IFrameworkPtr val )
 
 XE::GameObjectPtr XE::WorldObject::AddGameObject()
 {
-	static uint64 HandleTable = 0;
+	static XE::uint64 HandleTable = 0;
 
 	GameObjectPtr p = XE::make_shared<GameObject>();
 
@@ -54,14 +54,14 @@ XE::GameObjectPtr XE::WorldObject::AddGameObject()
 
 	_AllGameObjects.push_back( p );
 	_GameObjectMap.insert( std::make_pair( p->GetHandle().GetValue(), p ) );
-	_GameObjectMap.insert( std::make_pair( reinterpret_cast<uint64>( p->GetName().ToCString() ), p ) );
+	_GameObjectMap.insert( std::make_pair( reinterpret_cast<XE::uint64>( p->GetName().ToCString() ), p ) );
 
 	return p;
 }
 
 XE::GameObjectPtr XE::WorldObject::FindGameObject( const String& val ) const
 {
-	auto it = _GameObjectMap.find( reinterpret_cast<uint64>( val.ToCString() ) );
+	auto it = _GameObjectMap.find( reinterpret_cast<XE::uint64>( val.ToCString() ) );
 	if ( it != _GameObjectMap.end() )
 	{
 		return it->second;
@@ -88,7 +88,7 @@ void XE::WorldObject::Startup()
 {
 	for ( auto obj : _AllGameObjects )
 	{
-		_GameObjectMap.insert( std::make_pair( reinterpret_cast<uint64>( obj->GetName().ToCString() ), obj ) );
+		_GameObjectMap.insert( std::make_pair( reinterpret_cast<XE::uint64>( obj->GetName().ToCString() ), obj ) );
 		_GameObjectMap.insert( std::make_pair( obj->GetHandle().GetValue(), obj ) );
 		obj->_World = XE_THIS( WorldObject );
 		obj->SetFramework( GetFramework() );
@@ -112,7 +112,7 @@ void XE::WorldObject::Update( XE::float32 dt )
 			else
 			{
 				_GameObjectMap.erase( _AllGameObjects[i]->GetHandle().GetValue() );
-				_GameObjectMap.erase( reinterpret_cast<uint64>( _AllGameObjects[i]->GetName().ToCString() ) );
+				_GameObjectMap.erase( reinterpret_cast<XE::uint64>( _AllGameObjects[i]->GetName().ToCString() ) );
 				_AllGameObjects[i]->Clearup();
 				_AllGameObjects[i] = nullptr;
 			}

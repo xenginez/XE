@@ -16,7 +16,7 @@ XE::Event::Event()
 
 }
 
-XE::Event::Event( uint64 id, const Variant& parameter /*= Variant() */ )
+XE::Event::Event( XE::uint64 id, const Variant& parameter /*= Variant() */ )
 	: ignore( false ), id( id ), parameter( parameter )
 {
 

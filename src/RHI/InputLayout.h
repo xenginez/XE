@@ -19,7 +19,7 @@ public:
 	struct Element
 	{
 		String Name;
-		uint32 Offset;
+		XE::uint32 Offset;
 		LayoutFormat Format;
 	};
 
@@ -29,21 +29,21 @@ public:
 	~InputLayout();
 
 public:
-	InputLayout &Add( const String &name, uint32 offset, LayoutFormat format );
+	InputLayout &Add( const String &name, XE::uint32 offset, LayoutFormat format );
 
 public:
-	uint32 ElementCount() const;
+	XE::uint32 ElementCount() const;
 	
-	Element &GetElement( uint32 val );
+	Element &GetElement( XE::uint32 val );
 	
-	const Element &GetElement( uint32 val ) const;
+	const Element &GetElement( XE::uint32 val ) const;
 	
 	const Array < Element > &GetElements() const;
 
 public:
-	Element &operator []( uint32 val );
+	Element &operator []( XE::uint32 val );
 	
-	const Element &operator []( uint32 val ) const;
+	const Element &operator []( XE::uint32 val ) const;
 
 private:
 	Array < Element > _Elements;

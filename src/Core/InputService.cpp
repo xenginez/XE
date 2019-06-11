@@ -83,12 +83,12 @@ void XE::InputService::Clearup()
 
 XE::int32 XE::InputService::GetPov( const String& val ) const
 {
-	return GetValue( val ).Value<int32>();
+	return GetValue( val ).Value<XE::int32>();
 }
 
 XE::int32 XE::InputService::GetPov( KeyCode val ) const
 {
-	return GetValue( val ).Value<int32>();
+	return GetValue( val ).Value<XE::int32>();
 }
 
 XE::float32 XE::InputService::GetAxis( const String& val ) const
@@ -103,12 +103,12 @@ XE::float32 XE::InputService::GetAxis( KeyCode val ) const
 
 XE::int32 XE::InputService::GetButton( const String& val ) const
 {
-	return GetValue( val ).Value<int32>();
+	return GetValue( val ).Value<XE::int32>();
 }
 
 XE::int32 XE::InputService::GetButton( KeyCode val ) const
 {
-	return GetValue( val ).Value<int32>();
+	return GetValue( val ).Value<XE::int32>();
 }
 
 XE::Variant XE::InputService::GetValue( const String& val ) const
@@ -170,5 +170,5 @@ void XE::InputService::SetValue( const String& code, const Variant& val )
 
 XE::String XE::InputService::GetKeycodeString( KeyCode val ) const
 {
-	return EnumID<KeyCode>::Get()->FindName( (int64)val );
+	return EnumID<KeyCode>::Get()->FindName( (XE::int64)val );
 }

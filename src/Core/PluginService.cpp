@@ -13,7 +13,7 @@ struct XEPPluginInfo
 	
 	typedef void( * UnregisterInvoke )( IPlugin * );
 	
-	uint64 LibHandle;
+	XE::uint64 LibHandle;
 	IPlugin * Plugin;
 	RegisterInvoke Register;
 	UnregisterInvoke Unregister;
@@ -74,7 +74,7 @@ void XE::PluginService::Clearup()
 
 void XE::PluginService::RegisterPlugin( const std::filesystem::path &val )
 {
-	uint64 handle = Library::Open(val.string());
+	XE::uint64 handle = Library::Open(val.string());
 	if( handle == 0 )
 	{
 		XE_LOG(LoggerLevel::Error, "{%0} Plugin Load Error!", val);

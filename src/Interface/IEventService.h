@@ -20,10 +20,10 @@ class INTERFACE_API Event
 public:
 	Event();
 
-	Event( uint64 id, const Variant& parameter = Variant() );
+	Event( XE::uint64 id, const Variant& parameter = Variant() );
 
 public:
-	uint64 id;
+	XE::uint64 id;
 	bool ignore;
 	Variant parameter;
 };
@@ -49,9 +49,9 @@ public:
 	virtual void PostEvent( XE::float32 dt, EventPtr val ) = 0;
 
 public:
-	virtual XE::uint64 RegisterListener( uint32 event, ListenerType listener ) = 0;
+	virtual XE::uint64 RegisterListener( XE::uint32 event, ListenerType listener ) = 0;
 
-	virtual void UnregisterListener( uint32 event, XE::uint64 index ) = 0;
+	virtual void UnregisterListener( XE::uint32 event, XE::uint64 index ) = 0;
 
 };
 

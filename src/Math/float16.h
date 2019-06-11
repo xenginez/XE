@@ -26,17 +26,17 @@ public:
 		struct
 		{
 #if ENDIAN == ENDIAN_LITTLE
-			uint16 mantissa : 10;
-			uint16 exponent : 5;
-			uint16 sign : 1;
+			XE::uint16 mantissa : 10;
+			XE::uint16 exponent : 5;
+			XE::uint16 sign : 1;
 #else			   
-			uint16 sign : 1;
-			uint16 exponent : 5;
-			uint16 mantissa : 10;
+			XE::uint16 sign : 1;
+			XE::uint16 exponent : 5;
+			XE::uint16 mantissa : 10;
 #endif
 		};
 
-		uint16 encode;
+		XE::uint16 encode;
 	};
 
 public:

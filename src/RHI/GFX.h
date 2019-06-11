@@ -31,7 +31,7 @@ public:
 	virtual RendererType GetType() const = 0;
 
 public:
-	virtual WindowHandle CreateWindow( uint64 native_handle ) = 0;
+	virtual WindowHandle CreateWindow( XE::uint64 native_handle ) = 0;
 	
 	virtual WindowHandle CreateWindow( const String &title, const Rect &rect ) = 0;
 	
@@ -65,7 +65,7 @@ public:
 	
 	virtual String GetWindowIcon( const WindowHandle &handle ) = 0;
 	
-	virtual void SetWindowIcon( const WindowHandle &handle, const String &Icon ) = 0;
+	virtual void SetWindowIcon( const WindowHandle &handle, const String &icon ) = 0;
 	
 	virtual String GetWindowTitle( const WindowHandle &handle ) = 0;
 	
@@ -76,9 +76,9 @@ public:
 	
 	virtual VertexBufferHandle CreateVertexBuffer( const MemoryView &val ) = 0;
 	
-	virtual DynamicIndexBufferHandle CreateDynamicIndexBuffer( uint64 size ) = 0;
+	virtual DynamicIndexBufferHandle CreateDynamicIndexBuffer( XE::uint64 size ) = 0;
 	
-	virtual DynamicVertexBufferHandle CreateDynamicVertexBuffer( uint64 size ) = 0;
+	virtual DynamicVertexBufferHandle CreateDynamicVertexBuffer( XE::uint64 size ) = 0;
 	
 	virtual DynamicIndexBufferHandle CreateDynamicIndexBuffer( const MemoryView &val ) = 0;
 	
@@ -109,17 +109,18 @@ public:
 	virtual GeometryShaderHandle CreateGeometryShader( const std::filesystem::path &val ) = 0;
 	
 	virtual UniformHandle CreateUniform( const String &val ) = 0;
+
+	virtual TextureHandle CreateTexture(XE::float32 width, XE::uint16 mips, XE::uint16 players, TextureFormat format) = 0;
+
+	virtual TextureHandle CreateTexture2D(const Vec2& size, XE::uint16 mips, XE::uint16 players, TextureFormat format) = 0;
+
+	virtual TextureHandle CreateTexture3D( const Vec3 &size, XE::uint16 mips, XE::uint16 players, TextureFormat format ) = 0;
 	
-	virtual TextureHandle CreateTexture2D( const Vec2 &size, uint16 mips, uint16 players, TextureFormat format ) = 0;
-	
-	virtual TextureHandle CreateTexture3D( const Vec3 &size, uint16 mips, uint16 players, TextureFormat format ) = 0;
-	
-	virtual TextureHandle CreateTextureCube( uint16 size, uint16 mips, uint16 players, TextureFormat format ) = 0;
+	virtual TextureHandle CreateTextureCube( XE::uint16 size, XE::uint16 mips, XE::uint16 players, TextureFormat format ) = 0;
 	
 	virtual FrameBufferHandle CreateFrameBuffer( const Vec2 &size, TextureHandle texture, TextureHandle depth ) = 0;
 	
-	virtual ViewportHandle
-	CreateViewport( const Rect &rect, const FrameBufferHandle &frame, const Color &clear_color ) = 0;
+	virtual ViewportHandle CreateViewport( const Rect &rect, const FrameBufferHandle &frame, const Color &clear_color ) = 0;
 	
 };
 

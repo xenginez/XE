@@ -27,7 +27,7 @@ const char BASE64::_base64_decode_table[256] =
 	-2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2,
 };
 
-std::string BASE64::Encode( const uint8 * src, XE::uint64 size )
+std::string BASE64::Encode( const XE::uint8 * src, XE::uint64 size )
 {
 	std::string ret;
 
@@ -61,7 +61,7 @@ std::string BASE64::Encode( const uint8 * src, XE::uint64 size )
 	return ret;
 }
 
-XE::uint64 XE::BASE64::Encode( const uint8 * src, XE::uint64 size, uint8 * out )
+XE::uint64 XE::BASE64::Encode( const XE::uint8 * src, XE::uint64 size, XE::uint8 * out )
 {
 	XE::uint64 ret = 0;
 
@@ -99,13 +99,13 @@ XE::uint64 XE::BASE64::Encode( const uint8 * src, XE::uint64 size, uint8 * out )
 XE::uint64 BASE64::Decode( const std::string& str, char * out )
 {
 	XE::uint64 size = str.size();
-	const uint8 * src = (const uint8 *)str.c_str();
+	const XE::uint8 * src = (const XE::uint8 *)str.c_str();
 
-	int32 bin = 0, i = 0, pos = 0;
+	XE::int32 bin = 0, i = 0, pos = 0;
 
 	XE::uint64 ret = 0;
 
-	int32 * buf = (int *)out;
+	XE::int32 * buf = (int *)out;
 	char ch;
 
 	while ( ( ch = *src++ ) != '\0' && size-- > 0 )
@@ -154,13 +154,13 @@ XE::uint64 BASE64::Decode( const std::string& str, char * out )
 	return ret;
 }
 
-XE::uint64 XE::BASE64::Decode( const uint8* src, XE::uint64 size, char * out )
+XE::uint64 XE::BASE64::Decode( const XE::uint8* src, XE::uint64 size, char * out )
 {
-	int32 bin = 0, i = 0, pos = 0;
+	XE::int32 bin = 0, i = 0, pos = 0;
 
 	XE::uint64 ret = 0;
 
-	int32 * buf = (int *)out;
+	XE::int32 * buf = (int *)out;
 	char ch;
 
 	while ( ( ch = *src++ ) != '\0' && size-- > 0 )

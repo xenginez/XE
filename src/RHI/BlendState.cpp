@@ -45,17 +45,17 @@ void BlendState::SetAlphaToCoverageEnabled(bool val)
     _AlphaToCoverageEnabled = val;
 }
 
-uint64 BlendState::GetRenderTargetCount() const
+XE::uint64 BlendState::GetRenderTargetCount() const
 {
 	return _RenderTargets.size();
 }
 
-RenderTargetPtr BlendState::GetRenderTarget( uint64 index ) const
+RenderTargetPtr BlendState::GetRenderTarget( XE::uint64 index ) const
 {
 	return _RenderTargets[index];
 }
 
-void BlendState::SetRenderTarget( uint64 index, const RenderTargetPtr &val )
+void BlendState::SetRenderTarget( XE::uint64 index, const RenderTargetPtr &val )
 {
 	_RenderTargets[index] = val;
 }

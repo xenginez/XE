@@ -34,21 +34,21 @@ public:
 
 	String& operator += ( bool val );
 
-	String& operator += ( int8  val );
+	String& operator += ( XE::int8  val );
 
-	String& operator += ( int16  val );
+	String& operator += ( XE::int16  val );
 
-	String& operator += ( int32  val );
+	String& operator += ( XE::int32  val );
 
-	String& operator += ( int64  val );
+	String& operator += ( XE::int64  val );
 
-	String& operator += ( uint8  val );
+	String& operator += ( XE::uint8  val );
 
-	String& operator += ( uint16 val );
+	String& operator += ( XE::uint16 val );
 
-	String& operator += ( uint32 val );
+	String& operator += ( XE::uint32 val );
 
-	String& operator += ( uint64 val );
+	String& operator += ( XE::uint64 val );
 
 	String& operator += ( XE::float32  val );
 
@@ -62,21 +62,21 @@ public:
 
 	String operator + ( bool  val ) const;
 
-	String operator + ( int8  val ) const;
+	String operator + ( XE::int8  val ) const;
 
-	String operator + ( int16  val ) const;
+	String operator + ( XE::int16  val ) const;
 
-	String operator + ( int32  val ) const;
+	String operator + ( XE::int32  val ) const;
 
-	String operator + ( int64  val ) const;
+	String operator + ( XE::int64  val ) const;
 
-	String operator + ( uint8  val ) const;
+	String operator + ( XE::uint8  val ) const;
 
-	String operator + ( uint16 val ) const;
+	String operator + ( XE::uint16 val ) const;
 
-	String operator + ( uint32 val ) const;
+	String operator + ( XE::uint32 val ) const;
 
-	String operator + ( uint64 val ) const;
+	String operator + ( XE::uint64 val ) const;
 
 	String operator + ( XE::float32  val ) const;
 

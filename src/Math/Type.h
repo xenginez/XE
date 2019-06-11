@@ -43,7 +43,7 @@ enum class SideType
 };
 DECL_META_ENUM( MATH_API, SideType );
 
-enum class AxisType : uint8
+enum class AxisType : XE::uint8
 {
 	X = 1 << 0,
 	Y = 1 << 1,

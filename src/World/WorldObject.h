@@ -56,7 +56,7 @@ private:
 	String _Name;
 	IFrameworkPtr _Framework;
 	Array< GameObjectPtr > _AllGameObjects;
-	UnorderedMap< uint64, GameObjectPtr > _GameObjectMap;
+	UnorderedMap< XE::uint64, GameObjectPtr > _GameObjectMap;
 };
 
 END_XE_NAMESPACE

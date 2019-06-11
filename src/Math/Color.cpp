@@ -36,7 +36,7 @@ XE::Color::Color()
 {
 }
 
-XE::Color::Color( uint32 val )
+XE::Color::Color( XE::uint32 val )
 		:hex(val)
 {
 
@@ -54,7 +54,7 @@ XE::Color::Color( const FColor &val )
 
 }
 
-XE::Color::Color( uint8 r, uint8 g, uint8 b, uint8 a /*= 1 */ )
+XE::Color::Color( XE::uint8 r, XE::uint8 g, XE::uint8 b, XE::uint8 a /*= 1 */ )
 		:r(r), g(g), b(b), a(a)
 {
 
@@ -69,12 +69,12 @@ XE::uint32 XE::Color::GetHex() const
 	return hex;
 }
 
-void XE::Color::SetHex( uint32 val )
+void XE::Color::SetHex( XE::uint32 val )
 {
 	hex = val;
 }
 
-Color Color::Lerp( const Color &val1, const Color &val2, uint8 val )
+Color Color::Lerp( const Color &val1, const Color &val2, XE::uint8 val )
 {
 	return val1 * ( 255 - val ) + val2 * val;
 }
@@ -94,9 +94,9 @@ Color Color::operator *( const Color &val ) const
 	return Color(r * val.r, g * val.g, b * val.b, a * val.a);
 }
 
-Color Color::operator *( uint8 val ) const
+Color Color::operator *( XE::uint8 val ) const
 {
-	return ( *this ) * Color(uint8(val * 255), uint8(val * 255), uint8(val * 255), uint8(val * 255));
+	return ( *this ) * Color(XE::uint8(val * 255), XE::uint8(val * 255), XE::uint8(val * 255), XE::uint8(val * 255));
 }
 
 Color Color::operator -( const Color &val ) const
@@ -119,7 +119,7 @@ Color &Color::operator *=( const Color &val )
 	return *this;
 }
 
-Color &Color::operator *=( uint8 val )
+Color &Color::operator *=( XE::uint8 val )
 {
 	r *= val;
 	g *= val;
@@ -197,7 +197,7 @@ XE::FColor::FColor()
 {
 }
 
-XE::FColor::FColor( uint32 val )
+XE::FColor::FColor( XE::uint32 val )
 		:r((( val & 0xFF000000 ) >> 24 ) / 255.0f),
 		g((( val & 0x00FF0000 ) >> 16 ) / 255.0f),
 		b((( val & 0x0000FF00 ) >> 8 ) / 255.0f),
@@ -230,16 +230,16 @@ XE::FColor::~FColor()
 
 XE::uint32 XE::FColor::GetHex() const
 {
-	return ( uint32(r * 255.0f) << 24 ) | ( uint32(g * 255.0f) << 16 ) | ( uint32(b * 255.0f) << 8 ) |
-		   ( uint32(a * 255.0f) << 0 );
+	return ( XE::uint32(r * 255.0f) << 24 ) | ( XE::uint32(g * 255.0f) << 16 ) | ( XE::uint32(b * 255.0f) << 8 ) |
+		   ( XE::uint32(a * 255.0f) << 0 );
 }
 
-void XE::FColor::SetHex( uint32 val )
+void XE::FColor::SetHex( XE::uint32 val )
 {
-	r = uint8(( val & 0xFF000000 ) >> 24) / 255.0f;
-	g = uint8(( val & 0x00FF0000 ) >> 16) / 255.0f;
-	b = uint8(( val & 0x0000FF00 ) >> 8) / 255.0f;
-	a = uint8(( val & 0x000000FF ) >> 0) / 255.0f;
+	r = XE::uint8(( val & 0xFF000000 ) >> 24) / 255.0f;
+	g = XE::uint8(( val & 0x00FF0000 ) >> 16) / 255.0f;
+	b = XE::uint8(( val & 0x0000FF00 ) >> 8) / 255.0f;
+	a = XE::uint8(( val & 0x000000FF ) >> 0) / 255.0f;
 }
 
 FColor FColor::Lerp( const FColor &val1, const FColor &val2, XE::float32 val )

@@ -27,15 +27,15 @@ public:
 
 	XE::float32 GetDuration() const;
 
-	uint32 GetChannels() const;
+	XE::uint32 GetChannels() const;
 
-	uint32 GetSampleRate() const;
+	XE::uint32 GetSampleRate() const;
 
-	uint8 GetBytesPerSample() const;
+	XE::uint8 GetBytesPerSample() const;
 
-	uint32 GetBufferHandle() const;
+	XE::uint32 GetBufferHandle() const;
 
-	const Array<uint8>& GetBuffer() const;
+	const Array<XE::uint8>& GetBuffer() const;
 
 public:
 	virtual void Load( Archive &val ) override;
@@ -43,16 +43,16 @@ public:
 	virtual void Save( Archive &val ) const override;
 
 private:
-	int32 GetFormat();
+	XE::int32 GetFormat();
 
 private:
 	String _Name;
 	XE::float32 _Duration;
-	uint32 _Channels;
-	uint32 _SampleRate;
-	uint8 _BytesPerSample;
-	Array<uint8> _Buffer;
-	uint32 _BuffHandle;
+	XE::uint32 _Channels;
+	XE::uint32 _SampleRate;
+	XE::uint8 _BytesPerSample;
+	Array<XE::uint8> _Buffer;
+	XE::uint32 _BuffHandle;
 };
 
 END_XE_NAMESPACE

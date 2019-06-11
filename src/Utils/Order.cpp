@@ -6,7 +6,7 @@ USING_XE
 
 struct OrderInfo
 {
-	uint64 id;
+	XE::uint64 id;
 	String name;
 	String desc;
 	const IMetaInfo * info;
@@ -14,7 +14,7 @@ struct OrderInfo
 
 struct Order::Private
 {
-	std::vector< std::map<uint64, OrderInfo> > Groups;
+	std::vector< std::map<XE::uint64, OrderInfo> > Groups;
 };
 
 Order::Order()
@@ -27,9 +27,9 @@ Order::~Order()
 	delete _p;
 }
 
-XE::String XE::Order::FindOrderName( uint64 id )
+XE::String XE::Order::FindOrderName( XE::uint64 id )
 {
-	uint64 group = id >> 32;
+	XE::uint64 group = id >> 32;
 
 	auto it = This()->_p->Groups[group].find( id );
 	if ( it != This()->_p->Groups[group].end() )
@@ -40,9 +40,9 @@ XE::String XE::Order::FindOrderName( uint64 id )
 	return String();
 }
 
-XE::String XE::Order::FindOrderDesc( uint64 id )
+XE::String XE::Order::FindOrderDesc( XE::uint64 id )
 {
-	uint64 group = id >> 32;
+	XE::uint64 group = id >> 32;
 
 	auto it = This()->_p->Groups[group].find( id );
 	if ( it != This()->_p->Groups[group].end() )
@@ -53,9 +53,9 @@ XE::String XE::Order::FindOrderDesc( uint64 id )
 	return String();
 }
 
-const XE::IMetaInfo * XE::Order::FindOrderPatameter( uint64 id )
+const XE::IMetaInfo * XE::Order::FindOrderPatameter( XE::uint64 id )
 {
-	uint64 group = id >> 32;
+	XE::uint64 group = id >> 32;
 
 	auto it = This()->_p->Groups[group].find( id );
 	if ( it != This()->_p->Groups[group].end() )
@@ -66,14 +66,14 @@ const XE::IMetaInfo * XE::Order::FindOrderPatameter( uint64 id )
 	return nullptr;
 }
 
-uint64 XE::Order::RegisterOrder_P( uint64 group, const String& name, const String& desc, const IMetaInfo * parameter )
+XE::uint64 XE::Order::RegisterOrder_P( XE::uint64 group, const String& name, const String& desc, const IMetaInfo * parameter )
 {
 	if ( group >= This()->_p->Groups.size() )
 	{
 		This()->_p->Groups.resize( group + 1 );
 	}
 
-	uint64 crc = ( group << 32 ) + CRC32::GetCRC32( (uint32)group, (const uint8 *)name.ToCString(), name.Size() );
+	XE::uint64 crc = ( group << 32 ) + CRC32::GetCRC32( (XE::uint32)group, (const XE::uint8 *)name.ToCString(), name.Size() );
 
 	auto it = This()->_p->Groups[group].find( crc );
 	if ( it != This()->_p->Groups[group].end() )
@@ -98,9 +98,9 @@ uint64 XE::Order::RegisterOrder_P( uint64 group, const String& name, const Strin
 	return crc;
 }
 
-uint64 XE::Order::FindOrderID_P( uint64 group, const String& name )
+XE::uint64 XE::Order::FindOrderID_P( XE::uint64 group, const String& name )
 {
-	uint64 crc = ( group << 32 ) + CRC32::GetCRC32( (uint32)group, (const uint8 *)name.ToCString(), name.Size() );
+	XE::uint64 crc = ( group << 32 ) + CRC32::GetCRC32( (XE::uint32)group, (const XE::uint8 *)name.ToCString(), name.Size() );
 
 	auto it = This()->_p->Groups[group].find( crc );
 	if ( it != This()->_p->Groups[group].end() )
@@ -114,7 +114,7 @@ uint64 XE::Order::FindOrderID_P( uint64 group, const String& name )
 	return invalid;
 }
 
-void XE::Order::VisitOrder_P( uint64 group, std::function< void( uint64, String, String, const IMetaInfo * ) > val )
+void XE::Order::VisitOrder_P( XE::uint64 group, std::function< void( XE::uint64, String, String, const IMetaInfo * ) > val )
 {
 	for ( auto it : This()->_p->Groups[group] )
 	{

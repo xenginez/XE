@@ -12,7 +12,7 @@ XE::Layer::Layer()
 
 }
 
-XE::Layer::Layer( uint64 val )
+XE::Layer::Layer( XE::uint64 val )
 	: Value( val )
 {
 
@@ -29,7 +29,7 @@ XE::Layer::~Layer()
 
 }
 
-XE::Layer& XE::Layer::operator=( uint64 val )
+XE::Layer& XE::Layer::operator=( XE::uint64 val )
 {
 	Value = val;
 	return *this;
@@ -41,7 +41,7 @@ XE::Layer& XE::Layer::operator=( const Layer& val )
 	return *this;
 }
 
-XE::Layer& XE::Layer::operator|=( uint64 val )
+XE::Layer& XE::Layer::operator|=( XE::uint64 val )
 {
 	Value |= val;
 	return *this;
@@ -53,7 +53,7 @@ XE::Layer& XE::Layer::operator|=( const Layer& val )
 	return *this;
 }
 
-XE::Layer& XE::Layer::operator&=( uint64 val )
+XE::Layer& XE::Layer::operator&=( XE::uint64 val )
 {
 	Value &= val;
 	return *this;
@@ -65,7 +65,7 @@ XE::Layer& XE::Layer::operator&=( const Layer& val )
 	return *this;
 }
 
-bool XE::Layer::operator||( uint64 val ) const
+bool XE::Layer::operator||( XE::uint64 val ) const
 {
 	return Value || val;
 }
@@ -75,7 +75,7 @@ bool XE::Layer::operator||( const Layer& val ) const
 	return Value || val.Value;
 }
 
-bool XE::Layer::operator&&( uint64 val ) const
+bool XE::Layer::operator&&( XE::uint64 val ) const
 {
 	return Value && val;
 }
@@ -85,7 +85,7 @@ bool XE::Layer::operator&&( const Layer& val ) const
 	return Value && val.Value;
 }
 
-bool XE::Layer::operator==( uint64 val ) const
+bool XE::Layer::operator==( XE::uint64 val ) const
 {
 	return Value == val;
 }
@@ -95,7 +95,7 @@ bool XE::Layer::operator==( const Layer& val ) const
 	return Value == val.Value;
 }
 
-bool XE::Layer::operator!=( uint64 val ) const
+bool XE::Layer::operator!=( XE::uint64 val ) const
 {
 	return Value != val;
 }

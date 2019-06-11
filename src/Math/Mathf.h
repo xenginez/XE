@@ -524,8 +524,8 @@ public:
 		}
 		else
 		{
-			static uint32 nextLookup[3] = { 1, 2, 0 };
-			uint32 i = 0;
+			static XE::uint32 nextLookup[3] = { 1, 2, 0 };
+			XE::uint32 i = 0;
 
 			if ( mat[1][1] > mat[0][0] )
 				i = 1;
@@ -533,8 +533,8 @@ public:
 			if ( mat[2][2] > mat[i][i] )
 				i = 2;
 
-			uint32 j = nextLookup[i];
-			uint32 k = nextLookup[j];
+			XE::uint32 j = nextLookup[i];
+			XE::uint32 k = nextLookup[j];
 
 			root = Sqrt( mat[i][i] - mat[j][j] - mat[k][k] + 1.0f );
 
@@ -1032,9 +1032,9 @@ public:
 	static inline Mat3 Transpose( const Mat3 & val )
 	{
 		Mat3 ret;
-		for ( uint32 row = 0; row < 3; row++ )
+		for ( XE::uint32 row = 0; row < 3; row++ )
 		{
-			for ( uint32 col = 0; col < 3; col++ )
+			for ( XE::uint32 col = 0; col < 3; col++ )
 				ret[row][col] = val[col][row];
 		}
 		return ret;
@@ -1060,9 +1060,9 @@ public:
 			return Mat3::Identity;
 
 		XE::float32 invDet = 1.0f / det;
-		for ( uint32 row = 0; row < 3; row++ )
+		for ( XE::uint32 row = 0; row < 3; row++ )
 		{
-			for ( uint32 col = 0; col < 3; col++ )
+			for ( XE::uint32 col = 0; col < 3; col++ )
 				ret[row][col] *= invDet;
 		}
 
@@ -1191,7 +1191,7 @@ public:
 			d30, d31, d32, d33 };
 	}
 
-	static inline XE::float32 MINOR( const Mat4& m, const uint32 r0, const uint32 r1, const uint32 r2, const uint32 c0, const uint32 c1, const uint32 c2 )
+	static inline XE::float32 MINOR( const Mat4& m, const XE::uint32 r0, const XE::uint32 r1, const XE::uint32 r2, const XE::uint32 c0, const XE::uint32 c1, const XE::uint32 c2 )
 	{
 		return m[r0][c0] * ( m[r1][c1] * m[r2][c2] - m[r2][c1] * m[r1][c2] ) -
 			m[r0][c1] * ( m[r1][c0] * m[r2][c2] - m[r2][c0] * m[r1][c2] ) +
@@ -1443,8 +1443,8 @@ public:
 
 		if ( fDet < 0.0f )
 		{
-			for ( uint32 row = 0; row < 3; row++ )
-				for ( uint32 col = 0; col < 3; col++ )
+			for ( XE::uint32 row = 0; row < 3; row++ )
+				for ( XE::uint32 col = 0; col < 3; col++ )
 					matQ[row][col] = -matQ[row][col];
 		}
 

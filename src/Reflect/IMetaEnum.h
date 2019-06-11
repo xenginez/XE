@@ -25,17 +25,17 @@ public:
 public:
 	XE::uint64 GetEnumCount() const;
 
-	String FindName( int64 val ) const;
+	String FindName( XE::int64 val ) const;
 
-	int64 FindValue( const String& val ) const;
+	XE::int64 FindValue( const String& val ) const;
 
-	void Visit( std::function<void( String, int64 )> val ) const;
+	void Visit( std::function<void( String, XE::int64 )> val ) const;
 
 protected:
-	void _RegisterValue( const String& Name, int64 Val );
+	void _RegisterValue( const String& Name, XE::int64 Val );
 
 private:
-	Array< Pair<String, int64> > _Values;
+	Array< Pair<String, XE::int64> > _Values;
 };
 
 END_XE_NAMESPACE

@@ -21,13 +21,13 @@ public:
 	{
 	}
 	
-	MemoryView( uint8 * data, uint64 size )
+	MemoryView( XE::uint8 * data, XE::uint64 size )
 			:_Size(size), _Data(data)
 	{
 	}
 	
 public:
-	uint64 Size() const
+	XE::uint64 Size() const
 	{
 		return _Size;
 	}
@@ -38,8 +38,8 @@ public:
 	}
 
 private:
-	uint64 _Size;
-	uint8 * _Data;
+	XE::uint64 _Size;
+	XE::uint8 * _Data;
 	
 };
 

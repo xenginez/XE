@@ -52,8 +52,8 @@ public:
 	virtual void OnUpdate( XE::float32 dt ) override;
 
 private:
-	int64 _Count;
-	int64 _Tally;
+	XE::int64 _Count;
+	XE::int64 _Tally;
 };
 
 class AI_API BTSuccessNode : public BTDecoratorNode

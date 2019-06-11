@@ -127,7 +127,7 @@ void XE::Rect::Transform( const Mat4& val )
 	verts[2] = Vec4( x, y + height, 0.0f, 1.0f );
 	verts[3] = Vec4( x + width, y + height, 0.0f, 1.0f );
 
-	for ( uint32 i = 0; i < 4; i++ )
+	for ( XE::uint32 i = 0; i < 4; i++ )
 		verts[i] = val * verts[i];
 
 	XE::float32 minX = std::numeric_limits<XE::float32>::max();
@@ -135,7 +135,7 @@ void XE::Rect::Transform( const Mat4& val )
 	XE::float32 minY = std::numeric_limits<XE::float32>::max();
 	XE::float32 maxY = std::numeric_limits<XE::float32>::min();
 
-	for ( uint32 i = 0; i < 4; i++ )
+	for ( XE::uint32 i = 0; i < 4; i++ )
 	{
 		if ( verts[i].x < minX )
 			minX = verts[i].x;

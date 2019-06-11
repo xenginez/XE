@@ -90,7 +90,7 @@ std::pair<bool, XE::float32> XE::Ray::Intersect( const Vec3& a, const Vec3& b, c
 		}
 	}
 
-	uint32 i0, i1;
+	XE::uint32 i0, i1;
 	{
 		XE::float32 n0 = Mathf::Abs( normal[0] );
 		XE::float32 n1 = Mathf::Abs( normal[1] );

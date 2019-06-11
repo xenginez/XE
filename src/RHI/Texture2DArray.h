@@ -23,10 +23,10 @@ public:
 	~Texture2DArray() override;
 
 public:
-	uint32 GetSize() const;
+	XE::uint32 GetSize() const;
 
 private:
-	uint32 _Size;
+	XE::uint32 _Size;
 };
 
 END_XE_NAMESPACE

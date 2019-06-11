@@ -34,16 +34,16 @@ XE::ArchiveLoad::ArchiveLoad( std::istream& val )
 	auto pos = _Stream.tellg();
 	_Stream.seekg( 0, std::ostream::beg );
 
-	uint32 flag = 0;
-	Serialize( &flag, sizeof( uint32 ) );
+	XE::uint32 flag = 0;
+	Serialize( &flag, sizeof( XE::uint32 ) );
 
 	_IsConvert = ( flag != 0x12345678 );
 
-	uint64 version;
-	_Stream.read( (char *)&version, sizeof( uint64 ) );
+	XE::uint64 version;
+	_Stream.read( (char *)&version, sizeof( XE::uint64 ) );
 	if ( _IsConvert )
 	{
-		uint8 * buf = (uint8*)&version;
+		XE::uint8 * buf = (XE::uint8*)&version;
 		std::swap( buf[0], buf[7] );
 		std::swap( buf[1], buf[6] );
 		std::swap( buf[2], buf[5] );
@@ -67,43 +67,43 @@ void XE::ArchiveLoad::Serialize( bool * ptr )
 	_Stream.read( (char *)ptr, sizeof( bool ) );
 }
 
-void XE::ArchiveLoad::Serialize( int8 * ptr )
+void XE::ArchiveLoad::Serialize( XE::int8 * ptr )
 {
-	_Stream.read( (char *)ptr, sizeof( int8 ) );
+	_Stream.read( (char *)ptr, sizeof( XE::int8 ) );
 }
 
-void XE::ArchiveLoad::Serialize( int16 * ptr )
+void XE::ArchiveLoad::Serialize( XE::int16 * ptr )
 {
-	_Stream.read( (char *)ptr, sizeof( int8 ) );
+	_Stream.read( (char *)ptr, sizeof( XE::int8 ) );
 
 	if ( _IsConvert )
 	{
-		uint8 * buf = (uint8*)ptr;
+		XE::uint8 * buf = (XE::uint8*)ptr;
 
 		std::swap( buf[0], buf[1] );
 	}
 }
 
-void XE::ArchiveLoad::Serialize( int32 * ptr )
+void XE::ArchiveLoad::Serialize( XE::int32 * ptr )
 {
-	_Stream.read( (char *)ptr, sizeof( int32 ) );
+	_Stream.read( (char *)ptr, sizeof( XE::int32 ) );
 
 	if ( _IsConvert )
 	{
-		uint8 * buf = (uint8*)ptr;
+		XE::uint8 * buf = (XE::uint8*)ptr;
 
 		std::swap( buf[0], buf[3] );
 		std::swap( buf[1], buf[2] );
 	}
 }
 
-void XE::ArchiveLoad::Serialize( int64 * ptr )
+void XE::ArchiveLoad::Serialize( XE::int64 * ptr )
 {
-	_Stream.read( (char *)ptr, sizeof( int64 ) );
+	_Stream.read( (char *)ptr, sizeof( XE::int64 ) );
 
 	if ( _IsConvert )
 	{
-		uint8 * buf = (uint8*)ptr;
+		XE::uint8 * buf = (XE::uint8*)ptr;
 
 		std::swap( buf[0], buf[7] );
 		std::swap( buf[1], buf[6] );
@@ -112,43 +112,43 @@ void XE::ArchiveLoad::Serialize( int64 * ptr )
 	}
 }
 
-void XE::ArchiveLoad::Serialize( uint8 * ptr )
+void XE::ArchiveLoad::Serialize( XE::uint8 * ptr )
 {
-	_Stream.read( (char *)ptr, sizeof( uint8 ) );
+	_Stream.read( (char *)ptr, sizeof( XE::uint8 ) );
 }
 
-void XE::ArchiveLoad::Serialize( uint16 * ptr )
+void XE::ArchiveLoad::Serialize( XE::uint16 * ptr )
 {
-	_Stream.read( (char *)ptr, sizeof( uint16 ) );
+	_Stream.read( (char *)ptr, sizeof( XE::uint16 ) );
 
 	if ( _IsConvert )
 	{
-		uint8 * buf = (uint8*)ptr;
+		XE::uint8 * buf = (XE::uint8*)ptr;
 
 		std::swap( buf[0], buf[1] );
 	}
 }
 
-void XE::ArchiveLoad::Serialize( uint32 * ptr )
+void XE::ArchiveLoad::Serialize( XE::uint32 * ptr )
 {
-	_Stream.read( (char *)ptr, sizeof( uint32 ) );
+	_Stream.read( (char *)ptr, sizeof( XE::uint32 ) );
 
 	if ( _IsConvert )
 	{
-		uint8 * buf = (uint8*)ptr;
+		XE::uint8 * buf = (XE::uint8*)ptr;
 
 		std::swap( buf[0], buf[3] );
 		std::swap( buf[1], buf[2] );
 	}
 }
 
-void XE::ArchiveLoad::Serialize( uint64 * ptr )
+void XE::ArchiveLoad::Serialize( XE::uint64 * ptr )
 {
-	_Stream.read( (char *)ptr, sizeof( uint64 ) );
+	_Stream.read( (char *)ptr, sizeof( XE::uint64 ) );
 
 	if ( _IsConvert )
 	{
-		uint8 * buf = (uint8*)ptr;
+		XE::uint8 * buf = (XE::uint8*)ptr;
 
 		std::swap( buf[0], buf[7] );
 		std::swap( buf[1], buf[6] );
@@ -163,7 +163,7 @@ void XE::ArchiveLoad::Serialize( XE::float32 * ptr )
 
 	if ( _IsConvert )
 	{
-		uint8 * buf = (uint8*)ptr;
+		XE::uint8 * buf = (XE::uint8*)ptr;
 
 		std::swap( buf[0], buf[3] );
 		std::swap( buf[1], buf[2] );
@@ -176,7 +176,7 @@ void XE::ArchiveLoad::Serialize( XE::float64 * ptr )
 
 	if ( _IsConvert )
 	{
-		uint8 * buf = (uint8*)ptr;
+		XE::uint8 * buf = (XE::uint8*)ptr;
 
 		std::swap( buf[0], buf[7] );
 		std::swap( buf[1], buf[6] );
@@ -195,10 +195,10 @@ XE::ArchiveSave::ArchiveSave( std::ostream& val )
 {
 	if (_Stream.tellp() == 0)
 	{
-		uint32 flag = 0x12345678;
-		Serialize( &flag, sizeof( uint32 ) );
-		uint64 version = Version;
-		Serialize( &version, sizeof( uint64 ) );
+		XE::uint32 flag = 0x12345678;
+		Serialize( &flag, sizeof( XE::uint32 ) );
+		XE::uint64 version = Version;
+		Serialize( &version, sizeof( XE::uint64 ) );
 	}
 }
 
@@ -212,44 +212,44 @@ void XE::ArchiveSave::Serialize( bool * ptr )
 	_Stream.write( (const char *)ptr, sizeof( bool ) );
 }
 
-void XE::ArchiveSave::Serialize( int8 * ptr )
+void XE::ArchiveSave::Serialize( XE::int8 * ptr )
 {
-	_Stream.write( (const char *)ptr, sizeof( int8 ) );
+	_Stream.write( (const char *)ptr, sizeof( XE::int8 ) );
 }
 
-void XE::ArchiveSave::Serialize( int16 * ptr )
+void XE::ArchiveSave::Serialize( XE::int16 * ptr )
 {
-	_Stream.write( (const char *)ptr, sizeof( int16 ) );
+	_Stream.write( (const char *)ptr, sizeof( XE::int16 ) );
 }
 
-void XE::ArchiveSave::Serialize( int32 * ptr )
+void XE::ArchiveSave::Serialize( XE::int32 * ptr )
 {
-	_Stream.write( (const char *)ptr, sizeof( int32 ) );
+	_Stream.write( (const char *)ptr, sizeof( XE::int32 ) );
 }
 
-void XE::ArchiveSave::Serialize( int64 * ptr )
+void XE::ArchiveSave::Serialize( XE::int64 * ptr )
 {
-	_Stream.write( (const char *)ptr, sizeof( int64 ) );
+	_Stream.write( (const char *)ptr, sizeof( XE::int64 ) );
 }
 
-void XE::ArchiveSave::Serialize( uint8 * ptr )
+void XE::ArchiveSave::Serialize( XE::uint8 * ptr )
 {
-	_Stream.write( (const char *)ptr, sizeof( uint8 ) );
+	_Stream.write( (const char *)ptr, sizeof( XE::uint8 ) );
 }
 
-void XE::ArchiveSave::Serialize( uint16 * ptr )
+void XE::ArchiveSave::Serialize( XE::uint16 * ptr )
 {
-	_Stream.write( (const char *)ptr, sizeof( uint16 ) );
+	_Stream.write( (const char *)ptr, sizeof( XE::uint16 ) );
 }
 
-void XE::ArchiveSave::Serialize( uint32 * ptr )
+void XE::ArchiveSave::Serialize( XE::uint32 * ptr )
 {
-	_Stream.write( (const char *)ptr, sizeof( uint32 ) );
+	_Stream.write( (const char *)ptr, sizeof( XE::uint32 ) );
 }
 
-void XE::ArchiveSave::Serialize( uint64 * ptr )
+void XE::ArchiveSave::Serialize( XE::uint64 * ptr )
 {
-	_Stream.write( (const char *)ptr, sizeof( uint64 ) );
+	_Stream.write( (const char *)ptr, sizeof( XE::uint64 ) );
 }
 
 void XE::ArchiveSave::Serialize( XE::float32 * ptr )

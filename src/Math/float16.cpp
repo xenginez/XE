@@ -117,20 +117,20 @@ XE::float32 XE::float16::ToFloat32() const
 		struct
 		{
 #if ENDIAN == ENDIAN_LITTLE
-			uint32 mantissa
+			XE::uint32 mantissa
 					: 23;
-			uint16 exponent
+			XE::uint16 exponent
 					: 8;
-			uint16 sign
+			XE::uint16 sign
 					: 1;
 #else
-			uint16 sign : 1;
-			uint16 exponent : 8;
-			uint16 mantissa : 23;
+			XE::uint16 sign : 1;
+			XE::uint16 exponent : 8;
+			XE::uint16 mantissa : 23;
 #endif
 		};
 		
-		float32 encode;
+		XE::float32 encode;
 	};
 	
 	_float32 f{};
@@ -149,20 +149,20 @@ void XE::float16::FormFloat32( XE::float32 val )
 		struct
 		{
 #if ENDIAN == ENDIAN_LITTLE
-			uint32 mantissa
+			XE::uint32 mantissa
 					: 23;
-			uint16 exponent
+			XE::uint16 exponent
 					: 8;
-			uint16 sign
+			XE::uint16 sign
 					: 1;
 #else
-			uint16 sign : 1;
-			uint16 exponent : 8;
-			uint16 mantissa : 23;
+			XE::uint16 sign : 1;
+			XE::uint16 exponent : 8;
+			XE::uint16 mantissa : 23;
 #endif
 		};
 		
-		float32 encode;
+		XE::float32 encode;
 	};
 	
 	_float32 f{};

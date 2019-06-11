@@ -69,7 +69,7 @@ private:
 	XE::float32 _Pitch = 1.0f;
 
 	String _SoundPath;
-	uint32 _SourceHandle = 0;
+	XE::uint32 _SourceHandle = 0;
 	AudioSoundPtr _Sound;
 	XE::float32 _SoundPlayDt = 0;
 };

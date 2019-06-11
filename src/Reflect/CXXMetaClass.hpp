@@ -100,31 +100,31 @@ public:
 		_RegisterMethod( method );
 	}
 
-	template< typename Value > void Property( const String& Name, Value * Prop, uint8 Flag = IMetaProperty::Default )
+	template< typename Value > void Property( const String& Name, Value * Prop, XE::uint8 Flag = IMetaProperty::Default )
 	{
 		auto prop = XE::make_shared<CXXMetaProperty<Value>>( Name, Prop, Flag, SP_CAST<IMetaClass>( shared_from_this() ) );
 		_RegisterProperty( prop );
 	}
 
-	template< typename Value > void Property( const String& Name, Value( ClassType::*Prop ), uint8 Flag = IMetaProperty::Default )
+	template< typename Value > void Property( const String& Name, Value( ClassType::*Prop ), XE::uint8 Flag = IMetaProperty::Default )
 	{
 		auto prop = XE::make_shared<CXXMetaProperty<Value( ClassType::* )>>( Name, Prop, Flag, SP_CAST<IMetaClass>( shared_from_this() ) );
 		_RegisterProperty( prop );
 	}
 
-	template< typename GetType, typename SetType > void Property( const String& Name, GetType( *Get )( ), void( *Set )( SetType ), uint8 Flag = IMetaProperty::Default )
+	template< typename GetType, typename SetType > void Property( const String& Name, GetType( *Get )( ), void( *Set )( SetType ), XE::uint8 Flag = IMetaProperty::Default )
 	{
 		auto prop = XE::make_shared<CXXMetaProperty<GetType( *)( ), void( *)( SetType )>>( Name, Get, Set, Flag, SP_CAST<IMetaClass>( shared_from_this() ) );
 		_RegisterProperty( prop );
 	}
 
-	template< typename GetType, typename SetType > void Property( const String& Name, GetType( ClassType::*Get )( ), void( ClassType::*Set )( SetType ), uint8 Flag = IMetaProperty::Default )
+	template< typename GetType, typename SetType > void Property( const String& Name, GetType( ClassType::*Get )( ), void( ClassType::*Set )( SetType ), XE::uint8 Flag = IMetaProperty::Default )
 	{
 		auto prop = XE::make_shared<CXXMetaProperty<GetType( ClassType::* )( ), void( ClassType::* )( SetType )>>( Name, Get, Set, Flag, SP_CAST<IMetaClass>( shared_from_this() ) );
 		_RegisterProperty( prop );
 	}
 
-	template< typename GetType, typename SetType > void Property( const String& Name, GetType( ClassType::*Get )( ) const, void( ClassType::*Set )( SetType ), uint8 Flag = IMetaProperty::Default )
+	template< typename GetType, typename SetType > void Property( const String& Name, GetType( ClassType::*Get )( ) const, void( ClassType::*Set )( SetType ), XE::uint8 Flag = IMetaProperty::Default )
 	{
 		auto prop = XE::make_shared<CXXMetaProperty<GetType( ClassType::* )( ) const, void( ClassType::* )( SetType )>>( Name, Get, Set, Flag, SP_CAST<IMetaClass>( shared_from_this() ) );
 		_RegisterProperty( prop );
@@ -270,74 +270,74 @@ template<> struct REFLECT_API ClassID< bool >
 	}
 };
 
-template<> struct REFLECT_API ClassID< int8 >
+template<> struct REFLECT_API ClassID< XE::int8 >
 {
-	static IMetaClassPtr Get( const int8 * val = nullptr )
+	static IMetaClassPtr Get( const XE::int8 * val = nullptr )
 	{
-		static auto meta = XE::make_shared< CXXMetaFundamental<int8> >( "int8" );
+		static auto meta = XE::make_shared< CXXMetaFundamental<XE::int8> >( "XE::int8" );
 		return meta;
 	}
 };
 
-template<> struct REFLECT_API ClassID< int16 >
+template<> struct REFLECT_API ClassID< XE::int16 >
 {
-	static IMetaClassPtr Get( const int16 * val = nullptr )
+	static IMetaClassPtr Get( const XE::int16 * val = nullptr )
 	{
-		static auto meta = XE::make_shared< CXXMetaFundamental<int16> >( "int16" );
+		static auto meta = XE::make_shared< CXXMetaFundamental<XE::int16> >( "XE::int16" );
 		return meta;
 	}
 };
 
-template<> struct REFLECT_API ClassID< int32 >
+template<> struct REFLECT_API ClassID< XE::int32 >
 {
-	static IMetaClassPtr Get( const int32 * val = nullptr )
+	static IMetaClassPtr Get( const XE::int32 * val = nullptr )
 	{
-		static auto meta = XE::make_shared< CXXMetaFundamental<int32> >( "int32" );
+		static auto meta = XE::make_shared< CXXMetaFundamental<XE::int32> >( "XE::int32" );
 		return meta;
 	}
 };
 
-template<> struct REFLECT_API ClassID< int64 >
+template<> struct REFLECT_API ClassID< XE::int64 >
 {
-	static IMetaClassPtr Get( const int64 * val = nullptr )
+	static IMetaClassPtr Get( const XE::int64 * val = nullptr )
 	{
-		static auto meta = XE::make_shared< CXXMetaFundamental<int64> >( "int64" );
+		static auto meta = XE::make_shared< CXXMetaFundamental<XE::int64> >( "XE::int64" );
 		return meta;
 	}
 };
 
-template<> struct REFLECT_API ClassID< uint8 >
+template<> struct REFLECT_API ClassID< XE::uint8 >
 {
-	static IMetaClassPtr Get( const uint8 * val = nullptr )
+	static IMetaClassPtr Get( const XE::uint8 * val = nullptr )
 	{
-		static auto meta = XE::make_shared< CXXMetaFundamental<uint8> >( "uint8" );
+		static auto meta = XE::make_shared< CXXMetaFundamental<XE::uint8> >( "XE::uint8" );
 		return meta;
 	}
 };
 
-template<> struct REFLECT_API ClassID< uint16 >
+template<> struct REFLECT_API ClassID< XE::uint16 >
 {
-	static IMetaClassPtr Get( const uint16 * val = nullptr )
+	static IMetaClassPtr Get( const XE::uint16 * val = nullptr )
 	{
-		static auto meta = XE::make_shared< CXXMetaFundamental<uint16> >( "uint16" );
+		static auto meta = XE::make_shared< CXXMetaFundamental<XE::uint16> >( "XE::uint16" );
 		return meta;
 	}
 };
 
-template<> struct REFLECT_API ClassID< uint32 >
+template<> struct REFLECT_API ClassID< XE::uint32 >
 {
-	static IMetaClassPtr Get( const uint32 * val = nullptr )
+	static IMetaClassPtr Get( const XE::uint32 * val = nullptr )
 	{
-		static auto meta = XE::make_shared< CXXMetaFundamental<uint32> >( "uint32" );
+		static auto meta = XE::make_shared< CXXMetaFundamental<XE::uint32> >( "XE::uint32" );
 		return meta;
 	}
 };
 
-template<> struct REFLECT_API ClassID< uint64 >
+template<> struct REFLECT_API ClassID< XE::uint64 >
 {
-	static IMetaClassPtr Get( const uint64 * val = nullptr )
+	static IMetaClassPtr Get( const XE::uint64 * val = nullptr )
 	{
-		static auto meta = XE::make_shared< CXXMetaFundamental<uint64> >( "uint64" );
+		static auto meta = XE::make_shared< CXXMetaFundamental<XE::uint64> >( "XE::uint64" );
 		return meta;
 	}
 };
@@ -346,7 +346,7 @@ template<> struct REFLECT_API ClassID< XE::float32 >
 {
 	static IMetaClassPtr Get( const XE::float32 * val = nullptr )
 	{
-		static auto meta = XE::make_shared< CXXMetaFundamental<XE::float32> >( "float32" );
+		static auto meta = XE::make_shared< CXXMetaFundamental<XE::float32> >( "XE::float32" );
 		return meta;
 	}
 };
@@ -355,7 +355,7 @@ template<> struct REFLECT_API ClassID< XE::float64 >
 {
 	static IMetaClassPtr Get( const XE::float64 * val = nullptr )
 	{
-		static auto meta = XE::make_shared< CXXMetaFundamental<uint64> >( "float64" );
+		static auto meta = XE::make_shared< CXXMetaFundamental<XE::uint64> >( "XE::float64" );
 		return meta;
 	}
 };

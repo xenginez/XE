@@ -27,37 +27,37 @@ public:
 	
 	bool GetBool( const String& key, bool def = false ) const;
 
-	void SetInt8( const String& key, int8 val );
+	void SetInt8( const String& key, XE::int8 val );
 	
-	int8 GetInt8( const String& key, int8 def = 0 ) const;
+	XE::int8 GetInt8( const String& key, XE::int8 def = 0 ) const;
 
-	void SetInt16( const String& key, int16 val );
+	void SetInt16( const String& key, XE::int16 val );
 	
-	int16 GetInt16( const String& key, int16 def = 0 ) const;
+	XE::int16 GetInt16( const String& key, XE::int16 def = 0 ) const;
 
-	void SetInt32( const String& key, int32 val );
+	void SetInt32( const String& key, XE::int32 val );
 	
-	int32 GetInt32( const String& key, int32 def = 0 ) const;
+	XE::int32 GetInt32( const String& key, XE::int32 def = 0 ) const;
 
-	void SetInt64( const String& key, int64 val );
+	void SetInt64( const String& key, XE::int64 val );
 	
-	int64 GetInt64( const String& key, int64 def = 0 ) const;
+	XE::int64 GetInt64( const String& key, XE::int64 def = 0 ) const;
 
-	void  SetUInt8( const String& key, uint8 val );
+	void  SetUInt8( const String& key, XE::uint8 val );
 	
-	uint8  GetUInt8( const String& key, uint8 def = 0 ) const;
+	XE::uint8  GetUInt8( const String& key, XE::uint8 def = 0 ) const;
 
-	void SetUInt16( const String& key, uint16 val );
+	void SetUInt16( const String& key, XE::uint16 val );
 	
-	uint16 GetUInt16( const String& key, uint16 def = 0 ) const;
+	XE::uint16 GetUInt16( const String& key, XE::uint16 def = 0 ) const;
 
-	void SetUInt32( const String& key, uint32 val );
+	void SetUInt32( const String& key, XE::uint32 val );
 	
-	uint32 GetUInt32( const String& key, uint32 def = 0 ) const;
+	XE::uint32 GetUInt32( const String& key, XE::uint32 def = 0 ) const;
 
-	void SetUInt64( const String& key, uint64 val );
+	void SetUInt64( const String& key, XE::uint64 val );
 	
-	uint64 GetUInt64( const String& key, uint64 def = 0 ) const;
+	XE::uint64 GetUInt64( const String& key, XE::uint64 def = 0 ) const;
 
 	void SetFloat32( const String& key, XE::float32 val );
 	

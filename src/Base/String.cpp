@@ -131,42 +131,42 @@ String& String::operator+=( XE::float32 val )
 	return *this += std::to_string( val );
 }
 
-String& String::operator+=( uint64 val )
+String& String::operator+=( XE::uint64 val )
 {
 	return *this += std::to_string( val );
 }
 
-String& String::operator+=( uint32 val )
+String& String::operator+=( XE::uint32 val )
 {
 	return *this += std::to_string( val );
 }
 
-String& String::operator+=( uint16 val )
+String& String::operator+=( XE::uint16 val )
 {
 	return *this += std::to_string( val );
 }
 
-String& String::operator+=( uint8 val )
+String& String::operator+=( XE::uint8 val )
 {
 	return *this += std::to_string( val );
 }
 
-String& String::operator+=( int64 val )
+String& String::operator+=( XE::int64 val )
 {
 	return *this += std::to_string( val );
 }
 
-String& String::operator+=( int32 val )
+String& String::operator+=( XE::int32 val )
 {
 	return *this += std::to_string( val );
 }
 
-String& String::operator+=( int16 val )
+String& String::operator+=( XE::int16 val )
 {
 	return *this += std::to_string( val );
 }
 
-String& String::operator+=( int8 val )
+String& String::operator+=( XE::int8 val )
 {
 	return *this += std::to_string( val );
 }
@@ -201,42 +201,42 @@ String String::operator+( XE::float32 val ) const
 	return *this + std::to_string( val );
 }
 
-String String::operator+( uint64 val ) const
+String String::operator+( XE::uint64 val ) const
 {
 	return *this + std::to_string( val );
 }
 
-String String::operator+( uint32 val ) const
+String String::operator+( XE::uint32 val ) const
 {
 	return *this + std::to_string( val );
 }
 
-String String::operator+( uint16 val ) const
+String String::operator+( XE::uint16 val ) const
 {
 	return *this + std::to_string( val );
 }
 
-String String::operator+( uint8 val ) const
+String String::operator+( XE::uint8 val ) const
 {
 	return *this + std::to_string( val );
 }
 
-String String::operator+( int64 val ) const
+String String::operator+( XE::int64 val ) const
 {
 	return *this + std::to_string( val );
 }
 
-String String::operator+( int32 val ) const
+String String::operator+( XE::int32 val ) const
 {
 	return *this + std::to_string( val );
 }
 
-String String::operator+( int16 val ) const
+String String::operator+( XE::int16 val ) const
 {
 	return *this + std::to_string( val );
 }
 
-String String::operator+( int8 val ) const
+String String::operator+( XE::int8 val ) const
 {
 	return *this + std::to_string( val );
 }

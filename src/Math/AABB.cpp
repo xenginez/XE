@@ -348,9 +348,9 @@ void XE::AABB::TransformAffine( const Mat4& val )
 	Vec3 min = Mathf::Translation( val );
 	Vec3 max = Mathf::Translation( val );
 
-	for ( uint32 i = 0; i < 3; i++ )
+	for ( XE::uint32 i = 0; i < 3; i++ )
 	{
-		for ( uint32 j = 0; j < 3; j++ )
+		for ( XE::uint32 j = 0; j < 3; j++ )
 		{
 			XE::float32 e = val[i][j] * this->min[j];
 			XE::float32 f = val[i][j] * this->max[j];

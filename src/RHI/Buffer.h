@@ -30,9 +30,9 @@ public:
 
     void Unmap();
 
-    uint64 GetSize() const;
+    XE::uint64 GetSize() const;
 
-    uint64 GetGPUAddress() const;
+    XE::uint64 GetGPUAddress() const;
 
     AccessType GetCPUAccess() const;
 

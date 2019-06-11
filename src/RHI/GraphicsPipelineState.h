@@ -63,9 +63,9 @@ private:
 
 	void SetPrimitiveTopology(XE::TopologyType val);
 
-	uint32 GetSampleMask() const;
+	XE::uint32 GetSampleMask() const;
 
-	void SetSampleMask(uint32 val);
+	void SetSampleMask(XE::uint32 val);
 
 	FrameBufferPtr GetFrameBuffer() const;
 
@@ -85,7 +85,7 @@ private:
 	InputLayoutPtr _InputLayout;
 	TopologyType _PrimitiveTopology;
 
-	uint32 _SampleMask;
+	XE::uint32 _SampleMask;
 
 	FrameBufferPtr _FBO;
 };

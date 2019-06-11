@@ -35,11 +35,11 @@ public:
 	
 	void SetAlphaToCoverageEnabled( bool val );
 	
-	uint64 GetRenderTargetCount() const;
+	XE::uint64 GetRenderTargetCount() const;
 	
-	RenderTargetPtr GetRenderTarget( uint64 index ) const;
+	RenderTargetPtr GetRenderTarget( XE::uint64 index ) const;
 	
-	void SetRenderTarget( uint64 index, const RenderTargetPtr &val );
+	void SetRenderTarget( XE::uint64 index, const RenderTargetPtr &val );
 
 private:
 	Vec4 _BlendFactor;

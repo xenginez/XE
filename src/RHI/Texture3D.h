@@ -23,10 +23,10 @@ public:
 	~Texture3D() override;
 
 public:
-	uint32 GetDepth( uint32 mip = 1) const;
+	XE::uint32 GetDepth( XE::uint32 mip = 1) const;
 
 private:
-	uint32 _Depth;
+	XE::uint32 _Depth;
 };
 
 END_XE_NAMESPACE

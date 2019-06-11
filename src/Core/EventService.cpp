@@ -48,7 +48,7 @@ template<> struct std::less<XEPFrameEvent>
 
 struct EventService::Private
 {
-	using MapType = tbb::concurrent_hash_map<uint64, tbb::concurrent_vector< IEventService::ListenerType>>;
+	using MapType = tbb::concurrent_hash_map<XE::uint64, tbb::concurrent_vector< IEventService::ListenerType>>;
 
 	MapType _Maps;
 
@@ -126,7 +126,7 @@ void XE::EventService::PostEvent( XE::float32 dt, EventPtr val )
 	_p->_TimeEvents.push( std::move( evt ) );
 }
 
-XE::uint64 XE::EventService::RegisterListener( uint32 event, ListenerType listener )
+XE::uint64 XE::EventService::RegisterListener( XE::uint32 event, ListenerType listener )
 {
 	Private::MapType::accessor it;
 
@@ -147,7 +147,7 @@ XE::uint64 XE::EventService::RegisterListener( uint32 event, ListenerType listen
 	return 0;
 }
 
-void XE::EventService::UnregisterListener( uint32 event, XE::uint64 index )
+void XE::EventService::UnregisterListener( XE::uint32 event, XE::uint64 index )
 {
 	Private::MapType::accessor it;
 

@@ -39,30 +39,30 @@ public:
 	{
 		struct
 		{
-			uint8 r, g, b, a;
+			XE::uint8 r, g, b, a;
 		};
 		
-		uint8 d[4];
-		uint32 hex;
+		XE::uint8 d[4];
+		XE::uint32 hex;
 	};
 
 public:
 	Color();
 
-	Color( uint32 val );
+	Color( XE::uint32 val );
 
 	Color( const Color& val );
 	
 	Color( const FColor& val );
 
-	Color( uint8 r, uint8 g, uint8 b, uint8 a = 1 );
+	Color( XE::uint8 r, XE::uint8 g, XE::uint8 b, XE::uint8 a = 1 );
 
 	~Color();
 
 public:
 	Color& operator=( const Color& val );
 
-	Color& operator *=( uint8 val );
+	Color& operator *=( XE::uint8 val );
 
 	Color& operator *=( const Color& val );
 
@@ -70,7 +70,7 @@ public:
 
 	Color& operator -=( const Color& val );
 
-	Color operator *( uint8 val ) const;
+	Color operator *( XE::uint8 val ) const;
 
 	Color operator *( const Color& val ) const;
 
@@ -86,12 +86,12 @@ public:
 	friend Color operator *( XE::float32 a, const Color& b );
 
 public:
-	uint32 GetHex() const;
+	XE::uint32 GetHex() const;
 
-	void SetHex( uint32 val );
+	void SetHex( XE::uint32 val );
 
 public:
-	static Color Lerp( const Color& val1, const Color& val2, uint8 val );
+	static Color Lerp( const Color& val1, const Color& val2, XE::uint8 val );
 };
 DECL_META_CLASS( MATH_API, Color );
 
@@ -130,7 +130,7 @@ public:
 public:
 	FColor();
 	
-	FColor( uint32 val );
+	FColor( XE::uint32 val );
 	
 	FColor( const Color& val );
 	
@@ -167,9 +167,9 @@ public:
 	friend FColor operator *( XE::float32 a, const FColor& b );
 
 public:
-	uint32 GetHex() const;
+	XE::uint32 GetHex() const;
 	
-	void SetHex( uint32 val );
+	void SetHex( XE::uint32 val );
 
 public:
 	static FColor Lerp( const FColor& val1, const FColor& val2, XE::float32 val );

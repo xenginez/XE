@@ -33,20 +33,20 @@ public:
 	void Clearup() override;
 
 public:
-	int32 GetPov( const String& val ) const override;
+	XE::int32 GetPov( const String& val ) const override;
 
 	XE::float32 GetAxis( const String& val ) const override;
 
-	int32 GetButton( const String& val ) const override;
+	XE::int32 GetButton( const String& val ) const override;
 
 	Variant GetValue( const String& val ) const override;
 
 public:
-	int32 GetPov( KeyCode val ) const override;
+	XE::int32 GetPov( KeyCode val ) const override;
 
 	XE::float32 GetAxis( KeyCode val ) const override;
 
-	int32 GetButton( KeyCode val ) const override;
+	XE::int32 GetButton( KeyCode val ) const override;
 
 	Variant GetValue( KeyCode val ) const override;
 

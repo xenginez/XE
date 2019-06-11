@@ -31,9 +31,9 @@ public:
 	static void capacity();
 
 private:
-	std::atomic<uint8 *> _beg;
-	std::atomic<uint8 *> _cur;
-	std::atomic<uint8 *> _end;
+	std::atomic<XE::uint8 *> _beg;
+	std::atomic<XE::uint8 *> _cur;
+	std::atomic<XE::uint8 *> _end;
 };
 
 END_XE_NAMESPACE

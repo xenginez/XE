@@ -16,13 +16,13 @@ BEG_XE_NAMESPACE
 class UTILS_API BASE64
 {
 public:
-	static std::string Encode( const uint8 * src, XE::uint64 size );
+	static std::string Encode( const XE::uint8 * src, XE::uint64 size );
 
-	static XE::uint64 Encode( const uint8 * src, XE::uint64 size, uint8 * out );
+	static XE::uint64 Encode( const XE::uint8 * src, XE::uint64 size, XE::uint8 * out );
 
 	static XE::uint64 Decode( const std::string& str, char * out );
 
-	static XE::uint64 Decode( const uint8* src, XE::uint64 size, char * out );
+	static XE::uint64 Decode( const XE::uint8* src, XE::uint64 size, char * out );
 
 private:
 	static const char _base64_encode_table[65];

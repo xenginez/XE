@@ -39,13 +39,13 @@ public:
 
 	void SetStencilEnable(bool val);
 
-	uint8 GetStencilReadMask() const;
+	XE::uint8 GetStencilReadMask() const;
 
-	void SetStencilReadMask(uint8 val);
+	void SetStencilReadMask(XE::uint8 val);
 
-	uint8 GetStencilWriteMask() const;
+	XE::uint8 GetStencilWriteMask() const;
 
-	void SetStencilWriteMask(uint8 val);
+	void SetStencilWriteMask(XE::uint8 val);
 
 	XE::CompareType GetStencilFrontFunc() const;
 
@@ -84,8 +84,8 @@ private:
 	bool _DepthWriteEnable;
 	CompareType _DepthFunc;
 	bool _StencilEnable;
-	uint8 _StencilReadMask;
-	uint8 _StencilWriteMask;
+	XE::uint8 _StencilReadMask;
+	XE::uint8 _StencilWriteMask;
 
 	CompareType _StencilFrontFunc;
 	StencilOperation _StencilFrontFailOp;

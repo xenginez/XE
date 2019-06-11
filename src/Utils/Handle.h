@@ -27,7 +27,7 @@ public:
 	{
 	}
 
-	Handle( uint64 val )
+	Handle( XE::uint64 val )
 		:_value( val )
 	{
 	}
@@ -38,7 +38,7 @@ public:
 	}
 
 public:
-	operator uint64() const
+	operator XE::uint64() const
 	{
 		return _value;
 	}
@@ -50,32 +50,32 @@ public:
 	}
 
 public:
-	bool operator<( uint64 val ) const
+	bool operator<( XE::uint64 val ) const
 	{
 		return _value < val;
 	}
 
-	bool operator>( uint64 val ) const
+	bool operator>( XE::uint64 val ) const
 	{
 		return _value > val;
 	}
 
-	bool operator<=( uint64 val ) const
+	bool operator<=( XE::uint64 val ) const
 	{
 		return _value <= val;
 	}
 
-	bool operator>=( uint64 val ) const
+	bool operator>=( XE::uint64 val ) const
 	{
 		return _value >= val;
 	}
 
-	bool operator!=( uint64 val ) const
+	bool operator!=( XE::uint64 val ) const
 	{
 		return _value != val;
 	}
 
-	bool operator==( uint64 val ) const
+	bool operator==( XE::uint64 val ) const
 	{
 		return _value == val;
 	}
@@ -112,13 +112,13 @@ public:
 	}
 
 public:
-	uint64 GetValue() const
+	XE::uint64 GetValue() const
 	{
 		return _value;
 	}
 
 private:
-	uint64 _value;
+	XE::uint64 _value;
 
 };
 
@@ -180,6 +180,6 @@ template< typename T > bool operator==( XE::uint64 left, XE::Handle< T > right )
 	return left == right.GetValue();
 }
 
-template< typename T > const XE::Handle<T> XE::Handle<T>::invalid( std::numeric_limits<uint64>::max() );
+template< typename T > const XE::Handle<T> XE::Handle<T>::invalid( std::numeric_limits<XE::uint64>::max() );
 
 #endif // __HANDLE_H__7920C1A9_2044_45F0_84C4_221961C006AF

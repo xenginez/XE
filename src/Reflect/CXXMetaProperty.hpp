@@ -21,7 +21,7 @@ public:
 	using PropertyType = ValueType;
 
 public:
-	CXXMetaProperty( const String& Name, PropertyType * Value, uint8 Flag, IMetaClassPtr Owner )
+	CXXMetaProperty( const String& Name, PropertyType * Value, XE::uint8 Flag, IMetaClassPtr Owner )
 		:IMetaProperty( Name, Flag, true, std::is_const_v<ValueType>, !std::is_pointer_v<ValueType> && !std::is_reference_v<ValueType> && !std::is_weak_ptr_v<ValueType> && !std::is_shared_ptr_v<ValueType>, std::is_pointer_v<ValueType>, std::is_shared_ptr_v<ValueType> || std::is_weak_ptr_v<ValueType>, std::is_reference_v<ValueType>, MetaID<typename TypeTraits<ValueType>::raw_t>::Get(), Owner ), _Value( Value )
 	{
 
@@ -63,7 +63,7 @@ public:
 	using PropertyType = ValueType( ClassType::* );
 
 public:
-	CXXMetaProperty( const String& Name, PropertyType Value, uint8 Flag, IMetaClassPtr Owner )
+	CXXMetaProperty( const String& Name, PropertyType Value, XE::uint8 Flag, IMetaClassPtr Owner )
 		:IMetaProperty( Name, Flag, false, std::is_const_v<ValueType>, !std::is_pointer_v<ValueType> && !std::is_reference_v<ValueType> && !std::is_weak_ptr_v<ValueType> && !std::is_shared_ptr_v<ValueType>, std::is_pointer_v<ValueType>, std::is_shared_ptr_v<ValueType> || std::is_weak_ptr_v<ValueType>, std::is_reference_v<ValueType>, MetaID<typename TypeTraits<ValueType>::raw_t>::Get(), Owner ), _Value( Value )
 	{
 
@@ -107,7 +107,7 @@ public:
 	using SetFuncType = void( *)( _SetType );
 
 public:
-	CXXMetaProperty( const String& Name, GetFuncType get, SetFuncType set, uint8 Flag, IMetaClassPtr Owner )
+	CXXMetaProperty( const String& Name, GetFuncType get, SetFuncType set, XE::uint8 Flag, IMetaClassPtr Owner )
 		:IMetaProperty( Name, Flag, false, false, !std::is_pointer_v<ValueType> && !std::is_reference_v<ValueType> && !std::is_weak_ptr_v<ValueType> && !std::is_shared_ptr_v<ValueType>, std::is_pointer_v<ValueType>, std::is_shared_ptr_v<ValueType> || std::is_weak_ptr_v<ValueType>, std::is_reference_v<ValueType>, MetaID<typename TypeTraits<ValueType>::raw_t>::Get(), Owner ), _GetFunc( get ), _SetFunc( set )
 	{
 
@@ -145,7 +145,7 @@ public:
 	using SetFuncType = void( ClassType::* )( _SetType );
 
 public:
-	CXXMetaProperty( const String& Name, GetFuncType get, SetFuncType set, uint8 Flag, IMetaClassPtr Owner )
+	CXXMetaProperty( const String& Name, GetFuncType get, SetFuncType set, XE::uint8 Flag, IMetaClassPtr Owner )
 		:IMetaProperty( Name, Flag, false, false, !std::is_pointer_v<ValueType> && !std::is_reference_v<ValueType> && !std::is_weak_ptr_v<ValueType> && !std::is_shared_ptr_v<ValueType>, std::is_pointer_v<ValueType>, std::is_shared_ptr_v<ValueType> || std::is_weak_ptr_v<ValueType>, std::is_reference_v<ValueType>, MetaID<typename TypeTraits<ValueType>::raw_t>::Get(), Owner ), _GetFunc( get ), _SetFunc( set )
 	{
 
@@ -183,7 +183,7 @@ public:
 	using SetFuncType = void( ClassType::* )( _SetType );
 
 public:
-	CXXMetaProperty( const String& Name, GetFuncType get, SetFuncType set, uint8 Flag, IMetaClassPtr Owner )
+	CXXMetaProperty( const String& Name, GetFuncType get, SetFuncType set, XE::uint8 Flag, IMetaClassPtr Owner )
 		:IMetaProperty( Name, Flag, false, false, !std::is_pointer_v<ValueType> && !std::is_reference_v<ValueType> && !std::is_weak_ptr_v<ValueType> && !std::is_shared_ptr_v<ValueType>, std::is_pointer_v<ValueType>, std::is_shared_ptr_v<ValueType> || std::is_weak_ptr_v<ValueType>, std::is_reference_v<ValueType>, MetaID<typename TypeTraits<ValueType>::raw_t>::Get(), Owner ), _GetFunc( get ), _SetFunc( set )
 	{
 

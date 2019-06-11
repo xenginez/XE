@@ -47,9 +47,9 @@ public:
 
 	void SetAntialiasedLineEnable(bool val);
 
-	int32 GetDepthBias() const;
+	XE::int32 GetDepthBias() const;
 
-	void SetDepthBias(int32 val);
+	void SetDepthBias(XE::int32 val);
 
 	XE::float32 GetDepthBiasClamp() const;
 
@@ -66,7 +66,7 @@ private:
 	bool _DepthClipEnable;
 	bool _ScissorEnable;
 	bool _AntialiasedLineEnable;
-	int32 _DepthBias;
+	XE::int32 _DepthBias;
 	XE::float32 _DepthBiasClamp;
 	XE::float32 _SlopeSacleDepthBias;
 };

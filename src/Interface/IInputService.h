@@ -51,20 +51,20 @@ public:
 	~IInputService() override;
 
 public:
-	virtual int32 GetPov( const String& val ) const = 0;
+	virtual XE::int32 GetPov( const String& val ) const = 0;
 
 	virtual XE::float32 GetAxis( const String& val ) const = 0;
 
-	virtual int32 GetButton( const String& val ) const = 0;
+	virtual XE::int32 GetButton( const String& val ) const = 0;
 
 	virtual Variant GetValue( const String& val ) const = 0;
 
 public:
-	virtual int32 GetPov( KeyCode val ) const = 0;
+	virtual XE::int32 GetPov( KeyCode val ) const = 0;
 
 	virtual XE::float32 GetAxis( KeyCode val ) const = 0;
 
-	virtual int32 GetButton( KeyCode val ) const = 0;
+	virtual XE::int32 GetButton( KeyCode val ) const = 0;
 
 	virtual Variant GetValue( KeyCode val ) const = 0;
 

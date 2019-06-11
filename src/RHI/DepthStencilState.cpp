@@ -55,22 +55,22 @@ void XE::DepthStencilState::SetStencilEnable(bool val)
 	_StencilEnable = val;
 }
 
-uint8 XE::DepthStencilState::GetStencilReadMask() const
+XE::uint8 XE::DepthStencilState::GetStencilReadMask() const
 {
 	return _StencilReadMask;
 }
 
-void XE::DepthStencilState::SetStencilReadMask(uint8 val)
+void XE::DepthStencilState::SetStencilReadMask(XE::uint8 val)
 {
 	_StencilReadMask = val;
 }
 
-uint8 XE::DepthStencilState::GetStencilWriteMask() const
+XE::uint8 XE::DepthStencilState::GetStencilWriteMask() const
 {
 	return _StencilWriteMask;
 }
 
-void XE::DepthStencilState::SetStencilWriteMask(uint8 val)
+void XE::DepthStencilState::SetStencilWriteMask(XE::uint8 val)
 {
 	_StencilWriteMask = val;
 }

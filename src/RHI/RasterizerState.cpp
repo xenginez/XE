@@ -75,12 +75,12 @@ void XE::RasterizerState::SetAntialiasedLineEnable(bool val)
 	_AntialiasedLineEnable = val;
 }
 
-int32 XE::RasterizerState::GetDepthBias() const
+XE::int32 XE::RasterizerState::GetDepthBias() const
 {
 	return _DepthBias;
 }
 
-void XE::RasterizerState::SetDepthBias(int32 val)
+void XE::RasterizerState::SetDepthBias(XE::int32 val)
 {
 	_DepthBias = val;
 }

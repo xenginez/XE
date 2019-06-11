@@ -39,7 +39,7 @@ public:
 public:
 	void Value( const String& Name, T val )
 	{
-		_RegisterValue( Name, (int64)val );
+		_RegisterValue( Name, (XE::int64)val );
 	}
 };
 

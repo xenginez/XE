@@ -51,9 +51,9 @@ public:
 	
 	void setMipLodBias( XE::float32 val );
 	
-	uint32 getMaxAnisotropy() const;
+	XE::uint32 getMaxAnisotropy() const;
 	
-	void setMaxAnisotropy( uint32 val );
+	void setMaxAnisotropy( XE::uint32 val );
 	
 	CompareType getComparisonFunc() const;
 	
@@ -79,7 +79,7 @@ private:
 	SamplerAddressType _AddressW;
 	
 	XE::float32 _MipLODBias;
-	uint32 _MaxAnisotropy;
+	XE::uint32 _MaxAnisotropy;
 	CompareType _ComparisonFunc;
 	
 	XE::float32 _BorderColor[4];

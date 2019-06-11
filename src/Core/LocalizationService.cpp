@@ -59,7 +59,7 @@ void XE::LocalizationService::SetCurrentLanguage( Language val )
 {
 	_p->_Language = val;
 
-	GetFramework()->GetConfigService()->SetString( "Language", EnumID<Language>::Get()->FindName( (int64)_p->_Language ) );
+	GetFramework()->GetConfigService()->SetString( "Language", EnumID<Language>::Get()->FindName( (XE::int64)_p->_Language ) );
 
 	UpdateLocalized();
 }
@@ -94,7 +94,7 @@ void LocalizationService::UpdateLocalized()
 
 			std::vector<std::string> list = StringUtils::Split( buf, "," );
 
-			_p->_Maps.insert( std::make_pair( list[0], list[( (int64)_p->_Language ) + 1] ) );
+			_p->_Maps.insert( std::make_pair( list[0], list[( (XE::int64)_p->_Language ) + 1] ) );
 		}
 	}
 }

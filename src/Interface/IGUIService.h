@@ -31,13 +31,13 @@ public:
 
 	virtual void SetHeight( XE::uint64 val ) = 0;
 
-	virtual int32 GetPositionX() const = 0;
+	virtual XE::int32 GetPositionX() const = 0;
 
-	virtual void SetPositionX( int32 val ) = 0;
+	virtual void SetPositionX( XE::int32 val ) = 0;
 
-	virtual int32 GetPositionY() const = 0;
+	virtual XE::int32 GetPositionY() const = 0;
 
-	virtual void SetPositionY( int32 val ) = 0;
+	virtual void SetPositionY( XE::int32 val ) = 0;
 
 public:
 	virtual void IsFullScreen() const = 0;

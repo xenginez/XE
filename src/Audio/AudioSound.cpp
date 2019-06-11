@@ -78,7 +78,7 @@ const XE::Array<XE::uint8>& XE::AudioSound::GetBuffer() const
 
 XE::int32 XE::AudioSound::GetFormat()
 {
-	int32 format = 0;
+	XE::int32 format = 0;
 
 	switch ( _Channels )
 	{

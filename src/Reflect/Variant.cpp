@@ -77,50 +77,50 @@ XE::Variant::Variant( bool val )
 
 }
 
-XE::Variant::Variant( int8 val )
-	: _Data( val ), _Meta( MetaID<int8>::Get() ), _Flag( FUNDAMENTAL )
+XE::Variant::Variant( XE::int8 val )
+	: _Data( val ), _Meta( MetaID<XE::int8>::Get() ), _Flag( FUNDAMENTAL )
 {
 
 }
 
-XE::Variant::Variant( int16 val )
-	: _Data( val ), _Meta( MetaID<int16>::Get() ), _Flag( FUNDAMENTAL )
+XE::Variant::Variant( XE::int16 val )
+	: _Data( val ), _Meta( MetaID<XE::int16>::Get() ), _Flag( FUNDAMENTAL )
 {
 
 }
 
-XE::Variant::Variant( int32 val )
-	: _Data( val ), _Meta( MetaID<int32>::Get() ), _Flag( FUNDAMENTAL )
+XE::Variant::Variant( XE::int32 val )
+	: _Data( val ), _Meta( MetaID<XE::int32>::Get() ), _Flag( FUNDAMENTAL )
 {
 
 }
 
-XE::Variant::Variant( int64 val )
-	: _Data( val ), _Meta( MetaID<int64>::Get() ), _Flag( FUNDAMENTAL )
+XE::Variant::Variant( XE::int64 val )
+	: _Data( val ), _Meta( MetaID<XE::int64>::Get() ), _Flag( FUNDAMENTAL )
 {
 
 }
 
-XE::Variant::Variant( uint8 val )
-	: _Data( val ), _Meta( MetaID<uint8>::Get() ), _Flag( FUNDAMENTAL )
+XE::Variant::Variant( XE::uint8 val )
+	: _Data( val ), _Meta( MetaID<XE::uint8>::Get() ), _Flag( FUNDAMENTAL )
 {
 
 }
 
-XE::Variant::Variant( uint16 val )
-	: _Data( val ), _Meta( MetaID<uint16>::Get() ), _Flag( FUNDAMENTAL )
+XE::Variant::Variant( XE::uint16 val )
+	: _Data( val ), _Meta( MetaID<XE::uint16>::Get() ), _Flag( FUNDAMENTAL )
 {
 
 }
 
-XE::Variant::Variant( uint32 val )
-	: _Data( val ), _Meta( MetaID<uint32>::Get() ), _Flag( FUNDAMENTAL )
+XE::Variant::Variant( XE::uint32 val )
+	: _Data( val ), _Meta( MetaID<XE::uint32>::Get() ), _Flag( FUNDAMENTAL )
 {
 
 }
 
-XE::Variant::Variant( uint64 val )
-	: _Data( val ), _Meta( MetaID<uint64>::Get() ), _Flag( FUNDAMENTAL )
+XE::Variant::Variant( XE::uint64 val )
+	: _Data( val ), _Meta( MetaID<XE::uint64>::Get() ), _Flag( FUNDAMENTAL )
 {
 
 }
@@ -143,7 +143,7 @@ XE::Variant::Variant( const Variant & val )
 	Lock();
 }
 
-XE::Variant::Variant( IMetaInfoPtr Meta, UnionData Data, uint64 Flag )
+XE::Variant::Variant( IMetaInfoPtr Meta, UnionData Data, XE::uint64 Flag )
 	: _Data( Data ), _Meta( Meta ), _Flag( Flag )
 {
 	Lock();
@@ -260,35 +260,35 @@ void * XE::Variant::ToPointer() const
 		{
 			return (void*)( &( _Data.b ) );
 		}
-		else if ( _Meta == MetaID<int8>::Get() )
+		else if ( _Meta == MetaID<XE::int8>::Get() )
 		{
 			return (void*)( &( _Data.i8 ) );
 		}
-		else if ( _Meta == MetaID<int16>::Get() )
+		else if ( _Meta == MetaID<XE::int16>::Get() )
 		{
 			return (void*)( &( _Data.i16 ) );
 		}
-		else if ( _Meta == MetaID<int32>::Get() )
+		else if ( _Meta == MetaID<XE::int32>::Get() )
 		{
 			return (void*)( &( _Data.i32 ) );
 		}
-		else if ( _Meta == MetaID<int64>::Get() )
+		else if ( _Meta == MetaID<XE::int64>::Get() )
 		{
 			return (void*)( &( _Data.i64 ) );
 		}
-		else if ( _Meta == MetaID<uint8>::Get() )
+		else if ( _Meta == MetaID<XE::uint8>::Get() )
 		{
 			return (void*)( &( _Data.u8 ) );
 		}
-		else if ( _Meta == MetaID<uint16>::Get() )
+		else if ( _Meta == MetaID<XE::uint16>::Get() )
 		{
 			return (void*)( &( _Data.u16 ) );
 		}
-		else if ( _Meta == MetaID<uint32>::Get() )
+		else if ( _Meta == MetaID<XE::uint32>::Get() )
 		{
 			return (void*)( &( _Data.u32 ) );
 		}
-		else if ( _Meta == MetaID<uint64>::Get() )
+		else if ( _Meta == MetaID<XE::uint64>::Get() )
 		{
 			return (void*)( &( _Data.u64 ) );
 		}

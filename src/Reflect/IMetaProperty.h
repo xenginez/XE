@@ -19,14 +19,14 @@ class Archive;
 class REFLECT_API IMetaProperty : public IMetaInfo
 {
 public:
-	static constexpr uint8 Default = 0;
-	static constexpr uint8 NoClone = 1 << 1;
-	static constexpr uint8 NoDesign  = 1 << 2;
-	static constexpr uint8 NoRuntime = 1 << 3;
-	static constexpr uint8 NoSerialize = 1 << 4;
+	static constexpr XE::uint8 Default = 0;
+	static constexpr XE::uint8 NoClone = 1 << 1;
+	static constexpr XE::uint8 NoDesign  = 1 << 2;
+	static constexpr XE::uint8 NoRuntime = 1 << 3;
+	static constexpr XE::uint8 NoSerialize = 1 << 4;
 
 public:
-	IMetaProperty( const String& Name, uint8 Flag, bool IsStatic, bool IsConst, bool IsObject, bool IsPointer, bool IsSharedPtr, bool IsReference, IMetaInfoPtr Value, IMetaClassPtr Owner );
+	IMetaProperty( const String& Name, XE::uint8 Flag, bool IsStatic, bool IsConst, bool IsObject, bool IsPointer, bool IsSharedPtr, bool IsReference, IMetaInfoPtr Value, IMetaClassPtr Owner );
 
 	~IMetaProperty();
 
@@ -44,7 +44,7 @@ public:
 	bool IsReference() const;
 
 public:
-	uint8 GetFlag() const;
+	XE::uint8 GetFlag() const;
 
 	IMetaInfoPtr GetValue() const;
 
@@ -56,7 +56,7 @@ public:
 	virtual void Serialize( Archive * arc, Variant& val ) const = 0;
 
 private:
-	uint8 _Flag;
+	XE::uint8 _Flag;
 	bool _IsConst;
 	bool _IsStatic;
 	bool _IsObject;

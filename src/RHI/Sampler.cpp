@@ -85,12 +85,12 @@ void Sampler::setMipLodBias( XE::float32 val )
 	_MipLODBias = val;
 }
 
-uint32 Sampler::getMaxAnisotropy() const
+XE::uint32 Sampler::getMaxAnisotropy() const
 {
 	return _MaxAnisotropy;
 }
 
-void Sampler::setMaxAnisotropy( uint32 val )
+void Sampler::setMaxAnisotropy( XE::uint32 val )
 {
 	_MaxAnisotropy = val;
 }

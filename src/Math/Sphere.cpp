@@ -118,7 +118,7 @@ std::pair<bool, XE::float32> XE::Sphere::Intersect( const Ray& ray, bool discard
 void XE::Sphere::Transform( const Mat4& val )
 {
 	XE::float32 lengthSqrd[3];
-	for ( uint32 i = 0; i < 3; i++ )
+	for ( XE::uint32 i = 0; i < 3; i++ )
 	{
 		Vec3 column( val[0][i], val[1][i], val[2][i] );
 		lengthSqrd[i] = Mathf::Dot( column, column );

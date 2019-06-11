@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-template< uint64 T > class OrderGroup;
+template< XE::uint64 T > class OrderGroup;
 
 class UTILS_API Order : public Singleton< Order >
 {
@@ -23,7 +23,7 @@ private:
 	struct Private;
 
 public:
-	static const uint64 invalid = 0;
+	static const XE::uint64 invalid = 0;
 
 private:
 	Order();
@@ -31,34 +31,34 @@ private:
 	~Order();
 
 public:
-	template< typename T > static uint64 RegisterOrder( const String& name, const String& desc, const IMetaInfo * parameter )
+	template< typename T > static XE::uint64 RegisterOrder( const String& name, const String& desc, const IMetaInfo * parameter )
 	{
 		return RegisterOrder_P( T::group_value, name, desc, parameter );
 	}
 
-	template< typename T > static uint64 FindOrderID( const String& name )
+	template< typename T > static XE::uint64 FindOrderID( const String& name )
 	{
 		return FindOrderID_P( T::group_value, name );
 	}
 
-	template< typename T > static void VisitOrder( std::function< void( uint64, String, String, const IMetaInfo * ) > val )
+	template< typename T > static void VisitOrder( std::function< void( XE::uint64, String, String, const IMetaInfo * ) > val )
 	{
 		VisitOrder_P( T::group_value, val );
 	}
 
 public:
-	static String FindOrderName( uint64 id );
+	static String FindOrderName( XE::uint64 id );
 
-	static String FindOrderDesc( uint64 id );
+	static String FindOrderDesc( XE::uint64 id );
 
-	static const IMetaInfo * FindOrderPatameter( uint64 id );
+	static const IMetaInfo * FindOrderPatameter( XE::uint64 id );
 
 private:
-	static uint64 RegisterOrder_P( uint64 group, const String& name, const String& desc, const IMetaInfo * parameter );
+	static XE::uint64 RegisterOrder_P( XE::uint64 group, const String& name, const String& desc, const IMetaInfo * parameter );
 
-	static uint64 FindOrderID_P( uint64 group, const String& name );
+	static XE::uint64 FindOrderID_P( XE::uint64 group, const String& name );
 
-	static void VisitOrder_P( uint64 group, std::function< void( uint64, String, String, const IMetaInfo * ) > val );
+	static void VisitOrder_P( XE::uint64 group, std::function< void( XE::uint64, String, String, const IMetaInfo * ) > val );
 
 private:
 	Private * _p;

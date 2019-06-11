@@ -23,9 +23,9 @@ public:
 	~Fence();
 
 public:
-	uint64 GetValue() const;
+	XE::uint64 GetValue() const;
 	
-	void ResetValue( uint64 val );
+	void ResetValue( XE::uint64 val );
 };
 
 END_XE_NAMESPACE

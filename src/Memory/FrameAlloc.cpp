@@ -20,7 +20,7 @@ void * XE::FrameAlloc::allocate( const XE::uint64 _Count )
 		capacity();
 	}
 
-	uint8 * p = This()->_cur;
+	XE::uint8 * p = This()->_cur;
 
 	while ( !This()->_cur.compare_exchange_strong( p, p + _Count ) )
 	{
@@ -46,7 +46,7 @@ void XE::FrameAlloc::reset()
 {
 	if ( This()->_beg == nullptr )
 	{
-		This()->_beg = (uint8 *)Alloc::allocate( ONE_MBYTE * 4 );
+		This()->_beg = (XE::uint8 *)Alloc::allocate( ONE_MBYTE * 4 );
 		This()->_end = This()->_beg + ( ONE_MBYTE * 4 );
 	}
 
@@ -56,6 +56,6 @@ void XE::FrameAlloc::reset()
 void XE::FrameAlloc::capacity()
 {
 	XE::uint64 size = ( This()->_end - This()->_beg ) * 2;
-	This()->_beg = (uint8 *)Alloc::reallocate( This()->_beg, size );
+	This()->_beg = (XE::uint8 *)Alloc::reallocate( This()->_beg, size );
 	This()->_end = This()->_beg + size;
 }

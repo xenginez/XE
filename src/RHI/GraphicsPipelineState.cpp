@@ -115,12 +115,12 @@ void XE::GraphicsPipelineState::SetPrimitiveTopology(XE::TopologyType val)
 	_PrimitiveTopology = val;
 }
 
-uint32 XE::GraphicsPipelineState::GetSampleMask() const
+XE::uint32 XE::GraphicsPipelineState::GetSampleMask() const
 {
 	return _SampleMask;
 }
 
-void XE::GraphicsPipelineState::SetSampleMask(uint32 val)
+void XE::GraphicsPipelineState::SetSampleMask(XE::uint32 val)
 {
 	_SampleMask = val;
 }

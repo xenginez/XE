@@ -80,7 +80,7 @@ XE::uint64 LOD::GetLODLimits( XE::float32 val ) const
 	{
 		if( val > _Lods[i].first && val <= _Lods[i].second )
 		{
-			return static_cast<uint64>(i);
+			return static_cast<XE::uint64>(i);
 		}
 	}
 	

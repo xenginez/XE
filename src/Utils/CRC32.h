@@ -16,9 +16,9 @@ BEG_XE_NAMESPACE
 class UTILS_API CRC32
 {
 public:
-	static uint32 GetCRC32( const uint8 * src, XE::uint64 size );
+	static XE::uint32 GetCRC32( const XE::uint8 * src, XE::uint64 size );
 
-	static uint32 GetCRC32( uint32 salt, const uint8 * src, XE::uint64 size );
+	static XE::uint32 GetCRC32( XE::uint32 salt, const XE::uint8 * src, XE::uint64 size );
 };
 DECL_META_CLASS( UTILS_API, CRC32 );
 

@@ -89,7 +89,7 @@ public:
 public:
 	XE::uint64 max_size() const noexcept
 	{
-		return ( std::numeric_limits < uint64 >::max() / sizeof(_Ty));
+		return ( std::numeric_limits < XE::uint64 >::max() / sizeof(_Ty));
 	}
 
 public:

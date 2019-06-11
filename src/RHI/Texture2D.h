@@ -23,16 +23,16 @@ public:
 	~Texture2D() override;
 
 public:
-	uint32 GetMipCount() const;
+	XE::uint32 GetMipCount() const;
 	
-	uint32 GetWidth( uint32 mip = 1 ) const;
+	XE::uint32 GetWidth( XE::uint32 mip = 1 ) const;
 	
-	uint32 GetHeight( uint32 mip = 1 ) const;
+	XE::uint32 GetHeight( XE::uint32 mip = 1 ) const;
 
 protected:
-	uint32 _Width;
-	uint32 _Height;
-	uint32 _MipLevel;
+	XE::uint32 _Width;
+	XE::uint32 _Height;
+	XE::uint32 _MipLevel;
 };
 
 END_XE_NAMESPACE

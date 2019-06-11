@@ -25,12 +25,12 @@ public:
 	template< typename T > friend struct VariantCast;
 
 public:
-	static constexpr uint64 INVALID = 0;
-	static constexpr uint64 FUNDAMENTAL = 1 << 1;
-	static constexpr uint64 CONTAINER = 1 << 2;
-	static constexpr uint64 POINTER = 1 << 3;
-	static constexpr uint64 SHAREDPTR = 1 << 4;
-	static constexpr uint64 PRIVATEPTR = 1 << 5;
+	static constexpr XE::uint64 INVALID = 0;
+	static constexpr XE::uint64 FUNDAMENTAL = 1 << 1;
+	static constexpr XE::uint64 CONTAINER = 1 << 2;
+	static constexpr XE::uint64 POINTER = 1 << 3;
+	static constexpr XE::uint64 SHAREDPTR = 1 << 4;
+	static constexpr XE::uint64 PRIVATEPTR = 1 << 5;
 
 public:
 	class PrivatePtr
@@ -112,14 +112,14 @@ public:
 	{
 		UnionData() :p( nullptr ) {}
 		UnionData( bool b ) :b( b ) {}
-		UnionData( int8 i8 ) :i8( i8 ) {}
-		UnionData( int16 i16 ) :i16( i16 ) {}
-		UnionData( int32 i32 ) :i32( i32 ) {}
-		UnionData( int64 i64 ) :i64( i64 ) {}
-		UnionData( uint8 u8 ) :u8( u8 ) {}
-		UnionData( uint16 u16 ) :u16( u16 ) {}
-		UnionData( uint32 u32 ) :u32( u32 ) {}
-		UnionData( uint64 u64 ) :u64( u64 ) {}
+		UnionData( XE::int8 i8 ) :i8( i8 ) {}
+		UnionData( XE::int16 i16 ) :i16( i16 ) {}
+		UnionData( XE::int32 i32 ) :i32( i32 ) {}
+		UnionData( XE::int64 i64 ) :i64( i64 ) {}
+		UnionData( XE::uint8 u8 ) :u8( u8 ) {}
+		UnionData( XE::uint16 u16 ) :u16( u16 ) {}
+		UnionData( XE::uint32 u32 ) :u32( u32 ) {}
+		UnionData( XE::uint64 u64 ) :u64( u64 ) {}
 		UnionData( XE::float32  f ) :f( f ) {}
 		UnionData( XE::float64 d ) :d( d ) {}
 		UnionData( void * p ) :p( p ) {}
@@ -127,14 +127,14 @@ public:
 		UnionData( std::shared_ptr<void> * sp ) :sp( sp ) {}
 
 		bool b;
-		int8 i8;
-		int16 i16;
-		int32 i32;
-		int64 i64;
-		uint8 u8;
-		uint16 u16;
-		uint32 u32;
-		uint64 u64;
+		XE::int8 i8;
+		XE::int16 i16;
+		XE::int32 i32;
+		XE::int64 i64;
+		XE::uint8 u8;
+		XE::uint16 u16;
+		XE::uint32 u32;
+		XE::uint64 u64;
 		XE::float32  f;
 		XE::float64 d;
 		void * p;
@@ -149,21 +149,21 @@ public:
 
 	Variant( bool val );
 
-	Variant( int8 val );
+	Variant( XE::int8 val );
 
-	Variant( int16 val );
+	Variant( XE::int16 val );
 
-	Variant( int32 val );
+	Variant( XE::int32 val );
 
-	Variant( int64 val );
+	Variant( XE::int64 val );
 
-	Variant( uint8 val );
+	Variant( XE::uint8 val );
 
-	Variant( uint16 val );
+	Variant( XE::uint16 val );
 
-	Variant( uint32 val );
+	Variant( XE::uint32 val );
 
-	Variant( uint64 val );
+	Variant( XE::uint64 val );
 
 	Variant( XE::float32 val );
 
@@ -221,7 +221,7 @@ public:
 		_Flag = Variant::POINTER;
 	}
 
-	Variant( IMetaInfoPtr Meta, UnionData Data, uint64 Flag );
+	Variant( IMetaInfoPtr Meta, UnionData Data, XE::uint64 Flag );
 
 	~Variant();
 
@@ -260,7 +260,7 @@ public:
 	void * ToPointer() const;
 
 public:
-	uint64 GetFlag() const;
+	XE::uint64 GetFlag() const;
 
 	UnionData GetData() const;
 
@@ -311,7 +311,7 @@ private:
 	static std::shared_ptr<void> * RegisterSharedPtr( const std::shared_ptr<void>& p );
 
 private:
-	uint64 _Flag;
+	XE::uint64 _Flag;
 	UnionData _Data;
 	IMetaInfoPtr _Meta;
 };
