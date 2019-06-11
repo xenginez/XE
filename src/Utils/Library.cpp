@@ -8,19 +8,22 @@ USING_XE
 #if PLATFORM_OS == OS_WINDOWS
 #include <Windows.h>
 
-XE::uint64 dlopen( const String& name )
+namespace XE
 {
-	return reinterpret_cast<XE::uint64>( ::LoadLibrary( (name.ToStdString() + ".dll").c_str() ) );
-}
+    XE::uint64 dlopen(const String &name)
+    {
+        return reinterpret_cast<XE::uint64>( ::LoadLibrary((name.ToStdString() + ".dll").c_str()));
+    }
 
-void * dlsym( XE::uint64 handle, const String& name )
-{
-	return ::GetProcAddress( reinterpret_cast<HMODULE>( handle ), name.ToCString() );
-}
+    void *dlsym(XE::uint64 handle, const String &name)
+    {
+        return ::GetProcAddress(reinterpret_cast<HMODULE>( handle ), name.ToCString());
+    }
 
-bool dlclose( XE::uint64 handle )
-{
-	return ::FreeLibrary( reinterpret_cast<HMODULE>( handle ) );
+    bool dlclose(XE::uint64 handle)
+    {
+        return ::FreeLibrary(reinterpret_cast<HMODULE>( handle ));
+    }
 }
 #else
 #include <dlfcn.h>

@@ -92,7 +92,7 @@ target_link_libraries(Memory
 target_link_libraries(Reflect
 		Memory
 
-		Zipper-static
+		libZipper-static
 		)
 
 target_link_libraries(Utils
