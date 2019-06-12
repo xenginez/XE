@@ -3,59 +3,40 @@ cmake_minimum_required(VERSION 3.13)
 project(XE)
 
 set(CMAKE_CXX_STANDARD 17)
-SET(CMAKE_CONFIGURATION_TYPES "Debug;Release")
 
 if (CMAKE_SYSTEM_NAME MATCHES "Linux")
 	set(XE_PLATFORM_PATH linux)
 elseif (CMAKE_SYSTEM_NAME MATCHES "Windows")
 	set(XE_PLATFORM_PATH win)
-	if (CMAKE_BUILD_TYPE MATCHES "Debug")
-		set(XE_BUILD_TYPE debug)
-		set(TBB_SUFFIX _debug)
-		set(BULLET_SUFFIX _Debug)
-	else ()
-		set(XE_BUILD_TYPE release)
-		set(TBB_SUFFIX)
-		set(BULLET_SUFFIX)
-	endif ()
 elseif (CMAKE_SYSTEM_NAME MATCHES "IOS")
 	set(XE_PLATFORM_PATH ios)
 elseif (CMAKE_SYSTEM_NAME MATCHES "Android")
 	set(XE_PLATFORM_PATH android)
 elseif (CMAKE_SYSTEM_NAME MATCHES "Darwin")
 	set(XE_PLATFORM_PATH mac)
-	if (CMAKE_BUILD_TYPE MATCHES "Debug")
-		set(XE_BUILD_TYPE debug)
-		set(TBB_SUFFIX _debug)
-		set(BULLET_SUFFIX)
-	else ()
-		set(XE_BUILD_TYPE release)
-		set(TBB_SUFFIX)
-		set(BULLET_SUFFIX)
-	endif ()
 else ()
-	set(XE_PLATFORM_PATH linux)
 	message(FATAL_ERROR ${CMAKE_SYSTEM_NAME}" Other")
 endif ()
 
 set(BUILD_SHARED_LIBS ON)
 
-set(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/target/bin)
-
-set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/target/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_CURRENT_SOURCE_DIR}/target/${XE_PLATFORM_PATH}/debug/bin)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${CMAKE_CURRENT_SOURCE_DIR}/target/${XE_PLATFORM_PATH}/debug/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_CURRENT_SOURCE_DIR}/target/${XE_PLATFORM_PATH}/release/bin)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${CMAKE_CURRENT_SOURCE_DIR}/target/${XE_PLATFORM_PATH}/release/bin)
 
 include_directories(
 		${CMAKE_CURRENT_SOURCE_DIR}/src
 		${CMAKE_CURRENT_SOURCE_DIR}/depend/include
 )
 
-if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
+if (XE_PLATFORM_PATH MATCHES "mac")
 	include_directories(/usr/local/include)
 endif ()
 
 link_directories(
-		${CMAKE_CURRENT_SOURCE_DIR}/depend/bin/${XE_PLATFORM_PATH}/${XE_BUILD_TYPE}
-		${CMAKE_CURRENT_SOURCE_DIR}/depend/lib/${XE_PLATFORM_PATH}/${XE_BUILD_TYPE}
+		${CMAKE_CURRENT_SOURCE_DIR}/depend/bin/${XE_PLATFORM_PATH}
+		${CMAKE_CURRENT_SOURCE_DIR}/depend/lib/${XE_PLATFORM_PATH}
 )
 
 add_subdirectory(src)
@@ -81,9 +62,9 @@ add_dependencies(XE Base Memory Reflect Utils Math RHI Interface Audio Physics G
 
 target_link_libraries(Base
 
-		tbb${TBB_SUFFIX}
-		tbbmalloc${TBB_SUFFIX}
-		tbbmalloc_proxy${TBB_SUFFIX}
+		tbb
+		tbbmalloc
+		tbbmalloc_proxy
 		)
 
 target_link_libraries(Memory
@@ -116,25 +97,25 @@ target_link_libraries(Audio
 target_link_libraries(Physics
 		Interface
 
-		Bullet2FileLoader${BULLET_SUFFIX}
-		BulletInverseDynamicsUtils${BULLET_SUFFIX}
-		Bullet3Collision${BULLET_SUFFIX}
-		BulletRobotics${BULLET_SUFFIX}
-		Bullet3Common${BULLET_SUFFIX}
-		BulletSoftBody${BULLET_SUFFIX}
-		Bullet3Dynamics${BULLET_SUFFIX}
-		BulletWorldImporter${BULLET_SUFFIX}
-		Bullet3Geometry${BULLET_SUFFIX}
-		BulletXmlWorldImporter${BULLET_SUFFIX}
-		Bullet3OpenCL_clew${BULLET_SUFFIX}
-		ConvexDecomposition${BULLET_SUFFIX}
-		BulletCollision${BULLET_SUFFIX}
-		GIMPACTUtils${BULLET_SUFFIX}
-		BulletDynamics${BULLET_SUFFIX}
-		HACD${BULLET_SUFFIX}
-		BulletFileLoader${BULLET_SUFFIX}
-		LinearMath${BULLET_SUFFIX}
-		BulletInverseDynamics${BULLET_SUFFIX}
+		Bullet2FileLoader
+		BulletInverseDynamicsUtils
+		Bullet3Collision
+		BulletRobotics
+		Bullet3Common
+		BulletSoftBody
+		Bullet3Dynamics
+		BulletWorldImporter
+		Bullet3Geometry
+		BulletXmlWorldImporter
+		Bullet3OpenCL_clew
+		ConvexDecomposition
+		BulletCollision
+		GIMPACTUtils
+		BulletDynamics
+		HACD
+		BulletFileLoader
+		LinearMath
+		BulletInverseDynamics
 		)
 
 target_link_libraries(Graphics
