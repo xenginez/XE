@@ -2,5 +2,5 @@ cmake_minimum_required(VERSION 3.12)
 
 add_definitions(-DWORLD_EXPORT)
 
-aux_source_directory(./ SOURCE_FILES)
+FILE(GLOB SOURCE_FILES *.h *.hpp *.cpp *.inc)
 add_library(World ${SOURCE_FILES})
