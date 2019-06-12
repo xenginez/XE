@@ -49,7 +49,7 @@ XE::Color::Color( const Color &val )
 }
 
 XE::Color::Color( const FColor &val )
-		:r(val.r * 255), g(val.g * 255), b(val.b * 255), a(val.a * 255)
+		: r((XE::uint8)(val.r * 255)), g((XE::uint8)(val.g * 255)), b((XE::uint8)(val.b * 255)), a((XE::uint8)(val.a * 255))
 {
 
 }
@@ -159,7 +159,7 @@ Color &Color::operator =( const Color &val )
 	return *this;
 }
 
-XE::Color operator *( XE::float32 a, const Color &b )
+XE::Color operator *( XE::uint8 a, const Color &b )
 {
 	return b * a;
 }

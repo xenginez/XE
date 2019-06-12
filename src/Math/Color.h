@@ -83,7 +83,7 @@ public:
 	bool operator !=( const Color& val ) const;
 
 public:
-	friend Color operator *( XE::float32 a, const Color& b );
+	friend Color operator *( XE::uint8 a, const Color& b );
 
 public:
 	XE::uint32 GetHex() const;
