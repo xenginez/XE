@@ -1,12 +1,13 @@
 #include "Widget.h"
 
+USING_XE
 
-
-Widget::Widget()
+XE::Widget::Widget()
 {
+
 }
 
-
-Widget::~Widget()
+XE::Widget::~Widget()
 {
+
 }

@@ -9,7 +9,7 @@
 #ifndef __GLOBAL_H__0DFC6107_240B_453A_970F_16275816320F
 #define __GLOBAL_H__0DFC6107_240B_453A_970F_16275816320F
 
-#include <World/World.h>
+#include <Interface/Interface.h>
 
 #ifdef AUDIO_EXPORT
 #define AUDIO_API DLL_EXPORT

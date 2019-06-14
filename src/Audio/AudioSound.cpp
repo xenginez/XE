@@ -2,6 +2,8 @@
 
 #include <AL/al.h>
 
+#include "AudioUtil.h"
+
 USING_XE
 
 BEG_META( AudioSound )

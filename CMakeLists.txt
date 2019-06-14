@@ -53,8 +53,8 @@ add_dependencies(Graphics Base Memory Reflect Utils Math RHI Interface)
 add_dependencies(Animation Base Memory Reflect Utils Math RHI Interface)
 add_dependencies(Navigation Base Memory Reflect Utils Math RHI Interface)
 add_dependencies(GUI Base Memory Reflect Utils Math RHI Interface Graphics)
-add_dependencies(AI Base Memory Reflect Utils Math RHI Interface)
 add_dependencies(World Base Memory Reflect Utils Math RHI Interface)
+add_dependencies(AI Base Memory Reflect Utils Math RHI Interface World)
 add_dependencies(Behavior Base Memory Reflect Utils Math RHI Interface Audio Physics Animation Navigation AI World)
 add_dependencies(Render Base Memory Reflect Utils Math RHI Interface Graphics World GUI)
 add_dependencies(Core Base Memory Reflect Utils Math RHI Interface Audio Physics Graphics Animation Navigation GUI AI World Behavior Render)
@@ -137,20 +137,20 @@ target_link_libraries(Navigation
 target_link_libraries(GUI
 		Graphics)
 
-target_link_libraries(AI
-		Interface)
-
 target_link_libraries(World
 		Interface)
 
+target_link_libraries(AI
+		World)
+
 target_link_libraries(Behavior
-		Audio Physics Animation Navigation AI World)
+		Audio Physics Animation Navigation AI)
 
 target_link_libraries(Render
-		Graphics World GUI)
+		World GUI)
 
 target_link_libraries(Core
-		Behavior Render GUI
+		Behavior Render
 
 		pugixml
 		sqlite3
