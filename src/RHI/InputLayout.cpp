@@ -23,17 +23,17 @@ XE::InputLayout &XE::InputLayout::Add( const XE::String &name, XE::uint32 offset
 	return *this;
 }
 
-XE::uint32 XE::InputLayout::ElementCount() const
+XE::uint64 XE::InputLayout::ElementCount() const
 {
 	return _Elements.size();
 }
 
-XE::InputLayout::Element &XE::InputLayout::GetElement( XE::uint32 val )
+XE::InputLayout::Element &XE::InputLayout::GetElement( XE::uint64 val )
 {
 	return _Elements[val];
 }
 
-const XE::InputLayout::Element &XE::InputLayout::GetElement( XE::uint32 val ) const
+const XE::InputLayout::Element &XE::InputLayout::GetElement( XE::uint64 val ) const
 {
 	return _Elements[val];
 }
@@ -43,12 +43,12 @@ const XE::Array < XE::InputLayout::Element > &XE::InputLayout::GetElements() con
 	return _Elements;
 }
 
-XE::InputLayout::Element &XE::InputLayout::operator []( XE::uint32 val )
+XE::InputLayout::Element &XE::InputLayout::operator []( XE::uint64 val )
 {
 	return _Elements[val];
 }
 
-const XE::InputLayout::Element &XE::InputLayout::operator []( XE::uint32 val ) const
+const XE::InputLayout::Element &XE::InputLayout::operator []( XE::uint64 val ) const
 {
 	return _Elements[val];
 }

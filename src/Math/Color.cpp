@@ -1,5 +1,7 @@
 #include "Color.h"
 
+#include "Mathf.h"
+
 USING_XE
 
 BEG_META(Color)
@@ -247,14 +249,14 @@ FColor FColor::Lerp( const FColor &val1, const FColor &val2, XE::float32 val )
 
 bool FColor::operator !=( const FColor &val ) const
 {
-	return ( std::abs(r - val.r) > std::numeric_limits<XE::float32>::epsilon() ) && ( std::abs(g - val.g) > std::numeric_limits<XE::float32>::epsilon() ) &&
-		   ( std::abs(b - val.b) > std::numeric_limits<XE::float32>::epsilon() ) && ( std::abs(a - val.a) > std::numeric_limits<XE::float32>::epsilon() );
+	return ( Mathf::Abs(r - val.r) > std::numeric_limits<XE::float32>::epsilon() ) && ( Mathf::Abs(g - val.g) > std::numeric_limits<XE::float32>::epsilon() ) &&
+		   ( Mathf::Abs(b - val.b) > std::numeric_limits<XE::float32>::epsilon() ) && ( Mathf::Abs(a - val.a) > std::numeric_limits<XE::float32>::epsilon() );
 }
 
 bool FColor::operator ==( const FColor &val ) const
 {
-	return ( std::abs(r - val.r) <= std::numeric_limits<XE::float32>::epsilon() ) && ( std::abs(g - val.g) <= std::numeric_limits<XE::float32>::epsilon() ) &&
-		   ( std::abs(b - val.b) <= std::numeric_limits<XE::float32>::epsilon() ) && ( std::abs(a - val.a) <= std::numeric_limits<XE::float32>::epsilon() );
+	return ( Mathf::Abs(r - val.r) <= std::numeric_limits<XE::float32>::epsilon() ) && ( Mathf::Abs(g - val.g) <= std::numeric_limits<XE::float32>::epsilon() ) &&
+		   ( Mathf::Abs(b - val.b) <= std::numeric_limits<XE::float32>::epsilon() ) && ( Mathf::Abs(a - val.a) <= std::numeric_limits<XE::float32>::epsilon() );
 }
 
 FColor FColor::operator *( const FColor &val ) const
@@ -269,14 +271,14 @@ FColor FColor::operator *( XE::float32 val ) const
 
 FColor FColor::operator -( const FColor &val ) const
 {
-	return FColor(std::clamp(r - val.r, 0.0f, 1.0f), std::clamp(g - val.g, 0.0f, 1.0f), std::clamp(
-			b - val.b, 0.0f, 1.0f), std::clamp(a - val.a, 0.0f, 1.0f));
+	return FColor(Mathf::Clamp(r - val.r, 0.0f, 1.0f), Mathf::Clamp(g - val.g, 0.0f, 1.0f), Mathf::Clamp(
+			b - val.b, 0.0f, 1.0f), Mathf::Clamp(a - val.a, 0.0f, 1.0f));
 }
 
 FColor FColor::operator +( const FColor &val ) const
 {
-	return FColor(std::clamp(r + val.r, 0.0f, 1.0f), std::clamp(g + val.g, 0.0f, 1.0f), std::clamp(
-			b + val.b, 0.0f, 1.0f), std::clamp(a + val.a, 0.0f, 1.0f));
+	return FColor(Mathf::Clamp(r + val.r, 0.0f, 1.0f), Mathf::Clamp(g + val.g, 0.0f, 1.0f), Mathf::Clamp(
+			b + val.b, 0.0f, 1.0f), Mathf::Clamp(a + val.a, 0.0f, 1.0f));
 }
 
 FColor &FColor::operator *=( const FColor &val )
@@ -301,20 +303,20 @@ FColor &FColor::operator *=( XE::float32 val )
 
 FColor &FColor::operator -=( const FColor &val )
 {
-	r = std::clamp(r - val.r, 0.0f, 1.0f);
-	g = std::clamp(g - val.g, 0.0f, 1.0f);
-	b = std::clamp(b - val.b, 0.0f, 1.0f);
-	a = std::clamp(a - val.a, 0.0f, 1.0f);
+	r = Mathf::Clamp(r - val.r, 0.0f, 1.0f);
+	g = Mathf::Clamp(g - val.g, 0.0f, 1.0f);
+	b = Mathf::Clamp(b - val.b, 0.0f, 1.0f);
+	a = Mathf::Clamp(a - val.a, 0.0f, 1.0f);
 	
 	return *this;
 }
 
 FColor &FColor::operator +=( const FColor &val )
 {
-	r = std::clamp(r + val.r, 0.0f, 1.0f);
-	g = std::clamp(g + val.g, 0.0f, 1.0f);
-	b = std::clamp(b + val.b, 0.0f, 1.0f);
-	a = std::clamp(a + val.a, 0.0f, 1.0f);
+	r = Mathf::Clamp(r + val.r, 0.0f, 1.0f);
+	g = Mathf::Clamp(g + val.g, 0.0f, 1.0f);
+	b = Mathf::Clamp(b + val.b, 0.0f, 1.0f);
+	a = Mathf::Clamp(a + val.a, 0.0f, 1.0f);
 	
 	return *this;
 }

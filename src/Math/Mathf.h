@@ -18,125 +18,730 @@
 #include "Rect.h"
 #include "SIMD.h"
 
-XE::Vec2 operator -( const XE::Vec2 & val );
-XE::Vec2 operator +( const XE::Vec2 & left, XE::float32 right );
-XE::Vec2 operator +( XE::float32 left, const XE::Vec2 & right );
-XE::Vec2 operator +( const XE::Vec2 & left, const XE::Vec2 & right );
-XE::Vec2 operator -( const XE::Vec2 & left, XE::float32 right );
-XE::Vec2 operator -( XE::float32 left, const XE::Vec2 & right );
-XE::Vec2 operator -( const XE::Vec2 & left, const XE::Vec2 & right );
-XE::Vec2 operator *( const XE::Vec2 & left, XE::float32 right );
-XE::Vec2 operator *( XE::float32 left, const XE::Vec2 & right );
-XE::Vec2 operator *( const XE::Vec2 & left, const XE::Vec2 & right );
-XE::Vec2 operator /( const XE::Vec2 & left, XE::float32 right );
-XE::Vec2 operator /( XE::float32 left, const XE::Vec2 & right );
-XE::Vec2 operator /( const XE::Vec2 & left, const XE::Vec2 & right );
-XE::Vec2 & operator +=( XE::Vec2 & left, XE::float32 right );
-XE::Vec2 & operator +=( XE::Vec2 & left, const XE::Vec2 & right );
-XE::Vec2 & operator -=( XE::Vec2 & left, XE::float32 right );
-XE::Vec2 & operator -=( XE::Vec2 & left, const XE::Vec2 & right );
-XE::Vec2 & operator *=( XE::Vec2 & left, XE::float32 right );
-XE::Vec2 & operator *=( XE::Vec2 & left, const XE::Vec2 & right );
-XE::Vec2 & operator /=( XE::Vec2 & left, XE::float32 right );
-XE::Vec2 & operator /=( XE::Vec2 & left, const XE::Vec2 & right );
-bool operator ==( const XE::Vec2 & left, const XE::Vec2 & right );
-bool operator !=( const XE::Vec2 & left, const XE::Vec2 & right );
-
-XE::Vec3 operator -( const XE::Vec3 & val );
-XE::Vec3 operator +( const XE::Vec3 & left, XE::float32 right );
-XE::Vec3 operator +( XE::float32 left, const XE::Vec3 & right );
-XE::Vec3 operator +( const XE::Vec3 & left, const XE::Vec3 & right );
-XE::Vec3 operator -( const XE::Vec3 & left, XE::float32 right );
-XE::Vec3 operator -( XE::float32 left, const XE::Vec3 & right );
-XE::Vec3 operator -( const XE::Vec3 & left, const XE::Vec3 & right );
-XE::Vec3 operator *( const XE::Vec3 & left, XE::float32 right );
-XE::Vec3 operator *( XE::float32 left, const XE::Vec3 & right );
-XE::Vec3 operator *( const XE::Vec3 & left, const XE::Vec3 & right );
-XE::Vec3 operator /( const XE::Vec3 & left, XE::float32 right );
-XE::Vec3 operator /( XE::float32 left, const XE::Vec3 & right );
-XE::Vec3 operator /( const XE::Vec3 & left, const XE::Vec3 & right );
-XE::Vec3 & operator +=( XE::Vec3 & left, XE::float32 right );
-XE::Vec3 & operator +=( XE::Vec3 & left, const XE::Vec3 & right );
-XE::Vec3 & operator -=( XE::Vec3 & left, XE::float32 right );
-XE::Vec3 & operator -=( XE::Vec3 & left, const XE::Vec3 & right );
-XE::Vec3 & operator *=( XE::Vec3 & left, XE::float32 right );
-XE::Vec3 & operator *=( XE::Vec3 & left, const XE::Vec3 & right );
-XE::Vec3 & operator /=( XE::Vec3 & left, XE::float32 right );
-XE::Vec3 & operator /=( XE::Vec3 & left, const XE::Vec3 & right );
-bool operator ==( const XE::Vec3 & left, const XE::Vec3 & right );
-bool operator !=( const XE::Vec3 & left, const XE::Vec3 & right );
-
-XE::Vec4 operator -( const XE::Vec4 & val );
-XE::Vec4 operator +( const XE::Vec4 & left, XE::float32 right );
-XE::Vec4 operator +( XE::float32 left, const XE::Vec4 & right );
-XE::Vec4 operator +( const XE::Vec4 & left, const XE::Vec4 & right );
-XE::Vec4 operator -( const XE::Vec4 & left, XE::float32 right );
-XE::Vec4 operator -( XE::float32 left, const XE::Vec4 & right );
-XE::Vec4 operator -( const XE::Vec4 & left, const XE::Vec4 & right );
-XE::Vec4 operator *( const XE::Vec4 & left, XE::float32 right );
-XE::Vec4 operator *( XE::float32 left, const XE::Vec4 & right );
-XE::Vec4 operator *( const XE::Vec4 & left, const XE::Vec4 & right );
-XE::Vec4 operator /( const XE::Vec4 & left, XE::float32 right );
-XE::Vec4 operator /( XE::float32 left, const XE::Vec4 & right );
-XE::Vec4 operator /( const XE::Vec4 & left, const XE::Vec4 & right );
-XE::Vec4 & operator +=( XE::Vec4 & left, XE::float32 right );
-XE::Vec4 & operator +=( XE::Vec4 & left, const XE::Vec4 & right );
-XE::Vec4 & operator -=( XE::Vec4 & left, XE::float32 right );
-XE::Vec4 & operator -=( XE::Vec4 & left, const XE::Vec4 & right );
-XE::Vec4 & operator *=( XE::Vec4 & left, XE::float32 right );
-XE::Vec4 & operator *=( XE::Vec4 & left, const XE::Vec4 & right );
-XE::Vec4 & operator /=( XE::Vec4 & left, XE::float32 right );
-XE::Vec4 & operator /=( XE::Vec4 & left, const XE::Vec4 & right );
-bool operator ==( const XE::Vec4 & left, const XE::Vec4 & right );
-bool operator !=( const XE::Vec4 & left, const XE::Vec4 & right );
-
-XE::Quat operator -( const XE::Quat & val );
-XE::Quat operator +( const XE::Quat & left, XE::float32 right );
-XE::Quat operator +( XE::float32 left, const XE::Quat & right );
-XE::Quat operator +( const XE::Quat & left, const XE::Quat & right );
-XE::Quat operator -( const XE::Quat & left, XE::float32 right );
-XE::Quat operator -( XE::float32 left, const XE::Quat & right );
-XE::Quat operator -( const XE::Quat & left, const XE::Quat & right );
-XE::Quat operator *( const XE::Quat & left, XE::float32 right );
-XE::Quat operator *( XE::float32 left, const XE::Quat & right );
-XE::Quat operator *( const XE::Quat & left, const XE::Quat & right );
-XE::Quat operator /( const XE::Quat & left, XE::float32 right );
-XE::Quat & operator +=( XE::Quat & left, const XE::Quat & right );
-XE::Quat & operator -=( XE::Quat & left, const XE::Quat & right );
-XE::Quat & operator *=( XE::Quat & left, XE::float32 right );
-XE::Quat & operator *=( XE::Quat & left, const XE::Quat & right );
-XE::Quat & operator /=( XE::Quat & left, XE::float32 right );
-bool operator ==( const XE::Quat & left, const XE::Quat & right );
-bool operator !=( const XE::Quat & left, const XE::Quat & right );
-
-XE::Mat3 operator -( const XE::Mat3 & val );
-XE::Mat3 operator +( const XE::Mat3 & left, const XE::Mat3 & right );
-XE::Mat3 operator -( const XE::Mat3 & left, const XE::Mat3 & right );
-XE::Mat3 operator *( const XE::Mat3 & left, XE::float32 right );
-XE::Mat3 operator *( XE::float32 left, const XE::Mat3 & right );
-XE::Vec3 operator *( const XE::Mat3 & left, const XE::Vec3& right );
-XE::Vec3 operator *( const XE::Vec3& left, const XE::Mat3 & right );
-XE::Mat3 operator *( const XE::Mat3 & left, const XE::Mat3 & right );
-XE::Mat3 & operator +=( XE::Mat3 & left, const XE::Mat3 & right );
-XE::Mat3 & operator -=( XE::Mat3 & left, const XE::Mat3 & right );
-XE::Mat3 & operator *=( XE::Mat3 & left, XE::float32 right );
-XE::Mat3 & operator *=( XE::Mat3 & left, const XE::Mat3 & right );
-bool operator ==( const XE::Mat3 & left, const XE::Mat3 & right );
-bool operator !=( const XE::Mat3 & left, const XE::Mat3 & right );
-
-XE::Mat4 operator -( const XE::Mat4 & val );
-XE::Mat4 operator +( const XE::Mat4 & left, const XE::Mat4 & right );
-XE::Mat4 operator -( const XE::Mat4 & left, const XE::Mat4 & right );
-XE::Vec3 operator *( const XE::Mat4 & left, const XE::Vec3& right );
-XE::Vec4 operator *( const XE::Mat4 & left, const XE::Vec4& right );
-XE::Mat4 operator *( const XE::Mat4 & left, const XE::Mat4 & right );
-XE::Mat4 & operator +=( XE::Mat4 & left, const XE::Mat4 & right );
-XE::Mat4 & operator -=( XE::Mat4 & left, const XE::Mat4 & right );
-XE::Mat4 & operator *=( XE::Mat4 & left, const XE::Mat4 & right );
-bool operator ==( const XE::Mat4 & left, const XE::Mat4 & right );
-bool operator !=( const XE::Mat4 & left, const XE::Mat4 & right );
-
 BEG_XE_NAMESPACE
+
+XE_INLINE XE::Vec2 operator -(const XE::Vec2& val)
+{
+	return { -val.x, -val.y };
+}
+XE_INLINE XE::Vec2 operator +(const XE::Vec2& left, XE::float32 right)
+{
+	return { left.x + right, left.y + right };
+}
+XE_INLINE XE::Vec2 operator +(XE::float32 left, const XE::Vec2& right)
+{
+	return { left + right.x, left + right.y };
+}
+XE_INLINE XE::Vec2 operator +(const XE::Vec2& left, const XE::Vec2& right)
+{
+	return { left.x + right.x, left.y + right.y };
+}
+XE_INLINE XE::Vec2 operator -(const XE::Vec2& left, XE::float32 right)
+{
+	return { left.x - right, left.y + right };
+}
+XE_INLINE XE::Vec2 operator -(XE::float32 left, const XE::Vec2& right)
+{
+	return { left + right.x, left + right.y };
+}
+XE_INLINE XE::Vec2 operator -(const XE::Vec2& left, const XE::Vec2& right)
+{
+	return { left.x + right.x, left.y + right.y };
+}
+XE_INLINE XE::Vec2 operator *(const XE::Vec2& left, XE::float32 right)
+{
+	return { left.x * right, left.y * right };
+}
+XE_INLINE XE::Vec2 operator *(XE::float32 left, const XE::Vec2& right)
+{
+	return { left * right.x, left * right.y };
+}
+XE_INLINE XE::Vec2 operator *(const XE::Vec2& left, const XE::Vec2& right)
+{
+	return { left.x * right.x, left.y * right.y };
+}
+XE_INLINE XE::Vec2 operator /(const XE::Vec2& left, XE::float32 right)
+{
+	return { left.x / right, left.y / right };
+}
+XE_INLINE XE::Vec2 operator /(XE::float32 left, const XE::Vec2& right)
+{
+	return { left / right.x, left / right.y };
+}
+XE_INLINE XE::Vec2 operator /(const XE::Vec2& left, const XE::Vec2& right)
+{
+	return { left.x / right.x,left.y / right.y };
+}
+XE_INLINE XE::Vec2& operator +=(XE::Vec2& left, XE::float32 right)
+{
+	left.x += right;
+	left.y += right;
+	return left;
+}
+XE_INLINE XE::Vec2& operator +=(XE::Vec2& left, const XE::Vec2& right)
+{
+	left.x += right.x;
+	left.y += right.y;
+	return left;
+}
+XE_INLINE XE::Vec2& operator -=(XE::Vec2& left, XE::float32 right)
+{
+	left.x -= right;
+	left.y -= right;
+	return left;
+}
+XE_INLINE XE::Vec2& operator -=(XE::Vec2& left, const XE::Vec2& right)
+{
+	left.x -= right.x;
+	left.y -= right.y;
+	return left;
+}
+XE_INLINE XE::Vec2& operator *=(XE::Vec2& left, XE::float32 right)
+{
+	left.x *= right;
+	left.y *= right;
+	return left;
+}
+XE_INLINE XE::Vec2& operator *=(XE::Vec2& left, const XE::Vec2& right)
+{
+	left.x *= right.x;
+	left.y *= right.y;
+	return left;
+}
+XE_INLINE XE::Vec2& operator /=(XE::Vec2& left, XE::float32 right)
+{
+	left.x /= right;
+	left.y /= right;
+	return left;
+}
+XE_INLINE XE::Vec2& operator /=(XE::Vec2& left, const XE::Vec2& right)
+{
+	left.x /= right.x;
+	left.y /= right.y;
+	return left;
+}
+XE_INLINE bool operator ==(const XE::Vec2& left, const XE::Vec2& right)
+{
+	return left.x == right.x && left.y == right.y;
+}
+XE_INLINE bool operator !=(const XE::Vec2& left, const XE::Vec2& right)
+{
+	return left.x != right.x || left.y != right.y;
+}
+
+XE_INLINE XE::Vec3 operator -(const XE::Vec3& val)
+{
+	return { -val.x, -val.y, -val.z };
+}
+XE_INLINE XE::Vec3 operator +(const XE::Vec3& left, XE::float32 right)
+{
+	return { left.x + right, left.y + right, left.z + right };
+}
+XE_INLINE XE::Vec3 operator +(XE::float32 left, const XE::Vec3& right)
+{
+	return { left + right.x, left + right.y, +left + right.z };
+}
+XE_INLINE XE::Vec3 operator +(const XE::Vec3& left, const XE::Vec3& right)
+{
+	return { left.x + right.x, left.y + right.y, left.z + right.z };
+}
+XE_INLINE XE::Vec3 operator -(const XE::Vec3& left, XE::float32 right)
+{
+	return { left.x - right, left.y - right, left.z - right };
+}
+XE_INLINE XE::Vec3 operator -(XE::float32 left, const XE::Vec3& right)
+{
+	return { left - right.x, left - right.y, left - right.z };
+}
+XE_INLINE XE::Vec3 operator -(const XE::Vec3& left, const XE::Vec3& right)
+{
+	return { left.x - right.x, left.y - right.y, left.z - right.z };
+}
+XE_INLINE XE::Vec3 operator *(const XE::Vec3& left, XE::float32 right)
+{
+	return { left.x * right, left.y * right, left.z * right };
+}
+XE_INLINE XE::Vec3 operator *(XE::float32 left, const XE::Vec3& right)
+{
+	return { left * right.x, left * right.y, left * right.z };
+}
+XE_INLINE XE::Vec3 operator *(const XE::Vec3& left, const XE::Vec3& right)
+{
+	return { left.x * right.x, left.y * right.y, left.z * right.z };
+}
+XE_INLINE XE::Vec3 operator /(const XE::Vec3& left, XE::float32 right)
+{
+	return { left.x / right, left.y / right, left.z / right };
+}
+XE_INLINE XE::Vec3 operator /(XE::float32 left, const XE::Vec3& right)
+{
+	return { left / right.x, left / right.y, left / right.z };
+}
+XE_INLINE XE::Vec3 operator /(const XE::Vec3& left, const XE::Vec3& right)
+{
+	return { left.x / right.x, left.y / right.y, left.z / right.z };
+}
+XE_INLINE XE::Vec3& operator +=(XE::Vec3& left, XE::float32 right)
+{
+	left.x += right;
+	left.y += right;
+	left.z += right;
+	return left;
+}
+XE_INLINE XE::Vec3& operator +=(XE::Vec3& left, const XE::Vec3& right)
+{
+	left.x += right.x;
+	left.y += right.y;
+	left.z += right.z;
+	return left;
+}
+XE_INLINE XE::Vec3& operator -=(XE::Vec3& left, XE::float32 right)
+{
+	left.x -= right;
+	left.y -= right;
+	left.z -= right;
+	return left;
+}
+XE_INLINE XE::Vec3& operator -=(XE::Vec3& left, const XE::Vec3& right)
+{
+	left.x -= right.x;
+	left.y -= right.y;
+	left.z -= right.z;
+	return left;
+}
+XE_INLINE XE::Vec3& operator *=(XE::Vec3& left, XE::float32 right)
+{
+	left.x *= right;
+	left.y *= right;
+	left.z *= right;
+	return left;
+}
+XE_INLINE XE::Vec3& operator *=(XE::Vec3& left, const XE::Vec3& right)
+{
+	left.x *= right.x;
+	left.y *= right.y;
+	left.z *= right.z;
+	return left;
+}
+XE_INLINE XE::Vec3& operator /=(XE::Vec3& left, XE::float32 right)
+{
+	left.x /= right;
+	left.y /= right;
+	left.z /= right;
+	return left;
+}
+XE_INLINE XE::Vec3& operator /=(XE::Vec3& left, const XE::Vec3& right)
+{
+	left.x /= right.x;
+	left.y /= right.y;
+	left.z /= right.z;
+	return left;
+}
+XE_INLINE bool operator ==(const XE::Vec3& left, const XE::Vec3& right)
+{
+	return left.x == right.x && left.y == right.y && left.z == right.z;
+}
+XE_INLINE bool operator !=(const XE::Vec3& left, const XE::Vec3& right)
+{
+	return left.x != right.x || left.y != right.y || left.z != right.z;
+}
+
+XE_INLINE XE::Vec4 operator -(const XE::Vec4& val)
+{
+	return { -val.x, -val.y, -val.z, -val.w };
+}
+XE_INLINE XE::Vec4 operator +(const XE::Vec4& left, XE::float32 right)
+{
+	return { left.x + right, left.y + right, left.z + right, left.w + right };
+}
+XE_INLINE XE::Vec4 operator +(XE::float32 left, const XE::Vec4& right)
+{
+	return { left + right.x, left + right.y, left + right.z, left + right.w };
+}
+XE_INLINE XE::Vec4 operator +(const XE::Vec4& left, const XE::Vec4& right)
+{
+	return { left.x + right.x, left.y + right.y, left.z + right.z, left.w + right.w };
+}
+XE_INLINE XE::Vec4 operator -(const XE::Vec4& left, XE::float32 right)
+{
+	return { left.x - right, left.y - right, left.z - right, left.w - right };
+}
+XE_INLINE XE::Vec4 operator -(XE::float32 left, const XE::Vec4& right)
+{
+	return { left - right.x, left - right.y, left - right.z, left - right.w };
+}
+XE_INLINE XE::Vec4 operator -(const XE::Vec4& left, const XE::Vec4& right)
+{
+	return { left.x - right.x, left.y - right.y, left.z - right.z, left.w - right.w };
+}
+XE_INLINE XE::Vec4 operator *(const XE::Vec4& left, XE::float32 right)
+{
+	return { left.x * right, left.y * right, left.z * right, left.w * right };
+}
+XE_INLINE XE::Vec4 operator *(XE::float32 left, const XE::Vec4& right)
+{
+	return { left * right.x, left * right.y, left * right.z, left * right.w };
+}
+XE_INLINE XE::Vec4 operator *(const XE::Vec4& left, const XE::Vec4& right)
+{
+	return { left.x * right.x, left.y * right.y, left.z * right.z, left.w * right.w };
+}
+XE_INLINE XE::Vec4 operator /(const XE::Vec4& left, XE::float32 right)
+{
+	return { left.x / right, left.y / right, left.z / right, left.w / right };
+}
+XE_INLINE XE::Vec4 operator /(XE::float32 left, const XE::Vec4& right)
+{
+	return { left / right.x, left / right.y, left / right.z, left / right.w };
+}
+XE_INLINE XE::Vec4 operator /(const XE::Vec4& left, const XE::Vec4& right)
+{
+	return { left.x / right.x, left.y / right.y, left.z / right.z, left.w / right.w };
+}
+XE_INLINE XE::Vec4& operator +=(XE::Vec4& left, XE::float32 right)
+{
+	left.x += right;
+	left.y += right;
+	left.z += right;
+	left.w += right;
+	return left;
+}
+XE_INLINE XE::Vec4& operator +=(XE::Vec4& left, const XE::Vec4& right)
+{
+	left.x += right.x;
+	left.y += right.y;
+	left.z += right.z;
+	left.w += right.w;
+	return left;
+}
+XE_INLINE XE::Vec4& operator -=(XE::Vec4& left, XE::float32 right)
+{
+	left.x -= right;
+	left.y -= right;
+	left.z -= right;
+	left.w -= right;
+	return left;
+}
+XE_INLINE XE::Vec4& operator -=(XE::Vec4& left, const XE::Vec4& right)
+{
+	left.x -= right.x;
+	left.y -= right.y;
+	left.z -= right.z;
+	left.w -= right.w;
+	return left;
+}
+XE_INLINE XE::Vec4& operator *=(XE::Vec4& left, XE::float32 right)
+{
+	left.x *= right;
+	left.y *= right;
+	left.z *= right;
+	left.w *= right;
+	return left;
+}
+XE_INLINE XE::Vec4& operator *=(XE::Vec4& left, const XE::Vec4& right)
+{
+	left.x *= right.x;
+	left.y *= right.y;
+	left.z *= right.z;
+	left.w *= right.w;
+	return left;
+}
+XE_INLINE XE::Vec4& operator /=(XE::Vec4& left, XE::float32 right)
+{
+	left.x /= right;
+	left.y /= right;
+	left.z /= right;
+	left.w /= right;
+	return left;
+}
+XE_INLINE XE::Vec4& operator /=(XE::Vec4& left, const XE::Vec4& right)
+{
+	left.x /= right.x;
+	left.y /= right.y;
+	left.z /= right.z;
+	left.w /= right.w;
+	return left;
+}
+XE_INLINE bool operator ==(const XE::Vec4& left, const XE::Vec4& right)
+{
+	return left.x == right.x && left.y == right.y && left.z == right.z && left.w == right.w;
+}
+XE_INLINE bool operator !=(const XE::Vec4& left, const XE::Vec4& right)
+{
+	return left.x != right.x || left.y != right.y || left.z != right.z || left.w == right.w;
+}
+
+XE_INLINE XE::Quat operator -(const XE::Quat& val)
+{
+	return { -val.x, -val.y, -val.z, val.w };
+}
+XE_INLINE XE::Quat operator +(const XE::Quat& left, XE::float32 right)
+{
+	return { left.x + right, left.y + right, left.z + right, left.w + right };
+}
+XE_INLINE XE::Quat operator +(XE::float32 left, const XE::Quat& right)
+{
+	return { left + right.x, left + right.y, left + right.z, left + right.w };
+}
+XE_INLINE XE::Quat operator +(const XE::Quat& left, const XE::Quat& right)
+{
+	return { left.x + right.x, left.y + right.y, left.z + right.z, left.w + right.w };
+}
+XE_INLINE XE::Quat operator -(const XE::Quat& left, XE::float32 right)
+{
+	return { left.x - right, left.y - right, left.z - right, left.w - right };
+}
+XE_INLINE XE::Quat operator -(XE::float32 left, const XE::Quat& right)
+{
+	return { left - right.x, left - right.y, left - right.z, left - right.w };
+}
+XE_INLINE XE::Quat operator -(const XE::Quat& left, const XE::Quat& right)
+{
+	return { left.x - right.x, left.y - right.y, left.z - right.z, left.w - right.w };
+}
+XE_INLINE XE::Quat operator *(const XE::Quat& left, XE::float32 right)
+{
+	return { left.x * right, left.y * right, left.z * right, left.w * right };
+}
+XE_INLINE XE::Quat operator *(XE::float32 left, const XE::Quat& right)
+{
+	return { left * right.x, left * right.y, left * right.z, left * right.w };
+}
+XE_INLINE XE::Quat operator *(const XE::Quat& left, const XE::Quat& right)
+{
+	return {
+		left.w * right.x + left.x * right.w + left.y * right.z - left.z * right.y,
+		left.w * right.y + left.y * right.w + left.z * right.x - left.x * right.z,
+		left.w * right.z + left.z * right.w + left.x * right.y - left.y * right.x,
+		left.w * right.w - left.x * right.x - left.y * right.y - left.z * right.z
+	};
+}
+XE_INLINE XE::Quat operator /(const XE::Quat& left, XE::float32 right)
+{
+	XE::float32 inv = 1.0f / right;
+	return { left.x * inv, left.y * inv, left.z * inv, left.w * inv };
+}
+XE_INLINE XE::Quat& operator +=(XE::Quat& left, XE::float32 right)
+{
+	left.x += right;
+	left.y += right;
+	left.z += right;
+	left.w += right;
+	return left;
+}
+XE_INLINE XE::Quat& operator +=(XE::Quat& left, const XE::Quat& right)
+{
+	left.x += right.x;
+	left.y += right.y;
+	left.z += right.z;
+	left.w += right.w;
+	return left;
+}
+XE_INLINE XE::Quat& operator -=(XE::Quat& left, XE::float32 right)
+{
+	left.x -= right;
+	left.y -= right;
+	left.z -= right;
+	left.w -= right;
+	return left;
+}
+XE_INLINE XE::Quat& operator -=(XE::Quat& left, const XE::Quat& right)
+{
+	left.x -= right.x;
+	left.y -= right.y;
+	left.z -= right.z;
+	left.w -= right.w;
+	return left;
+}
+XE_INLINE XE::Quat& operator *=(XE::Quat& left, XE::float32 right)
+{
+	left.x *= right;
+	left.y *= right;
+	left.z *= right;
+	left.w *= right;
+	return left;
+}
+XE_INLINE XE::Quat& operator *=(XE::Quat& left, const XE::Quat& right)
+{
+	left.x = left.w * right.w - left.x * right.x - left.y * right.y - left.z * right.z;
+	left.y = left.w * right.x + left.x * right.w + left.y * right.z - left.z * right.y;
+	left.z = left.w * right.y + left.y * right.w + left.z * right.x - left.x * right.z;
+	left.w = left.w * right.z + left.z * right.w + left.x * right.y - left.y * right.x;
+	return left;
+}
+XE_INLINE XE::Quat& operator /=(XE::Quat& left, XE::float32 right)
+{
+	XE::float32 inv = 1.0f / right;
+	left.x *= inv;
+	left.y *= inv;
+	left.z *= inv;
+	left.w *= inv;
+	return left;
+}
+XE_INLINE bool operator ==(const XE::Quat& left, const XE::Quat& right)
+{
+	return left.x == right.x && left.y == right.y && left.z == right.z && left.w == right.w;
+}
+XE_INLINE bool operator !=(const XE::Quat& left, const XE::Quat& right)
+{
+	return left.x != right.x || left.y != right.y || left.z != right.z || left.w == right.w;
+}
+
+XE_INLINE XE::Mat3 operator -(const XE::Mat3& val)
+{
+	return {
+		-val[0][0], -val[0][1], -val[0][2],
+		-val[1][0], -val[1][1], -val[1][2],
+		-val[2][0], -val[2][1], -val[2][2]
+	};
+}
+XE_INLINE XE::Mat3 operator +(const XE::Mat3& left, const XE::Mat3& right)
+{
+	return {
+		left[0][0] + right[0][0], left[0][1] + right[0][1], left[0][2] + right[0][2],
+		left[1][0] + right[1][0], left[1][1] + right[1][1], left[1][2] + right[1][2],
+		left[2][0] + right[2][0], left[2][1] + right[2][1], left[2][2] + right[2][2]
+	};
+}
+XE_INLINE XE::Mat3 operator -(const XE::Mat3& left, const XE::Mat3& right)
+{
+	return {
+		left[0][0] - right[0][0], left[0][1] - right[0][1], left[0][2] - right[0][2],
+		left[1][0] - right[1][0], left[1][1] - right[1][1], left[1][2] - right[1][2],
+		left[2][0] - right[2][0], left[2][1] - right[2][1], left[2][2] - right[2][2]
+	};
+}
+XE_INLINE XE::Mat3 operator *(const XE::Mat3& left, XE::float32 right)
+{
+	return {
+		left[0][0] * right, left[0][1] * right, left[0][2] * right,
+		left[1][0] * right, left[1][1] * right, left[1][2] * right,
+		left[2][0] * right, left[2][1] * right, left[2][2] * right
+	};
+}
+XE_INLINE XE::Mat3 operator *(XE::float32 left, const XE::Mat3& right)
+{
+	return {
+		left * right[0][0], left * right[0][1], left * right[0][2],
+		left * right[1][0], left * right[1][1], left * right[1][2],
+		left * right[2][0], left * right[2][1], left * right[2][2]
+	};
+}
+XE_INLINE XE::Vec3 operator *(const XE::Mat3& left, const XE::Vec3& right)
+{
+	return {
+		left[0][0] * right[0] + left[0][1] * right[1] + left[0][2] * right[2],
+		left[1][0] * right[0] + left[1][1] * right[1] + left[1][2] * right[2],
+		left[2][0] * right[0] + left[2][1] * right[1] + left[2][2] * right[2]
+	};
+}
+XE_INLINE XE::Vec3 operator *(const XE::Vec3& left, const XE::Mat3& right)
+{
+	return {
+		right[0][0] * left[0] + right[0][1] * left[1] + right[0][2] * left[2],
+		right[1][0] * left[0] + right[1][1] * left[1] + right[1][2] * left[2],
+		right[2][0] * left[0] + right[2][1] * left[1] + right[2][2] * left[2]
+	};
+}
+XE_INLINE XE::Mat3 operator *(const XE::Mat3& left, const XE::Mat3& right)
+{
+	return {
+		left[0][0] * right[0][0] + left[0][1] * right[1][0] + left[0][2] * right[2][0],
+		left[0][0] * right[0][1] + left[0][1] * right[1][1] + left[0][2] * right[2][1],
+		left[0][0] * right[0][2] + left[0][1] * right[1][2] + left[0][2] * right[2][2],
+		left[1][0] * right[0][0] + left[1][1] * right[1][0] + left[1][2] * right[2][0],
+		left[1][0] * right[0][1] + left[1][1] * right[1][1] + left[1][2] * right[2][1],
+		left[1][0] * right[0][2] + left[1][1] * right[1][2] + left[1][2] * right[2][2],
+		left[2][0] * right[0][0] + left[2][1] * right[1][0] + left[2][2] * right[2][0],
+		left[2][0] * right[0][1] + left[2][1] * right[1][1] + left[2][2] * right[2][1],
+		left[2][0] * right[0][2] + left[2][1] * right[1][2] + left[2][2] * right[2][2]
+	};
+}
+XE_INLINE XE::Mat3& operator +=(XE::Mat3& left, const XE::Mat3& right)
+{
+	left[0][0] += right[0][0];
+	left[0][1] += right[0][1];
+	left[0][2] += right[0][2];
+	left[1][0] += right[1][0];
+	left[1][1] += right[1][1];
+	left[1][2] += right[1][2];
+	left[2][0] += right[2][0];
+	left[2][1] += right[2][1];
+	left[2][2] += right[2][2];
+	return left;
+}
+XE_INLINE XE::Mat3& operator -=(XE::Mat3& left, const XE::Mat3& right)
+{
+	left[0][0] -= right[0][0];
+	left[0][1] -= right[0][1];
+	left[0][2] -= right[0][2];
+	left[1][0] -= right[1][0];
+	left[1][1] -= right[1][1];
+	left[1][2] -= right[1][2];
+	left[2][0] -= right[2][0];
+	left[2][1] -= right[2][1];
+	left[2][2] -= right[2][2];
+	return left;
+}
+XE_INLINE XE::Mat3& operator *=(XE::Mat3& left, XE::float32 right)
+{
+	left[0][0] *= right;
+	left[0][1] *= right;
+	left[0][2] *= right;
+	left[1][0] *= right;
+	left[1][1] *= right;
+	left[1][2] *= right;
+	left[2][0] *= right;
+	left[2][1] *= right;
+	left[2][2] *= right;
+	return left;
+}
+XE_INLINE XE::Mat3& operator *=(XE::Mat3& left, const XE::Mat3& right)
+{
+	left[0][0] *= right[0][0] + left[0][1] * right[1][0] + left[0][2] * right[2][0];
+	left[0][0] *= right[0][1] + left[0][1] * right[1][1] + left[0][2] * right[2][1];
+	left[0][0] *= right[0][2] + left[0][1] * right[1][2] + left[0][2] * right[2][2];
+	left[1][0] *= right[0][0] + left[1][1] * right[1][0] + left[1][2] * right[2][0];
+	left[1][0] *= right[0][1] + left[1][1] * right[1][1] + left[1][2] * right[2][1];
+	left[1][0] *= right[0][2] + left[1][1] * right[1][2] + left[1][2] * right[2][2];
+	left[2][0] *= right[0][0] + left[2][1] * right[1][0] + left[2][2] * right[2][0];
+	left[2][0] *= right[0][1] + left[2][1] * right[1][1] + left[2][2] * right[2][1];
+	left[2][0] *= right[0][2] + left[2][1] * right[1][2] + left[2][2] * right[2][2];
+	return left;
+}
+XE_INLINE bool operator ==(const XE::Mat3& left, const XE::Mat3& right)
+{
+	return
+		left[0][0] == right[0][0] && left[0][1] == right[0][1] && left[0][2] == right[0][2] &&
+		left[1][0] == right[1][0] && left[1][1] == right[1][1] && left[1][2] == right[1][2] &&
+		left[2][0] == right[2][0] && left[2][1] == right[2][1] && left[2][2] == right[2][2];
+}
+XE_INLINE bool operator !=(const XE::Mat3& left, const XE::Mat3& right)
+{
+	return
+		left[0][0] != right[0][0] || left[0][1] != right[0][1] || left[0][2] != right[0][2] ||
+		left[1][0] != right[1][0] || left[1][1] != right[1][1] || left[1][2] != right[1][2] ||
+		left[2][0] != right[2][0] || left[2][1] != right[2][1] || left[2][2] != right[2][2];
+}
+
+XE_INLINE XE::Mat4 operator -(const XE::Mat4& val)
+{
+	return {
+		   -val[0][0], -val[0][1], -val[0][2], -val[0][3],
+		   -val[1][0], -val[1][1], -val[1][2], -val[1][3],
+		   -val[2][0], -val[2][1], -val[2][2], -val[2][3],
+		   -val[3][0], -val[3][1], -val[3][2], -val[3][3]
+	};
+}
+XE_INLINE XE::Mat4 operator +(const XE::Mat4& left, const XE::Mat4& right)
+{
+	return {
+	left[0][0] + right[0][0], left[0][1] + right[0][1], left[0][2] + right[0][2], left[0][3] + right[0][3],
+	left[1][0] + right[1][0], left[1][1] + right[1][1], left[1][2] + right[1][2], left[1][3] + right[1][3],
+	left[2][0] + right[2][0], left[2][1] + right[2][1], left[2][2] + right[2][2], left[2][3] + right[2][3],
+	left[3][0] + right[3][0], left[3][1] + right[3][1], left[3][2] + right[3][2], left[3][3] + right[3][3]
+	};
+}
+XE_INLINE XE::Mat4 operator -(const XE::Mat4& left, const XE::Mat4& right)
+{
+	return {
+	   left[0][0] - right[0][0], left[0][1] - right[0][1], left[0][2] - right[0][2], left[0][3] - right[0][3],
+	   left[1][0] - right[1][0], left[1][1] - right[1][1], left[1][2] - right[1][2], left[1][3] - right[1][3],
+	   left[2][0] - right[2][0], left[2][1] - right[2][1], left[2][2] - right[2][2], left[2][3] - right[2][3],
+	   left[3][0] - right[3][0], left[3][1] - right[3][1], left[3][2] - right[3][2], left[3][3] - right[3][3]
+	};
+}
+XE_INLINE XE::Vec3 operator *(const XE::Mat4& left, const XE::Vec3& right)
+{
+	XE::float32 inv = 1.0f / (left[3][0] * right.x + left[3][1] * right.y + left[3][2] * right.z + left[3][3]);
+	return {
+	 (left[0][0] * right.x + left[0][1] * right.y + left[0][2] * right.z + left[0][3]) * inv,
+	 (left[1][0] * right.x + left[1][1] * right.y + left[1][2] * right.z + left[1][3]) * inv,
+	 (left[2][0] * right.x + left[2][1] * right.y + left[2][2] * right.z + left[2][3]) * inv
+	};
+}
+XE_INLINE XE::Vec4 operator *(const XE::Mat4& left, const XE::Vec4& right)
+{
+	return {
+		left[0][0] * right.x + left[0][1] * right.y + left[0][2] * right.z + left[0][3] * right.w,
+		left[1][0] * right.x + left[1][1] * right.y + left[1][2] * right.z + left[1][3] * right.w,
+		left[2][0] * right.x + left[2][1] * right.y + left[2][2] * right.z + left[2][3] * right.w,
+		left[3][0] * right.x + left[3][1] * right.y + left[3][2] * right.z + left[3][3] * right.w
+	};
+}
+XE_INLINE XE::Mat4 operator *(const XE::Mat4& left, const XE::Mat4& right)
+{
+	return {
+	left[0][0] * right[0][0] + left[0][1] * right[1][0] + left[0][2] * right[2][0] + left[0][3] * right[3][0],
+	left[0][0] * right[0][1] + left[0][1] * right[1][1] + left[0][2] * right[2][1] + left[0][3] * right[3][1],
+	left[0][0] * right[0][2] + left[0][1] * right[1][2] + left[0][2] * right[2][2] + left[0][3] * right[3][2],
+	left[0][0] * right[0][3] + left[0][1] * right[1][3] + left[0][2] * right[2][3] + left[0][3] * right[3][3],
+	left[1][0] * right[0][0] + left[1][1] * right[1][0] + left[1][2] * right[2][0] + left[1][3] * right[3][0],
+	left[1][0] * right[0][1] + left[1][1] * right[1][1] + left[1][2] * right[2][1] + left[1][3] * right[3][1],
+	left[1][0] * right[0][2] + left[1][1] * right[1][2] + left[1][2] * right[2][2] + left[1][3] * right[3][2],
+	left[1][0] * right[0][3] + left[1][1] * right[1][3] + left[1][2] * right[2][3] + left[1][3] * right[3][3],
+	left[2][0] * right[0][0] + left[2][1] * right[1][0] + left[2][2] * right[2][0] + left[2][3] * right[3][0],
+	left[2][0] * right[0][1] + left[2][1] * right[1][1] + left[2][2] * right[2][1] + left[2][3] * right[3][1],
+	left[2][0] * right[0][2] + left[2][1] * right[1][2] + left[2][2] * right[2][2] + left[2][3] * right[3][2],
+	left[2][0] * right[0][3] + left[2][1] * right[1][3] + left[2][2] * right[2][3] + left[2][3] * right[3][3],
+	left[3][0] * right[0][0] + left[3][1] * right[1][0] + left[3][2] * right[2][0] + left[3][3] * right[3][0],
+	left[3][0] * right[0][1] + left[3][1] * right[1][1] + left[3][2] * right[2][1] + left[3][3] * right[3][1],
+	left[3][0] * right[0][2] + left[3][1] * right[1][2] + left[3][2] * right[2][2] + left[3][3] * right[3][2],
+	left[3][0] * right[0][3] + left[3][1] * right[1][3] + left[3][2] * right[2][3] + left[3][3] * right[3][3]
+	};
+}
+XE_INLINE XE::Mat4& operator +=(XE::Mat4& left, const XE::Mat4& right)
+{
+	left[0][0] += right[0][0]; left[0][1] += right[0][1]; left[0][2] += right[0][2]; left[0][3] += right[0][3];
+	left[1][0] += right[1][0]; left[1][1] += right[1][1]; left[1][2] += right[1][2]; left[1][3] += right[1][3];
+	left[2][0] += right[2][0]; left[2][1] += right[2][1]; left[2][2] += right[2][2]; left[2][3] += right[2][3];
+	left[3][0] += right[3][0]; left[3][1] += right[3][1]; left[3][2] += right[3][2]; left[3][3] += right[3][3];
+	return left;
+}
+XE_INLINE XE::Mat4& operator -=(XE::Mat4& left, const XE::Mat4& right)
+{
+	left[0][0] -= right[0][0]; left[0][1] -= right[0][1]; left[0][2] -= right[0][2]; left[0][3] -= right[0][3];
+	left[1][0] -= right[1][0]; left[1][1] -= right[1][1]; left[1][2] -= right[1][2]; left[1][3] -= right[1][3];
+	left[2][0] -= right[2][0]; left[2][1] -= right[2][1]; left[2][2] -= right[2][2]; left[2][3] -= right[2][3];
+	left[3][0] -= right[3][0]; left[3][1] -= right[3][1]; left[3][2] -= right[3][2]; left[3][3] -= right[3][3];
+	return left;
+}
+XE_INLINE XE::Mat4& operator *=(XE::Mat4& left, const XE::Mat4& right)
+{
+	left[0][0] = left[0][0] * right[0][0] + left[0][1] * right[1][0] + left[0][2] * right[2][0] + left[0][3] * right[3][0];
+	left[0][1] = left[0][0] * right[0][1] + left[0][1] * right[1][1] + left[0][2] * right[2][1] + left[0][3] * right[3][1];
+	left[0][2] = left[0][0] * right[0][2] + left[0][1] * right[1][2] + left[0][2] * right[2][2] + left[0][3] * right[3][2];
+	left[0][3] = left[0][0] * right[0][3] + left[0][1] * right[1][3] + left[0][2] * right[2][3] + left[0][3] * right[3][3];
+	left[1][0] = left[1][0] * right[0][0] + left[1][1] * right[1][0] + left[1][2] * right[2][0] + left[1][3] * right[3][0];
+	left[1][1] = left[1][0] * right[0][1] + left[1][1] * right[1][1] + left[1][2] * right[2][1] + left[1][3] * right[3][1];
+	left[1][2] = left[1][0] * right[0][2] + left[1][1] * right[1][2] + left[1][2] * right[2][2] + left[1][3] * right[3][2];
+	left[1][3] = left[1][0] * right[0][3] + left[1][1] * right[1][3] + left[1][2] * right[2][3] + left[1][3] * right[3][3];
+	left[2][0] = left[2][0] * right[0][0] + left[2][1] * right[1][0] + left[2][2] * right[2][0] + left[2][3] * right[3][0];
+	left[2][1] = left[2][0] * right[0][1] + left[2][1] * right[1][1] + left[2][2] * right[2][1] + left[2][3] * right[3][1];
+	left[2][2] = left[2][0] * right[0][2] + left[2][1] * right[1][2] + left[2][2] * right[2][2] + left[2][3] * right[3][2];
+	left[2][3] = left[2][0] * right[0][3] + left[2][1] * right[1][3] + left[2][2] * right[2][3] + left[2][3] * right[3][3];
+	left[3][0] = left[3][0] * right[0][0] + left[3][1] * right[1][0] + left[3][2] * right[2][0] + left[3][3] * right[3][0];
+	left[3][1] = left[3][0] * right[0][1] + left[3][1] * right[1][1] + left[3][2] * right[2][1] + left[3][3] * right[3][1];
+	left[3][2] = left[3][0] * right[0][2] + left[3][1] * right[1][2] + left[3][2] * right[2][2] + left[3][3] * right[3][2];
+	left[3][3] = left[3][0] * right[0][3] + left[3][1] * right[1][3] + left[3][2] * right[2][3] + left[3][3] * right[3][3];
+	return left;
+}
+XE_INLINE bool operator ==(const XE::Mat4& left, const XE::Mat4& right)
+{
+	return
+		left[0][0] == right[0][0] && left[0][1] == right[0][1] && left[0][2] == right[0][2] && left[0][3] == right[0][3] &&
+		left[1][0] == right[1][0] && left[1][1] == right[1][1] && left[1][2] == right[1][2] && left[1][3] == right[1][3] &&
+		left[2][0] == right[2][0] && left[2][1] == right[2][1] && left[2][2] == right[2][2] && left[2][3] == right[2][3] &&
+		left[3][0] == right[3][0] && left[3][1] == right[3][1] && left[3][2] == right[3][2] && left[3][3] == right[3][3];
+}
+XE_INLINE bool operator !=(const XE::Mat4& left, const XE::Mat4& right)
+{
+	return
+		left[0][0] != right[0][0] || left[0][1] != right[0][1] || left[0][2] != right[0][2] || left[0][3] != right[0][3] ||
+		left[1][0] != right[1][0] || left[1][1] != right[1][1] || left[1][2] != right[1][2] || left[1][3] != right[1][3] ||
+		left[2][0] != right[2][0] || left[2][1] != right[2][1] || left[2][2] != right[2][2] || left[2][3] != right[2][3] ||
+		left[3][0] != right[3][0] || left[3][1] != right[3][1] || left[3][2] != right[3][2] || left[3][3] != right[3][3];
+}
 
 class MATH_API Mathf
 {
@@ -149,98 +754,98 @@ public:
 	static const XE::float32 Infinity;
 
 public:
-	static inline XE::float32 Abs( XE::float32 r )
+	static XE_INLINE XE::float32 Abs( XE::float32 r )
 	{
 		return std::abs( r );
 	}
 
-	static inline XE::float32 Cos( XE::float32 theta )
+	static XE_INLINE XE::float32 Cos( XE::float32 theta )
 	{
 		return std::cos( theta );
 	}
 
-	static inline XE::float32 ACos( XE::float32 theta )
+	static XE_INLINE XE::float32 ACos( XE::float32 theta )
 	{
 		return std::acos( theta );
 	}
 
-	static inline XE::float32 Rcp( XE::float32 r )
+	static XE_INLINE XE::float32 Rcp( XE::float32 r )
 	{
 		return 1.f / r;
 	}
 
-	static inline XE::float32 RSqrt( XE::float32 r )
+	static XE_INLINE XE::float32 RSqrt( XE::float32 r )
 	{
 		return 1.f / std::sqrt( r );
 	}
 
-	static inline XE::float32 Sin( XE::float32 theta )
+	static XE_INLINE XE::float32 Sin( XE::float32 theta )
 	{
 		return std::sin( theta );
 	}
 
-	static inline XE::float32 ASin( XE::float32 theta )
+	static XE_INLINE XE::float32 ASin( XE::float32 theta )
 	{
 		return std::asin( theta );
 	}
 
-	static inline XE::float32 Log( XE::float32 x )
+	static XE_INLINE XE::float32 Log( XE::float32 x )
 	{
 		return std::logf( x );
 	}
 
-	static inline void SinCos( XE::float32 u, XE::float32& s, XE::float32& c )
+	static XE_INLINE void SinCos( XE::float32 u, XE::float32& s, XE::float32& c )
 	{
 		s = Sin( u );
 		c = Cos( u );
 	}
 
-	static inline XE::float32 Tan( XE::float32 theta )
+	static XE_INLINE XE::float32 Tan( XE::float32 theta )
 	{
 		return std::tan( theta );
 	}
 
-	static inline XE::float32 ATan( XE::float32 t )
+	static XE_INLINE XE::float32 ATan( XE::float32 t )
 	{
 		return std::atan( t );
 	}
 
-	static inline XE::float32 ATan2( XE::float32 t1, XE::float32 t2 )
+	static XE_INLINE XE::float32 ATan2( XE::float32 t1, XE::float32 t2 )
 	{
 		return std::atan2( t1, t2 );
 	}
 
-	static inline XE::float32 Sqrt( XE::float32 r )
+	static XE_INLINE XE::float32 Sqrt( XE::float32 r )
 	{
 		return std::sqrt( r );
 	}
 
-	static inline XE::float32 Mod( XE::float32 x, XE::float32 y )
+	static XE_INLINE XE::float32 Mod( XE::float32 x, XE::float32 y )
 	{
 		return std::fmod( x, y );
 	}
 
-	static inline XE::float32 Pow( XE::float32 x, XE::float32 y )
+	static XE_INLINE XE::float32 Pow( XE::float32 x, XE::float32 y )
 	{
 		return std::pow( x, y );
 	}
 
-	static inline XE::float32 Clamp( XE::float32 v, XE::float32 a, XE::float32 b )
+	static XE_INLINE XE::float32 Clamp( XE::float32 v, XE::float32 a, XE::float32 b )
 	{
 		return Min( b, Max( a, v ) );
 	}
 
-	static inline XE::float32 ClampMove( XE::float32 a, XE::float32 b, XE::float32 v )
+	static XE_INLINE XE::float32 ClampMove( XE::float32 a, XE::float32 b, XE::float32 v )
 	{
 		return  ( b - a ) > 0.0f ? a + Min( ( b - a ), v ) : a - Min( -( b - a ), v );
 	}
 
-	static inline XE::float32 Cond( bool c, XE::float32 a, XE::float32 b )
+	static XE_INLINE XE::float32 Cond( bool c, XE::float32 a, XE::float32 b )
 	{
 		return c ? a : b;
 	}
 
-	static inline XE::float32 Cubic( XE::float32 a, XE::float32 b, XE::float32 c, XE::float32 d, XE::float32 u )
+	static XE_INLINE XE::float32 Cubic( XE::float32 a, XE::float32 b, XE::float32 c, XE::float32 d, XE::float32 u )
 	{
 		const XE::float32 ab = Lerp( a, b, u );
 		const XE::float32 bc = Lerp( b, c, u );
@@ -250,58 +855,58 @@ public:
 		return Lerp( abc, bcd, u );
 	}
 
-	static inline XE::float32 Max( XE::float32 a, XE::float32 b )
+	static XE_INLINE XE::float32 Max( XE::float32 a, XE::float32 b )
 	{
 		return Cond( a > b, a, b );
 	}
 
-	static inline XE::float32 Min( XE::float32 a, XE::float32 b )
+	static XE_INLINE XE::float32 Min( XE::float32 a, XE::float32 b )
 	{
 		return Cond( a < b, a, b );
 	}
 
-	static inline XE::float32 Sgn( XE::float32 r )
+	static XE_INLINE XE::float32 Sgn( XE::float32 r )
 	{
 		return Cond( r >= 0.f, 1.f, -1.f );
 	}
 
-	static inline XE::float32 Sign( XE::float32 r )
+	static XE_INLINE XE::float32 Sign( XE::float32 r )
 	{
 		return Cond( r > 0, 1.f, Cond( r < 0, -1.f, 0.f ) );
 	}
 
-	static inline XE::float32 Saturate( XE::float32 r )
+	static XE_INLINE XE::float32 Saturate( XE::float32 r )
 	{
 		return Clamp( r, 0.f, 1.f );
 	}
 
-	static inline XE::float32 Degrees( XE::float32 rad )
+	static XE_INLINE XE::float32 Degrees( XE::float32 rad )
 	{
 		return rad * 57.295779513f;
 	}
 
-	static inline XE::float32 Radians( XE::float32 deg )
+	static XE_INLINE XE::float32 Radians( XE::float32 deg )
 	{
 		return deg * 0.0174532925f;
 	}
 
-	static inline XE::float32 Lerp( XE::float32 a, XE::float32 b, XE::float32 x )
+	static XE_INLINE XE::float32 Lerp( XE::float32 a, XE::float32 b, XE::float32 x )
 	{
 		return a + x * ( b - a );
 	}
 
-	static inline XE::float32 SmoothStep( XE::float32 min, XE::float32 max, XE::float32 x )
+	static XE_INLINE XE::float32 SmoothStep( XE::float32 min, XE::float32 max, XE::float32 x )
 	{
 		x = Clamp( x, min, max );
 		return -2.f * Pow( ( x - min ) / ( max - min ), 3.f ) + 3.f * Pow( ( x - min ) / ( max - min ), 2.f );
 	}
 
-	static inline XE::float32 SmoothPulse( XE::float32 minmin, XE::float32 minmax, XE::float32 maxmin, XE::float32 maxmax, XE::float32 x )
+	static XE_INLINE XE::float32 SmoothPulse( XE::float32 minmin, XE::float32 minmax, XE::float32 maxmin, XE::float32 maxmax, XE::float32 x )
 	{
 		return SmoothStep( minmin, minmax, x ) - SmoothStep( maxmin, maxmax, x );
 	}
 
-	static inline XE::float32 Unrollangle( XE::float32 angleRef, XE::float32 angle )
+	static XE_INLINE XE::float32 Unrollangle( XE::float32 angleRef, XE::float32 angle )
 	{
 		// todo:
 		XE::float32 i = 1;
@@ -309,44 +914,44 @@ public:
 		return angle + ( ( i + ( Abs( f ) > 0.5f ? Sgn( f ) * 1 : 0 ) ) * 2.f * Pi );
 	}
 
-	static inline XE::float32 HalfTan( XE::float32 a )
+	static XE_INLINE XE::float32 HalfTan( XE::float32 a )
 	{
 		XE::float32 x = ( 0.5f * Abs( a ) + Pi2 );
 		return Tan( Clamp( Sign( a )*( x - Pi2 ), -Pi2 + Epsilon, Pi2 - Epsilon ) );
 	}
 
-	static inline bool Equal( XE::float32 a, XE::float32 b, XE::float32 e = Epsilon )
+	static XE_INLINE bool Equal( XE::float32 a, XE::float32 b, XE::float32 e = Epsilon )
 	{
 		return Abs( a - b ) < e;
 	}
 
 public:
-	static inline XE::float32 Length( const Vec2& val )
+	static XE_INLINE XE::float32 Length( const Vec2& val )
 	{
 		return Sqrt( val.x * val.x + val.y * val.y );
 	}
 
-	static inline XE::float32 SqrLength( const Vec2& val )
+	static XE_INLINE XE::float32 SqrLength( const Vec2& val )
 	{
 		return ( val.x * val.x + val.y * val.y );
 	}
 
-	static inline XE::float32 Distance( const Vec2& left, const Vec2& right )
+	static XE_INLINE XE::float32 Distance( const Vec2& left, const Vec2& right )
 	{
 		return Length( left - right );
 	}
 
-	static inline XE::float32 SqrDistance( const Vec2& left, const Vec2& right )
+	static XE_INLINE XE::float32 SqrDistance( const Vec2& left, const Vec2& right )
 	{
 		return SqrLength( left - right );
 	}
 
-	static inline XE::float32 Dot( const Vec2& left, const Vec2& right )
+	static XE_INLINE XE::float32 Dot( const Vec2& left, const Vec2& right )
 	{
 		return left.x * right.x + left.y * right.y;
 	}
 
-	static inline Vec2 Normalize( const Vec2& val )
+	static XE_INLINE Vec2 Normalize( const Vec2& val )
 	{
 		Vec2 ret;
 
@@ -362,27 +967,27 @@ public:
 		return ret;
 	}
 
-	static inline XE::float32 Corss( const Vec2& left, const Vec2& right )
+	static XE_INLINE XE::float32 Corss( const Vec2& left, const Vec2& right )
 	{
 		return left.x * right.y - left.y * right.x;
 	}
 
-	static inline Vec2 Floor( const Vec2& left, const Vec2& right )
+	static XE_INLINE Vec2 Floor( const Vec2& left, const Vec2& right )
 	{
 		return Min( left, right );
 	}
 
-	static inline Vec2 Ceil( const Vec2& left, const Vec2& right )
+	static XE_INLINE Vec2 Ceil( const Vec2& left, const Vec2& right )
 	{
 		return Max( left, right );
 	}
 
-	static inline Vec2 Reflect( const Vec2& left, const Vec2& right )
+	static XE_INLINE Vec2 Reflect( const Vec2& left, const Vec2& right )
 	{
 		return  left - ( 2 * Dot( left, right ) * right );
 	}
 
-	static inline void OrthoNormalize( Vec2& left, Vec2& right )
+	static XE_INLINE void OrthoNormalize( Vec2& left, Vec2& right )
 	{
 		left = Normalize( left );
 		XE::float32 dot = Dot( left, right );
@@ -390,48 +995,48 @@ public:
 		right = Normalize( right );
 	}
 
-	static inline bool IsNAN( const Vec2& val )
+	static XE_INLINE bool IsNAN( const Vec2& val )
 	{
 		return val.x == Nan || val.y == Nan;
 	}
 
-	static inline Vec2 Min( const Vec2& left, const Vec2& right )
+	static XE_INLINE Vec2 Min( const Vec2& left, const Vec2& right )
 	{
 		return { Min( left.x, right.x ), Min( left.y, right.y ) };
 	}
 
-	static inline Vec2 Max( const Vec2& left, const Vec2& right )
+	static XE_INLINE Vec2 Max( const Vec2& left, const Vec2& right )
 	{
 		return { Max( left.x, right.x ), Max( left.y, right.y ) };
 	}
 
 public:
-	static inline XE::float32 Length( const Vec3& val )
+	static XE_INLINE XE::float32 Length( const Vec3& val )
 	{
 		return Sqrt( val.x * val.x + val.y * val.y + val.z * val.z );
 	}
 
-	static inline XE::float32 SqrLength( const Vec3& val )
+	static XE_INLINE XE::float32 SqrLength( const Vec3& val )
 	{
 		return ( val.x * val.x + val.y * val.y + val.z * val.z );
 	}
 
-	static inline XE::float32 Distance( const Vec3& left, const Vec3& right )
+	static XE_INLINE XE::float32 Distance( const Vec3& left, const Vec3& right )
 	{
 		return Length( left - right );
 	}
 
-	static inline XE::float32 SqrDistance( const Vec3& left, const Vec3& right )
+	static XE_INLINE XE::float32 SqrDistance( const Vec3& left, const Vec3& right )
 	{
 		return SqrLength( left - right );
 	}
 
-	static inline XE::float32 Dot( const Vec3& left, const Vec3& right )
+	static XE_INLINE XE::float32 Dot( const Vec3& left, const Vec3& right )
 	{
 		return left.x * right.x + left.y * right.y + left.z * right.z;
 	}
 
-	static inline Vec3 Normalize( const Vec3& val )
+	static XE_INLINE Vec3 Normalize( const Vec3& val )
 	{
 		Vec3 ret;
 
@@ -446,7 +1051,7 @@ public:
 		return ret;
 	}
 
-	static inline Vec3 Cross( const Vec3& left, const Vec3& right )
+	static XE_INLINE Vec3 Cross( const Vec3& left, const Vec3& right )
 	{
 		return {
 			left.y * right.z - left.z * right.y,
@@ -455,12 +1060,12 @@ public:
 		};
 	}
 
-	static inline Vec3 Reflect( const Vec3& left, const Vec3& right )
+	static XE_INLINE Vec3 Reflect( const Vec3& left, const Vec3& right )
 	{
 		return left - ( 2 * Dot( left, right ) * right );
 	}
 
-	static inline void OrthoNormalize( Vec3& a, Vec3& b, Vec3& c )
+	static XE_INLINE void OrthoNormalize( Vec3& a, Vec3& b, Vec3& c )
 	{
 		a = Normalize( a );
 
@@ -474,39 +1079,39 @@ public:
 		c = Normalize( c );
 	}
 
-	static inline bool IsNAN( const Vec3& val )
+	static XE_INLINE bool IsNAN( const Vec3& val )
 	{
 		return val.x == Nan || val.y == Nan || val.z == Nan;
 	}
 
-	static inline Vec3 Min( const Vec3& left, const Vec3& right )
+	static XE_INLINE Vec3 Min( const Vec3& left, const Vec3& right )
 	{
 		return { Min( left.x, right.x ), Min( left.y, right.y ), Min( left.z, right.z ) };
 	}
 
-	static inline Vec3 Max( const Vec3& left, const Vec3& right )
+	static XE_INLINE Vec3 Max( const Vec3& left, const Vec3& right )
 	{
 		return { Max( left.x, right.x ), Max( left.y, right.y ), Max( left.z, right.z ) };
 	}
 
-	static inline Vec3 Lerp( const Vec3& left, const Vec3& right, XE::float32 t )
+	static XE_INLINE Vec3 Lerp( const Vec3& left, const Vec3& right, XE::float32 t )
 	{
 		return ( 1.0f - t ) * left + t * right;
 	}
 
 public:
-	static inline XE::float32 Dot( const Vec4& left, const Vec4& right )
+	static XE_INLINE XE::float32 Dot( const Vec4& left, const Vec4& right )
 	{
 		return left.x * right.x + left.y * right.y + left.z * right.z + left.w * right.w;
 	}
 
-	static inline bool IsNAN( const Vec4& val )
+	static XE_INLINE bool IsNAN( const Vec4& val )
 	{
 		return val.x == Nan || val.y == Nan || val.z == Nan || val.w == Nan;
 	}
 
 public:
-	static inline Quat QuatFromMat( const Mat3& mat )
+	static XE_INLINE Quat QuatFromMat( const Mat3& mat )
 	{
 		Quat val;
 
@@ -554,7 +1159,7 @@ public:
 		return val;
 	}
 
-	static inline Quat QuatFromAxisAngle( const Vec3& axis, XE::float32 angle )
+	static XE_INLINE Quat QuatFromAxisAngle( const Vec3& axis, XE::float32 angle )
 	{
 		Quat val;
 
@@ -569,7 +1174,7 @@ public:
 		return val;
 	}
 
-	static inline Quat QuatFromAxes( const Vec3& x, const Vec3& y, const Vec3& z )
+	static XE_INLINE Quat QuatFromAxes( const Vec3& x, const Vec3& y, const Vec3& z )
 	{
 		Mat3 mat;
 
@@ -588,7 +1193,7 @@ public:
 		return QuatFromMat( mat );
 	}
 
-	static inline Quat QuatFromEuler( const Vec3& euler )
+	static XE_INLINE Quat QuatFromEuler( const Vec3& euler )
 	{
 		XE::float32 halfXAngle = euler.x * 0.5f;
 		XE::float32 halfYAngle = euler.y * 0.5f;
@@ -610,7 +1215,7 @@ public:
 		return ( quatZ * quatX ) * quatY;
 	}
 
-	static inline void QuatToMatrix( const Quat& val, Mat3& mat )
+	static XE_INLINE void QuatToMatrix( const Quat& val, Mat3& mat )
 	{
 		XE::float32 tx = val.x + val.x;
 		XE::float32 ty = val.y + val.y;
@@ -636,7 +1241,7 @@ public:
 		mat[2][2] = 1.0f - ( txx + tyy );
 	}
 
-	static inline void QuatToAxisAngle( const Quat& val, Vec3& axis, XE::float32& angle )
+	static XE_INLINE void QuatToAxisAngle( const Quat& val, Vec3& axis, XE::float32& angle )
 	{
 		XE::float32 sqrLength = val.x * val.x + val.y * val.y + val.z * val.z;
 		if ( sqrLength > 0.0f )
@@ -656,7 +1261,7 @@ public:
 		}
 	}
 
-	static inline void QuatToAxes( const Quat& val, Vec3& x, Vec3& y, Vec3& z )
+	static XE_INLINE void QuatToAxes( const Quat& val, Vec3& x, Vec3& y, Vec3& z )
 	{
 		Mat3 mat;
 		QuatToMatrix( val, mat );
@@ -674,14 +1279,14 @@ public:
 		z.z = mat[2][2];
 	}
 
-	static inline void QuatToEuler( const Quat& val, Vec3& euler )
+	static XE_INLINE void QuatToEuler( const Quat& val, Vec3& euler )
 	{
 		Mat3 mat;
 		QuatToMatrix( val, mat );
 		MatToEuler( mat, euler );
 	}
 
-	static inline Vec3 XAxis( const Quat& val )
+	static XE_INLINE Vec3 XAxis( const Quat& val )
 	{
 		XE::float32 fTy = 2.0f*val.y;
 		XE::float32 fTz = 2.0f*val.z;
@@ -695,7 +1300,7 @@ public:
 		return { 1.0f - ( fTyy + fTzz ), fTxy + fTwz, fTxz - fTwy };
 	}
 
-	static inline Vec3 YAxis( const Quat& val )
+	static XE_INLINE Vec3 YAxis( const Quat& val )
 	{
 		XE::float32 fTx = 2.0f * val.x;
 		XE::float32 fTy = 2.0f * val.y;
@@ -710,7 +1315,7 @@ public:
 		return { fTxy - fTwz, 1.0f - ( fTxx + fTzz ), fTyz + fTwx };
 	}
 
-	static inline Vec3 ZAxis( const Quat& val )
+	static XE_INLINE Vec3 ZAxis( const Quat& val )
 	{
 		XE::float32 fTx = 2.0f * val.x;
 		XE::float32 fTy = 2.0f * val.y;
@@ -725,19 +1330,19 @@ public:
 		return { fTxz + fTwy, fTyz - fTwx, 1.0f - ( fTxx + fTyy ) };
 	}
 
-	static inline XE::float32 Dot( const Quat& left, const Quat& right )
+	static XE_INLINE XE::float32 Dot( const Quat& left, const Quat& right )
 	{
 		return left.x * right.x + left.y * right.y + left.z * right.z + left.w * right.w;
 	}
 
-	static inline Quat Normalize( const Quat& val )
+	static XE_INLINE Quat Normalize( const Quat& val )
 	{
 		XE::float32 len = val.w * val.w + val.x * val.x + val.y * val.y + val.z * val.z;
 		XE::float32 factor = 1.0f / Sqrt( len );
 		return val * factor;
 	}
 
-	static inline Quat Inverse( const Quat& val )
+	static XE_INLINE Quat Inverse( const Quat& val )
 	{
 		XE::float32 fNorm = val.w * val.w + val.x * val.x + val.y * val.y + val.z * val.z;
 		if ( fNorm > 0.0f )
@@ -749,14 +1354,14 @@ public:
 		return Quat::Zero;
 	}
 
-	static inline Vec3 Rotate( const Quat& val, const Vec3& v )
+	static XE_INLINE Vec3 Rotate( const Quat& val, const Vec3& v )
 	{
 		Mat3 rot;
 		QuatToMatrix( val, rot );
 		return rot * v;
 	}
 
-	static inline Quat LookAt( const Quat& val, const Vec3& forward )
+	static XE_INLINE Quat LookAt( const Quat& val, const Vec3& forward )
 	{
 		if ( forward == Vec3::Zero )
 			return val;
@@ -772,7 +1377,7 @@ public:
 		return RotationFromTo( val, currentForwardDir, nrmForwardDir ) * val;
 	}
 
-	static inline Quat LookAt( const Quat& val, const Vec3& forward, const Vec3& up )
+	static XE_INLINE Quat LookAt( const Quat& val, const Vec3& forward, const Vec3& up )
 	{
 		if ( Abs( 1.0f - Dot( forward, up ) ) <= Epsilon )
 		{
@@ -788,19 +1393,19 @@ public:
 		return QuatFromAxes( x, y, -forward );
 	}
 
-	static inline bool IsNAN( const Quat& val )
+	static XE_INLINE bool IsNAN( const Quat& val )
 	{
 		return val.x == Nan || val.y == Nan || val.z == Nan || val.w == Nan;
 	}
 
-	static inline Quat Lerp( const Quat& left, const Quat& right, XE::float32 t )
+	static XE_INLINE Quat Lerp( const Quat& left, const Quat& right, XE::float32 t )
 	{
 		XE::float32 d = Dot( left, right );
 		XE::float32 flip = d >= 0.0f ? 1.0f : -1.0f;
 		return Normalize( flip * ( 1.0f - t ) * left + t * right );
 	}
 
-	static inline Quat Slerp( const Quat& left, const Quat& right, XE::float32 t )
+	static XE_INLINE Quat Slerp( const Quat& left, const Quat& right, XE::float32 t )
 	{
 		XE::float32 cos = Dot( left, right );
 		Quat ret;
@@ -828,7 +1433,7 @@ public:
 		return Normalize( ( 1.0f - t ) * left + t * ret );
 	}
 
-	static inline Quat RotationFromTo( const Quat& val, const Vec3& from, const Vec3& dest )
+	static XE_INLINE Quat RotationFromTo( const Quat& val, const Vec3& from, const Vec3& dest )
 	{// Based on Stan Melax's article in Game Programming Gems
 		Quat q;
 
@@ -865,25 +1470,25 @@ public:
 		return Normalize( q );
 	}
 
-	static inline Quat Min( const Quat& left, const Quat& right )
+	static XE_INLINE Quat Min( const Quat& left, const Quat& right )
 	{
 		return { Min( left.x, right.x ), Min( left.y, right.y ), Min( left.z, right.z ), Min( left.w, right.w ) };
 	}
 
-	static inline Quat Max( const Quat& left, const Quat& right )
+	static XE_INLINE Quat Max( const Quat& left, const Quat& right )
 	{
 		return { Max( left.x, right.x ), Max( left.y, right.y ), Max( left.z, right.z ), Max( left.w, right.w ) };
 	}
 
 public:
-	static inline Mat3 MatFromQuat( const Quat& q )
+	static XE_INLINE Mat3 MatFromQuat( const Quat& q )
 	{
 		Mat3 m;
 		QuatToMatrix( q, m );
 		return m;
 	}
 
-	static inline Mat3 MatFromAxisAngle( const Vec3& axis, XE::float32 angle )
+	static XE_INLINE Mat3 MatFromAxisAngle( const Vec3& axis, XE::float32 angle )
 	{
 		Mat3 m;
 		XE::float32 cos = Cos( angle );
@@ -912,7 +1517,7 @@ public:
 		return m;
 	}
 
-	static inline Mat3 MatFromEuler( const Vec3& euler )
+	static XE_INLINE Mat3 MatFromEuler( const Vec3& euler )
 	{
 		Mat3 m;
 
@@ -938,12 +1543,12 @@ public:
 		return m;
 	}
 
-	static inline void MatToQuat( const Mat3& val, Quat& q )
+	static XE_INLINE void MatToQuat( const Mat3& val, Quat& q )
 	{
 		q = QuatFromMat( val );
 	}
 
-	static inline void MatToAxisAngle( const Mat3& val, Vec3& axis, XE::float32& angle )
+	static XE_INLINE void MatToAxisAngle( const Mat3& val, Vec3& axis, XE::float32& angle )
 	{
 		XE::float32 trace = val[0][0] + val[1][1] + val[2][2];
 		XE::float32 cos = 0.5f*( trace - 1.0f );
@@ -1005,7 +1610,7 @@ public:
 		}
 	}
 
-	static inline void MatToEuler( const Mat3& val, Vec3& euler )
+	static XE_INLINE void MatToEuler( const Mat3& val, Vec3& euler )
 	{
 		euler.x = -ASin( val[1][2] );
 
@@ -1029,7 +1634,7 @@ public:
 		euler.z = 0.0f;
 	}
 
-	static inline Mat3 Transpose( const Mat3 & val )
+	static XE_INLINE Mat3 Transpose( const Mat3 & val )
 	{
 		Mat3 ret;
 		for ( XE::uint32 row = 0; row < 3; row++ )
@@ -1040,7 +1645,7 @@ public:
 		return ret;
 	}
 
-	static inline Mat3 Inverse( const Mat3 & val )
+	static XE_INLINE Mat3 Inverse( const Mat3 & val )
 	{
 		Mat3 ret;
 
@@ -1069,7 +1674,7 @@ public:
 		return ret;
 	}
 
-	static inline XE::float32 Determinant( const Mat3 & val )
+	static XE_INLINE XE::float32 Determinant( const Mat3 & val )
 	{
 		XE::float32 cofactor00 = val[1][1] * val[2][2] - val[1][2] * val[2][1];
 		XE::float32 cofactor10 = val[1][2] * val[2][0] - val[1][0] * val[2][2];
@@ -1080,7 +1685,7 @@ public:
 		return det;
 	}
 
-	static inline Mat3 OrthoNormalize( const Mat3 & val )
+	static XE_INLINE Mat3 OrthoNormalize( const Mat3 & val )
 	{
 		Mat3 m = val;
 		// Compute q0
@@ -1121,7 +1726,7 @@ public:
 	}
 
 public:
-	static inline Mat4 Transpose( const Mat4 & m )
+	static XE_INLINE Mat4 Transpose( const Mat4 & m )
 	{
 		return { m[0][0], m[1][0], m[2][0], m[3][0],
 						m[0][1], m[1][1], m[2][1], m[3][1],
@@ -1129,7 +1734,7 @@ public:
 						m[0][3], m[1][3], m[2][3], m[3][3] };
 	}
 
-	static inline Mat4 Inverse( const Mat4 & m )
+	static XE_INLINE Mat4 Inverse( const Mat4 & m )
 	{
 		XE::float32 m00 = m[0][0], m01 = m[0][1], m02 = m[0][2], m03 = m[0][3];
 		XE::float32 m10 = m[1][0], m11 = m[1][1], m12 = m[1][2], m13 = m[1][3];
@@ -1191,14 +1796,14 @@ public:
 			d30, d31, d32, d33 };
 	}
 
-	static inline XE::float32 MINOR( const Mat4& m, const XE::uint32 r0, const XE::uint32 r1, const XE::uint32 r2, const XE::uint32 c0, const XE::uint32 c1, const XE::uint32 c2 )
+	static XE_INLINE XE::float32 MINOR( const Mat4& m, const XE::uint32 r0, const XE::uint32 r1, const XE::uint32 r2, const XE::uint32 c0, const XE::uint32 c1, const XE::uint32 c2 )
 	{
 		return m[r0][c0] * ( m[r1][c1] * m[r2][c2] - m[r2][c1] * m[r1][c2] ) -
 			m[r0][c1] * ( m[r1][c0] * m[r2][c2] - m[r2][c0] * m[r1][c2] ) +
 			m[r0][c2] * ( m[r1][c0] * m[r2][c1] - m[r2][c0] * m[r1][c1] );
 	};
 
-	static inline Mat4 Adjoint( const Mat4 & m )
+	static XE_INLINE Mat4 Adjoint( const Mat4 & m )
 	{
 		return {
 			MINOR( m, 1, 2, 3, 1, 2, 3 ),
@@ -1223,7 +1828,7 @@ public:
 		};
 	}
 
-	static inline XE::float32 Determinant( const Mat4 & m )
+	static XE_INLINE XE::float32 Determinant( const Mat4 & m )
 	{
 		return m[0][0] * MINOR( m, 1, 2, 3, 1, 2, 3 ) -
 			m[0][1] * MINOR( m, 1, 2, 3, 0, 2, 3 ) +
@@ -1231,7 +1836,7 @@ public:
 			m[0][3] * MINOR( m, 1, 2, 3, 0, 1, 2 );
 	}
 
-	static inline XE::float32 Determinant3( const Mat4 & m )
+	static XE_INLINE XE::float32 Determinant3( const Mat4 & m )
 	{
 		XE::float32 cofactor00 = m[1][1] * m[2][2] - m[1][2] * m[2][1];
 		XE::float32 cofactor10 = m[1][2] * m[2][0] - m[1][0] * m[2][2];
@@ -1242,7 +1847,7 @@ public:
 		return det;
 	}
 
-	static inline Mat4 Translation( const Vec3 & val )
+	static XE_INLINE Mat4 Translation( const Vec3 & val )
 	{
 		return {
 				1.0f, 0.0f, 0.0f, val.x,
@@ -1252,17 +1857,17 @@ public:
 		};
 	}
 
-	static inline Vec3 Translation( const Mat4& m )
+	static XE_INLINE Vec3 Translation( const Mat4& m )
 	{
 		return { m[0][3], m[1][3], m[2][3] };
 	}
 
-	static inline Mat4 Rotation( const Quat & val )
+	static XE_INLINE Mat4 Rotation( const Quat & val )
 	{
 		return { MatFromQuat( val ) };
 	}
 
-	static inline Mat4 Scale( const Vec3 & val )
+	static XE_INLINE Mat4 Scale( const Vec3 & val )
 	{
 		return {
 			val.x, 0.0f,  0.0f,  0.0f,
@@ -1272,7 +1877,7 @@ public:
 		};
 	}
 
-	static inline Mat4 Scale( XE::float32 val )
+	static XE_INLINE Mat4 Scale( XE::float32 val )
 	{
 		return {
 			val,  0.0f, 0.0f, 0.0f,
@@ -1282,7 +1887,7 @@ public:
 		};
 	}
 
-	static inline Mat4 ProjectionPerspective( XE::float32 fov, XE::float32 aspect, XE::float32 near, XE::float32 far )
+	static XE_INLINE Mat4 ProjectionPerspective( XE::float32 fov, XE::float32 aspect, XE::float32 near, XE::float32 far )
 	{// Note: Duplicate code in Camera, bring it all here eventually
 		static constexpr XE::float32 INFINITE_FAR_PLANE_ADJUST = 0.00001f;
 
@@ -1329,7 +1934,7 @@ public:
 		};
 	}
 
-	static inline Mat4 ProjectionOrthographic( XE::float32 left, XE::float32 right, XE::float32 top, XE::float32 bottom, XE::float32 near, XE::float32 far )
+	static XE_INLINE Mat4 ProjectionOrthographic( XE::float32 left, XE::float32 right, XE::float32 top, XE::float32 bottom, XE::float32 near, XE::float32 far )
 	{
 		Mat4 m;
 
@@ -1369,7 +1974,7 @@ public:
 		return m;
 	}
 
-	static inline Mat4 View( const Vec3& position, const Quat & orientition )
+	static XE_INLINE Mat4 View( const Vec3& position, const Quat & orientition )
 	{
 		Mat4 m;
 
@@ -1386,7 +1991,7 @@ public:
 		return m;
 	}
 
-	static inline Mat4 TRS( const Vec3 & translation, const Quat& rotation, const Vec3& scale )
+	static XE_INLINE Mat4 TRS( const Vec3 & translation, const Quat& rotation, const Vec3& scale )
 	{
 		Mat4 m;
 		Mat3 rot3x3 = MatFromQuat( rotation );
@@ -1400,7 +2005,7 @@ public:
 		return m;
 	}
 
-	static inline void TRS( const Mat4& m, Vec3 & position, Quat& rotation, Vec3& scale )
+	static XE_INLINE void TRS( const Mat4& m, Vec3 & position, Quat& rotation, Vec3& scale )
 	{
 		Mat3 m3x3( m );
 
@@ -1475,7 +2080,7 @@ public:
 		position = Vec3( m[0][3], m[1][3], m[2][3] );
 	}
 
-	static inline Mat4 InverseTRS( const Vec3 & translation, const Quat& rotation, const Vec3& scale )
+	static XE_INLINE Mat4 InverseTRS( const Vec3 & translation, const Quat& rotation, const Vec3& scale )
 	{
 		Mat4 m;
 
@@ -1503,7 +2108,7 @@ public:
 		return m;
 	}
 
-	static inline Vec3 MultiplyAffine( const Mat4& m, const Vec3 & v )
+	static XE_INLINE Vec3 MultiplyAffine( const Mat4& m, const Vec3 & v )
 	{
 		return {
 			m[0][0] * v.x + m[0][1] * v.y + m[0][2] * v.z + m[0][3],
@@ -1511,7 +2116,7 @@ public:
 			m[2][0] * v.x + m[2][1] * v.y + m[2][2] * v.z + m[2][3] };
 	}
 
-	static inline Vec3 MultiplyDirection( const Mat4& m, const Vec3 & v )
+	static XE_INLINE Vec3 MultiplyDirection( const Mat4& m, const Vec3 & v )
 	{
 		return {
 				m[0][0] * v.x + m[0][1] * v.y + m[0][2] * v.z,
@@ -1523,729 +2128,5 @@ public:
 DECL_META_CLASS( MATH_API, Mathf );
 
 END_XE_NAMESPACE
-
-
-inline XE::Vec2 operator -( const XE::Vec2 & val )
-{
-	return { -val.x, -val.y };
-}
-inline XE::Vec2 operator +( const XE::Vec2 & left, XE::float32 right )
-{
-	return { left.x + right, left.y + right };
-}
-inline XE::Vec2 operator +( XE::float32 left, const XE::Vec2 & right )
-{
-	return { left + right.x, left + right.y };
-}
-inline XE::Vec2 operator +( const XE::Vec2 & left, const XE::Vec2 & right )
-{
-	return { left.x + right.x, left.y + right.y };
-}
-inline XE::Vec2 operator -( const XE::Vec2 & left, XE::float32 right )
-{
-	return { left.x - right, left.y + right };
-}
-inline XE::Vec2 operator -( XE::float32 left, const XE::Vec2 & right )
-{
-	return { left + right.x, left + right.y };
-}
-inline XE::Vec2 operator -( const XE::Vec2 & left, const XE::Vec2 & right )
-{
-	return { left.x + right.x, left.y + right.y };
-}
-inline XE::Vec2 operator *( const XE::Vec2 & left, XE::float32 right )
-{
-	return { left.x * right, left.y * right };
-}
-inline XE::Vec2 operator *( XE::float32 left, const XE::Vec2 & right )
-{
-	return { left * right.x, left * right.y };
-}
-inline XE::Vec2 operator *( const XE::Vec2 & left, const XE::Vec2 & right )
-{
-	return { left.x * right.x, left.y * right.y };
-}
-inline XE::Vec2 operator /( const XE::Vec2 & left, XE::float32 right )
-{
-	return { left.x / right, left.y / right };
-}
-inline XE::Vec2 operator /( XE::float32 left, const XE::Vec2 & right )
-{
-	return { left / right.x, left / right.y };
-}
-inline XE::Vec2 operator /( const XE::Vec2 & left, const XE::Vec2 & right )
-{
-	return { left.x / right.x,left.y / right.y };
-}
-inline XE::Vec2 & operator +=( XE::Vec2 & left, XE::float32 right )
-{
-	left.x += right;
-	left.y += right;
-	return left;
-}
-inline XE::Vec2 & operator +=( XE::Vec2 & left, const XE::Vec2 & right )
-{
-	left.x += right.x;
-	left.y += right.y;
-	return left;
-}
-inline XE::Vec2 & operator -=( XE::Vec2 & left, XE::float32 right )
-{
-	left.x -= right;
-	left.y -= right;
-	return left;
-}
-inline XE::Vec2 & operator -=( XE::Vec2 & left, const XE::Vec2 & right )
-{
-	left.x -= right.x;
-	left.y -= right.y;
-	return left;
-}
-inline XE::Vec2 & operator *=( XE::Vec2 & left, XE::float32 right )
-{
-	left.x *= right;
-	left.y *= right;
-	return left;
-}
-inline XE::Vec2 & operator *=( XE::Vec2 & left, const XE::Vec2 & right )
-{
-	left.x *= right.x;
-	left.y *= right.y;
-	return left;
-}
-inline XE::Vec2 & operator /=( XE::Vec2 & left, XE::float32 right )
-{
-	left.x /= right;
-	left.y /= right;
-	return left;
-}
-inline XE::Vec2 & operator /=( XE::Vec2 & left, const XE::Vec2 & right )
-{
-	left.x /= right.x;
-	left.y /= right.y;
-	return left;
-}
-inline bool operator ==( const XE::Vec2 & left, const XE::Vec2 & right )
-{
-	return left.x == right.x && left.y == right.y;
-}
-inline bool operator !=( const XE::Vec2 & left, const XE::Vec2 & right )
-{
-	return left.x != right.x || left.y != right.y;
-}
-
-inline XE::Vec3 operator -( const XE::Vec3 & val )
-{
-	return { -val.x, -val.y, -val.z };
-}
-inline XE::Vec3 operator +( const XE::Vec3 & left, XE::float32 right )
-{
-	return { left.x + right, left.y + right, left.z + right };
-}
-inline XE::Vec3 operator +( XE::float32 left, const XE::Vec3 & right )
-{
-	return { left + right.x, left + right.y, +left + right.z };
-}
-inline XE::Vec3 operator +( const XE::Vec3 & left, const XE::Vec3 & right )
-{
-	return { left.x + right.x, left.y + right.y, left.z + right.z };
-}
-inline XE::Vec3 operator -( const XE::Vec3 & left, XE::float32 right )
-{
-	return { left.x - right, left.y - right, left.z - right };
-}
-inline XE::Vec3 operator -( XE::float32 left, const XE::Vec3 & right )
-{
-	return { left - right.x, left - right.y, left - right.z };
-}
-inline XE::Vec3 operator -( const XE::Vec3 & left, const XE::Vec3 & right )
-{
-	return { left.x - right.x, left.y - right.y, left.z - right.z };
-}
-inline XE::Vec3 operator *( const XE::Vec3 & left, XE::float32 right )
-{
-	return { left.x * right, left.y * right, left.z * right };
-}
-inline XE::Vec3 operator *( XE::float32 left, const XE::Vec3 & right )
-{
-	return { left * right.x, left * right.y, left * right.z };
-}
-inline XE::Vec3 operator *( const XE::Vec3 & left, const XE::Vec3 & right )
-{
-	return { left.x * right.x, left.y * right.y, left.z * right.z };
-}
-inline XE::Vec3 operator /( const XE::Vec3 & left, XE::float32 right )
-{
-	return { left.x / right, left.y / right, left.z / right };
-}
-inline XE::Vec3 operator /( XE::float32 left, const XE::Vec3 & right )
-{
-	return { left / right.x, left / right.y, left / right.z };
-}
-inline XE::Vec3 operator /( const XE::Vec3 & left, const XE::Vec3 & right )
-{
-	return { left.x / right.x, left.y / right.y, left.z / right.z };
-}
-inline XE::Vec3 & operator +=( XE::Vec3 & left, XE::float32 right )
-{
-	left.x += right;
-	left.y += right;
-	left.z += right;
-	return left;
-}
-inline XE::Vec3 & operator +=( XE::Vec3 & left, const XE::Vec3 & right )
-{
-	left.x += right.x;
-	left.y += right.y;
-	left.z += right.z;
-	return left;
-}
-inline XE::Vec3 & operator -=( XE::Vec3 & left, XE::float32 right )
-{
-	left.x -= right;
-	left.y -= right;
-	left.z -= right;
-	return left;
-}
-inline XE::Vec3 & operator -=( XE::Vec3 & left, const XE::Vec3 & right )
-{
-	left.x -= right.x;
-	left.y -= right.y;
-	left.z -= right.z;
-	return left;
-}
-inline XE::Vec3 & operator *=( XE::Vec3 & left, XE::float32 right )
-{
-	left.x *= right;
-	left.y *= right;
-	left.z *= right;
-	return left;
-}
-inline XE::Vec3 & operator *=( XE::Vec3 & left, const XE::Vec3 & right )
-{
-	left.x *= right.x;
-	left.y *= right.y;
-	left.z *= right.z;
-	return left;
-}
-inline XE::Vec3 & operator /=( XE::Vec3 & left, XE::float32 right )
-{
-	left.x /= right;
-	left.y /= right;
-	left.z /= right;
-	return left;
-}
-inline XE::Vec3 & operator /=( XE::Vec3 & left, const XE::Vec3 & right )
-{
-	left.x /= right.x;
-	left.y /= right.y;
-	left.z /= right.z;
-	return left;
-}
-inline bool operator ==( const XE::Vec3 & left, const XE::Vec3 & right )
-{
-	return left.x == right.x && left.y == right.y && left.z == right.z;
-}
-inline bool operator !=( const XE::Vec3 & left, const XE::Vec3 & right )
-{
-	return left.x != right.x || left.y != right.y || left.z != right.z;
-}
-
-inline XE::Vec4 operator -( const XE::Vec4 & val )
-{
-	return { -val.x, -val.y, -val.z, -val.w };
-}
-inline XE::Vec4 operator +( const XE::Vec4 & left, XE::float32 right )
-{
-	return { left.x + right, left.y + right, left.z + right, left.w + right };
-}
-inline XE::Vec4 operator +( XE::float32 left, const XE::Vec4 & right )
-{
-	return { left + right.x, left + right.y, left + right.z, left + right.w };
-}
-inline XE::Vec4 operator +( const XE::Vec4 & left, const XE::Vec4 & right )
-{
-	return { left.x + right.x, left.y + right.y, left.z + right.z, left.w + right.w };
-}
-inline XE::Vec4 operator -( const XE::Vec4 & left, XE::float32 right )
-{
-	return { left.x - right, left.y - right, left.z - right, left.w - right };
-}
-inline XE::Vec4 operator -( XE::float32 left, const XE::Vec4 & right )
-{
-	return { left - right.x, left - right.y, left - right.z, left - right.w };
-}
-inline XE::Vec4 operator -( const XE::Vec4 & left, const XE::Vec4 & right )
-{
-	return { left.x - right.x, left.y - right.y, left.z - right.z, left.w - right.w };
-}
-inline XE::Vec4 operator *( const XE::Vec4 & left, XE::float32 right )
-{
-	return { left.x * right, left.y * right, left.z * right, left.w * right };
-}
-inline XE::Vec4 operator *( XE::float32 left, const XE::Vec4 & right )
-{
-	return { left * right.x, left * right.y, left * right.z, left * right.w };
-}
-inline XE::Vec4 operator *( const XE::Vec4 & left, const XE::Vec4 & right )
-{
-	return { left.x * right.x, left.y * right.y, left.z * right.z, left.w * right.w };
-}
-inline XE::Vec4 operator /( const XE::Vec4 & left, XE::float32 right )
-{
-	return { left.x / right, left.y / right, left.z / right, left.w / right };
-}
-inline XE::Vec4 operator /( XE::float32 left, const XE::Vec4 & right )
-{
-	return { left / right.x, left / right.y, left / right.z, left / right.w };
-}
-inline XE::Vec4 operator /( const XE::Vec4 & left, const XE::Vec4 & right )
-{
-	return { left.x / right.x, left.y / right.y, left.z / right.z, left.w / right.w };
-}
-inline XE::Vec4 & operator +=( XE::Vec4 & left, XE::float32 right )
-{
-	left.x += right;
-	left.y += right;
-	left.z += right;
-	left.w += right;
-	return left;
-}
-inline XE::Vec4 & operator +=( XE::Vec4 & left, const XE::Vec4 & right )
-{
-	left.x += right.x;
-	left.y += right.y;
-	left.z += right.z;
-	left.w += right.w;
-	return left;
-}
-inline XE::Vec4 & operator -=( XE::Vec4 & left, XE::float32 right )
-{
-	left.x -= right;
-	left.y -= right;
-	left.z -= right;
-	left.w -= right;
-	return left;
-}
-inline XE::Vec4 & operator -=( XE::Vec4 & left, const XE::Vec4 & right )
-{
-	left.x -= right.x;
-	left.y -= right.y;
-	left.z -= right.z;
-	left.w -= right.w;
-	return left;
-}
-inline XE::Vec4 & operator *=( XE::Vec4 & left, XE::float32 right )
-{
-	left.x *= right;
-	left.y *= right;
-	left.z *= right;
-	left.w *= right;
-	return left;
-}
-inline XE::Vec4 & operator *=( XE::Vec4 & left, const XE::Vec4 & right )
-{
-	left.x *= right.x;
-	left.y *= right.y;
-	left.z *= right.z;
-	left.w *= right.w;
-	return left;
-}
-inline XE::Vec4 & operator /=( XE::Vec4 & left, XE::float32 right )
-{
-	left.x /= right;
-	left.y /= right;
-	left.z /= right;
-	left.w /= right;
-	return left;
-}
-inline XE::Vec4 & operator /=( XE::Vec4 & left, const XE::Vec4 & right )
-{
-	left.x /= right.x;
-	left.y /= right.y;
-	left.z /= right.z;
-	left.w /= right.w;
-	return left;
-}
-inline bool operator ==( const XE::Vec4 & left, const XE::Vec4 & right )
-{
-	return left.x == right.x && left.y == right.y && left.z == right.z && left.w == right.w;
-}
-inline bool operator !=( const XE::Vec4 & left, const XE::Vec4 & right )
-{
-	return left.x != right.x || left.y != right.y || left.z != right.z || left.w == right.w;
-}
-
-inline XE::Quat operator -( const XE::Quat & val )
-{
-	return { -val.x, -val.y, -val.z, val.w };
-}
-inline XE::Quat operator +( const XE::Quat & left, XE::float32 right )
-{
-	return { left.x + right, left.y + right, left.z + right, left.w + right };
-}
-inline XE::Quat operator +( XE::float32 left, const XE::Quat & right )
-{
-	return { left + right.x, left + right.y, left + right.z, left + right.w };
-}
-inline XE::Quat operator +( const XE::Quat & left, const XE::Quat & right )
-{
-	return { left.x + right.x, left.y + right.y, left.z + right.z, left.w + right.w };
-}
-inline XE::Quat operator -( const XE::Quat & left, XE::float32 right )
-{
-	return { left.x - right, left.y - right, left.z - right, left.w - right };
-}
-inline XE::Quat operator -( XE::float32 left, const XE::Quat & right )
-{
-	return { left - right.x, left - right.y, left - right.z, left - right.w };
-}
-inline XE::Quat operator -( const XE::Quat & left, const XE::Quat & right )
-{
-	return { left.x - right.x, left.y - right.y, left.z - right.z, left.w - right.w };
-}
-inline XE::Quat operator *( const XE::Quat & left, XE::float32 right )
-{
-	return { left.x * right, left.y * right, left.z * right, left.w * right };
-}
-inline XE::Quat operator *( XE::float32 left, const XE::Quat & right )
-{
-	return { left * right.x, left * right.y, left * right.z, left * right.w };
-}
-inline XE::Quat operator *( const XE::Quat & left, const XE::Quat & right )
-{
-	return {
-		left.w * right.x + left.x * right.w + left.y * right.z - left.z * right.y,
-		left.w * right.y + left.y * right.w + left.z * right.x - left.x * right.z,
-		left.w * right.z + left.z * right.w + left.x * right.y - left.y * right.x,
-		left.w * right.w - left.x * right.x - left.y * right.y - left.z * right.z
-	};
-}
-inline XE::Quat operator /( const XE::Quat & left, XE::float32 right )
-{
-	XE::float32 inv = 1.0f / right;
-	return { left.x * inv, left.y * inv, left.z * inv, left.w * inv };
-}
-inline XE::Quat & operator +=( XE::Quat & left, XE::float32 right )
-{
-	left.x += right;
-	left.y += right;
-	left.z += right;
-	left.w += right;
-	return left;
-}
-inline XE::Quat & operator +=( XE::Quat & left, const XE::Quat & right )
-{
-	left.x += right.x;
-	left.y += right.y;
-	left.z += right.z;
-	left.w += right.w;
-	return left;
-}
-inline XE::Quat & operator -=( XE::Quat & left, XE::float32 right )
-{
-	left.x -= right;
-	left.y -= right;
-	left.z -= right;
-	left.w -= right;
-	return left;
-}
-inline XE::Quat & operator -=( XE::Quat & left, const XE::Quat & right )
-{
-	left.x -= right.x;
-	left.y -= right.y;
-	left.z -= right.z;
-	left.w -= right.w;
-	return left;
-}
-inline XE::Quat & operator *=( XE::Quat & left, XE::float32 right )
-{
-	left.x *= right;
-	left.y *= right;
-	left.z *= right;
-	left.w *= right;
-	return left;
-}
-inline XE::Quat & operator *=( XE::Quat & left, const XE::Quat & right )
-{
-	left.x = left.w * right.w - left.x * right.x - left.y * right.y - left.z * right.z;
-	left.y = left.w * right.x + left.x * right.w + left.y * right.z - left.z * right.y;
-	left.z = left.w * right.y + left.y * right.w + left.z * right.x - left.x * right.z;
-	left.w = left.w * right.z + left.z * right.w + left.x * right.y - left.y * right.x;
-	return left;
-}
-inline XE::Quat & operator /=( XE::Quat & left, XE::float32 right )
-{
-	XE::float32 inv = 1.0f / right;
-	left.x *= inv;
-	left.y *= inv;
-	left.z *= inv;
-	left.w *= inv;
-	return left;
-}
-inline bool operator ==( const XE::Quat & left, const XE::Quat & right )
-{
-	return left.x == right.x && left.y == right.y && left.z == right.z && left.w == right.w;
-}
-inline bool operator !=( const XE::Quat & left, const XE::Quat & right )
-{
-	return left.x != right.x || left.y != right.y || left.z != right.z || left.w == right.w;
-}
-
-inline XE::Mat3 operator -( const XE::Mat3 & val )
-{
-	return {
-		-val[0][0], -val[0][1], -val[0][2],
-		-val[1][0], -val[1][1], -val[1][2],
-		-val[2][0], -val[2][1], -val[2][2]
-	};
-}
-inline XE::Mat3 operator +( const XE::Mat3 & left, const XE::Mat3 & right )
-{
-	return {
-		left[0][0] + right[0][0], left[0][1] + right[0][1], left[0][2] + right[0][2],
-		left[1][0] + right[1][0], left[1][1] + right[1][1], left[1][2] + right[1][2],
-		left[2][0] + right[2][0], left[2][1] + right[2][1], left[2][2] + right[2][2]
-	};
-}
-inline XE::Mat3 operator -( const XE::Mat3 & left, const XE::Mat3 & right )
-{
-	return {
-		left[0][0] - right[0][0], left[0][1] - right[0][1], left[0][2] - right[0][2],
-		left[1][0] - right[1][0], left[1][1] - right[1][1], left[1][2] - right[1][2],
-		left[2][0] - right[2][0], left[2][1] - right[2][1], left[2][2] - right[2][2]
-	};
-}
-inline XE::Mat3 operator *( const XE::Mat3 & left, XE::float32 right )
-{
-	return {
-		left[0][0] * right, left[0][1] * right, left[0][2] * right,
-		left[1][0] * right, left[1][1] * right, left[1][2] * right,
-		left[2][0] * right, left[2][1] * right, left[2][2] * right
-	};
-}
-inline XE::Mat3 operator *( XE::float32 left, const XE::Mat3 & right )
-{
-	return {
-		left * right[0][0], left * right[0][1], left *right[0][2],
-		left * right[1][0], left * right[1][1], left *right[1][2],
-		left * right[2][0], left * right[2][1], left *right[2][2]
-	};
-}
-inline XE::Vec3 operator *( const XE::Mat3 & left, const XE::Vec3& right )
-{
-	return {
-		left[0][0] * right[0] + left[0][1] * right[1] + left[0][2] * right[2],
-		left[1][0] * right[0] + left[1][1] * right[1] + left[1][2] * right[2],
-		left[2][0] * right[0] + left[2][1] * right[1] + left[2][2] * right[2]
-	};
-}
-inline XE::Vec3 operator *( const XE::Vec3& left, const XE::Mat3 & right )
-{
-	return {
-		right[0][0] * left[0] + right[0][1] * left[1] + right[0][2] * left[2],
-		right[1][0] * left[0] + right[1][1] * left[1] + right[1][2] * left[2],
-		right[2][0] * left[0] + right[2][1] * left[1] + right[2][2] * left[2]
-	};
-}
-inline XE::Mat3 operator *( const XE::Mat3 & left, const XE::Mat3 & right )
-{
-	return {
-		left[0][0] * right[0][0] + left[0][1] * right[1][0] + left[0][2] * right[2][0],
-		left[0][0] * right[0][1] + left[0][1] * right[1][1] + left[0][2] * right[2][1],
-		left[0][0] * right[0][2] + left[0][1] * right[1][2] + left[0][2] * right[2][2],
-		left[1][0] * right[0][0] + left[1][1] * right[1][0] + left[1][2] * right[2][0],
-		left[1][0] * right[0][1] + left[1][1] * right[1][1] + left[1][2] * right[2][1],
-		left[1][0] * right[0][2] + left[1][1] * right[1][2] + left[1][2] * right[2][2],
-		left[2][0] * right[0][0] + left[2][1] * right[1][0] + left[2][2] * right[2][0],
-		left[2][0] * right[0][1] + left[2][1] * right[1][1] + left[2][2] * right[2][1],
-		left[2][0] * right[0][2] + left[2][1] * right[1][2] + left[2][2] * right[2][2]
-	};
-}
-inline XE::Mat3 & operator +=( XE::Mat3 & left, const XE::Mat3 & right )
-{
-	left[0][0] += right[0][0];
-	left[0][1] += right[0][1];
-	left[0][2] += right[0][2];
-	left[1][0] += right[1][0];
-	left[1][1] += right[1][1];
-	left[1][2] += right[1][2];
-	left[2][0] += right[2][0];
-	left[2][1] += right[2][1];
-	left[2][2] += right[2][2];
-	return left;
-}
-inline XE::Mat3 & operator -=( XE::Mat3 & left, const XE::Mat3 & right )
-{
-	left[0][0] -= right[0][0];
-	left[0][1] -= right[0][1];
-	left[0][2] -= right[0][2];
-	left[1][0] -= right[1][0];
-	left[1][1] -= right[1][1];
-	left[1][2] -= right[1][2];
-	left[2][0] -= right[2][0];
-	left[2][1] -= right[2][1];
-	left[2][2] -= right[2][2];
-	return left;
-}
-inline XE::Mat3 & operator *=( XE::Mat3 & left, XE::float32 right )
-{
-	left[0][0] *= right;
-	left[0][1] *= right;
-	left[0][2] *= right;
-	left[1][0] *= right;
-	left[1][1] *= right;
-	left[1][2] *= right;
-	left[2][0] *= right;
-	left[2][1] *= right;
-	left[2][2] *= right;
-	return left;
-}
-inline XE::Mat3 & operator *=( XE::Mat3 & left, const XE::Mat3 & right )
-{
-	left[0][0] *= right[0][0] + left[0][1] * right[1][0] + left[0][2] * right[2][0];
-	left[0][0] *= right[0][1] + left[0][1] * right[1][1] + left[0][2] * right[2][1];
-	left[0][0] *= right[0][2] + left[0][1] * right[1][2] + left[0][2] * right[2][2];
-	left[1][0] *= right[0][0] + left[1][1] * right[1][0] + left[1][2] * right[2][0];
-	left[1][0] *= right[0][1] + left[1][1] * right[1][1] + left[1][2] * right[2][1];
-	left[1][0] *= right[0][2] + left[1][1] * right[1][2] + left[1][2] * right[2][2];
-	left[2][0] *= right[0][0] + left[2][1] * right[1][0] + left[2][2] * right[2][0];
-	left[2][0] *= right[0][1] + left[2][1] * right[1][1] + left[2][2] * right[2][1];
-	left[2][0] *= right[0][2] + left[2][1] * right[1][2] + left[2][2] * right[2][2];
-	return left;
-}
-inline bool operator ==( const XE::Mat3 & left, const XE::Mat3 & right )
-{
-	return
-		left[0][0] == right[0][0] && left[0][1] == right[0][1] && left[0][2] == right[0][2] &&
-		left[1][0] == right[1][0] && left[1][1] == right[1][1] && left[1][2] == right[1][2] &&
-		left[2][0] == right[2][0] && left[2][1] == right[2][1] && left[2][2] == right[2][2];
-}
-inline bool operator !=( const XE::Mat3 & left, const XE::Mat3 & right )
-{
-	return
-		left[0][0] != right[0][0] || left[0][1] != right[0][1] || left[0][2] != right[0][2] ||
-		left[1][0] != right[1][0] || left[1][1] != right[1][1] || left[1][2] != right[1][2] ||
-		left[2][0] != right[2][0] || left[2][1] != right[2][1] || left[2][2] != right[2][2];
-}
-
-inline XE::Mat4 operator -( const XE::Mat4 & val )
-{
-	return {
-		   -val[0][0], -val[0][1], -val[0][2], -val[0][3],
-		   -val[1][0], -val[1][1], -val[1][2], -val[1][3],
-		   -val[2][0], -val[2][1], -val[2][2], -val[2][3],
-		   -val[3][0], -val[3][1], -val[3][2], -val[3][3]
-	};
-}
-inline XE::Mat4 operator +( const XE::Mat4 & left, const XE::Mat4 & right )
-{
-	return {
-	left[0][0] + right[0][0], left[0][1] + right[0][1], left[0][2] + right[0][2], left[0][3] + right[0][3],
-	left[1][0] + right[1][0], left[1][1] + right[1][1], left[1][2] + right[1][2], left[1][3] + right[1][3],
-	left[2][0] + right[2][0], left[2][1] + right[2][1], left[2][2] + right[2][2], left[2][3] + right[2][3],
-	left[3][0] + right[3][0], left[3][1] + right[3][1], left[3][2] + right[3][2], left[3][3] + right[3][3]
-	};
-}
-inline XE::Mat4 operator -( const XE::Mat4 & left, const XE::Mat4 & right )
-{
-	return {
-	   left[0][0] - right[0][0], left[0][1] - right[0][1], left[0][2] - right[0][2], left[0][3] - right[0][3],
-	   left[1][0] - right[1][0], left[1][1] - right[1][1], left[1][2] - right[1][2], left[1][3] - right[1][3],
-	   left[2][0] - right[2][0], left[2][1] - right[2][1], left[2][2] - right[2][2], left[2][3] - right[2][3],
-	   left[3][0] - right[3][0], left[3][1] - right[3][1], left[3][2] - right[3][2], left[3][3] - right[3][3]
-	};
-}
-inline XE::Vec3 operator *( const XE::Mat4 & left, const XE::Vec3& right )
-{
-	XE::float32 inv = 1.0f / ( left[3][0] * right.x + left[3][1] * right.y + left[3][2] * right.z + left[3][3] );
-	return {
-	 ( left[0][0] * right.x + left[0][1] * right.y + left[0][2] * right.z + left[0][3] ) * inv,
-	 ( left[1][0] * right.x + left[1][1] * right.y + left[1][2] * right.z + left[1][3] ) * inv,
-	 ( left[2][0] * right.x + left[2][1] * right.y + left[2][2] * right.z + left[2][3] ) * inv
-	};
-}
-inline XE::Vec4 operator *( const XE::Mat4 & left, const XE::Vec4& right )
-{
-	return {
-		left[0][0] * right.x + left[0][1] * right.y + left[0][2] * right.z + left[0][3] * right.w,
-		left[1][0] * right.x + left[1][1] * right.y + left[1][2] * right.z + left[1][3] * right.w,
-		left[2][0] * right.x + left[2][1] * right.y + left[2][2] * right.z + left[2][3] * right.w,
-		left[3][0] * right.x + left[3][1] * right.y + left[3][2] * right.z + left[3][3] * right.w
-	};
-}
-inline XE::Mat4 operator *( const XE::Mat4 & left, const XE::Mat4 & right )
-{
-	return {
-	left[0][0] * right[0][0] + left[0][1] * right[1][0] + left[0][2] * right[2][0] + left[0][3] * right[3][0],
-	left[0][0] * right[0][1] + left[0][1] * right[1][1] + left[0][2] * right[2][1] + left[0][3] * right[3][1],
-	left[0][0] * right[0][2] + left[0][1] * right[1][2] + left[0][2] * right[2][2] + left[0][3] * right[3][2],
-	left[0][0] * right[0][3] + left[0][1] * right[1][3] + left[0][2] * right[2][3] + left[0][3] * right[3][3],
-	left[1][0] * right[0][0] + left[1][1] * right[1][0] + left[1][2] * right[2][0] + left[1][3] * right[3][0],
-	left[1][0] * right[0][1] + left[1][1] * right[1][1] + left[1][2] * right[2][1] + left[1][3] * right[3][1],
-	left[1][0] * right[0][2] + left[1][1] * right[1][2] + left[1][2] * right[2][2] + left[1][3] * right[3][2],
-	left[1][0] * right[0][3] + left[1][1] * right[1][3] + left[1][2] * right[2][3] + left[1][3] * right[3][3],
-	left[2][0] * right[0][0] + left[2][1] * right[1][0] + left[2][2] * right[2][0] + left[2][3] * right[3][0],
-	left[2][0] * right[0][1] + left[2][1] * right[1][1] + left[2][2] * right[2][1] + left[2][3] * right[3][1],
-	left[2][0] * right[0][2] + left[2][1] * right[1][2] + left[2][2] * right[2][2] + left[2][3] * right[3][2],
-	left[2][0] * right[0][3] + left[2][1] * right[1][3] + left[2][2] * right[2][3] + left[2][3] * right[3][3],
-	left[3][0] * right[0][0] + left[3][1] * right[1][0] + left[3][2] * right[2][0] + left[3][3] * right[3][0],
-	left[3][0] * right[0][1] + left[3][1] * right[1][1] + left[3][2] * right[2][1] + left[3][3] * right[3][1],
-	left[3][0] * right[0][2] + left[3][1] * right[1][2] + left[3][2] * right[2][2] + left[3][3] * right[3][2],
-	left[3][0] * right[0][3] + left[3][1] * right[1][3] + left[3][2] * right[2][3] + left[3][3] * right[3][3]
-	};
-}
-inline XE::Mat4 & operator +=( XE::Mat4 & left, const XE::Mat4 & right )
-{
-	left[0][0] += right[0][0]; left[0][1] += right[0][1]; left[0][2] += right[0][2]; left[0][3] += right[0][3];
-	left[1][0] += right[1][0]; left[1][1] += right[1][1]; left[1][2] += right[1][2]; left[1][3] += right[1][3];
-	left[2][0] += right[2][0]; left[2][1] += right[2][1]; left[2][2] += right[2][2]; left[2][3] += right[2][3];
-	left[3][0] += right[3][0]; left[3][1] += right[3][1]; left[3][2] += right[3][2]; left[3][3] += right[3][3];
-	return left;
-}
-inline XE::Mat4 & operator -=( XE::Mat4 & left, const XE::Mat4 & right )
-{
-	left[0][0] -= right[0][0]; left[0][1] -= right[0][1]; left[0][2] -= right[0][2]; left[0][3] -= right[0][3];
-	left[1][0] -= right[1][0]; left[1][1] -= right[1][1]; left[1][2] -= right[1][2]; left[1][3] -= right[1][3];
-	left[2][0] -= right[2][0]; left[2][1] -= right[2][1]; left[2][2] -= right[2][2]; left[2][3] -= right[2][3];
-	left[3][0] -= right[3][0]; left[3][1] -= right[3][1]; left[3][2] -= right[3][2]; left[3][3] -= right[3][3];
-	return left;
-}
-inline XE::Mat4 & operator *=( XE::Mat4 & left, const XE::Mat4 & right )
-{
-	left[0][0] = left[0][0] * right[0][0] + left[0][1] * right[1][0] + left[0][2] * right[2][0] + left[0][3] * right[3][0];
-	left[0][1] = left[0][0] * right[0][1] + left[0][1] * right[1][1] + left[0][2] * right[2][1] + left[0][3] * right[3][1];
-	left[0][2] = left[0][0] * right[0][2] + left[0][1] * right[1][2] + left[0][2] * right[2][2] + left[0][3] * right[3][2];
-	left[0][3] = left[0][0] * right[0][3] + left[0][1] * right[1][3] + left[0][2] * right[2][3] + left[0][3] * right[3][3];
-	left[1][0] = left[1][0] * right[0][0] + left[1][1] * right[1][0] + left[1][2] * right[2][0] + left[1][3] * right[3][0];
-	left[1][1] = left[1][0] * right[0][1] + left[1][1] * right[1][1] + left[1][2] * right[2][1] + left[1][3] * right[3][1];
-	left[1][2] = left[1][0] * right[0][2] + left[1][1] * right[1][2] + left[1][2] * right[2][2] + left[1][3] * right[3][2];
-	left[1][3] = left[1][0] * right[0][3] + left[1][1] * right[1][3] + left[1][2] * right[2][3] + left[1][3] * right[3][3];
-	left[2][0] = left[2][0] * right[0][0] + left[2][1] * right[1][0] + left[2][2] * right[2][0] + left[2][3] * right[3][0];
-	left[2][1] = left[2][0] * right[0][1] + left[2][1] * right[1][1] + left[2][2] * right[2][1] + left[2][3] * right[3][1];
-	left[2][2] = left[2][0] * right[0][2] + left[2][1] * right[1][2] + left[2][2] * right[2][2] + left[2][3] * right[3][2];
-	left[2][3] = left[2][0] * right[0][3] + left[2][1] * right[1][3] + left[2][2] * right[2][3] + left[2][3] * right[3][3];
-	left[3][0] = left[3][0] * right[0][0] + left[3][1] * right[1][0] + left[3][2] * right[2][0] + left[3][3] * right[3][0];
-	left[3][1] = left[3][0] * right[0][1] + left[3][1] * right[1][1] + left[3][2] * right[2][1] + left[3][3] * right[3][1];
-	left[3][2] = left[3][0] * right[0][2] + left[3][1] * right[1][2] + left[3][2] * right[2][2] + left[3][3] * right[3][2];
-	left[3][3] = left[3][0] * right[0][3] + left[3][1] * right[1][3] + left[3][2] * right[2][3] + left[3][3] * right[3][3];
-	return left;
-}
-inline bool operator ==( const XE::Mat4 & left, const XE::Mat4 & right )
-{
-	return
-		left[0][0] == right[0][0] && left[0][1] == right[0][1] && left[0][2] == right[0][2] && left[0][3] == right[0][3] &&
-		left[1][0] == right[1][0] && left[1][1] == right[1][1] && left[1][2] == right[1][2] && left[1][3] == right[1][3] &&
-		left[2][0] == right[2][0] && left[2][1] == right[2][1] && left[2][2] == right[2][2] && left[2][3] == right[2][3] &&
-		left[3][0] == right[3][0] && left[3][1] == right[3][1] && left[3][2] == right[3][2] && left[3][3] == right[3][3];
-}
-inline bool operator !=( const XE::Mat4 & left, const XE::Mat4 & right )
-{
-	return
-		left[0][0] != right[0][0] || left[0][1] != right[0][1] || left[0][2] != right[0][2] || left[0][3] != right[0][3] ||
-		left[1][0] != right[1][0] || left[1][1] != right[1][1] || left[1][2] != right[1][2] || left[1][3] != right[1][3] ||
-		left[2][0] != right[2][0] || left[2][1] != right[2][1] || left[2][2] != right[2][2] || left[2][3] != right[2][3] ||
-		left[3][0] != right[3][0] || left[3][1] != right[3][1] || left[3][2] != right[3][2] || left[3][3] != right[3][3];
-}
 
 #endif // __MATHF_H__289359AA_D9DE_4269_B0BE_BAAA6E15461B

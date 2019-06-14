@@ -22,10 +22,6 @@ public:
 	
 	~Fence();
 
-public:
-	XE::uint64 GetValue() const;
-	
-	void ResetValue( XE::uint64 val );
 };
 
 END_XE_NAMESPACE

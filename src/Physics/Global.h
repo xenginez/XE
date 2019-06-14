@@ -9,7 +9,7 @@
 #ifndef __GLOBAL_H__988A05AF_624C_40F1_BE25_71295FF4361A
 #define __GLOBAL_H__988A05AF_624C_40F1_BE25_71295FF4361A
 
-#include <World/World.h>
+#include <Interface/Interface.h>
 
 #ifdef PHYSICS_EXPORT
 #define PHYSICS_API DLL_EXPORT

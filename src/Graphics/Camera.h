@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class RHI_API Camera : public Object
+class GRAPHICS_API Camera : public Object
 {
 	OBJECT(Camera, Object)
 	
