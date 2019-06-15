@@ -39,3 +39,4 @@
 /build
 /target
 /cmake-build-debug
+/CMakeSettings.json
