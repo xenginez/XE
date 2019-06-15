@@ -19,7 +19,7 @@ public:
 	static std::vector<std::string> Split( const std::string& src, const std::string& sep );
 
 public:
-	static std::string Format( const std::string& fmt )
+	static const std::string& Format( const std::string& fmt )
 	{
 		return fmt;
 	}
@@ -27,14 +27,14 @@ public:
 	template< typename ... ARGS > static std::string Format( const std::string& fmt, ARGS ... args )
 	{
 		std::string str = fmt;
-		_Format( str, 0, args... );
+		_Format( str, 1, args... );
 		return str;
 	}
 
 private:
 	template< typename T > static void _Format( std::string& fmt, XE::uint64 index, T val )
 	{
-		std::regex regex( "{%" + std::to_string( index ) + "}" );
+		std::regex regex( ( "%" + std::to_string( index ) ).c_str() );
 
 		fmt = std::regex_replace( fmt, regex, std::to_string( val ) );
 	}

@@ -22,12 +22,20 @@ class TYPE; typedef std::shared_ptr< TYPE > TYPE##Ptr; typedef std::shared_ptr< 
 
 BEG_XE_NAMESPACE
 
-template< typename Ty, typename ... Types > std::shared_ptr<Ty> make_shared( Types&& ...args )
+template< typename Ty, typename ... Types > std::shared_ptr<Ty> make_shared( Types && ...args )
 {
 	static XE::Allocator<Ty> _alloc;
 
 	return std::allocate_shared<Ty>( _alloc, args... );
 }
+
+template< typename Ty, typename ... Types > std::shared_ptr<Ty> make_object( Types && ...args )
+{
+	static XE::Allocator<Ty> _alloc;
+
+	return std::allocate_shared<Ty>( _alloc, args... );
+}
+
 
 END_XE_NAMESPACE
 

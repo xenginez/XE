@@ -94,7 +94,7 @@ XE::IAssetsServicePtr XE::CoreFramework::GetAssetsService() const
 
 XE::IConfigServicePtr XE::CoreFramework::GetConfigService() const
 {
-	return SP_CAST < IConfigService >(_p->_Services[0]);
+	return SP_CAST < IConfigService >(_p->_Services[1]);
 }
 
 XE::ILoggerServicePtr XE::CoreFramework::GetLoggerService() const

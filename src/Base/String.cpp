@@ -9,13 +9,16 @@ class StringPool : public Singleton<StringPool>
 {
 	friend Singleton<StringPool>;
 
+	using StringPtr = std::shared_ptr<std::string>;
+
 public:
-	typedef tbb::concurrent_hash_map<std::string, XE::uint64> hash_map;
+	typedef tbb::concurrent_hash_map<XE::uint64, StringPtr> hash_map;
 
 private:
 	StringPool()
 	{
-		Strings.insert( std::make_pair( "", 1 ) );
+		XE::uint64 hash_code = Hash( "" );
+		Strings.insert( std::make_pair( hash_code, std::make_shared<std::string>( "" ) ) );
 	}
 
 	~StringPool()
@@ -23,29 +26,31 @@ private:
 	}
 
 public:
-	static const std::string * Register( const std::string& val )
+	static StringPtr Register( const std::string& val )
 	{
+		XE::uint64 hash_code = This()->Hash( val );
+
 		hash_map::accessor it;
 
-		if ( This()->Strings.find( it, val ) )
+		if ( This()->Strings.find( it, hash_code ) )
 		{
-			it->second++;
-			return &it->first;
+			return it->second;
 		}
 
-		This()->Strings.insert( it, std::make_pair( val, 1 ) );
-		return &it->first;
+		This()->Strings.insert( it, std::make_pair( hash_code, std::make_shared<std::string>( val ) ) );
+		return it->second;
 	}
 
-	static void Unregister( const std::string * val )
+	static void Unregister( const std::shared_ptr< const std::string >& val )
 	{
+		XE_ASSERT( val != nullptr );
+
+		XE::uint64 hash_code = This()->Hash( *val );
+
 		hash_map::accessor it;
-
-		if ( This()->Strings.find( it, *val ) )
+		if ( This()->Strings.find( it, hash_code ) )
 		{
-			it->second--;
-
-			if ( it->second == 0 )
+			if ( it->second.use_count() == 2 )
 			{
 				This()->Strings.erase( it );
 			}
@@ -54,6 +59,7 @@ public:
 
 private:
 	hash_map Strings;
+	std::hash<std::string> Hash;
 };
 
 String::String()
@@ -69,7 +75,7 @@ String::String( const char * val )
 }
 
 String::String( const String& val )
-	: _String( StringPool::Register( val.ToStdString() ) )
+	: _String( val._String )
 {
 
 }
@@ -102,7 +108,7 @@ String& String::operator=( const String& val )
 		StringPool::Unregister( _String );
 	}
 
-	_String = StringPool::Register( val.ToStdString() );
+	_String = val._String;
 
 	return *this;
 }
@@ -183,7 +189,7 @@ String String::operator+( const std::string& val ) const
 
 String String::operator+( const String& val ) const
 {
-	return *_String + val.ToStdString();
+	return ToStdString() + val.ToStdString();
 }
 
 String String::operator+( const char * val ) const
@@ -193,57 +199,57 @@ String String::operator+( const char * val ) const
 
 String String::operator+( XE::float64 val ) const
 {
-	return *this + std::to_string( val );
+	return ToStdString() + std::to_string( val );
 }
 
 String String::operator+( XE::float32 val ) const
 {
-	return *this + std::to_string( val );
+	return ToStdString() + std::to_string( val );
 }
 
 String String::operator+( XE::uint64 val ) const
 {
-	return *this + std::to_string( val );
+	return ToStdString() + std::to_string( val );
 }
 
 String String::operator+( XE::uint32 val ) const
 {
-	return *this + std::to_string( val );
+	return ToStdString() + std::to_string( val );
 }
 
 String String::operator+( XE::uint16 val ) const
 {
-	return *this + std::to_string( val );
+	return ToStdString() + std::to_string( val );
 }
 
 String String::operator+( XE::uint8 val ) const
 {
-	return *this + std::to_string( val );
+	return ToStdString() + std::to_string( val );
 }
 
 String String::operator+( XE::int64 val ) const
 {
-	return *this + std::to_string( val );
+	return ToStdString() + std::to_string( val );
 }
 
 String String::operator+( XE::int32 val ) const
 {
-	return *this + std::to_string( val );
+	return ToStdString() + std::to_string( val );
 }
 
 String String::operator+( XE::int16 val ) const
 {
-	return *this + std::to_string( val );
+	return ToStdString() + std::to_string( val );
 }
 
 String String::operator+( XE::int8 val ) const
 {
-	return *this + std::to_string( val );
+	return ToStdString() + std::to_string( val );
 }
 
 String String::operator+( bool val ) const
 {
-	return (*this + (val ? "true" : "false"));
+	return (ToStdString() + (val ? "true" : "false"));
 }
 
 bool String::operator!=( const char * val ) const

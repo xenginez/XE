@@ -39,6 +39,8 @@ bool XE::ConfigService::Startup()
 			
 			_p->Values.insert({ key, val });
 		}
+
+		return true;
 	}
 	
 	return false;

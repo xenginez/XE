@@ -60,29 +60,30 @@ XE::Reflection::Reflection()
 {
 	_p->Classes.insert( std::make_pair( "void", nullptr ) );
 
-	RegisterMetaInfo( MetaID<std::nullptr_t>::Get() );
-	RegisterMetaInfo( MetaID<bool>::Get() );
-	RegisterMetaInfo( MetaID<XE::int8>::Get() );
-	RegisterMetaInfo( MetaID<XE::int16>::Get() );
-	RegisterMetaInfo( MetaID<XE::int32>::Get() );
-	RegisterMetaInfo( MetaID<XE::int64>::Get() );
-	RegisterMetaInfo( MetaID<XE::uint8>::Get() );
-	RegisterMetaInfo( MetaID<XE::uint16>::Get() );
-	RegisterMetaInfo( MetaID<XE::uint32>::Get() );
-	RegisterMetaInfo( MetaID<XE::uint64>::Get() );
-	RegisterMetaInfo( MetaID<XE::float32>::Get() );
-	RegisterMetaInfo( MetaID<XE::float64>::Get() );
-	RegisterMetaInfo( MetaID<String>::Get() );
-	RegisterMetaInfo( MetaID<VariantList>::Get() );
-	RegisterMetaInfo( MetaID<VariantDeque>::Get() );
-	RegisterMetaInfo( MetaID<VariantStack>::Get() );
-	RegisterMetaInfo( MetaID<VariantQueue>::Get() );
-	RegisterMetaInfo( MetaID<VariantArray>::Get() );
-	RegisterMetaInfo( MetaID<VariantPair>::Get() );
-	RegisterMetaInfo( MetaID<VariantSet>::Get() );
-	RegisterMetaInfo( MetaID<VariantMap>::Get() );
-	RegisterMetaInfo( MetaID<VariantMultiSet>::Get() );
-	RegisterMetaInfo( MetaID<VariantMultiMap>::Get() );
+	_p->Classes.insert( { MetaID<std::nullptr_t>::Get()->GetFullName(), ClassID<std::nullptr_t>::Get() } );
+	_p->Classes.insert( { MetaID<bool>::Get()->GetFullName(), ClassID<bool>::Get() } );
+	_p->Classes.insert( { MetaID<XE::int8>::Get()->GetFullName(), ClassID<XE::int8>::Get() } );
+	_p->Classes.insert( { MetaID<XE::int16>::Get()->GetFullName(), ClassID<XE::int16>::Get() } );
+	_p->Classes.insert( { MetaID<XE::int32>::Get()->GetFullName(), ClassID<XE::int32>::Get() } );
+	_p->Classes.insert( { MetaID<XE::int64>::Get()->GetFullName(), ClassID<XE::int64>::Get() } );
+	_p->Classes.insert( { MetaID<XE::uint8>::Get()->GetFullName(), ClassID<XE::uint8>::Get() } );
+	_p->Classes.insert( { MetaID<XE::uint16>::Get()->GetFullName(), ClassID<XE::uint16>::Get() } );
+	_p->Classes.insert( { MetaID<XE::uint32>::Get()->GetFullName(), ClassID<XE::uint32>::Get() } );
+	_p->Classes.insert( { MetaID<XE::uint64>::Get()->GetFullName(), ClassID<XE::uint64>::Get() } );
+	_p->Classes.insert( { MetaID<XE::float32>::Get()->GetFullName(), ClassID<XE::float32>::Get() } );
+	_p->Classes.insert( { MetaID<XE::float64>::Get()->GetFullName(), ClassID<XE::float64>::Get() } );
+
+	_p->Classes.insert( { MetaID<XE::String>::Get()->GetFullName(), ClassID<XE::String>::Get() } );
+	_p->Classes.insert( { MetaID<XE::VariantList>::Get()->GetFullName(), ClassID<XE::VariantList>::Get() } );
+	_p->Classes.insert( { MetaID<XE::VariantDeque>::Get()->GetFullName(), ClassID<XE::VariantDeque>::Get() } );
+	_p->Classes.insert( { MetaID<XE::VariantStack>::Get()->GetFullName(), ClassID<XE::VariantStack>::Get() } );
+	_p->Classes.insert( { MetaID<XE::VariantQueue>::Get()->GetFullName(), ClassID<XE::VariantQueue>::Get() } );
+	_p->Classes.insert( { MetaID<XE::VariantArray>::Get()->GetFullName(), ClassID<XE::VariantArray>::Get() } );
+	_p->Classes.insert( { MetaID<XE::VariantPair>::Get()->GetFullName(), ClassID<XE::VariantPair>::Get() } );
+	_p->Classes.insert( { MetaID<XE::VariantSet>::Get()->GetFullName(), ClassID<XE::VariantSet>::Get() } );
+	_p->Classes.insert( { MetaID<XE::VariantMap>::Get()->GetFullName(), ClassID<XE::VariantMap>::Get() } );
+	_p->Classes.insert( { MetaID<XE::VariantMultiSet>::Get()->GetFullName(), ClassID<XE::VariantMultiSet>::Get() } );
+	_p->Classes.insert( { MetaID<XE::VariantMultiMap>::Get()->GetFullName(), ClassID<XE::VariantMultiMap>::Get() } );
 }
 
 XE::Reflection::~Reflection()

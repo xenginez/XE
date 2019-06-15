@@ -152,7 +152,7 @@ public:
 	String SubString( XE::uint64 offset = 0, XE::uint64 count = npos ) const;
 
 private:
-	const std::string * _String;
+	std::shared_ptr<const std::string> _String;
 };
 
 END_XE_NAMESPACE
@@ -172,7 +172,7 @@ namespace std
 
 		bool operator()( const XE::String& _Left, const XE::String& _Right ) const
 		{
-			return ( _Left.ToCString() == _Right.ToCString() );
+			return ( _Left.ToStdString() == _Right.ToStdString() );
 		}
 	};
 
@@ -183,7 +183,7 @@ namespace std
 
 		XE::uint64 operator()( const XE::String& _Keyval ) const noexcept
 		{
-			return (XE::uint64)_Keyval.ToCString();
+			return std::hash<std::string>()( _Keyval.ToStdString() );
 		}
 	};
 
@@ -193,7 +193,7 @@ struct BASE_API StringHashCompare
 {
 	static XE::uint64 hash( const XE::String& a )
 	{
-		return (XE::uint64)a.ToCString();
+		return std::hash<std::string>()( a.ToStdString() );
 	}
 	static bool equal( const XE::String& a, const XE::String& b )
 	{

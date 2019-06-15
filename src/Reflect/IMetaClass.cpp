@@ -9,10 +9,9 @@ USING_XE
 XE::IMetaClass::IMetaClass( const String& Name, XE::uint64 Size, bool IsAbs, bool IsSin, IMetaClassPtr Super, IMetaInfoPtr Owner )
 	:IMetaType( Name, MetaType::CLASS, Size, Owner ), _IsAbstract( IsAbs ), _IsSingleton( IsSin ), _Super( Super )
 {
-	while ( Super )
+	if ( Super )
 	{
-		Super->_DerivedClasses.push_back( SP_CAST<IMetaClass>( shared_from_this() ) );
-		Super = Super->GetSuper();
+		Super->_DerivedClasses.push_back( this );
 	}
 }
 
@@ -95,9 +94,9 @@ void XE::IMetaClass::VisitOperator( std::function<void( IMetaOperatorPtr )> val 
 
 void XE::IMetaClass::VisitDerivedClass( std::function<void( IMetaClassPtr )> val ) const
 {
-	for ( auto var : _DerivedClasses )
+	for ( const auto& var : _DerivedClasses )
 	{
-		val( var );
+		val(std::static_pointer_cast<IMetaClass>(var->shared_from_this()));
 	}
 }
 

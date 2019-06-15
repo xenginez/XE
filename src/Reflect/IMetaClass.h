@@ -71,7 +71,7 @@ private:
 	Array< IMetaMethodPtr > _Methods;
 	Array< IMetaPropertyPtr > _Propertys;
 	Array< IMetaOperatorPtr > _Operators;
-	Array< IMetaClassPtr > _DerivedClasses;
+	Array< IMetaClass * > _DerivedClasses;
 };
 
 END_XE_NAMESPACE

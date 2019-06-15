@@ -36,12 +36,18 @@ void XE::LoggerService::Clearup()
 
 void XE::LoggerService::Log( LoggerLevel level, const String& file, XE::uint64 line, const String& text )
 {
-	LoggerPtr log = XE::make_shared<Logger>();
+	LoggerPtr log = XE::make_object<Logger>();
 
 	log->Level = level;
 	log->File = file;
 	log->Line = line;
 	log->Text = text;
+
+	if( _p->_Listeners.empty() )
+	{
+		std::cout << "[" << EnumID<LoggerLevel>::Get()->FindName( static_cast< int64 >( level ) ) << "] File: " << file << " : " << line << std::endl;
+		std::cout << "\t" << text << std::endl;
+	}
 
 	for ( auto var : _p->_Listeners )
 	{
