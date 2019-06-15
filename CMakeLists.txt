@@ -18,6 +18,16 @@ else ()
 	message(FATAL_ERROR ${CMAKE_SYSTEM_NAME}" Other")
 endif ()
 
+if (CMAKE_BUILD_TYPE MATCHES "Debug")
+	set(XE_CONFIG debug)
+	set(XE_TBB_POSTFIX _debug)
+else()
+	set(XE_CONFIG release)
+	set(XE_TBB_POSTFIX)
+endif()
+
+
+
 set(BUILD_SHARED_LIBS ON)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_CURRENT_SOURCE_DIR}/target/${XE_PLATFORM_PATH}/debug/bin)
@@ -35,8 +45,8 @@ if (XE_PLATFORM_PATH MATCHES "mac")
 endif ()
 
 link_directories(
-		${CMAKE_CURRENT_SOURCE_DIR}/depend/bin/${XE_PLATFORM_PATH}
-		${CMAKE_CURRENT_SOURCE_DIR}/depend/lib/${XE_PLATFORM_PATH}
+		${CMAKE_CURRENT_SOURCE_DIR}/depend/bin/${XE_PLATFORM_PATH}/${XE_CONFIG}
+		${CMAKE_CURRENT_SOURCE_DIR}/depend/lib/${XE_PLATFORM_PATH}/${XE_CONFIG}
 )
 
 add_subdirectory(src)
@@ -62,9 +72,9 @@ add_dependencies(XE Base Memory Reflect Utils Math RHI Interface Audio Physics G
 
 target_link_libraries(Base
 
-		tbb
-		tbbmalloc
-		tbbmalloc_proxy
+		tbb${XE_TBB_POSTFIX}
+		tbbmalloc${XE_TBB_POSTFIX}
+		tbbmalloc_proxy${XE_TBB_POSTFIX}
 		)
 
 target_link_libraries(Memory
