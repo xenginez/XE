@@ -120,8 +120,8 @@ struct XEPWorkThread : public XEPMainThread
 
 struct ThreadService::Private
 {
-	XEPMainThread * _MainThread;
-	XEPWorkThread ** _Threads;
+	XEPMainThread * _MainThread = nullptr;
+	XEPWorkThread ** _Threads = nullptr;
 };
 
 XE::ThreadService::ThreadService()
@@ -151,14 +151,20 @@ void XE::ThreadService::Update()
 
 void XE::ThreadService::Clearup()
 {
-	delete _p->_MainThread;
-
-	for ( XE::uint64 i = 0; i < THREAD_COUNT; i++ )
+	if( _p->_MainThread )
 	{
-		_p->_Threads[i]->_Exit = true;
+		delete _p->_MainThread;
 	}
 
-	delete[]( (XEPWorkThread*)_p->_Threads );
+	if( _p->_Threads )
+	{
+		for( XE::uint64 i = 0; i < THREAD_COUNT; i++ )
+		{
+			_p->_Threads[i]->_Exit = true;
+		}
+
+		delete[]( (XEPWorkThread * )_p->_Threads );
+	}
 }
 
 XE::TID XE::ThreadService::GetIOThread() const

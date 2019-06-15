@@ -26,7 +26,7 @@ public:
 	~CoreFramework();
 
 public:
-	virtual int Exec() override;
+	int Exec();
 
 public:
 	IGUIServicePtr GetGUIService() const override;
@@ -57,11 +57,11 @@ public:
 
 	ILocalizationServicePtr GetLocalizationService() const override;
 
-	IServicePtr GetService( IMetaClassPtr val ) const override;
+	IServicePtr GetService( const IMetaClassPtr & val ) const override;
 
-	bool RegisterService( IMetaClassPtr val ) override;
+	bool RegisterService( const IMetaClassPtr & val ) override;
 
-	void UnregisterService( IMetaClassPtr val ) override;
+	void UnregisterService( const IMetaClassPtr & val ) override;
 
 public:
 	Language GetSystemLanguage() const override;

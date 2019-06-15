@@ -12,8 +12,8 @@ struct TimerService::Private
 	XE::float32 _TimeScale;
 	XE::float32 _DetlaTime;
 	XE::float32 _FixedDetlaTime;
-	std::chrono::steady_clock::time_point _StartTime;
-	std::chrono::steady_clock::time_point _FrameTime;
+	std::chrono::high_resolution_clock::time_point _StartTime;
+	std::chrono::high_resolution_clock::time_point _FrameTime;
 };
 
 XE::TimerService::TimerService()
@@ -34,7 +34,7 @@ bool XE::TimerService::Startup()
 	_p->_TimeScale = 1.0f;
 	_p->_DetlaTime = 0.0f;
 	_p->_FixedDetlaTime = 0.0f;
-	_p->_StartTime = std::chrono::steady_clock::now();
+	_p->_StartTime = std::chrono::high_resolution_clock::now();
 	_p->_FrameTime = _p->_StartTime;
 
 	return true;
@@ -44,7 +44,7 @@ void XE::TimerService::Update()
 {
 	_p->_FrameCount++;
 
-	auto now_time = std::chrono::steady_clock::now();
+	auto now_time = std::chrono::high_resolution_clock::now();
 
 	_p->_DetlaTime = ( std::chrono::duration_cast<std::chrono::milliseconds>( now_time - _p->_FrameTime ).count() ) / 1000.0f;
 
@@ -56,7 +56,7 @@ void XE::TimerService::Clearup()
 	_p->_TimeScale = 1.0f;
 	_p->_DetlaTime = 0.0f;
 	_p->_FixedDetlaTime = 0.0f;
-	_p->_StartTime = std::chrono::steady_clock::now();
+	_p->_StartTime = std::chrono::high_resolution_clock::now();
 	_p->_FrameTime = _p->_StartTime;
 }
 

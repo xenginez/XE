@@ -17,8 +17,8 @@ class INTERFACE_API Logger
 {
 public:
 	String File;
-	XE::uint64 Line;
 	String Text;
+	XE::uint64 Line;
 	LoggerLevel Level;
 	std::chrono::system_clock::time_point Time;
 };

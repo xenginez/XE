@@ -72,11 +72,58 @@ namespace std
 	{
 		return _Val;
 	}
-	
-	inline std::string to_string( const std::filesystem::path& _Val )
+
+	inline std::string to_string( const std::filesystem::path & _Val )
 	{
 		return _Val.string();
 	}
+
+	inline std::string to_string( const std::chrono::system_clock::time_point & _Val )
+	{
+		std::ostringstream oss;
+
+		const time_t t = std::chrono::system_clock::to_time_t( _Val );
+
+		const char * put_time_format = "%Y-%m-%d %X";
+
+	#if PLATFORM_OS == OS_WINDOWS
+		std::tm tm;
+		gmtime_s( &tm, &t );
+		localtime_s( &tm, &t );
+		oss << std::put_time( &tm, put_time_format );
+	#else
+		oss << std::put_time( std::gmtime( &t ), put_time_format );
+	#endif
+
+		return oss.str();
+	}
+
+	namespace chrono
+	{
+		inline system_clock::time_point from_string( const std::string & _Val )
+		{
+			std::tm tm;
+
+			tm.tm_wday = 0;
+			tm.tm_yday = 0;
+			tm.tm_isdst = 0;
+
+			tm.tm_year = std::stoi( _Val.substr( 0, 4 ) ) - 1900;
+			tm.tm_mon = std::stoi( _Val.substr( 5, 2 ) ) - 1;
+			tm.tm_mday = std::stoi( _Val.substr( 8, 2 ) );
+			tm.tm_hour = std::stoi( _Val.substr( 11, 2 ) );
+			tm.tm_min = std::stoi( _Val.substr( 14, 2 ) );
+			tm.tm_sec = std::stoi( _Val.substr( 17, 2 ) );
+
+		#if PLATFORM_OS == OS_WINDOWS
+			const std::time_t t = _mkgmtime( &tm );
+		#else
+			const std::time_t t = timegm( &tm );
+		#endif
+
+			return system_clock::from_time_t( t );
+		}
+	};
 };
 
 BEG_XE_NAMESPACE

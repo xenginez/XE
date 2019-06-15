@@ -12,6 +12,22 @@
 
 #include "AssetsService.h"
 
+#define LOGGER_INDEX	_p->_Services.at(0)
+#define CONFIG_INDEX	_p->_Services.at(1)
+#define LOCAL_INDEX		_p->_Services.at(2)
+#define TIMER_INDEX		_p->_Services.at(3)
+#define EVENT_INDEX		_p->_Services.at(4)
+#define AUDIO_INDEX		_p->_Services.at(5)
+#define THREAD_INDEX	_p->_Services.at(6)
+#define PLUGIN_INDEX	_p->_Services.at(7)
+#define INPUT_INDEX		_p->_Services.at(8)
+#define ASSETS_INDEX	_p->_Services.at(9)
+#define RENDER_INDEX	_p->_Services.at(10)
+#define GUI_INDEX		_p->_Services.at(11)
+#define PHYSICS_INDEX	_p->_Services.at(12)
+#define NAVIGAT_INDEX	_p->_Services.at(13)
+#define WORLD_INDEX		_p->_Services.at(14)
+
 USING_XE
 
 BEG_META(CoreFramework)
@@ -19,7 +35,7 @@ END_META()
 
 struct XE::CoreFramework::Private
 {
-	bool _Exit = false;
+	std::atomic_bool _Exit = false;
 	Array < IServicePtr > _Services;
 };
 
@@ -43,81 +59,90 @@ int XE::CoreFramework::Exec()
 	Update();
 	
 	Clearup();
-	
+
+#ifdef DEBUG
+#if PLATFORM_OS == OS_WINDOWS
+	system( "pause" );
+#else
+	printf( "please press enter to continue ..." );
+	getchar();
+#endif // PLATFORM_OS == OS_WINDOWS
+#endif // DEBUG
+
 	return 0;
 }
 
 XE::IGUIServicePtr XE::CoreFramework::GetGUIService() const
 {
-	return SP_CAST < IGUIService >(_p->_Services[0]);
+	return SP_CAST < IGUIService >(GUI_INDEX);
 }
 
 XE::ITimerServicePtr XE::CoreFramework::GetTimerService() const
 {
-	return SP_CAST < ITimerService >(_p->_Services[0]);
+	return SP_CAST < ITimerService >(TIMER_INDEX);
 }
 
 XE::IEventServicePtr XE::CoreFramework::GetEventService() const
 {
-	return SP_CAST < IEventService >(_p->_Services[0]);
+	return SP_CAST < IEventService >(EVENT_INDEX);
 }
 
 XE::IInputServicePtr XE::CoreFramework::GetInputService() const
 {
-	return SP_CAST < IInputService >(_p->_Services[0]);
+	return SP_CAST < IInputService >(INPUT_INDEX);
 }
 
 XE::IAudioServicePtr XE::CoreFramework::GetAudioService() const
 {
-	return SP_CAST < IAudioService >(_p->_Services[0]);
+	return SP_CAST < IAudioService >(AUDIO_INDEX);
 }
 
 XE::IWorldServicePtr XE::CoreFramework::GetWorldService() const
 {
-	return SP_CAST < IWorldService >(_p->_Services[0]);
+	return SP_CAST < IWorldService >(WORLD_INDEX);
 }
 
 XE::IPluginServicePtr XE::CoreFramework::GetPluginService() const
 {
-	return SP_CAST < IPluginService >(_p->_Services[0]);
+	return SP_CAST < IPluginService >(PLUGIN_INDEX);
 }
 
 XE::IThreadServicePtr XE::CoreFramework::GetThreadService() const
 {
-	return SP_CAST < IThreadService >(_p->_Services[0]);
+	return SP_CAST < IThreadService >(THREAD_INDEX);
 }
 
 XE::IAssetsServicePtr XE::CoreFramework::GetAssetsService() const
 {
-	return SP_CAST < IAssetsService >(_p->_Services[0]);
+	return SP_CAST < IAssetsService >(ASSETS_INDEX);
 }
 
 XE::IConfigServicePtr XE::CoreFramework::GetConfigService() const
 {
-	return SP_CAST < IConfigService >(_p->_Services[1]);
+	return SP_CAST < IConfigService >(CONFIG_INDEX);
 }
 
 XE::ILoggerServicePtr XE::CoreFramework::GetLoggerService() const
 {
-	return SP_CAST < ILoggerService >(_p->_Services[0]);
+	return SP_CAST < ILoggerService >(LOGGER_INDEX);
 }
 
 XE::IRenderServicePtr XE::CoreFramework::GetRenderService() const
 {
-	return SP_CAST < IRenderService >(_p->_Services[0]);
+	return SP_CAST < IRenderService >(RENDER_INDEX);
 }
 
 XE::IPhysicsServicePtr XE::CoreFramework::GetPhysicsService() const
 {
-	return SP_CAST < IPhysicsService >(_p->_Services[0]);
+	return SP_CAST < IPhysicsService >(PHYSICS_INDEX);
 }
 
 XE::ILocalizationServicePtr XE::CoreFramework::GetLocalizationService() const
 {
-	return SP_CAST < ILocalizationService >(_p->_Services[0]);
+	return SP_CAST < ILocalizationService >(LOCAL_INDEX);
 }
 
-XE::IServicePtr XE::CoreFramework::GetService( IMetaClassPtr val ) const
+XE::IServicePtr XE::CoreFramework::GetService( const IMetaClassPtr & val ) const
 {
 	for( auto it = _p->_Services.rbegin(); it != _p->_Services.rend(); ++it )
 	{
@@ -130,7 +155,7 @@ XE::IServicePtr XE::CoreFramework::GetService( IMetaClassPtr val ) const
 	return nullptr;
 }
 
-bool XE::CoreFramework::RegisterService( IMetaClassPtr val )
+bool XE::CoreFramework::RegisterService( const IMetaClassPtr & val )
 {
 	if( val->CanConvert(IService::GetMetaClassStatic()) && !val->IsAbstract())
 	{
@@ -151,15 +176,17 @@ bool XE::CoreFramework::RegisterService( IMetaClassPtr val )
 	return false;
 }
 
-void XE::CoreFramework::UnregisterService( IMetaClassPtr val )
+void XE::CoreFramework::UnregisterService( const IMetaClassPtr & val )
 {
-	for( XE::uint64 i = _p->_Services.size() - 1; i >= 0; --i )
+	auto it = std::find_if( _p->_Services.begin(), _p->_Services.end(), [val]( const IServicePtr & srv )
+							{
+								return srv->GetMetaClass() == val || srv->GetMetaClass()->CanConvert( val );
+							} );
+
+	if( it != _p->_Services.end() )
 	{
-		if( _p->_Services[i]->GetMetaClass()->CanConvert(val))
-		{
-			_p->_Services[i]->Clearup();
-			_p->_Services[i] = nullptr;
-		}
+		( *it )->Clearup();
+		( *it ) = nullptr;
 	}
 }
 
@@ -220,10 +247,11 @@ void XE::CoreFramework::Startup()
 	{
 		if( !service->Startup())
 		{
-			XE_LOG(LoggerLevel::Error, "startup %1 error!", service->GetMetaClass()->GetFullName());
+			XE_LOG( LoggerLevel::Error, "startup %1 error!", service->GetMetaClass()->GetFullName() );
 			
-			service->Clearup();
-			service = nullptr;
+			_p->_Exit = true;
+
+			return;
 		}
 	}
 }

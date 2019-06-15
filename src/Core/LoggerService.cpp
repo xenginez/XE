@@ -38,15 +38,25 @@ void XE::LoggerService::Log( LoggerLevel level, const String& file, XE::uint64 l
 {
 	LoggerPtr log = XE::make_object<Logger>();
 
-	log->Level = level;
 	log->File = file;
 	log->Line = line;
 	log->Text = text;
-
+	log->Level = level;
+	log->Time = std::chrono::system_clock::now();
+	
 	if( _p->_Listeners.empty() )
 	{
-		std::cout << "[" << EnumID<LoggerLevel>::Get()->FindName( static_cast< int64 >( level ) ) << "] File: " << file << " : " << line << std::endl;
-		std::cout << "\t" << text << std::endl;
+		std::cout 
+			<< "[" << EnumID<LoggerLevel>::Get()->FindName( static_cast< int64 >( level ) )
+			<< "]\t"
+			<< std::to_string( log->Time )
+			<< " "
+			<< file
+			<< " : "
+			<< line
+			<<  "\n\t"
+			<< text
+			<< std::endl;
 	}
 
 	for ( auto var : _p->_Listeners )
@@ -62,11 +72,9 @@ XE::uint64 XE::LoggerService::RegisterListener( ListenerType listener )
 {
 	std::lock_guard<std::mutex> lock( _p->_Lock );
 
-	XE::uint64 i = _p->_Listeners.size();
-
 	_p->_Listeners.push_back( listener );
 
-	return i;
+	return _p->_Listeners.size() - 1;
 }
 
 void XE::LoggerService::UnregisterListener( XE::uint64 index )

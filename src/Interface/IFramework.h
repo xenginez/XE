@@ -26,12 +26,9 @@ public:
 	static IFrameworkPtr GetCurrentFramework();
 
 public:
-	virtual int Exec() = 0;
-
-public:
 	template< typename T > T GetService() const
 	{
-		return SP_CAST<T>( GetService( ClassID< typename T::element_type >::Get() ) );
+		return SP_CAST< typename T::element_type >( GetService( ClassID< typename T::element_type >::Get() ) );
 	}
 
 public:
@@ -63,11 +60,11 @@ public:
 
 	virtual ILocalizationServicePtr GetLocalizationService() const = 0;
 
-	virtual IServicePtr GetService( IMetaClassPtr val ) const = 0;
+	virtual IServicePtr GetService( const IMetaClassPtr & val ) const = 0;
 
-	virtual bool RegisterService( IMetaClassPtr val ) = 0;
+	virtual bool RegisterService( const IMetaClassPtr & val ) = 0;
 
-	virtual void UnregisterService( IMetaClassPtr val ) = 0;
+	virtual void UnregisterService( const IMetaClassPtr & val ) = 0;
 
 public:
 	virtual Language GetSystemLanguage() const = 0;

@@ -184,7 +184,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 /// DEBUG
 
-#if defined(_DEBUG) || defined(NDEBUG)
+#if defined(DEBUG) || defined(_DEBUG)
 #undef DEBUG
 #define DEBUG
 #endif // DEBUG
