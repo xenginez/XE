@@ -37,16 +37,16 @@ XE::PluginService::~PluginService()
 
 bool XE::PluginService::Startup()
 {
-	String paths = GetFramework()->GetConfigService()->GetString( "plugins" );
+	String paths = GetFramework()->GetConfigService()->GetString( "System.Plugins" );
 
-	std::vector<std::string> path_list = StringUtils::Split( paths, ",|, " );
+	std::vector<std::string> path_list = StringUtils::Split( paths, "," );
 
 	Array < std::filesystem::path > list;
 	IteratorDirectory( list, GetFramework()->GetPluginPath() );
 
 	for( const auto & p : list )
 	{
-		auto it = std::find( path_list.begin(), path_list.end(), p.string() );
+		auto it = std::find( path_list.begin(), path_list.end(), p.filename() );
 
 		if( it != path_list.end() )
 		{

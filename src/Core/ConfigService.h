@@ -11,6 +11,11 @@
 
 #include "Type.h"
 
+namespace pugi
+{
+	class xml_node_iterator;
+}
+
 BEG_XE_NAMESPACE
 
 class CORE_API ConfigService : public IConfigService
@@ -36,6 +41,9 @@ protected:
 	String GetValue( const String& key ) const override;
 
 	void SetValue( const String& key, const String& val ) const override;
+
+private:
+	void Load( const pugi::xml_node_iterator & parent, const std::string & parent_name );
 
 private:
 	Private * _p;

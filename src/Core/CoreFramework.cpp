@@ -60,15 +60,6 @@ int XE::CoreFramework::Exec()
 	
 	Clearup();
 
-#ifdef DEBUG
-#if PLATFORM_OS == OS_WINDOWS
-	system( "pause" );
-#else
-	printf( "please press enter to continue ..." );
-	getchar();
-#endif // PLATFORM_OS == OS_WINDOWS
-#endif // DEBUG
-
 	return 0;
 }
 

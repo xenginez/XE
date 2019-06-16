@@ -26,18 +26,18 @@ XE::ConfigService::~ConfigService()
 bool XE::ConfigService::Startup()
 {
 	auto path = GetFramework()->GetUserDataPath() / "config.xml";
+
+	std::cout << path.string() << std::endl;
 	
 	pugi::xml_document doc;
 	if( doc.load_file(path.string().c_str()).status == pugi::status_ok )
 	{
-		auto node = doc.select_node("items");
-		auto set = node.node().select_nodes("item");
-		for( auto it : set )
+		for( auto it = doc.begin(); it != doc.end(); ++it )
 		{
-			String key = it.node().attribute("name").value();
-			String val = it.node().attribute("value").value();
-			
-			_p->Values.insert({ key, val });
+			for( auto it2 = it->begin(); it2 != it->end(); ++it2 )
+			{
+				Load( it2, it->name() );
+			}
 		}
 
 		return true;
@@ -57,16 +57,25 @@ void XE::ConfigService::Clearup()
 	
 	pugi::xml_document doc;
 	
-	auto node = doc.append_child("items");
 	for( const auto &it : _p->Values )
 	{
-		auto item = node.append_child("item");
-		
-		item.append_attribute("name").set_value(it.first.ToCString());
-		item.append_attribute("value").set_value(it.first.ToCString());
+		std::vector<std::string> path_list = StringUtils::Split( it.first, "." );
+
+		if( !path_list.empty() )
+		{
+			pugi::xml_node node = doc.child( path_list[0].c_str() );
+			for( int i = 1; i < path_list.size(); ++i )
+			{
+				node = node.child( path_list[i].c_str() );
+			}
+
+			node.append_attribute( "value" ).set_value( it.second.ToCString() );
+		}
 	}
 	
 	doc.save_file(path.string().c_str());
+
+	_p->Values.clear();
 }
 
 String XE::ConfigService::GetValue( const String &key ) const
@@ -84,4 +93,20 @@ String XE::ConfigService::GetValue( const String &key ) const
 void XE::ConfigService::SetValue( const String &key, const String &val ) const
 {
 	_p->Values[key] = val;
+}
+
+void XE::ConfigService::Load( const pugi::xml_node_iterator & parent, const std::string & parent_name )
+{
+	std::string this_name = parent_name + "." + parent->name();
+
+	auto attr = parent->attribute( "value" );
+	if( !attr.empty() )
+	{
+		_p->Values.insert( { this_name, attr.value() } );
+	}
+
+	for( auto it = parent->begin(); it != parent->end(); ++it )
+	{
+		Load( it, this_name );
+	}
 }
