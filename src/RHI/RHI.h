@@ -13,6 +13,8 @@
 
 #include "GFX.h"
 #include "Image.h"
+#include "Camera.h"
+
 #include "Fence.h"
 #include "Sampler.h"
 #include "Uniform.h"

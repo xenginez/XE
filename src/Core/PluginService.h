@@ -33,12 +33,12 @@ public:
 	void Clearup() override;
 
 public:
-	void RegisterPlugin( const std::filesystem::path &val ) override;
+	void RegisterPlugin( const String & name ) override;
 	
-	void UnregisterPlugin( const String &val ) override;
+	void UnregisterPlugin( const String & name ) override;
 
 private:
-	void IteratorDirectory( Array < std::filesystem::path >& list, const std::filesystem::path &val ) const;
+	XE::uint64 LoadPlugin( const String & name );
 
 private:
 	Private * _p;

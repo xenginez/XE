@@ -14,7 +14,10 @@ struct XEPPluginInfo
 	typedef void( *UnregisterInvoke )( IPlugin * );
 
 	XE::uint64 LibHandle;
+
 	IPlugin * Plugin;
+	std::filesystem::path Path;
+
 	RegisterInvoke Register;
 	UnregisterInvoke Unregister;
 };
@@ -39,19 +42,11 @@ bool XE::PluginService::Startup()
 {
 	String paths = GetFramework()->GetConfigService()->GetString( "System.Plugins" );
 
-	std::vector<std::string> path_list = StringUtils::Split( paths, "," );
+	std::vector<std::string> plugin_names = StringUtils::Split( paths, "," );
 
-	Array < std::filesystem::path > list;
-	IteratorDirectory( list, GetFramework()->GetPluginPath() );
-
-	for( const auto & p : list )
+	for( const auto & name : plugin_names )
 	{
-		auto it = std::find( path_list.begin(), path_list.end(), p.filename() );
-
-		if( it != path_list.end() )
-		{
-			RegisterPlugin( p );
-		}
+		RegisterPlugin( name );
 	}
 
 	return true;
@@ -59,10 +54,7 @@ bool XE::PluginService::Startup()
 
 void XE::PluginService::Update()
 {
-	for( auto & p : _p->_Plugins )
-	{
-		p.second.Plugin->Update();
-	}
+
 }
 
 void XE::PluginService::Clearup()
@@ -76,12 +68,17 @@ void XE::PluginService::Clearup()
 	_p->_Plugins.clear();
 }
 
-void XE::PluginService::RegisterPlugin( const std::filesystem::path & val )
+void XE::PluginService::RegisterPlugin( const String & name )
 {
-	XE::uint64 handle = Library::Open( val.string() );
+	if( _p->_Plugins.find( name ) != _p->_Plugins.end() )
+	{
+		return;
+	}
+
+	XE::uint64 handle = LoadPlugin( name );
 	if( handle == 0 )
 	{
-		XE_LOG( LoggerLevel::Error, "{%0} Plugin Load Error!", val );
+		XE_LOG( LoggerLevel::Error, "%1 plugin load error!", name );
 		return;
 	}
 
@@ -93,37 +90,37 @@ void XE::PluginService::RegisterPlugin( const std::filesystem::path & val )
 
 	info.Plugin->Startup();
 
-	_p->_Plugins.insert( std::make_pair( info.Plugin->GetName(), info ) );
+	_p->_Plugins.insert( std::make_pair( name, info ) );
 }
 
-void XE::PluginService::UnregisterPlugin( const String & val )
+void XE::PluginService::UnregisterPlugin( const String & name )
 {
-	auto it = _p->_Plugins.find( val );
+	auto it = _p->_Plugins.find( name );
 
 	if( it != _p->_Plugins.end() )
 	{
 		it->second.Plugin->Clearup();
 		it->second.Unregister( it->second.Plugin );
+		Library::Close( it->second.LibHandle );
+
 		_p->_Plugins.erase( it );
 	}
 }
 
-void XE::PluginService::IteratorDirectory( Array < std::filesystem::path > & list, const std::filesystem::path & val ) const
+XE::uint64 XE::PluginService::LoadPlugin( const String & name )
 {
-	if( std::filesystem::exists( val ) )
+	auto path = GetFramework()->GetPluginPath();
+
+	for( std::filesystem::recursive_directory_iterator it( path ), end; it != end; ++it )
 	{
-		std::filesystem::directory_iterator item_begin( val );
-		std::filesystem::directory_iterator item_end;
-		for( ; item_begin != item_end; item_begin++ )
+		if( !std::filesystem::is_directory( *it ) )
 		{
-			if( std::filesystem::is_directory( *item_begin ) )
+			if( it->path().stem().string() == name.ToStdString() )
 			{
-				IteratorDirectory( list, item_begin->path() );
-			}
-			else
-			{
-				list.push_back( item_begin->path() );
+				return Library::Open( it->path().string() );
 			}
 		}
 	}
+
+	return 0;
 }

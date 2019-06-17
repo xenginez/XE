@@ -26,8 +26,6 @@ public:
 public:
 	virtual void Startup() = 0;
 
-	virtual void Update() = 0;
-
 	virtual void Clearup() = 0;
 
 protected:
@@ -47,9 +45,9 @@ public:
 	~IPluginService() override;
 
 public:
-	virtual void RegisterPlugin( const std::filesystem::path& val ) = 0;
+	virtual void RegisterPlugin( const String& name ) = 0;
 
-	virtual void UnregisterPlugin( const String& val ) = 0;
+	virtual void UnregisterPlugin( const String& name ) = 0;
 
 };
 

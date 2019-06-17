@@ -56,6 +56,7 @@ struct XEPMainThread
 	void Handler()
 	{
 		tbb::concurrent_priority_queue<XEPTask> * Tasks = _CurrentTasks == 0 ? &_FrontTasks : &_BackTasks;
+
 		_CurrentTasks = ( _CurrentTasks + 1 ) % 2;
 
 		XEPTask task;
@@ -70,11 +71,11 @@ struct XEPMainThread
 
 	void PushTask( XEPTask && val )
 	{
-		_CurrentTasks == 1 ? _BackTasks.push( val ) : _FrontTasks.push( val );
+		_CurrentTasks == 0 ? _FrontTasks.push( val ) : _BackTasks.push( val );
 	}
 
 	TID _Tid;
-	std::atomic_size_t _CurrentTasks;
+	XE::uint64 _CurrentTasks;
 	tbb::concurrent_priority_queue<XEPTask> _FrontTasks;
 	tbb::concurrent_priority_queue<XEPTask> _BackTasks;
 };

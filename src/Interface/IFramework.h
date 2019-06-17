@@ -67,6 +67,10 @@ public:
 	virtual void UnregisterService( const IMetaClassPtr & val ) = 0;
 
 public:
+	virtual void Exit() = 0;
+
+	virtual bool IsExit() const = 0;
+
 	virtual Language GetSystemLanguage() const = 0;
 	
 	virtual std::filesystem::path GetPluginPath() const = 0;

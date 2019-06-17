@@ -64,6 +64,10 @@ public:
 	void UnregisterService( const IMetaClassPtr & val ) override;
 
 public:
+	void Exit() override;
+
+	bool IsExit() const override;
+
 	Language GetSystemLanguage() const override;
 	
 	std::filesystem::path GetPluginPath() const override;

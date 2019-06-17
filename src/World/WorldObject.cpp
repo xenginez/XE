@@ -45,7 +45,7 @@ XE::GameObjectPtr XE::WorldObject::AddGameObject()
 
 	GameObjectPtr p = XE::make_shared<GameObject>();
 
-	p->_Name = "GameObject_" + StringUtils::Format( "%0", p->_Handle.GetValue() );
+	p->_Name = "GameObject_" + std::to_string( p->_Handle.GetValue() );
 	p->_Handle = HandleTable++;
 	p->_World = XE_THIS( WorldObject );
 	p->SetFramework( GetFramework() );
