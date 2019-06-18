@@ -48,10 +48,9 @@ template<> struct std::less<XEPFrameEvent>
 
 struct EventService::Private
 {
-	using MapType = tbb::concurrent_hash_map<XE::uint64, tbb::concurrent_vector< IEventService::ListenerType>>;
+	using ListenerMap = tbb::concurrent_hash_map<XE::uint64, tbb::concurrent_vector<IEventService::ListenerType>>;
 
-	MapType _Maps;
-
+	ListenerMap _Listeners;
 	tbb::concurrent_priority_queue<XEPTimeEvent> _TimeEvents;
 	tbb::concurrent_priority_queue<XEPFrameEvent> _FrameEvents;
 };
@@ -81,17 +80,17 @@ void XE::EventService::Update()
 
 void XE::EventService::Clearup()
 {
-	_p->_Maps.clear();
+	_p->_Listeners.clear();
 	_p->_TimeEvents.clear();
 	_p->_FrameEvents.clear();
 }
 
 void XE::EventService::PostEvent( EventPtr val )
 {
-	Private::MapType::accessor it;
-	if ( _p->_Maps.find( it, val->id ) )
+	Private::ListenerMap::accessor accessor;
+	if ( _p->_Listeners.find( accessor, val->id ) )
 	{
-		for ( auto var : it->second )
+		for ( auto var : accessor->second )
 		{
 			if ( var )
 			{
@@ -108,6 +107,11 @@ void XE::EventService::PostEvent( EventPtr val )
 
 void XE::EventService::PostEvent( XE::uint64 frame, EventPtr val )
 {
+	if( frame == 0 )
+	{
+		PostEvent( val );
+	}
+
 	XEPFrameEvent evt;
 	evt._Event = val;
 	evt._Frame = frame;
@@ -118,6 +122,11 @@ void XE::EventService::PostEvent( XE::uint64 frame, EventPtr val )
 
 void XE::EventService::PostEvent( XE::float32 dt, EventPtr val )
 {
+	if( dt <= Mathf::Epsilon )
+	{
+		PostEvent( val );
+	}
+
 	XEPTimeEvent evt;
 	evt._Event = val;
 	evt._Duration = dt;
@@ -128,19 +137,18 @@ void XE::EventService::PostEvent( XE::float32 dt, EventPtr val )
 
 XE::uint64 XE::EventService::RegisterListener( XE::uint32 event, ListenerType listener )
 {
-	Private::MapType::accessor it;
+	Private::ListenerMap::accessor accessor;
 
-	if ( _p->_Maps.find( it, event ) )
+	if ( _p->_Listeners.find( accessor, event ) )
 	{
-		auto i = it->second.size();
-		it->second.push_back( listener );
-		return i;
+		accessor->second.push_back( listener );
+		return accessor->second.size() - 1;
 	}
 
-	if ( _p->_Maps.insert( it, event ) )
+	if ( _p->_Listeners.insert( accessor, event ) )
 	{
-		it->second.push_back( nullptr );
-		it->second.push_back( listener );
+		accessor->second.push_back( nullptr );
+		accessor->second.push_back( listener );
 		return 1;
 	}
 
@@ -149,43 +157,28 @@ XE::uint64 XE::EventService::RegisterListener( XE::uint32 event, ListenerType li
 
 void XE::EventService::UnregisterListener( XE::uint32 event, XE::uint64 index )
 {
-	Private::MapType::accessor it;
+	Private::ListenerMap::accessor accessor;
 
-	if ( _p->_Maps.find( it, event ) )
+	if ( _p->_Listeners.find( accessor, event ) )
 	{
-		it->second[index] = nullptr;
+		accessor->second[index] = nullptr;
 	}
 }
 
 void XE::EventService::ProcessTimeEvent()
 {
-	auto now_time = GetFramework()->GetTimerService()->GetTime();
+	XE::float32 NowTime = GetFramework()->GetTimerService()->GetTime();
 
-	XEPTimeEvent tevt;
-	while ( _p->_TimeEvents.try_pop( tevt ) )
+	XEPTimeEvent event;
+	while ( _p->_TimeEvents.try_pop( event ) )
 	{
-		if ( ( now_time - tevt._StartTime ) >= tevt._Duration )
+		if ( ( NowTime - event._StartTime ) >= event._Duration )
 		{
-			Private::MapType::accessor it;
-			if ( _p->_Maps.find( it, tevt._Event->id ) )
-			{
-				for ( auto var : it->second )
-				{
-					if ( var )
-					{
-						var( tevt._Event );
-
-						if ( tevt._Event->ignore )
-						{
-							return;
-						}
-					}
-				}
-			}
+			PostEvent( event._Event );
 		}
 		else
 		{
-			_p->_TimeEvents.push( tevt );
+			_p->_TimeEvents.push( event );
 			break;
 		}
 	}
@@ -195,31 +188,16 @@ void XE::EventService::ProcessFrameEvent()
 {
 	XE::uint64 FrameCount = GetFramework()->GetTimerService()->GetFrameCount();
 
-	XEPFrameEvent fevt;
-	while ( _p->_FrameEvents.try_pop( fevt ) )
+	XEPFrameEvent event;
+	while ( _p->_FrameEvents.try_pop( event ) )
 	{
-		if ( ( FrameCount - fevt._StartFrame ) >= fevt._Frame )
+		if ( ( FrameCount - event._StartFrame ) >= event._Frame )
 		{
-			Private::MapType::accessor it;
-			if ( _p->_Maps.find( it, fevt._Event->id ) )
-			{
-				for ( auto var : it->second )
-				{
-					if ( var )
-					{
-						var( fevt._Event );
-
-						if ( fevt._Event->ignore )
-						{
-							return;
-						}
-					}
-				}
-			}
+			PostEvent( event._Event );
 		}
 		else
 		{
-			_p->_FrameEvents.push( fevt );
+			_p->_FrameEvents.push( event );
 			break;
 		}
 	}
