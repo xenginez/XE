@@ -27,8 +27,6 @@ bool XE::ConfigService::Startup()
 {
 	auto path = GetFramework()->GetUserDataPath() / "config.xml";
 
-	std::cout << path.string() << std::endl;
-	
 	pugi::xml_document doc;
 	if( doc.load_file(path.string().c_str()).status == pugi::status_ok )
 	{

@@ -63,6 +63,7 @@ void XE::PluginService::Clearup()
 	{
 		p.second.Plugin->Clearup();
 		p.second.Unregister( p.second.Plugin );
+		Library::Close( p.second.LibHandle );
 	}
 
 	_p->_Plugins.clear();

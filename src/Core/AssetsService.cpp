@@ -4,7 +4,7 @@
 
 USING_XE
 
-BEG_META(AssetsService)
+BEG_META( AssetsService )
 END_META()
 
 class XEPAsset
@@ -16,13 +16,13 @@ public:
 	Array < String > Dependent;
 };
 
-DECL_META_CLASS(CORE_API, XEPAsset);
+DECL_META_CLASS( CORE_API, XEPAsset );
 
-BEG_META(XEPAsset)
-		type->Property("Name", &XEPAsset::Name);
-		type->Property("Beg", &XEPAsset::Beg);
-		type->Property("End", &XEPAsset::End);
-		type->Property("Dependent", &XEPAsset::Dependent);
+BEG_META( XEPAsset )
+type->Property( "Name", &XEPAsset::Name );
+type->Property( "Beg", &XEPAsset::Beg );
+type->Property( "End", &XEPAsset::End );
+type->Property( "Dependent", &XEPAsset::Dependent );
 END_META()
 
 
@@ -39,7 +39,7 @@ struct AssetsService::Private
 
 
 XE::AssetsService::AssetsService()
-		:_p(new Private)
+	:_p( new Private )
 {
 
 }
@@ -51,37 +51,37 @@ XE::AssetsService::~AssetsService()
 
 bool XE::AssetsService::Startup()
 {
-	std::ifstream ifs(( GetFramework()->GetAssetsPath() / "directory" ).string(), std::ios::binary);
-	if( ifs.is_open())
+	std::ifstream ifs( ( GetFramework()->GetAssetsPath() / "directory" ).string(), std::ios::binary );
+	if( ifs.is_open() )
 	{
-		ArchiveLoad Load(ifs);
-		
+		ArchiveLoad Load( ifs );
+
 		Load & _p->_Directorys;
 	}
-	
+
 	return true;
 }
 
 void XE::AssetsService::Update()
 {
-	if( auto threadService = GetFramework()->GetThreadService())
+	if( auto threadService = GetFramework()->GetThreadService() )
 	{
 		for( auto it : _p->_Erase )
 		{
-			threadService->RegisterTask(std::bind(&AssetsService::UnloadAsset, this, it), GetFramework()->GetThreadService()->GetIOThread());
+			threadService->RegisterTask( std::bind( &AssetsService::UnloadAsset, this, it ), GetFramework()->GetThreadService()->GetIOThread() );
 		}
 	}
 	_p->_Erase.clear();
-	
+
 	auto time = GetFramework()->GetTimerService()->GetTime();
-	
+
 	for( auto it = _p->_Assets.begin(); it != _p->_Assets.end(); ++it )
 	{
-		if( ObjectPtr asset = std::get < 1 >(it->second))
+		if( ObjectPtr asset = std::get < 1 >( it->second ) )
 		{
-			if( asset.use_count() == 1 && (( time - std::get < 2 >(it->second)) > AssetCacheTime ))
+			if( asset.use_count() == 1 && ( ( time - std::get < 2 >( it->second ) ) > AssetCacheTime ) )
 			{
-				_p->_Erase.push_back(it->first);
+				_p->_Erase.push_back( it->first );
 			}
 		}
 	}
@@ -94,89 +94,89 @@ void XE::AssetsService::Clearup()
 	_p->_Directorys.clear();
 }
 
-XE::Prefab XE::AssetsService::Load( const String &val )
+XE::Prefab XE::AssetsService::Load( const String & val )
 {
-	auto obj = GetAsset(val);
+	auto obj = GetAsset( val );
 	if( obj == nullptr )
 	{
-		_p->_Assets.insert(std::make_pair(val, std::make_tuple(AssetStatus::Loading, nullptr, GetFramework()->GetTimerService()->GetTime())));
-		LoadAsset(val);
+		_p->_Assets.insert( std::make_pair( val, std::make_tuple( AssetStatus::Loading, nullptr, GetFramework()->GetTimerService()->GetTime() ) ) );
+		LoadAsset( val );
 	}
-	
-	return CreatePrefab(val);
+
+	return CreatePrefab( val );
 }
 
-XE::Prefab XE::AssetsService::AsynLoad( const String &val )
+XE::Prefab XE::AssetsService::AsynLoad( const String & val )
 {
-	auto obj = GetAsset(val);
+	auto obj = GetAsset( val );
 	if( obj == nullptr )
 	{
-		GetFramework()->GetThreadService()->RegisterTask(std::bind(&AssetsService::LoadAsset, this, val), GetFramework()->GetThreadService()->GetIOThread());
-		_p->_Assets.insert(std::make_pair(val, std::make_tuple(AssetStatus::Loading, nullptr, GetFramework()->GetTimerService()->GetTime())));
+		GetFramework()->GetThreadService()->RegisterTask( std::bind( &AssetsService::LoadAsset, this, val ), GetFramework()->GetThreadService()->GetIOThread() );
+		_p->_Assets.insert( std::make_pair( val, std::make_tuple( AssetStatus::Loading, nullptr, GetFramework()->GetTimerService()->GetTime() ) ) );
 	}
-	
-	return CreatePrefab(val);
+
+	return CreatePrefab( val );
 }
 
-void XE::AssetsService::Unload( const String &val )
+void XE::AssetsService::Unload( const String & val )
 {
-	GetFramework()->GetThreadService()->RegisterTask(std::bind(&AssetsService::UnloadAsset, this, val), GetFramework()->GetThreadService()->GetIOThread());
+	GetFramework()->GetThreadService()->RegisterTask( std::bind( &AssetsService::UnloadAsset, this, val ), GetFramework()->GetThreadService()->GetIOThread() );
 }
 
-XE::ObjectPtr XE::AssetsService::GetAsset( const String &val ) const
+XE::ObjectPtr XE::AssetsService::GetAsset( const String & val ) const
 {
 	AssetMap::accessor it;
-	if( _p->_Assets.find(it, val))
+	if( _p->_Assets.find( it, val ) )
 	{
-		std::get < 2 >(it->second) = GetFramework()->GetTimerService()->GetTime();
-		return std::get < 1 >(it->second);
+		std::get < 2 >( it->second ) = GetFramework()->GetTimerService()->GetTime();
+		return std::get < 1 >( it->second );
 	}
-	
+
 	return nullptr;
 }
 
-XE::AssetStatus XE::AssetsService::GetAssetStatus( const String &val ) const
+XE::AssetStatus XE::AssetsService::GetAssetStatus( const String & val ) const
 {
 	AssetMap::accessor it;
-	if( _p->_Assets.find(it, val))
+	if( _p->_Assets.find( it, val ) )
 	{
-		return std::get < 0 >(it->second);
+		return std::get < 0 >( it->second );
 	}
-	
+
 	return AssetStatus::Undefined;
 }
 
-void XE::AssetsService::LoadAsset( const String &val )
+void XE::AssetsService::LoadAsset( const String & val )
 {
 	{
-		auto it = _p->_Directorys.find(val);
-		if( it != _p->_Directorys.end())
+		auto it = _p->_Directorys.find( val );
+		if( it != _p->_Directorys.end() )
 		{
-			for( const auto &dep : it->second.Dependent )
+			for( const auto & dep : it->second.Dependent )
 			{
-				LoadAsset(dep);
+				LoadAsset( dep );
 			}
 		}
 	}
-	
+
 	// TODO: Load Current Asset
-	
+
 	{
 		AssetMap::accessor it;
-		if( _p->_Assets.find(it, val))
+		if( _p->_Assets.find( it, val ) )
 		{
-			std::get < 0 >(it->second) = AssetStatus::Ready;
-			std::get < 1 >(it->second) = nullptr;
-			std::get < 2 >(it->second) = GetFramework()->GetTimerService()->GetTime();
+			std::get < 0 >( it->second ) = AssetStatus::Ready;
+			std::get < 1 >( it->second ) = nullptr;
+			std::get < 2 >( it->second ) = GetFramework()->GetTimerService()->GetTime();
 		}
 	}
 }
 
-void XE::AssetsService::UnloadAsset( const String &val )
+void XE::AssetsService::UnloadAsset( const String & val )
 {
 	AssetMap::accessor it;
-	if( _p->_Assets.find(it, val))
+	if( _p->_Assets.find( it, val ) )
 	{
-		_p->_Assets.erase(it);
+		_p->_Assets.erase( it );
 	}
 }

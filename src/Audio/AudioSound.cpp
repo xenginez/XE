@@ -111,7 +111,7 @@ XE::int32 XE::AudioSound::GetFormat()
 			format = AL_FORMAT_STEREO16;
 			break;
 		default:
-			XE_LOG( LoggerLevel::Error, "Uunsupported bytes per sample count : %1", _BytesPerSample );
+			XE_LOG( LoggerLevel::Error, "unsupported bytes per sample count : %1", _BytesPerSample );
 			break;
 		}
 	}

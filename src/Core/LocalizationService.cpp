@@ -59,7 +59,7 @@ void XE::LocalizationService::SetCurrentLanguage( Language val )
 {
 	_p->_Language = val;
 
-	GetFramework()->GetConfigService()->SetString( "Language", EnumID<Language>::Get()->FindName( (XE::int64)_p->_Language ) );
+	GetFramework()->GetConfigService()->SetString( "System.Language", EnumID<Language>::Get()->FindName( (XE::int64)_p->_Language ) );
 
 	UpdateLocalized();
 }
@@ -78,9 +78,9 @@ XE::String XE::LocalizationService::LocalizedString( const String& val ) const
 
 void LocalizationService::UpdateLocalized()
 {
-	String path = (GetFramework()->GetUserDataPath() / "language.csv").string();
+	std::string path = (GetFramework()->GetUserDataPath() / "language.csv").string();
 
-	std::ifstream ifs( path.ToStdString() );
+	std::ifstream ifs( path );
 
 	std::string buf( 2048, 0 );
 
