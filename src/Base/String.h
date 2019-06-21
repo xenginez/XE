@@ -157,7 +157,7 @@ public:
 	String SubString( XE::uint64 offset = 0, XE::uint64 count = npos ) const;
 
 private:
-	std::shared_ptr<const std::string> _String;
+	const std::string * _String;
 };
 
 END_XE_NAMESPACE

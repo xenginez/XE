@@ -2,75 +2,57 @@
 #include "Singleton.hpp"
 #include "StringUtils.h"
 
-#include <tbb/concurrent_hash_map.h>
+#include <tbb/concurrent_unordered_set.h>
 
 USING_XE
 
-class StringPool : public Singleton<StringPool>
+class ConstStringPool : public Singleton<ConstStringPool>
 {
-	friend Singleton<StringPool>;
+public:
+	ConstStringPool()
+	{
+		_Strings.insert( "" );
+		_Strings.insert( "1" );
+		_Strings.insert( "2" );
+		_Strings.insert( "3" );
+		_Strings.insert( "4" );
+		_Strings.insert( "5" );
+		_Strings.insert( "6" );
+		_Strings.insert( "7" );
+		_Strings.insert( "8" );
+		_Strings.insert( "9" );
+		_Strings.insert( "0" );
+	}
 
-	using StringPtr = std::shared_ptr<std::string>;
+	~ConstStringPool()
+	{
+	}
 
 public:
-	typedef tbb::concurrent_hash_map<XE::uint64, StringPtr> hash_map;
-
-private:
-	StringPool()
+	static const std::string * Register( const std::string& val )
 	{
-		XE::uint64 hash_code = Hash( "" );
-		Strings.insert( std::make_pair( hash_code, std::make_shared<std::string>( "" ) ) );
-	}
+		tbb::concurrent_unordered_set<std::string>::const_iterator it = This()->_Strings.find( val );
 
-	~StringPool()
-	{
-	}
-
-public:
-	static StringPtr Register( const std::string& val )
-	{
-		XE::uint64 hash_code = This()->Hash( val );
-
-		hash_map::accessor it;
-
-		if ( This()->Strings.find( it, hash_code ) )
+		if( it != This()->_Strings.end() )
 		{
-			return it->second;
+			return &( *it );
 		}
 
-		This()->Strings.insert( it, std::make_pair( hash_code, std::make_shared<std::string>( val ) ) );
-		return it->second;
-	}
-
-	static void Unregister( const std::shared_ptr< const std::string >& val )
-	{
-		XE_ASSERT( val != nullptr );
-
-		XE::uint64 hash_code = This()->Hash( *val );
-
-		hash_map::accessor it;
-		if ( This()->Strings.find( it, hash_code ) )
-		{
-			if ( it->second.use_count() == 2 )
-			{
-				This()->Strings.erase( it );
-			}
-		}
+		return &( *This()->_Strings.insert( val ).first );
 	}
 
 private:
-	hash_map Strings;
-	std::hash<std::string> Hash;
+	tbb::concurrent_unordered_set<std::string> _Strings;
 };
 
 String::String()
-	:_String( StringPool::Register( "" ) )
+	:_String( ConstStringPool::Register( "" ) )
 {
 
 }
 
 String::String( const char * val )
-	: _String( StringPool::Register( val ) )
+	: _String( ConstStringPool::Register( val ) )
 {
 
 }
@@ -82,17 +64,14 @@ String::String( const String& val )
 }
 
 String::String( const std::string& val )
-	: _String( StringPool::Register( val ) )
+	: _String( ConstStringPool::Register( val ) )
 {
 
 }
 
 String::~String()
 {
-	if ( _String )
-	{
-		StringPool::Unregister( _String );
-	}
+
 }
 
 String& String::operator+=( const std::string& val )
@@ -104,11 +83,6 @@ String& String::operator+=( const std::string& val )
 
 String& String::operator=( const String& val )
 {
-	if ( _String )
-	{
-		StringPool::Unregister( _String );
-	}
-
 	_String = val._String;
 
 	return *this;
@@ -380,12 +354,7 @@ String& String::FromStdString( const std::string& val )
 
 void String::Clear()
 {
-	if ( *_String != "" )
-	{
-		StringPool::Unregister( _String );
-
-		_String = StringPool::Register( "" );
-	}
+	_String = ConstStringPool::Register( "" );
 }
 
 bool XE::String::Empty() const
