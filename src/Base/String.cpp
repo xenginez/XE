@@ -1,5 +1,6 @@
 #include "String.h"
 #include "Singleton.hpp"
+#include "StringUtils.h"
 
 #include <tbb/concurrent_hash_map.h>
 
@@ -63,7 +64,7 @@ private:
 };
 
 String::String()
-	:_String(StringPool::Register(""))
+	:_String( StringPool::Register( "" ) )
 {
 
 }
@@ -179,7 +180,7 @@ String& String::operator+=( XE::int8 val )
 
 String& String::operator+=( bool val )
 {
-	return (*this += (val ? "true" : "false"));
+	return *this += std::to_string( val );
 }
 
 String String::operator+( const std::string& val ) const
@@ -249,7 +250,7 @@ String String::operator+( XE::int8 val ) const
 
 String String::operator+( bool val ) const
 {
-	return (ToStdString() + (val ? "true" : "false"));
+	return ToStdString() + std::to_string( val );
 }
 
 bool String::operator!=( const char * val ) const
@@ -289,7 +290,7 @@ bool String::operator>=( const char * val ) const
 
 bool String::operator>=( const String& val ) const
 {
-	return _String >= val._String;
+	return ( *_String ) >= ( *val._String );
 }
 
 bool String::operator>=( const std::string& val ) const
@@ -304,7 +305,7 @@ bool String::operator<=( const char * val ) const
 
 bool String::operator<=( const String& val ) const
 {
-	return _String <= val._String;
+	return ( *_String ) <= ( *val._String );
 }
 
 bool String::operator<=( const std::string& val ) const
@@ -319,7 +320,7 @@ bool String::operator>( const char * val ) const
 
 bool String::operator>( const String& val ) const
 {
-	return _String > val._String;
+	return ( *_String ) > ( *val._String );
 }
 
 bool String::operator>( const std::string& val ) const
@@ -334,7 +335,7 @@ bool String::operator<( const char * val ) const
 
 bool String::operator<( const String& val ) const
 {
-	return _String < val._String;
+	return ( *_String ) < ( *val._String );
 }
 
 bool String::operator<( const std::string& val ) const
@@ -344,7 +345,7 @@ bool String::operator<( const std::string& val ) const
 
 char String::operator[]( XE::uint64 val ) const
 {
-	return _String->at( val );
+	return ( *_String )[val];
 }
 
 String::operator const char *( ) const
@@ -382,14 +383,24 @@ void String::Clear()
 	if ( *_String != "" )
 	{
 		StringPool::Unregister( _String );
-	}
 
-	_String = StringPool::Register( "" );
+		_String = StringPool::Register( "" );
+	}
+}
+
+bool XE::String::Empty() const
+{
+	return _String->empty();
 }
 
 XE::uint64 String::Size() const
 {
 	return _String->size();
+}
+
+XE::uint64 XE::String::Count() const
+{
+	return StringUtils::UTF8CharacterCount( ToStdString() );
 }
 
 XE::uint64 String::Find( const String& val ) const
@@ -410,57 +421,57 @@ String String::SubString( XE::uint64 offset /*= 0*/, XE::uint64 count /*= npos *
 
 String operator+( bool val1, const String& val2 )
 {
-	return String() + val1 + val2;
+	return std::to_string( val1 ) + val2.ToStdString();
 }
 
 String operator+( XE::int8 val1, const String& val2 )
 {
-	return String() + val1 + val2;
+	return std::to_string( val1 ) + val2.ToStdString();
 }
 
 String operator+( XE::int16 val1, const String& val2 )
 {
-	return String() + val1 + val2;
+	return std::to_string( val1 ) + val2.ToStdString();
 }
 
 String operator+( XE::int32 val1, const String& val2 )
 {
-	return String() + val1 + val2;
+	return std::to_string( val1 ) + val2.ToStdString();
 }
 
 String operator+( XE::int64 val1, const String& val2 )
 {
-	return String() + val1 + val2;
+	return std::to_string( val1 ) + val2.ToStdString();
 }
 
 String operator+( XE::uint8 val1, const String& val2 )
 {
-	return String() + val1 + val2;
+	return std::to_string( val1 ) + val2.ToStdString();
 }
 
 String operator+( XE::uint16 val1, const String& val2 )
 {
-	return String() + val1 + val2;
+	return std::to_string( val1 ) + val2.ToStdString();
 }
 
 String operator+( XE::uint32 val1, const String& val2 )
 {
-	return String() + val1 + val2;
+	return std::to_string( val1 ) + val2.ToStdString();
 }
 
 String operator+( XE::uint64 val1, const String& val2 )
 {
-	return String() + val1 + val2;
+	return std::to_string( val1 ) + val2.ToStdString();
 }
 
 String operator+( XE::float32 val1, const String& val2 )
 {
-	return String() + val1 + val2;
+	return std::to_string( val1 ) + val2.ToStdString();
 }
 
 String operator+( XE::float64 val1, const String& val2 )
 {
-	return String() + val1 + val2;
+	return std::to_string( val1 ) + val2.ToStdString();
 }
 
 String operator+( const char * val1, const String& val2 )

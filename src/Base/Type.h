@@ -51,6 +51,11 @@ namespace std
 
 	template< typename T > inline constexpr bool is_shared_ptr_v = is_shared_ptr<T>::value;
 
+	inline std::string to_string( bool _Val )
+	{
+		return _Val ? "true" : "false";
+	}
+
 	inline std::string to_string( char _Val )
 	{
 		std::string s;

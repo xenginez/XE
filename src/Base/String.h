@@ -143,8 +143,13 @@ public:
 	void Clear();
 
 public:
+	bool Empty() const;
+
 	XE::uint64 Size() const;
 
+	XE::uint64 Count() const;
+
+public:
 	XE::uint64 Find( const String& val )const;
 
 	bool Contains( const String& val ) const;

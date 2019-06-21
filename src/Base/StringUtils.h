@@ -16,7 +16,21 @@ BEG_XE_NAMESPACE
 class BASE_API StringUtils
 {
 public:
-	static std::vector<std::string> Split( const std::string& src, const std::string& sep );
+	static std::string UTF16ToUTF8( const std::wstring & val );
+
+	static std::wstring UTF8ToUTF16( const std::string & val );
+
+	static std::string UTF16ToGBK( const std::wstring & val );
+
+	static std::wstring GBKToUTF16( const std::string & val );
+
+	static std::string UTF8ToGBK( const std::string & val );
+
+	static std::string GBKToUTF8( const std::string & val );
+
+	static XE::uint64 UTF8CharacterCount( const std::string & val );
+
+	static std::vector<std::string> Split( const std::string & src, const std::string & sep );
 
 public:
 	static const std::string& Format( const std::string& fmt )
