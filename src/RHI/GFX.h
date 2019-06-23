@@ -110,7 +110,7 @@ public:
 	
 	virtual UniformHandle CreateUniform( const String &val ) = 0;
 
-	virtual TextureHandle CreateTexture(XE::float32 width, XE::uint16 mips, XE::uint16 players, TextureFormat format) = 0;
+	virtual TextureHandle CreateTexture(XE::real width, XE::uint16 mips, XE::uint16 players, TextureFormat format) = 0;
 
 	virtual TextureHandle CreateTexture2D(const Vec2& size, XE::uint16 mips, XE::uint16 players, TextureFormat format) = 0;
 

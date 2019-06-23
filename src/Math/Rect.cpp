@@ -21,13 +21,13 @@ XE::Rect::Rect( const Rect& val )
 
 }
 
-XE::Rect::Rect( const Vec2& min, const Vec2& max )
-	: x( min.x ), y( min.y ), width( max.x - min.x ), height( max.y - min.y )
+XE::Rect::Rect( const Vec2& center, const Vec2& size )
+	: x( center.x - size.x * 0.5f ), y( center.y - size.y * 0.5f ), width( size.x ), height( size.y )
 {
 
 }
 
-XE::Rect::Rect( XE::float32 x, XE::float32 y, XE::float32 w, XE::float32 h )
+XE::Rect::Rect( XE::real x, XE::real y, XE::real w, XE::real h )
 	: x( x ), y( y ), width( w ), height( h )
 {
 
@@ -52,42 +52,55 @@ bool XE::Rect::operator!=( const Rect& val ) const
 	return x != val.x || y != val.y || width != val.width || height != val.height;
 }
 
-bool XE::Rect::contains( const Vec2& val ) const
+Vec2 XE::Rect::GetMin() const
 {
-	if ( val.x >= x && val.x <= ( x + width ) )
-	{
-		if ( val.y >= y && val.y <= ( y + height ) )
-		{
-			return true;
-		}
-	}
-
-	return false;
+	return { x, y };
 }
 
-bool XE::Rect::overlaps( const Rect& val ) const
+Vec2 XE::Rect::GetMax() const
 {
-	XE::float32 otherRight = val.x + val.width;
-	XE::float32 myRight = x + width;
-
-	XE::float32 otherBottom = val.y + val.height;
-	XE::float32 myBottom = y + height;
-
-	if ( x < otherRight && myRight > val.x && y < otherBottom && myBottom > val.y )
-	{
-		return true;
-	}
-
-	return false;
+	return{ x + width, y + height };
 }
 
-void XE::Rect::clip( const Rect& val )
+Vec2 XE::Rect::GetSize() const
 {
-	XE::float32 newLeft = Mathf::Max( x, val.x );
-	XE::float32 newTop = Mathf::Max( y, val.y );
+	return { width, height };
+}
 
-	XE::float32 newRight = Mathf::Min( x + width, val.x + val.width );
-	XE::float32 newBottom = Mathf::Min( y + height, val.y + val.height );
+Vec2 XE::Rect::GetCenter() const
+{
+	return { x + width * 0.5f, y + height * 0.5f };
+}
+
+bool XE::Rect::Contains( const Vec2& val ) const
+{
+	return ( val.x > x && val.x < ( x + width ) &&
+			 val.y > y && val.y < ( y + height ) );
+}
+
+bool XE::Rect::Contains( const Rect & val ) const
+{
+	return ( val.x > x && val.width < width &&
+			 val.y > y && val.height < height );
+}
+
+bool XE::Rect::Intersects( const Rect& val ) const
+{
+	XE::real minx = Mathf::Max( x, val.x );
+	XE::real miny = Mathf::Max( y, val.y );
+	XE::real maxx = Mathf::Min( x + width, val.x + val.width );
+	XE::real maxy = Mathf::Min( y + height, val.y + val.height );
+
+	return !( minx > maxx || miny > maxy );
+}
+
+void XE::Rect::Clip( const Rect& val )
+{
+	XE::real newLeft = Mathf::Max( x, val.x );
+	XE::real newTop = Mathf::Max( y, val.y );
+
+	XE::real newRight = Mathf::Min( x + width, val.x + val.width );
+	XE::real newBottom = Mathf::Min( y + height, val.y + val.height );
 
 	x = newLeft;
 	y = newTop;
@@ -95,12 +108,12 @@ void XE::Rect::clip( const Rect& val )
 	height = newBottom - newTop;
 }
 
-void XE::Rect::encapsulate( const Rect& val )
+void XE::Rect::Encapsulate( const Rect& val )
 {
-	XE::float32 myRight = x + width;
-	XE::float32 myBottom = y + height;
-	XE::float32 otherRight = val.x + val.width;
-	XE::float32 otherBottom = val.y + val.height;
+	XE::real myRight = x + width;
+	XE::real myBottom = y + height;
+	XE::real otherRight = val.x + val.width;
+	XE::real otherBottom = val.y + val.height;
 
 	if ( val.x < x )
 		x = val.x;
@@ -130,10 +143,10 @@ void XE::Rect::Transform( const Mat4& val )
 	for ( XE::uint32 i = 0; i < 4; i++ )
 		verts[i] = val * verts[i];
 
-	XE::float32 minX = std::numeric_limits<XE::float32>::max();
-	XE::float32 maxX = std::numeric_limits<XE::float32>::min();
-	XE::float32 minY = std::numeric_limits<XE::float32>::max();
-	XE::float32 maxY = std::numeric_limits<XE::float32>::min();
+	XE::real minX = std::numeric_limits<XE::real>::max();
+	XE::real maxX = std::numeric_limits<XE::real>::min();
+	XE::real minY = std::numeric_limits<XE::real>::max();
+	XE::real maxY = std::numeric_limits<XE::real>::min();
 
 	for ( XE::uint32 i = 0; i < 4; i++ )
 	{

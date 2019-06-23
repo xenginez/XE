@@ -38,7 +38,7 @@ void XE::StateMachine::Startup()
 	_States[_Current.GetValue()]->Startup();
 }
 
-void XE::StateMachine::Update( XE::float32 dt )
+void XE::StateMachine::Update( XE::real dt )
 {
 	StatePtr s = _States[_Current.GetValue()];
 

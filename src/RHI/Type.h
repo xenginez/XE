@@ -205,7 +205,7 @@ enum class LayoutFormat
 	UINT32,
 	UINT64,
 	FLOAT16,
-	FLOAT32,
+	real,
 	FLOAT64,
 	VEC2,
 	VEC3,

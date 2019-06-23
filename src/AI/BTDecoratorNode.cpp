@@ -42,7 +42,7 @@ void XE::BTDecoratorNode::OnStartup()
 	}
 }
 
-void XE::BTDecoratorNode::OnUpdate( XE::float32 dt )
+void XE::BTDecoratorNode::OnUpdate( XE::real dt )
 {
 	Super::OnUpdate( dt );
 
@@ -89,7 +89,7 @@ void XE::BTRepeatNode::OnStartup()
 	Super::OnStartup();
 }
 
-void XE::BTRepeatNode::OnUpdate( XE::float32 dt )
+void XE::BTRepeatNode::OnUpdate( XE::real dt )
 {
 	Super::OnUpdate( dt );
 
@@ -150,7 +150,7 @@ void XE::BTSuccessNode::OnStartup()
 	}
 }
 
-void XE::BTSuccessNode::OnUpdate( XE::float32 dt )
+void XE::BTSuccessNode::OnUpdate( XE::real dt )
 {
 	Super::OnUpdate( dt );
 
@@ -193,7 +193,7 @@ void XE::BTFailureNode::OnStartup()
 	}
 }
 
-void XE::BTFailureNode::OnUpdate( XE::float32 dt )
+void XE::BTFailureNode::OnUpdate( XE::real dt )
 {
 	Super::OnUpdate( dt );
 
@@ -238,7 +238,7 @@ void XE::BTReversedNode::OnStartup()
 	}
 }
 
-void XE::BTReversedNode::OnUpdate( XE::float32 dt )
+void XE::BTReversedNode::OnUpdate( XE::real dt )
 {
 	Super::OnUpdate( dt );
 
@@ -279,7 +279,7 @@ void XE::BTDelayNode::OnStartup()
 	SetStatus( NodeStatus::Running );
 }
 
-void XE::BTDelayNode::OnUpdate( XE::float32 dt )
+void XE::BTDelayNode::OnUpdate( XE::real dt )
 {
 	Super::OnUpdate( dt );
 

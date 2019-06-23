@@ -157,7 +157,7 @@ void XE::GameObject::Startup()
 	}
 }
 
-void XE::GameObject::Update( XE::float32 dt )
+void XE::GameObject::Update( XE::real dt )
 {
 	if ( _Enabled == false )
 	{
@@ -206,7 +206,7 @@ void XE::GameObject::OnStartup()
 
 }
 
-void XE::GameObject::OnUpdate( XE::float32 dt )
+void XE::GameObject::OnUpdate( XE::real dt )
 {
 
 }

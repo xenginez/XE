@@ -47,7 +47,7 @@ public:
 protected:
 	virtual void OnStartup() override;
 
-	virtual void OnUpdate( XE::float32 dt ) override;
+	virtual void OnUpdate( XE::real dt ) override;
 
 private:
 	XE::uint64 _Current;
@@ -65,7 +65,7 @@ public:
 protected:
 	virtual void OnStartup() override;
 
-	virtual void OnUpdate( XE::float32 dt ) override;
+	virtual void OnUpdate( XE::real dt ) override;
 
 private:
 	XE::uint64 _Current;
@@ -81,7 +81,7 @@ public:
 	~BTParallelNode();
 
 protected:
-	virtual void OnUpdate( XE::float32 dt ) override;
+	virtual void OnUpdate( XE::real dt ) override;
 
 };
 

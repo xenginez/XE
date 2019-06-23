@@ -33,20 +33,20 @@ public:
 	virtual XE::uint64 GetFrameCount() const = 0;
 
 public:
-	virtual XE::float32 GetTimeScale() const = 0;
+	virtual XE::real GetTimeScale() const = 0;
 
-	virtual void SetTimeScale( XE::float32 val ) = 0;
+	virtual void SetTimeScale( XE::real val ) = 0;
 
 public:
-	virtual XE::float32 GetTime() const = 0;
+	virtual XE::real GetTime() const = 0;
 
-	virtual XE::float32 GetDeltaTime() const = 0;
+	virtual XE::real GetDeltaTime() const = 0;
 
-	virtual XE::float32 GetFixedDeltaTime() const = 0;
+	virtual XE::real GetFixedDeltaTime() const = 0;
 
-	virtual XE::float32 GetUnscaleDeltaTime() const = 0;
+	virtual XE::real GetUnscaleDeltaTime() const = 0;
 
-	virtual XE::float32 GetUnscaleFixedDeltaTime() const = 0;
+	virtual XE::real GetUnscaleFixedDeltaTime() const = 0;
 
 };
 

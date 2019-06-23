@@ -30,7 +30,7 @@ public:
 public:
 	Line();
 
-	Line( const Ray& ray, XE::float32 distance );
+	Line( const Ray& ray, XE::real distance );
 
 	Line( const Vec3& start, const Vec3& end );
 
@@ -47,7 +47,7 @@ public:
 public:
 	Ray GetRay() const;
 
-	XE::float32 GetDistance() const;
+	XE::real GetDistance() const;
 
 	Vec3 GetDirection() const;
 
@@ -64,7 +64,7 @@ public:
 
 	bool Intersect( const Frustum& val ) const;
 
-	std::pair<bool, XE::float32> Intersect( const Ray& ray, bool discardInside = true ) const;
+	std::pair<bool, XE::real> Intersect( const Ray& ray, bool discardInside = true ) const;
 
 };
 DECL_META_CLASS( MATH_API, Line );

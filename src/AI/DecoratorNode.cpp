@@ -42,7 +42,7 @@ void XE::DecoratorNode::OnStartup()
 	}
 }
 
-void XE::DecoratorNode::OnUpdate( XE::float32 dt )
+void XE::DecoratorNode::OnUpdate( XE::real dt )
 {
 	Super::OnUpdate( dt );
 
@@ -89,7 +89,7 @@ void XE::RepeatNode::OnStartup()
 	Super::OnStartup();
 }
 
-void XE::RepeatNode::OnUpdate( XE::float32 dt )
+void XE::RepeatNode::OnUpdate( XE::real dt )
 {
 	Super::OnUpdate( dt );
 
@@ -150,7 +150,7 @@ void XE::SuccessNode::OnStartup()
 	}
 }
 
-void XE::SuccessNode::OnUpdate( XE::float32 dt )
+void XE::SuccessNode::OnUpdate( XE::real dt )
 {
 	Super::OnUpdate( dt );
 
@@ -193,7 +193,7 @@ void XE::FailureNode::OnStartup()
 	}
 }
 
-void XE::FailureNode::OnUpdate( XE::float32 dt )
+void XE::FailureNode::OnUpdate( XE::real dt )
 {
 	Super::OnUpdate( dt );
 
@@ -238,7 +238,7 @@ void XE::ReversedNode::OnStartup()
 	}
 }
 
-void XE::ReversedNode::OnUpdate( XE::float32 dt )
+void XE::ReversedNode::OnUpdate( XE::real dt )
 {
 	Super::OnUpdate( dt );
 
@@ -279,7 +279,7 @@ void XE::DelayNode::OnStartup()
 	SetStatus( NodeStatus::Running );
 }
 
-void XE::DelayNode::OnUpdate( XE::float32 dt )
+void XE::DelayNode::OnUpdate( XE::real dt )
 {
 	Super::OnUpdate( dt );
 

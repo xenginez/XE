@@ -107,7 +107,7 @@ String& String::operator+=( XE::float64 val )
 	return *this += std::to_string( val );
 }
 
-String& String::operator+=( XE::float32 val )
+String& String::operator+=( XE::real val )
 {
 	return *this += std::to_string( val );
 }
@@ -177,7 +177,7 @@ String String::operator+( XE::float64 val ) const
 	return ToStdString() + std::to_string( val );
 }
 
-String String::operator+( XE::float32 val ) const
+String String::operator+( XE::real val ) const
 {
 	return ToStdString() + std::to_string( val );
 }
@@ -433,7 +433,7 @@ String operator+( XE::uint64 val1, const String& val2 )
 	return std::to_string( val1 ) + val2.ToStdString();
 }
 
-String operator+( XE::float32 val1, const String& val2 )
+String operator+( XE::real val1, const String& val2 )
 {
 	return std::to_string( val1 ) + val2.ToStdString();
 }

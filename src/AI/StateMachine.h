@@ -25,7 +25,7 @@ public:
 public:
 	virtual void Startup() override;
 
-	virtual void Update( XE::float32 dt ) override;
+	virtual void Update( XE::real dt ) override;
 
 	virtual void Clearup() override;
 

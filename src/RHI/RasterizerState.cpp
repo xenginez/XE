@@ -85,22 +85,22 @@ void XE::RasterizerState::SetDepthBias(XE::int32 val)
 	_DepthBias = val;
 }
 
-XE::float32 XE::RasterizerState::GetDepthBiasClamp() const
+XE::real XE::RasterizerState::GetDepthBiasClamp() const
 {
 	return _DepthBiasClamp;
 }
 
-void XE::RasterizerState::SetDepthBiasClamp(XE::float32 val)
+void XE::RasterizerState::SetDepthBiasClamp(XE::real val)
 {
 	_DepthBiasClamp = val;
 }
 
-XE::float32 XE::RasterizerState::GetSlopeSacleDepthBias() const
+XE::real XE::RasterizerState::GetSlopeSacleDepthBias() const
 {
 	return _SlopeSacleDepthBias;
 }
 
-void XE::RasterizerState::SetSlopeSacleDepthBias(XE::float32 val)
+void XE::RasterizerState::SetSlopeSacleDepthBias(XE::real val)
 {
 	_SlopeSacleDepthBias = val;
 }

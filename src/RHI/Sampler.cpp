@@ -75,12 +75,12 @@ void Sampler::setAddressW( SamplerAddressType val )
 	_AddressW = val;
 }
 
-XE::float32 Sampler::getMipLodBias() const
+XE::real Sampler::getMipLodBias() const
 {
 	return _MipLODBias;
 }
 
-void Sampler::setMipLodBias( XE::float32 val )
+void Sampler::setMipLodBias( XE::real val )
 {
 	_MipLODBias = val;
 }
@@ -105,27 +105,27 @@ void Sampler::setComparisonFunc( CompareType val )
 	_ComparisonFunc = val;
 }
 
-const XE::float32 * Sampler::getBorderColor() const
+const XE::real * Sampler::getBorderColor() const
 {
 	return _BorderColor;
 }
 
-XE::float32 Sampler::getMinLOD() const
+XE::real Sampler::getMinLOD() const
 {
 	return _MinLOD;
 }
 
-void Sampler::setMinLOD( XE::float32 val )
+void Sampler::setMinLOD( XE::real val )
 {
 	_MinLOD = val;
 }
 
-XE::float32 Sampler::getMaxLOD() const
+XE::real Sampler::getMaxLOD() const
 {
 	return _MaxLOD;
 }
 
-void Sampler::setMaxLOD( XE::float32 val )
+void Sampler::setMaxLOD( XE::real val )
 {
 	_MaxLOD = val;
 }

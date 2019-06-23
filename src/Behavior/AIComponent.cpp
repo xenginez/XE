@@ -28,7 +28,7 @@ void XE::AIComponent::OnStartup()
 	}
 }
 
-void XE::AIComponent::OnUpdate( XE::float32 dt )
+void XE::AIComponent::OnUpdate( XE::real dt )
 {
 	Super::OnUpdate( dt );
 

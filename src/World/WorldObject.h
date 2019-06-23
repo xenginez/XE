@@ -48,7 +48,7 @@ public:
 protected:
 	void Startup();
 
-	void Update( XE::float32 dt );
+	void Update( XE::real dt );
 
 	void Clearup();
 

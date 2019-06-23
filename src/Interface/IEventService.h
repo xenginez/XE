@@ -46,7 +46,7 @@ public:
 
 	virtual void PostEvent( XE::uint64 frame, EventPtr val ) = 0;
 
-	virtual void PostEvent( XE::float32 dt, EventPtr val ) = 0;
+	virtual void PostEvent( XE::real dt, EventPtr val ) = 0;
 
 public:
 	virtual XE::uint64 RegisterListener( XE::uint32 event, ListenerType listener ) = 0;

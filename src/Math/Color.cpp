@@ -218,7 +218,7 @@ XE::FColor::FColor( const FColor &val )
 
 }
 
-XE::FColor::FColor( XE::float32 r, XE::float32 g, XE::float32 b, XE::float32 a /*= 1.0f */ )
+XE::FColor::FColor( XE::real r, XE::real g, XE::real b, XE::real a /*= 1.0f */ )
 		:r(r), g(g), b(b), a(a)
 {
 
@@ -242,21 +242,21 @@ void XE::FColor::SetHex( XE::uint32 val )
 	a = XE::uint8(( val & 0x000000FF ) >> 0) / 255.0f;
 }
 
-FColor FColor::Lerp( const FColor &val1, const FColor &val2, XE::float32 val )
+FColor FColor::Lerp( const FColor &val1, const FColor &val2, XE::real val )
 {
 	return val1 * ( 1.0f - val ) + val2 * val;
 }
 
 bool FColor::operator !=( const FColor &val ) const
 {
-	return ( Mathf::Abs(r - val.r) > std::numeric_limits<XE::float32>::epsilon() ) && ( Mathf::Abs(g - val.g) > std::numeric_limits<XE::float32>::epsilon() ) &&
-		   ( Mathf::Abs(b - val.b) > std::numeric_limits<XE::float32>::epsilon() ) && ( Mathf::Abs(a - val.a) > std::numeric_limits<XE::float32>::epsilon() );
+	return ( Mathf::Abs(r - val.r) > std::numeric_limits<XE::real>::epsilon() ) && ( Mathf::Abs(g - val.g) > std::numeric_limits<XE::real>::epsilon() ) &&
+		   ( Mathf::Abs(b - val.b) > std::numeric_limits<XE::real>::epsilon() ) && ( Mathf::Abs(a - val.a) > std::numeric_limits<XE::real>::epsilon() );
 }
 
 bool FColor::operator ==( const FColor &val ) const
 {
-	return ( Mathf::Abs(r - val.r) <= std::numeric_limits<XE::float32>::epsilon() ) && ( Mathf::Abs(g - val.g) <= std::numeric_limits<XE::float32>::epsilon() ) &&
-		   ( Mathf::Abs(b - val.b) <= std::numeric_limits<XE::float32>::epsilon() ) && ( Mathf::Abs(a - val.a) <= std::numeric_limits<XE::float32>::epsilon() );
+	return ( Mathf::Abs(r - val.r) <= std::numeric_limits<XE::real>::epsilon() ) && ( Mathf::Abs(g - val.g) <= std::numeric_limits<XE::real>::epsilon() ) &&
+		   ( Mathf::Abs(b - val.b) <= std::numeric_limits<XE::real>::epsilon() ) && ( Mathf::Abs(a - val.a) <= std::numeric_limits<XE::real>::epsilon() );
 }
 
 FColor FColor::operator *( const FColor &val ) const
@@ -264,7 +264,7 @@ FColor FColor::operator *( const FColor &val ) const
 	return FColor(r * val.r, g * val.g, b * val.b, a * val.a);
 }
 
-FColor FColor::operator *( XE::float32 val ) const
+FColor FColor::operator *( XE::real val ) const
 {
 	return *this * FColor(val, val, val, val);
 }
@@ -291,7 +291,7 @@ FColor &FColor::operator *=( const FColor &val )
 	return *this;
 }
 
-FColor &FColor::operator *=( XE::float32 val )
+FColor &FColor::operator *=( XE::real val )
 {
 	r *= val;
 	g *= val;
@@ -331,7 +331,7 @@ FColor &FColor::operator =( const FColor &val )
 	return *this;
 }
 
-XE::FColor operator *( XE::float32 a, const FColor &b )
+XE::FColor operator *( XE::real a, const FColor &b )
 {
 	return b * a;
 }

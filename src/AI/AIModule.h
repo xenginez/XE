@@ -25,7 +25,7 @@ public:
 public:
 	virtual void Startup() = 0;
 
-	virtual void Update( XE::float32 dt ) = 0;
+	virtual void Update( XE::real dt ) = 0;
 
 	virtual void Clearup() = 0;
 

@@ -36,22 +36,22 @@ void XE::AudioSourceComponent::SetLoop( bool val )
 	_Loop = val;
 }
 
-XE::float32 XE::AudioSourceComponent::GetVolume() const
+XE::real XE::AudioSourceComponent::GetVolume() const
 {
 	return _Volume;
 }
 
-void XE::AudioSourceComponent::SetVolume( XE::float32 val )
+void XE::AudioSourceComponent::SetVolume( XE::real val )
 {
 	_Volume = val;
 }
 
-XE::float32 XE::AudioSourceComponent::GetPitch() const
+XE::real XE::AudioSourceComponent::GetPitch() const
 {
 	return _Pitch;
 }
 
-void XE::AudioSourceComponent::SetPitch( XE::float32 val )
+void XE::AudioSourceComponent::SetPitch( XE::real val )
 {
 	_Pitch = val;
 }
@@ -127,7 +127,7 @@ void XE::AudioSourceComponent::OnStartup()
 	}
 }
 
-void XE::AudioSourceComponent::OnUpdate( XE::float32 dt )
+void XE::AudioSourceComponent::OnUpdate( XE::real dt )
 {
 	Super::OnUpdate( dt );
 

@@ -15,42 +15,42 @@ XE::Viewport::~Viewport()
 
 }
 
-XE::float32 XE::Viewport::GetX() const
+XE::real XE::Viewport::GetX() const
 {
 	return _Rect.x;
 }
 
-void XE::Viewport::SetX( XE::float32 val )
+void XE::Viewport::SetX( XE::real val )
 {
 	_Rect.x = val;
 }
 
-XE::float32 XE::Viewport::GetY() const
+XE::real XE::Viewport::GetY() const
 {
 	return _Rect.y;
 }
 
-void XE::Viewport::SetY( XE::float32 val )
+void XE::Viewport::SetY( XE::real val )
 {
 	_Rect.y = val;
 }
 
-XE::float32 XE::Viewport::GetWidth() const
+XE::real XE::Viewport::GetWidth() const
 {
 	return _Rect.width;
 }
 
-void XE::Viewport::SetWidth( XE::float32 val )
+void XE::Viewport::SetWidth( XE::real val )
 {
 	_Rect.width = val;
 }
 
-XE::float32 XE::Viewport::GetHeight() const
+XE::real XE::Viewport::GetHeight() const
 {
 	return _Rect.height;
 }
 
-void XE::Viewport::SetHeight( XE::float32 val )
+void XE::Viewport::SetHeight( XE::real val )
 {
 	_Rect.height = val;
 }

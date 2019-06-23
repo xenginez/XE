@@ -29,13 +29,13 @@ public:
 
 	void SetLoop( bool val );
 
-	XE::float32 GetVolume() const;
+	XE::real GetVolume() const;
 
-	void SetVolume( XE::float32 val );
+	void SetVolume( XE::real val );
 
-	XE::float32 GetPitch() const;
+	XE::real GetPitch() const;
 
-	void SetPitch( XE::float32 val );
+	void SetPitch( XE::real val );
 
 	const String& GetSound() const;
 
@@ -57,7 +57,7 @@ public:
 protected:
 	virtual void OnStartup() override;
 
-	virtual void OnUpdate( XE::float32 dt ) override;
+	virtual void OnUpdate( XE::real dt ) override;
 
 	virtual void OnClearup() override;
 
@@ -65,13 +65,13 @@ private:
 	bool _Play = true;
 	bool _Pause = false;
 	bool _Loop = true;
-	XE::float32 _Volume = 1.0f;
-	XE::float32 _Pitch = 1.0f;
+	XE::real _Volume = 1.0f;
+	XE::real _Pitch = 1.0f;
 
 	String _SoundPath;
 	XE::uint32 _SourceHandle = 0;
 	AudioSoundPtr _Sound;
-	XE::float32 _SoundPlayDt = 0;
+	XE::real _SoundPlayDt = 0;
 };
 
 END_XE_NAMESPACE

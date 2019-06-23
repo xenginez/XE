@@ -51,13 +51,13 @@ public:
 
 	void SetDepthBias(XE::int32 val);
 
-	XE::float32 GetDepthBiasClamp() const;
+	XE::real GetDepthBiasClamp() const;
 
-	void SetDepthBiasClamp(XE::float32 val);
+	void SetDepthBiasClamp(XE::real val);
 
-	XE::float32 GetSlopeSacleDepthBias() const;
+	XE::real GetSlopeSacleDepthBias() const;
 
-	void SetSlopeSacleDepthBias(XE::float32 val);
+	void SetSlopeSacleDepthBias(XE::real val);
 
 private:
 	FillType _FillMode;
@@ -67,8 +67,8 @@ private:
 	bool _ScissorEnable;
 	bool _AntialiasedLineEnable;
 	XE::int32 _DepthBias;
-	XE::float32 _DepthBiasClamp;
-	XE::float32 _SlopeSacleDepthBias;
+	XE::real _DepthBiasClamp;
+	XE::real _SlopeSacleDepthBias;
 };
 
 END_XE_NAMESPACE

@@ -23,21 +23,21 @@ public:
 	~Viewport() override;
 
 public:
-	XE::float32 GetX() const;
+	XE::real GetX() const;
 	
-	void SetX(XE::float32 val);
+	void SetX(XE::real val);
 	
-	XE::float32 GetY() const;
+	XE::real GetY() const;
 	
-	void SetY(XE::float32 val);
+	void SetY(XE::real val);
 	
-	XE::float32 GetWidth() const;
+	XE::real GetWidth() const;
 	
-	void SetWidth(XE::float32 val);
+	void SetWidth(XE::real val);
 	
-	XE::float32 GetHeight() const;
+	XE::real GetHeight() const;
 	
-	void SetHeight(XE::float32 val);
+	void SetHeight(XE::real val);
 	
 	const Rect &GetRect() const;
 	

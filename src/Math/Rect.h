@@ -19,19 +19,19 @@ public:
 	static const Rect Zero;
 
 public:
-	XE::float32 x;
-	XE::float32 y;
-	XE::float32 width;
-	XE::float32 height;
+	XE::real x;
+	XE::real y;
+	XE::real width;
+	XE::real height;
 
 public:
 	Rect();
 
 	Rect( const Rect& val );
 
-	Rect( const Vec2& min, const Vec2& max );
+	Rect( const Vec2& center, const Vec2& size );
 
-	Rect( XE::float32 x, XE::float32 y, XE::float32 w, XE::float32 h );
+	Rect( XE::real x, XE::real y, XE::real w, XE::real h );
 
 public:
 	Rect& operator=( const Rect& val );
@@ -41,14 +41,25 @@ public:
 	bool operator !=( const Rect& val ) const;
 
 public:
-	bool contains( const Vec2& val ) const;
+	Vec2 GetMin() const;
 
-	bool overlaps( const Rect& val ) const;
+	Vec2 GetMax() const;
+
+	Vec2 GetSize() const;
+
+	Vec2 GetCenter() const;
 
 public:
-	void clip( const Rect& val );
+	bool Contains( const Vec2& val ) const;
 
-	void encapsulate( const Rect& val );
+	bool Contains( const Rect & val ) const;
+
+	bool Intersects( const Rect & val ) const;
+
+public:
+	void Clip( const Rect& val );
+
+	void Encapsulate( const Rect& val );
 
 public:
 	void Transform( const Mat4& val );

@@ -21,7 +21,7 @@ private:
 	struct Private;
 
 public:
-	static constexpr XE::float32 AssetCacheTime = 60.0f; // 1 minutes
+	static constexpr XE::real AssetCacheTime = 60.0f; // 1 minutes
 
 public:
 	AssetsService();

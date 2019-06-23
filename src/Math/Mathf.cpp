@@ -12,9 +12,9 @@ type->Property( "Infinity", &Mathf::Infinity );
 END_META()
 
 
-const XE::float32 Mathf::Pi = 3.141592f;
-const XE::float32 Mathf::Pi2 = 1.570796f;
-const XE::float32 Mathf::Pi4 = 0.7853981f;
-const XE::float32 Mathf::Nan = std::numeric_limits<XE::float32>::quiet_NaN();
-const XE::float32 Mathf::Epsilon = std::numeric_limits<XE::float32>::epsilon();
-const XE::float32 Mathf::Infinity = std::numeric_limits<XE::float32>::infinity();
+const XE::real Mathf::Pi = 3.141592f;
+const XE::real Mathf::Pi2 = 1.570796f;
+const XE::real Mathf::Pi4 = 0.7853981f;
+const XE::real Mathf::Nan = std::numeric_limits<XE::real>::quiet_NaN();
+const XE::real Mathf::Epsilon = std::numeric_limits<XE::real>::epsilon();
+const XE::real Mathf::Infinity = std::numeric_limits<XE::real>::infinity();

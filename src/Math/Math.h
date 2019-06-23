@@ -32,7 +32,4 @@
 #include "Sphere.h"
 #include "Frustum.h"
 
-#include "KDTree.hpp"
-#include "BSPTree.hpp"
-
 #endif // __MATH_H__84AFAF0A_10EA_491F_8BD6_28A8543AE1CF
