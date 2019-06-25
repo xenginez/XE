@@ -25,18 +25,6 @@ public:
 	}
 
 public:
-	virtual void Serialize( Archive * arc, Variant& val ) const override
-	{
-		T t = val.Value<T>();
-		arc->Serialize( &t, sizeof( T ) );
-
-		if (arc->GetType() == ArchiveType::LOAD)
-		{
-			val = t;
-		}
-	}
-
-public:
 	void Value( const String& Name, T val )
 	{
 		_RegisterValue( Name, (XE::int64)val );

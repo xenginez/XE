@@ -21,363 +21,202 @@ template< typename T > struct Serializable;
 class REFLECT_API Archive : public NonCopyable
 {
 public:
-	static constexpr XE::uint64 Version = ( ( (XE::uint64)1 ) << 48 ) | ( ( (XE::uint64)1 ) << 32 ) | ( ( (XE::uint64)1 ) << 16 ) | ( ( (XE::uint64)1 ) << 0 );
+	template< typename T > struct NVP
+	{
+		NVP( const std::string & name, T & val )
+			:Name( name ), Value( val )
+		{ }
+
+		std::string Name;
+		T & Value;
+	};
 
 protected:
-	Archive( ArchiveType val );
-
-	virtual ~Archive();
-
-public:
-	XE::uint64 GetVersion() const;
-
-	ArchiveType GetType() const;
+	struct NameValue
+	{
+		std::string Name;
+		XE::Variant Value;
+	};
 
 protected:
-	void SetVersion( XE::uint64 val );
+	Archive() = default;
+
+	virtual ~Archive() = default;
 
 public:
-	template< typename T > Archive& operator&( T &val )
+	template< typename T > Archive & operator&( T & val )
 	{
-		using type = typename TypeTraits<T>::raw_t;
+		NameValue nv;
 
-		auto p = &val;
-
-		if ( auto meta = TypeID<type>::Get( p ) )
+		if constexpr( std::is_enum_v<T> )
 		{
-			Variant v( p );
-			meta->Serialize( this, v );
+			nv.Value = val;
+			Serialize( nv );
+			val = nv.Value.Value<T>();
+		}
+		else
+		{
+			nv.Value = &val;
+			Serialize( nv );
+			val = nv.Value.Value<T &>();
 		}
 
 		return *this;
 	}
 
-	template< typename T > Archive& operator&( const T &val )
+	template< typename T > Archive & operator&( T *& val )
 	{
-		using type = typename TypeTraits<T>::raw_t;
+		NameValue nv;
 
-		auto p = &const_cast<T&>( val );
+		nv.Value = val;
 
-		if ( auto meta = TypeID<type>::Get( p ) )
+		Serialize( nv );
+
+		val = static_cast< T * >( nv.Value.Detach() );
+
+		return *this;
+	}
+
+	template< typename T > Archive & operator&( std::shared_ptr< T > & val )
+	{
+		NameValue nv;
+
+		nv.Value = val;
+
+		Serialize( nv );
+
+		val = SP_CAST<T>( nv.Value.DetachSharedPtr() );
+
+		return *this;
+	}
+
+	template< typename T > Archive & operator&( NVP< T > & val )
+	{
+		NameValue nv;
+
+		nv.Name = val.Name;
+
+		if constexpr( std::is_pointer_v<T> )
 		{
-			Variant v( p );
-			meta->Serialize( this, v );
+			nv.Value = val.Value;
+			Serialize( nv );
+			val.Value = static_cast< T * >( nv.Value.Detach() );
+		}
+		else if constexpr( std::is_shared_ptr_v<T> )
+		{
+			nv.Value = val.Value;
+			Serialize( nv );
+			val.Value = SP_CAST< typename T::element_type >( nv.Value.DetachSharedPtr() );
+		}
+		else
+		{
+			nv.Value = &val.Value;
+			Serialize( nv );
+			val.Value = nv.Value.Value<T &>();
 		}
 
 		return *this;
 	}
 
-	template< typename T > Archive& operator&( T * val )
-	{
-		using type = typename TypeTraits<T>::raw_t;
+protected:
+	virtual void Serialize( NameValue & val ) = 0;
 
-		auto p = val;
-
-		if ( auto meta = TypeID<type>::Get( p ) )
-		{
-			Variant v( p );
-			meta->Serialize( this, v );
-		}
-
-		return *this;
-	}
-
-	template< typename T > Archive& operator&( const T * val )
-	{
-		using type = typename TypeTraits<T>::raw_t;
-
-		auto p = const_cast<T*>( val );
-
-		if ( auto meta = TypeID<type>::Get( p ) )
-		{
-			Variant v( p );
-			meta->Serialize( this, v );
-		}
-
-		return *this;
-	}
-
-	template< typename T > Archive& operator&( const std::weak_ptr<T>& val )
-	{
-		using type = typename TypeTraits<T>::raw_t;
-
-		auto p = val.lock().get();
-
-		if ( auto meta = TypeID<type>::Get( p ) )
-		{
-			Variant v( p );
-			meta->Serialize( this, v );
-		}
-
-		return *this;
-	}
-
-	template< typename T > Archive& operator&( const std::shared_ptr<T>& val )
-	{
-		using type = typename TypeTraits<T>::raw_t;
-
-		auto p = val.get();
-
-		if ( auto meta = TypeID<type>::Get( p ) )
-		{
-			Variant v( p );
-			meta->Serialize( this, v );
-		}
-
-		return *this;
-	}
-
-public:
-	virtual void Serialize( bool * ptr ) = 0;
-
-	virtual void Serialize( XE::int8 * ptr ) = 0;
-
-	virtual void Serialize( XE::int16 * ptr ) = 0;
-
-	virtual void Serialize( XE::int32 * ptr ) = 0;
-
-	virtual void Serialize( XE::int64 * ptr ) = 0;
-
-	virtual void Serialize( XE::uint8 * ptr ) = 0;
-
-	virtual void Serialize( XE::uint16 * ptr ) = 0;
-
-	virtual void Serialize( XE::uint32 * ptr ) = 0;
-
-	virtual void Serialize( XE::uint64 * ptr ) = 0;
-
-	virtual void Serialize( XE::float32 * ptr ) = 0;
-
-	virtual void Serialize( XE::float64 * ptr ) = 0;
-
-	virtual void Serialize( void * ptr, XE::uint64 size ) = 0;
-
-private:
-	XE::uint64 _Version;
-	ArchiveType _Type;
 };
 
-class REFLECT_API ArchiveLoad : public Archive
+class REFLECT_API XmlLoadArchive : public Archive
 {
-public:
-	ArchiveLoad( std::istream& val );
-
-	~ArchiveLoad();
+	struct Private;
 
 public:
-	virtual void Serialize( bool * ptr ) override;
+	XmlLoadArchive( std::istream & val );
 
-	virtual void Serialize( XE::int8 * ptr ) override;
+	~XmlLoadArchive() override;
 
-	virtual void Serialize( XE::int16 * ptr ) override;
-
-	virtual void Serialize( XE::int32 * ptr ) override;
-
-	virtual void Serialize( XE::int64 * ptr ) override;
-
-	virtual void Serialize( XE::uint8 * ptr ) override;
-
-	virtual void Serialize( XE::uint16 * ptr ) override;
-
-	virtual void Serialize( XE::uint32 * ptr ) override;
-
-	virtual void Serialize( XE::uint64 * ptr ) override;
-
-	virtual void Serialize( XE::float32 * ptr ) override;
-
-	virtual void Serialize( XE::float64 * ptr ) override;
-
-	virtual void Serialize( void * ptr, XE::uint64 size ) override;
+protected:
+	void Serialize( NameValue & val ) override;
 
 private:
-	bool _IsConvert;
-	std::istream _Stream;
+	Private * _p;
 };
 
-class REFLECT_API ArchiveSave : public Archive
+class REFLECT_API XmlSaveArchive : public Archive
 {
+	struct Private;
 public:
-	ArchiveSave( std::ostream& val );
+	XmlSaveArchive();
 
-	~ArchiveSave();
+	~XmlSaveArchive() override;
 
 public:
-	virtual void Serialize( bool * ptr ) override;
+	void Save( std::ostream & val ) const;
 
-	virtual void Serialize( XE::int8 * ptr ) override;
-
-	virtual void Serialize( XE::int16 * ptr ) override;
-
-	virtual void Serialize( XE::int32 * ptr ) override;
-
-	virtual void Serialize( XE::int64 * ptr ) override;
-
-	virtual void Serialize( XE::uint8 * ptr ) override;
-
-	virtual void Serialize( XE::uint16 * ptr ) override;
-
-	virtual void Serialize( XE::uint32 * ptr ) override;
-
-	virtual void Serialize( XE::uint64 * ptr ) override;
-
-	virtual void Serialize( XE::float32 * ptr ) override;
-
-	virtual void Serialize( XE::float64 * ptr ) override;
-
-	virtual void Serialize( void * ptr, XE::uint64 size ) override;
+protected:
+	void Serialize( NameValue & val ) override;
 
 private:
-	std::ostream _Stream;
+	Private * _p;
 };
 
 
 template< typename T > struct Serializable
 {
 public:
-	template<typename U>
-	struct HasMemberLoad
+	template<typename U> struct HasMemberLoad
 	{
 	private:
-		template <typename Ty, void( Ty::* )( Archive& ) = &Ty::Load>
-		static constexpr auto check( Ty* ) { return true; };
+		template <typename Ty, void( Ty:: * )( Archive & ) = &Ty::Load>
+		static constexpr auto check( Ty * ) { return true; };
 
 		static constexpr bool check( ... ) { return false; };
 
 	public:
-		static constexpr bool value = check( static_cast<U*>( nullptr ) );
+		static constexpr bool value = check( static_cast< U * >( nullptr ) );
 	};
 
-	template<typename U>
-	struct HasMemberSave
+	template<typename U> struct HasMemberSave
 	{
-		template <typename Ty, void( Ty::* )( Archive& ) const = &Ty::Save>
-		static constexpr bool check( Ty* ) { return true; };
+		template <typename Ty, void( Ty:: * )( Archive & ) = &Ty::Save>
+		static constexpr bool check( Ty * ) { return true; };
 
 		static constexpr bool check( ... ) { return false; };
 
 	public:
-		static constexpr bool value = check( static_cast<U*>( nullptr ) );
+		static constexpr bool value = check( static_cast< U * >( nullptr ) );
+	};
+
+	template< typename U > struct HasMemberSerialize
+	{
+	private:
+		template <typename Ty, void( Ty:: * )( Archive & ) = &Ty::Serialize>
+		static constexpr auto check( Ty * ) { return true; };
+
+		static constexpr bool check( ... ) { return false; };
+
+	public:
+		static constexpr bool value = check( static_cast< U * >( nullptr ) );
 	};
 
 public:
-	static void Load( Archive& arc, T & val )
+	static void Serialize( Archive & arc, T * val )
 	{
-		using type = typename TypeTraits<T>::raw_t;
-
-		if constexpr (HasMemberLoad<type>::value)
+		if constexpr( HasMemberSerialize<T>::value )
 		{
-			val.Load( arc );
+			val->Serialize( arc );
 		}
 		else
 		{
-			if ( auto meta = ClassID<type>::Get( &val ) )
+			if( auto cls = ClassID<T>::Get( val ) )
 			{
-				meta->VisitProperty( [&] ( IMetaPropertyPtr prop )
-				{
-					if( !prop->IsConst() && !prop->IsStatic() )
-					{
-						Variant v( &val );
-						prop->Serialize( &arc, v );
-					}
-				} );
+				cls->VisitProperty( [&]( IMetaPropertyPtr prop )
+									{
+										if( !prop->IsConst() && !prop->IsStatic() )
+										{
+											Variant v = prop->Get( val );
+											arc & v;
+											prop->Set( val, v );
+										}
+									} );
 			}
-		}
-	}
-
-	static void Save( Archive& arc, T & val )
-	{
-		using type = typename TypeTraits<T>::raw_t;
-
-		if constexpr (HasMemberSave<type>::value)
-		{
-			val.Save( arc );
-		}
-		else
-		{
-			if ( auto meta = ClassID<type>::Get( &val ) )
-			{
-				meta->VisitProperty( [&] ( IMetaPropertyPtr prop )
-				{
-					if( !prop->IsConst() && !prop->IsStatic() )
-					{
-						Variant v( &val );
-						prop->Serialize( &arc, v );
-					}
-				} );
-			}
-		}
-	}
-};
-
-template<> struct Serializable<std::string>
-{
-	static void Load( Archive& arc, std::string & val )
-	{
-		XE::uint64 sz = 0;
-
-		arc.Serialize( &sz, sizeof( XE::uint64 ) );
-
-		val.resize( sz, 0 );
-
-		arc.Serialize( (void*)val.data(), sz );
-	}
-
-	static void Save( Archive& arc, std::string & val )
-	{
-		XE::uint64 sz = val.size();
-
-		arc.Serialize( &sz, sizeof( XE::uint64 ) );
-
-		arc.Serialize( (void*)val.data(), sz );
-	}
-};
-
-template<> struct Serializable<String>
-{
-	static void Load( Archive& arc, String & val )
-	{
-		std::string s = val.ToStdString();
-		Serializable<std::string>::Load( arc, s );
-		val = s;
-	}
-
-	static void Save( Archive& arc, String & val )
-	{
-		std::string s = val.ToStdString();
-		Serializable<std::string>::Load( arc, s );
-	}
-};
-
-template<> struct Serializable<Variant>
-{
-	static void Load( Archive& arc, Variant & val )
-	{
-		std::string meta_name;
-		Serializable<std::string>::Load( arc, meta_name );
-
-		XE::uint32 flag;
-		arc.Serialize( &flag, sizeof( XE::uint32 ) );
-
-		if ( IMetaTypePtr meta = GetReclectionType( meta_name ) )
-		{
-			Variant::UnionData d;
-			val = Variant( meta, d, flag );
-
-			meta->Serialize( &arc, val );
-		}
-	}
-
-	static void Save( Archive& arc, Variant & val )
-	{
-		std::string meta_name = val.GetMeta()->GetFullName().ToStdString();
-		Serializable<std::string>::Save( arc, meta_name );
-
-		XE::uint32 flag = val.GetFlag();
-		arc.Serialize( &flag, sizeof( XE::uint32 ) );
-
-		if ( auto e = SP_CAST<IMetaType>( val.GetMeta() ) )
-		{
-			e->Serialize( &arc, val );
 		}
 	}
 };

@@ -26,6 +26,12 @@ XE::Line::Line( const Vec3& start, const Vec3& end )
 
 }
 
+XE::Line::Line( const Line & val )
+	: start( val.start ), end( val.end )
+{
+
+}
+
 XE::Line::~Line()
 {
 

@@ -59,26 +59,7 @@ public:
 
 	virtual void Serialize( Archive * arc, Variant& val ) const override
 	{
-		if ( val.IsNull() )
-		{
-			if ( val.IsSharedPtr() )
-			{
-				val = SP_CAST<ClassType>( ConstructPtr() );
-			}
-			else
-			{
-				val = static_cast<ClassType*>( Construct() );
-			}
-		}
-
-		if ( arc->GetType() == ArchiveType::LOAD )
-		{
-			Serializable<ClassType>::Load( *arc, val.Value<ClassType&>() );
-		}
-		else
-		{
-			Serializable<ClassType>::Save( *arc, val.Value<ClassType&>() );
-		}
+		Serializable<ClassType>::Serialize( *arc, val.Value<ClassType *>() );
 	}
 
 public:
@@ -206,39 +187,6 @@ public:
 
 	virtual void Serialize( Archive * arc, Variant& val ) const override
 	{
-		ClassType t = val.Value<ClassType>();
-		arc->Serialize( &t );
-	}
-
-};
-
-template<> class CXXMetaFundamental<std::nullptr_t> : public IMetaClass
-{
-public:
-	CXXMetaFundamental( const String& Name )
-		:IMetaClass( Name, 0, false, false, nullptr, nullptr )
-	{
-	}
-
-public:
-	virtual void * Construct() const override
-	{
-		return nullptr;
-	}
-
-	virtual std::shared_ptr<void> ConstructPtr() const override
-	{
-		return nullptr;
-	}
-
-	virtual void Destruct( void * val ) const override
-	{
-
-	}
-
-	virtual void Serialize( Archive * arc, Variant& val ) const override
-	{
-
 	}
 
 };
@@ -338,6 +286,14 @@ template<> struct REFLECT_API ClassID< XE::uint32 >
 	{
 		static auto meta = XE::make_shared< CXXMetaFundamental<XE::uint32> >( "uint32" );
 		return meta;
+	}
+};
+
+template<> struct REFLECT_API ClassID< unsigned long >
+{
+	static IMetaClassPtr Get( const unsigned long * val = nullptr )
+	{
+		return ClassID< XE::uint32 >::Get();
 	}
 };
 

@@ -33,9 +33,7 @@ public:
 	virtual ObjectPtr Clone() const;
 
 public:
-	virtual void Load( Archive &val );
-
-	virtual void Save( Archive &val ) const;
+	virtual void Serialize( Archive &val );
 
 public:
 	String tr( const String& val ) const;

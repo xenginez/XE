@@ -149,6 +149,12 @@ XE::Variant::Variant( IMetaInfoPtr Meta, UnionData Data, XE::uint32 Flag )
 	Lock();
 }
 
+XE::Variant::Variant( IMetaInfoPtr Meta, std::shared_ptr<void> Data, XE::uint32 Flag )
+	: _Meta( Meta ), _Flag( Flag )
+{
+	_Data.sp = RegisterSharedPtr( Data );
+}
+
 XE::Variant::~Variant()
 {
 	Unlock();

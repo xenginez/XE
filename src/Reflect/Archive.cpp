@@ -1,268 +1,250 @@
 #include "Archive.h"
 
+#include "Reflection.h"
+
+#include <pugixml/pugixml.hpp>
+
 USING_XE
 
-XE::Archive::Archive( ArchiveType val )
-	:_Type( val ), _Version( Version )
+struct XE::XmlLoadArchive::Private
 {
+	pugi::xml_document Doc;
+	std::stack< pugi::xml_node * > Nodes;
+};
 
-}
-
-XE::Archive::~Archive()
+XE::XmlLoadArchive::XmlLoadArchive( std::istream & val )
+	:_p( new Private )
 {
-
-}
-
-XE::uint64 XE::Archive::GetVersion() const
-{
-	return _Version;
-}
-
-XE::ArchiveType XE::Archive::GetType() const
-{
-	return _Type;
-}
-
-void XE::Archive::SetVersion( XE::uint64 val )
-{
-	_Version = val;
-}
-
-XE::ArchiveLoad::ArchiveLoad( std::istream& val )
-	:Archive( ArchiveType::LOAD ), _Stream( val.rdbuf() )
-{
-	auto pos = _Stream.tellg();
-	_Stream.seekg( 0, std::ostream::beg );
-
-	XE::uint32 flag = 0;
-	Serialize( &flag, sizeof( XE::uint32 ) );
-
-	_IsConvert = ( flag != 0x12345678 );
-
-	XE::uint64 version;
-	_Stream.read( (char *)&version, sizeof( XE::uint64 ) );
-	if ( _IsConvert )
+	if( _p->Doc.load( val ).status == pugi::status_ok )
 	{
-		XE::uint8 * buf = (XE::uint8*)&version;
-		std::swap( buf[0], buf[7] );
-		std::swap( buf[1], buf[6] );
-		std::swap( buf[2], buf[5] );
-		std::swap( buf[3], buf[4] );
-	}
-	SetVersion( version );
-
-	if ( pos > _Stream.tellg() )
-	{
-		_Stream.seekg( pos );
+		_p->Nodes.push( &_p->Doc );
 	}
 }
 
-XE::ArchiveLoad::~ArchiveLoad()
+XE::XmlLoadArchive::~XmlLoadArchive()
 {
-
+	delete _p;
 }
 
-void XE::ArchiveLoad::Serialize( bool * ptr )
+void XE::XmlLoadArchive::Serialize( NameValue & val )
 {
-	_Stream.read( (char *)ptr, sizeof( bool ) );
-}
+	std::string name = val.Name == "" ? "item" : val.Name;
 
-void XE::ArchiveLoad::Serialize( XE::int8 * ptr )
-{
-	_Stream.read( (char *)ptr, sizeof( XE::int8 ) );
-}
+	pugi::xml_node node = _p->Nodes.top()->select_node( val.Name.c_str() ).node();
+	IMetaInfoPtr type = Reflection::FindMeta( node.attribute( "type" ).value() );
+	XE::uint32 flag = node.attribute( "flag" ).as_uint();
 
-void XE::ArchiveLoad::Serialize( XE::int16 * ptr )
-{
-	_Stream.read( (char *)ptr, sizeof( XE::int8 ) );
-
-	if ( _IsConvert )
+	if( type->GetType() == MetaType::ENUM )
 	{
-		XE::uint8 * buf = (XE::uint8*)ptr;
+		if( auto enm = SP_CAST<IMetaEnum>( type ) )
+		{
+			XE::int64 v = enm->FindValue( node.value() );
+			val.Value = Variant( type, { v }, flag );
+		}
+	}
+	else if( auto cls = SP_CAST<IMetaClass>( type ) )
+	{
+		if( flag == Variant::FUNDAMENTAL )
+		{
+			if( type == MetaID<std::nullptr_t>::Get() )
+			{
+				val.Value = nullptr;
+			}
+			else if( type == MetaID<bool>::Get() )
+			{
+				val.Value = ( std::string( node.value() ) == "true" );
+			}
+			else if( type == MetaID<XE::int8>::Get() )
+			{
+				val.Value = std::atoi( node.value() );
+			}
+			else if( type == MetaID<XE::int16>::Get() )
+			{
+				val.Value = std::atoi( node.value() );
+			}
+			else if( type == MetaID<XE::int32>::Get() )
+			{
+				val.Value = std::atoi( node.value() );
+			}
+			else if( type == MetaID<XE::int64>::Get() )
+			{
+				val.Value = std::strtoll( node.value(), nullptr, 10 );
+			}
+			else if( type == MetaID<XE::uint8>::Get() )
+			{
+				val.Value = ( XE::uint8 )std::atoi( node.value() );
+			}
+			else if( type == MetaID<XE::uint16>::Get() )
+			{
+				val.Value = ( XE::uint16 )std::atoll( node.value() );
+			}
+			else if( type == MetaID<XE::uint32>::Get() )
+			{
+				val.Value = std::strtoul( node.value(), nullptr, 10 );
+			}
+			else if( type == MetaID<XE::uint64>::Get() )
+			{
+				val.Value = std::strtoull( node.value(), nullptr, 10 );
+			}
+			else if( type == MetaID<XE::float32>::Get() )
+			{
+				val.Value = std::strtof( node.value(), nullptr );
+			}
+			else if( type == MetaID<XE::float32>::Get() )
+			{
+				val.Value = std::strtod( node.value(), nullptr );
+			}
+		}
+		else if( flag == Variant::CONTAINER )
+		{
+			VariantArray arr;
 
-		std::swap( buf[0], buf[1] );
+			XE::uint64 size = node.attribute( "count" ).as_ullong();
+
+			arr.resize( size );
+
+			_p->Nodes.push( &node );
+			for( XE::uint64 i = 0; i < size; ++i )
+			{
+				Variant v;
+				( *this ) & NVP( "item_" + std::to_string( i ), v );
+				arr[i] = v;
+			}
+			_p->Nodes.pop();
+		}
+		else
+		{
+			if( val.Value.IsNull() )
+			{
+				if( flag == Variant::POINTER )
+				{
+					val.Value = Variant( type, cls->Construct(), flag );
+				}
+				else if( flag == Variant::SHAREDPTR )
+				{
+					val.Value = Variant( type, cls->ConstructPtr(), flag );
+				}
+
+				_p->Nodes.push( &node );
+				cls->Serialize( this, val.Value );
+				_p->Nodes.pop();
+			}
+		}
 	}
 }
 
-void XE::ArchiveLoad::Serialize( XE::int32 * ptr )
+struct XE::XmlSaveArchive::Private
 {
-	_Stream.read( (char *)ptr, sizeof( XE::int32 ) );
+	pugi::xml_document Doc;
+	std::stack< pugi::xml_node * > Nodes;
+};
 
-	if ( _IsConvert )
+XE::XmlSaveArchive::XmlSaveArchive()
+	:_p( new Private )
+{
+	_p->Nodes.push( &_p->Doc );
+}
+
+XE::XmlSaveArchive::~XmlSaveArchive()
+{
+	delete _p;
+}
+
+void XE::XmlSaveArchive::Save( std::ostream & val ) const
+{
+	_p->Doc.save( val );
+}
+
+void XE::XmlSaveArchive::Serialize( NameValue & val )
+{
+	std::string name = val.Name == "" ? "item" : val.Name;
+
+	IMetaInfoPtr type = val.Value.GetMeta();
+	XE::uint32 flag = val.Value.GetFlag();
+
+	pugi::xml_node node = _p->Nodes.top()->child( name.c_str() );
+	node.append_attribute( "type" ).set_value( type->GetFullName().ToCString() );
+	node.append_attribute( "flag" ).set_value( flag );
+
+	if( type->GetType() == MetaType::ENUM )
 	{
-		XE::uint8 * buf = (XE::uint8*)ptr;
+		if( auto enm = SP_CAST<IMetaEnum>( type ) )
+		{
+			node.set_value( enm->FindName( val.Value.Value<XE::int64>() ).ToCString() );
+		}
+	}
+	else if( auto cls = SP_CAST<IMetaClass>( type ) )
+	{
+		if( flag == Variant::FUNDAMENTAL )
+		{
+			if( type == MetaID<std::nullptr_t>::Get() )
+			{
+				node.set_value( "null" );
+			}
+			else if( type == MetaID<bool>::Get() )
+			{
+				node.set_value( val.Value.Value<bool>() ? "true" : "false" );
+			}
+			else if( type == MetaID<XE::int8>::Get() )
+			{
+				node.set_value( std::to_string( val.Value.Value<XE::int8>() ).c_str() );
+			}
+			else if( type == MetaID<XE::int16>::Get() )
+			{
+				node.set_value( std::to_string( val.Value.Value<XE::int16>() ).c_str() );
+			}
+			else if( type == MetaID<XE::int32>::Get() )
+			{
+				node.set_value( std::to_string( val.Value.Value<XE::int32>() ).c_str() );
+			}
+			else if( type == MetaID<XE::int64>::Get() )
+			{
+				node.set_value( std::to_string( val.Value.Value<XE::int64>() ).c_str() );
+			}
+			else if( type == MetaID<XE::uint8>::Get() )
+			{
+				node.set_value( std::to_string( val.Value.Value<XE::uint8>() ).c_str() );
+			}
+			else if( type == MetaID<XE::uint16>::Get() )
+			{
+				node.set_value( std::to_string( val.Value.Value<XE::uint16>() ).c_str() );
+			}
+			else if( type == MetaID<XE::uint32>::Get() )
+			{
+				node.set_value( std::to_string( val.Value.Value<XE::uint32>() ).c_str() );
+			}
+			else if( type == MetaID<XE::uint64>::Get() )
+			{
+				node.set_value( std::to_string( val.Value.Value<XE::uint64>() ).c_str() );
+			}
+			else if( type == MetaID<XE::float32>::Get() )
+			{
+				node.set_value( std::to_string( val.Value.Value<XE::float32>() ).c_str() );
+			}
+			else if( type == MetaID<XE::float32>::Get() )
+			{
+				node.set_value( std::to_string( val.Value.Value<XE::float64>() ).c_str() );
+			}
+		}
+		else if( flag == Variant::CONTAINER )
+		{
+			VariantArray arr = val.Value.Value<VariantArray>();
 
-		std::swap( buf[0], buf[3] );
-		std::swap( buf[1], buf[2] );
+			node.append_attribute( "count" ).set_value( arr.size() );
+
+			_p->Nodes.push( &node );
+			for( XE::uint64 i = 0; i < arr.size(); ++i )
+			{
+				( *this ) & NVP( "item_" + std::to_string( i ), arr[i] );
+			}
+			_p->Nodes.pop();
+		}
+		else
+		{
+			_p->Nodes.push( &node );
+			cls->Serialize( this, val.Value );
+			_p->Nodes.pop();
+		}
 	}
 }
-
-void XE::ArchiveLoad::Serialize( XE::int64 * ptr )
-{
-	_Stream.read( (char *)ptr, sizeof( XE::int64 ) );
-
-	if ( _IsConvert )
-	{
-		XE::uint8 * buf = (XE::uint8*)ptr;
-
-		std::swap( buf[0], buf[7] );
-		std::swap( buf[1], buf[6] );
-		std::swap( buf[2], buf[5] );
-		std::swap( buf[3], buf[4] );
-	}
-}
-
-void XE::ArchiveLoad::Serialize( XE::uint8 * ptr )
-{
-	_Stream.read( (char *)ptr, sizeof( XE::uint8 ) );
-}
-
-void XE::ArchiveLoad::Serialize( XE::uint16 * ptr )
-{
-	_Stream.read( (char *)ptr, sizeof( XE::uint16 ) );
-
-	if ( _IsConvert )
-	{
-		XE::uint8 * buf = (XE::uint8*)ptr;
-
-		std::swap( buf[0], buf[1] );
-	}
-}
-
-void XE::ArchiveLoad::Serialize( XE::uint32 * ptr )
-{
-	_Stream.read( (char *)ptr, sizeof( XE::uint32 ) );
-
-	if ( _IsConvert )
-	{
-		XE::uint8 * buf = (XE::uint8*)ptr;
-
-		std::swap( buf[0], buf[3] );
-		std::swap( buf[1], buf[2] );
-	}
-}
-
-void XE::ArchiveLoad::Serialize( XE::uint64 * ptr )
-{
-	_Stream.read( (char *)ptr, sizeof( XE::uint64 ) );
-
-	if ( _IsConvert )
-	{
-		XE::uint8 * buf = (XE::uint8*)ptr;
-
-		std::swap( buf[0], buf[7] );
-		std::swap( buf[1], buf[6] );
-		std::swap( buf[2], buf[5] );
-		std::swap( buf[3], buf[4] );
-	}
-}
-
-void XE::ArchiveLoad::Serialize( XE::float32 * ptr )
-{
-	_Stream.read( (char *)ptr, sizeof( XE::float32 ) );
-
-	if ( _IsConvert )
-	{
-		XE::uint8 * buf = (XE::uint8*)ptr;
-
-		std::swap( buf[0], buf[3] );
-		std::swap( buf[1], buf[2] );
-	}
-}
-
-void XE::ArchiveLoad::Serialize( XE::float64 * ptr )
-{
-	_Stream.read( (char *)ptr, sizeof( XE::float64 ) );
-
-	if ( _IsConvert )
-	{
-		XE::uint8 * buf = (XE::uint8*)ptr;
-
-		std::swap( buf[0], buf[7] );
-		std::swap( buf[1], buf[6] );
-		std::swap( buf[2], buf[5] );
-		std::swap( buf[3], buf[4] );
-	}
-}
-
-void XE::ArchiveLoad::Serialize( void * ptr, XE::uint64 size )
-{
-	_Stream.read( (char *)ptr, size );
-}
-
-XE::ArchiveSave::ArchiveSave( std::ostream& val )
-	:Archive( ArchiveType::SAVE ), _Stream( val.rdbuf() )
-{
-	if (_Stream.tellp() == 0)
-	{
-		XE::uint32 flag = 0x12345678;
-		Serialize( &flag, sizeof( XE::uint32 ) );
-		XE::uint64 version = Version;
-		Serialize( &version, sizeof( XE::uint64 ) );
-	}
-}
-
-XE::ArchiveSave::~ArchiveSave()
-{
-	_Stream.flush();
-}
-
-void XE::ArchiveSave::Serialize( bool * ptr )
-{
-	_Stream.write( (const char *)ptr, sizeof( bool ) );
-}
-
-void XE::ArchiveSave::Serialize( XE::int8 * ptr )
-{
-	_Stream.write( (const char *)ptr, sizeof( XE::int8 ) );
-}
-
-void XE::ArchiveSave::Serialize( XE::int16 * ptr )
-{
-	_Stream.write( (const char *)ptr, sizeof( XE::int16 ) );
-}
-
-void XE::ArchiveSave::Serialize( XE::int32 * ptr )
-{
-	_Stream.write( (const char *)ptr, sizeof( XE::int32 ) );
-}
-
-void XE::ArchiveSave::Serialize( XE::int64 * ptr )
-{
-	_Stream.write( (const char *)ptr, sizeof( XE::int64 ) );
-}
-
-void XE::ArchiveSave::Serialize( XE::uint8 * ptr )
-{
-	_Stream.write( (const char *)ptr, sizeof( XE::uint8 ) );
-}
-
-void XE::ArchiveSave::Serialize( XE::uint16 * ptr )
-{
-	_Stream.write( (const char *)ptr, sizeof( XE::uint16 ) );
-}
-
-void XE::ArchiveSave::Serialize( XE::uint32 * ptr )
-{
-	_Stream.write( (const char *)ptr, sizeof( XE::uint32 ) );
-}
-
-void XE::ArchiveSave::Serialize( XE::uint64 * ptr )
-{
-	_Stream.write( (const char *)ptr, sizeof( XE::uint64 ) );
-}
-
-void XE::ArchiveSave::Serialize( XE::float32 * ptr )
-{
-	_Stream.write( (const char *)ptr, sizeof( XE::float32 ) );
-}
-
-void XE::ArchiveSave::Serialize( XE::float64 * ptr )
-{
-	_Stream.write( (const char *)ptr, sizeof( XE::float64 ) );
-}
-
-void XE::ArchiveSave::Serialize( void * ptr, XE::uint64 size )
-{
-	_Stream.write( (const char *)ptr, size );
-}
+	

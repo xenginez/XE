@@ -86,7 +86,14 @@ public:
 
 		virtual void * Copy() const override
 		{
-			return new Type( *_Data );
+			if constexpr ( std::is_abstract_v<T> )
+			{
+				return nullptr;
+			}
+			else
+			{
+				return new Type( *_Data );
+			}
 		}
 
 		virtual void * Data() const override
@@ -222,6 +229,8 @@ public:
 	}
 
 	Variant( IMetaInfoPtr Meta, UnionData Data, XE::uint32 Flag );
+
+	Variant( IMetaInfoPtr Meta, std::shared_ptr<void> Data, XE::uint32 Flag );
 
 	~Variant();
 

@@ -54,7 +54,7 @@ bool XE::AssetsService::Startup()
 	std::ifstream ifs( ( GetFramework()->GetAssetsPath() / "directory" ).string(), std::ios::binary );
 	if( ifs.is_open() )
 	{
-		ArchiveLoad Load( ifs );
+		XmlLoadArchive Load( ifs );
 
 		Load & _p->_Directorys;
 	}

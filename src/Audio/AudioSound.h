@@ -37,11 +37,6 @@ public:
 
 	const Array<XE::uint8>& GetBuffer() const;
 
-public:
-	virtual void Load( Archive &val ) override;
-
-	virtual void Save( Archive &val ) const override;
-
 private:
 	XE::int32 GetFormat();
 

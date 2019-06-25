@@ -26,9 +26,6 @@ public:
 public:
 	XE::uint64 GetSize() const;
 
-public:
-	virtual void Serialize( Archive * arc, Variant& val ) const = 0;
-
 private:
 	XE::uint64 _Size;
 };

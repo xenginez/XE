@@ -54,20 +54,6 @@ XE::uint8 XE::AudioSound::GetBytesPerSample() const
 	return _BytesPerSample;
 }
 
-void XE::AudioSound::Load( Archive &val )
-{
-	Super::Load( val );
-
-	AL_CHECK( alGenBuffers( 1, &_BuffHandle ) );
-
-	AL_CHECK( alBufferData( _BuffHandle, GetFormat(), _Buffer.data(), ALsizei( _Buffer.size() ), _SampleRate ) );
-}
-
-void XE::AudioSound::Save( Archive &val ) const
-{
-	Super::Save( val );
-}
-
 XE::uint32 XE::AudioSound::GetBufferHandle() const
 {
 	return _BuffHandle;

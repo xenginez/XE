@@ -45,14 +45,6 @@ public:
 		}
 	}
 
-	virtual void Serialize( Archive * arc, Variant& val ) const override
-	{
-		if ( !( GetFlag() & NoSerialize ) && !IsConst() )
-		{
-			( *arc ) & _Value;
-		}
-	}
-
 private:
 	PropertyType * _Value;
 };
@@ -87,14 +79,6 @@ public:
 		}
 	}
 
-	virtual void Serialize( Archive * arc, Variant& val ) const override
-	{
-		if ( !( GetFlag() & NoSerialize ) && !IsConst() )
-		{
-			( *arc ) & ( val.Value<ClassType*>()->*( _Value ) );
-		}
-	}
-
 private:
 	PropertyType _Value;
 };
@@ -122,14 +106,6 @@ public:
 	virtual void Set( const Variant& obj, const Variant& val ) const override
 	{
 		_SetFunc( val.Value<_SetType>() );
-	}
-
-	virtual void Serialize( Archive * arc, Variant& val ) const override
-	{
-		if ( !( GetFlag() & NoSerialize ) && !IsConst() )
-		{
-			( *arc ) & _GetFunc();
-		}
 	}
 
 private:
@@ -162,14 +138,6 @@ public:
 		( obj.Value<ClassType*>()->*_SetFunc )( val.Value<_SetType>() );
 	}
 
-	virtual void Serialize( Archive * arc, Variant& val ) const override
-	{
-		if ( !( GetFlag() & NoSerialize ) && !IsConst() )
-		{
-			( *arc ) & ( ( val.Value<ClassType*>()->*_GetFunc )( ) );
-		}
-	}
-
 private:
 	GetFuncType _GetFunc;
 	SetFuncType _SetFunc;
@@ -198,14 +166,6 @@ public:
 	virtual void Set( const Variant& obj, const Variant& val ) const override
 	{
 		( obj.Value<ClassType*>()->*_SetFunc )( val.Value<_SetType>() );
-	}
-
-	virtual void Serialize( Archive * arc, Variant& val ) const override
-	{
-		if ( !( GetFlag() & NoSerialize ) && !IsConst() )
-		{
-			( *arc ) &( ( val.Value<ClassType*>()->*_GetFunc )( ) );
-		}
 	}
 
 private:

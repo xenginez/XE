@@ -41,13 +41,7 @@ XE::ObjectPtr XE::Object::Clone() const
 	return ret;
 }
 
-void XE::Object::Load( Archive &val )
-{
-	XE::Variant v(this);
-	GetMetaClass()->Serialize(&val, v);
-}
-
-void XE::Object::Save( Archive &val ) const
+void XE::Object::Serialize( Archive &val )
 {
 	XE::Variant v(this);
 	GetMetaClass()->Serialize(&val, v);

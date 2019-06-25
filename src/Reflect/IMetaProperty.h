@@ -53,8 +53,6 @@ public:
 
 	virtual void Set( const Variant& obj, const Variant& val ) const = 0;
 
-	virtual void Serialize( Archive * arc, Variant& val ) const = 0;
-
 private:
 	XE::uint8 _Flag;
 	bool _IsConst;

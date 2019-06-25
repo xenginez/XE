@@ -57,6 +57,8 @@ public:
 
 	virtual void Destruct( void * val ) const = 0;
 
+	virtual void Serialize( Archive * arc, Variant & val ) const = 0;
+
 protected:
 	void _RegisterMethod( const IMetaMethodPtr& val );
 

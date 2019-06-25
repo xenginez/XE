@@ -30,6 +30,8 @@ public:
 public:
 	Line();
 
+	Line( const Line & val );
+
 	Line( const Ray& ray, XE::real distance );
 
 	Line( const Vec3& start, const Vec3& end );
