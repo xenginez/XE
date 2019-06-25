@@ -221,7 +221,7 @@ public:
 		_Flag = Variant::POINTER;
 	}
 
-	Variant( IMetaInfoPtr Meta, UnionData Data, XE::uint64 Flag );
+	Variant( IMetaInfoPtr Meta, UnionData Data, XE::uint32 Flag );
 
 	~Variant();
 

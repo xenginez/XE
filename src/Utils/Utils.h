@@ -18,7 +18,6 @@
 #include "Library.h"
 #include "Platform.h"
 #include "Profiler.h"
-#include "Archives.h"
 
 #define DECL_HANDLE( _DLL_EXPORT, NAME ) class NAME; using NAME##Handle = XE::Handle< NAME >; DECL_META_CLASS( _DLL_EXPORT, NAME##Handle );
 

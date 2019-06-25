@@ -274,8 +274,11 @@ public:
 			{
 				meta->VisitProperty( [&] ( IMetaPropertyPtr prop )
 				{
-					Variant v( &val );
-					prop->Serialize( &arc, v );
+					if( !prop->IsConst() && !prop->IsStatic() )
+					{
+						Variant v( &val );
+						prop->Serialize( &arc, v );
+					}
 				} );
 			}
 		}
@@ -295,8 +298,11 @@ public:
 			{
 				meta->VisitProperty( [&] ( IMetaPropertyPtr prop )
 				{
-					Variant v( &val );
-					prop->Serialize( &arc, v );
+					if( !prop->IsConst() && !prop->IsStatic() )
+					{
+						Variant v( &val );
+						prop->Serialize( &arc, v );
+					}
 				} );
 			}
 		}
@@ -349,8 +355,8 @@ template<> struct Serializable<Variant>
 		std::string meta_name;
 		Serializable<std::string>::Load( arc, meta_name );
 
-		XE::uint64 flag;
-		arc.Serialize( &flag, sizeof( XE::uint64 ) );
+		XE::uint32 flag;
+		arc.Serialize( &flag, sizeof( XE::uint32 ) );
 
 		if ( IMetaTypePtr meta = GetReclectionType( meta_name ) )
 		{
@@ -366,8 +372,8 @@ template<> struct Serializable<Variant>
 		std::string meta_name = val.GetMeta()->GetFullName().ToStdString();
 		Serializable<std::string>::Save( arc, meta_name );
 
-		XE::uint64 flag = val.GetFlag();
-		arc.Serialize( &flag, sizeof( XE::uint64 ) );
+		XE::uint32 flag = val.GetFlag();
+		arc.Serialize( &flag, sizeof( XE::uint32 ) );
 
 		if ( auto e = SP_CAST<IMetaType>( val.GetMeta() ) )
 		{

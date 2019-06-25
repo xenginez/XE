@@ -143,7 +143,7 @@ XE::Variant::Variant( const Variant & val )
 	Lock();
 }
 
-XE::Variant::Variant( IMetaInfoPtr Meta, UnionData Data, XE::uint64 Flag )
+XE::Variant::Variant( IMetaInfoPtr Meta, UnionData Data, XE::uint32 Flag )
 	: _Data( Data ), _Meta( Meta ), _Flag( Flag )
 {
 	Lock();
