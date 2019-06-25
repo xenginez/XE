@@ -131,6 +131,19 @@ void XE::Reflection::RegisterMetaInfo( IMetaInfoPtr val )
 	}
 }
 
+void XE::Reflection::VisitMeta( std::function<void( IMetaInfoPtr )> val )
+{
+	VisitEnum( [&]( IMetaEnumPtr enm )
+	{
+		val( enm );
+	} );
+
+	VisitClass( [&]( IMetaClassPtr cls )
+	{
+		val( cls );
+	} );
+}
+
 void XE::Reflection::VisitEnum( std::function<void( IMetaEnumPtr )> val )
 {
 	for ( auto var : This()->_p->Enums )
@@ -169,6 +182,21 @@ void XE::Reflection::VisitOperator( std::function<void( IMetaOperatorPtr )> val 
 	{
 		val( var.second );
 	}
+}
+
+XE::IMetaInfoPtr XE::Reflection::FindMeta( const String & FullName )
+{
+	if( auto ret = FindEnum( FullName ) )
+	{
+		return ret;
+	}
+	
+	if( auto ret = FindClass( FullName ) )
+	{
+		return ret;
+	}
+
+	return nullptr;
 }
 
 XE::IMetaEnumPtr XE::Reflection::FindEnum( const String& FullName )

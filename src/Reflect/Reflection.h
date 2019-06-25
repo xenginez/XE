@@ -47,6 +47,8 @@ public:
 	static void RegisterMetaInfo( IMetaInfoPtr val );
 
 public:
+	static void VisitMeta( std::function<void( IMetaInfoPtr )> val );
+
 	static void VisitEnum( std::function<void( IMetaEnumPtr )> val );
 
 	static void VisitClass( std::function<void( IMetaClassPtr )> val );
@@ -58,6 +60,8 @@ public:
 	static void VisitOperator( std::function<void( IMetaOperatorPtr )> val );
 
 public:
+	static IMetaInfoPtr FindMeta( const String & FullName );
+
 	static IMetaEnumPtr FindEnum( const String& FullName );
 
 	static IMetaClassPtr FindClass( const String& FullName );
