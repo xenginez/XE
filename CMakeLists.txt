@@ -82,7 +82,9 @@ target_link_libraries(Memory
 
 target_link_libraries(Reflect
 		Memory
-
+		
+		pugixml
+		sqlite3
 		libZipper-static
 		)
 
@@ -161,9 +163,6 @@ target_link_libraries(Render
 
 target_link_libraries(Core
 		Behavior Render
-
-		pugixml
-		sqlite3
 		)
 
 target_link_libraries(XE

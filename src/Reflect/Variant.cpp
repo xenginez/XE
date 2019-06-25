@@ -305,7 +305,7 @@ void * XE::Variant::ToPointer() const
 	return nullptr;
 }
 
-XE::uint64 XE::Variant::GetFlag() const
+XE::uint32 XE::Variant::GetFlag() const
 {
 	return _Flag;
 }

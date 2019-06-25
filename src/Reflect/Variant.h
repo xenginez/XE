@@ -25,12 +25,12 @@ public:
 	template< typename T > friend struct VariantCast;
 
 public:
-	static constexpr XE::uint64 INVALID = 0;
-	static constexpr XE::uint64 FUNDAMENTAL = 1 << 1;
-	static constexpr XE::uint64 CONTAINER = 1 << 2;
-	static constexpr XE::uint64 POINTER = 1 << 3;
-	static constexpr XE::uint64 SHAREDPTR = 1 << 4;
-	static constexpr XE::uint64 PRIVATEPTR = 1 << 5;
+	static constexpr XE::uint32 INVALID = 0;
+	static constexpr XE::uint32 FUNDAMENTAL = 1 << 1;
+	static constexpr XE::uint32 CONTAINER = 1 << 2;
+	static constexpr XE::uint32 POINTER = 1 << 3;
+	static constexpr XE::uint32 SHAREDPTR = 1 << 4;
+	static constexpr XE::uint32 PRIVATEPTR = 1 << 5;
 
 public:
 	class PrivatePtr
@@ -260,7 +260,7 @@ public:
 	void * ToPointer() const;
 
 public:
-	XE::uint64 GetFlag() const;
+	XE::uint32 GetFlag() const;
 
 	UnionData GetData() const;
 
@@ -311,8 +311,8 @@ private:
 	static std::shared_ptr<void> * RegisterSharedPtr( const std::shared_ptr<void>& p );
 
 private:
-	XE::uint64 _Flag;
 	UnionData _Data;
+	XE::uint32 _Flag;
 	IMetaInfoPtr _Meta;
 };
 

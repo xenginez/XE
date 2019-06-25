@@ -86,6 +86,13 @@ enum WindowFlags
 };
 DECL_META_ENUM( UTILS_API, WindowFlags);
 
+enum class ArchiveFlag
+{
+	POINTER,
+	SHARED_POINTER,
+	REFERENCE,
+};
+
 END_XE_NAMESPACE
 
 #endif // __TYPE_H__FF3D8A9E_5172_4F88_873F_0CAF1E5289F6
