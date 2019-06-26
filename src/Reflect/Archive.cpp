@@ -531,45 +531,222 @@ void XE::JsonSaveArchive::Serialize( NameValue & val )
 
 struct XE::BinaryLoadArchive::Private
 {
+	Private( XE::memory_view & val )
+		:Stream( val )
+	{
+	}
 
+	XE::imemorystream Stream;
 };
 
-XE::BinaryLoadArchive::BinaryLoadArchive( std::istream & val )
+XE::BinaryLoadArchive::BinaryLoadArchive( XE::memory_view & val )
+	:_p( new Private( val ) )
 {
 
 }
 
 XE::BinaryLoadArchive::~BinaryLoadArchive()
 {
-
+	delete _p;
 }
 
 void XE::BinaryLoadArchive::Serialize( NameValue & val )
 {
+	std::string type_name;
+	_p->Stream >> type_name;
 
+	IMetaInfoPtr type = Reflection::FindMeta( type_name );
+	XE::uint32 flag;
+	_p->Stream >> flag;
+
+	if( type->GetType() == MetaType::ENUM )
+	{
+		if( auto enm = SP_CAST<IMetaEnum>( type ) )
+		{
+			XE::int64 v = 0;
+			_p->Stream >> v;
+			val.Value = Variant( type, { v }, flag );
+		}
+	}
+	else if( auto cls = SP_CAST<IMetaClass>( type ) )
+	{
+		if( flag == Variant::FUNDAMENTAL )
+		{
+			if( type == MetaID<std::nullptr_t>::Get() )
+			{
+				val.Value = nullptr;
+			}
+			else if( type == MetaID<bool>::Get() )
+			{
+				bool v = false;
+				_p->Stream >> v; val.Value = v;
+			}
+			else if( type == MetaID<XE::int8>::Get() )
+			{
+				XE::int8 v = 0; _p->Stream >> v; val.Value = v;
+			}
+			else if( type == MetaID<XE::int16>::Get() )
+			{
+				XE::int16 v = 0; _p->Stream >> v; val.Value = v;
+			}
+			else if( type == MetaID<XE::int32>::Get() )
+			{
+				XE::int32 v = 0; _p->Stream >> v; val.Value = v;
+			}
+			else if( type == MetaID<XE::int64>::Get() )
+			{
+				XE::int64 v = 0; _p->Stream >> v; val.Value = v;
+			}
+			else if( type == MetaID<XE::uint8>::Get() )
+			{
+				XE::uint8 v = 0; _p->Stream >> v; val.Value = v;
+			}
+			else if( type == MetaID<XE::uint16>::Get() )
+			{
+				XE::uint16 v = 0; _p->Stream >> v; val.Value = v;
+			}
+			else if( type == MetaID<XE::uint32>::Get() )
+			{
+				XE::uint32 v = 0; _p->Stream >> v; val.Value = v;
+			}
+			else if( type == MetaID<XE::uint64>::Get() )
+			{
+				XE::uint64 v = 0; _p->Stream >> v; val.Value = v;
+			}
+			else if( type == MetaID<XE::float32>::Get() )
+			{
+				XE::float32 v = 0; _p->Stream >> v; val.Value = v;
+			}
+			else if( type == MetaID<XE::float32>::Get() )
+			{
+				XE::float64 v = 0; _p->Stream >> v; val.Value = v;
+			}
+		}
+		else if( flag == Variant::CONTAINER )
+		{
+			VariantArray arr;
+
+			XE::uint64 size = 0;
+			_p->Stream >> size;
+
+			arr.resize( size );
+
+			for( XE::uint64 i = 0; i < size; ++i )
+			{
+				Variant v;
+				( *this ) & NVP( nullptr, v );
+				arr[i] = v;
+			}
+		}
+		else
+		{
+			cls->Serialize( this, val.Value );
+		}
+	}
 }
 
 struct XE::BinarySaveArchive::Private
 {
-
+	XE::omemorystream Stream;
 };
 
 XE::BinarySaveArchive::BinarySaveArchive()
+	:_p( new Private )
 {
 
 }
 
 XE::BinarySaveArchive::~BinarySaveArchive()
 {
-
+	delete _p;
 }
 
 void XE::BinarySaveArchive::Save( std::ostream & val ) const
 {
-
+	val << _p->Stream.rdbuf();
 }
 
 void XE::BinarySaveArchive::Serialize( NameValue & val )
 {
+	IMetaInfoPtr type = val.Value.GetMeta();
+	XE::uint32 flag = val.Value.GetFlag();
 
+	_p->Stream << type->GetFullName().ToStdString() << flag;
+
+	if( type->GetType() == MetaType::ENUM )
+	{
+		if( auto enm = SP_CAST<IMetaEnum>( type ) )
+		{
+			_p->Stream << val.Value.Value<XE::int64>();
+		}
+	}
+	else if( auto cls = SP_CAST<IMetaClass>( type ) )
+	{
+		if( flag == Variant::FUNDAMENTAL )
+		{
+			if( type == MetaID<std::nullptr_t>::Get() )
+			{
+				
+			}
+			else if( type == MetaID<bool>::Get() )
+			{
+				_p->Stream << val.Value.Value<bool>();
+			}
+			else if( type == MetaID<XE::int8>::Get() )
+			{
+				_p->Stream << val.Value.Value<XE::int8>();
+			}
+			else if( type == MetaID<XE::int16>::Get() )
+			{
+				_p->Stream << val.Value.Value<XE::int16>();
+			}
+			else if( type == MetaID<XE::int32>::Get() )
+			{
+				_p->Stream << val.Value.Value<XE::int32>();
+			}
+			else if( type == MetaID<XE::int64>::Get() )
+			{
+				_p->Stream << val.Value.Value<XE::int64>();
+			}
+			else if( type == MetaID<XE::uint8>::Get() )
+			{
+				_p->Stream << val.Value.Value<XE::uint8>();
+			}
+			else if( type == MetaID<XE::uint16>::Get() )
+			{
+				_p->Stream << val.Value.Value<XE::uint16>();
+			}
+			else if( type == MetaID<XE::uint32>::Get() )
+			{
+				_p->Stream << val.Value.Value<XE::uint32>();
+			}
+			else if( type == MetaID<XE::uint64>::Get() )
+			{
+				_p->Stream << val.Value.Value<XE::uint64>();
+			}
+			else if( type == MetaID<XE::float32>::Get() )
+			{
+				_p->Stream << val.Value.Value<XE::float32>();
+			}
+			else if( type == MetaID<XE::float32>::Get() )
+			{
+				_p->Stream << val.Value.Value<XE::float64>();
+			}
+		}
+		else if( flag == Variant::CONTAINER )
+		{
+			VariantArray arr = val.Value.Value<VariantArray>();
+
+			_p->Stream << arr.size();
+
+			for( XE::uint64 i = 0; i < arr.size(); ++i )
+			{
+				( *this ) & NVP( nullptr, arr[i] );
+			}
+		}
+		else
+		{
+			cls->Serialize( this, val.Value );
+		}
+	}
 }

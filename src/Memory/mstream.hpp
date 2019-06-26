@@ -420,7 +420,7 @@ public:
 		return _Count;
 	}
 
-	constexpr basic_memory_view substr( const size_type _Off = 0, size_type _Count = npos ) const
+	constexpr basic_memory_view subview( const size_type _Off = 0, size_type _Count = npos ) const
 	{
 		_Check_offset( _Off );
 		_Count = _Clamp_suffix_size( _Off, _Count );
@@ -458,15 +458,13 @@ private:
 	size_type _Mysize;
 };
 
-using memory_view = basic_memory_view<XE::uint8, memory_traits<XE::uint8>>;
-
 template <class _Elem, class _Traits, class _Alloc>
 class basic_memorybuf : public std::basic_streambuf<_Elem, _Traits>
 {
 public:
 	using allocator_type = _Alloc;
 	using _Mysb          = std::basic_streambuf<_Elem, _Traits>;
-	using _Myview         = memory_view;
+	using _Myview         = basic_memory_view<_Elem, memory_traits<_Elem>>;
 	using _Mysize_type   = typename _Myview::size_type;
 
 	explicit basic_memorybuf( std::ios_base::openmode _Mode = std::ios_base::in | std::ios_base::out )
@@ -475,7 +473,7 @@ public:
 	}
 
 	explicit basic_memorybuf( const _Myview & _Str, std::ios_base::openmode _Mode = std::ios_base::in | std::ios_base::out )
-		: _Al( _Str.get_allocator() )
+		: _Al()
 	{
 		_Init( _Str.data(), _Str.size(), _Getstate( _Mode ) );
 	}
@@ -548,12 +546,12 @@ public:
 		return _Myview();
 	}
 
-	void view( const _Myview & _Newstr )
+	void view( const _Myview & _Newview )
 	{
 		_Tidy();
-		_Init( _Newstr.data(), _Newstr.size(), _Mystate );
+		_Init( _Newview.data(), _Newview.size(), _Mystate );
 	}
-
+	
 protected:
 	virtual int_type overflow( int_type _Meta = _Traits::eof() )
 	{
@@ -601,7 +599,7 @@ protected:
 			return _Traits::eof();
 		}
 
-		const auto _Newptr = _Unfancy( _Al.allocate( _Newsize ) );
+		const auto _Newptr = _Al.allocate( _Newsize );
 		_Traits::copy( _Newptr, _Oldptr, _Oldsize );
 
 		const auto _New_pnext = _Newptr + _Oldsize;
@@ -665,7 +663,7 @@ protected:
 			return _Traits::eof();
 		}
 
-		const auto _Local_highwater = _Max_value( _Seekhigh, _Pptr );
+		const auto _Local_highwater = std::max( _Seekhigh, _Pptr );
 		if( _Local_highwater <= _Gptr )
 		{
 			return _Traits::eof();
@@ -750,7 +748,7 @@ protected:
 
 	virtual pos_type seekpos( pos_type _Pos, std::ios_base::openmode _Mode = std::ios_base::in | std::ios_base::out )
 	{
-		const auto _Off = static_cast<streamoff>( _Pos );
+		const auto _Off = static_cast<std::streamoff>( _Pos );
 		const auto _Gptr_old = _Mysb::gptr();
 		const auto _Pptr_old = _Mysb::pptr();
 		if( _Pptr_old != nullptr && _Seekhigh < _Pptr_old )
@@ -788,16 +786,13 @@ protected:
 
 	void _Init( const _Elem * _Ptr, _Mysize_type _Count, int _State )
 	{
-		if( _Count > INT_MAX )
-		{
-			_Xbad_alloc();
-		}
+		XE_ASSERT( _Count > INT_MAX );
 
 		if( _Count != 0
 			&& ( _State & ( _Noread | _Constant ) )
 			!= ( _Noread | _Constant ) )
 		{
-			const auto _Pnew = _Unfancy( _Al.allocate( _Count ) );
+			const auto _Pnew = _Al.allocate( _Count );
 			_Traits::copy( _Pnew, _Ptr, _Count );
 			_Seekhigh = _Pnew + _Count;
 
@@ -831,7 +826,7 @@ protected:
 		if( _Mystate & _Allocated )
 		{
 			_Al.deallocate( _Ptr_traits::pointer_to( *_Mysb::eback() ),
-							static_cast<typename allocator_traits<allocator_type>::size_type>(
+							static_cast<typename std::allocator_traits<allocator_type>::size_type>(
 							( _Mysb::pptr() != nullptr ? _Mysb::epptr() : _Mysb::egptr() ) - _Mysb::eback() ) );
 		}
 
@@ -840,7 +835,7 @@ protected:
 		_Seekhigh = nullptr;
 		_Mystate &= ~_Allocated;
 	}
-
+	
 private:
 	using _Ptr_traits = std::pointer_traits<typename std::allocator_traits<allocator_type>::pointer>;
 
@@ -893,16 +888,15 @@ public:
 	using _Mybase        = std::basic_istream<_Elem, _Traits>;
 	using allocator_type = _Alloc;
 	using _Mysb          = basic_memorybuf<_Elem, _Traits, _Alloc>;
-	using _Myview         = memory_view;
+	using _Myview         = basic_memory_view<_Elem, memory_traits<_Elem>>;
 
 	explicit basic_imemorystream( std::ios_base::openmode _Mode = std::ios_base::in )
 		: _Mybase( &_Memorybuffer ), _Memorybuffer( _Mode | std::ios_base::in )
 	{
 	}
 
-	explicit basic_imemorystream( const _Myview & _Str, std::ios_base::openmode _Mode = std::ios_base::in )
-		: _Mybase( &_Memorybuffer ),
-		_Memorybuffer( _Str, _Mode | std::ios_base::in )
+	explicit basic_imemorystream( const _Myview & _View, std::ios_base::openmode _Mode = std::ios_base::in )
+		: _Mybase( &_Memorybuffer ), _Memorybuffer( _View, _Mode | std::ios_base::in )
 	{
 	}
 
@@ -953,9 +947,9 @@ public:
 		return _Memorybuffer.view();
 	}
 
-	void view( const _Myview & _Newstr )
+	void view( const _Myview & _Newview )
 	{
-		_Memorybuffer.view( _Newstr );
+		_Memorybuffer.view( _Newview );
 	}
 
 private:
@@ -975,16 +969,16 @@ public:
 	using _Mybase        = std::basic_ostream<_Elem, _Traits>;
 	using allocator_type = _Alloc;
 	using _Mysb          = basic_memorybuf<_Elem, _Traits, _Alloc>;
-	using _Myview         = memory_view;
+	using _Myview         = basic_memory_view<_Elem, memory_traits<_Elem>>;
 
 	explicit basic_omemorystream( std::ios_base::openmode _Mode = std::ios_base::out )
 		: _Mybase( &_Memorybuffer ), _Memorybuffer( _Mode | std::ios_base::out )
 	{
 	}
 
-	explicit basic_omemorystream( const _Myview & _Str, std::ios_base::openmode _Mode = std::ios_base::out )
+	explicit basic_omemorystream( const _Myview & _View, std::ios_base::openmode _Mode = std::ios_base::out )
 		: _Mybase( &_Memorybuffer ),
-		_Memorybuffer( _Str, _Mode | std::ios_base::out )
+		_Memorybuffer( _View, _Mode | std::ios_base::out )
 	{
 	}
 
@@ -1035,9 +1029,9 @@ public:
 		return _Memorybuffer.view();
 	}
 
-	void view( const _Myview & _Newstr )
+	void view( const _Myview & _Newview )
 	{
-		_Memorybuffer.view( _Newstr );
+		_Memorybuffer.view( _Newview );
 	}
 
 private:
@@ -1063,15 +1057,15 @@ public:
 	using pos_type       = typename _Traits::pos_type;
 	using off_type       = typename _Traits::off_type;
 	using _Mysb          = basic_memorybuf<_Elem, _Traits, _Alloc>;
-	using _Myview         = memory_view;
+	using _Myview         = basic_memory_view<_Elem, memory_traits<_Elem>>;
 
 	explicit basic_memorystream( std::ios_base::openmode _Mode = std::ios_base::in | std::ios_base::out )
 		: _Mybase( &_Stringbuffer ), _Stringbuffer( _Mode )
 	{
 	}
 
-	explicit basic_memorystream( const _Myview & _Str, std::ios_base::openmode _Mode = std::ios_base::in | std::ios_base::out )
-		: _Mybase( &_Stringbuffer ), _Stringbuffer( _Str, _Mode )
+	explicit basic_memorystream( const _Myview & _View, std::ios_base::openmode _Mode = std::ios_base::in | std::ios_base::out )
+		: _Mybase( &_Stringbuffer ), _Stringbuffer( _View, _Mode )
 	{
 	}
 
@@ -1121,9 +1115,9 @@ public:
 		return _Stringbuffer.view();
 	}
 
-	void view( const _Myview & _Newstr )
+	void view( const _Myview & _Newview )
 	{
-		_Stringbuffer.view( _Newstr );
+		_Stringbuffer.view( _Newview );
 	}
 
 private:
@@ -1136,10 +1130,32 @@ inline void swap( basic_memorystream<_Elem, _Traits, _Alloc> & _Left, basic_memo
 	_Left.swap( _Right );
 }
 
-using imemorystream = basic_imemorystream<XE::uint8, memory_traits<XE::uint8>, XE::Allocator<XE::uint8>>;
-using omemorystream = basic_omemorystream<XE::uint8, memory_traits<XE::uint8>, XE::Allocator<XE::uint8>>;
-using memorystream = basic_memorystream<XE::uint8, memory_traits<XE::uint8>, XE::Allocator<XE::uint8>>;
+using memory_view = basic_memory_view<XE::int8, memory_traits<XE::int8>>;
+using imemorystream = basic_imemorystream<XE::int8, memory_traits<XE::int8>, XE::Allocator<XE::int8>>;
+using omemorystream = basic_omemorystream<XE::int8, memory_traits<XE::int8>, XE::Allocator<XE::int8>>;
+using memorystream = basic_memorystream<XE::int8, memory_traits<XE::int8>, XE::Allocator<XE::int8>>;
 
 END_XE_NAMESPACE
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_imemorystream<_Elem, _Traits, _Alloc> & operator >>( XE::basic_imemorystream<_Elem, _Traits, _Alloc> & _Left, std::string & _Right )
+{
+	XE::uint64 size;
+	_Left >> size;
+
+	_Right.resize( size );
+
+	_Left.read( reinterpret_cast< _Elem * >( _Right.data() ), size / sizeof( _Elem ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_omemorystream<_Elem, _Traits, _Alloc> & operator <<( XE::basic_omemorystream<_Elem, _Traits, _Alloc> & _Left, const std::string & _Right )
+{
+	_Left.write( reinterpret_cast< const _Elem * >( _Right.c_str() ), _Right.size() / sizeof( _Elem ) );
+
+	return _Left;
+}
 
 #endif // __MSTREAM_HPP__6426E8EE_6AF1_4B69_9CB9_F9569C80C447
