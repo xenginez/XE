@@ -157,6 +157,40 @@ private:
 	Private * _p;
 };
 
+class REFLECT_API JsonLoadArchive : public Archive
+{
+	struct Private;
+
+public:
+	JsonLoadArchive( std::istream & val );
+
+	~JsonLoadArchive() override;
+
+protected:
+	void Serialize( NameValue & val ) override;
+
+private:
+	Private * _p;
+};
+
+class REFLECT_API JsonSaveArchive : public Archive
+{
+	struct Private;
+public:
+	JsonSaveArchive();
+
+	~JsonSaveArchive() override;
+
+public:
+	void Save( std::ostream & val ) const;
+
+protected:
+	void Serialize( NameValue & val ) override;
+
+private:
+	Private * _p;
+};
+
 
 template< typename T > struct Serializable
 {
