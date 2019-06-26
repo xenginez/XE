@@ -26,7 +26,7 @@ public:
     BufferHandle GetHandle() const;
 
 public:
-    MemoryView Map(AccessType val);
+    memory_view Map(AccessType val);
 
     void Unmap();
 
@@ -37,7 +37,7 @@ public:
     AccessType GetCPUAccess() const;
 
 private:
-    MemoryView _Data;
+    memory_view _Data;
     AccessType _CPUAccess;
 
     BufferHandle _Handle;

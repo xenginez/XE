@@ -528,3 +528,48 @@ void XE::JsonSaveArchive::Serialize( NameValue & val )
 		}
 	}
 }
+
+struct XE::BinaryLoadArchive::Private
+{
+
+};
+
+XE::BinaryLoadArchive::BinaryLoadArchive( std::istream & val )
+{
+
+}
+
+XE::BinaryLoadArchive::~BinaryLoadArchive()
+{
+
+}
+
+void XE::BinaryLoadArchive::Serialize( NameValue & val )
+{
+
+}
+
+struct XE::BinarySaveArchive::Private
+{
+
+};
+
+XE::BinarySaveArchive::BinarySaveArchive()
+{
+
+}
+
+XE::BinarySaveArchive::~BinarySaveArchive()
+{
+
+}
+
+void XE::BinarySaveArchive::Save( std::ostream & val ) const
+{
+
+}
+
+void XE::BinarySaveArchive::Serialize( NameValue & val )
+{
+
+}

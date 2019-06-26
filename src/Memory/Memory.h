@@ -10,9 +10,9 @@
 #define __MEMORY_H__32A3DBEA_AF97_44CA_B481_147D90DC8B33
 
 #include "Alloc.h"
+#include "mstream.hpp"
 #include "FrameAlloc.h"
 #include "Allocator.hpp"
-#include "MemoryView.hpp"
 #include "FrameAllocator.hpp"
 #include "ObjectAllocator.hpp"
 

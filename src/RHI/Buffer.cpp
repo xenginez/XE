@@ -20,7 +20,7 @@ XE::BufferHandle XE::Buffer::GetHandle() const
 	return _Handle;
 }
 
-XE::MemoryView XE::Buffer::Map( XE::AccessType val )
+XE::memory_view XE::Buffer::Map( XE::AccessType val )
 {
 	return _Data;
 }
@@ -32,12 +32,12 @@ void XE::Buffer::Unmap()
 
 XE::uint64 XE::Buffer::GetSize() const
 {
-	return _Data.Size();
+	return _Data.size();
 }
 
 XE::uint64 XE::Buffer::GetGPUAddress() const
 {
-	return (XE::uint64)_Data.Data();
+	return (XE::uint64)_Data.data();
 }
 
 XE::AccessType XE::Buffer::GetCPUAccess() const

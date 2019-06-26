@@ -191,6 +191,40 @@ private:
 	Private * _p;
 };
 
+class REFLECT_API BinaryLoadArchive : public Archive
+{
+	struct Private;
+
+public:
+	BinaryLoadArchive( std::istream & val );
+
+	~BinaryLoadArchive() override;
+
+protected:
+	void Serialize( NameValue & val ) override;
+
+private:
+	Private * _p;
+};
+
+class REFLECT_API BinarySaveArchive : public Archive
+{
+	struct Private;
+public:
+	BinarySaveArchive();
+
+	~BinarySaveArchive() override;
+
+public:
+	void Save( std::ostream & val ) const;
+
+protected:
+	void Serialize( NameValue & val ) override;
+
+private:
+	Private * _p;
+};
+
 
 template< typename T > struct Serializable
 {

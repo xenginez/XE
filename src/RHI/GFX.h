@@ -72,39 +72,39 @@ public:
 	virtual void SetWindowTitle( const WindowHandle &handle, const String &title ) = 0;
 
 public:
-	virtual IndexBufferHandle CreateIndexBuffer( const MemoryView &val ) = 0;
+	virtual IndexBufferHandle CreateIndexBuffer( const memory_view &val ) = 0;
 	
-	virtual VertexBufferHandle CreateVertexBuffer( const MemoryView &val ) = 0;
+	virtual VertexBufferHandle CreateVertexBuffer( const memory_view &val ) = 0;
 	
 	virtual DynamicIndexBufferHandle CreateDynamicIndexBuffer( XE::uint64 size ) = 0;
 	
 	virtual DynamicVertexBufferHandle CreateDynamicVertexBuffer( XE::uint64 size ) = 0;
 	
-	virtual DynamicIndexBufferHandle CreateDynamicIndexBuffer( const MemoryView &val ) = 0;
+	virtual DynamicIndexBufferHandle CreateDynamicIndexBuffer( const memory_view &val ) = 0;
 	
-	virtual DynamicVertexBufferHandle CreateDynamicVertexBuffer( const MemoryView &val ) = 0;
+	virtual DynamicVertexBufferHandle CreateDynamicVertexBuffer( const memory_view &val ) = 0;
 	
-	virtual HullShaderHandle CreateHullShader( const MemoryView &val ) = 0;
+	virtual HullShaderHandle CreateHullShader( const memory_view &val ) = 0;
 	
 	virtual HullShaderHandle CreateHullShader( const std::filesystem::path &val ) = 0;
 	
-	virtual PixelShaderHandle CreatePixelShader( const MemoryView &val ) = 0;
+	virtual PixelShaderHandle CreatePixelShader( const memory_view &val ) = 0;
 	
 	virtual PixelShaderHandle CreatePixelShader( const std::filesystem::path &val ) = 0;
 	
-	virtual VertexShaderHandle CreateVertexShader( const MemoryView &val ) = 0;
+	virtual VertexShaderHandle CreateVertexShader( const memory_view &val ) = 0;
 	
 	virtual VertexShaderHandle CreateVertexShader( const std::filesystem::path &val ) = 0;
 	
-	virtual DomainShaderHandle CreateDomainShader( const MemoryView &val ) = 0;
+	virtual DomainShaderHandle CreateDomainShader( const memory_view &val ) = 0;
 	
 	virtual DomainShaderHandle CreateDomainShader( const std::filesystem::path &val ) = 0;
 	
-	virtual ComputeShaderHandle CreateComputeShader( const MemoryView &val ) = 0;
+	virtual ComputeShaderHandle CreateComputeShader( const memory_view &val ) = 0;
 	
 	virtual ComputeShaderHandle CreateComputeShader( const std::filesystem::path &val ) = 0;
 	
-	virtual GeometryShaderHandle CreateGeometryShader( const MemoryView &val ) = 0;
+	virtual GeometryShaderHandle CreateGeometryShader( const memory_view &val ) = 0;
 	
 	virtual GeometryShaderHandle CreateGeometryShader( const std::filesystem::path &val ) = 0;
 	
