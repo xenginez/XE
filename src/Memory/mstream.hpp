@@ -15,12 +15,11 @@ BEG_XE_NAMESPACE
 
 template <class _Elem, class _Traits> class basic_memory_view;
 
-template <class _Traits>
-class _Memory_view_iterator
-{ // iterator for character buffer wrapper
+template <class _Traits> class _Memory_view_iterator
+{
 public:
 	using iterator_category = std::random_access_iterator_tag;
-	using value_type        = typename _Traits::char_type;
+	using value_type        = typename _Traits::element_type;
 	using difference_type   = ptrdiff_t;
 	using pointer           = const value_type *;
 	using reference         = const value_type &;
@@ -28,10 +27,10 @@ public:
 	constexpr _Memory_view_iterator() noexcept
 	#ifdef DEBUG
 		: _Mydata(), _Mysize( 0 ), _Myoff( 0 )
-	#else // ^^^ _ITERATOR_DEBUG_LEVEL >= 1 ^^^ // vvv _ITERATOR_DEBUG_LEVEL == 0 vvv
+	#else
 		: _Myptr()
 	#endif 
-	{ // default-initialize a basic_string_view::const_iterator
+	{
 	}
 
 private:
@@ -40,82 +39,82 @@ private:
 #ifdef DEBUG
 	constexpr _Memory_view_iterator( const pointer _Data, const size_t _Size, const size_t _Off ) noexcept
 		: _Mydata( _Data ), _Mysize( _Size ), _Myoff( _Off )
-	{ // initialize a basic_string_view::const_iterator
+	{
 	}
-#else // ^^^ _ITERATOR_DEBUG_LEVEL >= 1 ^^^ // vvv _ITERATOR_DEBUG_LEVEL == 0 vvv
+#else
 	constexpr explicit _Memory_view_iterator( const pointer _Ptr ) noexcept
 		: _Myptr( _Ptr )
-	{ // initialize a basic_string_view::const_iterator
+	{
 	}
 #endif 
 
 public:
 	constexpr reference operator*() const noexcept
-	{ // return designated object
+	{
+		ASSERT( _Mydata && "cannot dereference value-initialized memory_view iterator" );
+		ASSERT( _Myoff < _Mysize && "cannot dereference end memory_view iterator" );
 	#ifdef DEBUG
-		_STL_VERIFY( _Mydata, "cannot dereference value-initialized string_view iterator" );
-		_STL_VERIFY( _Myoff < _Mysize, "cannot dereference end string_view iterator" );
 		return _Mydata[_Myoff];
-	#else // ^^^ _ITERATOR_DEBUG_LEVEL >= 1 ^^^ // vvv _ITERATOR_DEBUG_LEVEL == 0 vvv
+	#else
 		return *_Myptr;
 	#endif 
 	}
 
 	constexpr pointer operator->() const noexcept
-	{ // return pointer to class object
+	{
+		ASSERT( _Mydata && "cannot dereference value-initialized memory_view iterator" );
+		ASSERT( _Myoff < _Mysize && "cannot dereference end memory_view iterator" );
 	#ifdef DEBUG
-		_STL_VERIFY( _Mydata, "cannot dereference value-initialized string_view iterator" );
-		_STL_VERIFY( _Myoff < _Mysize, "cannot dereference end string_view iterator" );
 		return _Mydata + _Myoff;
-	#else // ^^^ _ITERATOR_DEBUG_LEVEL >= 1 ^^^ // vvv _ITERATOR_DEBUG_LEVEL == 0 vvv
+	#else 
 		return _Myptr;
 	#endif 
 	}
 
 	constexpr _Memory_view_iterator & operator++() noexcept
-	{ // preincrement
+	{
+		ASSERT( _Mydata && "cannot increment value-initialized memory_view iterator" );
+		ASSERT( _Myoff < _Mysize && "cannot increment memory_view iterator past end" );
 	#ifdef DEBUG
-		_STL_VERIFY( _Mydata, "cannot increment value-initialized string_view iterator" );
-		_STL_VERIFY( _Myoff < _Mysize, "cannot increment string_view iterator past end" );
 		++_Myoff;
-	#else // ^^^ _ITERATOR_DEBUG_LEVEL >= 1 ^^^ // vvv _ITERATOR_DEBUG_LEVEL == 0 vvv
+	#else 
 		++_Myptr;
 	#endif 
 		return *this;
 	}
 
 	constexpr _Memory_view_iterator operator++( int ) noexcept
-	{ // postincrement
+	{
 		_Memory_view_iterator _Tmp{ *this };
 		++ * this;
 		return _Tmp;
 	}
 
 	constexpr _Memory_view_iterator & operator--() noexcept
-	{ // predecrement
+	{
+		ASSERT( _Mydata && "cannot decrement value-initialized memory_view iterator" );
+		ASSERT( _Myoff != 0 && "cannot decrement memory_view iterator before begin" );
 	#ifdef DEBUG
-		_STL_VERIFY( _Mydata, "cannot decrement value-initialized string_view iterator" );
-		_STL_VERIFY( _Myoff != 0, "cannot decrement string_view iterator before begin" );
 		--_Myoff;
-	#else // ^^^ _ITERATOR_DEBUG_LEVEL >= 1 ^^^ // vvv _ITERATOR_DEBUG_LEVEL == 0 vvv
+	#else 
 		--_Myptr;
 	#endif 
 		return *this;
 	}
 
 	constexpr _Memory_view_iterator operator--( int ) noexcept
-	{ // postdecrement
+	{
 		_Memory_view_iterator _Tmp{ *this };
 		-- * this;
 		return _Tmp;
 	}
 
 	constexpr _Memory_view_iterator & operator+=( const difference_type _Off ) noexcept
-	{ // increment by integer
+	{
 	#ifdef DEBUG
 		_Verify_offset( _Off );
 		_Myoff += _Off;
-	#else // ^^^ _ITERATOR_DEBUG_LEVEL >= 1 ^^^ // vvv _ITERATOR_DEBUG_LEVEL == 0 vvv
+	#else 
 		_Myptr += _Off;
 	#endif 
 
@@ -135,22 +134,22 @@ public:
 	#ifdef DEBUG
 		if( _Off != 0 )
 		{
-			_STL_VERIFY( _Mydata, "cannot seek value-initialized string_view iterator" );
+			ASSERT( _Mydata && "cannot seek value-initialized memory_view iterator" );
 		}
 
 		if( _Off > 0 )
 		{
-			_STL_VERIFY( _Myoff >= static_cast<size_t>( _Off ), "cannot seek string_view iterator before begin" );
+			ASSERT( _Myoff >= static_cast<size_t>( _Off ) && "cannot seek memory_view iterator before begin" );
 		}
 
 		if( _Off < 0 )
 		{
-		#pragma warning(suppress : 4146) // unary minus operator applied to unsigned type, result still unsigned
-			_STL_VERIFY( _Mysize - _Myoff >= -static_cast<size_t>( _Off ), "cannot seek string_view iterator after end" );
+		#pragma warning(suppress : 4146)
+			ASSERT( _Mysize - _Myoff >= -static_cast<size_t>( _Off ) && "cannot seek memory_view iterator after end" );
 		}
 
 		_Myoff -= _Off;
-	#else // ^^^ _ITERATOR_DEBUG_LEVEL >= 1 ^^^ // vvv _ITERATOR_DEBUG_LEVEL == 0 vvv
+	#else 
 		_Myptr -= _Off;
 	#endif 
 
@@ -167,62 +166,59 @@ public:
 
 	constexpr difference_type operator-( const _Memory_view_iterator & _Right ) const
 		noexcept
-	{ // return difference of iterators
+	{
+		ASSERT( _Mydata == _Right._Mydata && _Mysize == _Right._Mysize && "cannot subtract incompatible memory_view iterators" );
 	#ifdef DEBUG
-		_STL_VERIFY( _Mydata == _Right._Mydata && _Mysize == _Right._Mysize,
-					 "cannot subtract incompatible string_view iterators" );
 		return static_cast<difference_type>( _Myoff - _Right._Myoff );
-	#else // ^^^ _ITERATOR_DEBUG_LEVEL >= 1 ^^^ // vvv _ITERATOR_DEBUG_LEVEL == 0 vvv
+	#else 
 		return _Myptr - _Right._Myptr;
 	#endif 
 	}
 
 	constexpr reference operator[]( const difference_type _Off ) const noexcept
-	{ // subscript
+	{
 		return *( *this + _Off );
 	}
 
 	constexpr bool operator==( const _Memory_view_iterator & _Right ) const
 		noexcept
-	{ // test for iterator equality
+	{
+		ASSERT( _Mydata == _Right._Mydata && _Mysize == _Right._Mysize && "cannot compare incompatible memory_view iterators for equality" );
 	#ifdef DEBUG
-		_STL_VERIFY( _Mydata == _Right._Mydata && _Mysize == _Right._Mysize,
-					 "cannot compare incompatible string_view iterators for equality" );
 		return _Myoff == _Right._Myoff;
-	#else // ^^^ _ITERATOR_DEBUG_LEVEL >= 1 ^^^ // vvv _ITERATOR_DEBUG_LEVEL == 0 vvv
+	#else 
 		return _Myptr == _Right._Myptr;
 	#endif 
 	}
 
 	constexpr bool operator!=( const _Memory_view_iterator & _Right ) const
 		noexcept
-	{ // test for iterator inequality
+	{
 		return !( *this == _Right );
 	}
 
 	constexpr bool operator<( const _Memory_view_iterator & _Right ) const noexcept
-	{ // test if this < _Right
+	{
+		ASSERT( _Mydata == _Right._Mydata && _Mysize == _Right._Mysize && "cannot compare incompatible memory_view iterators" );
 	#ifdef DEBUG
-		_STL_VERIFY( _Mydata == _Right._Mydata && _Mysize == _Right._Mysize,
-					 "cannot compare incompatible string_view iterators" );
 		return _Myoff < _Right._Myoff;
-	#else // ^^^ _ITERATOR_DEBUG_LEVEL >= 1 ^^^ // vvv _ITERATOR_DEBUG_LEVEL == 0 vvv
+	#else 
 		return _Myptr < _Right._Myptr;
 	#endif 
 	}
 
 	constexpr bool operator>( const _Memory_view_iterator & _Right ) const noexcept
-	{ // test if this > _Right
+	{
 		return _Right < *this;
 	}
 
 	constexpr bool operator<=( const _Memory_view_iterator & _Right ) const noexcept
-	{ // test if this <= _Right
+	{
 		return !( _Right < *this );
 	}
 
 	constexpr bool operator>=( const _Memory_view_iterator & _Right ) const noexcept
-	{ // test if this >= _Right
+	{
 		return !( *this < _Right );
 	}
 
@@ -233,22 +229,22 @@ private:
 	#ifdef DEBUG
 		if( _Off != 0 )
 		{
-			_STL_VERIFY( _Mydata, "cannot seek value-initialized string_view iterator" );
+			ASSERT( _Mydata && "cannot seek value-initialized memory_view iterator" );
 		}
 
 		if( _Off < 0 )
 		{
-		#pragma warning(suppress : 4146) // unary minus operator applied to unsigned type, result still unsigned
-			_STL_VERIFY( _Myoff >= -static_cast<size_t>( _Off ), "cannot seek string_view iterator before begin" );
+		#pragma warning(suppress : 4146)
+			ASSERT( _Myoff >= -static_cast<size_t>( _Off ) && "cannot seek memory_view iterator before begin" );
 		}
 
 		if( _Off > 0 )
 		{
-			_STL_VERIFY( _Mysize - _Myoff >= static_cast<size_t>( _Off ), "cannot seek string_view iterator after end" );
+			ASSERT( _Mysize - _Myoff >= static_cast<size_t>( _Off ) && "cannot seek memory_view iterator after end" );
 		}
-	#else // ^^^ _ITERATOR_DEBUG_LEVEL >= 1 ^^^ // vvv _ITERATOR_DEBUG_LEVEL == 0 vvv
+	#else 
 		( void) _Off;
-	#endif  >= 1
+	#endif
 	}
 #endif
 
@@ -257,14 +253,14 @@ private:
 	pointer _Mydata;
 	size_t _Mysize;
 	size_t _Myoff;
-#else // ^^^ _ITERATOR_DEBUG_LEVEL >= 1 ^^^ // vvv _ITERATOR_DEBUG_LEVEL == 0 vvv
+#else 
 	pointer _Myptr;
 #endif 
 };
 
 
 template <class _Elem, class _Traits> class basic_memory_view
-{ // wrapper for any kind of contiguous character buffer
+{
 public:
 	using traits_type            = _Traits;
 	using value_type             = _Elem;
@@ -283,154 +279,141 @@ public:
 	static constexpr auto npos{ static_cast<size_type>( -1 ) };
 
 	constexpr basic_memory_view() noexcept : _Mydata(), _Mysize( 0 )
-	{ // construct empty basic_string_view
+	{
 	}
 
 	constexpr basic_memory_view( const basic_memory_view & ) noexcept = default;
 	constexpr basic_memory_view & operator=( const basic_memory_view & ) noexcept = default;
 
-	constexpr basic_memory_view( const const_pointer _Cts, const size_type _Count ) noexcept // strengthened
+	constexpr basic_memory_view( const const_pointer _Cts, const size_type _Count ) noexcept
 		: _Mydata( _Cts ), _Mysize( _Count )
 	{
 	}
 
 	constexpr const_iterator begin() const noexcept
-	{ // get the beginning of the range
+	{
 	#ifdef DEBUG
 		return const_iterator( _Mydata, _Mysize, 0 );
-	#else // ^^^ _ITERATOR_DEBUG_LEVEL >= 1 ^^^ // vvv _ITERATOR_DEBUG_LEVEL == 0 vvv
+	#else 
 		return const_iterator( _Mydata );
 	#endif 
 	}
 
 	constexpr const_iterator end() const noexcept
-	{ // get the end of the range
+	{
 	#ifdef DEBUG
 		return const_iterator( _Mydata, _Mysize, _Mysize );
-	#else // ^^^ _ITERATOR_DEBUG_LEVEL >= 1 ^^^ // vvv _ITERATOR_DEBUG_LEVEL == 0 vvv
+	#else 
 		return const_iterator( _Mydata + _Mysize );
 	#endif 
 	}
 
 	constexpr const_iterator cbegin() const noexcept
-	{ // get the beginning of the range
+	{
 		return begin();
 	}
 
 	constexpr const_iterator cend() const noexcept
-	{ // get the end of the range
+	{
 		return end();
 	}
 
 	constexpr const_reverse_iterator rbegin() const noexcept
-	{ // get the beginning of the reversed range
+	{
 		return const_reverse_iterator{ end() };
 	}
 
 	constexpr const_reverse_iterator rend() const noexcept
-	{ // get the end of the reversed range
+	{
 		return const_reverse_iterator{ begin() };
 	}
 
 	constexpr const_reverse_iterator crbegin() const noexcept
-	{ // get the beginning of the reversed range
+	{
 		return rbegin();
 	}
 
 	constexpr const_reverse_iterator crend() const noexcept
-	{ // get the end of the reversed range
+	{
 		return rend();
 	}
 
 	constexpr size_type size() const noexcept
-	{ // get the size of this basic_string_view
+	{
 		return _Mysize;
 	}
 
 	constexpr size_type length() const noexcept
-	{ // get the size of this basic_string_view
+	{
 		return _Mysize;
 	}
 
 	constexpr bool empty() const noexcept
-	{ // check whether this basic_string_view is empty
+	{
 		return _Mysize == 0;
 	}
 
 	constexpr const_pointer data() const noexcept
-	{ // get the base pointer of this basic_string_view
+	{
 		return _Mydata;
 	}
 
-	constexpr size_type max_size() const
-		noexcept
-	{ // get the maximum possible size
-	 // bound to PTRDIFF_MAX to make end() - begin() well defined (also makes room for npos)
-	 // bound to static_cast<size_t>(-1) / sizeof(_Elem) by address space limits
+	constexpr size_type max_size() const noexcept
+	{
 		return _Min_value( static_cast<size_t>( PTRDIFF_MAX ), static_cast<size_t>( -1 ) / sizeof( _Elem ) );
 	}
 
 	constexpr const_reference operator[]( const size_type _Off ) const noexcept
-	{ // strengthened
-// get character at offset; assume offset is in range
-	#ifdef DEBUG
-		_STL_VERIFY( _Off < _Mysize, "string_view subscript out of range" );
-	#endif  >= 1
+	{
+		ASSERT( _Off < _Mysize && "memory_view subscript out of range" );
+
 		return _Mydata[_Off];
 	}
 
 	constexpr const_reference at( const size_type _Off ) const
-	{ // get the character at _Off or throw if that is out of range
+	{
 		_Check_offset_exclusive( _Off );
 		return _Mydata[_Off];
 	}
 
 	constexpr const_reference front() const noexcept
-	{ // strengthened
-// returns a reference to the first character in *this
-	#ifdef DEBUG
-		_STL_VERIFY( _Mysize != 0, "cannot call front on empty string_view" );
-	#endif  >= 1
+	{
+		ASSERT( _Mysize != 0 && "cannot call front on empty memory_view" );
+
 		return _Mydata[0];
 	}
 
 	constexpr const_reference back() const noexcept
-	{ // strengthened
-// returns a reference to the last character in *this
-	#ifdef DEBUG
-		_STL_VERIFY( _Mysize != 0, "cannot call back on empty string_view" );
-	#endif  >= 1
+	{
+		ASSERT( _Mysize != 0 && "cannot call back on empty memory_view" );
+
 		return _Mydata[_Mysize - 1];
 	}
 
 	constexpr void remove_prefix( const size_type _Count ) noexcept
-	{ // strengthened
-// chop off the beginning
-	#ifdef DEBUG
-		_STL_VERIFY( _Mysize >= _Count, "cannot remove prefix longer than total size" );
-	#endif  >= 1
+	{
+		ASSERT( _Mysize >= _Count && "cannot remove prefix longer than total size" );
+
 		_Mydata += _Count;
 		_Mysize -= _Count;
 	}
 
 	constexpr void remove_suffix( const size_type _Count ) noexcept
-	{ // strengthened
-// chop off the end
-	#ifdef DEBUG
-		_STL_VERIFY( _Mysize >= _Count, "cannot remove suffix longer than total size" );
-	#endif  >= 1
+	{
+		ASSERT( _Mysize >= _Count && "cannot remove suffix longer than total size" );
+
 		_Mysize -= _Count;
 	}
 
 	constexpr void swap( basic_memory_view & _Other ) noexcept
-	{ // swap contents
-		const basic_memory_view _Tmp{ _Other }; // note: std::swap is not constexpr
+	{
+		const basic_memory_view _Tmp{ _Other };
 		_Other = *this;
 		*this = _Tmp;
 	}
 
 	constexpr size_type copy( _Elem * const _Ptr, size_type _Count, const size_type _Off = 0 ) const
-	{ // copy [_Off, _Off + Count) to [_Ptr, _Ptr + _Count)
+	{
 		_Check_offset( _Off );
 		_Count = _Clamp_suffix_size( _Off, _Count );
 		_Traits::copy( _Ptr, _Mydata + _Off, _Count );
@@ -438,7 +421,7 @@ public:
 	}
 
 	constexpr basic_memory_view substr( const size_type _Off = 0, size_type _Count = npos ) const
-	{ // return a new basic_string_view moved forward by _Off and trimmed to _Count elements
+	{
 		_Check_offset( _Off );
 		_Count = _Clamp_suffix_size( _Off, _Count );
 		return basic_memory_view( _Mydata + _Off, _Count );
@@ -446,7 +429,7 @@ public:
 
 private:
 	constexpr void _Check_offset( const size_type _Off ) const
-	{ // checks whether _Off is in the bounds of [0, size()]
+	{
 		if( _Mysize < _Off )
 		{
 			_Xran();
@@ -454,7 +437,7 @@ private:
 	}
 
 	constexpr void _Check_offset_exclusive( const size_type _Off ) const
-	{ // checks whether _Off is in the bounds of [0, size())
+	{
 		if( _Mysize <= _Off )
 		{
 			_Xran();
@@ -462,12 +445,12 @@ private:
 	}
 
 	constexpr size_type _Clamp_suffix_size( const size_type _Off, const size_type _Size ) const noexcept
-	{ // trims _Size to the longest it can be assuming a string at/after _Off
+	{
 		return _Min_value( _Size, _Mysize - _Off );
 	}
 
 	static void _Xran()
-	{ // report an out_of_range error
+	{
 		ASSERT( false && "invalid memory_view position" );
 	}
 
