@@ -115,6 +115,12 @@ public:
 
 };
 
+template< typename Ty > struct AllocatorProxy
+{
+public:
+	using allocator_type = XE::Allocator< Ty >;
+};
+
 template< typename T >
 using List = std::list<T, Allocator<T>>;
 template< typename T >

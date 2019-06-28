@@ -15,6 +15,9 @@ BEG_XE_NAMESPACE
 
 class MEMORY_API FrameAlloc : public XE::Singleton< FrameAlloc >
 {
+private:
+	struct Private;
+
 public:
 	FrameAlloc();
 
@@ -31,9 +34,8 @@ public:
 	static void capacity();
 
 private:
-	std::atomic<XE::uint8 *> _beg;
-	std::atomic<XE::uint8 *> _cur;
-	std::atomic<XE::uint8 *> _end;
+	Private * _p;
+private:
 };
 
 END_XE_NAMESPACE

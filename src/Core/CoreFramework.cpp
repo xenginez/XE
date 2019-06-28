@@ -272,6 +272,8 @@ void XE::CoreFramework::Update()
 {
 	while( !_p->_Exit )
 	{
+		FrameAlloc::reset();
+
 		for( auto & service : _p->_Services )
 		{
 			if( service != nullptr )
@@ -293,4 +295,7 @@ void XE::CoreFramework::Clearup()
 	}
 
 	_p->_Services.clear();
+
+	FrameAlloc::clear();
+	ObjectAlloc::clear();
 }

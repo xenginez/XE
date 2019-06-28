@@ -36,7 +36,7 @@ void XE::LoggerService::Clearup()
 
 void XE::LoggerService::Log( LoggerLevel level, const String& file, XE::uint64 line, const String& text )
 {
-	LoggerPtr log = XE::make_object<Logger>();
+	LoggerPtr log = XE::make_shared<Logger>();
 
 	log->File = file;
 	log->Line = line;

@@ -13,20 +13,28 @@
 
 BEG_XE_NAMESPACE
 
-class MEMORY_API ObjectAlloc : public XE::NonCopyable
+class MEMORY_API ObjectAlloc : public XE::Singleton< ObjectAlloc >
 {
-public:
-	ObjectAlloc() = delete;
+private:
+	struct Private;
 
-	~ObjectAlloc() = delete;
+public:
+	ObjectAlloc();
+
+	~ObjectAlloc();
 
 public:
 	static void * allocate( XE::uint64 size );
 
-	static void * reallocate( void * ptr, XE::uint64 size );
+	static void deallocate( void * ptr, XE::uint64 size );
 
-	static void deallocate( void * ptr );
+public:
+	static void clear();
 
+	static void reset();
+
+private:
+	Private * _p;
 };
 
 END_XE_NAMESPACE
