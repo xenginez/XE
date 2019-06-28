@@ -148,13 +148,23 @@ XE::IServicePtr XE::CoreFramework::GetService( const IMetaClassPtr & val ) const
 
 bool XE::CoreFramework::RegisterService( const IMetaClassPtr & val )
 {
-	if( val->CanConvert( IService::GetMetaClassStatic() ) && !val->IsAbstract() )
+	if( val->CanConvert( IService::GetMetaClassStatic() ) && !val->IsAbstract() && !val->IsSingleton() )
 	{
+		for( const auto & sev : _p->_Services )
+		{
+			if( sev->GetMetaClass()->CanConvert( val ) )
+			{
+				return false;
+			}
+		}
+
 		if( auto p = val->ConstructPtr() )
 		{
 			IServicePtr service = SP_CAST < IService >( p );
 
 			service->SetFramework( this );
+
+			service->Prepare();
 
 			service->Startup();
 
@@ -171,7 +181,7 @@ void XE::CoreFramework::UnregisterService( const IMetaClassPtr & val )
 {
 	auto it = std::find_if( _p->_Services.begin(), _p->_Services.end(), [val]( const IServicePtr & srv )
 							{
-								return srv->GetMetaClass() == val || srv->GetMetaClass()->CanConvert( val );
+								return srv->GetMetaClass()->CanConvert( val );
 							} );
 
 	if( it != _p->_Services.end() )
@@ -237,6 +247,7 @@ void XE::CoreFramework::Prepare()
 	for( auto & it : _p->_Services )
 	{
 		it->SetFramework( this );
+		it->Prepare();
 	}
 }
 

@@ -180,3 +180,8 @@ void XE::AssetsService::UnloadAsset( const String & val )
 		_p->_Assets.erase( it );
 	}
 }
+
+void XE::AssetsService::Prepare()
+{
+
+}

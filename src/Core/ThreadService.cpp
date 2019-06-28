@@ -229,3 +229,8 @@ bool XE::ThreadService::RegisterTask( TaskType task, TID tid /*= std::this_threa
 
 	return false;
 }
+
+void XE::ThreadService::Prepare()
+{
+
+}

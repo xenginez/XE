@@ -76,6 +76,11 @@ XE::String XE::LocalizationService::LocalizedString( const String& val ) const
 	return val;
 }
 
+void XE::LocalizationService::Prepare()
+{
+
+}
+
 void LocalizationService::UpdateLocalized()
 {
 	std::string path = (GetFramework()->GetUserDataPath() / "language.csv").string();

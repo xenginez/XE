@@ -48,3 +48,8 @@ void XE::AudioService::Clearup()
 	alcDestroyContext( context );
 	alcCloseDevice( device );
 }
+
+void XE::AudioService::Prepare()
+{
+
+}

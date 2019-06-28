@@ -13,12 +13,12 @@
 
 BEG_XE_NAMESPACE
 
-class MEMORY_API Alloc : public XE::Singleton< Alloc >
+class MEMORY_API Alloc : public XE::NonCopyable
 {
 public:
-	Alloc();
+	Alloc() = delete;
 
-	~Alloc();
+	~Alloc() = delete;
 
 public:
 	static void * allocate( XE::uint64 size );

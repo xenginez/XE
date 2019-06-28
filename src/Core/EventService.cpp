@@ -202,3 +202,8 @@ void XE::EventService::ProcessFrameEvent()
 		}
 	}
 }
+
+void XE::EventService::Prepare()
+{
+
+}

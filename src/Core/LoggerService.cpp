@@ -85,3 +85,8 @@ void XE::LoggerService::UnregisterListener( XE::uint64 index )
 
 	_p->_Listeners[index] = nullptr;
 }
+
+void XE::LoggerService::Prepare()
+{
+
+}

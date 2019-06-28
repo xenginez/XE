@@ -125,3 +125,8 @@ XE::uint64 XE::PluginService::LoadPlugin( const String & name )
 
 	return 0;
 }
+
+void XE::PluginService::Prepare()
+{
+
+}

@@ -4,16 +4,6 @@
 
 USING_XE
 
-XE::Alloc::Alloc()
-{
-
-}
-
-XE::Alloc::~Alloc()
-{
-
-}
-
 void * XE::Alloc::allocate( XE::uint64 size )
 {
 	return scalable_malloc( size );

@@ -26,6 +26,8 @@ public:
 	~ThreadService() override;
 
 public:
+	void Prepare()override;
+
 	bool Startup() override;
 
 	void Update() override;

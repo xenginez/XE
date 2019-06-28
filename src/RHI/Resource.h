@@ -23,7 +23,7 @@ public:
 	virtual ~Resource();
 
 public:
-	virtual bool PreInit() = 0;
+	virtual bool Prepare() = 0;
 };
 
 END_XE_NAMESPACE

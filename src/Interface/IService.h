@@ -28,6 +28,8 @@ public:
 	void SetFramework( IFrameworkPtr val );
 
 public:
+	virtual void Prepare() = 0;
+
 	virtual bool Startup() = 0;
 
 	virtual void Update() = 0;

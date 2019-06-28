@@ -108,3 +108,8 @@ void XE::ConfigService::Load( const pugi::xml_node_iterator & parent, const std:
 		Load( it, this_name );
 	}
 }
+
+void XE::ConfigService::Prepare()
+{
+
+}

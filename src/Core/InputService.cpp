@@ -172,3 +172,8 @@ XE::String XE::InputService::GetKeycodeString( KeyCode val ) const
 {
 	return EnumID<KeyCode>::Get()->FindName( (XE::int64)val );
 }
+
+void XE::InputService::Prepare()
+{
+
+}

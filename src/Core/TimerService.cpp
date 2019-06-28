@@ -114,3 +114,8 @@ XE::real XE::TimerService::GetUnscaleFixedDeltaTime() const
 {
 	return _p->_FixedDetlaTime;
 }
+
+void XE::TimerService::Prepare()
+{
+
+}
