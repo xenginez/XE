@@ -15,7 +15,7 @@ BEG_XE_NAMESPACE
 
 template< typename T > class Singleton : public NonCopyable
 {
-public:
+protected:
 	static T * This()
 	{
 		static T value;

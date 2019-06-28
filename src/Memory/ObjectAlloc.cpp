@@ -8,10 +8,11 @@
 
 USING_XE
 
-struct PMemGroup
+class ObjectGroup
 {
-	PMemGroup( XE::uint64 size )
-		:Size( size ), Mems( size * 32 )
+public:
+	ObjectGroup( XE::uint64 size )
+		:ObjectSize( size ), Mems( size * 32 )
 	{
 		for( XE::uint64 i = 0; i < 32; ++i )
 		{
@@ -19,40 +20,27 @@ struct PMemGroup
 		}
 	}
 
-	PMemGroup( const PMemGroup & val )
-		:Size( val.Size ), Mems( val.Mems ), Frees( val.Frees )
+	ObjectGroup( ObjectGroup && val )
+		:ObjectSize( val.ObjectSize ), Mems( std::move( val.Mems ) ), Frees( std::move( val.Frees ) )
 	{
 
 	}
 
-	void * alloc()
+public:
+	void * alloc( XE::uint64 count )
 	{
 		XE::int64 i = 0;
 
 		if( Frees.try_pop( i ) )
 		{
-			return &( Mems[i * Size] );
+			return &( Mems[i * ObjectSize] );
 		}
 
-		ResizeMutex.lock();
-		try
-		{
-			XE::uint64 m_size = Mems.size();
-			Mems.resize( m_size * 2 );
-			for( XE::uint64 j = 0; j < m_size / Size; ++j )
-			{
-				Frees.push( j + ( m_size / Size ) );
-			}
-		}
-		catch( ... )
-		{
-			ResizeMutex.unlock();
-		}
-		ResizeMutex.unlock();
+		capacity();
 
 		if( Frees.try_pop( i ) )
 		{
-			return &( Mems[i * Size] );
+			return &( Mems[i * ObjectSize] );
 		}
 
 		return nullptr;
@@ -62,10 +50,23 @@ struct PMemGroup
 	{
 		XE::uint64 i = ( XE::uint64 )ptr - ( XE::uint64 )( &( Mems[0] ) );
 
-		Frees.push( i / Size );
+		Frees.push( i / ObjectSize );
 	}
 
-	XE::uint64 Size;
+	void capacity()
+	{
+		std::lock_guard<std::mutex> lock( ResizeMutex );
+
+		XE::uint64 m_size = Mems.size();
+		Mems.resize( m_size * 2 );
+		for( XE::uint64 j = 0; j < m_size / ObjectSize; ++j )
+		{
+			Frees.push( j + ( m_size / ObjectSize ) );
+		}
+	}
+
+private:
+	XE::uint64 ObjectSize;
 	std::mutex ResizeMutex;
 	tbb::concurrent_vector<XE::uint8> Mems;
 	tbb::concurrent_priority_queue<XE::int64> Frees;
@@ -73,46 +74,41 @@ struct PMemGroup
 
 struct XE::ObjectAlloc::Private
 {
-	tbb::concurrent_hash_map< XE::uint64, PMemGroup > Groups;
+	tbb::concurrent_hash_map< XE::uint64, ObjectGroup > Groups;
 };
 
 XE::ObjectAlloc::ObjectAlloc()
 	:_p( new Private )
 {
-	reset();
 }
 
 XE::ObjectAlloc::~ObjectAlloc()
 {
-	clear();
-
 	delete _p;
 }
 
-void * XE::ObjectAlloc::allocate( XE::uint64 size )
+void * XE::ObjectAlloc::allocate( XE::uint64 hash, XE::uint64 size, XE::uint64 count )
 {
 	size = ALIGNED64( size );
 
-	tbb::concurrent_hash_map< XE::uint64, PMemGroup >::accessor accessor;
+	tbb::concurrent_hash_map< XE::uint64, ObjectGroup >::accessor accessor;
 
-	if( This()->_p->Groups.find( accessor, size ) )
+	if( This()->_p->Groups.find( accessor, hash ) )
 	{
-		return accessor->second.alloc();
+		return accessor->second.alloc( count );
 	}
-	else if( This()->_p->Groups.insert( accessor, { size, PMemGroup( size ) } ) )
+	else if( This()->_p->Groups.insert( accessor, { hash, ObjectGroup( size ) } ) )
 	{
-		return accessor->second.alloc();
+		return accessor->second.alloc( count );
 	}
 
 	return nullptr;
 }
 
-void XE::ObjectAlloc::deallocate( void * ptr, XE::uint64 size )
+void XE::ObjectAlloc::deallocate( void * ptr, XE::uint64 hash )
 {
-	size = ALIGNED64( size );
-
-	tbb::concurrent_hash_map< XE::uint64, PMemGroup >::accessor accessor;
-	if( This()->_p->Groups.find( accessor, size ) )
+	tbb::concurrent_hash_map< XE::uint64, ObjectGroup >::accessor accessor;
+	if( This()->_p->Groups.find( accessor, hash ) )
 	{
 		return accessor->second.free( ptr );
 	}
@@ -121,18 +117,4 @@ void XE::ObjectAlloc::deallocate( void * ptr, XE::uint64 size )
 void XE::ObjectAlloc::clear()
 {
 	This()->_p->Groups.clear();
-}
-
-void XE::ObjectAlloc::reset()
-{
-	clear();
-
-	This()->_p->Groups.insert( std::make_pair( 8, PMemGroup( 8 ) ) );
-	This()->_p->Groups.insert( std::make_pair( 16, PMemGroup( 16 ) ) );
-	This()->_p->Groups.insert( std::make_pair( 32, PMemGroup( 32 ) ) );
-	This()->_p->Groups.insert( std::make_pair( 64, PMemGroup( 64 ) ) );
-	This()->_p->Groups.insert( std::make_pair( 80, PMemGroup( 80 ) ) );
-	This()->_p->Groups.insert( std::make_pair( 112, PMemGroup( 112 ) ) );
-	This()->_p->Groups.insert( std::make_pair( 176, PMemGroup( 176 ) ) );
-	This()->_p->Groups.insert( std::make_pair( 256, PMemGroup( 256 ) ) );
 }

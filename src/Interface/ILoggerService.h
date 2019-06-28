@@ -22,8 +22,6 @@ public:
 	LoggerLevel Level;
 	std::chrono::system_clock::time_point Time;
 };
-DECL_PTR( Logger );
-DECL_OBJECT_POOL( Logger );
 
 class INTERFACE_API ILoggerService : public IService
 {

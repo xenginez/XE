@@ -14,6 +14,7 @@
 BEG_XE_NAMESPACE
 
 DECL_PTR( Event );
+DECL_PTR( Logger );
 DECL_PTR( Object );
 DECL_PTR( Prefab );
 DECL_PTR( IService );
@@ -33,6 +34,8 @@ DECL_PTR( IPhysicsService );
 DECL_PTR( INavigationService );
 DECL_PTR( ILocalizationService );
 class IFramework; typedef IFramework* IFrameworkPtr;
+
+DECL_OBJECT_POOL( Logger );
 
 using TID = std::thread::id;
 

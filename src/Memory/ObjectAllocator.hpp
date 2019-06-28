@@ -68,13 +68,13 @@ public:
 public:
 	void deallocate( _Ty * const _Ptr, const XE::uint64 _Count )
 	{
-		XE::ObjectAlloc::deallocate( _Ptr, sizeof( _Ty ) );
+		XE::ObjectAlloc::deallocate( _Ptr, typeid( _Ty ).hash_code() );
 	}
 
 public:
 	_Ty * allocate( const XE::uint64 _Count )
 	{
-		return ( static_cast<_Ty *>( XE::ObjectAlloc::allocate( sizeof( _Ty ) * _Count ) ) );
+		return ( static_cast<_Ty *>( XE::ObjectAlloc::allocate( typeid(_Ty).hash_code(), sizeof( _Ty ), _Count ) ) );
 	}
 
 	_Ty * allocate( const XE::uint64 _Count, const void * )

@@ -14,6 +14,7 @@
 BEG_XE_NAMESPACE
 
 DECL_PTR( ProfilerFrame );
+DECL_OBJECT_POOL( ProfilerFrame );
 
 enum class Language
 {
