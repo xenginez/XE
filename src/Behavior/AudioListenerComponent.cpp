@@ -26,10 +26,10 @@ void XE::AudioListenerComponent::OnUpdate( XE::real dt )
 	AL_CHECK( alListener3f( AL_VELOCITY, 0.0f, 0.0f, 0.0f ) );
 
 	Vec3 pos = GetTransform()->GetWorldPosition();
-	AL_CHECK( alListener3f( AL_POSITION, pos.x, pos.y, pos.z ) );
+	AL_CHECK( alListener3f( AL_POSITION, (ALfloat )pos.x, (ALfloat )pos.y, (ALfloat )pos.z ) );
 
 	Vec3 forward = GetTransform()->GetWorldForward();
 	Vec3 up = GetTransform()->GetWorldUp();
-	XE::real buf[6] = { forward.x, forward.y, forward.z, up.x, up.y, up.z };
+	ALfloat buf[6] = { (ALfloat )forward.x, (ALfloat )forward.y, (ALfloat )forward.z, (ALfloat )up.x, (ALfloat )up.y, (ALfloat )up.z };
 	AL_CHECK( alListenerfv( AL_ORIENTATION, buf ) );
 }

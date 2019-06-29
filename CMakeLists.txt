@@ -26,9 +26,20 @@ else()
 	set(XE_TBB_POSTFIX)
 endif()
 
+option (USE_MATH "whether to use a high-precision float type" OFF)
+option (USE_SHARED_LIBS "whether to use a dynamic library" ON)
 
 
-set(BUILD_SHARED_LIBS ON)
+if( USE_MATH)
+	add_definitions(-DXE_DOUBLE)
+endif()
+
+if( USE_SHARED_LIBS)
+	set(BUILD_SHARED_LIBS ON)
+else()
+	set(BUILD_SHARED_LIBS OFF)
+endif()
+
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_CURRENT_SOURCE_DIR}/target/${XE_PLATFORM_PATH}/debug/bin)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${CMAKE_CURRENT_SOURCE_DIR}/target/${XE_PLATFORM_PATH}/debug/bin)

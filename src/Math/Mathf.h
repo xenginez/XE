@@ -743,15 +743,16 @@ XE_INLINE bool operator !=(const XE::Mat4& left, const XE::Mat4& right)
 		left[3][0] != right[3][0] || left[3][1] != right[3][1] || left[3][2] != right[3][2] || left[3][3] != right[3][3];
 }
 
+
 class MATH_API Mathf
 {
 public:
-	static const XE::real Pi;
-	static const XE::real Pi2;
-	static const XE::real Pi4;
-	static const XE::real Nan;
-	static const XE::real Epsilon;
-	static const XE::real Infinity;
+	static constexpr XE::real Pi = ( XE::real )3.14159265358979323846;
+	static constexpr XE::real Pi2 = ( XE::real )1.57079632679489661923;
+	static constexpr XE::real Pi4 = ( XE::real )0.785398163397448309616;
+	static constexpr XE::real Nan = std::numeric_limits<XE::real>::quiet_NaN();
+	static constexpr XE::real Epsilon = std::numeric_limits<XE::real>::epsilon();
+	static constexpr XE::real Infinity = std::numeric_limits<XE::real>::infinity();
 
 public:
 	static XE_INLINE XE::real Abs( XE::real r )
@@ -791,7 +792,7 @@ public:
 
 	static XE_INLINE XE::real Log( XE::real x )
 	{
-		return std::logf( x );
+		return std::log( x );
 	}
 
 	static XE_INLINE void SinCos( XE::real u, XE::real& s, XE::real& c )

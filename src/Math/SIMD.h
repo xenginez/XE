@@ -31,19 +31,19 @@ public:
 #endif
 
 public:
-	static XE_INLINE XE::real X( simd_t a );
+	static XE_INLINE XE::float32 X( simd_t a );
 
-	static XE_INLINE XE::real Y( simd_t a );
+	static XE_INLINE XE::float32 Y( simd_t a );
 
-	static XE_INLINE XE::real Z( simd_t a );
+	static XE_INLINE XE::float32 Z( simd_t a );
 
-	static XE_INLINE XE::real W( simd_t a );
+	static XE_INLINE XE::float32 W( simd_t a );
 
-	static XE_INLINE void Stream( XE::real * ptr, simd_t a );
+	static XE_INLINE void Stream( XE::float32 * ptr, simd_t a );
 
-	static XE_INLINE simd_t Load( const XE::real * ptr );
+	static XE_INLINE simd_t Load( const XE::float32 * ptr );
 
-	static XE_INLINE simd_t Load( XE::real x, XE::real y, XE::real z, XE::real w );
+	static XE_INLINE simd_t Load( XE::float32 x, XE::float32 y, XE::float32 z, XE::float32 w );
 
 	static XE_INLINE simd_t Zero();
 

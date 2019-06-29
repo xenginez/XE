@@ -1,38 +1,38 @@
 #define Swizzle( a, x, y, z, w) ( __builtin_shuffle( a, (uint32x4_t){ x, y, z, w } ) )
 
-XE::real XE::SIMD::X( simd_t a )
+XE::float32 XE::SIMD::X( simd_t a )
 {
 	return vgetq_lane_f32( a, 0 );
 }
 
-XE::real XE::SIMD::Y( simd_t a )
+XE::float32 XE::SIMD::Y( simd_t a )
 {
 	return vgetq_lane_f32( a, 1 );
 }
 
-XE::real XE::SIMD::Z( simd_t a )
+XE::float32 XE::SIMD::Z( simd_t a )
 {
 	return vgetq_lane_f32( a, 2 );
 }
 
-XE::real XE::SIMD::W( simd_t a )
+XE::float32 XE::SIMD::W( simd_t a )
 {
 	return vgetq_lane_f32( a, 3 );
 }
 
-void XE::SIMD::Stream( XE::real * ptr, simd_t a )
+void XE::SIMD::Stream( XE::float32 * ptr, simd_t a )
 {
 	vst1q_f32( ptr, a );
 }
 
-XE::SIMD::simd_t XE::SIMD::Load( const XE::real * ptr )
+XE::SIMD::simd_t XE::SIMD::Load( const XE::float32 * ptr )
 {
 	return vld1q_f32( ptr );
 }
 
-XE::SIMD::simd_t XE::SIMD::Load( XE::real x, XE::real y, XE::real z, XE::real w )
+XE::SIMD::simd_t XE::SIMD::Load( XE::float32 x, XE::float32 y, XE::float32 z, XE::float32 w )
 {
-	const XE::real val[4] = { x, y, z, w };
+	const XE::float32 val[4] = { x, y, z, w };
 	return Load( val );
 }
 
