@@ -13,6 +13,9 @@
 
 BEG_XE_NAMESPACE
 
+#define _D() auto _d = This()
+#define _P() auto _p = This()->_p
+
 template< typename T > class Singleton : public NonCopyable
 {
 protected:

@@ -29,9 +29,9 @@ public:
 	static void Deallocate( void * ptr, XE::uint64 hash_code );
 
 public:
-	static void clear();
+	static void Clear();
 
-	static void reset();
+	static void ShrinkToFit();
 
 private:
 	Private * _p;

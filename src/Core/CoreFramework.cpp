@@ -48,6 +48,9 @@ XE::CoreFramework::CoreFramework()
 XE::CoreFramework::~CoreFramework()
 {
 	delete _p;
+
+	FrameAlloc::Clear();
+	ObjectAlloc::Clear();
 }
 
 int XE::CoreFramework::Exec()
@@ -272,7 +275,7 @@ void XE::CoreFramework::Update()
 {
 	while( !_p->_Exit )
 	{
-		FrameAlloc::clear();
+		FrameAlloc::Reset();
 
 		for( auto & service : _p->_Services )
 		{

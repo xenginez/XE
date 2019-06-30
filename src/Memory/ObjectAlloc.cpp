@@ -140,16 +140,16 @@ public:
 	XE::uint8 * End;
 };
 
-class ObjectBlock
+class Block
 {
 public:
-	ObjectBlock( XE::uint64 size )
+	Block( XE::uint64 size )
 		:Size( size ), Pages( Page( size, KBYTE( 4 ) / size ) )
 	{
 
 	}
 
-	ObjectBlock( ObjectBlock && val )
+	Block( Block && val )
 		:Size( val.Size ), Pages( val.Pages )
 	{
 
@@ -184,12 +184,15 @@ public:
 
 	void ShrinkToFit()
 	{
-		for( auto it = Pages.rbegin(); it != Pages.rend(); ++it )
+		if( Pages.size() > 1 )
 		{
-			if( it->Empty() )
+			for( auto it = Pages.rbegin(); it != Pages.rend(); ++it )
 			{
-				Pages.erase( it.base() );
-				return;
+				if( it->Empty() )
+				{
+					Pages.erase( it.base() );
+					return;
+				}
 			}
 		}
 	}
@@ -201,7 +204,7 @@ private:
 
 struct XE::ObjectAlloc::Private
 {
-	tbb::concurrent_hash_map< XE::uint64, ObjectBlock > Blocks;
+	tbb::concurrent_hash_map< XE::uint64, Block > Blocks;
 };
 
 XE::ObjectAlloc::ObjectAlloc()
@@ -218,13 +221,13 @@ void * XE::ObjectAlloc::Allocate( XE::uint64 hash_code, XE::uint64 size, XE::uin
 {
 	size = ALIGNED64( size );
 
-	tbb::concurrent_hash_map< XE::uint64, ObjectBlock >::accessor accessor;
+	tbb::concurrent_hash_map< XE::uint64, Block >::accessor accessor;
 
 	if( This()->_p->Blocks.find( accessor, hash_code ) )
 	{
 		return accessor->second.Allocate();
 	}
-	else if( This()->_p->Blocks.insert( accessor, { hash_code, ObjectBlock( size ) } ) )
+	else if( This()->_p->Blocks.insert( accessor, { hash_code, Block( size ) } ) )
 	{
 		return accessor->second.Allocate();
 	}
@@ -234,14 +237,22 @@ void * XE::ObjectAlloc::Allocate( XE::uint64 hash_code, XE::uint64 size, XE::uin
 
 void XE::ObjectAlloc::Deallocate( void * ptr, XE::uint64 hash_code )
 {
-	tbb::concurrent_hash_map< XE::uint64, ObjectBlock >::accessor accessor;
+	tbb::concurrent_hash_map< XE::uint64, Block >::accessor accessor;
 	if( This()->_p->Blocks.find( accessor, hash_code ) )
 	{
 		return accessor->second.Deallocate( ptr );
 	}
 }
 
-void XE::ObjectAlloc::clear()
+void XE::ObjectAlloc::Clear()
 {
 	This()->_p->Blocks.clear();
+}
+
+void XE::ObjectAlloc::ShrinkToFit()
+{
+	for( auto it = This()->_p->Blocks.begin(); it != This()->_p->Blocks.end(); ++it )
+	{
+		it->second.ShrinkToFit();
+	}
 }

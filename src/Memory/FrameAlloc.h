@@ -27,11 +27,12 @@ public:
 	static void * Allocate( const XE::uint64 _Count );
 
 public:
-	static void clear();
+	static void Clear();
 
-	static void reset();
+	static void Reset();
 
-	static void capacity();
+private:
+	static void Capacity();
 
 private:
 	Private * _p;

@@ -4,6 +4,8 @@ USING_XE
 
 struct XE::FrameAlloc::Private
 {
+	std::mutex Lock;
+	XE::uint64 Mask = 0;
 	std::atomic<XE::uint8 *> _beg = nullptr;
 	std::atomic<XE::uint8 *> _cur = nullptr;
 	std::atomic<XE::uint8 *> _end = nullptr;
@@ -12,56 +14,75 @@ struct XE::FrameAlloc::Private
 XE::FrameAlloc::FrameAlloc()
 	:_p( new Private )
 {
-	reset();
+	_p->_beg = ( XE::uint8 * )Alloc::Allocate( MBYTE( 4 ) );
+	_p->_cur = _p->_beg.load();
+	_p->_end = _p->_beg + ( MBYTE( 4 ) );
 }
 
 XE::FrameAlloc::~FrameAlloc()
 {
-	clear();
+	Clear();
 
 	delete _p;
 }
 
 void * XE::FrameAlloc::Allocate( const XE::uint64 _Count )
 {
-	if ( XE::uint64( This()->_p->_end - This()->_p->_cur ) < _Count )
+	_P();
+
+	if( XE::uint64( _p->_end - _p->_cur ) < _Count )
 	{
-		capacity();
+		std::lock_guard<std::mutex> lock( _p->Lock );
+
+		if( XE::uint64( _p->_end - _p->_cur ) < _Count )
+		{
+			Capacity();
+		}
 	}
 
-	XE::uint8 * p = This()->_p->_cur;
-
-	while( !This()->_p->_cur.compare_exchange_weak( p, p + _Count ) );
+	XE::uint8 * p = _p->_cur;
+	while( !_p->_cur.compare_exchange_weak( p, p + _Count ) );
 
 	return p;
 }
 
-void XE::FrameAlloc::clear()
+void XE::FrameAlloc::Clear()
 {
-	if ( This()->_p->_beg )
+	_P();
+
+	if( _p->_beg )
 	{
-		Alloc::Deallocate( This()->_p->_beg );
+		Alloc::Deallocate( _p->_beg );
 	}
 
-	This()->_p->_beg = nullptr;
-	This()->_p->_cur = nullptr;
-	This()->_p->_end = nullptr;
+	_p->_beg = nullptr;
+	_p->_cur = nullptr;
+	_p->_end = nullptr;
 }
 
-void XE::FrameAlloc::reset()
+void XE::FrameAlloc::Reset()
 {
-	if ( This()->_p->_beg == nullptr )
+	_P();
+
+	if( _p->_beg == nullptr )
 	{
-		This()->_p->_beg = (XE::uint8 *)Alloc::Allocate( ONE_MBYTE * 4 );
-		This()->_p->_end = This()->_p->_beg + ( ONE_MBYTE * 4 );
+		_p->_beg = ( XE::uint8 * )Alloc::Allocate( MBYTE( 4 ) );
+		_p->_end = _p->_beg + ( MBYTE( 4 ) );
 	}
 
-	This()->_p->_cur = This()->_p->_beg.load();
+	if( _p->Mask == 1 )
+	{
+		_p->_cur = _p->_beg.load();
+	}
+
+	_p->Mask = ( _p->Mask + 1 ) % 2;
 }
 
-void XE::FrameAlloc::capacity()
+void XE::FrameAlloc::Capacity()
 {
-	XE::uint64 size = ( This()->_p->_end - This()->_p->_beg ) * 2;
-	This()->_p->_beg = (XE::uint8 *)Alloc::Reallocate( This()->_p->_beg, size );
-	This()->_p->_end = This()->_p->_beg + size;
+	_P();
+
+	XE::uint64 size = ( _p->_end - _p->_beg ) * 2;
+	_p->_beg = ( XE::uint8 * )Alloc::Reallocate( _p->_beg, size );
+	_p->_end = _p->_beg + size;
 }
