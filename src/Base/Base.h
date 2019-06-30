@@ -18,4 +18,7 @@
 #include "Singleton.hpp"
 #include "NonCopyable.hpp"
 
+#include "mstream.hpp"
+#include "concurrent_list.hpp"
+
 #endif // __BASE_H__B7D1B206_632A_4E34_BB88_68449EC6138E

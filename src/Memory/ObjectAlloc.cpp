@@ -1,80 +1,207 @@
 #include "ObjectAlloc.h"
 
-#include "Alloc.h"
+#include "Allocator.hpp"
 
-#include <tbb/concurrent_vector.h>
 #include <tbb/concurrent_hash_map.h>
-#include <tbb/concurrent_priority_queue.h>
 
 USING_XE
 
-class ObjectGroup
+class Page
 {
 public:
-	ObjectGroup( XE::uint64 size )
-		:ObjectSize( size ), Mems( size * 32 )
+	Page()
+		:Size( 0 ), Bit( nullptr ), Beg( nullptr ), End( nullptr )
 	{
-		for( XE::uint64 i = 0; i < 32; ++i )
-		{
-			Frees.push( i );
-		}
+
 	}
 
-	ObjectGroup( ObjectGroup && val )
-		:ObjectSize( val.ObjectSize ), Mems( std::move( val.Mems ) ), Frees( std::move( val.Frees ) )
+	Page( Page && val )
+		:Size( val.Size ), Bit( val.Bit ), Beg( val.Beg ), End( val.End )
 	{
 
+	}
+
+	Page( const Page & val )
+		:Size( val.Size )
+	{
+		XE::uint64 count = ( val.End - val.Beg ) / val.Size;
+		XE::uint64 bit_count = count / 32 + 1;
+		Bit = static_cast< XE::uint8 * >( Alloc::Allocate( val.End - val.Bit ) );
+		Beg = Bit + bit_count;
+		End = Bit + Size * count + bit_count;
+		std::memset( Bit, 0, Size * count + bit_count );
+	}
+
+	Page( XE::uint64 size, XE::uint64 count )
+		:Size( size )
+	{
+		XE::uint64 bit_count = count / 32 + 1;
+		Bit = static_cast< XE::uint8 * >( Alloc::Allocate( size * count + bit_count ) );
+		Beg = Bit + bit_count;
+		End = Bit + size * count + bit_count;
+		std::memset( Bit, 0, size * count + bit_count );
+	}
+
+	~Page()
+	{
+		Alloc::Deallocate( Bit );
 	}
 
 public:
-	void * alloc( XE::uint64 count )
+	XE::uint8 * Allocate()
 	{
-		XE::int64 i = 0;
+		XE::uint64 count = ( ( End - Beg ) / Size ) / 32 + 1;
+		std::atomic<XE::uint32> * bp = reinterpret_cast< std::atomic<XE::uint32> * >( Bit );
 
-		if( Frees.try_pop( i ) )
+		for( int i = 0; i < count; ++i )
 		{
-			return &( Mems[i * ObjectSize] );
-		}
-
-		capacity();
-
-		if( Frees.try_pop( i ) )
-		{
-			return &( Mems[i * ObjectSize] );
+			XE::uint32 value = bp[i].load();
+			if( value != 0XFFFFFFFF )
+			{
+				XE::uint32 index = GetFirstBitZero( value );
+				if( bp[i].compare_exchange_weak( value, value | ( 1 << index ) ) )
+				{
+					SetBit( i * 32 + index, true );
+					return Beg + ( i * 32 + index ) * Size;
+				}
+				index = GetFirstBitZero( value );
+				if( bp[i].compare_exchange_weak( value, value | ( 1 << index ) ) )
+				{
+					SetBit( i * 32 + index, true );
+					return Beg + ( i * 32 + index ) * Size;
+				}
+				index = GetFirstBitZero( value );
+				if( bp[i].compare_exchange_weak( value, value | ( 1 << index ) ) )
+				{
+					SetBit( i * 32 + index, true );
+					return Beg + ( i * 32 + index ) * Size;
+				}
+			}
 		}
 
 		return nullptr;
 	}
 
-	void free( void * ptr )
+	void Deallocate( void * p )
 	{
-		XE::uint64 i = ( XE::uint64 )ptr - ( XE::uint64 )( &( Mems[0] ) );
-
-		Frees.push( i / ObjectSize );
+		SetBit( ( static_cast< XE::uint8 * >( p ) - Beg ) / Size, false );
 	}
 
-	void capacity()
+public:
+	bool Empty() const
 	{
-		std::lock_guard<std::mutex> lock( ResizeMutex );
+		XE::uint64 count = ( ( End - Beg ) / Size ) / 32 + 1;
+		std::atomic<XE::uint32> * bp = reinterpret_cast< std::atomic<XE::uint32> * >( Bit );
 
-		XE::uint64 m_size = Mems.size();
-		Mems.resize( m_size * 2 );
-		for( XE::uint64 j = 0; j < m_size / ObjectSize; ++j )
+		for( int i = 0; i < count; ++i )
 		{
-			Frees.push( j + ( m_size / ObjectSize ) );
+			if( bp[i].load() != 0 )
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	XE::uint64 Count() const
+	{
+		return ( End - Beg ) / Size;
+	}
+
+	bool IsFrom( void * p ) const
+	{
+		return p >= Beg && p < End;
+	}
+
+private:
+	XE_INLINE XE::uint32 GetFirstBitZero( XE::uint32 mask )
+	{
+		XE::uint32 index = mask;
+		index = ( index - 1 ) & ~index;
+		index = index & 0x55555555 + ( index >> 1 ) & 0x55555555;
+		index = index & 0x33333333 + ( index >> 2 ) & 0x33333333;
+		index = index & 0x0F0F0F0F + ( index >> 4 ) & 0x0F0F0F0F;
+		index = index & 0xFF + ( index & 0xFF00 >> 8 ) + ( index & 0xFF0000 >> 16 ) + ( index & 0xFF000000 >> 24 );
+		return index;
+	}
+
+	XE_INLINE void SetBit( XE::uint64 index, bool val )
+	{
+		val ?
+			Bit[index / sizeof( XE::uint8 )] |= ( 1 << ( index % sizeof( XE::uint8 ) ) ) :
+			Bit[index / sizeof( XE::uint8 )] &= ~( 1 << ( index % sizeof( XE::uint8 ) ) );
+	}
+
+public:
+	XE::uint64 Size;
+	XE::uint8 * Bit;
+	XE::uint8 * Beg;
+	XE::uint8 * End;
+};
+
+class ObjectBlock
+{
+public:
+	ObjectBlock( XE::uint64 size )
+		:Size( size ), Pages( Page( size, KBYTE( 4 ) / size ) )
+	{
+
+	}
+
+	ObjectBlock( ObjectBlock && val )
+		:Size( val.Size ), Pages( val.Pages )
+	{
+
+	}
+
+public:
+	void * Allocate()
+	{
+		for( auto it = Pages.begin(); it != Pages.end(); ++it )
+		{
+			XE::uint8 * p = it->Allocate();
+
+			if( p )
+			{
+				return p;
+			}
+		}
+
+		return Pages.emplace_back( Page( Size, KBYTE( 4 ) / Size ) )->Allocate();
+	}
+
+	void Deallocate( void * p )
+	{
+		for( auto it = Pages.begin(); it != Pages.end(); ++it )
+		{
+			if( it->IsFrom( p ) )
+			{
+				it->Deallocate( p );
+			}
+		}
+	}
+
+	void ShrinkToFit()
+	{
+		for( auto it = Pages.rbegin(); it != Pages.rend(); ++it )
+		{
+			if( it->Empty() )
+			{
+				Pages.erase( it.base() );
+				return;
+			}
 		}
 	}
 
 private:
-	XE::uint64 ObjectSize;
-	std::mutex ResizeMutex;
-	tbb::concurrent_vector<XE::uint8> Mems;
-	tbb::concurrent_priority_queue<XE::int64> Frees;
+	XE::uint64 Size;
+	XE::concurrent_list<Page, XE::Allocator<Page>> Pages;
 };
 
 struct XE::ObjectAlloc::Private
 {
-	tbb::concurrent_hash_map< XE::uint64, ObjectGroup > Groups;
+	tbb::concurrent_hash_map< XE::uint64, ObjectBlock > Blocks;
 };
 
 XE::ObjectAlloc::ObjectAlloc()
@@ -87,34 +214,34 @@ XE::ObjectAlloc::~ObjectAlloc()
 	delete _p;
 }
 
-void * XE::ObjectAlloc::allocate( XE::uint64 hash, XE::uint64 size, XE::uint64 count )
+void * XE::ObjectAlloc::Allocate( XE::uint64 hash_code, XE::uint64 size, XE::uint64 count )
 {
 	size = ALIGNED64( size );
 
-	tbb::concurrent_hash_map< XE::uint64, ObjectGroup >::accessor accessor;
+	tbb::concurrent_hash_map< XE::uint64, ObjectBlock >::accessor accessor;
 
-	if( This()->_p->Groups.find( accessor, hash ) )
+	if( This()->_p->Blocks.find( accessor, hash_code ) )
 	{
-		return accessor->second.alloc( count );
+		return accessor->second.Allocate();
 	}
-	else if( This()->_p->Groups.insert( accessor, { hash, ObjectGroup( size ) } ) )
+	else if( This()->_p->Blocks.insert( accessor, { hash_code, ObjectBlock( size ) } ) )
 	{
-		return accessor->second.alloc( count );
+		return accessor->second.Allocate();
 	}
 
 	return nullptr;
 }
 
-void XE::ObjectAlloc::deallocate( void * ptr, XE::uint64 hash )
+void XE::ObjectAlloc::Deallocate( void * ptr, XE::uint64 hash_code )
 {
-	tbb::concurrent_hash_map< XE::uint64, ObjectGroup >::accessor accessor;
-	if( This()->_p->Groups.find( accessor, hash ) )
+	tbb::concurrent_hash_map< XE::uint64, ObjectBlock >::accessor accessor;
+	if( This()->_p->Blocks.find( accessor, hash_code ) )
 	{
-		return accessor->second.free( ptr );
+		return accessor->second.Deallocate( ptr );
 	}
 }
 
 void XE::ObjectAlloc::clear()
 {
-	This()->_p->Groups.clear();
+	This()->_p->Blocks.clear();
 }

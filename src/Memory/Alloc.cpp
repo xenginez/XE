@@ -1,20 +1,18 @@
 #include "Alloc.h"
 
-#include <tbb/scalable_allocator.h>
-
 USING_XE
 
-void * XE::Alloc::allocate( XE::uint64 size )
+void * XE::Alloc::Allocate( XE::uint64 size )
 {
-	return scalable_malloc( size );
+	return ::malloc( size );
 }
 
-void * XE::Alloc::reallocate( void * ptr, XE::uint64 size )
+void * XE::Alloc::Reallocate( void * ptr, XE::uint64 size )
 {
-	return scalable_realloc( ptr, size );
+	return ::realloc( ptr, size );
 }
 
-void XE::Alloc::deallocate( void * ptr )
+void XE::Alloc::Deallocate( void * ptr )
 {
-	scalable_free( ptr );
+	::free( ptr );
 }

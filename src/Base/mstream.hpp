@@ -9,7 +9,7 @@
 #ifndef __MSTREAM_HPP__6426E8EE_6AF1_4B69_9CB9_F9569C80C447
 #define __MSTREAM_HPP__6426E8EE_6AF1_4B69_9CB9_F9569C80C447
 
-#include "Allocator.hpp"
+#include "Type.h"
 
 BEG_XE_NAMESPACE
 
@@ -1131,9 +1131,9 @@ inline void swap( basic_memorystream<_Elem, _Traits, _Alloc> & _Left, basic_memo
 }
 
 using memory_view = basic_memory_view<XE::int8, memory_traits<XE::int8>>;
-using imemorystream = basic_imemorystream<XE::int8, memory_traits<XE::int8>, XE::Allocator<XE::int8>>;
-using omemorystream = basic_omemorystream<XE::int8, memory_traits<XE::int8>, XE::Allocator<XE::int8>>;
-using memorystream = basic_memorystream<XE::int8, memory_traits<XE::int8>, XE::Allocator<XE::int8>>;
+using imemorystream = basic_imemorystream<XE::int8, memory_traits<XE::int8>, std::allocator<XE::int8>>;
+using omemorystream = basic_omemorystream<XE::int8, memory_traits<XE::int8>, std::allocator<XE::int8>>;
+using memorystream = basic_memorystream<XE::int8, memory_traits<XE::int8>, std::allocator<XE::int8>>;
 
 END_XE_NAMESPACE
 

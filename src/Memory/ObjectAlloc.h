@@ -24,9 +24,9 @@ public:
 	~ObjectAlloc();
 
 public:
-	static void * allocate( XE::uint64 hash, XE::uint64 size, XE::uint64 count );
+	static void * Allocate( XE::uint64 hash_code, XE::uint64 size, XE::uint64 count );
 
-	static void deallocate( void * ptr, XE::uint64 hash );
+	static void Deallocate( void * ptr, XE::uint64 hash_code );
 
 public:
 	static void clear();

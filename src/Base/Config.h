@@ -213,6 +213,10 @@
 #define ONE_KBYTE (ONE_BYTE * 1024)
 #define ONE_MBYTE (ONE_KBYTE * 1024)
 #define ONE_GBYTE (ONE_MBYTE * 1024)
+#define BYTE(COUNT) (COUNT)
+#define KBYTE(COUNT) (ONE_BYTE * (COUNT))
+#define MBYTE(COUNT) (ONE_KBYTE * (COUNT))
+#define GBYTE(COUNT) (ONE_MBYTE * (COUNT))
 
 /////////////////////////////////////////////////////////////////////////////////////////
 

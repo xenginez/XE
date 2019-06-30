@@ -68,13 +68,13 @@ public:
 public:
 	void deallocate( _Ty * const _Ptr, const XE::uint64 _Count )
 	{
-		XE::ObjectAlloc::deallocate( _Ptr, typeid( _Ty ).hash_code() );
+		XE::ObjectAlloc::Deallocate( _Ptr, typeid( _Ty ).hash_code() );
 	}
 
 public:
 	_Ty * allocate( const XE::uint64 _Count )
 	{
-		return ( static_cast<_Ty *>( XE::ObjectAlloc::allocate( typeid(_Ty).hash_code(), sizeof( _Ty ), _Count ) ) );
+		return ( static_cast<_Ty *>( XE::ObjectAlloc::Allocate( typeid(_Ty).hash_code(), sizeof( _Ty ), _Count ) ) );
 	}
 
 	_Ty * allocate( const XE::uint64 _Count, const void * )
@@ -114,6 +114,17 @@ public:
 	}
 
 };
+
+template<> class ObjectAllocator<XE::int8>{};
+template<> class ObjectAllocator<XE::int16>{};
+template<> class ObjectAllocator<XE::int32>{};
+template<> class ObjectAllocator<XE::int64>{};
+template<> class ObjectAllocator<XE::uint8>{};
+template<> class ObjectAllocator<XE::uint16>{};
+template<> class ObjectAllocator<XE::uint32>{};
+template<> class ObjectAllocator<XE::uint64>{};
+template<> class ObjectAllocator<XE::float32>{};
+template<> class ObjectAllocator<XE::float64>{};
 
 END_XE_NAMESPACE
 

@@ -24,7 +24,7 @@ public:
 	~FrameAlloc();
 
 public:
-	static void * allocate( const XE::uint64 _Count );
+	static void * Allocate( const XE::uint64 _Count );
 
 public:
 	static void clear();

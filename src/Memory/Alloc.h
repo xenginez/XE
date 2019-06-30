@@ -21,11 +21,11 @@ public:
 	~Alloc() = delete;
 
 public:
-	static void * allocate( XE::uint64 size );
+	static void * Allocate( XE::uint64 size );
 
-	static void * reallocate( void * ptr, XE::uint64 size );
+	static void * Reallocate( void * ptr, XE::uint64 size );
 
-	static void deallocate( void * ptr );
+	static void Deallocate( void * ptr );
 
 };
 

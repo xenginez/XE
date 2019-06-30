@@ -68,7 +68,7 @@ public:
 public:
 	_Ty * allocate( const XE::uint64 _Count )
 	{
-		return static_cast<_Ty*>( FrameAlloc::allocate( _Count ) );
+		return static_cast<_Ty*>( FrameAlloc::Allocate( _Count ) );
 	}
 
 	_Ty * allocate( const XE::uint64 _Count, const void * )
