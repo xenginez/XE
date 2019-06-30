@@ -49,8 +49,12 @@ public:
 	constexpr Allocator( const Allocator& ) noexcept
 	{
 	}
-	
-	template<class _Other> constexpr Allocator( const Allocator<_Other>& ) noexcept
+
+	template<class _Other> constexpr Allocator( const Allocator<_Other> & ) noexcept
+	{
+	}
+
+	template<class _Other> constexpr Allocator( const ObjectAllocator<_Other> & ) noexcept
 	{
 	}
 

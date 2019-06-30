@@ -38,7 +38,7 @@ public:
 public:
 	template<typename _Other> struct rebind
 	{
-		using other = ObjectAllocator<_Other>;
+		using other = typename AllocatorProxy<_Other>::template allocator_type;
 	};
 
 public:
@@ -47,6 +47,10 @@ public:
 	}
 
 	constexpr ObjectAllocator( const ObjectAllocator & ) noexcept
+	{
+	}
+
+	template<class _Other> constexpr ObjectAllocator( const Allocator<_Other> & ) noexcept
 	{
 	}
 
