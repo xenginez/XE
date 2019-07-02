@@ -13,8 +13,8 @@
 
 BEG_XE_NAMESPACE
 
-DECL_PTR(GFX);
-DECL_PTR(Image);
+DECL_PTR( Image );
+DECL_PTR( Device );
 
 DECL_PTR(Buffer);
 DECL_PTR(FrameBuffer);
@@ -168,14 +168,19 @@ enum class AttributeType
 };
 DECL_META_ENUM(RHI_API, AttributeType);
 
-enum class RendererType
+enum class DeviceType
 {
 	SOFT,
+	WEBGL,
 	METAL,
 	VULKAN,
+	OPENGL,
+	OPENGLES2,
+	OPENGLES3,
+	DIRECT3D11,
 	DIRECT3D12,
 };
-DECL_META_ENUM(RHI_API, RendererType);
+DECL_META_ENUM(RHI_API, DeviceType);
 
 enum class UniformType
 {
@@ -205,7 +210,7 @@ enum class LayoutFormat
 	UINT32,
 	UINT64,
 	FLOAT16,
-	real,
+	FLOAT32,
 	FLOAT64,
 	VEC2,
 	VEC3,

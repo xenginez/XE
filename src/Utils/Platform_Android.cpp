@@ -4,7 +4,7 @@
 
 USING_XE
 
-XE::Language Platform::get_default_language()
+XE::Language Platform::GetDefaultLanguage()
 {
 	return Language::ENGLISH;
 }

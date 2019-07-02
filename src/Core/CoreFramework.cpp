@@ -206,7 +206,7 @@ bool XE::CoreFramework::IsExit() const
 
 XE::Language XE::CoreFramework::GetSystemLanguage() const
 {
-	return Platform::get_default_language();
+	return Platform::GetDefaultLanguage();
 }
 
 std::filesystem::path XE::CoreFramework::GetPluginPath() const

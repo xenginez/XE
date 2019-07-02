@@ -6,7 +6,7 @@
 
 USING_XE
 
-Language Platform::get_default_language()
+Language Platform::GetDefaultLanguage()
 {
 	NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
 	

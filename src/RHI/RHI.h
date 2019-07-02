@@ -9,10 +9,8 @@
 #ifndef __RHI_H__B57E1D98_CE7B_4EF9_BEEC_C2CB1911EEB2
 #define __RHI_H__B57E1D98_CE7B_4EF9_BEEC_C2CB1911EEB2
 
-#include "Resource.h"
-
-#include "GFX.h"
 #include "Image.h"
+#include "Device.h"
 #include "Camera.h"
 
 #include "Fence.h"
@@ -22,6 +20,8 @@
 #include "InputLayout.h"
 #include "RenderTarget.h"
 #include "OcclusionQuery.h"
+
+#include "Resource.h"
 
 #include "BlendState.h"
 #include "RasterizerState.h"
