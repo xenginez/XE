@@ -55,4 +55,16 @@ link_directories(
 )
 
 
-add_subdirectory(D3DRHI)
+if (CMAKE_SYSTEM_NAME MATCHES "Linux")
+
+elseif (CMAKE_SYSTEM_NAME MATCHES "Windows")
+	add_subdirectory(D3DRHI)
+elseif (CMAKE_SYSTEM_NAME MATCHES "IOS")
+
+elseif (CMAKE_SYSTEM_NAME MATCHES "Android")
+
+elseif (CMAKE_SYSTEM_NAME MATCHES "Darwin")
+
+else ()
+	message(FATAL_ERROR ${CMAKE_SYSTEM_NAME}" Other")
+endif ()
