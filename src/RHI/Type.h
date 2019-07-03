@@ -16,74 +16,74 @@ BEG_XE_NAMESPACE
 DECL_PTR( Image );
 DECL_PTR( Device );
 
-DECL_PTR(Buffer);
-DECL_PTR(FrameBuffer);
-DECL_PTR(IndexBuffer);
-DECL_PTR(VertexBuffer);
-DECL_PTR(UniformBuffer);
-DECL_PTR(ComputeBuffer);
-DECL_PTR(ConstantBuffer);
-DECL_PTR(DepthStencilBuffer);
-DECL_PTR(DynamicIndexBuffer);
-DECL_PTR(DynamicVertexBuffer);
+DECL_PTR( Buffer );
+DECL_PTR( FrameBuffer );
+DECL_PTR( IndexBuffer );
+DECL_PTR( VertexBuffer );
+DECL_PTR( UniformBuffer );
+DECL_PTR( ComputeBuffer );
+DECL_PTR( ConstantBuffer );
+DECL_PTR( DepthStencilBuffer );
+DECL_PTR( DynamicIndexBuffer );
+DECL_PTR( DynamicVertexBuffer );
 
-DECL_PTR(Shader);
-DECL_PTR(HullShader);
-DECL_PTR(PixelShader);
-DECL_PTR(VertexShader);
-DECL_PTR(DomainShader);
-DECL_PTR(ComputeShader);
-DECL_PTR(GeometryShader);
+DECL_PTR( Shader );
+DECL_PTR( HullShader );
+DECL_PTR( PixelShader );
+DECL_PTR( VertexShader );
+DECL_PTR( DomainShader );
+DECL_PTR( ComputeShader );
+DECL_PTR( GeometryShader );
 
-DECL_PTR(BlendState);
-DECL_PTR(RasterizerState);
-DECL_PTR(DepthStencilState);
-DECL_PTR(ComputePipelineState);
-DECL_PTR(GraphicsPipelineState);
+DECL_PTR( BlendState );
+DECL_PTR( RasterizerState );
+DECL_PTR( DepthStencilState );
+DECL_PTR( ComputePipelineState );
+DECL_PTR( GraphicsPipelineState );
 
-DECL_PTR(Texture);
-DECL_PTR(Sampler);
-DECL_PTR(Uniform);
-DECL_PTR(Viewport);
-DECL_PTR(InputLayout);
-DECL_PTR(RenderTarget);
-DECL_PTR(OcclusionQuery);
+DECL_PTR( Texture );
+DECL_PTR( Sampler );
+DECL_PTR( Uniform );
+DECL_PTR( Viewport );
+DECL_PTR( InputLayout );
+DECL_PTR( RenderTarget );
+DECL_PTR( OcclusionQuery );
 
 
-DECL_HANDLE(RHI_API, Window);
+DECL_HANDLE( RHI_API, RenderWindow );
 
-DECL_HANDLE(RHI_API, Buffer);
-DECL_HANDLE(RHI_API, FrameBuffer);
-DECL_HANDLE(RHI_API, IndexBuffer);
-DECL_HANDLE(RHI_API, VertexBuffer);
-DECL_HANDLE(RHI_API, ComputeBuffer);
-DECL_HANDLE(RHI_API, UniformBuffer);
-DECL_HANDLE(RHI_API, ConstantBuffer);
-DECL_HANDLE(RHI_API, DepthStencilBuffer);
-DECL_HANDLE(RHI_API, DynamicIndexBuffer);
-DECL_HANDLE(RHI_API, DynamicVertexBuffer);
+DECL_HANDLE( RHI_API, Buffer );
+DECL_HANDLE( RHI_API, FrameBuffer );
+DECL_HANDLE( RHI_API, IndexBuffer );
+DECL_HANDLE( RHI_API, VertexBuffer );
+DECL_HANDLE( RHI_API, ComputeBuffer );
+DECL_HANDLE( RHI_API, UniformBuffer );
+DECL_HANDLE( RHI_API, ConstantBuffer );
+DECL_HANDLE( RHI_API, DepthStencilBuffer );
+DECL_HANDLE( RHI_API, DynamicIndexBuffer );
+DECL_HANDLE( RHI_API, DynamicVertexBuffer );
 
-DECL_HANDLE(RHI_API, Shader);
-DECL_HANDLE(RHI_API, HullShader);
-DECL_HANDLE(RHI_API, PixelShader);
-DECL_HANDLE(RHI_API, VertexShader);
-DECL_HANDLE(RHI_API, DomainShader);
-DECL_HANDLE(RHI_API, ComputeShader);
-DECL_HANDLE(RHI_API, GeometryShader);
+DECL_HANDLE( RHI_API, Shader );
+DECL_HANDLE( RHI_API, HullShader );
+DECL_HANDLE( RHI_API, PixelShader );
+DECL_HANDLE( RHI_API, VertexShader );
+DECL_HANDLE( RHI_API, DomainShader );
+DECL_HANDLE( RHI_API, ComputeShader );
+DECL_HANDLE( RHI_API, GeometryShader );
 
-DECL_HANDLE(RHI_API, BlendState);
-DECL_HANDLE(RHI_API, RasterizerState);
-DECL_HANDLE(RHI_API, DepthStencilState);
-DECL_HANDLE(RHI_API, ComputePipelineState);
-DECL_HANDLE(RHI_API, GraphicsPipelineState);
+DECL_HANDLE( RHI_API, BlendState );
+DECL_HANDLE( RHI_API, RasterizerState );
+DECL_HANDLE( RHI_API, DepthStencilState );
+DECL_HANDLE( RHI_API, ComputePipelineState );
+DECL_HANDLE( RHI_API, GraphicsPipelineState );
 
-DECL_HANDLE(RHI_API, Texture);
-DECL_HANDLE(RHI_API, Sampler);
-DECL_HANDLE(RHI_API, Uniform);
-DECL_HANDLE(RHI_API, Viewport);
-DECL_HANDLE(RHI_API, InputLayout);
-DECL_HANDLE(RHI_API, RenderTarget);
-DECL_HANDLE(RHI_API, OcclusionQuery);
+DECL_HANDLE( RHI_API, Texture );
+DECL_HANDLE( RHI_API, Sampler );
+DECL_HANDLE( RHI_API, Uniform );
+DECL_HANDLE( RHI_API, Viewport );
+DECL_HANDLE( RHI_API, InputLayout );
+DECL_HANDLE( RHI_API, RenderTarget );
+DECL_HANDLE( RHI_API, OcclusionQuery );
 
 
 enum class FillType
@@ -91,7 +91,7 @@ enum class FillType
 	WIRTEFRAME,
 	SOLID,
 };
-DECL_META_ENUM(RHI_API, FillType);
+DECL_META_ENUM( RHI_API, FillType );
 
 enum class CullType
 {
@@ -99,7 +99,7 @@ enum class CullType
 	FRONT,
 	BACK,
 };
-DECL_META_ENUM(RHI_API, CullType);
+DECL_META_ENUM( RHI_API, CullType );
 
 enum class TopologyType
 {
@@ -121,7 +121,7 @@ enum class TopologyType
 	CONTROL_POINT_PATCHLIST_6,
 	CONTROL_POINT_PATCHLIST_7,
 };
-DECL_META_ENUM(RHI_API, TopologyType);
+DECL_META_ENUM( RHI_API, TopologyType );
 
 enum class AccessType
 {
@@ -130,7 +130,7 @@ enum class AccessType
 	WIRTE,
 	READWIRTE,
 };
-DECL_META_ENUM(RHI_API, AccessType);
+DECL_META_ENUM( RHI_API, AccessType );
 
 enum class CompareType
 {
@@ -143,7 +143,7 @@ enum class CompareType
 	NEVER,
 	ALWAYS,
 };
-DECL_META_ENUM(RHI_API, CompareType);
+DECL_META_ENUM( RHI_API, CompareType );
 
 enum class AttributeType
 {
@@ -166,7 +166,7 @@ enum class AttributeType
 	TEXCOORD6,
 	TEXCOORD7,
 };
-DECL_META_ENUM(RHI_API, AttributeType);
+DECL_META_ENUM( RHI_API, AttributeType );
 
 enum class DeviceType
 {
@@ -180,7 +180,7 @@ enum class DeviceType
 	DIRECT3D11,
 	DIRECT3D12,
 };
-DECL_META_ENUM(RHI_API, DeviceType);
+DECL_META_ENUM( RHI_API, DeviceType );
 
 enum class UniformType
 {
@@ -189,7 +189,7 @@ enum class UniformType
 	MAT4,
 	Sampler,
 };
-DECL_META_ENUM(RHI_API, UniformType);
+DECL_META_ENUM( RHI_API, UniformType );
 
 enum class TextureType
 {
@@ -197,7 +197,7 @@ enum class TextureType
 	TEXTURE3D,
 	TEXTURECUBE,
 };
-DECL_META_ENUM(RHI_API, TextureType);
+DECL_META_ENUM( RHI_API, TextureType );
 
 enum class LayoutFormat
 {
@@ -220,7 +220,7 @@ enum class LayoutFormat
 	MAT3,
 	MAT4,
 	COLOR,
-	
+
 	POSITION,
 	NORMAL,
 	TANGENT,
@@ -240,7 +240,7 @@ enum class LayoutFormat
 	TEXCOORD6,
 	TEXCOORD7,
 };
-DECL_META_ENUM(RHI_API, LayoutFormat);
+DECL_META_ENUM( RHI_API, LayoutFormat );
 
 enum class TextureFormat
 {
@@ -253,7 +253,7 @@ enum class TextureFormat
 	///       |   |     [U]int
 	///       |   +---- Number of bits per component
 	///       +-------- Components
-	
+
 	BC1,          /// DXT1
 	BC2,          /// DXT3
 	BC3,          /// DXT5
@@ -280,7 +280,7 @@ enum class TextureFormat
 	ASTC8x5,      /// ASTC 8x5 3.20 BPP
 	ASTC8x6,      /// ASTC 8x6 2.67 BPP
 	ASTC10x5,     /// ASTC 10x5 2.56 BPP
-	
+
 	R1,
 	A8,
 	R8,
@@ -330,7 +330,7 @@ enum class TextureFormat
 	RGB5A1,
 	RGB10A2,
 	RG11B10F,
-	
+
 	D16,
 	D24,
 	D24S8,
@@ -340,7 +340,7 @@ enum class TextureFormat
 	D32F,
 	D0S8,
 };
-DECL_META_ENUM(RHI_API, TextureFormat);
+DECL_META_ENUM( RHI_API, TextureFormat );
 
 enum class SamplerFilter
 {
@@ -358,7 +358,7 @@ enum class SamplerFilter
 	MAXIMUM_ANISOTROPIC,
 	NUM_FILTERS,
 };
-DECL_META_ENUM(RHI_API, SamplerFilter);
+DECL_META_ENUM( RHI_API, SamplerFilter );
 
 enum class SamplerAddressType
 {
@@ -366,7 +366,7 @@ enum class SamplerAddressType
 	CLAMP,
 	BORDER,
 };
-DECL_META_ENUM(RHI_API, SamplerAddressType);
+DECL_META_ENUM( RHI_API, SamplerAddressType );
 
 enum class BlendFactor
 {
@@ -384,7 +384,7 @@ enum class BlendFactor
 	FACTOR,						/// Blend factor
 	INV_FACTOR,					/// 1-Blend factor
 };
-DECL_META_ENUM(RHI_API, BlendFactor);
+DECL_META_ENUM( RHI_API, BlendFactor );
 
 enum class BlendOperation
 {
@@ -394,7 +394,7 @@ enum class BlendOperation
 	MIN,
 	MAX,
 };
-DECL_META_ENUM(RHI_API, BlendOperation);
+DECL_META_ENUM( RHI_API, BlendOperation );
 
 enum class StencilOperation
 {
@@ -407,7 +407,7 @@ enum class StencilOperation
 	DECRSAT,
 	INVERT,
 };
-DECL_META_ENUM(RHI_API, StencilOperation);
+DECL_META_ENUM( RHI_API, StencilOperation );
 
 END_XE_NAMESPACE
 

@@ -37,7 +37,16 @@ public:
 
 	static bool FullscreenWindow( XE::uint64 handle );
 
+	static bool GetWindowFocus( XE::uint64 handle );
+
+	static bool SetWindowTitle( XE::uint64 handle, const String & title );
+
 	static bool SetWindowRect( XE::uint64 handle, XE::uint32 x, XE::uint32 y, XE::uint32 w, XE::uint32 h, bool topmost );
+
+public:
+	static bool ShowMouse();
+
+	static bool HideMouse();
 
 };
 

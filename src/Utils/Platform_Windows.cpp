@@ -182,6 +182,7 @@ bool XE::Platform::RegisterWindowClass( const String & icon, std::function<bool(
 	wce.hbrBackground = (HBRUSH )( COLOR_WINDOW + 1 );
 	wce.hCursor = LoadCursor( NULL, IDC_ARROW );
 	wce.hIcon = LoadIcon( wce.hInstance, icon.ToCString() );
+	wce.hIconSm = LoadIcon( wce.hInstance, icon.ToCString() );
 	wce.lpfnWndProc = WndProc;
 	wce.lpszClassName = "XE";
 	wce.lpszMenuName = NULL;
@@ -255,10 +256,32 @@ bool XE::Platform::FullscreenWindow( XE::uint64 handle )
 		::UpdateWindow( reinterpret_cast< HWND >( handle ) ) != 0;
 }
 
-bool Platform::SetWindowRect( XE::uint64 handle, XE::uint32 x, XE::uint32 y, XE::uint32 w, XE::uint32 h, bool topmost )
+bool Platform::GetWindowFocus( XE::uint64 handle )
+{
+	return GetFocus() == reinterpret_cast< HWND >( handle );
+}
+
+bool XE::Platform::SetWindowTitle( XE::uint64 handle, const String & title )
+{
+	return SetWindowText( reinterpret_cast< HWND >( handle ), title.ToCString() );
+}
+
+bool XE::Platform::SetWindowRect( XE::uint64 handle, XE::uint32 x, XE::uint32 y, XE::uint32 w, XE::uint32 h, bool topmost )
 {
 	return ::SetWindowPos( reinterpret_cast< HWND >( handle ), topmost ? HWND_TOPMOST : HWND_NOTOPMOST, x, y, w, h, SWP_NOZORDER ) != 0 &&
 		::UpdateWindow( reinterpret_cast< HWND >( handle ) ) != 0;
+}
+
+bool XE::Platform::ShowMouse()
+{
+	while( ShowCursor( true ) >= 0 );
+	return true;
+}
+
+bool XE::Platform::HideMouse()
+{
+	while( ShowCursor( false ) < 0 );
+	return true;
 }
 
 #endif
