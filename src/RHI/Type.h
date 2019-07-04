@@ -45,6 +45,7 @@ DECL_PTR( Texture );
 DECL_PTR( Sampler );
 DECL_PTR( Uniform );
 DECL_PTR( Viewport );
+DECL_PTR( SwapChain );
 DECL_PTR( InputLayout );
 DECL_PTR( RenderTarget );
 DECL_PTR( OcclusionQuery );
@@ -81,6 +82,7 @@ DECL_HANDLE( RHI_API, Texture );
 DECL_HANDLE( RHI_API, Sampler );
 DECL_HANDLE( RHI_API, Uniform );
 DECL_HANDLE( RHI_API, Viewport );
+DECL_HANDLE( RHI_API, SwapChain );
 DECL_HANDLE( RHI_API, InputLayout );
 DECL_HANDLE( RHI_API, RenderTarget );
 DECL_HANDLE( RHI_API, OcclusionQuery );
@@ -175,9 +177,7 @@ enum class DeviceType
 	METAL,
 	VULKAN,
 	OPENGL,
-	OPENGLES2,
 	OPENGLES3,
-	DIRECT3D11,
 	DIRECT3D12,
 };
 DECL_META_ENUM( RHI_API, DeviceType );

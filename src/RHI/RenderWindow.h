@@ -80,11 +80,7 @@ public:
 	void SetTitle( const String & val );
 
 public:
-	FrameBufferPtr GetBackFrameBuffer() const;
-
-	FrameBufferPtr GetFrontFrameBuffer() const;
-
-	FrameBufferPtr GetCurrentFrameBuffer() const;
+	SwapChainPtr GetSwapChain() const;
 
 private:
 	bool _Show = true;
@@ -93,7 +89,7 @@ private:
 	Rect _Rect = { 0, 0, 800, 600 };
 	String _Title = "XE";
 
-	DevicePtr _Device;
+	SwapChainPtr _SwapChain;
 	RenderWindowHandle _Handle;
 };
 

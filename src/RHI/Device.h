@@ -31,15 +31,9 @@ public:
 	virtual DeviceType GetType() const = 0;
 
 public:
-	virtual bool CreateSwapChain( RenderWindowHandle handle ) = 0;
+	virtual SwapChainHandle CreateSwapChain( RenderWindowHandle handle, TextureFormat framefmt, XE::uint32 w, XE::uint32 h ) = 0;
 
-	virtual FrameBufferPtr GetBackFrameBuffer( RenderWindowHandle handle ) = 0;
-
-	virtual FrameBufferPtr GetFrontFrameBuffer( RenderWindowHandle handle ) = 0;
-
-	virtual FrameBufferPtr GetCurrentFrameBuffer( RenderWindowHandle handle ) = 0;
-
-	virtual bool DestroySwapChain( RenderWindowHandle handle ) = 0;
+	virtual bool DestroySwapChain( SwapChainHandle handle ) = 0;
 
 };
 

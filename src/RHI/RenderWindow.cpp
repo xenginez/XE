@@ -1,18 +1,17 @@
 #include "RenderWindow.h"
 
-#include "Device.h"
+#include "SwapChain.h"
 
 XE::RenderWindow::RenderWindow( DevicePtr val )
-	:_Device( val )
 {
 	_Handle = Platform::ConstructWindow( _Title, static_cast< XE::uint32 >( _Rect.x ), static_cast< XE::uint32 >( _Rect.y ), static_cast< XE::uint32 >( _Rect.width ), static_cast< XE::uint32 >( _Rect.height ) );
 
-	_Device->CreateSwapChain( _Handle );
+	_SwapChain = XE::make_shared<SwapChain>( val, _Handle );
 }
 
 XE::RenderWindow::~RenderWindow()
 {
-	_Device->DestroySwapChain( _Handle );
+	_SwapChain = nullptr;
 
 	Platform::DestroyWindow( _Handle.GetValue() );
 }
@@ -178,17 +177,7 @@ void XE::RenderWindow::SetTitle( const String & val )
 	Platform::SetWindowTitle( _Handle.GetValue(), _Title );
 }
 
-XE::FrameBufferPtr XE::RenderWindow::GetBackFrameBuffer() const
+XE::SwapChainPtr XE::RenderWindow::GetSwapChain() const
 {
-	return _Device->GetBackFrameBuffer( _Handle );
-}
-
-XE::FrameBufferPtr XE::RenderWindow::GetFrontFrameBuffer() const
-{
-	return _Device->GetFrontFrameBuffer( _Handle );
-}
-
-XE::FrameBufferPtr XE::RenderWindow::GetCurrentFrameBuffer() const
-{
-	return _Device->GetCurrentFrameBuffer( _Handle );
+	return _SwapChain;
 }

@@ -34,49 +34,25 @@ public:
 	DeviceType GetType() const override;
 
 public:
-	bool CreateSwapChain( RenderWindowHandle handle ) override;
+	SwapChainHandle CreateSwapChain( RenderWindowHandle handle, TextureFormat framefmt, XE::uint32 w, XE::uint32 h ) override;
 
-	FrameBufferPtr GetBackFrameBuffer( RenderWindowHandle handle ) override;
-
-	FrameBufferPtr GetFrontFrameBuffer( RenderWindowHandle handle ) override;
-
-	FrameBufferPtr GetCurrentFrameBuffer( RenderWindowHandle handle ) override;
-
-	bool DestroySwapChain( RenderWindowHandle handle ) override;
+	bool DestroySwapChain( SwapChainHandle handle ) override;
 
 private:
-	void GetHardwareAdapter( IDXGIFactory2 * pFactory, IDXGIAdapter1 ** ppAdapter );
+	void CreateD3DDevice();
+
+	DXGI_FORMAT ToFormat( TextureFormat val ) const;
 
 private:
-	Array< Pair<RenderWindowHandle, ComPtr<IDXGISwapChain3>> > _SwapChains;
+	Array< ComPtr<IDXGISwapChain> > _SwapChains;
 
-
-
-	// App resources.
-	D3D12_VIEWPORT m_viewport;
-	D3D12_RECT m_scissorRect;
-	ComPtr<ID3D12Resource> m_vertexBuffer;
-	D3D12_VERTEX_BUFFER_VIEW m_vertexBufferView;
-	ComPtr<IDXGISwapChain3> m_swapChain;
-	ComPtr<ID3D12Resource> m_renderTargets[8];
-
-	// Synchronization objects.
-	UINT m_frameIndex;
-	HANDLE m_fenceEvent;
-	ComPtr<ID3D12Fence> m_fence;
-	UINT64 m_fenceValue;
-
-
-	ComPtr<IDXGIFactory4> m_factory;
-	ComPtr<ID3D12Device> m_device;
-	ComPtr<ID3D12CommandAllocator> m_commandAllocator;
-	ComPtr<ID3D12CommandQueue> m_commandQueue;
-	ComPtr<ID3D12RootSignature> m_rootSignature;
-	ComPtr<ID3D12DescriptorHeap> m_rtvHeap;
-	ComPtr<ID3D12PipelineState> m_pipelineState;
-	ComPtr<ID3D12GraphicsCommandList> m_commandList;
-	UINT m_rtvDescriptorSize;
-
+	ComPtr<IDXGIFactory4> _Factory;
+	ComPtr<ID3D12Device> _Device;
+	ComPtr<ID3D12CommandQueue> _CommandQueue;
+	ComPtr<ID3D12RootSignature> _RootSignature;
+	ComPtr<ID3D12DescriptorHeap> _RTVDescriptorHeap;
+	ComPtr<ID3D12CommandAllocator> _CommandAllocator;
+	XE::uint32 _RTVDescSize;
 };
 
 END_XE_NAMESPACE
