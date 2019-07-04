@@ -13,6 +13,13 @@
 
 BEG_XE_NAMESPACE
 
+struct CORE_API PluginDesc
+{
+	String Name = "";
+	XE::uint64 Library = 0;
+	String Description = "";
+};
+
 class CORE_API PluginService : public IPluginService
 {
 	OBJECT(PluginService, IPluginService)
@@ -40,7 +47,7 @@ public:
 	void UnregisterPlugin( const String & name ) override;
 
 private:
-	XE::uint64 LoadPlugin( const String & name );
+	PluginDesc LoadPlugin( const String & name );
 
 private:
 	Private * _p;

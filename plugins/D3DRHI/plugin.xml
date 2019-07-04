@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Plugin>
+  <Name>D3DRHI</Name>
+  <Library>D3DRHI</Library>
+	<Description>D3D12 graphics API encapsulation plugin</Description>
+</Plugin>

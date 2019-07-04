@@ -1,23 +1,24 @@
 #include "PluginService.h"
-#include "PluginService.h"
 
+#include <pugixml/pugixml.hpp>
 
 USING_XE
 
 BEG_META( PluginService )
 END_META()
 
+
 struct XEPPluginInfo
 {
+public:
 	typedef IPlugin * ( *RegisterInvoke )( IFrameworkPtr );
 
 	typedef void( *UnregisterInvoke )( IPlugin * );
 
-	XE::uint64 LibHandle;
+public:
+	PluginDesc Desc;
 
 	IPlugin * Plugin;
-	std::filesystem::path Path;
-
 	RegisterInvoke Register;
 	UnregisterInvoke Unregister;
 };
@@ -63,7 +64,7 @@ void XE::PluginService::Clearup()
 	{
 		p.second.Plugin->Clearup();
 		p.second.Unregister( p.second.Plugin );
-		Library::Close( p.second.LibHandle );
+		Library::Close( p.second.Desc.Library );
 	}
 
 	_p->_Plugins.clear();
@@ -76,17 +77,18 @@ void XE::PluginService::RegisterPlugin( const String & name )
 		return;
 	}
 
-	XE::uint64 handle = LoadPlugin( name );
-	if( handle == 0 )
+	PluginDesc Desc = LoadPlugin( name );
+
+	if( Desc.Library == 0 )
 	{
 		XE_LOG( LoggerLevel::Error, "%1 plugin load error!", name );
 		return;
 	}
 
 	XEPPluginInfo info{};
-	info.LibHandle = handle;
-	info.Register = Library::SymbolT < XEPPluginInfo::RegisterInvoke >( handle, "RegisterPlugin" );
-	info.Unregister = Library::SymbolT < XEPPluginInfo::UnregisterInvoke >( handle, "UnregisterPlugin" );
+	info.Desc = Desc;
+	info.Register = Library::SymbolT < XEPPluginInfo::RegisterInvoke >( Desc.Library, "RegisterPlugin" );
+	info.Unregister = Library::SymbolT < XEPPluginInfo::UnregisterInvoke >( Desc.Library, "UnregisterPlugin" );
 	info.Plugin = info.Register( GetFramework() );
 
 	info.Plugin->Startup();
@@ -102,28 +104,36 @@ void XE::PluginService::UnregisterPlugin( const String & name )
 	{
 		it->second.Plugin->Clearup();
 		it->second.Unregister( it->second.Plugin );
-		Library::Close( it->second.LibHandle );
+		Library::Close( it->second.Desc.Library );
 
 		_p->_Plugins.erase( it );
 	}
 }
 
-XE::uint64 XE::PluginService::LoadPlugin( const String & name )
+XE::PluginDesc XE::PluginService::LoadPlugin( const String & name )
 {
-	auto path = GetFramework()->GetPluginPath();
+	PluginDesc Desc;
 
-	for( std::filesystem::recursive_directory_iterator it( path ), end; it != end; ++it )
+	auto path = GetFramework()->GetPluginPath() / name.ToStdString();
+
+	if( std::filesystem::is_directory( path ) )
 	{
-		if( !std::filesystem::is_directory( *it ) )
+		auto plugin_path = path / "plugin.xml";
+
+		pugi::xml_document doc;
+		if( doc.load_file( plugin_path.string().c_str() ).status == pugi::status_ok )
 		{
-			if( it->path().stem().string() == name.ToStdString() )
-			{
-				return Library::Open( it->path().string() );
-			}
+			auto plugin = doc.select_node( "Plugin" );
+
+			Desc.Name = plugin.node().select_node( "Name" ).node().value();
+			Desc.Description = plugin.node().select_node( "Description" ).node().value();
+			std::string lib_name = plugin.node().select_node( "Library" ).node().value();
+			lib_name += DLL_EXT_NAME;
+			Desc.Library = Library::Open( ( path / lib_name ).string() );
 		}
 	}
 
-	return 0;
+	return Desc;
 }
 
 void XE::PluginService::Prepare()

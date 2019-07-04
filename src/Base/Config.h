@@ -157,6 +157,22 @@
 #   define DLL_VAR_WEAK __attribute__((weak))
 #endif
 
+#if PLATFORM_OS == OS_WINDOWS
+#	define DLL_EXT_NAME ".dll"
+#elif PLATFORM_OS == OS_XBOXONE
+#	define DLL_EXT_NAME ".dll"
+#elif PLATFORM_OS == OS_ANDROID
+#	define DLL_EXT_NAME ".so"
+#elif PLATFORM_OS == OS_LINUX
+#	define DLL_EXT_NAME ".so"
+#elif PLATFORM_OS == OS_IOS
+#	define DLL_EXT_NAME ".dylib"
+#elif PLATFORM_OS == OS_MAC
+#	define DLL_EXT_NAME ".dylib"
+#elif PLATFORM_OS == OS_PS4
+#	define DLL_EXT_NAME ".so"
+#endif
+
 /////////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////////////////////////////////
