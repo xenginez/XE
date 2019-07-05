@@ -38,14 +38,14 @@ private:
 	Map<String, Variant> _Variables;
 };
 
-class RHI_API VertexShader : public Shader
+class RHI_API HullShader : public Shader
 {
-	OBJECT( VertexShader, Shader )
+	OBJECT( HullShader, Shader )
 
 public:
-	VertexShader();
+	HullShader();
 
-	~VertexShader() override;
+	~HullShader() override;
 };
 
 class RHI_API PixelShader : public Shader
@@ -58,14 +58,14 @@ public:
 	~PixelShader() override;
 };
 
-class RHI_API HullShader : public Shader
+class RHI_API VertexShader : public Shader
 {
-	OBJECT( HullShader, Shader )
+	OBJECT( VertexShader, Shader )
 
 public:
-	HullShader();
+	VertexShader();
 
-	~HullShader() override;
+	~VertexShader() override;
 };
 
 class RHI_API DomainShader : public Shader
@@ -78,16 +78,6 @@ public:
 	~DomainShader() override;
 };
 
-class RHI_API GeometryShader : public Shader
-{
-	OBJECT( GeometryShader, Shader )
-
-public:
-	GeometryShader();
-
-	~GeometryShader() override;
-};
-
 class RHI_API ComputeShader : public Shader
 {
 	OBJECT( ComputeShader, Shader )
@@ -96,6 +86,16 @@ public:
 	ComputeShader();
 
 	~ComputeShader() override;
+};
+
+class RHI_API GeometryShader : public Shader
+{
+	OBJECT( GeometryShader, Shader )
+
+public:
+	GeometryShader();
+
+	~GeometryShader() override;
 };
 
 END_XE_NAMESPACE

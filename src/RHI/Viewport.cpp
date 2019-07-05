@@ -60,7 +60,37 @@ const XE::Rect &XE::Viewport::GetRect() const
 	return _Rect;
 }
 
-void XE::Viewport::SetRect( const XE::Rect &val )
+void XE::Viewport::SetRect( const Rect & val )
 {
 	_Rect = val;
+}
+
+XE::real XE::Viewport::GetMinDepth() const
+{
+	return _Depth.x;
+}
+
+void XE::Viewport::SetMinDepth( XE::real val )
+{
+	_Depth.x = val;
+}
+
+XE::real XE::Viewport::GetMaxDepth() const
+{
+	return _Depth.y;
+}
+
+void XE::Viewport::SetMaxDepth( XE::real val )
+{
+	_Depth.y = val;
+}
+
+const XE::Vec2 & XE::Viewport::GetDepth() const
+{
+	return _Depth;
+}
+
+void XE::Viewport::SetDepth( const Vec2 & val )
+{
+	_Depth = val;
 }

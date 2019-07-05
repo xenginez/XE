@@ -13,14 +13,14 @@
 
 BEG_XE_NAMESPACE
 
-class RHI_API Viewport : public Resource
+class RHI_API Viewport
 {
-	OBJECT( Viewport, Resource )
+	OBJECT( Viewport )
 
 public:
 	Viewport();
 
-	~Viewport() override;
+	~Viewport();
 
 public:
 	XE::real GetX() const;
@@ -41,10 +41,24 @@ public:
 
 	const Rect & GetRect() const;
 
-	void SetRect( const Rect & rect );
+	void SetRect( const Rect & val );
+
+public:
+	XE::real GetMinDepth() const;
+
+	void SetMinDepth( XE::real val );
+
+	XE::real GetMaxDepth() const;
+
+	void SetMaxDepth( XE::real val );
+
+	const Vec2 & GetDepth() const;
+
+	void SetDepth( const Vec2 & val );
 
 private:
 	Rect _Rect;
+	Vec2 _Depth;
 };
 
 END_XE_NAMESPACE

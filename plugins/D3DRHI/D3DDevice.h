@@ -34,7 +34,7 @@ public:
 	DeviceType GetType() const override;
 
 public:
-	SwapChainHandle CreateSwapChain( RenderWindowHandle handle, TextureFormat framefmt, XE::uint32 w, XE::uint32 h ) override;
+	SwapChainHandle CreateSwapChain( WindowHandle handle, TextureFormat framefmt, XE::uint32 w, XE::uint32 h ) override;
 
 	bool DestroySwapChain( SwapChainHandle handle ) override;
 

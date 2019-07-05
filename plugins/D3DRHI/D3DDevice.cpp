@@ -89,7 +89,7 @@ void XE::D3DDevice::CreateD3DDevice()
 	}
 }
 
-XE::SwapChainHandle XE::D3DDevice::CreateSwapChain( RenderWindowHandle handle, TextureFormat framefmt, XE::uint32 w, XE::uint32 h )
+XE::SwapChainHandle XE::D3DDevice::CreateSwapChain( WindowHandle handle, TextureFormat framefmt, XE::uint32 w, XE::uint32 h )
 {
 	DXGI_SWAP_CHAIN_DESC swapChainDesc = {};
 	swapChainDesc.BufferCount = 1;
