@@ -15,34 +15,34 @@ BEG_XE_NAMESPACE
 
 class RHI_API Viewport : public Resource
 {
-	OBJECT(Viewport, Resource)
+	OBJECT( Viewport, Resource )
 
 public:
 	Viewport();
-	
+
 	~Viewport() override;
 
 public:
 	XE::real GetX() const;
-	
-	void SetX(XE::real val);
-	
+
+	void SetX( XE::real val );
+
 	XE::real GetY() const;
-	
-	void SetY(XE::real val);
-	
+
+	void SetY( XE::real val );
+
 	XE::real GetWidth() const;
-	
-	void SetWidth(XE::real val);
-	
+
+	void SetWidth( XE::real val );
+
 	XE::real GetHeight() const;
-	
-	void SetHeight(XE::real val);
-	
-	const Rect &GetRect() const;
-	
-	void SetRect( const Rect &rect );
-	
+
+	void SetHeight( XE::real val );
+
+	const Rect & GetRect() const;
+
+	void SetRect( const Rect & rect );
+
 private:
 	Rect _Rect;
 };

@@ -20,6 +20,11 @@ XE::ShaderHandle XE::Shader::GetHandle() const
     return _Handle;
 }
 
+const XE::String & XE::Shader::GetEntry() const
+{
+	return _Entry;
+}
+
 XE::Variant Shader::GetVariable( const String &val ) const
 {
 	auto it = _Variables.find(val);

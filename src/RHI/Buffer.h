@@ -32,15 +32,89 @@ public:
 
     XE::uint64 GetSize() const;
 
-    XE::uint64 GetGPUAddress() const;
-
-    AccessType GetCPUAccess() const;
-
 private:
     memory_view _Data;
-    AccessType _CPUAccess;
-
     BufferHandle _Handle;
+};
+
+class RHI_API VertexBuffer : public Buffer
+{
+	OBJECT( VertexBuffer, Buffer )
+
+public:
+	VertexBuffer();
+
+	~VertexBuffer() override;
+};
+
+class RHI_API IndexBuffer : public Buffer
+{
+	OBJECT( IndexBuffer, Buffer )
+
+public:
+	IndexBuffer();
+
+	~IndexBuffer() override;
+};
+
+class RHI_API DepthStencilBuffer : public Buffer
+{
+	OBJECT( DepthStencilBuffer, Buffer )
+
+public:
+	DepthStencilBuffer();
+
+	~DepthStencilBuffer() override;
+};
+
+class RHI_API DynamicIndexBuffer : public Buffer
+{
+	OBJECT( DynamicIndexBuffer, Buffer )
+
+public:
+	DynamicIndexBuffer();
+
+	~DynamicIndexBuffer() override;
+};
+
+class RHI_API DynamicVertexBuffer : public Buffer
+{
+	OBJECT( DynamicVertexBuffer, Buffer )
+
+public:
+	DynamicVertexBuffer();
+
+	~DynamicVertexBuffer() override;
+};
+
+class RHI_API UniformBuffer : public Buffer
+{
+	OBJECT( UniformBuffer, Buffer )
+
+public:
+	UniformBuffer();
+
+	~UniformBuffer() override;
+};
+
+class RHI_API ComputeBuffer : public Buffer
+{
+	OBJECT( ComputeBuffer, Buffer )
+
+public:
+	ComputeBuffer();
+
+	~ComputeBuffer() override;
+};
+
+class RHI_API ConstantBuffer : public Buffer
+{
+	OBJECT( ConstantBuffer, Buffer )
+
+public:
+	ConstantBuffer();
+
+	~ConstantBuffer() override;
 };
 
 END_XE_NAMESPACE

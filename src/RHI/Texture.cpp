@@ -15,6 +15,16 @@ XE::Texture::~Texture()
 
 }
 
+XE::memory_view XE::Texture::Map( AccessType val )
+{
+	return memory_view();
+}
+
+void XE::Texture::Unmap()
+{
+
+}
+
 XE::TextureHandle XE::Texture::GetHandle() const
 {
 	return _Handle;

@@ -34,6 +34,7 @@ public:
 public:
 	XE::uint64 ElementCount() const;
 	
+public:
 	Element &GetElement( XE::uint64 val );
 	
 	const Element &GetElement( XE::uint64 val ) const;

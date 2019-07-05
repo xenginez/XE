@@ -13,8 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-DECL_PTR( Image );
-DECL_PTR( Device );
+DECL_PTR( Resource );
 
 DECL_PTR( Buffer );
 DECL_PTR( FrameBuffer );
@@ -42,41 +41,33 @@ DECL_PTR( ComputePipelineState );
 DECL_PTR( GraphicsPipelineState );
 
 DECL_PTR( Texture );
+DECL_PTR( Texture2D );
+DECL_PTR( Texture3D );
+DECL_PTR( TextureCube );
+DECL_PTR( Texture2DArray );
+
+DECL_PTR( RenderTarget );
+DECL_PTR( RenderWindow );
+DECL_PTR( RenderTexture2D );
+
+DECL_PTR( Image );
+DECL_PTR( Device );
 DECL_PTR( Sampler );
 DECL_PTR( Uniform );
 DECL_PTR( Viewport );
 DECL_PTR( SwapChain );
 DECL_PTR( InputLayout );
-DECL_PTR( RenderTarget );
 DECL_PTR( OcclusionQuery );
 
 
-DECL_HANDLE( RHI_API, RenderWindow );
+
+DECL_HANDLE( RHI_API, Window );
 
 DECL_HANDLE( RHI_API, Buffer );
-DECL_HANDLE( RHI_API, FrameBuffer );
-DECL_HANDLE( RHI_API, IndexBuffer );
-DECL_HANDLE( RHI_API, VertexBuffer );
-DECL_HANDLE( RHI_API, ComputeBuffer );
-DECL_HANDLE( RHI_API, UniformBuffer );
-DECL_HANDLE( RHI_API, ConstantBuffer );
-DECL_HANDLE( RHI_API, DepthStencilBuffer );
-DECL_HANDLE( RHI_API, DynamicIndexBuffer );
-DECL_HANDLE( RHI_API, DynamicVertexBuffer );
 
 DECL_HANDLE( RHI_API, Shader );
-DECL_HANDLE( RHI_API, HullShader );
-DECL_HANDLE( RHI_API, PixelShader );
-DECL_HANDLE( RHI_API, VertexShader );
-DECL_HANDLE( RHI_API, DomainShader );
-DECL_HANDLE( RHI_API, ComputeShader );
-DECL_HANDLE( RHI_API, GeometryShader );
 
-DECL_HANDLE( RHI_API, BlendState );
-DECL_HANDLE( RHI_API, RasterizerState );
-DECL_HANDLE( RHI_API, DepthStencilState );
-DECL_HANDLE( RHI_API, ComputePipelineState );
-DECL_HANDLE( RHI_API, GraphicsPipelineState );
+DECL_HANDLE( RHI_API, PipelineState );
 
 DECL_HANDLE( RHI_API, Texture );
 DECL_HANDLE( RHI_API, Sampler );
@@ -84,6 +75,7 @@ DECL_HANDLE( RHI_API, Uniform );
 DECL_HANDLE( RHI_API, Viewport );
 DECL_HANDLE( RHI_API, SwapChain );
 DECL_HANDLE( RHI_API, InputLayout );
+DECL_HANDLE( RHI_API, FrameBuffer );
 DECL_HANDLE( RHI_API, RenderTarget );
 DECL_HANDLE( RHI_API, OcclusionQuery );
 

@@ -9,12 +9,18 @@
 #ifndef __UNIFORM_H__15040EFC_8F5A_4BE2_8538_3278F81C55DA
 #define __UNIFORM_H__15040EFC_8F5A_4BE2_8538_3278F81C55DA
 
-class Uniform
+#include "Type.h"
+
+BEG_XE_NAMESPACE
+
+class RHI_API Uniform
 {
 public:
 	Uniform();
 	
 	~Uniform();
 };
+
+END_XE_NAMESPACE
 
 #endif //__UNIFORM_H__15040EFC_8F5A_4BE2_8538_3278F81C55DA

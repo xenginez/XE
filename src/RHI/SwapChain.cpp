@@ -2,7 +2,7 @@
 
 #include "Device.h"
 
-XE::SwapChain::SwapChain( DevicePtr device, RenderWindowHandle handle )
+XE::SwapChain::SwapChain( DevicePtr device, WindowHandle handle )
 	:_Device( device )
 {
 	//_Handle = _Device->CreateSwapChain( handle );

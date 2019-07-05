@@ -34,13 +34,3 @@ XE::uint64 XE::Buffer::GetSize() const
 {
 	return _Data.size();
 }
-
-XE::uint64 XE::Buffer::GetGPUAddress() const
-{
-	return (XE::uint64)_Data.data();
-}
-
-XE::AccessType XE::Buffer::GetCPUAccess() const
-{
-	return _CPUAccess;
-}

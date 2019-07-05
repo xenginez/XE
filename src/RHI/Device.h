@@ -31,7 +31,7 @@ public:
 	virtual DeviceType GetType() const = 0;
 
 public:
-	virtual SwapChainHandle CreateSwapChain( RenderWindowHandle handle, TextureFormat framefmt, XE::uint32 w, XE::uint32 h ) = 0;
+	virtual SwapChainHandle CreateSwapChain( WindowHandle handle, TextureFormat framefmt, XE::uint32 w, XE::uint32 h ) = 0;
 
 	virtual bool DestroySwapChain( SwapChainHandle handle ) = 0;
 
