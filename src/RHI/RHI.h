@@ -20,7 +20,6 @@
 #include "Device.h"
 #include "Camera.h"
 #include "Sampler.h"
-#include "Uniform.h"
 #include "Viewport.h"
 #include "FrameBuffer.h"
 #include "InputLayout.h"

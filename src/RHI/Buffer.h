@@ -34,16 +34,6 @@ private:
 	Array<XE::uint8> _Data;
 };
 
-class RHI_API VertexBuffer : public Buffer
-{
-	OBJECT( VertexBuffer, Buffer )
-
-public:
-	VertexBuffer();
-
-	~VertexBuffer() override;
-};
-
 class RHI_API IndexBuffer : public Buffer
 {
 	OBJECT( IndexBuffer, Buffer )
@@ -54,34 +44,14 @@ public:
 	~IndexBuffer() override;
 };
 
-class RHI_API DepthStencilBuffer : public Buffer
+class RHI_API VertexBuffer : public Buffer
 {
-	OBJECT( DepthStencilBuffer, Buffer )
+	OBJECT( VertexBuffer, Buffer )
 
 public:
-	DepthStencilBuffer();
+	VertexBuffer();
 
-	~DepthStencilBuffer() override;
-};
-
-class RHI_API DynamicIndexBuffer : public Buffer
-{
-	OBJECT( DynamicIndexBuffer, Buffer )
-
-public:
-	DynamicIndexBuffer();
-
-	~DynamicIndexBuffer() override;
-};
-
-class RHI_API DynamicVertexBuffer : public Buffer
-{
-	OBJECT( DynamicVertexBuffer, Buffer )
-
-public:
-	DynamicVertexBuffer();
-
-	~DynamicVertexBuffer() override;
+	~VertexBuffer() override;
 };
 
 class RHI_API UniformBuffer : public Buffer
@@ -112,6 +82,36 @@ public:
 	ConstantBuffer();
 
 	~ConstantBuffer() override;
+};
+
+class RHI_API DepthStencilBuffer : public Buffer
+{
+	OBJECT( DepthStencilBuffer, Buffer )
+
+public:
+	DepthStencilBuffer();
+
+	~DepthStencilBuffer() override;
+};
+
+class RHI_API DynamicIndexBuffer : public Buffer
+{
+	OBJECT( DynamicIndexBuffer, Buffer )
+
+public:
+	DynamicIndexBuffer();
+
+	~DynamicIndexBuffer() override;
+};
+
+class RHI_API DynamicVertexBuffer : public Buffer
+{
+	OBJECT( DynamicVertexBuffer, Buffer )
+
+public:
+	DynamicVertexBuffer();
+
+	~DynamicVertexBuffer() override;
 };
 
 END_XE_NAMESPACE

@@ -31,19 +31,30 @@ public:
 	virtual DeviceType GetType() const = 0;
 
 public:
-	virtual SwapChainHandle CreateSwapChain( WindowHandle handle, TextureFormat framefmt, XE::uint32 w, XE::uint32 h ) = 0;
+	virtual SwapChainHandle CreateSwapChain( SwapChainPtr & val ) = 0;
 
 	virtual bool DestroySwapChain( SwapChainHandle handle ) = 0;
 
 public:
+	virtual ResourceHandle CreateResource( ResourcePtr & val ) = 0;
+
+	virtual ResourceHandle CreateTexture( TexturePtr & val ) = 0;
+
+	virtual ResourceHandle CreateBuffer( BufferPtr & val ) = 0;
+
+	virtual ResourceHandle CreateShader( ShaderPtr & val ) = 0;
+
 	virtual XE::memory_view Map( ResourceHandle handle, XE::uint32 sub_resource, XE::uint64 begin, XE::uint64 end, XE::uint8 * read_data ) = 0;
 
 	virtual void Unmap( ResourceHandle handle, XE::uint32 sub_resource, XE::uint64 begin, XE::uint64 end ) = 0;
 
-public:
-	virtual ResourceHandle CompileShader( const String & file, const String & entry, Array<XE::uint8> & byte ) = 0;
+	virtual bool DestoryShader( ResourceHandle handle ) = 0;
 
-	virtual ResourceHandle CompileShader( memory_view byte, const String & entry ) = 0;
+	virtual bool DestoryBuffer( ResourceHandle handle ) = 0;
+
+	virtual bool DestoryTexture( ResourceHandle handle ) = 0;
+
+	virtual bool DestoryResource( ResourceHandle handle ) = 0;
 
 public:
 	virtual SamplerHandle CreateSampler( SamplerPtr & desc ) = 0;
@@ -55,6 +66,18 @@ public:
 
 	virtual bool DestroyRenderTarget( RenderTargetHandle handle ) = 0;
 
+public:
+	virtual FenceHandle CreateFence( XE::uint64 val ) = 0;
+
+	virtual bool Wait( FenceHandle handle, XE::uint64 val ) = 0;
+
+	virtual bool Signal( FenceHandle handle, XE::uint64 val ) = 0;
+
+	virtual XE::uint64 GetCompletedValue( FenceHandle handle ) = 0;
+
+	virtual bool DestroyFence( FenceHandle handle ) = 0;
+
+public:
 };
 
 END_XE_NAMESPACE

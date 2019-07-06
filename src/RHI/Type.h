@@ -50,10 +50,10 @@ DECL_PTR( RenderTarget );
 DECL_PTR( RenderWindow );
 DECL_PTR( RenderTexture2D );
 
+DECL_PTR( Fence );
 DECL_PTR( Image );
 DECL_PTR( Device );
 DECL_PTR( Sampler );
-DECL_PTR( Uniform );
 DECL_PTR( Viewport );
 DECL_PTR( SwapChain );
 DECL_PTR( InputLayout );
@@ -67,8 +67,8 @@ DECL_HANDLE( RHI_API, Resource );
 
 DECL_HANDLE( RHI_API, PipelineState );
 
+DECL_HANDLE( RHI_API, Fence );
 DECL_HANDLE( RHI_API, Sampler );
-DECL_HANDLE( RHI_API, Uniform );
 DECL_HANDLE( RHI_API, Viewport );
 DECL_HANDLE( RHI_API, SwapChain );
 DECL_HANDLE( RHI_API, InputLayout );

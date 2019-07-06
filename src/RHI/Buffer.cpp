@@ -37,19 +37,6 @@ XE::uint64 XE::Buffer::GetSize() const
 	return _Data.size();
 }
 
-BEG_META( VertexBuffer )
-END_META()
-
-XE::VertexBuffer::VertexBuffer()
-{
-
-}
-
-XE::VertexBuffer::~VertexBuffer()
-{
-
-}
-
 BEG_META( IndexBuffer )
 END_META()
 
@@ -63,41 +50,15 @@ XE::IndexBuffer::~IndexBuffer()
 
 }
 
-BEG_META( DepthStencilBuffer )
+BEG_META( VertexBuffer )
 END_META()
 
-XE::DepthStencilBuffer::DepthStencilBuffer()
+XE::VertexBuffer::VertexBuffer()
 {
 
 }
 
-XE::DepthStencilBuffer::~DepthStencilBuffer()
-{
-
-}
-
-BEG_META( DynamicIndexBuffer )
-END_META()
-
-XE::DynamicIndexBuffer::DynamicIndexBuffer()
-{
-
-}
-
-XE::DynamicIndexBuffer::~DynamicIndexBuffer()
-{
-
-}
-
-BEG_META( DynamicVertexBuffer )
-END_META()
-
-XE::DynamicVertexBuffer::DynamicVertexBuffer()
-{
-
-}
-
-XE::DynamicVertexBuffer::~DynamicVertexBuffer()
+XE::VertexBuffer::~VertexBuffer()
 {
 
 }
@@ -137,6 +98,45 @@ XE::ConstantBuffer::ConstantBuffer()
 }
 
 XE::ConstantBuffer::~ConstantBuffer()
+{
+
+}
+
+BEG_META( DepthStencilBuffer )
+END_META()
+
+XE::DepthStencilBuffer::DepthStencilBuffer()
+{
+
+}
+
+XE::DepthStencilBuffer::~DepthStencilBuffer()
+{
+
+}
+
+BEG_META( DynamicIndexBuffer )
+END_META()
+
+XE::DynamicIndexBuffer::DynamicIndexBuffer()
+{
+
+}
+
+XE::DynamicIndexBuffer::~DynamicIndexBuffer()
+{
+
+}
+
+BEG_META( DynamicVertexBuffer )
+END_META()
+
+XE::DynamicVertexBuffer::DynamicVertexBuffer()
+{
+
+}
+
+XE::DynamicVertexBuffer::~DynamicVertexBuffer()
 {
 
 }
