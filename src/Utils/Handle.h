@@ -19,11 +19,11 @@ public:
 	using Type = T;
 
 public:
-	static const Handle< T > invalid;
+	static const Handle< T > Invalid;
 
 public:
 	Handle()
-		:_value( invalid._value )
+		:_value( Invalid._value )
 	{
 	}
 
@@ -180,6 +180,6 @@ template< typename T > bool operator==( XE::uint64 left, XE::Handle< T > right )
 	return left == right.GetValue();
 }
 
-template< typename T > const XE::Handle<T> XE::Handle<T>::invalid( std::numeric_limits<XE::uint64>::max() );
+template< typename T > const XE::Handle<T> XE::Handle<T>::Invalid( std::numeric_limits<XE::uint64>::max() );
 
 #endif // __HANDLE_H__7920C1A9_2044_45F0_84C4_221961C006AF

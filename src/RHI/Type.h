@@ -68,7 +68,6 @@ DECL_PTR( UnorderedAccess );
 
 DECL_HANDLE( RHI_API, Fence );
 DECL_HANDLE( RHI_API, Query );
-DECL_HANDLE( RHI_API, Window );
 DECL_HANDLE( RHI_API, Sampler );
 DECL_HANDLE( RHI_API, Viewport );
 DECL_HANDLE( RHI_API, Resource );

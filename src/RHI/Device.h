@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class RHI_API Device
+class RHI_API Device : public NonCopyable
 {
 	OBJECT( Device )
 

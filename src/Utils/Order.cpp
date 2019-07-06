@@ -83,7 +83,7 @@ XE::uint64 XE::Order::RegisterOrder_P( XE::uint64 group, const String& name, con
 			return crc;
 		}
 
-		return invalid;
+		return Invalid;
 	}
 
 	OrderInfo info;
@@ -111,7 +111,7 @@ XE::uint64 XE::Order::FindOrderID_P( XE::uint64 group, const String& name )
 		}
 	}
 
-	return invalid;
+	return Invalid;
 }
 
 void XE::Order::VisitOrder_P( XE::uint64 group, std::function< void( XE::uint64, String, String, const IMetaInfo * ) > val )

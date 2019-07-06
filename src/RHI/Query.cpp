@@ -1,4 +1,4 @@
-#include "OcclusionQuery.h"
+#include "Query.h"
 
 USING_XE
 
@@ -27,7 +27,7 @@ void XE::Query::EndQuery( XE::uint32 val )
 
 XE::Variant XE::Query::ReadBack() const
 {
-
+	return nullptr;
 }
 
 BEG_META( TimerQuery )

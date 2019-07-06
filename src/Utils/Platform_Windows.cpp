@@ -5,6 +5,8 @@
 
 USING_XE
 
+IMPLEMENT_META( WindowHandle );
+
 std::function<bool( XE::uint64, XE::uint64, XE::uint64, XE::uint64 )> G_Callback;
 
 LRESULT WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
@@ -197,7 +199,7 @@ bool XE::Platform::RegisterWindowClass( const String & icon, std::function<bool(
 	return false;
 }
 
-XE::uint64 XE::Platform::ConstructWindow( const String & title, XE::uint32 x, XE::uint32 y, XE::uint32 w, XE::uint32 h )
+WindowHandle XE::Platform::ConstructWindow( const String & title, XE::uint32 x, XE::uint32 y, XE::uint32 w, XE::uint32 h )
 {
 	HWND hwnd = ::CreateWindow( "XE", title.ToCString(), WS_OVERLAPPEDWINDOW, x, y, w, h, nullptr, nullptr, GetModuleHandle( NULL ), nullptr );
 
@@ -210,66 +212,66 @@ XE::uint64 XE::Platform::ConstructWindow( const String & title, XE::uint32 x, XE
 	return reinterpret_cast< XE::uint64 >( hwnd );
 }
 
-bool XE::Platform::DestroyWindow( XE::uint64 handle )
+bool XE::Platform::DestroyWindow( WindowHandle handle )
 {
-	return ::DestroyWindow( reinterpret_cast< HWND >( handle ) ) != 0;
+	return ::DestroyWindow( reinterpret_cast< HWND >( handle.GetValue() ) ) != 0;
 }
 
-bool Platform::GrabWindow( XE::uint64 handle )
+bool Platform::GrabWindow( WindowHandle handle )
 {
-	return BringWindowToTop( reinterpret_cast< HWND >( handle ) ) != 0;
+	return BringWindowToTop( reinterpret_cast< HWND >( handle.GetValue() ) ) != 0;
 }
 
-bool XE::Platform::ShowWindow( XE::uint64 handle )
+bool XE::Platform::ShowWindow( WindowHandle handle )
 {
-	return ::ShowWindow( reinterpret_cast< HWND >( handle ), SW_SHOW ) != 0 &&
-		::UpdateWindow( reinterpret_cast< HWND >( handle ) ) != 0;
+	return ::ShowWindow( reinterpret_cast< HWND >( handle.GetValue() ), SW_SHOW ) != 0 &&
+		::UpdateWindow( reinterpret_cast< HWND >( handle.GetValue() ) ) != 0;
 }
 
-bool XE::Platform::HideWindow( XE::uint64 handle )
+bool XE::Platform::HideWindow( WindowHandle handle )
 {
-	return ::ShowWindow( reinterpret_cast< HWND >( handle ), SW_HIDE ) != 0 &&
-		::UpdateWindow( reinterpret_cast< HWND >( handle ) ) != 0;
+	return ::ShowWindow( reinterpret_cast< HWND >( handle.GetValue() ), SW_HIDE ) != 0 &&
+		::UpdateWindow( reinterpret_cast< HWND >( handle.GetValue() ) ) != 0;
 }
 
-bool XE::Platform::MinimizeWindow( XE::uint64 handle )
+bool XE::Platform::MinimizeWindow( WindowHandle handle )
 {
-	return ::ShowWindow( reinterpret_cast< HWND >( handle ), SW_MINIMIZE ) != 0 &&
-		::UpdateWindow( reinterpret_cast< HWND >( handle ) ) != 0;
+	return ::ShowWindow( reinterpret_cast< HWND >( handle.GetValue() ), SW_MINIMIZE ) != 0 &&
+		::UpdateWindow( reinterpret_cast< HWND >( handle.GetValue() ) ) != 0;
 }
 
-bool XE::Platform::MaximizeWindow( XE::uint64 handle )
+bool XE::Platform::MaximizeWindow( WindowHandle handle )
 {
-	return ::ShowWindow( reinterpret_cast< HWND >( handle ), SW_MAXIMIZE ) != 0 &&
-		::UpdateWindow( reinterpret_cast< HWND >( handle ) ) != 0;
+	return ::ShowWindow( reinterpret_cast< HWND >( handle.GetValue() ), SW_MAXIMIZE ) != 0 &&
+		::UpdateWindow( reinterpret_cast< HWND >( handle.GetValue() ) ) != 0;
 }
 
-bool XE::Platform::FullscreenWindow( XE::uint64 handle )
+bool XE::Platform::FullscreenWindow( WindowHandle handle )
 {
 	RECT desk_rect;
 	HWND desk_handle;
 	desk_handle = GetDesktopWindow();
 	GetWindowRect( desk_handle, &desk_rect );
-	SetWindowLong( reinterpret_cast< HWND >( handle ), GWL_STYLE, WS_BORDER );
+	SetWindowLong( reinterpret_cast< HWND >( handle.GetValue() ), GWL_STYLE, WS_BORDER );
 
-	return SetWindowPos( reinterpret_cast< HWND >( handle ), HWND_TOPMOST, 0, 0, desk_rect.right, desk_rect.bottom, SWP_NOSIZE | SWP_NOMOVE | SWP_SHOWWINDOW ) != 0 &&
-		::UpdateWindow( reinterpret_cast< HWND >( handle ) ) != 0;
+	return SetWindowPos( reinterpret_cast< HWND >( handle.GetValue() ), HWND_TOPMOST, 0, 0, desk_rect.right, desk_rect.bottom, SWP_NOSIZE | SWP_NOMOVE | SWP_SHOWWINDOW ) != 0 &&
+		::UpdateWindow( reinterpret_cast< HWND >( handle.GetValue() ) ) != 0;
 }
 
-bool Platform::GetWindowFocus( XE::uint64 handle )
+bool Platform::GetWindowFocus( WindowHandle handle )
 {
-	return GetFocus() == reinterpret_cast< HWND >( handle );
+	return GetFocus() == reinterpret_cast< HWND >( handle.GetValue() );
 }
 
-bool XE::Platform::SetWindowTitle( XE::uint64 handle, const String & title )
+bool XE::Platform::SetWindowTitle( WindowHandle handle, const String & title )
 {
-	return SetWindowText( reinterpret_cast< HWND >( handle ), title.ToCString() );
+	return SetWindowText( reinterpret_cast< HWND >( handle.GetValue() ), title.ToCString() );
 }
 
-bool XE::Platform::SetWindowRect( XE::uint64 handle, XE::uint32 x, XE::uint32 y, XE::uint32 w, XE::uint32 h, bool topmost )
+bool XE::Platform::SetWindowRect( WindowHandle handle, XE::uint32 x, XE::uint32 y, XE::uint32 w, XE::uint32 h, bool topmost )
 {
-	return ::SetWindowPos( reinterpret_cast< HWND >( handle ), topmost ? HWND_TOPMOST : HWND_NOTOPMOST, x, y, w, h, SWP_NOZORDER ) != 0 &&
-		::UpdateWindow( reinterpret_cast< HWND >( handle ) ) != 0;
+	return ::SetWindowPos( reinterpret_cast< HWND >( handle.GetValue() ), topmost ? HWND_TOPMOST : HWND_NOTOPMOST, x, y, w, h, SWP_NOZORDER ) != 0 &&
+		::UpdateWindow( reinterpret_cast< HWND >( handle.GetValue() ) ) != 0;
 }
 
 bool XE::Platform::ShowMouse()

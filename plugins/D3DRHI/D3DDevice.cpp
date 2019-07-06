@@ -89,38 +89,39 @@ void XE::D3DDevice::CreateD3DDevice()
 	}
 }
 
-XE::SwapChainHandle XE::D3DDevice::CreateSwapChain( WindowHandle handle, TextureFormat framefmt, XE::uint32 w, XE::uint32 h )
+XE::SwapChainHandle XE::D3DDevice::CreateSwapChain( SwapChainPtr & val )
 {
-	DXGI_SWAP_CHAIN_DESC swapChainDesc = {};
-	swapChainDesc.BufferCount = 1;
-	swapChainDesc.BufferDesc.Width = w;
-	swapChainDesc.BufferDesc.Height = h;
-	swapChainDesc.BufferDesc.RefreshRate.Numerator = 60;
-	swapChainDesc.BufferDesc.RefreshRate.Denominator = 1;
-	swapChainDesc.BufferDesc.Format = ToFormat( framefmt );
-	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
-	swapChainDesc.OutputWindow = reinterpret_cast< HWND >( handle.GetValue() );
-	swapChainDesc.SampleDesc.Count = 1;
-	swapChainDesc.Windowed = TRUE;
-
-	ComPtr<IDXGISwapChain> swapChain;
-	ThrowIfFailed( _Factory->CreateSwapChain( _CommandQueue.Get(), &swapChainDesc, &swapChain ) );
-	ThrowIfFailed( _Factory->MakeWindowAssociation( swapChainDesc.OutputWindow, DXGI_MWA_NO_ALT_ENTER ) );
-
-	for( int i = 0; i < _SwapChains.size(); ++i )
-	{
-		if( !_SwapChains[i] )
-		{
-			_SwapChains[i] = swapChain;
-
-			return i;
-		}
-	}
-
-	_SwapChains.push_back( swapChain );
-
-	return _SwapChains.size() - 1;
+	return SwapChainHandle::Invalid;
+// 	DXGI_SWAP_CHAIN_DESC swapChainDesc = {};
+// 	swapChainDesc.BufferCount = 1;
+// 	swapChainDesc.BufferDesc.Width = w;
+// 	swapChainDesc.BufferDesc.Height = h;
+// 	swapChainDesc.BufferDesc.RefreshRate.Numerator = 60;
+// 	swapChainDesc.BufferDesc.RefreshRate.Denominator = 1;
+// 	swapChainDesc.BufferDesc.Format = ToFormat( framefmt );
+// 	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+// 	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
+// 	swapChainDesc.OutputWindow = reinterpret_cast< HWND >( handle.GetValue() );
+// 	swapChainDesc.SampleDesc.Count = 1;
+// 	swapChainDesc.Windowed = TRUE;
+// 
+// 	ComPtr<IDXGISwapChain> swapChain;
+// 	ThrowIfFailed( _Factory->CreateSwapChain( _CommandQueue.Get(), &swapChainDesc, &swapChain ) );
+// 	ThrowIfFailed( _Factory->MakeWindowAssociation( swapChainDesc.OutputWindow, DXGI_MWA_NO_ALT_ENTER ) );
+// 
+// 	for( int i = 0; i < _SwapChains.size(); ++i )
+// 	{
+// 		if( !_SwapChains[i] )
+// 		{
+// 			_SwapChains[i] = swapChain;
+// 
+// 			return i;
+// 		}
+// 	}
+// 
+// 	_SwapChains.push_back( swapChain );
+// 
+// 	return _SwapChains.size() - 1;
 }
 
 bool XE::D3DDevice::DestroySwapChain( SwapChainHandle handle )

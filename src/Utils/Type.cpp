@@ -1,4 +1,4 @@
-#include"Utils/Type.h"
+#include"Type.h"
 
 USING_XE
 
@@ -45,27 +45,4 @@ BEG_META(Language)
 		type->Value("VIETNAMESE", Language::VIETNAMESE);
 		type->Value("HUNGARIAN", Language::HUNGARIAN);
 		type->Value("UNKNOWN", Language::UNKNOWN);
-END_META()
-
-
-BEG_META(WindowFlags)
-		type->Value("FULLSCREEN", WindowFlags::FULLSCREEN);
-		type->Value("SHOWN", WindowFlags::SHOWN);
-		type->Value("HIDDEN", WindowFlags::HIDDEN);
-		type->Value("BORDERLESS", WindowFlags::BORDERLESS);
-		type->Value("RESIZABLE", WindowFlags::RESIZABLE);
-		type->Value("MINIMIZED", WindowFlags::MINIMIZED);
-		type->Value("MAXIMIZED", WindowFlags::MAXIMIZED);
-		type->Value("INPUT_GRABBED", WindowFlags::INPUT_GRABBED);
-		type->Value("INPUT_FOCUS", WindowFlags::INPUT_FOCUS);
-		type->Value("MOUSE_FOCUS", WindowFlags::MOUSE_FOCUS);
-		type->Value("FOREIGN", WindowFlags::FOREIGN);
-		type->Value("ALLOW_HIGHDPI", WindowFlags::ALLOW_HIGHDPI);
-		type->Value("MOUSE_CAPTURE", WindowFlags::MOUSE_CAPTURE);
-		type->Value("ALWAYS_ON_TOP", WindowFlags::ALWAYS_ON_TOP);
-		type->Value("SKIP_TASKBAR", WindowFlags::SKIP_TASKBAR);
-		type->Value("UTILITY", WindowFlags::UTILITY);
-		type->Value("TOOLTIP", WindowFlags::TOOLTIP);
-		type->Value("POPUP_MENU", WindowFlags::POPUP_MENU);
-		type->Value("VULKAN", WindowFlags::VULKAN);
 END_META()

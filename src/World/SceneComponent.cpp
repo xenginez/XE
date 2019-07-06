@@ -76,7 +76,7 @@ void XE::SceneComponent::AttachToParent( SceneComponentPtr val )
 
 	if ( val == nullptr )
 	{
-		_ParentHandle = ComponentHandle::invalid;
+		_ParentHandle = ComponentHandle::Invalid;
 		return;
 	}
 
@@ -189,7 +189,7 @@ XE::SceneComponentPtr XE::SceneComponent::FindChildFromTree( ComponentHandle val
 
 void XE::SceneComponent::Startup()
 {
-	_Transform.SetParent( _ParentHandle != ComponentHandle::invalid ? GetParent()->GetTransform() : nullptr );
+	_Transform.SetParent( _ParentHandle != ComponentHandle::Invalid ? GetParent()->GetTransform() : nullptr );
 
 	OnStartup();
 

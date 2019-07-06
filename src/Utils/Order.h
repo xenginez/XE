@@ -23,7 +23,7 @@ private:
 	struct Private;
 
 public:
-	static const XE::uint64 invalid = 0;
+	static const XE::uint64 Invalid = 0;
 
 private:
 	Order();
