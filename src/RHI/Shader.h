@@ -23,8 +23,6 @@ public:
 	~Shader() override;
 
 public:
-	ShaderHandle GetHandle() const;
-
 	const String & GetEntry() const;
 
 public:
@@ -34,8 +32,7 @@ public:
 
 private:
 	String _Entry;
-	ShaderHandle _Handle;
-	Map<String, Variant> _Variables;
+	XE::Map<String, Variant> _Variables;
 };
 
 class RHI_API HullShader : public Shader

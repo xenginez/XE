@@ -15,11 +15,6 @@ XE::Shader::~Shader()
 
 }
 
-XE::ShaderHandle XE::Shader::GetHandle() const
-{
-    return _Handle;
-}
-
 const XE::String & XE::Shader::GetEntry() const
 {
 	return _Entry;

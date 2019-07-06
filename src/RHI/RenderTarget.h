@@ -13,77 +13,77 @@
 
 BEG_XE_NAMESPACE
 
-class RHI_API RenderTarget : Resource
+class RHI_API RenderTarget : std::enable_shared_from_this< RenderTarget >
 {
-	OBJECT(RenderTarget, Resource)
-	
-public:
-    RenderTarget();
-
-    ~RenderTarget() override;
+	OBJECT( RenderTarget )
 
 public:
-    RenderTargetHandle Handle() const;
+	RenderTarget();
+
+	virtual ~RenderTarget();
 
 public:
-    bool GetWriteRed() const;
+	RenderTargetHandle GetHandle() const;
 
-    void SetWriteRed(bool WriteRed);
+public:
+	bool GetWriteRed() const;
 
-    bool GetWriteGreen() const;
+	void SetWriteRed( bool WriteRed );
 
-    void SetWriteGreen(bool WriteGreen);
+	bool GetWriteGreen() const;
 
-    bool GetWriteBlue() const;
+	void SetWriteGreen( bool WriteGreen );
 
-    void SetWriteBlue(bool WriteBlue);
+	bool GetWriteBlue() const;
 
-    bool GetWriteAlpha() const;
+	void SetWriteBlue( bool WriteBlue );
 
-    void SetWriteAlpha(bool WriteAlpha);
+	bool GetWriteAlpha() const;
 
-    bool GetBlendEnabled() const;
+	void SetWriteAlpha( bool WriteAlpha );
 
-    void SetBlendEnabled(bool BlendEnabled);
+	bool GetBlendEnabled() const;
 
-    BlendFactor GetSrcRgbFunc() const;
+	void SetBlendEnabled( bool BlendEnabled );
 
-    void SetSrcRgbFunc(const BlendFactor &SrcRgbFunc);
+	BlendFactor GetSrcRgbFunc() const;
 
-    BlendFactor GetSrcAlphaFunc() const;
+	void SetSrcRgbFunc( const BlendFactor & SrcRgbFunc );
 
-    void SetSrcAlphaFunc(const BlendFactor &SrcAlphaFunc);
+	BlendFactor GetSrcAlphaFunc() const;
 
-    BlendFactor GetDstRgbFunc() const;
+	void SetSrcAlphaFunc( const BlendFactor & SrcAlphaFunc );
 
-    void SetDstRgbFunc(const BlendFactor &DstRgbFunc);
+	BlendFactor GetDstRgbFunc() const;
 
-    BlendFactor GetDstAlphaFunc() const;
+	void SetDstRgbFunc( const BlendFactor & DstRgbFunc );
 
-    void SetDstAlphaFunc(const BlendFactor &DstAlphaFunc);
+	BlendFactor GetDstAlphaFunc() const;
 
-    BlendOperation GetRgbBlendOp() const;
+	void SetDstAlphaFunc( const BlendFactor & DstAlphaFunc );
 
-    void SetRgbBlendOp(const BlendOperation &RgbBlendOp);
+	BlendOperation GetRgbBlendOp() const;
 
-    BlendOperation GetAlphaBlendOp() const;
+	void SetRgbBlendOp( const BlendOperation & RgbBlendOp );
 
-    void SetAlphaBlendOp(const BlendOperation &AlphaBlendOp);
+	BlendOperation GetAlphaBlendOp() const;
+
+	void SetAlphaBlendOp( const BlendOperation & AlphaBlendOp );
 
 private:
-    bool _WriteRed;
-    bool _WriteGreen;
-    bool _WriteBlue;
-    bool _WriteAlpha;
-    bool _BlendEnabled;
-    BlendFactor _SrcRgbFunc;
-    BlendFactor _SrcAlphaFunc;
-    BlendFactor _DstRgbFunc;
-    BlendFactor _DstAlphaFunc;
-    BlendOperation _RgbBlendOp;
-    BlendOperation _AlphaBlendOp;
+	bool _WriteRed;
+	bool _WriteGreen;
+	bool _WriteBlue;
+	bool _WriteAlpha;
+	bool _BlendEnabled;
+	BlendFactor _SrcRgbFunc;
+	BlendFactor _SrcAlphaFunc;
+	BlendFactor _DstRgbFunc;
+	BlendFactor _DstAlphaFunc;
+	BlendOperation _RgbBlendOp;
+	BlendOperation _AlphaBlendOp;
 
-    RenderTargetHandle _Handle;
+	RenderTargetHandle _Handle;
 };
 
 class RHI_API RenderWindow : public RenderTarget
@@ -153,6 +153,8 @@ public:
 public:
 	SwapChainPtr GetSwapChain() const;
 
+	WindowHandle GetWindowHandle() const;
+
 private:
 	bool _Show = true;
 	bool _Fullscreen = false;
@@ -160,8 +162,8 @@ private:
 	Rect _Rect = { 0, 0, 800, 600 };
 	String _Title = "XE";
 
-	SwapChainPtr _SwapChain;
 	WindowHandle _Handle;
+	SwapChainPtr _SwapChain;
 };
 
 class RHI_API RenderTexture2D : public RenderTarget
@@ -173,8 +175,14 @@ public:
 	~RenderTexture2D() override;
 
 public:
+	Texture2DPtr GetTexture2D() const;
+
+	void SetTexture2D( const Texture2DPtr & val );
+
+private:
+	Texture2DPtr _Texture;
 };
-	 
+
 
 END_XE_NAMESPACE
 

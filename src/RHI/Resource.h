@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class RHI_API Resource : public std::enable_shared_from_this<Resource>
+class RHI_API Resource : public std::enable_shared_from_this< Resource >
 {
 	OBJECT(Resource)
 
@@ -24,6 +24,23 @@ public:
 
 public:
 	virtual bool Prepare() = 0;
+
+public:
+	DevicePtr GetDevice() const;
+
+	void SetDevice( const DevicePtr & val );
+
+public:
+	ResourceHandle GetHandle() const;
+
+protected:
+	XE::memory_view Map( XE::uint32 sub_resource, XE::uint64 begin, XE::uint64 end, XE::uint8 * read_data );
+
+	void Unmap( XE::uint32 sub_resource, XE::uint64 begin, XE::uint64 end );
+
+private:
+	DevicePtr _Device;
+	ResourceHandle _Handle;
 };
 
 END_XE_NAMESPACE

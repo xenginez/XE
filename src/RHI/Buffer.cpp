@@ -15,19 +15,21 @@ XE::Buffer::~Buffer()
 
 }
 
-XE::BufferHandle XE::Buffer::GetHandle() const
-{
-	return _Handle;
-}
-
 XE::memory_view XE::Buffer::Map( XE::AccessType val )
 {
-	return _Data;
+	_Access = val;
+
+	Resource::Map( 0, 0, 0, _Data.data() );
+
+	return memory_view( ( XE::int8 * )_Data.data(), _Data.size() );
 }
 
 void XE::Buffer::Unmap()
 {
+	Resource::Unmap( 0, 0, 0 );
 
+	_Data.clear();
+	_Data.shrink_to_fit();
 }
 
 XE::uint64 XE::Buffer::GetSize() const

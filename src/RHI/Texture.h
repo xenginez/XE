@@ -28,13 +28,10 @@ public:
 	void Unmap();
 
 public:
-	TextureHandle GetHandle() const;
-
 	TextureFormat GetFormat() const;
 
 protected:
 	TextureFormat _Format;
-	TextureHandle _Handle;
 };
 
 class RHI_API Texture2D : public Texture

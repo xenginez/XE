@@ -25,11 +25,6 @@ void XE::Texture::Unmap()
 
 }
 
-XE::TextureHandle XE::Texture::GetHandle() const
-{
-	return _Handle;
-}
-
 XE::TextureFormat XE::Texture::GetFormat() const
 {
 	return _Format;

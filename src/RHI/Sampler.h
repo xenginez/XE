@@ -13,61 +13,64 @@
 
 BEG_XE_NAMESPACE
 
-class RHI_API Sampler : public Resource
+class RHI_API Sampler : public std::enable_shared_from_this< Sampler >
 {
-	OBJECT(Sampler, Resource)
+	OBJECT( Sampler )
 	
 public:
 	Sampler();
 	
-	~Sampler() override;
+	~Sampler();
 
 public:
-	SamplerFilter getMinFilter() const;
+	SamplerHandle GetHandle() const;
+
+public:
+	SamplerFilter GetMinFilter() const;
 	
-	void setMinFilter( SamplerFilter val );
+	void SetMinFilter( SamplerFilter val );
 	
-	SamplerFilter getMagFilter() const;
+	SamplerFilter GetMagFilter() const;
 	
-	void setMagFilter( SamplerFilter val );
+	void SetMagFilter( SamplerFilter val );
 	
-	SamplerFilter getMipFilter() const;
+	SamplerFilter GetMipFilter() const;
 	
-	void setMipFilter( SamplerFilter val );
+	void SetMipFilter( SamplerFilter val );
 	
-	SamplerAddressType getAddressU() const;
+	SamplerAddressType GetAddressU() const;
 	
-	void setAddressU( SamplerAddressType val );
+	void SetAddressU( SamplerAddressType val );
 	
-	SamplerAddressType getAddressV() const;
+	SamplerAddressType GetAddressV() const;
 	
-	void setAddressV( SamplerAddressType val );
+	void SetAddressV( SamplerAddressType val );
 	
-	SamplerAddressType getAddressW() const;
+	SamplerAddressType GetAddressW() const;
 	
-	void setAddressW( SamplerAddressType val );
+	void SetAddressW( SamplerAddressType val );
 	
-	XE::real getMipLodBias() const;
+	XE::real GetMipLodBias() const;
 	
-	void setMipLodBias( XE::real val );
+	void SetMipLodBias( XE::real val );
 	
-	XE::uint32 getMaxAnisotropy() const;
+	XE::uint32 GetMaxAnisotropy() const;
 	
-	void setMaxAnisotropy( XE::uint32 val );
+	void SetMaxAnisotropy( XE::uint32 val );
 	
-	CompareType getComparisonFunc() const;
+	CompareType GetComparisonFunc() const;
 	
-	void setComparisonFunc( CompareType val );
+	void SetComparisonFunc( CompareType val );
 	
-	const XE::real * getBorderColor() const;
+	const XE::real * GetBorderColor() const;
 	
-	XE::real getMinLOD() const;
+	XE::real GetMinLOD() const;
 	
-	void setMinLOD( XE::real val );
+	void SetMinLOD( XE::real val );
 	
-	XE::real getMaxLOD() const;
+	XE::real GetMaxLOD() const;
 	
-	void setMaxLOD( XE::real val );
+	void SetMaxLOD( XE::real val );
 
 private:
 	SamplerFilter _MinFilter;
@@ -86,6 +89,8 @@ private:
 	
 	XE::real _MinLOD;
 	XE::real _MaxLOD;
+
+	SamplerHandle _Handle;
 };
 
 END_XE_NAMESPACE

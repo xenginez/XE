@@ -285,7 +285,7 @@ public:
 	constexpr basic_memory_view( const basic_memory_view & ) noexcept = default;
 	constexpr basic_memory_view & operator=( const basic_memory_view & ) noexcept = default;
 
-	constexpr basic_memory_view( const const_pointer _Cts, const size_type _Count ) noexcept
+	constexpr basic_memory_view( const_pointer _Cts, size_type _Count ) noexcept
 		: _Mydata( _Cts ), _Mysize( _Count )
 	{
 	}

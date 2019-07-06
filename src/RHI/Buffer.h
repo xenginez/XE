@@ -23,9 +23,6 @@ public:
     ~Buffer() override;
 
 public:
-    BufferHandle GetHandle() const;
-
-public:
     memory_view Map(AccessType val);
 
     void Unmap();
@@ -33,8 +30,8 @@ public:
     XE::uint64 GetSize() const;
 
 private:
-    memory_view _Data;
-    BufferHandle _Handle;
+	AccessType _Access;
+	Array<XE::uint8> _Data;
 };
 
 class RHI_API VertexBuffer : public Buffer

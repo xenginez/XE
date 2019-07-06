@@ -63,13 +63,10 @@ DECL_PTR( OcclusionQuery );
 
 DECL_HANDLE( RHI_API, Window );
 
-DECL_HANDLE( RHI_API, Buffer );
-
-DECL_HANDLE( RHI_API, Shader );
+DECL_HANDLE( RHI_API, Resource );
 
 DECL_HANDLE( RHI_API, PipelineState );
 
-DECL_HANDLE( RHI_API, Texture );
 DECL_HANDLE( RHI_API, Sampler );
 DECL_HANDLE( RHI_API, Uniform );
 DECL_HANDLE( RHI_API, Viewport );

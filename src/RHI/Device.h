@@ -35,6 +35,26 @@ public:
 
 	virtual bool DestroySwapChain( SwapChainHandle handle ) = 0;
 
+public:
+	virtual XE::memory_view Map( ResourceHandle handle, XE::uint32 sub_resource, XE::uint64 begin, XE::uint64 end, XE::uint8 * read_data ) = 0;
+
+	virtual void Unmap( ResourceHandle handle, XE::uint32 sub_resource, XE::uint64 begin, XE::uint64 end ) = 0;
+
+public:
+	virtual ResourceHandle CompileShader( const String & file, const String & entry, Array<XE::uint8> & byte ) = 0;
+
+	virtual ResourceHandle CompileShader( memory_view byte, const String & entry ) = 0;
+
+public:
+	virtual SamplerHandle CreateSampler( SamplerPtr & desc ) = 0;
+
+	virtual bool DestroySampler( SamplerHandle handle ) = 0;
+
+public:
+	virtual RenderTargetHandle CreateRenderTarget( RenderTargetPtr & desc ) = 0;
+
+	virtual bool DestroyRenderTarget( RenderTargetHandle handle ) = 0;
+
 };
 
 END_XE_NAMESPACE

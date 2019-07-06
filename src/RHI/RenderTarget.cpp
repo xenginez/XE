@@ -32,7 +32,7 @@ bool XE::RenderTarget::GetWriteGreen() const
 	return _WriteGreen;
 }
 
-XE::RenderTargetHandle XE::RenderTarget::Handle() const
+XE::RenderTargetHandle XE::RenderTarget::GetHandle() const
 {
 	return _Handle;
 }
@@ -313,6 +313,11 @@ XE::SwapChainPtr XE::RenderWindow::GetSwapChain() const
 	return _SwapChain;
 }
 
+XE::WindowHandle XE::RenderWindow::GetWindowHandle() const
+{
+	return _Handle;
+}
+
 BEG_META( RenderTexture2D )
 END_META()
 
@@ -324,4 +329,14 @@ XE::RenderTexture2D::RenderTexture2D()
 XE::RenderTexture2D::~RenderTexture2D()
 {
 
+}
+
+XE::Texture2DPtr XE::RenderTexture2D::GetTexture2D() const
+{
+	return _Texture;
+}
+
+void XE::RenderTexture2D::SetTexture2D( const Texture2DPtr & val )
+{
+	_Texture = val;
 }
