@@ -46,6 +46,10 @@ DECL_PTR( Texture3D );
 DECL_PTR( TextureCube );
 DECL_PTR( Texture2DArray );
 
+DECL_PTR( Query );
+DECL_PTR( TimerQuery );
+DECL_PTR( OcclusionQuery );
+
 DECL_PTR( RenderTarget );
 DECL_PTR( RenderWindow );
 DECL_PTR( RenderTexture2D );
@@ -57,24 +61,22 @@ DECL_PTR( Sampler );
 DECL_PTR( Viewport );
 DECL_PTR( SwapChain );
 DECL_PTR( InputLayout );
-DECL_PTR( OcclusionQuery );
+DECL_PTR( UnorderedAccess );
 
 
 
-DECL_HANDLE( RHI_API, Window );
-
-DECL_HANDLE( RHI_API, Resource );
-
-DECL_HANDLE( RHI_API, PipelineState );
 
 DECL_HANDLE( RHI_API, Fence );
+DECL_HANDLE( RHI_API, Query );
+DECL_HANDLE( RHI_API, Window );
 DECL_HANDLE( RHI_API, Sampler );
 DECL_HANDLE( RHI_API, Viewport );
+DECL_HANDLE( RHI_API, Resource );
 DECL_HANDLE( RHI_API, SwapChain );
 DECL_HANDLE( RHI_API, InputLayout );
 DECL_HANDLE( RHI_API, FrameBuffer );
 DECL_HANDLE( RHI_API, RenderTarget );
-DECL_HANDLE( RHI_API, OcclusionQuery );
+DECL_HANDLE( RHI_API, PipelineState );
 
 
 enum class FillType

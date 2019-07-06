@@ -36,6 +36,8 @@ public:
 	virtual bool DestroySwapChain( SwapChainHandle handle ) = 0;
 
 public:
+	virtual ResourceHandle CreateUnorderedAccess( UnorderedAccessPtr & val ) = 0;
+
 	virtual ResourceHandle CreateResource( ResourcePtr & val ) = 0;
 
 	virtual ResourceHandle CreateTexture( TexturePtr & val ) = 0;
@@ -44,9 +46,9 @@ public:
 
 	virtual ResourceHandle CreateShader( ShaderPtr & val ) = 0;
 
-	virtual XE::memory_view Map( ResourceHandle handle, XE::uint32 sub_resource, XE::uint64 begin, XE::uint64 end, XE::uint8 * read_data ) = 0;
+	virtual XE::memory_view Map( ResourceHandle handle, XE::uint32 sub, XE::uint64 begin, XE::uint64 end, XE::uint8 * read_data ) = 0;
 
-	virtual void Unmap( ResourceHandle handle, XE::uint32 sub_resource, XE::uint64 begin, XE::uint64 end ) = 0;
+	virtual void Unmap( ResourceHandle handle, XE::uint32 sub, XE::uint64 begin, XE::uint64 end ) = 0;
 
 	virtual bool DestoryShader( ResourceHandle handle ) = 0;
 
@@ -55,6 +57,8 @@ public:
 	virtual bool DestoryTexture( ResourceHandle handle ) = 0;
 
 	virtual bool DestoryResource( ResourceHandle handle ) = 0;
+
+	virtual bool DestoryUnorderedAccess( ResourceHandle handle ) = 0;
 
 public:
 	virtual SamplerHandle CreateSampler( SamplerPtr & desc ) = 0;
@@ -78,6 +82,16 @@ public:
 	virtual bool DestroyFence( FenceHandle handle ) = 0;
 
 public:
+	virtual QueryHandle CreateQuery( QueryPtr & val ) = 0;
+
+	virtual void BeginQuery( QueryHandle handle, XE::uint32 index ) = 0;
+
+	virtual void EndQuery( QueryHandle handle, XE::uint32 index ) = 0;
+
+	virtual Variant ReadBack( QueryHandle handle ) = 0;
+
+	virtual bool DestoryQuery( QueryHandle handle ) = 0;
+
 };
 
 END_XE_NAMESPACE

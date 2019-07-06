@@ -9,22 +9,19 @@
 #ifndef __XE_UNORDEREDACCESS_H__
 #define __XE_UNORDEREDACCESS_H__
 
-#include "Type.h"
+#include "Resource.h"
 
 BEG_XE_NAMESPACE
 
-class RHI_API UnorderedAccess
+class RHI_API UnorderedAccess : public Resource
 {
+	OBJECT( UnorderedAccess, Resource )
+
 public:
 	UnorderedAccess();
 	
-	~UnorderedAccess();
+	~UnorderedAccess() override;
 
-public:
-	ResourcePtr GetResource();
-
-private:
-	ResourcePtr _Resource;
 };
 
 END_XE_NAMESPACE
