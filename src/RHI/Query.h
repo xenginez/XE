@@ -29,6 +29,12 @@ public:
 
 public:
 	Variant ReadBack() const;
+
+	QueryHandle GetHandle() const;
+
+private:
+	DevicePtr _Device;
+	QueryHandle _Handle;
 };
 
 class RHI_API TimerQuery : public Query
