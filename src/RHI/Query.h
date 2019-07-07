@@ -23,14 +23,15 @@ public:
 	virtual ~Query();
 
 public:
-	void BeginQuery( XE::uint32 val );
+	void Begin( XE::uint32 val );
 
-	void EndQuery( XE::uint32 val );
+	void End( XE::uint32 val );
 
 public:
-	Variant ReadBack() const;
-
 	QueryHandle GetHandle() const;
+
+protected:
+	Variant ReadBack() const;
 
 private:
 	DevicePtr _Device;
@@ -45,6 +46,9 @@ public:
 	TimerQuery();
 
 	~TimerQuery() override;
+
+public:
+	XE::float64 TimeElapsed() const;
 };
 
 class RHI_API OcclusionQuery : public Query
@@ -55,6 +59,35 @@ public:
 	OcclusionQuery();
 
 	~OcclusionQuery() override;
+
+public:
+	XE::uint64 SamplesPassed() const;
+};
+
+class RHI_API ConditionQuery : public Query
+{
+	OBJECT( ConditionQuery, Query )
+
+public:
+	ConditionQuery();
+
+	~ConditionQuery() override;
+
+public:
+	bool SamplesPassed() const;
+};
+
+class RHI_API SOStatisticsQuery : public Query
+{
+	OBJECT( SOStatisticsQuery, Query )
+
+public:
+	SOStatisticsQuery();
+
+	~SOStatisticsQuery() override;
+
+public:
+	XE::uint64 WritePrimitivesCount() const;
 };
 
 END_XE_NAMESPACE

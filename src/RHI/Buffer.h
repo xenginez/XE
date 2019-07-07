@@ -92,6 +92,14 @@ public:
 	DepthStencilBuffer();
 
 	~DepthStencilBuffer() override;
+
+public:
+	bool ClearDepth( XE::real val );
+
+	bool ClearStencil( XE::uint32 val );
+
+	bool ClearDepthStencil( XE::real depth, XE::uint32 stencil );
+
 };
 
 class RHI_API DynamicIndexBuffer : public Buffer

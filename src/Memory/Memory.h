@@ -20,7 +20,7 @@ BEG_XE_NAMESPACE
 
 template< typename Ty, typename ... Types > std::shared_ptr<Ty> make_shared( Types && ...args )
 {
-	static XE::AllocatorProxy<Ty>::allocator_type _alloc;
+	typename XE::AllocatorProxy<Ty>::allocator_type _alloc;
 
 	return std::allocate_shared<Ty>( _alloc, args... );
 }
@@ -31,12 +31,19 @@ END_XE_NAMESPACE
 #define DECL_PTR( TYPE ) \
 class TYPE; typedef std::shared_ptr< TYPE > TYPE##Ptr; typedef std::shared_ptr< const TYPE > TYPE##CPtr; typedef std::weak_ptr< TYPE > TYPE##WPtr; typedef std::unique_ptr<TYPE> TYPE##UPtr
 
-#define DECL_OBJECT_POOL( TYPE ) \
+#define DECL_ALLOCATOR_POLL( TYPE ) \
 template<> struct AllocatorProxy< TYPE > \
 { \
 public: \
 	using allocator_type = XE::ObjectAllocator< TYPE >; \
 }
+
+#define DECL_ALLOCATOR_FRAME( TYPE ) \
+template<> struct AllocatorProxy< TYPE > \
+{ \
+public: \
+	using allocator_type = XE::FrameAllocator< TYPE >; \
+} 
 
 #define CP_CAST std::const_pointer_cast
 #define SP_CAST std::static_pointer_cast

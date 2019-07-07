@@ -70,6 +70,9 @@ public:
 
 	void SetAlphaBlendOp( const BlendOperation & AlphaBlendOp );
 
+public:
+	void ClearColor( const Color & val );
+
 private:
 	bool _WriteRed;
 	bool _WriteGreen;
@@ -83,6 +86,7 @@ private:
 	BlendOperation _RgbBlendOp;
 	BlendOperation _AlphaBlendOp;
 
+	DevicePtr _Device;
 	RenderTargetHandle _Handle;
 };
 

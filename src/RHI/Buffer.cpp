@@ -1,5 +1,7 @@
 #include "Buffer.h"
 
+#include "Device.h"
+
 USING_XE
 
 BEG_META(Buffer)
@@ -113,6 +115,21 @@ XE::DepthStencilBuffer::DepthStencilBuffer()
 XE::DepthStencilBuffer::~DepthStencilBuffer()
 {
 
+}
+
+bool XE::DepthStencilBuffer::ClearDepth( XE::real val )
+{
+	return GetDevice()->ClearDepth( GetHandle(), val );
+}
+
+bool XE::DepthStencilBuffer::ClearStencil( XE::uint32 val )
+{
+	return GetDevice()->ClearStencil( GetHandle(), val );
+}
+
+bool XE::DepthStencilBuffer::ClearDepthStencil( XE::real depth, XE::uint32 stencil )
+{
+	return GetDevice()->ClearDepthStencil( GetHandle(), depth, stencil );
 }
 
 BEG_META( DynamicIndexBuffer )

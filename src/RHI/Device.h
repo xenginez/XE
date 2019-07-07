@@ -68,6 +68,8 @@ public:
 public:
 	virtual RenderTargetHandle CreateRenderTarget( RenderTargetPtr & desc ) = 0;
 
+	virtual bool ClearColor( RenderTargetHandle handle, const Color & val ) = 0;
+
 	virtual bool DestroyRenderTarget( RenderTargetHandle handle ) = 0;
 
 public:
@@ -91,6 +93,13 @@ public:
 	virtual Variant ReadBack( QueryHandle handle ) = 0;
 
 	virtual bool DestoryQuery( QueryHandle handle ) = 0;
+
+public:
+	virtual bool ClearDepth( ResourceHandle handle, XE::real val ) = 0;
+
+	virtual bool ClearStencil( ResourceHandle handle, XE::uint32 val ) = 0;
+
+	virtual bool ClearDepthStencil( ResourceHandle handle, XE::real depth, XE::uint32 val ) = 0;
 
 };
 

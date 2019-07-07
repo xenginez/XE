@@ -1,5 +1,6 @@
 #include "RenderTarget.h"
 
+#include "Device.h"
 #include "SwapChain.h"
 
 USING_XE
@@ -130,6 +131,11 @@ XE::BlendOperation XE::RenderTarget::GetAlphaBlendOp() const
 void XE::RenderTarget::SetAlphaBlendOp( const BlendOperation & val )
 {
 	_AlphaBlendOp = val;
+}
+
+void XE::RenderTarget::ClearColor( const Color & val )
+{
+	_Device->ClearColor( _Handle, val );
 }
 
 BEG_META( RenderWindow )

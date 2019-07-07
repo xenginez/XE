@@ -33,9 +33,10 @@ DECL_PTR( ILoggerService );
 DECL_PTR( IPhysicsService );
 DECL_PTR( INavigationService );
 DECL_PTR( ILocalizationService );
-class IFramework; typedef IFramework* IFrameworkPtr;
+class IFramework; typedef IFramework * IFrameworkPtr;
 
-DECL_OBJECT_POOL( Logger );
+DECL_ALLOCATOR_POLL( Event );
+DECL_ALLOCATOR_POLL( Logger );
 
 using TID = std::thread::id;
 

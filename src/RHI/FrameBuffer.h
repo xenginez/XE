@@ -16,9 +16,27 @@ BEG_XE_NAMESPACE
 class RHI_API FrameBuffer
 {
 public:
+	static constexpr XE::uint64 MaxRenderTargetCount = 8;
+
+public:
 	FrameBuffer();
 	
 	~FrameBuffer();
+
+public:
+	DepthStencilBufferPtr GetDepthStencil() const;
+
+	void SetDepthStencil( const DepthStencilBufferPtr & val );
+
+	RenderTargetPtr GetColor( XE::uint64 index ) const;
+
+	void SetColor( XE::uint64 index, const RenderTargetPtr & val );
+
+	const Array< RenderTargetPtr > GetColors() const;
+
+private:
+	Array< RenderTargetPtr > _Colors;
+	DepthStencilBufferPtr _DepthStencil;
 };
 
 END_XE_NAMESPACE

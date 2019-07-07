@@ -64,8 +64,6 @@ DECL_PTR( InputLayout );
 DECL_PTR( UnorderedAccess );
 
 
-
-
 DECL_HANDLE( RHI_API, Fence );
 DECL_HANDLE( RHI_API, Query );
 DECL_HANDLE( RHI_API, Sampler );
@@ -76,6 +74,9 @@ DECL_HANDLE( RHI_API, InputLayout );
 DECL_HANDLE( RHI_API, FrameBuffer );
 DECL_HANDLE( RHI_API, RenderTarget );
 DECL_HANDLE( RHI_API, PipelineState );
+
+
+DECL_ALLOCATOR_FRAME( FrameBuffer );
 
 
 enum class FillType
