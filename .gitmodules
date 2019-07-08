@@ -25,3 +25,6 @@
 [submodule "3rdparty/sqlite3-cmake"]
 	path = 3rdparty/sqlite3-cmake
 	url = https://github.com/alex85k/sqlite3-cmake.git
+[submodule "3rdparty/stb"]
+	path = 3rdparty/stb
+	url = https://github.com/nothings/stb.git
