@@ -30,7 +30,7 @@ public: \
 typedef XE::OrderGroup< INDEX > NAME##Group;
 
 #define DECL_ORDER(GROUP, NAME, DESC, PARAM) \
-DLL_VAR_WEAK extern const XE::uint64 NAME = XE::Order::RegisterOrder< GROUP >( #NAME, DESC, XE::MetaID< PARAM >() )
+DLL_VAR_WEAK extern const XE::uint64 NAME = XE::Order::RegisterOrder< GROUP >( #NAME, DESC, XE::MetaID< PARAM >::Get() )
 
 #ifdef DEBUG
 #define PROFILER_TRACK(X) XE::ProfilerTrack _321_Profiler_Track__##X_456_(__FILE__, __LINE__, #X);
