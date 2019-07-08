@@ -9,7 +9,7 @@ struct OrderInfo
 	XE::uint64 id;
 	String name;
 	String desc;
-	const IMetaInfo * info;
+	IMetaInfoPtr info;
 };
 
 struct Order::Private
@@ -53,7 +53,7 @@ XE::String XE::Order::FindOrderDesc( XE::uint64 id )
 	return String();
 }
 
-const XE::IMetaInfo * XE::Order::FindOrderPatameter( XE::uint64 id )
+XE::IMetaInfoPtr XE::Order::FindOrderPatameter( XE::uint64 id )
 {
 	XE::uint64 group = id >> 32;
 
@@ -66,7 +66,7 @@ const XE::IMetaInfo * XE::Order::FindOrderPatameter( XE::uint64 id )
 	return nullptr;
 }
 
-XE::uint64 XE::Order::RegisterOrder_P( XE::uint64 group, const String& name, const String& desc, const IMetaInfo * parameter )
+XE::uint64 XE::Order::RegisterOrder_P( XE::uint64 group, const String& name, const String& desc, const IMetaInfoPtr & parameter )
 {
 	if ( group >= This()->_p->Groups.size() )
 	{
@@ -114,7 +114,7 @@ XE::uint64 XE::Order::FindOrderID_P( XE::uint64 group, const String& name )
 	return Invalid;
 }
 
-void XE::Order::VisitOrder_P( XE::uint64 group, std::function< void( XE::uint64, String, String, const IMetaInfo * ) > val )
+void XE::Order::VisitOrder_P( XE::uint64 group, std::function< void( XE::uint64, String, String, const IMetaInfoPtr & ) > val )
 {
 	for ( auto it : This()->_p->Groups[group] )
 	{

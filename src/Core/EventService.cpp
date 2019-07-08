@@ -135,7 +135,7 @@ void XE::EventService::PostEvent( XE::real dt, EventPtr val )
 	_p->_TimeEvents.push( std::move( evt ) );
 }
 
-XE::uint64 XE::EventService::RegisterListener( XE::uint32 event, ListenerType listener )
+XE::uint64 XE::EventService::RegisterListener( XE::uint64 event, ListenerType listener )
 {
 	Private::ListenerMap::accessor accessor;
 
@@ -155,7 +155,7 @@ XE::uint64 XE::EventService::RegisterListener( XE::uint32 event, ListenerType li
 	return 0;
 }
 
-void XE::EventService::UnregisterListener( XE::uint32 event, XE::uint64 index )
+void XE::EventService::UnregisterListener( XE::uint64 event, XE::uint64 index )
 {
 	Private::ListenerMap::accessor accessor;
 
