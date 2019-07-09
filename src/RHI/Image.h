@@ -20,34 +20,32 @@ class RHI_API Image
 public:
 	Image();
 
-	Image( XE::memory_view & val );
+	Image( XE::basic_memory_view<XE::uint8> & val );
 
 	Image( const std::filesystem::path & val );
 
-	Image( XE::uint32 width, XE::uint32 height, TextureFormat format );
+	Image( XE::uint32 width, XE::uint32 height, XE::uint32 channels, bool is_hdr = false );
 
 	Image( const Image& val );
 
 	~Image();
 
 public:
-	bool Load( XE::memory_view val );
+	bool Load( XE::basic_memory_view<XE::uint8> val );
 
 	bool Load( const std::filesystem::path& val );
 
-	bool Load( XE::uint32 width, XE::uint32 height, TextureFormat format );
-
 public:
-	bool Save( XE::memory_view val );
-
 	bool Save( const std::filesystem::path& val );
 
 public:
+	bool IsHDR() const;
+
 	XE::uint32 GetWidth() const;
 
 	XE::uint32 GetHeight() const;
 
-	TextureFormat GetFormat() const;
+	XE::uint32 GetChannels() const;
 
 public:
 	XE::uint64 Size() const;
@@ -55,20 +53,20 @@ public:
 	XE::uint64 Count() const;
 
 public:
-	Color GetPixel( XE::uint64 index ) const;
-
 	Color GetPixel( XE::uint32 x, XE::uint32 y ) const;
-
-	void SetPixel( XE::uint64 index, const Color & val );
 
 	void SetPixel( XE::uint32 x, XE::uint32 y, const Color & val );
 
-public:
-	XE::memory_view GetPixels() const;
+	FColor GetHDRPixel( XE::uint32 x, XE::uint32 y ) const;
+
+	void SetHDRPixel( XE::uint32 x, XE::uint32 y, const FColor & val );
 
 public:
-	Image Convert( TextureFormat format ) const;
+	XE::basic_memory_view<XE::uint8> GetPixels() const;
 
+	XE::basic_memory_view<XE::float32> GetHDRPixels() const;
+
+public:
 	Image Copy( XE::uint32 x, XE::uint32 y, XE::uint32 width, XE::uint32 height ) const;
 
 public:
@@ -76,6 +74,16 @@ public:
 
 	void Scaled( XE::float32 x, XE::float32 y );
 
+private:
+	bool _IsHDR;
+	XE::int32 _Width;
+	XE::int32 _Height;
+	XE::int32 _Channels;
+	union
+	{
+		Array< XE::uint8 > _Data;
+		Array< XE::float32 > _HDRData;
+	};
 };
 
 END_XE_NAMESPACE
