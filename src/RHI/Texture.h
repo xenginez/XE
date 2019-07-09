@@ -23,7 +23,7 @@ public:
 	~Texture() override;
 
 public:
-	XE::memory_view Map( AccessType val );
+	XE::basic_memory_view<XE::uint8> Map( AccessType val );
 
 	void Unmap();
 

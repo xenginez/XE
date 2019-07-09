@@ -531,15 +531,15 @@ void XE::JsonSaveArchive::Serialize( NameValue & val )
 
 struct XE::BinaryLoadArchive::Private
 {
-	Private( XE::memory_view & val )
+	Private( XE::basic_memory_view<XE::int8> & val )
 		:Stream( val )
 	{
 	}
 
-	XE::imemorystream Stream;
+	XE::basic_imemorystream<XE::int8> Stream;
 };
 
-XE::BinaryLoadArchive::BinaryLoadArchive( XE::memory_view & val )
+XE::BinaryLoadArchive::BinaryLoadArchive( XE::basic_memory_view<XE::int8> & val )
 	:_p( new Private( val ) )
 {
 
@@ -583,7 +583,7 @@ void XE::BinaryLoadArchive::Serialize( NameValue & val )
 			}
 			else if( type == MetaID<XE::int8>::Get() )
 			{
-				XE::int8 v = 0; _p->Stream >> v; val.Value = v;
+				XE::uint8 v = 0; _p->Stream >> v; val.Value = ( XE::int8 )( v );
 			}
 			else if( type == MetaID<XE::int16>::Get() )
 			{
@@ -647,7 +647,7 @@ void XE::BinaryLoadArchive::Serialize( NameValue & val )
 
 struct XE::BinarySaveArchive::Private
 {
-	XE::omemorystream Stream;
+	XE::basic_omemorystream<XE::int8> Stream;
 };
 
 XE::BinarySaveArchive::BinarySaveArchive()

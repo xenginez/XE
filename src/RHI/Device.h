@@ -46,7 +46,7 @@ public:
 
 	virtual ResourceHandle CreateShader( ShaderPtr & val ) = 0;
 
-	virtual XE::memory_view Map( ResourceHandle handle, XE::uint32 sub, XE::uint64 begin, XE::uint64 end, XE::uint8 * read_data ) = 0;
+	virtual XE::basic_memory_view<XE::uint8> Map( ResourceHandle handle, XE::uint32 sub, XE::uint64 begin, XE::uint64 end, XE::uint8 * read_data ) = 0;
 
 	virtual void Unmap( ResourceHandle handle, XE::uint32 sub, XE::uint64 begin, XE::uint64 end ) = 0;
 

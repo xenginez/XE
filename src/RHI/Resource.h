@@ -34,7 +34,7 @@ public:
 	ResourceHandle GetHandle() const;
 
 protected:
-	XE::memory_view Map( XE::uint32 sub_resource, XE::uint64 begin, XE::uint64 end, XE::uint8 * read_data );
+	XE::basic_memory_view<XE::uint8> Map( XE::uint32 sub_resource, XE::uint64 begin, XE::uint64 end, XE::uint8 * read_data );
 
 	void Unmap( XE::uint32 sub_resource, XE::uint64 begin, XE::uint64 end );
 

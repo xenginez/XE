@@ -23,7 +23,7 @@ public:
     ~Buffer() override;
 
 public:
-    memory_view Map(AccessType val);
+    basic_memory_view<XE::uint8> Map(AccessType val);
 
     void Unmap();
 

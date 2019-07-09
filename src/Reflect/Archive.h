@@ -196,7 +196,7 @@ class REFLECT_API BinaryLoadArchive : public Archive
 	struct Private;
 
 public:
-	BinaryLoadArchive( XE::memory_view & val );
+	BinaryLoadArchive( XE::basic_memory_view<XE::int8> & val );
 
 	~BinaryLoadArchive() override;
 

@@ -32,7 +32,7 @@ XE::ResourceHandle XE::Resource::GetHandle() const
 	return _Handle;
 }
 
-XE::memory_view XE::Resource::Map( XE::uint32 sub_resource, XE::uint64 begin, XE::uint64 end, XE::uint8 * read_data )
+XE::basic_memory_view<XE::uint8> XE::Resource::Map( XE::uint32 sub_resource, XE::uint64 begin, XE::uint64 end, XE::uint8 * read_data )
 {
 	return _Device->Map( _Handle, sub_resource, begin, end, read_data );
 }

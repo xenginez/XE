@@ -17,13 +17,13 @@ XE::Buffer::~Buffer()
 
 }
 
-XE::memory_view XE::Buffer::Map( XE::AccessType val )
+XE::basic_memory_view<XE::uint8> XE::Buffer::Map( XE::AccessType val )
 {
 	_Access = val;
 
 	Resource::Map( 0, 0, 0, _Data.data() );
 
-	return memory_view( ( XE::int8 * )_Data.data(), _Data.size() );
+	return basic_memory_view<XE::uint8>( _Data.data(), _Data.size() );
 }
 
 void XE::Buffer::Unmap()

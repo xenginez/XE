@@ -15,9 +15,9 @@ XE::Texture::~Texture()
 
 }
 
-XE::memory_view XE::Texture::Map( AccessType val )
+XE::basic_memory_view<XE::uint8> XE::Texture::Map( AccessType val )
 {
-	return memory_view();
+	return basic_memory_view<XE::uint8>();
 }
 
 void XE::Texture::Unmap()
