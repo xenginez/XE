@@ -259,7 +259,7 @@ private:
 };
 
 
-template <class _Elem, class _Traits> class basic_memory_view
+template <class _Elem, class _Traits = XE::memory_traits<_Elem> > class basic_memory_view
 {
 public:
 	using traits_type            = _Traits;

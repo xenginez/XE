@@ -1,5 +1,7 @@
 #include "Image.h"
 
+#include <stb/stb_image.h>
+
 USING_XE
 
 BEG_META(Image)
