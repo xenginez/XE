@@ -59,6 +59,19 @@ private:
 	String GetKeycodeString( KeyCode val ) const;
 
 private:
+	bool CallEQUAL( const Variant& a, const Variant& b ) const;
+
+	bool CallNOT_EQUAL( const Variant& a, const Variant& b ) const;
+
+	bool CallLESS( const Variant& a, const Variant& b ) const;
+
+	bool CallGREATER( const Variant& a, const Variant& b ) const;
+
+	bool CallLESS_EQUAL( const Variant& a, const Variant& b ) const;
+
+	bool CallGREATER_EQUAL( const Variant& a, const Variant& b ) const;
+
+private:
 	Private * _p;
 };
 

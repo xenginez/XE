@@ -5,15 +5,29 @@ USING_XE
 BEG_META( InputService )
 END_META()
 
+class XEPAction
+{
+	OBJECT( XEPAction )
+
+public:
+	KeyCode Code = KeyCode::None;
+	Operation Operator = XE::Operation::EQUAL;
+	Variant Operand;
+};
+BEG_META( XEPAction )
+type->Property( "Code", &XEPAction::Code );
+type->Property( "Operator", &XEPAction::Operand );
+type->Property( "Operator", &XEPAction::Operator );
+END_META()
+
 class XEPInputAction
 {
 	OBJECT( XEPInputAction )
 
 public:
 	String Name;
-	Array<KeyCode> Keys;
+	Array<XEPAction> Keys;
 };
-DECL_PTR( XEPInputAction );
 BEG_META( XEPInputAction )
 type->Property( "Name", &XEPInputAction::Name );
 type->Property( "Keys", &XEPInputAction::Keys );
@@ -23,7 +37,7 @@ END_META()
 struct InputService::Private
 {
 	Array<IInputControlPtr> _Controls;
-	Map<String, XEPInputActionPtr> _Actions;
+	Map<String, XEPInputAction> _Actions;
 	UnorderedMap<String, Variant> _ValueMaps;
 };
 
@@ -41,31 +55,31 @@ XE::InputService::~InputService()
 bool XE::InputService::Startup()
 {
 	// TODO: InputAction Serialization
-	
-	IInputControl::GetMetaClassStatic()->VisitDerivedClass( [&] ( IMetaClassPtr derived )
-	{
-		if ( !derived->IsAbstract() )
+
+	IInputControl::GetMetaClassStatic()->VisitDerivedClass( [&]( IMetaClassPtr derived )
 		{
-			if ( auto p = derived->ConstructPtr() )
+			if( !derived->IsAbstract() )
 			{
-				if ( IInputControlPtr c = SP_CAST<IInputControl>( p ) )
+				if( auto p = derived->ConstructPtr() )
 				{
-					c->_InputService = XE_THIS( InputService );
+					if( IInputControlPtr c = SP_CAST<IInputControl>( p ) )
+					{
+						c->_InputService = XE_THIS( InputService );
 
-					c->Startup();
+						c->Startup();
 
-					_p->_Controls.push_back( c );
+						_p->_Controls.push_back( c );
+					}
 				}
 			}
-		}
-	} );
+		} );
 
 	return true;
 }
 
 void XE::InputService::Update()
 {
-	for ( auto control : _p->_Controls )
+	for( auto control : _p->_Controls )
 	{
 		control->Update();
 	}
@@ -73,7 +87,7 @@ void XE::InputService::Update()
 
 void XE::InputService::Clearup()
 {
-	for ( auto control : _p->_Controls )
+	for( auto control : _p->_Controls )
 	{
 		control->Clearup();
 	}
@@ -115,7 +129,7 @@ XE::Variant XE::InputService::GetValue( const String& val ) const
 {
 	{
 		auto it = _p->_ValueMaps.find( val );
-		if ( it != _p->_ValueMaps.end() )
+		if( it != _p->_ValueMaps.end() )
 		{
 			return it->second;
 		}
@@ -123,19 +137,42 @@ XE::Variant XE::InputService::GetValue( const String& val ) const
 
 	{
 		auto it = _p->_Actions.find( val );
-		if ( it != _p->_Actions.end() )
+		if( it != _p->_Actions.end() )
 		{
-			if ( it->second->Keys.size() == 1 )
+			if( it->second.Keys.size() == 1 )
 			{
-				return GetValue( it->second->Keys[0] );
+				return GetValue( it->second.Keys[0].Code );
 			}
 			else
 			{
-				for ( auto k : it->second->Keys )
+				for( auto k : it->second.Keys )
 				{
-					Variant v = GetValue( k );
+					Variant v = GetValue( k.Code );
 
-					if ( v.GetMeta() == MetaID<bool>::Get() && v.Value<bool>() )
+					bool pass = false;
+					switch( k.Operator )
+					{
+					case Operation::EQUAL:
+						pass = CallEQUAL( v, k.Operand );
+						break;
+					case Operation::NOT_EQUAL:
+						pass = CallNOT_EQUAL( v, k.Operand );
+						break;
+					case Operation::LESS:
+						pass = CallLESS( v, k.Operand );
+						break;
+					case Operation::GREATER:
+						pass = CallGREATER( v, k.Operand );
+						break;
+					case Operation::LESS_EQUAL:
+						pass = CallLESS_EQUAL( v, k.Operand );
+						break;
+					case Operation::GREATER_EQUAL:
+						pass = CallGREATER_EQUAL( v, k.Operand );
+						break;
+					}
+
+					if( pass )
 					{
 						continue;
 					}
@@ -155,7 +192,7 @@ XE::Variant XE::InputService::GetValue( KeyCode val ) const
 {
 	auto it = _p->_ValueMaps.find( GetKeycodeString( val ) );
 
-	if ( it != _p->_ValueMaps.end() )
+	if( it != _p->_ValueMaps.end() )
 	{
 		return it->second;
 	}
@@ -170,10 +207,78 @@ void XE::InputService::SetValue( const String& code, const Variant& val )
 
 XE::String XE::InputService::GetKeycodeString( KeyCode val ) const
 {
-	return EnumID<KeyCode>::Get()->FindName( (XE::int64)val );
+	return EnumID<KeyCode>::Get()->FindName( ( XE::int64 )val );
 }
 
 void XE::InputService::Prepare()
 {
 
+}
+
+bool XE::InputService::CallEQUAL( const Variant& a, const Variant& b ) const
+{
+	return( 
+		( a.GetMeta() == MetaID<bool>::Get() && a.Value<bool>() == b.Value<bool>() ) ||
+		( a.GetMeta() == MetaID<XE::int32>::Get() && a.Value<XE::int32>() == b.Value<XE::int32>() ) ||
+		( a.GetMeta() == MetaID<XE::int64>::Get() && a.Value<XE::int64>() == b.Value<XE::int64>() ) ||
+		( a.GetMeta() == MetaID<XE::uint32>::Get() && a.Value<XE::uint32>() == b.Value<XE::uint32>() ) ||
+		( a.GetMeta() == MetaID<XE::uint64>::Get() && a.Value<XE::uint64>() == b.Value<XE::uint64>() ) ||
+		( a.GetMeta() == MetaID<XE::float32>::Get() && a.Value<XE::float32>() == b.Value<XE::float32>() ) ||
+		( a.GetMeta() == MetaID<XE::float64>::Get() && a.Value<XE::float64>() == b.Value<XE::float64>() ) );
+}
+
+bool XE::InputService::CallNOT_EQUAL( const Variant& a, const Variant& b ) const
+{
+	return(
+		( a.GetMeta() == MetaID<bool>::Get() && a.Value<bool>() != b.Value<bool>() ) ||
+		( a.GetMeta() == MetaID<XE::int32>::Get() && a.Value<XE::int32>() != b.Value<XE::int32>() ) ||
+		( a.GetMeta() == MetaID<XE::int64>::Get() && a.Value<XE::int64>() != b.Value<XE::int64>() ) ||
+		( a.GetMeta() == MetaID<XE::uint32>::Get() && a.Value<XE::uint32>() != b.Value<XE::uint32>() ) ||
+		( a.GetMeta() == MetaID<XE::uint64>::Get() && a.Value<XE::uint64>() != b.Value<XE::uint64>() ) ||
+		( a.GetMeta() == MetaID<XE::float32>::Get() && a.Value<XE::float32>() != b.Value<XE::float32>() ) ||
+		( a.GetMeta() == MetaID<XE::float64>::Get() && a.Value<XE::float64>() != b.Value<XE::float64>() ) );
+}
+
+bool XE::InputService::CallLESS( const Variant& a, const Variant& b ) const
+{
+	return(
+		( a.GetMeta() == MetaID<XE::int32>::Get() && a.Value<XE::int32>() < b.Value<XE::int32>() ) ||
+		( a.GetMeta() == MetaID<XE::int64>::Get() && a.Value<XE::int64>() < b.Value<XE::int64>() ) ||
+		( a.GetMeta() == MetaID<XE::uint32>::Get() && a.Value<XE::uint32>() < b.Value<XE::uint32>() ) ||
+		( a.GetMeta() == MetaID<XE::uint64>::Get() && a.Value<XE::uint64>() < b.Value<XE::uint64>() ) ||
+		( a.GetMeta() == MetaID<XE::float32>::Get() && a.Value<XE::float32>() < b.Value<XE::float32>() ) ||
+		( a.GetMeta() == MetaID<XE::float64>::Get() && a.Value<XE::float64>() < b.Value<XE::float64>() ) );
+}
+
+bool XE::InputService::CallGREATER( const Variant& a, const Variant& b ) const
+{
+	return(
+		( a.GetMeta() == MetaID<XE::int32>::Get() && a.Value<XE::int32>() > b.Value<XE::int32>() ) ||
+		( a.GetMeta() == MetaID<XE::int64>::Get() && a.Value<XE::int64>() > b.Value<XE::int64>() ) ||
+		( a.GetMeta() == MetaID<XE::uint32>::Get() && a.Value<XE::uint32>() > b.Value<XE::uint32>() ) ||
+		( a.GetMeta() == MetaID<XE::uint64>::Get() && a.Value<XE::uint64>() > b.Value<XE::uint64>() ) ||
+		( a.GetMeta() == MetaID<XE::float32>::Get() && a.Value<XE::float32>() > b.Value<XE::float32>() ) ||
+		( a.GetMeta() == MetaID<XE::float64>::Get() && a.Value<XE::float64>() > b.Value<XE::float64>() ) );
+}
+
+bool XE::InputService::CallLESS_EQUAL( const Variant& a, const Variant& b ) const
+{
+	return(
+		( a.GetMeta() == MetaID<XE::int32>::Get() && a.Value<XE::int32>() <= b.Value<XE::int32>() ) ||
+		( a.GetMeta() == MetaID<XE::int64>::Get() && a.Value<XE::int64>() <= b.Value<XE::int64>() ) ||
+		( a.GetMeta() == MetaID<XE::uint32>::Get() && a.Value<XE::uint32>() <= b.Value<XE::uint32>() ) ||
+		( a.GetMeta() == MetaID<XE::uint64>::Get() && a.Value<XE::uint64>() <= b.Value<XE::uint64>() ) ||
+		( a.GetMeta() == MetaID<XE::float32>::Get() && a.Value<XE::float32>() <= b.Value<XE::float32>() ) ||
+		( a.GetMeta() == MetaID<XE::float64>::Get() && a.Value<XE::float64>() <= b.Value<XE::float64>() ) );
+}
+
+bool XE::InputService::CallGREATER_EQUAL( const Variant& a, const Variant& b ) const
+{
+	return(
+		( a.GetMeta() == MetaID<XE::int32>::Get() && a.Value<XE::int32>() >= b.Value<XE::int32>() ) ||
+		( a.GetMeta() == MetaID<XE::int64>::Get() && a.Value<XE::int64>() >= b.Value<XE::int64>() ) ||
+		( a.GetMeta() == MetaID<XE::uint32>::Get() && a.Value<XE::uint32>() >= b.Value<XE::uint32>() ) ||
+		( a.GetMeta() == MetaID<XE::uint64>::Get() && a.Value<XE::uint64>() >= b.Value<XE::uint64>() ) ||
+		( a.GetMeta() == MetaID<XE::float32>::Get() && a.Value<XE::float32>() >= b.Value<XE::float32>() ) ||
+		( a.GetMeta() == MetaID<XE::float64>::Get() && a.Value<XE::float64>() >= b.Value<XE::float64>() ) );
 }

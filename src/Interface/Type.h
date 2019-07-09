@@ -733,6 +733,17 @@ enum class KeyCode
 };
 DECL_META_ENUM( INTERFACE_API, KeyCode );
 
+enum class Operation
+{
+	EQUAL,
+	NOT_EQUAL,
+	LESS,
+	GREATER,
+	LESS_EQUAL,
+	GREATER_EQUAL,
+};
+DECL_META_ENUM( INTERFACE_API, Operation );
+
 enum class LoggerLevel
 {
 	Error,

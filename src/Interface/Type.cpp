@@ -694,6 +694,15 @@ type->Value( "Joystick8Pov18", KeyCode::Joystick8Pov18 );
 type->Value( "Joystick8Pov19", KeyCode::Joystick8Pov19 );
 END_META()
 
+BEG_META( Operation )
+type->Value( "EQUAL", Operation::EQUAL );
+type->Value( "NOT_EQUAL", Operation::NOT_EQUAL );
+type->Value( "LESS", Operation::LESS );
+type->Value( "GREATER", Operation::GREATER );
+type->Value( "LESS_EQUAL", Operation::LESS_EQUAL );
+type->Value( "GREATER_EQUAL", Operation::GREATER_EQUAL );
+END_META()
+
 BEG_META( LoggerLevel )
 type->Value( "Error", LoggerLevel::Error );
 type->Value( "Warning", LoggerLevel::Warning );
