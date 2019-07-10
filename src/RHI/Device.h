@@ -36,27 +36,37 @@ public:
 	virtual bool DestroySwapChain( SwapChainHandle handle ) = 0;
 
 public:
-	virtual ResourceHandle CreateUnorderedAccess( UnorderedAccessPtr & val ) = 0;
-
 	virtual ResourceHandle CreateResource( ResourcePtr & val ) = 0;
-
-	virtual ResourceHandle CreateTexture( TexturePtr & val ) = 0;
-
-	virtual ResourceHandle CreateBuffer( BufferPtr & val ) = 0;
-
-	virtual ResourceHandle CreateShader( ShaderPtr & val ) = 0;
 
 	virtual XE::basic_memory_view<XE::uint8> Map( ResourceHandle handle, XE::uint32 sub, XE::uint64 begin, XE::uint64 end, XE::uint8 * read_data ) = 0;
 
 	virtual void Unmap( ResourceHandle handle, XE::uint32 sub, XE::uint64 begin, XE::uint64 end ) = 0;
 
-	virtual bool DestoryShader( ResourceHandle handle ) = 0;
+	virtual bool DestoryResource( ResourceHandle handle ) = 0;
+
+public:
+	virtual ResourceHandle CreateBuffer( BufferPtr & val ) = 0;
+
+	virtual bool ClearDepth( ResourceHandle handle, XE::real val ) = 0;
+
+	virtual bool ClearStencil( ResourceHandle handle, XE::uint32 val ) = 0;
+
+	virtual bool ClearDepthStencil( ResourceHandle handle, XE::real depth, XE::uint32 val ) = 0;
 
 	virtual bool DestoryBuffer( ResourceHandle handle ) = 0;
 
+public:
+	virtual ResourceHandle CreateShader( ShaderPtr & val ) = 0;
+
+	virtual bool DestoryShader( ResourceHandle handle ) = 0;
+
+public:
+	virtual ResourceHandle CreateTexture( TexturePtr & val ) = 0;
+
 	virtual bool DestoryTexture( ResourceHandle handle ) = 0;
 
-	virtual bool DestoryResource( ResourceHandle handle ) = 0;
+public:
+	virtual ResourceHandle CreateUnorderedAccess( UnorderedAccessPtr & val ) = 0;
 
 	virtual bool DestoryUnorderedAccess( ResourceHandle handle ) = 0;
 
@@ -95,12 +105,9 @@ public:
 	virtual bool DestoryQuery( QueryHandle handle ) = 0;
 
 public:
-	virtual bool ClearDepth( ResourceHandle handle, XE::real val ) = 0;
+	virtual BackendPtr Begin() = 0;
 
-	virtual bool ClearStencil( ResourceHandle handle, XE::uint32 val ) = 0;
-
-	virtual bool ClearDepthStencil( ResourceHandle handle, XE::real depth, XE::uint32 val ) = 0;
-
+	virtual void End( BackendPtr val ) = 0;
 };
 
 END_XE_NAMESPACE

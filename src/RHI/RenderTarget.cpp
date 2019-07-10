@@ -1,6 +1,7 @@
 #include "RenderTarget.h"
 
 #include "Device.h"
+#include "Viewport.h"
 #include "SwapChain.h"
 
 USING_XE
@@ -10,7 +11,11 @@ END_META()
 
 XE::RenderTarget::RenderTarget()
 {
+	auto viewport = XE::make_shared<Viewport>();
 
+	viewport->SetRect( Rect( 0, 0, 1, 1 ) );
+
+	_Viewports.push_back( viewport );
 }
 
 XE::RenderTarget::~RenderTarget()
@@ -136,6 +141,21 @@ void XE::RenderTarget::SetAlphaBlendOp( const BlendOperation & val )
 void XE::RenderTarget::ClearColor( const Color & val )
 {
 	_Device->ClearColor( _Handle, val );
+}
+
+XE::ViewportPtr XE::RenderTarget::GetViewport( XE::uint64 val ) const
+{
+	return _Viewports[val];
+}
+
+const XE::Array<XE::ViewportPtr> & XE::RenderTarget::GetViewports() const
+{
+	return _Viewports;
+}
+
+void XE::RenderTarget::SetViewports( const Array<ViewportPtr> & val )
+{
+	_Viewports = val;
 }
 
 BEG_META( RenderWindow )

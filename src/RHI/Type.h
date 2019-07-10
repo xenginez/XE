@@ -35,6 +35,7 @@ DECL_PTR( ComputeShader );
 DECL_PTR( GeometryShader );
 
 DECL_PTR( BlendState );
+DECL_PTR( PipelineState );
 DECL_PTR( RasterizerState );
 DECL_PTR( DepthStencilState );
 DECL_PTR( ComputePipelineState );
@@ -54,9 +55,10 @@ DECL_PTR( RenderTarget );
 DECL_PTR( RenderWindow );
 DECL_PTR( RenderTexture2D );
 
-DECL_PTR( Fence );
 DECL_PTR( Image );
+DECL_PTR( Fence );
 DECL_PTR( Device );
+DECL_PTR( Backend );
 DECL_PTR( Sampler );
 DECL_PTR( Viewport );
 DECL_PTR( SwapChain );

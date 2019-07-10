@@ -73,6 +73,12 @@ public:
 public:
 	void ClearColor( const Color & val );
 
+	ViewportPtr GetViewport( XE::uint64 val )const;
+
+	const Array<ViewportPtr> & GetViewports() const;
+
+	void SetViewports( const Array<ViewportPtr> & val );
+
 private:
 	bool _WriteRed;
 	bool _WriteGreen;
@@ -85,6 +91,8 @@ private:
 	BlendFactor _DstAlphaFunc;
 	BlendOperation _RgbBlendOp;
 	BlendOperation _AlphaBlendOp;
+
+	Array<ViewportPtr> _Viewports;
 
 	DevicePtr _Device;
 	RenderTargetHandle _Handle;
