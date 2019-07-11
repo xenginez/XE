@@ -19,6 +19,7 @@ DECL_PTR( WorldObject );
 DECL_PTR( SceneComponent );
 DECL_PTR( RenderComponent );
 DECL_PTR( BehaviorComponent );
+template< typename _Ty > class MakeAABB;
 
 
 enum class GameObjectType
@@ -31,6 +32,7 @@ DECL_META_ENUM( WORLD_API, GameObjectType );
 
 DECL_HANDLE( WORLD_API, Component );
 DECL_HANDLE( WORLD_API, GameObject );
+
 
 END_XE_NAMESPACE
 
