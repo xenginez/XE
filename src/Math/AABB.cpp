@@ -127,6 +127,12 @@ bool XE::AABB::Contains( const AABB& val ) const
 		   val.max.z <= max.z;
 }
 
+bool XE::AABB::Intersect( const OBB & val ) const
+{
+	// todo:
+	return false;
+}
+
 bool XE::AABB::Intersect( const AABB& val ) const
 {
 	if ( max.x < val.min.x )
@@ -144,6 +150,12 @@ bool XE::AABB::Intersect( const AABB& val ) const
 		return false;
 
 	return true;
+}
+
+bool XE::AABB::Intersect( const Line & val ) const
+{
+	// todo:
+	return false;
 }
 
 bool XE::AABB::Intersect( const Plane& val ) const
@@ -171,6 +183,12 @@ bool XE::AABB::Intersect( const Sphere& val ) const
 		}
 	}
 	return d <= radius * radius;
+}
+
+bool XE::AABB::Intersect( const Frustum & val ) const
+{
+	// todo:
+	return false;
 }
 
 std::pair<bool, XE::real> XE::AABB::Intersect( const Ray& ray, bool discardInside /*= true */ ) const

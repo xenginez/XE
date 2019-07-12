@@ -37,6 +37,16 @@ XE::GameObjectHandle XE::GameObject::GetHandle() const
 	return _Handle;
 }
 
+XE::OBB XE::GameObject::GetOBB() const
+{
+	return _SceneComponent ? _SceneComponent->GetOBB() : OBB();
+}
+
+XE::AABB XE::GameObject::GetAABB() const
+{
+	return _SceneComponent ? _SceneComponent->GetAABB() : AABB();
+}
+
 XE::Transform * XE::GameObject::GetTransform()
 {
 	return _SceneComponent->GetTransform();

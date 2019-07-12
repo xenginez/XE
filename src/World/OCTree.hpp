@@ -17,7 +17,7 @@ template< typename _Ty, typename _By = MakeAABB< _Ty > >
 class OCTree : public NonCopyable
 {
 public:
-	static constexpr XE::uint32 MaxDepthCount = 16;
+	static constexpr XE::uint32 MaxDepthCount = 8;
 
 public:
 	using ValueType = typename _Ty;
@@ -27,51 +27,283 @@ public:
 	struct Node
 	{
 		XE::AABB Box;
-		Array< ValueType > _Objects;
+		XE::uint32 Depth = 0;
+		XE::uint32 Children = 0;
+		Array< ValueType > Objects;
 	};
 
 public:
 	OCTree()
-		:_Dirty( false ), _Depth( 8 )
+		:_Depth( 4 ), _Nodes( 1 )
 	{
 	}
 
 	OCTree( XE::uint32 val )
-		:_Dirty( false ), _Depth( std::min( val, MaxDepthCount ) )
+		:_Depth( std::clamp( val, 1, MaxDepthCount ) ), _Nodes( 1 )
 	{
+		
 	}
 
 	~OCTree() = default;
 
 public:
-	void Marker()
-	{
-		_Dirty = true;
-	}
-
 	XE::uint32 DepthCount() const
 	{
 		return _Depth;
 	}
 
 public:
-	void Insert( const ValueType & val );
-
 	template< typename _Iter >
-	void Insert( _Iter first, _Iter last );
+	void Rebuild( _Iter first, _Iter last )
+	{
+		_Nodes.clear();
 
-	void Erase( const ValueType & val );
+		_Nodes.resize( 1 );
 
-	template< typename _Iter >
-	void Erase( _Iter first, _Iter last );
+		std::for_each( first, last, [&]( const ValueType & val )
+					   {
+						   _Nodes[0].Objects.push_back( val );
+						   _Nodes[0].Box.Merge( _BoundBox( val ) );
+					   } );
+
+		Build( 0, 0 );
+	}
+
+	void Clear()
+	{
+		_Nodes.clear();
+		_Nodes.shrink_to_fit();
+	}
 
 public:
-	void Update();
+	template< typename _Other >
+	ValueType Intersect( const _Other & val, const Array<ValueType> & exclude ) const
+	{
+		return Intersect( 0, exclude, val );
+	}
 
-	void Clear();
+public:
+	template< typename _Other >
+	Array<ValueType> Intersects( const _Other & val ) const
+	{
+		Set<ValueType> ret;
+
+		Intersects( 0, ret, val );
+
+		return { ret.begin(), ret.end() };
+	}
 
 private:
-	bool _Dirty;
+	void Build( XE::uint64 node, XE::uint32 depth )
+	{
+		if( _Nodes[node].Objects.size() > 1 )
+		{
+			_Nodes[node].Depth = depth;
+
+			if( depth < _Depth )
+			{
+				Vec3 center = _Nodes[node].Box.GetCenter();
+
+				XE::uint64 children = _Nodes.size();
+
+				_Nodes[node].Children = static_cast< XE::uint32 >( children );
+
+				_Nodes.resize( children + 8 );
+
+				for( const auto & child : _Nodes[node].Objects )
+				{
+					XE::AABB aabb = _BoundBox( child );
+					int mark[6];
+					mark[0] = aabb.min.x >= center.x ? 1 : 0;
+					mark[1] = aabb.min.y >= center.y ? 2 : 0;
+					mark[2] = aabb.min.z >= center.z ? 4 : 0;
+					mark[3] = aabb.max.x >= center.x ? 1 : 0;
+					mark[4] = aabb.max.y >= center.y ? 2 : 0;
+					mark[5] = aabb.max.z >= center.z ? 4 : 0;
+					for( int i = 0; i < 8; ++i )
+					{
+						if( i == ( ( i & 1 ) ? mark[3] : mark[0] )
+							+ ( ( i & 2 ) ? mark[4] : mark[1] )
+							+ ( ( i & 4 ) ? mark[5] : mark[2] ) )
+						{
+							_Nodes[children + i].Objects.push_back( child );
+						}
+					}
+				}
+
+				for( int i = 0; i < 8; ++i )
+				{
+					_Nodes[children + i].Box = AABB(
+						Vec3(
+							( i & 1 ) ? center.x : _Nodes[node].Box.min.x,
+							( i & 2 ) ? center.y : _Nodes[node].Box.min.y,
+							( i & 4 ) ? center.z : _Nodes[node].Box.min.z
+						),
+						Vec3(
+							( i & 1 ) ? _Nodes[node].Box.max.x : center.x,
+							( i & 2 ) ? _Nodes[node].Box.max.y : center.y,
+							( i & 4 ) ? _Nodes[node].Box.max.z : center.z
+						)
+					);
+
+					Build( children + i, depth + 1 );
+				}
+			}
+		}
+
+		_Nodes[node].Objects.clear();
+		_Nodes[node].Objects.shrink_to_fit();
+	}
+
+	template< typename _Other >
+	ValueType Intersect( XE::uint64 node, const Array<ValueType> & exclude, const _Other & val ) const
+	{
+		const Node & n = _Nodes[node];
+
+		if( n.Box.Intersect( val ) )
+		{
+			if( n.Children == 0 )
+			{
+				for( const auto & obj : n.Objects )
+				{
+					if( _BoundBox( obj ).Intersect( val ) )
+					{
+						for( const auto & ex : exclude )
+						{
+							if( ex == obj )
+							{
+								continue;
+							}
+						}
+
+						return obj;
+					}
+				}
+			}
+			else
+			{
+				for( int i = 0; i < 8; ++i )
+				{
+					if( ValueType obj = Intersect( node + i, exclude, val ) )
+					{
+						for( const auto & ex : exclude )
+						{
+							if( ex == obj )
+							{
+								continue;
+							}
+						}
+
+						return obj;
+					}
+				}
+			}
+		}
+
+		return nullptr;
+	}
+
+	ValueType Intersect( XE::uint64 node, const Array<ValueType> & exclude, const Ray & val ) const
+	{
+		const Node & n = _Nodes[node];
+
+		if( n.Box.Intersect( val ).first )
+		{
+			if( n.Children == 0 )
+			{
+				for( const auto & obj : n.Objects )
+				{
+					if( _BoundBox( obj ).Intersect( val ).first )
+					{
+						for( const auto & ex : exclude )
+						{
+							if( ex == obj )
+							{
+								continue;
+							}
+						}
+
+						return obj;
+					}
+				}
+			}
+			else
+			{
+				for( int i = 0; i < 8; ++i )
+				{
+					if( ValueType obj = Intersect( node + i, exclude, val ) )
+					{
+						for( const auto & ex : exclude )
+						{
+							if( ex == obj )
+							{
+								continue;
+							}
+						}
+
+						return obj;
+					}
+				}
+			}
+		}
+
+		return nullptr;
+	}
+
+	template< typename _Other >
+	void Intersects( XE::uint64 node, Set<ValueType> & out, const _Other & val ) const
+	{
+		const Node & n = _Nodes[node];
+
+		if( n.Box.Intersect( val ) )
+		{
+			if( n.Children == 0 )
+			{
+				for( const auto & obj : n.Objects )
+				{
+					if( _BoundBox( obj ).Intersect( val ) )
+					{
+						out.insert( obj );
+					}
+				}
+			}
+			else
+			{
+				for( int i = 0; i < 8; ++i )
+				{
+					Intersects( node + i, out, val );
+				}
+			}
+		}
+	}
+
+	void Intersects( XE::uint64 node, Set<ValueType> & out, const Ray & val ) const
+	{
+		const Node & n = _Nodes[node];
+
+		if( n.Box.Intersect( val ).first )
+		{
+			if( n.Children == 0 )
+			{
+				for( const auto & obj : n.Objects )
+				{
+					if( _BoundBox( obj ).Intersect( val ).first )
+					{
+						out.insert( obj );
+					}
+				}
+			}
+			else
+			{
+				for( int i = 0; i < 8; ++i )
+				{
+					Intersects( node + i, out, val );
+				}
+			}
+		}
+	}
+
+private:
 	XE::uint32 _Depth;
 	Array< Node > _Nodes;
 	BoundBoxType _BoundBox;

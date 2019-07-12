@@ -19,6 +19,7 @@ DECL_PTR( WorldObject );
 DECL_PTR( SceneComponent );
 DECL_PTR( RenderComponent );
 DECL_PTR( BehaviorComponent );
+template< typename _Ty > class MakeRect;
 template< typename _Ty > class MakeAABB;
 
 

@@ -37,6 +37,11 @@ public:
 	void SetFramework( IFrameworkPtr val );
 
 public:
+	XE::OBB GetOBB() const;
+
+	XE::AABB GetAABB() const;
+
+public:
 	Transform * GetTransform();
 
 	SceneComponentPtr GetSceneComponent() const;
@@ -110,6 +115,28 @@ private:
 	IFrameworkPtr _Framework;
 	SceneComponentPtr _SceneComponent;
 	std::vector< ComponentPtr > _Components;
+};
+
+template<> class MakeAABB< GameObjectPtr >
+{
+public:
+	XE::AABB operator()( const GameObjectPtr & val ) const
+	{
+		return val->GetAABB();
+	}
+};
+
+template<> class MakeRect< GameObjectPtr >
+{
+public:
+	XE::Rect operator()( const GameObjectPtr & val ) const
+	{
+		AABB box = val->GetAABB();
+		auto center = box.GetCenter();
+		auto size = box.GetSize();
+
+		return Rect( center.x, center.z, size.x, size.z );
+	}
 };
 
 END_XE_NAMESPACE

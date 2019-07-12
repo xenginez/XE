@@ -25,6 +25,16 @@ XE::Transform * XE::SceneComponent::GetTransform()
 	return &_Transform;
 }
 
+XE::OBB XE::SceneComponent::GetOBB() const
+{
+	return OBB();
+}
+
+XE::AABB XE::SceneComponent::GetAABB() const
+{
+	return AABB();
+}
+
 XE::SceneComponentPtr XE::SceneComponent::GetRoot()
 {
 	if ( auto parent = GetParent() )
