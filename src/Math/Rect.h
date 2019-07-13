@@ -54,7 +54,10 @@ public:
 
 	bool Contains( const Rect & val ) const;
 
-	bool Intersects( const Rect & val ) const;
+public:
+	bool Intersect( const Rect & val ) const;
+
+	bool Intersect( const Vec2 & beg, const Vec2 & end )const;
 
 public:
 	void Clip( const Rect& val );

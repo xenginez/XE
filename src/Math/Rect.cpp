@@ -84,7 +84,7 @@ bool XE::Rect::Contains( const Rect & val ) const
 			 val.y > y && val.height < height );
 }
 
-bool XE::Rect::Intersects( const Rect& val ) const
+bool XE::Rect::Intersect( const Rect& val ) const
 {
 	XE::real minx = Mathf::Max( x, val.x );
 	XE::real miny = Mathf::Max( y, val.y );
@@ -92,6 +92,55 @@ bool XE::Rect::Intersects( const Rect& val ) const
 	XE::real maxy = Mathf::Min( y + height, val.y + val.height );
 
 	return !( minx > maxx || miny > maxy );
+}
+
+bool XE::Rect::Intersect( const Vec2 & beg, const Vec2 & end ) const
+{
+	auto line_intersect = []( const Vec2 & beg1, const Vec2 & end1, const Vec2 & beg2, const Vec2 & end2 )
+	{
+		real x1 = beg1.x;
+		real y1 = beg1.y;
+		real x2 = end1.x;
+		real y2 = end1.y;
+		real x3 = beg2.x;
+		real y3 = beg2.y;
+		real x4 = end2.x;
+		real y4 = end2.y;
+
+		if( ( ( x1 * y3 + x2 * y1 + x3 * y2 - x1 * y2 - x2 * y3 - x3 * y1 ) * ( x1 * y4 + x2 * y1 + x4 * y2 - x1 * y2 - x2 * y4 - x4 * y1 ) ) > 0 )
+		{
+			return false;
+		}
+
+		if( ( ( x3 * y1 + x4 * y3 + x1 * y4 - x3 * y4 - x4 * y1 - x1 * y3 ) * ( x3 * y2 + x4 * y3 + x2 * y4 - x3 * y4 - x4 * y2 - x2 * y3 ) ) > 0 )
+		{
+			return false;
+		}
+
+		return true;
+	};
+
+	if( line_intersect( beg, end, Vec2( x, y ), Vec2( x, y + height ) ) )
+	{
+		return true;
+	}
+
+	if( line_intersect( beg, end, Vec2( x, y + height ), Vec2( x + width, y + height ) ) )
+	{
+		return true;
+	}
+
+	if( line_intersect( beg, end, Vec2( x + width, y + height ), Vec2( x + width, y ) ) )
+	{
+		return true;
+	}
+
+	if( line_intersect( beg, end, Vec2( x + width, y ), Vec2( x, y ) ) )
+	{
+		return true;
+	}
+
+	return false;
 }
 
 void XE::Rect::Clip( const Rect& val )

@@ -69,6 +69,22 @@ public:
 		Build( 0, 0 );
 	}
 
+	template< typename ... _Args >
+	ValueType Intersect( const Array<ValueType> & exclude, const _Args & ... val )const
+	{
+		return Intersect( 0, exclude, val... );
+	}
+
+	template< typename ... _Args >
+	Array<ValueType> Intersects( const _Args & ... val )const
+	{
+		Set<ValueType> out;
+
+		Intersects( 0, out, val... );
+
+		return { out.begin(), out.end() };
+	}
+
 private:
 	void Build( XE::uint64 node, XE::uint32 depth )
 	{
@@ -125,6 +141,81 @@ private:
 
 		_Nodes[node]._Objects.clear();
 		_Nodes[node]._Objects.shrink_to_fit();
+	}
+
+	template< typename ... _Args >
+	ValueType Intersect( XE::uint64 node, const Array<ValueType> & exclude, const _Args &... val )const
+	{
+		const Node & n = _Nodes[node];
+
+		if( n.Box.Intersect( val... ) )
+		{
+			if( n.Children == 0 )
+			{
+				for( const auto & obj : n.Objects )
+				{
+					if( _BoundBox( obj ).Intersect( val... ) )
+					{
+						for( const auto & ex : exclude )
+						{
+							if( ex == obj )
+							{
+								continue;
+							}
+						}
+
+						return obj;
+					}
+				}
+			}
+			else
+			{
+				for( int i = 0; i < 8; ++i )
+				{
+					if( ValueType obj = Intersect( node + i, exclude, val... ) )
+					{
+						for( const auto & ex : exclude )
+						{
+							if( ex == obj )
+							{
+								continue;
+							}
+						}
+
+						return obj;
+					}
+				}
+			}
+		}
+
+		return nullptr;
+	}
+
+	template< typename ... _Args >
+	void Intersects( XE::uint64 node, Set<ValueType> & out, const _Args & ... val )const
+	{
+		const Node & n = _Nodes[node];
+
+		if( n.Box.Intersect( val... ) )
+		{
+			if( n.Children == 0 )
+			{
+				for( const auto & obj : n.Objects )
+				{
+					if( _BoundBox( obj ).Intersect( val... ) )
+					{
+						out.insert( obj );
+					}
+				}
+			}
+			else
+			{
+				for( int i = 0; i < 8; ++i )
+				{
+					Intersects( node + i, out, val... );
+				}
+			}
+		}
 	}
 
 private:
