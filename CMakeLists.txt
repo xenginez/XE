@@ -62,24 +62,24 @@ link_directories(
 
 add_subdirectory(src)
 
-add_dependencies(Memory Base)
-add_dependencies(Reflect Base Memory)
-add_dependencies(Utils Base Memory Reflect)
-add_dependencies(Math Base Memory Reflect Utils)
-add_dependencies(RHI Base Memory Reflect Utils Math)
-add_dependencies(Interface Base Memory Reflect Utils Math RHI)
-add_dependencies(Audio Base Memory Reflect Utils Math RHI Interface)
-add_dependencies(Physics Base Memory Reflect Utils Math RHI Interface)
-add_dependencies(Graphics Base Memory Reflect Utils Math RHI Interface)
-add_dependencies(Animation Base Memory Reflect Utils Math RHI Interface)
+add_dependencies(Memory		Base)
+add_dependencies(Reflect	Base Memory)
+add_dependencies(Utils		Base Memory Reflect)
+add_dependencies(Math		Base Memory Reflect Utils)
+add_dependencies(RHI		Base Memory Reflect Utils Math)
+add_dependencies(Interface	Base Memory Reflect Utils Math RHI)
+add_dependencies(World		Base Memory Reflect Utils Math RHI Interface)
+add_dependencies(Audio		Base Memory Reflect Utils Math RHI Interface)
+add_dependencies(Physics	Base Memory Reflect Utils Math RHI Interface)
+add_dependencies(Graphics	Base Memory Reflect Utils Math RHI Interface)
+add_dependencies(Animation	Base Memory Reflect Utils Math RHI Interface)
 add_dependencies(Navigation Base Memory Reflect Utils Math RHI Interface)
-add_dependencies(GUI Base Memory Reflect Utils Math RHI Interface Graphics)
-add_dependencies(World Base Memory Reflect Utils Math RHI Interface)
-add_dependencies(AI Base Memory Reflect Utils Math RHI Interface World)
-add_dependencies(Behavior Base Memory Reflect Utils Math RHI Interface Audio Physics Animation Navigation AI World)
-add_dependencies(Render Base Memory Reflect Utils Math RHI Interface Graphics World GUI)
-add_dependencies(Core Base Memory Reflect Utils Math RHI Interface Audio Physics Graphics Animation Navigation GUI AI World Behavior Render)
-add_dependencies(XE Base Memory Reflect Utils Math RHI Interface Audio Physics Graphics Animation Navigation GUI AI World Behavior Render Core)
+add_dependencies(AI			Base Memory Reflect Utils Math RHI Interface World)
+add_dependencies(GUI		Base Memory Reflect Utils Math RHI Interface Graphics)
+add_dependencies(Render		Base Memory Reflect Utils Math RHI Interface Graphics)
+add_dependencies(Components	Base Memory Reflect Utils Math RHI Interface Graphics World Render Audio Physics Animation Navigation AI GUI)
+add_dependencies(Core		Base Memory Reflect Utils Math RHI Interface Graphics World Render Audio Physics Animation Navigation AI GUI Components)
+add_dependencies(XE			Base Memory Reflect Utils Math RHI Interface Graphics World Render Audio Physics Animation Navigation AI GUI Components Core)
 
 target_link_libraries(Base
 
@@ -108,6 +108,9 @@ target_link_libraries(RHI
 
 target_link_libraries(Interface
 		RHI)
+
+target_link_libraries(World
+		Interface)
 
 target_link_libraries(Audio
 		Interface
@@ -155,23 +158,20 @@ target_link_libraries(Navigation
 		DetourTileCache
 		)
 
-target_link_libraries(GUI
-		Graphics)
-
-target_link_libraries(World
-		Interface)
-
 target_link_libraries(AI
 		World)
 
-target_link_libraries(Behavior
-		Audio Physics Animation Navigation AI)
+target_link_libraries(GUI
+		Graphics)
 
 target_link_libraries(Render
-		World GUI)
+		Graphics)
+
+target_link_libraries(Components
+		Audio Render Physics Animation Navigation AI GUI)
 
 target_link_libraries(Core
-		Behavior Render
+		Components
 
 		sqlite3
 		libZipper-static

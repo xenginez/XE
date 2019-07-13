@@ -9,7 +9,6 @@
 #ifndef __GLOBAL_H__A39D40FD_1112_4C76_B112_E283BE8AFE97
 #define __GLOBAL_H__A39D40FD_1112_4C76_B112_E283BE8AFE97
 
-#include <World/World.h>
 #include <Graphics/Graphics.h>
 
 #ifdef RENDER_EXPORT
