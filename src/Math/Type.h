@@ -66,6 +66,9 @@ enum class RotationType
 };
 DECL_META_ENUM( MATH_API, RotationType );
 
+template< typename _Ty > class MakeRect;
+template< typename _Ty > class MakeAABB;
+
 END_XE_NAMESPACE
 
 #endif // __TYPE_H__98A93208_FE74_468C_A0B7_059AC2D5374C

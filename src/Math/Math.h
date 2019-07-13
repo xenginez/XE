@@ -11,7 +11,6 @@
 
 #include "Mathf.h"
 
-#include "float16.h"
 
 #include "Vec2.h"
 #include "Vec3.h"
@@ -22,8 +21,6 @@
 #include "Rect.h"
 #include "SIMD.h"
 
-#include "Color.h"
-
 #include "Ray.h"
 #include "OBB.h"
 #include "AABB.h"
@@ -31,5 +28,10 @@
 #include "Plane.h"
 #include "Sphere.h"
 #include "Frustum.h"
+
+#include "Color.h"
+#include "float16.h"
+#include "QTree.hpp"
+#include "OCTree.hpp"
 
 #endif // __MATH_H__84AFAF0A_10EA_491F_8BD6_28A8543AE1CF
