@@ -26,7 +26,7 @@ public:
 	~RenderComponent();
 
 public:
-	virtual AABB GetBounds() const;
+	virtual AABB GetAABB() const;
 
 private:
 	void Render();

@@ -27,11 +27,6 @@ public:
 	Transform * GetTransform();
 
 public:
-	virtual XE::OBB GetOBB() const;
-
-	virtual XE::AABB GetAABB() const;
-
-public:
 	SceneComponentPtr GetRoot();
 
 	SceneComponentPtr GetParent() const;

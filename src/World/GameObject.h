@@ -37,11 +37,8 @@ public:
 	void SetFramework( IFrameworkPtr val );
 
 public:
-	XE::OBB GetOBB() const;
-
 	XE::AABB GetAABB() const;
 
-public:
 	Transform * GetTransform();
 
 	SceneComponentPtr GetSceneComponent() const;
