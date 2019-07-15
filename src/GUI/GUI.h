@@ -17,7 +17,6 @@
 #include "FromLayout.h"
 #include "GridLayout.h"
 #include "Label.h"
-#include "Image.h"
 #include "Button.h"
 #include "Slider.h"
 #include "TabWidget.h"
