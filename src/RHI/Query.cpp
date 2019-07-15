@@ -1,6 +1,6 @@
 #include "Query.h"
 
-#include "Device.h"
+#include "Context.h"
 
 USING_XE
 

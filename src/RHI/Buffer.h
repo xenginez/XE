@@ -102,9 +102,9 @@ public:
 
 };
 
-class RHI_API DynamicIndexBuffer : public Buffer
+class RHI_API DynamicIndexBuffer : public IndexBuffer
 {
-	OBJECT( DynamicIndexBuffer, Buffer )
+	OBJECT( DynamicIndexBuffer, IndexBuffer )
 
 public:
 	DynamicIndexBuffer();
@@ -112,9 +112,9 @@ public:
 	~DynamicIndexBuffer() override;
 };
 
-class RHI_API DynamicVertexBuffer : public Buffer
+class RHI_API DynamicVertexBuffer : public VertexBuffer
 {
-	OBJECT( DynamicVertexBuffer, Buffer )
+	OBJECT( DynamicVertexBuffer, VertexBuffer )
 
 public:
 	DynamicVertexBuffer();

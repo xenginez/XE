@@ -16,14 +16,14 @@ using namespace Microsoft::WRL;
 
 BEG_XE_NAMESPACE
 
-class D3DDevice : public XE::Device
+class D3DContext : public XE::Context
 {
-	OBJECT( D3DDevice, Device )
+	OBJECT( D3DContext, Context )
 	
 public:
-	D3DDevice();
+	D3DContext();
 
-	~D3DDevice() override;
+	~D3DContext() override;
 
 public:
 	void Startup() override;

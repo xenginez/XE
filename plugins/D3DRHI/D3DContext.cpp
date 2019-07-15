@@ -1,23 +1,23 @@
-#include "D3DDevice.h"
+#include "D3DContext.h"
 
 #define ThrowIfFailed( EXPR ) if( FAILED( EXPR ) ) { XE_LOG( LoggerLevel::Error, #EXPR ); exit(0); }
 
 USING_XE
 
-BEG_META(D3DDevice)
+BEG_META(D3DContext)
 END_META()
 
-XE::D3DDevice::D3DDevice()
+XE::D3DContext::D3DContext()
 {
 
 }
 
-XE::D3DDevice::~D3DDevice()
+XE::D3DContext::~D3DContext()
 {
 
 }
 
-void XE::D3DDevice::Startup()
+void XE::D3DContext::Startup()
 {
 #if defined(DEBUG)
 	{
@@ -50,7 +50,7 @@ void XE::D3DDevice::Startup()
 	ThrowIfFailed( _Device->CreateCommandAllocator( D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS( &_CommandAllocator ) ) );
 }
 
-void XE::D3DDevice::Clearup()
+void XE::D3DContext::Clearup()
 {
 	_SwapChains.clear();
 
@@ -63,12 +63,12 @@ void XE::D3DDevice::Clearup()
 	_RTVDescSize = 0;
 }
 
-DeviceType XE::D3DDevice::GetType() const
+DeviceType XE::D3DContext::GetType() const
 {
 	return DeviceType::DIRECT3D12;
 }
 
-void XE::D3DDevice::CreateD3DDevice()
+void XE::D3DContext::CreateD3DDevice()
 {
 	ComPtr<IDXGIAdapter1> adapter;
 
@@ -89,7 +89,7 @@ void XE::D3DDevice::CreateD3DDevice()
 	}
 }
 
-XE::SwapChainHandle XE::D3DDevice::CreateSwapChain( SwapChainPtr & val )
+XE::SwapChainHandle XE::D3DContext::CreateSwapChain( SwapChainPtr & val )
 {
 	return SwapChainHandle::Invalid;
 // 	DXGI_SWAP_CHAIN_DESC swapChainDesc = {};
@@ -124,7 +124,7 @@ XE::SwapChainHandle XE::D3DDevice::CreateSwapChain( SwapChainPtr & val )
 // 	return _SwapChains.size() - 1;
 }
 
-bool XE::D3DDevice::DestroySwapChain( SwapChainHandle handle )
+bool XE::D3DContext::DestroySwapChain( SwapChainHandle handle )
 {
 	if( _SwapChains.size() > handle.GetValue() && _SwapChains[handle.GetValue()] )
 	{
@@ -134,7 +134,7 @@ bool XE::D3DDevice::DestroySwapChain( SwapChainHandle handle )
 	return false;
 }
 
-DXGI_FORMAT XE::D3DDevice::ToFormat( TextureFormat val ) const
+DXGI_FORMAT XE::D3DContext::ToFormat( TextureFormat val ) const
 {
 	// todo: 
 	return DXGI_FORMAT_B8G8R8A8_TYPELESS;

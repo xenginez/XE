@@ -1,6 +1,6 @@
 #include "Resource.h"
 
-#include "Device.h"
+#include "Context.h"
 
 USING_XE
 
@@ -17,12 +17,12 @@ XE::Resource::~Resource()
 
 }
 
-XE::DevicePtr XE::Resource::GetDevice() const
+XE::ContextPtr XE::Resource::GetContext() const
 {
 	return _Device;
 }
 
-void XE::Resource::SetDevice( const DevicePtr & val )
+void XE::Resource::SetContext( const ContextPtr & val )
 {
 	_Device = val;
 }

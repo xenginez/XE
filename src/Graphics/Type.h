@@ -13,11 +13,12 @@
 
 BEG_XE_NAMESPACE
 
-DECL_PTR(Mesh);
-DECL_PTR(Camera);
-DECL_PTR(Material);
-DECL_PTR(Renderer);
-DECL_PTR(Renderable);
+DECL_PTR( Mesh );
+DECL_PTR( Camera );
+DECL_PTR( Material );
+DECL_PTR( Renderer );
+DECL_PTR( RenderPass );
+DECL_PTR( Renderable );
 
 END_XE_NAMESPACE
 

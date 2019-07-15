@@ -1,5 +1,5 @@
 /*!
- * \file	Device.h
+ * \file	Context.h
  *
  * \author	ZhengYuanQing
  * \date	2019/06/30
@@ -13,14 +13,14 @@
 
 BEG_XE_NAMESPACE
 
-class RHI_API Device : public NonCopyable
+class RHI_API Context : public NonCopyable
 {
-	OBJECT( Device )
+	OBJECT( Context )
 
 public:
-	Device();
+	Context();
 
-	virtual ~Device();
+	virtual ~Context();
 
 public:
 	virtual void Startup() = 0;
@@ -104,10 +104,6 @@ public:
 
 	virtual bool DestoryQuery( QueryHandle handle ) = 0;
 
-public:
-	virtual BackendPtr Begin() = 0;
-
-	virtual void End( BackendPtr val ) = 0;
 };
 
 END_XE_NAMESPACE

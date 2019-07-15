@@ -34,7 +34,7 @@ public:
 	FenceHandle GetHandle() const;
 
 private:
-	DevicePtr _Device;
+	ContextPtr _Device;
 	FenceHandle _Handle;
 };
 

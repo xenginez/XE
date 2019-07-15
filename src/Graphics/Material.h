@@ -22,6 +22,13 @@ public:
 	
 	~Material() override;
 
+public:
+	RenderPassPtr GetRenderPass() const;
+
+	void SetRenderPass( const RenderPassPtr & val );
+
+private:
+	RenderPassPtr _Pass;
 };
 
 END_XE_NAMESPACE

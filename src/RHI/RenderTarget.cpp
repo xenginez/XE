@@ -1,6 +1,6 @@
 #include "RenderTarget.h"
 
-#include "Device.h"
+#include "Context.h"
 #include "Viewport.h"
 #include "SwapChain.h"
 

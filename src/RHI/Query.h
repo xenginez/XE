@@ -34,7 +34,7 @@ protected:
 	Variant ReadBack() const;
 
 private:
-	DevicePtr _Device;
+	ContextPtr _Device;
 	QueryHandle _Handle;
 };
 

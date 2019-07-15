@@ -14,3 +14,13 @@ XE::Material::~Material()
 {
 
 }
+
+XE::RenderPassPtr XE::Material::GetRenderPass() const
+{
+	return _Pass;
+}
+
+void XE::Material::SetRenderPass( const RenderPassPtr & val )
+{
+	_Pass = val;
+}

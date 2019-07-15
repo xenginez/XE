@@ -1,8 +1,8 @@
 #include "SwapChain.h"
 
-#include "Device.h"
+#include "Context.h"
 
-XE::SwapChain::SwapChain( DevicePtr device, WindowHandle handle )
+XE::SwapChain::SwapChain( ContextPtr device, WindowHandle handle )
 	:_Device( device )
 {
 	//_Handle = _Device->CreateSwapChain( handle );

@@ -15,12 +15,21 @@ BEG_XE_NAMESPACE
 
 class GRAPHICS_API Renderable : public Object
 {
-	OBJECT(Renderable, Object)
+	OBJECT( Renderable, Object )
 	
 public:
 	Renderable();
 	
 	~Renderable() override;
+
+public:
+	MeshPtr GetMesh() const;
+
+	void SetMesh( const MeshPtr & val );
+
+	MaterialPtr GetMaterial() const;
+
+	void SetMaterialPtr( const MaterialPtr & val );
 
 private:
 	Mat4 _Transform;

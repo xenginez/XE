@@ -26,9 +26,9 @@ public:
 	virtual bool Prepare() = 0;
 
 public:
-	DevicePtr GetDevice() const;
+	ContextPtr GetContext() const;
 
-	void SetDevice( const DevicePtr & val );
+	void SetContext( const ContextPtr & val );
 
 public:
 	ResourceHandle GetHandle() const;
@@ -39,7 +39,7 @@ protected:
 	void Unmap( XE::uint32 sub_resource, XE::uint64 begin, XE::uint64 end );
 
 private:
-	DevicePtr _Device;
+	ContextPtr _Device;
 	ResourceHandle _Handle;
 };
 

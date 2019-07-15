@@ -1,6 +1,6 @@
 #include "Fence.h"
 
-#include "Device.h"
+#include "Context.h"
 
 XE::Fence::Fence()
 {
