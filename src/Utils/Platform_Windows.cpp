@@ -286,4 +286,33 @@ bool XE::Platform::HideMouse()
 	return true;
 }
 
+XE::ProcessHandle XE::Platform::ConstructProcess( const std::filesystem::path & app, const std::string & cmd, bool inherit, XE::uint32 flag )
+{
+	STARTUPINFO startup = {};
+	PROCESS_INFORMATION * info = new PROCESS_INFORMATION();
+
+	if( ::CreateProcess( app.string().c_str(), const_cast< char * >( cmd.c_str() ), nullptr, nullptr, inherit, flag, nullptr, nullptr, &startup, info ) )
+	{
+		return reinterpret_cast< XE::uint64 >( info );
+	}
+
+	return ProcessHandle::Invalid;
+}
+
+bool XE::Platform::DestroyProcess( ProcessHandle handle, XE::uint32 code )
+{
+	if( handle != ProcessHandle::Invalid )
+	{
+		PROCESS_INFORMATION * info = reinterpret_cast< PROCESS_INFORMATION * >( handle.GetValue() );
+		if( info != nullptr )
+		{
+			::TerminateProcess( info->hProcess, code );
+			::CloseHandle( info->hThread );
+			return ::CloseHandle( info->hProcess );
+		}
+	}
+
+	return false;
+}
+
 #endif

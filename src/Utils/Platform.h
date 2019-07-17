@@ -13,9 +13,8 @@
 
 BEG_XE_NAMESPACE
 
-class Window; 
-using WindowHandle = XE::Handle< XE::Window >; 
-DECL_META_CLASS( UTILS_API, WindowHandle );
+class Window; using WindowHandle = XE::Handle< XE::Window >; DECL_META_CLASS( UTILS_API, WindowHandle );
+class Process; using ProcessHandle = XE::Handle< XE::Process >; DECL_META_CLASS( UTILS_API, ProcessHandle );
 
 class UTILS_API Platform
 {
@@ -51,6 +50,11 @@ public:
 	static bool ShowMouse();
 
 	static bool HideMouse();
+
+public:
+	static ProcessHandle ConstructProcess( const std::filesystem::path & app, const std::string & cmd, bool inherit, XE::uint32 flag );
+
+	static bool DestroyProcess( ProcessHandle handle, XE::uint32 code );
 
 };
 
