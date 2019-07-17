@@ -42,7 +42,7 @@ struct XEPMainThread
 
 	}
 
-	XEPMainThread( TID id )
+	XEPMainThread( thread_id id )
 		:_CurrentTasks( 0 ), _Tid( id )
 	{
 
@@ -74,7 +74,7 @@ struct XEPMainThread
 		_CurrentTasks == 0 ? _FrontTasks.push( val ) : _BackTasks.push( val );
 	}
 
-	TID _Tid;
+	thread_id _Tid;
 	XE::uint64 _CurrentTasks;
 	tbb::concurrent_priority_queue<XEPTask> _FrontTasks;
 	tbb::concurrent_priority_queue<XEPTask> _BackTasks;
@@ -168,44 +168,44 @@ void XE::ThreadService::Clearup()
 	}
 }
 
-XE::TID XE::ThreadService::GetIOThread() const
+XE::thread_id XE::ThreadService::GetIOThread() const
 {
 	return _p->_Threads[IO_INDEX]->_Tid;
 }
 
-XE::TID XE::ThreadService::GetMainThread() const
+XE::thread_id XE::ThreadService::GetMainThread() const
 {
 	return _p->_MainThread->_Tid;
 }
 
-XE::TID XE::ThreadService::GetGameThread() const
+XE::thread_id XE::ThreadService::GetGameThread() const
 {
 	return _p->_Threads[GAME_INDEX]->_Tid;
 }
 
-XE::TID XE::ThreadService::GetRenderThread() const
+XE::thread_id XE::ThreadService::GetRenderThread() const
 {
 	return _p->_Threads[RENDER_INDEX]->_Tid;
 }
 
-XE::TID XE::ThreadService::GetPhysicsThread() const
+XE::thread_id XE::ThreadService::GetPhysicsThread() const
 {
 	return _p->_Threads[PHYSICS_INDEX]->_Thread.get_id();
 }
 
-XE::TID XE::ThreadService::GetNavigationThread() const
+XE::thread_id XE::ThreadService::GetNavigationThread() const
 {
 	return _p->_Threads[NAVIGATION_INDEX]->_Tid;
 }
 
-XE::TID XE::ThreadService::GetWorkThread( XE::uint64 val ) const
+XE::thread_id XE::ThreadService::GetWorkThread( XE::uint64 val ) const
 {
 	XE_ASSERT( val < std::thread::hardware_concurrency() );
 
 	return _p->_Threads[TOOL_THREAD + val]->_Tid;
 }
 
-bool XE::ThreadService::RegisterTask( TaskType task, TID tid /*= std::this_thread::get_id() */, ThreadPriority pri /*= ThreadPriority::NORM*/ )
+bool XE::ThreadService::RegisterTask( TaskType task, thread_id tid /*= std::this_thread::get_id() */, ThreadPriority pri /*= ThreadPriority::NORM*/ )
 {
 	XEPTask tk;
 	tk.Pri = pri;

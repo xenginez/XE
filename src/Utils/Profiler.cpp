@@ -56,7 +56,7 @@ void Profiler::Beg()
 	XE_ASSERT( it == This()->_p->Frames.end() );
 
 	ProfilerFramePtr frame = make_shared<ProfilerFrame>();
-	frame->TID = id;
+	frame->tid = id;
 	This()->_p->Frames[id] = std::make_pair( frame, Stack<ProfilerItem *>() );
 }
 

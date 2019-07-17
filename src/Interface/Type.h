@@ -38,8 +38,6 @@ class IFramework; typedef IFramework * IFrameworkPtr;
 DECL_ALLOCATOR_POLL( Event );
 DECL_ALLOCATOR_POLL( Logger );
 
-using TID = std::thread::id;
-
 enum class KeyCode
 {
 	None,

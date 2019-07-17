@@ -57,6 +57,7 @@ DECL_PTR( RenderTexture2D );
 
 DECL_PTR( Image );
 DECL_PTR( Fence );
+DECL_PTR( Encoder );
 DECL_PTR( Context );
 DECL_PTR( Sampler );
 DECL_PTR( Viewport );

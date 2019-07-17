@@ -26,22 +26,22 @@ public:
 	~IThreadService() override;
 
 public:
-	virtual TID GetIOThread() const = 0;
+	virtual thread_id GetIOThread() const = 0;
 
-	virtual TID GetMainThread() const = 0;
+	virtual thread_id GetMainThread() const = 0;
 
-	virtual TID GetGameThread() const = 0;
+	virtual thread_id GetGameThread() const = 0;
 
-	virtual TID GetRenderThread() const = 0;
+	virtual thread_id GetRenderThread() const = 0;
 
-	virtual TID GetPhysicsThread() const = 0;
+	virtual thread_id GetPhysicsThread() const = 0;
 
-	virtual TID GetNavigationThread() const = 0;
+	virtual thread_id GetNavigationThread() const = 0;
 
-	virtual TID GetWorkThread( XE::uint64 val ) const = 0;
+	virtual thread_id GetWorkThread( XE::uint64 val ) const = 0;
 
 public:
-	virtual bool RegisterTask( TaskType task, TID tid = std::this_thread::get_id(), ThreadPriority pri = ThreadPriority::NORM ) = 0;
+	virtual bool RegisterTask( TaskType task, thread_id tid = std::this_thread::get_id(), ThreadPriority pri = ThreadPriority::NORM ) = 0;
 
 };
 

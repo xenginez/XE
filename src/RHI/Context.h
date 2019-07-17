@@ -2,12 +2,12 @@
  * \file	Context.h
  *
  * \author	ZhengYuanQing
- * \date	2019/06/30
+ * \date	2019/07/17
  * \email	zhengyuanqing.95@gmail.com
  *
  */
-#ifndef DEVICE_H__C8946AB4_1220_4FEE_AB78_53C9D8C6A6A3
-#define DEVICE_H__C8946AB4_1220_4FEE_AB78_53C9D8C6A6A3
+#ifndef CONTEXT_H__D80BEEA9_CB5A_4757_89F8_785D078A7BDB
+#define CONTEXT_H__D80BEEA9_CB5A_4757_89F8_785D078A7BDB
 
 #include "Type.h"
 
@@ -24,6 +24,8 @@ public:
 
 public:
 	virtual void Startup() = 0;
+
+	virtual void Present() = 0;
 
 	virtual void Clearup() = 0;
 
@@ -104,8 +106,11 @@ public:
 
 	virtual bool DestoryQuery( QueryHandle handle ) = 0;
 
+public:
+	virtual EncoderPtr GetEncoder( std::thread::id id = std::this_thread::get_id() ) = 0;
+
 };
 
 END_XE_NAMESPACE
 
-#endif // DEVICE_H__C8946AB4_1220_4FEE_AB78_53C9D8C6A6A3
+#endif // CONTEXT_H__D80BEEA9_CB5A_4757_89F8_785D078A7BDB

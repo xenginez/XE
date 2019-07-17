@@ -133,21 +133,23 @@ namespace std
 
 BEG_XE_NAMESPACE
 
-typedef char				int8;
-typedef short				int16;
-typedef int					int32;
-typedef long long			int64;
-typedef unsigned char		uint8;
-typedef unsigned short		uint16;
-typedef unsigned int		uint32;
-typedef unsigned long long	uint64;
-typedef float				float32;
-typedef double				float64;
+using int8 = char;
+using int16 = short;
+using int32 = int;
+using int64 = long long;
+using uint8 = unsigned char;
+using uint16 = unsigned short;
+using uint32 = unsigned int;
+using uint64 = unsigned long long;
+using float32 = float;
+using float64 = double;
 #ifndef XE_DOUBLE
-typedef XE::float32			real;
+using real = float32;
 #else
-typedef XE::float64			real;
+using real = float64;
 #endif
+using thread_id = std::thread::id;
+
 
 template< typename T > struct TypeTraits
 {

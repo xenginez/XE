@@ -35,22 +35,22 @@ public:
 	void Clearup() override;
 
 public:
-	TID GetIOThread() const override;
+	thread_id GetIOThread() const override;
 
-	TID GetMainThread() const override;
+	thread_id GetMainThread() const override;
 
-	TID GetGameThread() const override;
+	thread_id GetGameThread() const override;
 
-	TID GetRenderThread() const override;
+	thread_id GetRenderThread() const override;
 
-	TID GetPhysicsThread() const override;
+	thread_id GetPhysicsThread() const override;
 
-	TID GetNavigationThread() const override;
+	thread_id GetNavigationThread() const override;
 
-	TID GetWorkThread( XE::uint64 val ) const override;
+	thread_id GetWorkThread( XE::uint64 val ) const override;
 
 public:
-	bool RegisterTask( TaskType task, TID tid = std::this_thread::get_id(), ThreadPriority pri = ThreadPriority::NORM ) override;
+	bool RegisterTask( TaskType task, thread_id tid = std::this_thread::get_id(), ThreadPriority pri = ThreadPriority::NORM ) override;
 
 private:
 	Private * _p;

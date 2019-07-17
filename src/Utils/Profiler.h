@@ -28,7 +28,7 @@ public:
 class UTILS_API ProfilerFrame : public std::enable_shared_from_this<ProfilerFrame>
 {
 public:
-	std::thread::id TID;
+	thread_id tid;
 	Array<ProfilerItem> Children;
 };
 
