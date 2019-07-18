@@ -18,22 +18,19 @@ class WORLD_API Transform
 	OBJECT( Transform )
 
 public:
-	friend class SceneComponent;
-
-public:
 	Transform();
 
-private:
+public:
 	Transform * GetParent() const;
 
 	void SetParent( Transform * val );
 
 public:
-	Vec3 GetWorldUp() const;
+	Vec3 GetWorldUp();
 
-	Vec3 GetWorldRight() const;
+	Vec3 GetWorldRight();
 
-	Vec3 GetWorldForward() const;
+	Vec3 GetWorldForward();
 
 	Vec3 GetRelativeUp() const;
 
@@ -67,10 +64,17 @@ public:
 
 	void SetRelativeRotation( const Quat& val );
 
-private:
-	void UpdateTransformCache();
+public:
+	const Mat4& GetWorldTransform() const;
 
-	const Mat4& GetTransformCache( XE::uint64 val ) const;
+	void SetWorldTransform( const Mat4& val );
+
+	const Mat4& GetRelativeTransform() const;
+
+	void SetRelativeTransform( const Mat4& val );
+
+private:
+	void UpdateTransform();
 
 private:
 	bool _Dirty;
@@ -82,7 +86,8 @@ private:
 	Vec3 _RelativePosition;
 	Quat _RelativeRotation;
 
-	Mat4 _TransformCache[2];
+	Mat4 _WorldTransform;
+	Mat4 _RelativeTransform;
 
 	Transform * _Parent;
 };

@@ -37,7 +37,7 @@ public:
 	void SetFramework( IFrameworkPtr val );
 
 public:
-	XE::AABB GetAABB() const;
+	XE::AABB GetBoundingBox() const;
 
 	Transform * GetTransform();
 
@@ -119,7 +119,7 @@ template<> class MakeAABB< GameObjectPtr >
 public:
 	XE::AABB operator()( const GameObjectPtr & val ) const
 	{
-		return val->GetAABB();
+		return val->GetBoundingBox();
 	}
 };
 
@@ -128,7 +128,7 @@ template<> class MakeRect< GameObjectPtr >
 public:
 	XE::Rect operator()( const GameObjectPtr & val ) const
 	{
-		AABB box = val->GetAABB();
+		AABB box = val->GetBoundingBox();
 		auto center = box.GetCenter();
 		auto size = box.GetSize();
 

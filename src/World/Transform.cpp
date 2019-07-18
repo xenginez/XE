@@ -28,18 +28,33 @@ void XE::Transform::SetParent( Transform * val )
 	_Parent = val;
 }
 
-XE::Vec3 XE::Transform::GetWorldUp() const
+XE::Vec3 XE::Transform::GetWorldUp()
 {
+	if( _Dirty )
+	{
+		UpdateTransform();
+	}
+
 	return Mathf::Rotate( _WorldRotation, Vec3::Up );
 }
 
-XE::Vec3 XE::Transform::GetWorldRight() const
+XE::Vec3 XE::Transform::GetWorldRight()
 {
+	if( _Dirty )
+	{
+		UpdateTransform();
+	}
+
 	return Mathf::Rotate( _WorldRotation, Vec3::Right );
 }
 
-XE::Vec3 XE::Transform::GetWorldForward() const
+XE::Vec3 XE::Transform::GetWorldForward()
 {
+	if( _Dirty )
+	{
+		UpdateTransform();
+	}
+
 	return Mathf::Rotate( _WorldRotation, Vec3::Forward );
 }
 
@@ -62,7 +77,7 @@ const XE::Vec3& XE::Transform::GetWorldScale()
 {
 	if ( _Dirty )
 	{
-		UpdateTransformCache();
+		UpdateTransform();
 	}
 
 	return _WorldScale;
@@ -71,14 +86,14 @@ const XE::Vec3& XE::Transform::GetWorldScale()
 void XE::Transform::SetWorldScale( const Vec3& val )
 {
 	_WorldScale = val;
-	_RelativeScale = _Parent ? val / _Parent->GetWorldScale() : val;
+	SetRelativeScale( _Parent ? val / _Parent->GetWorldScale() : val );
 }
 
 const XE::Vec3& XE::Transform::GetWorldPosition()
 {
 	if ( _Dirty )
 	{
-		UpdateTransformCache();
+		UpdateTransform();
 	}
 
 	return _WorldPosition;
@@ -87,14 +102,14 @@ const XE::Vec3& XE::Transform::GetWorldPosition()
 void XE::Transform::SetWorldPosition( const Vec3& val )
 {
 	_WorldPosition = val;
-	_RelativePosition = _Parent ? val - _Parent->GetWorldPosition() : val;
+	SetRelativePosition( _Parent ? val - _Parent->GetWorldPosition() : val );
 }
 
 const XE::Quat& XE::Transform::GetWorldRotation()
 {
 	if ( _Dirty )
 	{
-		UpdateTransformCache();
+		UpdateTransform();
 	}
 
 	return _WorldRotation;
@@ -103,7 +118,7 @@ const XE::Quat& XE::Transform::GetWorldRotation()
 void XE::Transform::SetWorldRotation( const Quat& val )
 {
 	_WorldRotation = val;
-	_RelativeRotation = _Parent ? Mathf::Inverse( _Parent->GetWorldRotation() ) * val : val;
+	SetRelativeRotation( _Parent ? Mathf::Inverse( _Parent->GetWorldRotation() ) * val : val );
 }
 
 const XE::Vec3& XE::Transform::GetRelativeScale() const
@@ -113,9 +128,12 @@ const XE::Vec3& XE::Transform::GetRelativeScale() const
 
 void XE::Transform::SetRelativeScale( const Vec3& val )
 {
-	_RelativeScale = val;
+	if( _RelativeScale != val )
+	{
+		_Dirty = true;
 
-	_Dirty = true;
+		_RelativeScale = val;
+	}
 }
 
 const XE::Vec3& XE::Transform::GetRelativePosition() const
@@ -125,9 +143,12 @@ const XE::Vec3& XE::Transform::GetRelativePosition() const
 
 void XE::Transform::SetRelativePosition( const Vec3& val )
 {
-	_RelativePosition = val;
+	if( _RelativePosition != val )
+	{
+		_Dirty = true;
 
-	_Dirty = true;
+		_RelativePosition = val;
+	}
 }
 
 const XE::Quat& XE::Transform::GetRelativeRotation() const
@@ -137,12 +158,39 @@ const XE::Quat& XE::Transform::GetRelativeRotation() const
 
 void XE::Transform::SetRelativeRotation( const Quat& val )
 {
-	_RelativeRotation = val;
+	if( _RelativeRotation != val )
+	{
+		_Dirty = true;
 
-	_Dirty = true;
+		_RelativeRotation = val;
+	}
 }
 
-void XE::Transform::UpdateTransformCache()
+const XE::Mat4& XE::Transform::GetWorldTransform() const
+{
+	return _WorldTransform;
+}
+
+void XE::Transform::SetWorldTransform( const Mat4& val )
+{
+	_WorldTransform = val;
+
+	Mathf::TRS( _WorldTransform, _WorldPosition, _WorldRotation, _WorldScale );
+}
+
+const XE::Mat4& XE::Transform::GetRelativeTransform() const
+{
+	return _RelativeTransform;
+}
+
+void XE::Transform::SetRelativeTransform( const Mat4& val )
+{
+	_RelativeTransform = val;
+
+	Mathf::TRS( _RelativeTransform, _RelativePosition, _RelativeRotation, _RelativeScale );
+}
+
+void XE::Transform::UpdateTransform()
 {
 	if ( _Parent )
 	{
@@ -157,12 +205,8 @@ void XE::Transform::UpdateTransformCache()
 		_WorldRotation = _RelativeRotation;
 	}
 
-	_TransformCache[0] = Mathf::Translation( _WorldPosition ) * Mathf::Rotation( _WorldRotation ) * Mathf::Scale( _WorldScale );
+	_WorldTransform = Mathf::TRS( _WorldPosition, _WorldRotation, _WorldScale );
+	_RelativeTransform = Mathf::TRS( _RelativePosition, _RelativeRotation, _RelativeScale );
 
 	_Dirty = false;
-}
-
-const XE::Mat4& XE::Transform::GetTransformCache( XE::uint64 val ) const
-{
-	return _TransformCache[0];
 }

@@ -37,11 +37,11 @@ XE::GameObjectHandle XE::GameObject::GetHandle() const
 	return _Handle;
 }
 
-XE::AABB XE::GameObject::GetAABB() const
+XE::AABB XE::GameObject::GetBoundingBox() const
 {
 	if( _SceneComponent && _SceneComponent->GetMetaClass()->CanConvert( RenderComponent::GetMetaClassStatic() ) )
 	{
-		return SP_CAST<RenderComponent>( _SceneComponent )->GetAABB();
+		return SP_CAST<RenderComponent>( _SceneComponent )->GetBoundingBox();
 	}
 
 	return AABB();

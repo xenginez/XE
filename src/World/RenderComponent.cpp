@@ -17,7 +17,7 @@ XE::RenderComponent::~RenderComponent()
 
 }
 
-XE::AABB XE::RenderComponent::GetAABB() const
+XE::AABB XE::RenderComponent::GetBoundingBox() const
 {
 	AABB ret;
 
@@ -26,7 +26,7 @@ XE::AABB XE::RenderComponent::GetAABB() const
 	{
 		if ( auto rcom = DP_CAST<RenderComponent>( child ) )
 		{
-			AABB raabb = rcom->GetAABB();
+			AABB raabb = rcom->GetBoundingBox();
 
 			ret.min = Mathf::Min( ret.min, raabb.min );
 			ret.max = Mathf::Max( ret.max, raabb.max );

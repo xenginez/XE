@@ -26,13 +26,16 @@ public:
 	~RenderComponent();
 
 public:
-	virtual AABB GetAABB() const;
+	virtual AABB GetBoundingBox() const;
 
 private:
 	void Render();
 
 protected:
 	virtual void OnRender();
+
+private:
+	AABB _BoundingBox;
 };
 
 END_XE_NAMESPACE
