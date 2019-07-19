@@ -22,6 +22,8 @@ DECL_PTR( VertexBuffer );
 DECL_PTR( UniformBuffer );
 DECL_PTR( ComputeBuffer );
 DECL_PTR( ConstantBuffer );
+DECL_PTR( IndirectBuffer );
+DECL_PTR( InstanceBuffer );
 DECL_PTR( DepthStencilBuffer );
 DECL_PTR( DynamicIndexBuffer );
 DECL_PTR( DynamicVertexBuffer );
@@ -401,6 +403,18 @@ enum class StencilOperation
 	INVERT,
 };
 DECL_META_ENUM( RHI_API, StencilOperation );
+
+
+enum class RenderGroup
+{
+	BACKGROUND = 1000,
+	GEOMETRY = 2000,
+	ALPHATEST = 2450,
+	TRANSPARENT = 3000,
+	OVERLAY = 4000,
+};
+DECL_META_ENUM( RHI_API, RenderGroup );
+
 
 END_XE_NAMESPACE
 

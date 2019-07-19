@@ -84,6 +84,26 @@ public:
 	~ConstantBuffer() override;
 };
 
+class RHI_API IndirectBuffer : public Buffer
+{
+	OBJECT( IndirectBuffer, Buffer )
+
+public:
+	IndirectBuffer();
+
+	~IndirectBuffer() override;
+};
+
+class RHI_API InstanceBuffer : public Buffer
+{
+	OBJECT( InstanceBuffer, Buffer )
+
+public:
+	InstanceBuffer();
+
+	~InstanceBuffer() override;
+};
+
 class RHI_API DepthStencilBuffer : public Buffer
 {
 	OBJECT( DepthStencilBuffer, Buffer )

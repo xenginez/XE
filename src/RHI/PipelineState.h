@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class RHI_API BlendState : public std::enable_shared_from_this<BlendState>
+class RHI_API BlendState : public std::enable_shared_from_this< BlendState >
 {
 	OBJECT( BlendState )
 
@@ -23,10 +23,6 @@ public:
 	~BlendState();
 
 public:
-	Vec4 GetBlendFactor() const;
-
-	void SetBlendFactor( const Vec4 & val );
-
 	bool GetEnableIndependentBlend() const;
 
 	void SetEnableIndependentBlend( bool val );
@@ -35,20 +31,12 @@ public:
 
 	void SetAlphaToCoverageEnabled( bool val );
 
-	XE::uint64 GetRenderTargetCount() const;
-
-	RenderTargetPtr GetRenderTarget( XE::uint64 index ) const;
-
-	void SetRenderTarget( XE::uint64 index, const RenderTargetPtr & val );
-
 private:
-	Vec4 _BlendFactor;
 	bool _EnableIndependentBlend;
 	bool _AlphaToCoverageEnabled;
-	Array < RenderTargetPtr > _RenderTargets;
 };
 
-class RHI_API RasterizerState : public std::enable_shared_from_this<RasterizerState>
+class RHI_API RasterizerState : public std::enable_shared_from_this< RasterizerState >
 {
 	OBJECT( RasterizerState )
 
@@ -70,18 +58,6 @@ public:
 
 	void SetFrontCountClockwise( bool val );
 
-	bool GetDepthClipEnable() const;
-
-	void SetDepthClipEnable( bool val );
-
-	bool GetScissorEnable() const;
-
-	void SetScissorEnable( bool val );
-
-	bool GetAntialiasedLineEnable() const;
-
-	void SetAntialiasedLineEnable( bool val );
-
 	XE::int32 GetDepthBias() const;
 
 	void SetDepthBias( XE::int32 val );
@@ -94,19 +70,41 @@ public:
 
 	void SetSlopeSacleDepthBias( XE::real val );
 
+	bool GetDepthClipEnable() const;
+
+	void SetDepthClipEnable( bool val );
+
+	bool GetMultisampleEnable() const;
+
+	void SetMultisampleEnable( bool val );
+
+	bool GetAntialiasedLineEnable() const;
+
+	void SetAntialiasedLineEnable( bool val );
+
+	XE::uint32 GetForcedSampleCount() const;
+
+	void SetForcedSampleCount( XE::uint32 val );
+
+	bool GetConservativeRaster() const;
+
+	void SetConservativeRaster( bool val );
+
 private:
 	FillType _FillMode;
 	CullType _CullMode;
 	bool _FrontCountClockwise;
-	bool _DepthClipEnable;
-	bool _ScissorEnable;
-	bool _AntialiasedLineEnable;
 	XE::int32 _DepthBias;
 	XE::real _DepthBiasClamp;
 	XE::real _SlopeSacleDepthBias;
+	bool _DepthClipEnable;
+	bool _MultisampleEnable;
+	bool _AntialiasedLineEnable;
+	XE::uint32 _ForcedSampleCount;
+	bool _ConservativeRaster;
 };
 
-class RHI_API DepthStencilState : public std::enable_shared_from_this<DepthStencilState>
+class RHI_API DepthStencilState : public std::enable_shared_from_this< DepthStencilState >
 {
 	OBJECT( DepthStencilState )
 
@@ -191,14 +189,32 @@ private:
 	StencilOperation _StencilBackDepthFailOp;
 };
 
-class RHI_API ComputePipelineState : public std::enable_shared_from_this<ComputePipelineState>
+class RHI_API PipelineState : public std::enable_shared_from_this< PipelineState >
 {
-	OBJECT( ComputePipelineState )
+	OBJECT( PipelineState )
+
+public:
+	PipelineState();
+
+	virtual ~PipelineState();
+
+public:
+	PipelineStateHandle GetHandle() const;
+
+	void SetHandle( PipelineStateHandle val );
+
+private:
+	PipelineStateHandle _Handle;
+};
+
+class RHI_API ComputePipelineState : public PipelineState
+{
+	OBJECT( ComputePipelineState, PipelineState )
 
 public:
 	ComputePipelineState();
 
-	~ComputePipelineState();
+	~ComputePipelineState() override;
 
 public:
 	ComputeShaderPtr GetComputeShader() const;
@@ -207,17 +223,16 @@ public:
 
 private:
 	ComputeShaderPtr _CS;
-	PipelineStateHandle _Handle;
 };
 
-class RHI_API GraphicsPipelineState : public std::enable_shared_from_this<GraphicsPipelineState>
+class RHI_API GraphicsPipelineState : public PipelineState
 {
-	OBJECT( GraphicsPipelineState )
+	OBJECT( GraphicsPipelineState, PipelineState )
 
 public:
 	GraphicsPipelineState();
 
-	~GraphicsPipelineState();
+	~GraphicsPipelineState() override;
 
 private:
 	XE::HullShaderPtr GetHS() const;
@@ -284,8 +299,7 @@ private:
 
 	XE::uint32 _SampleMask;
 
-	FrameBufferPtr _FBO;
-	PipelineStateHandle _Handle;
+	FrameBufferPtr _FrameBuffer;
 };
 
 END_XE_NAMESPACE

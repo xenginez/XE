@@ -104,6 +104,32 @@ XE::ConstantBuffer::~ConstantBuffer()
 
 }
 
+BEG_META( IndirectBuffer )
+END_META()
+
+XE::IndirectBuffer::IndirectBuffer()
+{
+
+}
+
+XE::IndirectBuffer::~IndirectBuffer()
+{
+
+}
+
+BEG_META( InstanceBuffer )
+END_META()
+
+XE::InstanceBuffer::InstanceBuffer()
+{
+
+}
+
+XE::InstanceBuffer::~InstanceBuffer()
+{
+
+}
+
 BEG_META( DepthStencilBuffer )
 END_META()
 
