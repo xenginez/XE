@@ -20,6 +20,18 @@ DECL_PTR( Renderer );
 DECL_PTR( RenderPass );
 DECL_PTR( Renderable );
 
+
+enum RenderGroup
+{
+	BACKGROUND = 1000,
+	GEOMETRY = 2000,
+	ALPHATEST = 2450,
+	TRANSPARENT = 3000,
+	OVERLAY = 4000,
+};
+DECL_META_ENUM( RHI_API, RenderGroup );
+
+
 END_XE_NAMESPACE
 
 #endif // __TYPE_H__C42D32D2_F661_421A_A1A7_D0EB0BB50848

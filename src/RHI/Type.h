@@ -404,18 +404,6 @@ enum class StencilOperation
 };
 DECL_META_ENUM( RHI_API, StencilOperation );
 
-
-enum class RenderGroup
-{
-	BACKGROUND = 1000,
-	GEOMETRY = 2000,
-	ALPHATEST = 2450,
-	TRANSPARENT = 3000,
-	OVERLAY = 4000,
-};
-DECL_META_ENUM( RHI_API, RenderGroup );
-
-
 END_XE_NAMESPACE
 
 #endif //__TYPE_H__6580A518_948A_4162_A63F_E02DCC393EC9

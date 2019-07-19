@@ -21,7 +21,7 @@ public:
 	~DrawCall() = default;
 
 public:
-	void SetRenderGroup( RenderGroup val );
+	void SetLayer( XE::uint32 val );
 
 public:
 	void SetQuery( const QueryPtr & val );
