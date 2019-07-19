@@ -31,9 +31,14 @@ public:
 
 	void SetMaterialPtr( const MaterialPtr & val );
 
+public:
+	const Mat4& GetTransform() const;
+
+	void UpdateTransform( const Mat4& val );
+
 private:
-	Mat4 _Transform;
 	MeshPtr _Mesh;
+	Mat4 _Transform;
 	MaterialPtr _Material;
 };
 

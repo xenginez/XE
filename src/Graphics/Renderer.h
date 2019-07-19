@@ -13,14 +13,32 @@
 
 BEG_XE_NAMESPACE
 
-class GRAPHICS_API Renderer : public Object
+class GRAPHICS_API Renderer : public std::enable_shared_from_this< Renderer >
 {
-	OBJECT(Renderer, Object)
+	OBJECT( Renderer )
 	
 public:
 	Renderer();
 	
-	~Renderer() override;
+	virtual ~Renderer();
+
+public:
+	void Startup();
+
+	void Render();
+
+	void Clearup();
+
+protected:
+	virtual void OnStartup() = 0;
+
+	virtual void BeginFrame() = 0;
+
+	virtual void OnRender() = 0;
+
+	virtual void EndFrame() = 0;
+
+	virtual void OnClearup() = 0;
 };
 
 END_XE_NAMESPACE

@@ -13,9 +13,20 @@
 
 BEG_XE_NAMESPACE
 
-class GRAPHICS_API RenderPass
+class GRAPHICS_API RenderPass : public std::enable_shared_from_this< RenderPass >
 {
+	OBJECT( RenderPass )
 
+public:
+	RenderPass();
+
+	virtual ~RenderPass();
+
+public:
+	void Render();
+
+protected:
+	virtual void OnRender() = 0;
 };
 
 END_XE_NAMESPACE

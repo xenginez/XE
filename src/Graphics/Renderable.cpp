@@ -34,3 +34,13 @@ void XE::Renderable::SetMaterialPtr( const MaterialPtr & val )
 {
 	_Material = val;
 }
+
+const XE::Mat4& XE::Renderable::GetTransform() const
+{
+	return _Transform;
+}
+
+void XE::Renderable::UpdateTransform( const Mat4& val )
+{
+	_Transform = val;
+}

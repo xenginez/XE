@@ -20,7 +20,8 @@ public:
 
 	~Encoder();
 
-	/*public:
+	/*
+public:
 	void SetQuery(); // ( OcclusionQueryHandle _handle, bool _visible );
 
 	void SetStencil(); // ( uint32_t _fstencil, uint32_t _bstencil = BGFX_STENCIL_NONE );
@@ -74,7 +75,8 @@ public:
 public:
 	void Blit(); // ( ViewId _id, TextureHandle _dst, uint16_t _dstX, uint16_t _dstY, TextureHandle _src, uint16_t _srcX = 0, uint16_t _srcY = 0, uint16_t _width = UINT16_MAX, uint16_t _height = UINT16_MAX );
 
-	void Blit(); // ( ViewId _id, TextureHandle _dst, uint8_t _dstMip, uint16_t _dstX, uint16_t _dstY, uint16_t _dstZ, TextureHandle _src, uint8_t _srcMip = 0, uint16_t _srcX = 0, uint16_t _srcY = 0, uint16_t _srcZ = 0, uint16_t _width = UINT16_MAX, uint16_t _height = UINT16_MAX, uint16_t _depth = UINT16_MAX );*/
+	void Blit(); // ( ViewId _id, TextureHandle _dst, uint8_t _dstMip, uint16_t _dstX, uint16_t _dstY, uint16_t _dstZ, TextureHandle _src, uint8_t _srcMip = 0, uint16_t _srcX = 0, uint16_t _srcY = 0, uint16_t _srcZ = 0, uint16_t _width = UINT16_MAX, uint16_t _height = UINT16_MAX, uint16_t _depth = UINT16_MAX );
+*/
 };
 
 END_XE_NAMESPACE
