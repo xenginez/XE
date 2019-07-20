@@ -55,6 +55,20 @@ public:
 public:
 	void Dispatch( XE::uint32 x, XE::uint32 y, XE::uint32 z );
 
+private:
+	XE::uint32 _Layer;
+	Rect _Scissor;
+	Mat4 _Transform;
+
+	QueryPtr _Query;
+	SamplerPtr _Sampler;
+	UniformBufferPtr _Uniform;
+	IndexBufferPtr _IndexBuffer;
+	VertexBufferPtr _VertexBuffer;
+	IndirectBufferPtr _IndirectBuffer;
+	InstanceBufferPtr _InstanceBuffer;
+	PipelineStatePtr _PipelineState;
+	TexturePtr _Texture;
 };
 
 END_XE_NAMESPACE
