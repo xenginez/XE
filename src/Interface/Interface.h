@@ -27,6 +27,7 @@
 #include "ILoggerService.h"
 #include "IRenderService.h"
 #include "IPhysicsService.h"
+#include "IProfilerService.h"
 #include "INavigationService.h"
 #include "ILocalizationService.h"
 

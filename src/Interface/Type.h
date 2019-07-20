@@ -19,6 +19,7 @@ DECL_PTR( Object );
 DECL_PTR( Prefab );
 DECL_PTR( IService );
 DECL_PTR( IGUIService );
+DECL_PTR( ProfilerFrame );
 DECL_PTR( IEventService );
 DECL_PTR( ITimerService );
 DECL_PTR( IAudioService );
@@ -31,12 +32,14 @@ DECL_PTR( IRenderService );
 DECL_PTR( IThreadService );
 DECL_PTR( ILoggerService );
 DECL_PTR( IPhysicsService );
+DECL_PTR( IProfilerService );
 DECL_PTR( INavigationService );
 DECL_PTR( ILocalizationService );
 class IFramework; typedef IFramework * IFrameworkPtr;
 
 DECL_ALLOCATOR_POLL( Event );
 DECL_ALLOCATOR_POLL( Logger );
+DECL_ALLOCATOR_POLL( ProfilerFrame );
 
 enum class KeyCode
 {

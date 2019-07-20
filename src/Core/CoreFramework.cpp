@@ -12,21 +12,24 @@
 
 #include "AssetsService.h"
 
-#define LOGGER_INDEX	_p->_Services.at(0)
-#define CONFIG_INDEX	_p->_Services.at(1)
-#define LOCAL_INDEX		_p->_Services.at(2)
-#define TIMER_INDEX		_p->_Services.at(3)
-#define EVENT_INDEX		_p->_Services.at(4)
-#define AUDIO_INDEX		_p->_Services.at(5)
-#define THREAD_INDEX	_p->_Services.at(6)
-#define PLUGIN_INDEX	_p->_Services.at(7)
-#define INPUT_INDEX		_p->_Services.at(8)
-#define ASSETS_INDEX	_p->_Services.at(9)
-#define RENDER_INDEX	_p->_Services.at(10)
-#define GUI_INDEX		_p->_Services.at(11)
-#define PHYSICS_INDEX	_p->_Services.at(12)
-#define NAVIGAT_INDEX	_p->_Services.at(13)
-#define WORLD_INDEX		_p->_Services.at(14)
+#include "ProfilerService.h"
+
+#define LOGGER_INDEX		_p->_Services.at(0)
+#define CONFIG_INDEX		_p->_Services.at(1)
+#define LOCAL_INDEX			_p->_Services.at(2)
+#define TIMER_INDEX			_p->_Services.at(3)
+#define EVENT_INDEX			_p->_Services.at(4)
+#define AUDIO_INDEX			_p->_Services.at(5)
+#define THREAD_INDEX		_p->_Services.at(6)
+#define PLUGIN_INDEX		_p->_Services.at(7)
+#define INPUT_INDEX			_p->_Services.at(8)
+#define ASSETS_INDEX		_p->_Services.at(9)
+#define RENDER_INDEX		_p->_Services.at(10)
+#define GUI_INDEX			_p->_Services.at(11)
+#define PHYSICS_INDEX		_p->_Services.at(12)
+#define NAVIGAT_INDEX		_p->_Services.at(13)
+#define WORLD_INDEX			_p->_Services.at(14)
+#define PROFILER_INDEX		_p->_Services.at(15)
 
 USING_XE
 
@@ -129,6 +132,11 @@ XE::IRenderServicePtr XE::CoreFramework::GetRenderService() const
 XE::IPhysicsServicePtr XE::CoreFramework::GetPhysicsService() const
 {
 	return SP_CAST < IPhysicsService >( PHYSICS_INDEX );
+}
+
+XE::IProfilerServicePtr XE::CoreFramework::GetProfilerService() const
+{
+	return SP_CAST < IProfilerService >( PROFILER_INDEX );
 }
 
 XE::ILocalizationServicePtr XE::CoreFramework::GetLocalizationService() const
@@ -246,6 +254,7 @@ void XE::CoreFramework::Prepare()
 	_p->_Services.push_back( make_shared < AssetsService >() );
 	// 	_p->_Services.push_back( make_shared <NavigationService>() );
 	// 	_p->_Services.push_back( make_shared <WorldService>() );
+	_p->_Services.push_back( make_shared < ProfilerService >() );
 
 	for( auto & it : _p->_Services )
 	{
