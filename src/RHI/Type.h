@@ -404,6 +404,15 @@ enum class StencilOperation
 };
 DECL_META_ENUM( RHI_API, StencilOperation );
 
+
+enum ClearType
+{
+	CLAER_COLOR = 1 << 1,
+	CLAER_DEPTH = 1 << 2,
+	CLAER_STENCIL = 1 << 3,
+};
+
+
 END_XE_NAMESPACE
 
 #endif //__TYPE_H__6580A518_948A_4162_A63F_E02DCC393EC9

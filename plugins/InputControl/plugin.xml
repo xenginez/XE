@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Plugin>
-  <Name>InputControl</Name>
-  <Library>InputControl</Library>
-	<Description>hardware input device controller plugins</Description>
-</Plugin>

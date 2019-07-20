@@ -23,18 +23,16 @@ public:
 	~Encoder();
 
 public:
-	void Begin();
-
-public:
 	void SetScissor( const Rect & val );
 
 	void SetViewTransform( const Mat4 & val );
 
-public:
-	void Push( DrawCall && val );
+	void Clear( ClearType type, const Color & color, XE::real depth = 0.0f, XE::uint32 stencil = 0 );
 
 public:
-	void End();
+	void Submit( DrawCall && val, bool reserveState );
+
+	void Dispatch( DrawCall && val, XE::uint32 x, XE::uint32 y, XE::uint32 z );
 
 };
 

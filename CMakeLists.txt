@@ -181,4 +181,4 @@ target_link_libraries(XE
 		Core)
 
 
-add_subdirectory(plugins)
+add_subdirectory(module)

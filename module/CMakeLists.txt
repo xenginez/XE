@@ -62,5 +62,3 @@ elseif (CMAKE_SYSTEM_NAME MATCHES "Darwin")
 else ()
 	message(FATAL_ERROR ${CMAKE_SYSTEM_NAME}" Other")
 endif ()
-
-add_subdirectory(InputControl)

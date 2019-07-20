@@ -39,6 +39,7 @@ END_META()
 struct XE::CoreFramework::Private
 {
 	std::atomic_bool _Exit = false;
+	Array<XE::uint64> _Libs;
 	Array < IServicePtr > _Services;
 };
 
@@ -239,6 +240,14 @@ std::filesystem::path XE::CoreFramework::GetApplicationPath() const
 
 void XE::CoreFramework::Prepare()
 {
+	for(auto & file : std::filesystem::recursive_directory_iterator( GetApplicationPath() / "module" ) )
+	{
+		if( !std::filesystem::is_directory( file.path() ) )
+		{
+			_p->_Libs.push_back( Library::Open( file.path().string() ) );
+		}
+	}
+
 	_p->_Services.push_back( make_shared < LoggerService >() );
 	_p->_Services.push_back( make_shared < ConfigService >() );
 	_p->_Services.push_back( make_shared < LocalizationService >() );
@@ -305,6 +314,11 @@ void XE::CoreFramework::Clearup()
 			service->Clearup();
 		}
 	}
-
 	_p->_Services.clear();
+
+	for( auto lib : _p->_Libs )
+	{
+		Library::Close( lib );
+	}
+	_p->_Libs.clear();
 }

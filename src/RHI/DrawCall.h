@@ -26,8 +26,6 @@ public:
 public:
 	void SetQuery( const QueryPtr & val );
 
-	void SetScissor( const Rect & val );
-
 	void SetSampler( const SamplerPtr & val );
 
 	void SetUniform( const UniformBufferPtr & val );
@@ -41,19 +39,13 @@ public:
 	void SetInstanceBuffer( const InstanceBufferPtr & val );
 
 public:
-	void SetPipelineState( const PipelineStatePtr & val );
-
-public:
 	void SetTransform( const Mat4 & val );
 
-public:
+	void SetBlendFactor( BlendFactor val );
+
 	void SetTexture( const TexturePtr & val );
 
-public:
-	void Submit( bool reserveState );
-
-public:
-	void Dispatch( XE::uint32 x, XE::uint32 y, XE::uint32 z );
+	void SetPipelineState( const PipelineStatePtr & val );
 
 private:
 	XE::uint32 _Layer;
