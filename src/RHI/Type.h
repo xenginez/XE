@@ -59,12 +59,12 @@ DECL_PTR( RenderTexture2D );
 
 DECL_PTR( Image );
 DECL_PTR( Fence );
-DECL_PTR( Encoder );
 DECL_PTR( Context );
 DECL_PTR( Sampler );
 DECL_PTR( Viewport );
 DECL_PTR( SwapChain );
 DECL_PTR( InputLayout );
+DECL_PTR( CommandList );
 DECL_PTR( UnorderedAccess );
 
 
@@ -412,6 +412,16 @@ enum ClearType
 	CLAER_STENCIL = 1 << 3,
 };
 
+enum LayerType
+{
+	RENDER_QUEUE_BACKGROUND = 0,
+	RENDER_QUEUE_SKIES_EARLY = 5,
+	RENDER_QUEUE_WORLD_GEOMETRY_1 = 25,
+	RENDER_QUEUE_MAIN = 50,
+	RENDER_QUEUE_WORLD_GEOMETRY_2 = 75,
+	RENDER_QUEUE_SKIES_LATE = 95,
+	RENDER_QUEUE_OVERLAY = 100,
+};
 
 END_XE_NAMESPACE
 

@@ -40,7 +40,22 @@ const XE::Mat4& XE::Renderable::GetTransform() const
 	return _Transform;
 }
 
-void XE::Renderable::UpdateTransform( const Mat4& val )
+void XE::Renderable::SetTransform( const Mat4& val )
 {
 	_Transform = val;
+}
+
+void XE::Renderable::Startup()
+{
+	OnStartup();
+}
+
+void XE::Renderable::Render()
+{
+	OnRender();
+}
+
+void XE::Renderable::Clearup()
+{
+	OnClearup();
 }

@@ -13,16 +13,34 @@
 
 BEG_XE_NAMESPACE
 
-class GRAPHICS_API Renderable : public Object
+class GRAPHICS_API Renderable : public std::enable_shared_from_this< Renderable >
 {
-	OBJECT( Renderable, Object )
+	OBJECT( Renderable )
 	
 public:
 	Renderable();
 	
-	~Renderable() override;
+	virtual ~Renderable();
 
 public:
+	virtual void Startup();
+
+	virtual void Render();
+
+	virtual void Clearup();
+
+protected:
+	virtual void OnStartup() = 0;
+
+	virtual void OnRender() = 0;
+
+	virtual void OnClearup() = 0;
+
+public:
+	const Mat4 & GetTransform() const;
+
+	void SetTransform( const Mat4 & val );
+
 	MeshPtr GetMesh() const;
 
 	void SetMesh( const MeshPtr & val );
@@ -30,11 +48,6 @@ public:
 	MaterialPtr GetMaterial() const;
 
 	void SetMaterialPtr( const MaterialPtr & val );
-
-public:
-	const Mat4& GetTransform() const;
-
-	void UpdateTransform( const Mat4& val );
 
 private:
 	MeshPtr _Mesh;

@@ -107,9 +107,9 @@ public:
 	virtual bool DestoryQuery( QueryHandle handle ) = 0;
 
 public:
-	virtual EncoderPtr ResetEncoder( std::thread::id id = std::this_thread::get_id() ) = 0;
+	virtual CommandListPtr CreateCommandList( std::thread::id id = std::this_thread::get_id() ) = 0;
 
-	virtual void CloseEncoder( const EncoderPtr & val ) = 0;
+	virtual void DestoryCommandList( const CommandListPtr & val ) = 0;
 
 };
 

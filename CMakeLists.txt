@@ -179,6 +179,3 @@ target_link_libraries(Core
 
 target_link_libraries(XE
 		Core)
-
-
-add_subdirectory(module)

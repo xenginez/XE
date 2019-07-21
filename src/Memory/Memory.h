@@ -29,7 +29,12 @@ END_XE_NAMESPACE
 
 
 #define DECL_PTR( TYPE ) \
-class TYPE; typedef std::shared_ptr< TYPE > TYPE##Ptr; typedef std::shared_ptr< const TYPE > TYPE##CPtr; typedef std::weak_ptr< TYPE > TYPE##WPtr; typedef std::unique_ptr<TYPE> TYPE##UPtr
+class TYPE; \
+typedef std::shared_ptr< TYPE > TYPE##Ptr; \
+typedef std::shared_ptr< const TYPE > TYPE##CPtr; \
+typedef std::weak_ptr< TYPE > TYPE##WPtr; \
+typedef std::unique_ptr< TYPE > TYPE##UPtr; \
+typedef TYPE * TYPE##RPtr
 
 #define DECL_ALLOCATOR_POLL( TYPE ) \
 template<> struct AllocatorProxy< TYPE > \

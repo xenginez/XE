@@ -41,10 +41,10 @@
 /cmake-build-debug
 /CMakeSettings.json
 
-/plugins/.vs
-/plugins/out
-/plugins/.idea
-/plugins/build
-/plugins/target
-/plugins/cmake-build-debug
-/plugins/CMakeSettings.json
+/module/.vs
+/module/out
+/module/.idea
+/module/build
+/module/target
+/module/cmake-build-debug
+/module/CMakeSettings.json
