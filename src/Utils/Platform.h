@@ -22,7 +22,9 @@ public:
 	static Language GetDefaultLanguage();
 
 public:
-	static bool RegisterWindowClass( const String & icon, std::function<bool( XE::uint64, XE::uint64, XE::uint64, XE::uint64 )> callback );
+	static bool RegisterWindowClass( const String & icon, std::function<bool( WindowHandle, XE::WindowEvent )> callback );
+
+	static void UnregisterWindowClass();
 
 	static WindowHandle ConstructWindow( const String & title, XE::uint32 x, XE::uint32 y, XE::uint32 w, XE::uint32 h );
 

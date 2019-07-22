@@ -20,6 +20,8 @@ public:
 
 	~CommandList();
 
+	/*
+
 public:
 	bool Close();
 
@@ -122,7 +124,7 @@ public:
 	void EndEvent( void );
 
 	void ExecuteIndirect( ID3D12CommandSignature * pCommandSignature, XE::uint32 MaxCommandCount, ResourcePtr & pArgumentBuffer, XE::uint64 ArgumentBufferOffset, ResourcePtr & pCountBuffer, XE::uint64 CountBufferOffset );
-
+	*/
 private:
 	ContextRPtr _Context;
 };

@@ -13,11 +13,14 @@
 
 BEG_XE_NAMESPACE
 
-DECL_EVENT( KEY_UP, u8"键盘按键抬起", XE::uint32 );
-DECL_EVENT( KEY_DOWN, u8"键盘按键按下", XE::uint32 );
-DECL_EVENT( MOUSE_UP, u8"鼠标按键抬起", XE::uint32 );
-DECL_EVENT( MOUSE_DOWN, u8"鼠标按键按下", XE::uint32 );
-DECL_EVENT( MOUSE_WHEEL, u8"鼠标滚轮滚动", XE::uint32 );
+using WindowEventPair = XE::Pair<WindowHandle, XE::WindowEvent>;
+
+DECL_EVENT( WINDOW, "window events", XE::Pair<WindowHandle, XE::WindowEvent> );
+DECL_EVENT( KEY_UP, "keyboard button up", XE::uint32 );
+DECL_EVENT( KEY_DOWN, "keyboard button down", XE::uint32 );
+DECL_EVENT( MOUSE_UP, "mouse button up", XE::uint32 );
+DECL_EVENT( MOUSE_DOWN, "mouse button down", XE::uint32 );
+DECL_EVENT( MOUSE_WHEEL, "mouse wheel", XE::uint32 );
 
 END_XE_NAMESPACE
 

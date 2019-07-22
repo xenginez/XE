@@ -59,6 +59,18 @@ XE::CoreFramework::~CoreFramework()
 
 int XE::CoreFramework::Exec()
 {
+	Platform::RegisterWindowClass( "", [&]( WindowHandle handle, WindowEvent event )
+								   {
+									   if( GetEventService() )
+									   {
+										   EventPtr e = XE::make_shared<Event>( EVENT_WINDOW, event );
+
+										   GetEventService()->PostEvent( e );
+									   }
+
+									   return true;
+								   } );
+
 	Prepare();
 
 	Startup();
@@ -66,6 +78,8 @@ int XE::CoreFramework::Exec()
 	Update();
 
 	Clearup();
+
+	Platform::UnregisterWindowClass();
 
 	return 0;
 }

@@ -7,18 +7,65 @@ USING_XE
 
 IMPLEMENT_META( WindowHandle );
 
-std::function<bool( XE::uint64, XE::uint64, XE::uint64, XE::uint64 )> G_Callback;
+std::function<bool( WindowHandle, XE::WindowEvent )> G_Callback;
 
 LRESULT WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
 {
 	if( G_Callback != nullptr )
 	{
-		if( !G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), message, wParam, lParam ) )
+		switch( message )
 		{
-			G_Callback = nullptr;
+		case WM_CREATE:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::CREATE ); break;
+		case WM_DESTROY:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::DESTROY ); break;
+		case WM_MOVE:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::MOVE ); break;
+		case WM_SIZE:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::SIZE ); break;
+		case WM_ACTIVATE:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::ACTIVATE ); break;
+		case WM_SETFOCUS:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::SETFOCUS ); break;
+		case WM_KILLFOCUS:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::KILLFOCUS ); break;
+		case WM_ENABLE:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::ENABLE ); break;
+		case WM_PAINT:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::PAINT ); break;
+		case WM_CLOSE:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::CLOSE ); break;
+		case WM_QUERYENDSESSION:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::QUERYENDSESSION ); break;
+		case WM_QUIT:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::QUIT ); break;
+		case WM_SHOWWINDOW:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::SHOWWINDOW ); break;
+		case WM_ACTIVATEAPP:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::ACTIVATEAPP ); break;
+		case WM_SETCURSOR:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::SETCURSOR ); break;
+		case WM_MOUSEACTIVATE:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::MOUSEACTIVATE ); break;
+		case WM_GETMINMAXINFO:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::GETMINMAXINFO ); break;
+		case WM_NEXTDLGCTL:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::NEXTDLGCTL ); break;
+		case WM_COMPACTING:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::COMPACTING ); break;
+		case WM_WINDOWPOSCHANGING:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::WINDOWPOSCHANGING ); break;
+		case WM_WINDOWPOSCHANGED:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::WINDOWPOSCHANGED ); break;
+		case WM_DISPLAYCHANGE:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::DISPLAYCHANGE ); break;
+		case WM_GETICON:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::GETICON ); break;
+		case WM_SETICON:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::SETICON ); break;
+		case WM_KEYDOWN:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::KEYDOWN ); break;
+		case WM_KEYUP:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::KEYUP ); break;
+		case WM_CHAR:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::CHAR ); break;
+		case WM_DEADCHAR:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::DEADCHAR ); break;
+		case WM_SYSKEYDOWN:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::SYSKEYDOWN ); break;
+		case WM_SYSKEYUP:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::SYSKEYUP ); break;
+		case WM_SYSCHAR:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::SYSCHAR ); break;
+		case WM_SYSDEADCHAR:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::SYSDEADCHAR ); break;
+		case WM_MOUSEMOVE:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::MOUSEMOVE ); break;
+		case WM_LBUTTONDOWN:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::LBUTTONDOWN ); break;
+		case WM_LBUTTONUP:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::LBUTTONUP ); break;
+		case WM_LBUTTONDBLCLK:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::LBUTTONDBLCLK ); break;
+		case WM_RBUTTONDOWN:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::RBUTTONDOWN ); break;
+		case WM_RBUTTONUP:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::RBUTTONUP ); break;
+		case WM_RBUTTONDBLCLK:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::RBUTTONDBLCLK ); break;
+		case WM_MBUTTONDOWN:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::MBUTTONDOWN ); break;
+		case WM_MBUTTONUP:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::MBUTTONUP ); break;
+		case WM_MBUTTONDBLCLK:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::MBUTTONDBLCLK ); break;
+		case WM_MOUSEWHEEL:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::MOUSEWHEEL ); break;
+		case WM_SIZING:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::SIZING ); break;
+		case WM_CAPTURECHANGED:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::CAPTURECHANGED ); break;
+		case WM_MOVING:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::MOVING ); break;
+		case WM_POWERBROADCAST:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::POWERBROADCAST ); break;
+		case WM_DEVICECHANGE:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::DEVICECHANGE ); break;
+		default:
+			break;
 		}
-
-		return 0;
 	}
 
 	return DefWindowProc( hWnd, message, wParam, lParam );
@@ -174,7 +221,7 @@ XE::Language XE::Platform::GetDefaultLanguage()
 	}
 }
 
-bool XE::Platform::RegisterWindowClass( const String & icon, std::function<bool( XE::uint64, XE::uint64, XE::uint64, XE::uint64 )> callback )
+bool XE::Platform::RegisterWindowClass( const String & icon, std::function<bool( WindowHandle, XE::WindowEvent )> callback )
 {
 	WNDCLASSEX wce = { 0 };
 	wce.cbSize = sizeof( wce );
@@ -197,6 +244,11 @@ bool XE::Platform::RegisterWindowClass( const String & icon, std::function<bool(
 	}
 
 	return false;
+}
+
+void XE::Platform::UnregisterWindowClass()
+{
+	G_Callback = nullptr;
 }
 
 WindowHandle XE::Platform::ConstructWindow( const String & title, XE::uint32 x, XE::uint32 y, XE::uint32 w, XE::uint32 h )
