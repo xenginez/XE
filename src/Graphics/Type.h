@@ -13,6 +13,10 @@
 
 BEG_XE_NAMESPACE
 
+class DrawCall;
+class RenderQueue;
+
+
 DECL_PTR( Mesh );
 DECL_PTR( Camera );
 DECL_PTR( Material );

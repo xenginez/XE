@@ -36,7 +36,6 @@ private:
 
 private:
 	Private * _p;
-private:
 };
 
 END_XE_NAMESPACE

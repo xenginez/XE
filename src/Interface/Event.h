@@ -15,7 +15,7 @@ BEG_XE_NAMESPACE
 
 using WindowEventPair = XE::Pair<WindowHandle, XE::WindowEvent>;
 
-DECL_EVENT( WINDOW, "window events", XE::Pair<WindowHandle, XE::WindowEvent> );
+DECL_EVENT( WINDOW, "window events", WindowEventPair );
 DECL_EVENT( KEY_UP, "keyboard button up", XE::uint32 );
 DECL_EVENT( KEY_DOWN, "keyboard button down", XE::uint32 );
 DECL_EVENT( MOUSE_UP, "mouse button up", XE::uint32 );
