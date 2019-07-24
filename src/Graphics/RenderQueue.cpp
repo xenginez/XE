@@ -2,12 +2,8 @@
 
 USING_XE
 
-XE::uint64 XE::RenderQueue::GenKey( const RenderablePtr& val )
-{
-	return 0;
-}
-
-XE::RenderQueue::RenderQueue()
+XE::RenderQueue::RenderQueue( const CommandListPtr & val )
+	:_CommandList( val )
 {
 
 }
@@ -17,7 +13,56 @@ XE::RenderQueue::~RenderQueue()
 
 }
 
-XE::uint8* XE::RenderQueue::CreateDrawCall( XE::uint64 key, XE::uint64 size )
+void XE::RenderQueue::Flush()
 {
+	XE::uint8 * p = _DrawCalls.data();
 
+	SortKeyPair pair;
+
+	while( !_Background.empty() )
+	{
+		pair = _Background.top();
+		DrawCall * call = (DrawCall * )( p + pair.draw );
+		( *call )( _CommandList );
+		_Background.pop();
+	}
+
+	while( !_Geometry.empty() )
+	{
+		pair = _Geometry.top();
+		DrawCall * call = (DrawCall * )( p + pair.draw );
+		( *call )( _CommandList );
+		_Geometry.pop();
+	}
+
+	while( !_AlphaTest.empty() )
+	{
+		pair = _AlphaTest.top();
+		DrawCall * call = (DrawCall * )( p + pair.draw );
+		( *call )( _CommandList );
+		_AlphaTest.pop();
+	}
+
+	while( !_Transparent.empty() )
+	{
+		pair = _Transparent.top();
+		DrawCall * call = (DrawCall * )( p + pair.draw );
+		( *call )( _CommandList );
+		_Transparent.pop();
+	}
+
+	while( !_Overlay.empty() )
+	{
+		pair = _Overlay.top();
+		DrawCall * call = (DrawCall * )( p + pair.draw );
+		( *call )( _CommandList );
+		_Overlay.pop();
+	}
+
+	_DrawCalls.clear();
+}
+
+const XE::CommandListPtr & XE::RenderQueue::GetCommandList() const
+{
+	return _CommandList;
 }

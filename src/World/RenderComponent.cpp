@@ -35,22 +35,3 @@ XE::AABB XE::RenderComponent::GetBoundingBox() const
 
 	return ret;
 }
-
-void XE::RenderComponent::Render()
-{
-	OnRender();
-
-	auto children = GetChildren();
-	for ( auto scene : children )
-	{
-		if ( auto render = DP_CAST<RenderComponent>( scene ) )
-		{
-			render->Render();
-		}
-	}
-}
-
-void XE::RenderComponent::OnRender()
-{
-
-}

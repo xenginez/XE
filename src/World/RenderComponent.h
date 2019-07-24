@@ -29,12 +29,6 @@ public:
 	virtual AABB GetBoundingBox() const;
 
 private:
-	void Render();
-
-protected:
-	virtual void OnRender();
-
-private:
 	AABB _BoundingBox;
 };
 

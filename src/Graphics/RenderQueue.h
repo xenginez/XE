@@ -15,58 +15,71 @@ BEG_XE_NAMESPACE
 
 class GRAPHICS_API RenderQueue
 {
+	friend class DrawCall;
+
 public:
-	RenderQueue();
+	RenderQueue( const CommandListPtr & val );
 
 	~RenderQueue();
 
 public:
-	static XE::uint64 GenKey( const RenderablePtr & val );
-
-public:
-	template<typename _DC> _DC * CreateDrawCall()
+	template<typename _DC> _DC * AddDrawCall()
 	{
+		static_assert( std::is_base_of_v<DrawCall, _DC>, "" );
+
 		XE::uint64 size = _DrawCalls.size();
 
 		_DrawCalls.insert( _DrawCalls.end(), sizeof( _DC ), 0 );
 
-		return new ( _DrawCalls.data() + size ) _DC();
+		DrawCall * p = new ( _DrawCalls.data() + size ) _DC();
+
+		p->_Queue = this;
+
+		return static_cast< _DC * >( p );
 	}
 
 	template< typename _DC > void Submit( _DC * val )
 	{
+		static_assert( std::is_base_of_v<DrawCall, _DC>, "" );
+
 		SortKeyPair pair;
 
 		pair.key = val->GetSortKey();
 		pair.draw = ( XE::uint64 )val - ( XE::uint64 )_DrawCalls.data();
 
-		if( pair.key.layer <= RenderGroup::BACKGROUND )
+		if( pair.key.group <= RenderGroup::BACKGROUND )
 		{
 			_Background.push( pair );
 		}
-		else if( pair.key.layer <= RenderGroup::GEOMETRY )
+		else if( pair.key.group <= RenderGroup::GEOMETRY )
 		{
 			_Geometry.push( pair );
 		}
-		else if( pair.key.layer <= RenderGroup::ALPHATEST )
+		else if( pair.key.group <= RenderGroup::ALPHATEST )
 		{
-			_Alphatest.push( pair );
+			_AlphaTest.push( pair );
 		}
-		else if( pair.key.layer <= RenderGroup::TRANSPARENT )
+		else if( pair.key.group <= RenderGroup::TRANSPARENT )
 		{
 			_Transparent.push( pair );
 		}
-		else if( pair.key.layer <= RenderGroup::OVERLAY )
+		else if( pair.key.group <= RenderGroup::OVERLAY )
 		{
 			_Overlay.push( pair );
 		}
 	}
 
+	void Flush();
+
 private:
+	const CommandListPtr & GetCommandList() const;
+
+private:
+	CommandListPtr _CommandList;
 	Array<XE::uint8> _DrawCalls;
 	std::priority_queue<SortKeyPair, Array<SortKeyPair>, BackgroundLess> _Background;
 	std::priority_queue<SortKeyPair, Array<SortKeyPair>, GeometryLess> _Geometry;
-	std::priority_queue<SortKeyPair, Array<SortKeyPair>, AlphatestLess> _Alphatest;
+	std::priority_queue<SortKeyPair, Array<SortKeyPair>, AlphaTestLess> _AlphaTest;
 	std::priority_queue<SortKeyPair, Array<SortKeyPair>, TransparentLess> _Transparent;
 	std::priority_queue<SortKeyPair, Array<SortKeyPair>, OverlayLess> _Overlay;
 };

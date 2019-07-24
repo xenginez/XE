@@ -27,11 +27,11 @@ DECL_PTR( Renderable );
 
 enum RenderGroup
 {
-	BACKGROUND = 1000,
-	GEOMETRY = 2000,
-	ALPHATEST = 2450,
-	TRANSPARENT = 3000,
-	OVERLAY = 4000,
+	BACKGROUND = 10,
+	GEOMETRY = 20,
+	ALPHATEST = 30,
+	TRANSPARENT = 40,
+	OVERLAY = 50,
 };
 DECL_META_ENUM( RHI_API, RenderGroup );
 
@@ -52,8 +52,8 @@ union SortKey
 	XE::uint64 key;
 	struct
 	{
-		XE::uint8 layer;
-		XE::uint32 transform;
+		XE::uint8 group : 6;
+		XE::uint32 trans : 3;
 		XE::uint8 draw : 1;
 		XE::uint32 depth : 24;
 		XE::uint32 shader : 30;
@@ -88,7 +88,7 @@ struct GeometryLess
 		return _Left.key.key < _Right.key.key;
 	}
 };
-struct AlphatestLess
+struct AlphaTestLess
 {
 	typedef SortKeyPair first_argument_type;
 	typedef SortKeyPair second_argument_type;

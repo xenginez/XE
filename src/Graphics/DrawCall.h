@@ -15,21 +15,19 @@ BEG_XE_NAMESPACE
 
 class GRAPHICS_API DrawCall : public XE::NonCopyable
 {
-public:
-	void operator()( CommandListPtr & val )
-	{
-		XE_ASSERT( _Callback != nullptr && "" );
-
-		_Callback( std::ref( val ) );
-	}
+	friend class RenderQueue;
 
 public:
-	SortKey GetSortKey() const
-	{
-		return 0;
-	}
+	void operator()( CommandListPtr & val );
+
+public:
+	SortKey GetSortKey() const;
 
 protected:
+	RenderQueue * GetRenderQueue() const;
+
+protected:
+	RenderQueue * _Queue;
 	std::function<void( CommandListPtr & )> _Callback;
 };
 
