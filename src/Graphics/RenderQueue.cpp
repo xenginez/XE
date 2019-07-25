@@ -23,7 +23,7 @@ void XE::RenderQueue::Flush()
 	{
 		pair = _Background.top();
 		DrawCall * call = (DrawCall * )( p + pair.draw );
-		( *call )( _CommandList );
+		call->Execute( _CommandList );
 		_Background.pop();
 	}
 
@@ -31,7 +31,7 @@ void XE::RenderQueue::Flush()
 	{
 		pair = _Geometry.top();
 		DrawCall * call = (DrawCall * )( p + pair.draw );
-		( *call )( _CommandList );
+		call->Execute( _CommandList );
 		_Geometry.pop();
 	}
 
@@ -39,7 +39,7 @@ void XE::RenderQueue::Flush()
 	{
 		pair = _AlphaTest.top();
 		DrawCall * call = (DrawCall * )( p + pair.draw );
-		( *call )( _CommandList );
+		call->Execute( _CommandList );
 		_AlphaTest.pop();
 	}
 
@@ -47,7 +47,7 @@ void XE::RenderQueue::Flush()
 	{
 		pair = _Transparent.top();
 		DrawCall * call = (DrawCall * )( p + pair.draw );
-		( *call )( _CommandList );
+		call->Execute( _CommandList );
 		_Transparent.pop();
 	}
 
@@ -55,7 +55,7 @@ void XE::RenderQueue::Flush()
 	{
 		pair = _Overlay.top();
 		DrawCall * call = (DrawCall * )( p + pair.draw );
-		( *call )( _CommandList );
+		call->Execute( _CommandList );
 		_Overlay.pop();
 	}
 

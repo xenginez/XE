@@ -13,83 +13,66 @@
 
 BEG_XE_NAMESPACE
 
-class GRAPHICS_API DrawCall : public XE::NonCopyable
+struct GRAPHICS_API DrawCall : public XE::NonCopyable
 {
-	friend class RenderQueue;
-
-public:
-	void operator()( CommandListPtr & val );
-
 public:
 	SortKey GetSortKey() const;
 
-protected:
-	RenderQueue * GetRenderQueue() const;
+public:
+	virtual void Execute( CommandListPtr & val );
 
-protected:
-	RenderQueue * _Queue;
-	std::function<void( CommandListPtr & )> _Callback;
 };
 
-class GRAPHICS_API RenderDrawCall : public DrawCall
+struct GRAPHICS_API RenderDrawCall : public DrawCall
 {
-
-protected:
+public:
 	IndexBufferPtr _IndexBuffer;
 	VertexBufferPtr _VertexBuffer;
 	GraphicsPipelineStatePtr _PipelineState;
 };
 
-class GRAPHICS_API ComputeDrawCall : public DrawCall
+struct GRAPHICS_API ComputeDrawCall : public DrawCall
 {
-
-protected:
+public:
 	ComputeBufferPtr _ComputeBuffer;
 	ComputePipelineStatePtr _PipelineState;
 };
 
-template< typename ... _DC >class DrawCallPacket : public DrawCall
+template< typename ... _DC >struct DrawCallPacket : public DrawCall
 {
 public:
-	DrawCallPacket()
-	{
-		_Callback = std::bind( &DrawCallPacket<_DC...>::operator(), this, std::placeholders::_1 );
-	}
-
-public:
-	void operator()( CommandListPtr & val )
-	{
-		for_each_in_tuple( _DrawCalls, [val]( const auto & x )
-						   {
-							   x( val );
-						   } );
-	}
+	std::tuple<_DC...> _DrawCalls;
 
 public:
 	SortKey GetSortKey() const
 	{
-		return 0;
+		return std::get<0>( _DrawCalls ).GetSortKey();
+	}
+
+public:
+	void Execute( CommandListPtr & val ) override
+	{
+		for_each_in_tuple( [val]( auto & draw_call )
+						   {
+							   draw_call.Execute( val );
+						   } );
 	}
 
 private:
-	template<class F, class...Ts, std::size_t...Is>
-	void for_each_in_tuple( const std::tuple<Ts...> & tuple, F func, std::index_sequence<Is...> )
+	template<class F, std::size_t...Is> void for_each_in_tuple( F func, std::index_sequence<Is...> )
 	{
 		using expander = int[];
 		(void )expander
 		{
-			0, ( (void )func( std::get<Is>( tuple ) ), 0 )...
+			0, ( (void )func( std::get<Is>( _DrawCalls ) ), 0 )...
 		};
 	}
 
-	template<class F, class...Ts>
-	void for_each_in_tuple( const std::tuple<Ts...> & tuple, F func )
+	template<class F> void for_each_in_tuple( F func )
 	{
-		for_each_in_tuple( tuple, func, std::make_index_sequence<sizeof...( Ts )>() );
+		for_each_in_tuple( func, std::make_index_sequence<sizeof...( _DC )>() );
 	}
 
-private:
-	std::tuple<_DC...> _DrawCalls;
 };
 
 END_XE_NAMESPACE
