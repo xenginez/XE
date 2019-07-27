@@ -1,12 +1,23 @@
 #include "Object.h"
 
-#include "IFramework.h"
-#include "ILocalizationService.h"
+#include "Reflection.h"
 
 USING_XE
 
-BEG_META(Object)
-END_META()
+template<> struct XE::MetaDataCollector< Object >
+{
+	typedef Object ThisType;
+	MetaDataCollector()
+	{
+		auto type = std::conditional_t<std::is_enum<ThisType>::value, Reflection::Enum<ThisType>, Reflection::Class<ThisType>>::Get();
+
+		Reflection::RegisterMetaInfo( type );
+	}
+	static void Use()
+	{
+		ActiveSingleton< MetaDataCollector<ThisType> >::Register();
+	}
+};
 
 XE::Object::Object()
 {
@@ -14,6 +25,17 @@ XE::Object::Object()
 
 XE::Object::~Object()
 {
+}
+
+const XE::IMetaClassPtr XE::Object::GetMetaClassStatic()
+{
+	static auto p = XE::make_shared< CXXMetaClass<Object> >( "Object", nullptr, nullptr );
+	return p;
+}
+
+const XE::IMetaClassPtr XE::Object::GetMetaClass() const
+{
+	return GetMetaClassStatic();
 }
 
 XE::Variant XE::Object::GetProperty( const String &name )
@@ -45,9 +67,4 @@ void XE::Object::Serialize( Archive &val )
 {
 	XE::Variant v(this);
 	GetMetaClass()->Serialize(&val, v);
-}
-
-XE::String XE::Object::tr( const XE::String &val ) const
-{
-	return _Framework->GetLocalizationService()->LocalizedString(val);
 }

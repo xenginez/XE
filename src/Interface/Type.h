@@ -15,7 +15,6 @@ BEG_XE_NAMESPACE
 
 DECL_PTR( Event );
 DECL_PTR( Logger );
-DECL_PTR( Object );
 DECL_PTR( Prefab );
 DECL_PTR( IService );
 DECL_PTR( IGUIService );

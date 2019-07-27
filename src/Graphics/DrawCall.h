@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-struct GRAPHICS_API DrawCall : public XE::NonCopyable
+class GRAPHICS_API DrawCall : public XE::NonCopyable
 {
 public:
 	SortKey GetSortKey() const;
@@ -23,7 +23,7 @@ public:
 
 };
 
-struct GRAPHICS_API RenderDrawCall : public DrawCall
+class GRAPHICS_API RenderDrawCall : public DrawCall
 {
 public:
 	IndexBufferPtr _IndexBuffer;
@@ -31,14 +31,14 @@ public:
 	GraphicsPipelineStatePtr _PipelineState;
 };
 
-struct GRAPHICS_API ComputeDrawCall : public DrawCall
+class GRAPHICS_API ComputeDrawCall : public DrawCall
 {
 public:
 	ComputeBufferPtr _ComputeBuffer;
 	ComputePipelineStatePtr _PipelineState;
 };
 
-template< typename ... _DC >struct DrawCallPacket : public DrawCall
+template< typename ... _DC >class DrawCallPacket : public DrawCall
 {
 public:
 	std::tuple<_DC...> _DrawCalls;

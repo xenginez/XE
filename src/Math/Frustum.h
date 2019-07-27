@@ -31,28 +31,25 @@ public:
 		Plane plane[6];
 	};
 
-	union
-	{
-		struct  
-		{
-			Vec3 left_bottom_near;
-			Vec3 right_bottom_near;
-			Vec3 left_top_near;
-			Vec3 right_top_near;
-			Vec3 left_bottom_far;
-			Vec3 right_bottom_far;
-			Vec3 left_top_far;
-			Vec3 right_top_far;
-		};
-		Vec3 corners[8];
-	};
-
 public:
 	Frustum();
 
 	Frustum( const Frustum& val );
 
 	~Frustum();
+
+public:
+	Frustum & operator=( const Frustum & val );
+
+public:
+	Vec3 left_bottom_near;
+	Vec3 right_bottom_near;
+	Vec3 left_top_near;
+	Vec3 right_top_near;
+	Vec3 left_bottom_far;
+	Vec3 right_bottom_far;
+	Vec3 left_top_far;
+	Vec3 right_top_far;
 
 public:
 	bool Intersect( const OBB& val ) const;

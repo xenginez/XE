@@ -25,6 +25,13 @@ DECL_PTR( RenderPass );
 DECL_PTR( Renderable );
 
 
+enum class ProjectType
+{
+	PERSPECTIVE,
+	ORTHOGRAPHIC,
+};
+DECL_META_ENUM( GRAPHICS_API, ProjectType );
+
 enum RenderGroup
 {
 	BACKGROUND = 10,
@@ -33,7 +40,7 @@ enum RenderGroup
 	TRANSPARENT = 40,
 	OVERLAY = 50,
 };
-DECL_META_ENUM( RHI_API, RenderGroup );
+DECL_META_ENUM( GRAPHICS_API, RenderGroup );
 
 
 

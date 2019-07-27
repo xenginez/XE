@@ -13,6 +13,7 @@
 
 BEG_XE_NAMESPACE
 
+DECL_PTR( Object );
 DECL_PTR( IMetaInfo );
 DECL_PTR( IMetaType );
 DECL_PTR( IMetaEnum );

@@ -13,9 +13,9 @@
 
 BEG_XE_NAMESPACE
 
-class GRAPHICS_API Renderable : public std::enable_shared_from_this< Renderable >
+class GRAPHICS_API Renderable : public Object
 {
-	OBJECT( Renderable )
+	OBJECT( Renderable, Object )
 	
 public:
 	Renderable();

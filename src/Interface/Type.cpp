@@ -1,7 +1,5 @@
 #include "Type.h"
 
-#include "Object.h"
-
 USING_XE
 
 BEG_META( KeyCode )

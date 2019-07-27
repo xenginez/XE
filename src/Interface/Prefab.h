@@ -9,7 +9,7 @@
 #ifndef __PREFAB_H__A6AEEDC5_FCE5_4139_8B44_6A57BEB2DD7F
 #define __PREFAB_H__A6AEEDC5_FCE5_4139_8B44_6A57BEB2DD7F
 
-#include "Object.h"
+#include "Type.h"
 
 BEG_XE_NAMESPACE
 

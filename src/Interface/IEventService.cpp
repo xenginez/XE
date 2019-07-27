@@ -1,6 +1,6 @@
 #include "IEventService.h"
 
-#include "Object.h"
+#include "Type.h"
 
 USING_XE
 

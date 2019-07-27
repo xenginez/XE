@@ -9,15 +9,19 @@
 #ifndef __OBJECT_H__E9308405_DB33_49CC_953A_8011B015CAA9
 #define __OBJECT_H__E9308405_DB33_49CC_953A_8011B015CAA9
 
-#include "Type.h"
+#include "Variant.h"
+#include "Archive.h"
 
 BEG_XE_NAMESPACE
 
-class IFramework;
-
-class INTERFACE_API Object : public std::enable_shared_from_this< Object >, public XE::NonCopyable
+class REFLECT_API Object : public std::enable_shared_from_this< Object >, public XE::NonCopyable
 {
-	OBJECT( Object )
+	template< typename T > friend struct MetaDataCollector;
+
+public:
+	static const IMetaClassPtr GetMetaClassStatic();
+
+	virtual const IMetaClassPtr GetMetaClass() const;
 
 public:
 	Object();
@@ -35,11 +39,6 @@ public:
 public:
 	virtual void Serialize( Archive &val );
 
-public:
-	String tr( const String& val ) const;
-	
-private:
-	IFrameworkPtr _Framework;
 };
 
 END_XE_NAMESPACE

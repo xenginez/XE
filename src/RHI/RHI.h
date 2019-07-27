@@ -12,7 +12,6 @@
 #include "Image.h"
 #include "Query.h"
 #include "Fence.h"
-#include "Camera.h"
 #include "Buffer.h"
 #include "Shader.h"
 #include "Context.h"
