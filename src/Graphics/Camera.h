@@ -25,14 +25,12 @@ public:
 public:
 	void Startup();
 
-	void Render();
-
 	void Clearup();
 
 public:
-	XE::ProjectType GetProjType() const;
+	XE::CameraType GetType() const;
 
-	void SetProjType( XE::ProjectType val );
+	void SetType( XE::CameraType val );
 
 	XE::float32 GetFOV() const;
 
@@ -66,8 +64,17 @@ public:
 
 	void SetFrustum( const Frustum & val );
 
+public:
+	const ViewportPtr & GetViewport() const;
+
+	void SetViewport( const ViewportPtr & val );
+
+	const RendererPtr & GetRenderer() const;
+
+	void SetRenderer( const RendererPtr & val );
+
 private:
-	ProjectType _ProjType;
+	CameraType _Type;
 	XE::float32 _FOV;
 	XE::float32 _Far;
 	XE::float32 _Near;
@@ -76,6 +83,9 @@ private:
 	Mat4 _ProjMatrix;
 	Mat4 _ViewMatrix;
 	Frustum _Frustum;
+
+	ViewportPtr _Viewport;
+	RendererPtr _Renderer;
 };
 
 END_XE_NAMESPACE

@@ -21,6 +21,21 @@ public:
 	Mesh();
 	
 	~Mesh() override;
+
+public:
+	const AABB & GetBoundingBox() const;
+
+	const InputLayoutPtr & GetInputLayout() const;
+
+	const IndexBufferPtr & GetIndexBuffer() const;
+
+	const VertexBufferPtr & GetVertexBuffer() const;
+
+private:
+	AABB _BoundingBox;
+	InputLayoutPtr _InputLayout;
+	IndexBufferPtr _IndexBuffer;
+	VertexBufferPtr _VertexBuffer;
 };
 
 class GRAPHICS_API DynamicMesh : public Mesh
@@ -31,16 +46,31 @@ public:
 	DynamicMesh();
 
 	~DynamicMesh() override;
+
+public:
+	const DynamicIndexBufferPtr & GetDynamicIndexBuffer() const;
+
+	const DynamicVertexBufferPtr & GetDynamicVertexBuffer() const;
+
+private:
+	DynamicIndexBufferPtr _DynamicIndexBuffer;
+	DynamicVertexBufferPtr _DynamicVertexBuffer;
 };
 
-class GRAPHICS_API SkinnedMesh : public Mesh
+class GRAPHICS_API SkinnedMesh : public DynamicMesh
 {
-	OBJECT( SkinnedMesh, Mesh )
+	OBJECT( SkinnedMesh, DynamicMesh )
 
 public:
 	SkinnedMesh();
 
 	~SkinnedMesh() override;
+
+public:
+	const SkeletonPtr & GetSkeleton() const;
+
+private:
+	SkeletonPtr _Skeleton;
 };
 
 END_XE_NAMESPACE

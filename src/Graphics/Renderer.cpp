@@ -2,7 +2,7 @@
 
 USING_XE
 
-BEG_META(Renderer)
+BEG_META( Renderer )
 END_META()
 
 XE::Renderer::Renderer()
@@ -20,13 +20,13 @@ void XE::Renderer::Startup()
 	OnStartup();
 }
 
-void XE::Renderer::Render()
+void XE::Renderer::Render( const CameraPtr & camera )
 {
-	BeginFrame();
-	
-	OnRender();
+	BeginRender( camera );
 
-	EndFrame();
+	OnRender( camera );
+
+	EndRender( camera );
 }
 
 void XE::Renderer::Clearup()

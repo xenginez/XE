@@ -16,21 +16,23 @@ BEG_XE_NAMESPACE
 class DrawCall;
 class RenderQueue;
 
-
 DECL_PTR( Mesh );
+DECL_PTR( Light );
 DECL_PTR( Camera );
 DECL_PTR( Material );
 DECL_PTR( Renderer );
+DECL_PTR( Skeleton );
+DECL_PTR( Technique );
 DECL_PTR( RenderPass );
 DECL_PTR( Renderable );
 
 
-enum class ProjectType
+enum class CameraType
 {
 	PERSPECTIVE,
 	ORTHOGRAPHIC,
 };
-DECL_META_ENUM( GRAPHICS_API, ProjectType );
+DECL_META_ENUM( GRAPHICS_API, CameraType );
 
 enum RenderGroup
 {
@@ -41,7 +43,6 @@ enum RenderGroup
 	OVERLAY = 50,
 };
 DECL_META_ENUM( GRAPHICS_API, RenderGroup );
-
 
 
 union SortKey
@@ -84,6 +85,7 @@ struct BackgroundLess
 		return _Left.key.key < _Right.key.key;
 	}
 };
+
 struct GeometryLess
 {
 	typedef SortKeyPair first_argument_type;
@@ -95,6 +97,7 @@ struct GeometryLess
 		return _Left.key.key < _Right.key.key;
 	}
 };
+
 struct AlphaTestLess
 {
 	typedef SortKeyPair first_argument_type;
@@ -106,6 +109,7 @@ struct AlphaTestLess
 		return _Left.key.key < _Right.key.key;
 	}
 };
+
 struct TransparentLess
 {
 	typedef SortKeyPair first_argument_type;
@@ -117,6 +121,7 @@ struct TransparentLess
 		return _Left.key.key < _Right.key.key;
 	}
 };
+
 struct OverlayLess
 {
 	typedef SortKeyPair first_argument_type;

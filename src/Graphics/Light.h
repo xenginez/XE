@@ -20,8 +20,49 @@ class GRAPHICS_API Light : public XE::Object
 public:
 	Light();
 
-	~Light();
+	~Light() override;
 
+};
+
+class GRAPHICS_API SpotLight : public Light
+{
+	OBJECT( SpotLight, Light )
+
+public:
+	SpotLight();
+
+	~SpotLight() override;
+};
+
+class GRAPHICS_API AreaLight : public Light
+{
+	OBJECT( AreaLight, Light )
+
+public:
+	AreaLight();
+
+	~AreaLight() override;
+
+};
+
+class GRAPHICS_API PointLight : public Light
+{
+	OBJECT( PointLight, Light )
+
+public:
+	PointLight();
+
+	~PointLight() override;
+};
+
+class GRAPHICS_API DirectionalLight : public Light
+{
+	OBJECT( DirectionalLight, Light )
+
+public:
+	DirectionalLight();
+
+	~DirectionalLight() override;
 };
 
 END_XE_NAMESPACE

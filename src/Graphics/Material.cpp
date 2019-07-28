@@ -1,8 +1,11 @@
 #include "Material.h"
 
+#include "Technique.h"
+
 USING_XE
 
-BEG_META(Material)
+BEG_META( Material )
+type->Property( "Technique", &Material::_Technique );
 END_META()
 
 XE::Material::Material()
@@ -15,12 +18,7 @@ XE::Material::~Material()
 
 }
 
-XE::RenderPassPtr XE::Material::GetRenderPass() const
+const XE::TechniquePtr & XE::Material::GetTechnique() const
 {
-	return _Pass;
-}
-
-void XE::Material::SetRenderPass( const RenderPassPtr & val )
-{
-	_Pass = val;
+	return _Technique;
 }

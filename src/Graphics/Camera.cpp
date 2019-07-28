@@ -1,5 +1,7 @@
 #include "Camera.h"
 
+#include "Renderer.h"
+
 USING_XE
 
 XE::Camera::Camera()
@@ -14,27 +16,24 @@ XE::Camera::~Camera()
 
 void XE::Camera::Startup()
 {
-
-}
-
-void XE::Camera::Render()
-{
-
+	_Renderer->Startup();
 }
 
 void XE::Camera::Clearup()
 {
+	_Renderer->Clearup();
 
+	_Viewport = nullptr;
 }
 
-XE::ProjectType XE::Camera::GetProjType() const
+XE::CameraType XE::Camera::GetType() const
 {
-	return _ProjType;
+	return _Type;
 }
 
-void XE::Camera::SetProjType( XE::ProjectType val )
+void XE::Camera::SetType( XE::CameraType val )
 {
-	_ProjType = val;
+	_Type = val;
 }
 
 XE::float32 XE::Camera::GetFOV() const
@@ -115,4 +114,24 @@ const XE::Frustum & XE::Camera::GetFrustum() const
 void XE::Camera::SetFrustum( const Frustum & val )
 {
 	_Frustum = val;
+}
+
+const XE::ViewportPtr & XE::Camera::GetViewport() const
+{
+	return _Viewport;
+}
+
+void XE::Camera::SetViewport( const ViewportPtr & val )
+{
+	_Viewport = val;
+}
+
+const XE::RendererPtr & XE::Camera::GetRenderer() const
+{
+	return _Renderer;
+}
+
+void XE::Camera::SetRenderer( const RendererPtr & val )
+{
+	_Renderer = val;
 }

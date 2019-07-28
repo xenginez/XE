@@ -172,7 +172,9 @@ enum class DeviceType
 	METAL,
 	VULKAN,
 	OPENGL,
+	OPENGLES2,
 	OPENGLES3,
+	DIRECT3D11,
 	DIRECT3D12,
 };
 DECL_META_ENUM( RHI_API, DeviceType );
@@ -182,7 +184,8 @@ enum class UniformType
 	VEC4,
 	MAT3,
 	MAT4,
-	Sampler,
+	SAMPLER,
+	TEXTURE,
 };
 DECL_META_ENUM( RHI_API, UniformType );
 
@@ -365,19 +368,19 @@ DECL_META_ENUM( RHI_API, SamplerAddressType );
 
 enum class BlendFactor
 {
-	ZERO,						/// 0, 0, 0, 0
-	ONE,						/// 1, 1, 1, 1
-	SRC_COLOR,					/// Rs, Gs, Bs, As
-	INV_SRC_COLOR,				/// 1-Rs, 1-Gs, 1-Bs, 1-As
-	SRC_ALPHA,					/// As, As, As, As
-	INV_SRC_ALPHA,				/// 1-As, 1-As, 1-As, 1-As
-	DST_ALPHA,					/// Ad, Ad, Ad, Ad
-	INV_DST_ALPHA,				/// 1-Ad, 1-Ad, 1-Ad ,1-Ad
-	DST_COLOR,					/// Rd, Gd, Bd, Ad
-	INV_DST_COLOR,				/// 1-Rd, 1-Gd, 1-Bd, 1-Ad
-	SRC_ALPHA_SAT,				/// f, f, f, 1; f = min(As, 1-Ad)
-	FACTOR,						/// Blend factor
-	INV_FACTOR,					/// 1-Blend factor
+	ZERO,
+	ONE,
+	SRC_COLOR,
+	INV_SRC_COLOR,
+	SRC_ALPHA,
+	INV_SRC_ALPHA,
+	DST_ALPHA,
+	INV_DST_ALPHA,
+	DST_COLOR,
+	INV_DST_COLOR,
+	SRC_ALPHA_SAT,
+	FACTOR,
+	INV_FACTOR,
 };
 DECL_META_ENUM( RHI_API, BlendFactor );
 

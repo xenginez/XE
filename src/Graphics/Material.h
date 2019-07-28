@@ -23,12 +23,10 @@ public:
 	~Material() override;
 
 public:
-	RenderPassPtr GetRenderPass() const;
-
-	void SetRenderPass( const RenderPassPtr & val );
+	const TechniquePtr & GetTechnique() const;
 
 private:
-	RenderPassPtr _Pass;
+	TechniquePtr _Technique;
 };
 
 END_XE_NAMESPACE

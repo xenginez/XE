@@ -25,18 +25,18 @@ public:
 public:
 	void Startup();
 
-	void Render();
+	void Render( const CameraPtr & camera );
 
 	void Clearup();
 
 protected:
 	virtual void OnStartup() = 0;
 
-	virtual void BeginFrame() = 0;
+	virtual void BeginRender( const CameraPtr & camera ) = 0;
 
-	virtual void OnRender() = 0;
+	virtual void OnRender( const CameraPtr & camera ) = 0;
 
-	virtual void EndFrame() = 0;
+	virtual void EndRender( const CameraPtr & camera ) = 0;
 
 	virtual void OnClearup() = 0;
 };
