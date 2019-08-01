@@ -30,7 +30,7 @@ XE::MaterialPtr XE::Renderable::GetMaterial() const
 	return _Material;
 }
 
-void XE::Renderable::SetMaterialPtr( const MaterialPtr & val )
+void XE::Renderable::SetMaterial( const MaterialPtr & val )
 {
 	_Material = val;
 }

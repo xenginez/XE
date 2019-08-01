@@ -47,7 +47,7 @@ public:
 
 	MaterialPtr GetMaterial() const;
 
-	void SetMaterialPtr( const MaterialPtr & val );
+	void SetMaterial( const MaterialPtr & val );
 
 private:
 	MeshPtr _Mesh;

@@ -2,8 +2,7 @@
 
 USING_XE
 
-XE::RenderQueue::RenderQueue( const CommandListPtr & val )
-	:_CommandList( val )
+XE::RenderQueue::RenderQueue()
 {
 
 }
@@ -13,7 +12,7 @@ XE::RenderQueue::~RenderQueue()
 
 }
 
-void XE::RenderQueue::Flush()
+void XE::RenderQueue::Flush( CommandListPtr & val )
 {
 	XE::uint8 * p = _DrawCalls.data();
 
@@ -23,7 +22,7 @@ void XE::RenderQueue::Flush()
 	{
 		pair = _Background.top();
 		DrawCall * call = (DrawCall * )( p + pair.draw );
-		call->Execute( _CommandList );
+		call->Execute( val );
 		_Background.pop();
 	}
 
@@ -31,7 +30,7 @@ void XE::RenderQueue::Flush()
 	{
 		pair = _Geometry.top();
 		DrawCall * call = (DrawCall * )( p + pair.draw );
-		call->Execute( _CommandList );
+		call->Execute( val );
 		_Geometry.pop();
 	}
 
@@ -39,7 +38,7 @@ void XE::RenderQueue::Flush()
 	{
 		pair = _AlphaTest.top();
 		DrawCall * call = (DrawCall * )( p + pair.draw );
-		call->Execute( _CommandList );
+		call->Execute( val );
 		_AlphaTest.pop();
 	}
 
@@ -47,7 +46,7 @@ void XE::RenderQueue::Flush()
 	{
 		pair = _Transparent.top();
 		DrawCall * call = (DrawCall * )( p + pair.draw );
-		call->Execute( _CommandList );
+		call->Execute( val );
 		_Transparent.pop();
 	}
 
@@ -55,14 +54,9 @@ void XE::RenderQueue::Flush()
 	{
 		pair = _Overlay.top();
 		DrawCall * call = (DrawCall * )( p + pair.draw );
-		call->Execute( _CommandList );
+		call->Execute( val );
 		_Overlay.pop();
 	}
 
 	_DrawCalls.clear();
-}
-
-const XE::CommandListPtr & XE::RenderQueue::GetCommandList() const
-{
-	return _CommandList;
 }

@@ -13,14 +13,12 @@
 
 BEG_XE_NAMESPACE
 
-class GRAPHICS_API RenderQueue
+class GRAPHICS_API RenderQueue : public std::enable_shared_from_this< RenderQueue > , public NonCopyable
 {
-	friend class DrawCall;
-
 public:
-	RenderQueue( const CommandListPtr & val );
+	RenderQueue();
 
-	~RenderQueue();
+	virtual ~RenderQueue();
 
 public:
 	template<typename _DC> _DC * AddDrawCall()
@@ -69,13 +67,10 @@ public:
 		}
 	}
 
-	void Flush();
+public:
+	void Flush( CommandListPtr & val );
 
 private:
-	const CommandListPtr & GetCommandList() const;
-
-private:
-	CommandListPtr _CommandList;
 	Array<XE::uint8> _DrawCalls;
 	std::priority_queue<SortKeyPair, Array<SortKeyPair>, BackgroundLess> _Background;
 	std::priority_queue<SortKeyPair, Array<SortKeyPair>, GeometryLess> _Geometry;
