@@ -43,8 +43,7 @@ void XE::XmlLoadArchive::Serialize( NameValue & val )
 	{
 		if( auto enm = SP_CAST<IMetaEnum>( type ) )
 		{
-			XE::int64 v = enm->FindValue( node.value() );
-			val.Value = Variant( type, { v }, flag );
+			val.Value = enm->FindValue( node.value() );
 		}
 	}
 	else if( auto cls = SP_CAST<IMetaClass>( type ) )
@@ -123,11 +122,11 @@ void XE::XmlLoadArchive::Serialize( NameValue & val )
 			{
 				if( flag == Variant::POINTER )
 				{
-					val.Value = Variant( type, cls->Construct(), flag );
+					val.Value = Variant( type, cls->Construct().Detach(), flag );
 				}
 				else if( flag == Variant::SHAREDPTR )
 				{
-					val.Value = Variant( type, cls->ConstructPtr(), flag );
+					val.Value = Variant( type, cls->ConstructPtr().DetachPtr(), flag );
 				}
 
 				_p->Nodes.push( &node );
@@ -284,8 +283,7 @@ void XE::JsonLoadArchive::Serialize( NameValue & val )
 	{
 		if( auto enm = SP_CAST<IMetaEnum>( type ) )
 		{
-			XE::int64 v = enm->FindValue( node.FindMember( "value" )->value.GetString() );
-			val.Value = Variant( type, { v }, flag );
+			val.Value = enm->FindValue( node.FindMember( "value" )->value.GetString() );
 		}
 	}
 	else if( auto cls = SP_CAST<IMetaClass>( type ) )
@@ -364,11 +362,11 @@ void XE::JsonLoadArchive::Serialize( NameValue & val )
 			{
 				if( flag == Variant::POINTER )
 				{
-					val.Value = Variant( type, cls->Construct(), flag );
+					val.Value = Variant( type, cls->Construct().Detach(), flag );
 				}
 				else if( flag == Variant::SHAREDPTR )
 				{
-					val.Value = Variant( type, cls->ConstructPtr(), flag );
+					val.Value = Variant( type, cls->ConstructPtr().DetachPtr(), flag );
 				}
 
 				_p->Values.push( &node );

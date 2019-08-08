@@ -28,7 +28,7 @@ public:
 	}
 
 public:
-	virtual void * Construct() const override
+	virtual Variant Construct() const override
 	{
 		if constexpr ( !std::is_abstract_v<ClassType> )
 		{
@@ -40,7 +40,7 @@ public:
 		}
 	}
 
-	virtual std::shared_ptr<void> ConstructPtr() const override
+	virtual Variant ConstructPtr() const override
 	{
 		if constexpr ( !std::is_abstract_v<ClassType> )
 		{
@@ -52,9 +52,9 @@ public:
 		}
 	}
 
-	virtual void Destruct( void * val ) const override
+	virtual void Destruct( Variant & val ) const override
 	{
-		delete (ClassType*)val;
+		delete (ClassType*)val.Detach();
 	}
 
 	virtual void Serialize( Archive * arc, Variant& val ) const override
@@ -170,17 +170,17 @@ public:
 	}
 
 public:
-	virtual void * Construct() const override
+	virtual Variant Construct() const override
 	{
 		return nullptr;
 	}
 
-	virtual std::shared_ptr<void> ConstructPtr() const override
+	virtual Variant ConstructPtr() const override
 	{
 		return nullptr;
 	}
 
-	virtual void Destruct( void * val ) const override
+	virtual void Destruct( Variant & val ) const override
 	{
 
 	}

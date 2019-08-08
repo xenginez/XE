@@ -359,10 +359,8 @@ void * XE::Variant::Detach()
 	return p;
 }
 
-std::shared_ptr<void> XE::Variant::DetachSharedPtr()
+std::shared_ptr<void> XE::Variant::DetachPtr()
 {
-	void * p = nullptr;
-
 	if ( _Flag & SHAREDPTR )
 	{
 		std::shared_ptr<void> p = *_Data.sp;

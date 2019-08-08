@@ -50,7 +50,7 @@ void XE::Object::SetProperty( const String &name, const Variant &val )
 
 XE::ObjectPtr XE::Object::Clone() const
 {
-	ObjectPtr ret = SP_CAST < Object >(GetMetaClass()->ConstructPtr());
+	ObjectPtr ret = GetMetaClass()->ConstructPtr().Value<ObjectPtr>();
 	
 	GetMetaClass()->VisitProperty([&]( IMetaPropertyPtr prop )
 								  {

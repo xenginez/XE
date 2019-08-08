@@ -60,7 +60,7 @@ bool XE::InputService::Startup()
 		{
 			if( !derived->IsAbstract() )
 			{
-				if( auto p = derived->ConstructPtr() )
+				if( auto p = derived->ConstructPtr().DetachPtr() )
 				{
 					if( IInputControlPtr c = SP_CAST<IInputControl>( p ) )
 					{

@@ -18,7 +18,7 @@ XE::uint64 XE::IMetaEnum::GetEnumCount() const
 	return _Values.size();
 }
 
-XE::String XE::IMetaEnum::FindName( XE::int64 val ) const
+XE::String XE::IMetaEnum::FindName( XE::Variant val ) const
 {
 	for ( auto var : _Values )
 	{
@@ -31,7 +31,7 @@ XE::String XE::IMetaEnum::FindName( XE::int64 val ) const
 	return "";
 }
 
-XE::int64 XE::IMetaEnum::FindValue( const String& val ) const
+XE::Variant XE::IMetaEnum::FindValue( const String& val ) const
 {
 	for ( auto var : _Values )
 	{
@@ -41,10 +41,10 @@ XE::int64 XE::IMetaEnum::FindValue( const String& val ) const
 		}
 	}
 
-	return std::numeric_limits<XE::int64>::max();
+	return XE::Variant();
 }
 
-void XE::IMetaEnum::Visit( std::function<void( String, XE::int64 )> val ) const
+void XE::IMetaEnum::Visit( std::function<void( String, XE::Variant )> val ) const
 {
 	for ( auto var : _Values )
 	{
@@ -52,7 +52,7 @@ void XE::IMetaEnum::Visit( std::function<void( String, XE::int64 )> val ) const
 	}
 }
 
-void XE::IMetaEnum::_RegisterValue( const String& Name, XE::int64 Val )
+void XE::IMetaEnum::_RegisterValue( const String& Name, XE::Variant Val )
 {
 	_Values.push_back( std::make_pair( Name, Val ) );
 }

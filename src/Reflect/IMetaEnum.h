@@ -9,6 +9,7 @@
 #ifndef __IMETAENUM_H__08B9D60C_CE48_4913_BE61_A217F8BFF289
 #define __IMETAENUM_H__08B9D60C_CE48_4913_BE61_A217F8BFF289
 
+#include "Variant.h"
 #include "IMetaType.h"
 
 BEG_XE_NAMESPACE
@@ -25,17 +26,17 @@ public:
 public:
 	XE::uint64 GetEnumCount() const;
 
-	String FindName( XE::int64 val ) const;
+	String FindName( XE::Variant val ) const;
 
-	XE::int64 FindValue( const String& val ) const;
+	XE::Variant FindValue( const String& val ) const;
 
-	void Visit( std::function<void( String, XE::int64 )> val ) const;
+	void Visit( std::function<void( String, XE::Variant )> val ) const;
 
 protected:
-	void _RegisterValue( const String& Name, XE::int64 Val );
+	void _RegisterValue( const String& Name, XE::Variant Val );
 
 private:
-	Array< Pair<String, XE::int64> > _Values;
+	Array< Pair<String, XE::Variant> > _Values;
 };
 
 END_XE_NAMESPACE

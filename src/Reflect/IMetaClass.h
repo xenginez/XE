@@ -9,6 +9,7 @@
 #ifndef __IMETACLASS_H__0775C1BF_63EA_4CCE_84ED_90EBF29B082B
 #define __IMETACLASS_H__0775C1BF_63EA_4CCE_84ED_90EBF29B082B
 
+#include "Variant.h"
 #include "IMetaType.h"
 #include "ParameterType.hpp"
 
@@ -51,11 +52,11 @@ public:
 	IMetaOperatorPtr FindOperator( const String& Name, const IMetaInfoPtr& Type = nullptr ) const;
 
 public:
-	virtual void * Construct() const = 0;
+	virtual Variant Construct() const = 0;
 
-	virtual std::shared_ptr<void> ConstructPtr() const = 0;
+	virtual Variant ConstructPtr() const = 0;
 
-	virtual void Destruct( void * val ) const = 0;
+	virtual void Destruct( Variant & val ) const = 0;
 
 	virtual void Serialize( Archive * arc, Variant & val ) const = 0;
 

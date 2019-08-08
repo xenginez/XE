@@ -280,7 +280,7 @@ public:
 
 	void * Detach();
 
-	std::shared_ptr<void> DetachSharedPtr();
+	std::shared_ptr<void> DetachPtr();
 
 public:
 	template< typename T > T Value() const

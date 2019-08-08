@@ -104,7 +104,7 @@ void XE::GameObject::SetType( GameObjectType val )
 
 XE::ComponentPtr XE::GameObject::AddComponent( IMetaClassPtr val )
 {
-	XE::ComponentPtr comp = SP_CAST< Component >( val->ConstructPtr() );
+	XE::ComponentPtr comp = SP_CAST< Component >( val->ConstructPtr().DetachPtr() );
 	if ( comp )
 	{
 		comp->_GameObject = XE_THIS( GameObject );

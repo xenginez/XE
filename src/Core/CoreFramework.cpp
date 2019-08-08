@@ -184,7 +184,7 @@ bool XE::CoreFramework::RegisterService( const IMetaClassPtr & val )
 			}
 		}
 
-		if( auto p = val->ConstructPtr() )
+		if( auto p = val->ConstructPtr().DetachPtr() )
 		{
 			IServicePtr service = SP_CAST < IService >( p );
 

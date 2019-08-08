@@ -85,7 +85,7 @@ public:
 
 		Serialize( nv );
 
-		val = SP_CAST<T>( nv.Value.DetachSharedPtr() );
+		val = SP_CAST<T>( nv.Value.DetachPtr() );
 
 		return *this;
 	}
@@ -106,7 +106,7 @@ public:
 		{
 			nv.Value = val.Value;
 			Serialize( nv );
-			val.Value = SP_CAST< typename T::element_type >( nv.Value.DetachSharedPtr() );
+			val.Value = SP_CAST< typename T::element_type >( nv.Value.DetachPtr() );
 		}
 		else
 		{

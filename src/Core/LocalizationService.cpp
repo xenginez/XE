@@ -32,7 +32,7 @@ bool XE::LocalizationService::Startup()
 	}
 	else
 	{
-		_p->_Language = (Language)( EnumID<Language>::Get()->FindValue( LanguageName ) );
+		_p->_Language = (Language)( EnumID<Language>::Get()->FindValue( LanguageName ).Value<Language>() );
 	}
 
 	UpdateLocalized();
