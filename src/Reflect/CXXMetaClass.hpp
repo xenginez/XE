@@ -165,7 +165,7 @@ template< typename ClassType > class CXXMetaFundamental : public IMetaClass
 {
 public:
 	CXXMetaFundamental( const String& Name )
-		:IMetaClass( Name, sizeof( ClassType ), false, false, nullptr, nullptr )
+		:IMetaClass( Name, sizeof( ClassType ), false, false, nullptr, nullptr, "" )
 	{
 	}
 
