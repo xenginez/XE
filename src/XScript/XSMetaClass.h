@@ -13,8 +13,21 @@
 
 BEG_XE_NAMESPACE
 
-class XSCRIPT_API XSMetaClass
+class XSCRIPT_API XSMetaClass : public XE::IMetaClass
 {
+public:
+	XSMetaClass( const String & Name, XE::uint64 Size, IMetaClassPtr Super, IMetaInfoPtr Owner, const String & ModuleName );
+
+	~XSMetaClass();
+
+public:
+	Variant Construct() const override;
+
+	Variant ConstructPtr() const override;
+
+	void Destruct( Variant & val ) const override;
+
+	void Serialize( Archive * arc, Variant & val ) const override;
 
 };
 
