@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class InvokeStack
+class REFLECT_API InvokeStack
 {
 public:
 	InvokeStack();

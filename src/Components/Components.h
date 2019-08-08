@@ -11,6 +11,8 @@
 
 #include "AIComponent.h"
 
+#include "XScriptComponent.h"
+
 #include "AudioSourceComponent.h"
 #include "AudioListenerComponent.h"
 
