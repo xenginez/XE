@@ -16,16 +16,18 @@ BEG_XE_NAMESPACE
 class REFLECT_API IMetaInfo : public std::enable_shared_from_this< IMetaInfo >
 {
 public:
-	IMetaInfo( const String& Name, MetaType Type, IMetaInfoPtr Owner );
+	IMetaInfo( const String & Name, MetaType Type, IMetaInfoPtr Owner, const String & ModuleName = "XE" );
 
 	virtual ~IMetaInfo();
 
 public:
 	const MetaType GetType() const;
 
-	const String& GetName() const;
+	const String & GetName() const;
 
-	const String& GetFullName() const;
+	const String & GetFullName() const;
+
+	const String & GetModuleName() const;
 
 public:
 	IMetaInfoPtr GetOwner() const;
@@ -34,6 +36,7 @@ private:
 	MetaType _Type;
 	String _Name;
 	String _FullName;
+	String _ModuleName;
 	IMetaInfoWPtr _Owner;
 };
 

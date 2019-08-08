@@ -6,10 +6,10 @@
 
 USING_XE
 
-XE::IMetaClass::IMetaClass( const String& Name, XE::uint64 Size, bool IsAbs, bool IsSin, IMetaClassPtr Super, IMetaInfoPtr Owner )
-	:IMetaType( Name, MetaType::CLASS, Size, Owner ), _IsAbstract( IsAbs ), _IsSingleton( IsSin ), _Super( Super )
+XE::IMetaClass::IMetaClass( const String & Name, XE::uint64 Size, bool IsAbs, bool IsSin, IMetaClassPtr Super, IMetaInfoPtr Owner, const String & ModuleName /*= "XE" */ )
+	:IMetaType( Name, MetaType::CLASS, Size, Owner, ModuleName ), _IsAbstract( IsAbs ), _IsSingleton( IsSin ), _Super( Super )
 {
-	if ( Super )
+	if( Super )
 	{
 		Super->_DerivedClasses.push_back( this );
 	}

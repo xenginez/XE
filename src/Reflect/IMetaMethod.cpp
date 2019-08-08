@@ -4,8 +4,8 @@
 
 USING_XE
 
-XE::IMetaMethod::IMetaMethod( const String& Name, bool IsStatic, bool IsConst, IMetaInfoPtr Result, ParameterType&& Parameter, IMetaClassPtr Owner )
-	:IMetaInfo( Name, MetaType::METHOD, SP_CAST<IMetaInfo>( Owner ) ), _IsStatic( IsStatic ), _IsConst( IsConst ), _Result( Result ), _Parameter( Parameter )
+XE::IMetaMethod::IMetaMethod( const String & Name, bool IsStatic, bool IsConst, IMetaInfoPtr Result, ParameterType && Parameter, IMetaClassPtr Owner, const String & ModuleName /*= "XE" */ )
+	:IMetaInfo( Name, MetaType::METHOD, SP_CAST<IMetaInfo>( Owner ), ModuleName ), _IsStatic( IsStatic ), _IsConst( IsConst ), _Result( Result ), _Parameter( Parameter )
 {
 
 }

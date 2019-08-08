@@ -18,7 +18,7 @@ class Archive;
 class REFLECT_API IMetaEnum : public IMetaType
 {
 public:
-	IMetaEnum( const String& Name, XE::uint64 Size, IMetaInfoPtr Owner );
+	IMetaEnum( const String& Name, XE::uint64 Size, IMetaInfoPtr Owner, const String & ModuleName = "XE" );
 
 	~IMetaEnum();
 

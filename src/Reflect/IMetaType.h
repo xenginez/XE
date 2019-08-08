@@ -19,7 +19,7 @@ class Archive;
 class REFLECT_API IMetaType : public IMetaInfo
 {
 public:
-	IMetaType( const String& Name, MetaType Type, XE::uint64 Size, IMetaInfoPtr Owner );
+	IMetaType( const String& Name, MetaType Type, XE::uint64 Size, IMetaInfoPtr Owner, const String & ModuleName = "XE" );
 
 	~IMetaType();
 

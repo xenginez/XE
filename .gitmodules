@@ -28,6 +28,3 @@
 [submodule "3rdparty/stb"]
 	path = 3rdparty/stb
 	url = https://github.com/nothings/stb.git
-[submodule "3rdparty/duktape"]
-	path = 3rdparty/duktape
-	url = https://github.com/svaarala/duktape.git
