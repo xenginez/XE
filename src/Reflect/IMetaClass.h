@@ -52,9 +52,9 @@ public:
 	IMetaOperatorPtr FindOperator( const String& Name, const IMetaInfoPtr& Type = nullptr ) const;
 
 public:
-	virtual Variant Construct() const = 0;
+	virtual Variant Construct( void * ptr = nullptr ) const = 0;
 
-	virtual Variant ConstructPtr() const = 0;
+	virtual Variant ConstructPtr( std::shared_ptr<void> ptr = nullptr ) const = 0;
 
 	virtual void Destruct( Variant & val ) const = 0;
 

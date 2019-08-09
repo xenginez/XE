@@ -13,9 +13,20 @@
 
 BEG_XE_NAMESPACE
 
-class XSCRIPT_API XSMetaProperty
+class XSCRIPT_API XSMetaProperty : public XE::IMetaProperty
 {
+public:
+	XSMetaProperty( const String & Name, XE::uint8 Flag, IMetaInfoPtr Value, IMetaClassPtr Owner, const String & ModuleName );
 
+	~XSMetaProperty();
+
+public:
+	Variant Get( const Variant & obj ) const override;
+
+	void Set( const Variant & obj, const Variant & val ) const override;
+
+private:
+	XE::uint64 _Address;
 };
 
 END_XE_NAMESPACE

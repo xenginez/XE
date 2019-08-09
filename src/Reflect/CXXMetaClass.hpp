@@ -28,11 +28,16 @@ public:
 	}
 
 public:
-	virtual Variant Construct() const override
+	virtual Variant Construct( void * ptr ) const override
 	{
 		if constexpr ( !std::is_abstract_v<ClassType> )
 		{
-			return new ClassType();
+			if( ptr == nullptr )
+			{
+				ptr = XE::Alloc::Allocate( GetSize() );
+			}
+
+			return new ( ptr ) ClassType();
 		}
 		else
 		{
@@ -40,10 +45,17 @@ public:
 		}
 	}
 
-	virtual Variant ConstructPtr() const override
+	virtual Variant ConstructPtr( std::shared_ptr<void> ptr ) const override
 	{
 		if constexpr ( !std::is_abstract_v<ClassType> )
 		{
+			if( ptr != nullptr )
+			{
+				Construct( ptr.get() );
+
+				return SP_CAST<ClassType>( ptr );
+			}
+
 			return XE::make_shared<ClassType>();
 		}
 		else
@@ -54,7 +66,7 @@ public:
 
 	virtual void Destruct( Variant & val ) const override
 	{
-		delete (ClassType*)val.Detach();
+		( (ClassType * )val.ToPointer() )->~ClassType();
 	}
 
 	virtual void Serialize( Archive * arc, Variant& val ) const override
@@ -170,12 +182,12 @@ public:
 	}
 
 public:
-	virtual Variant Construct() const override
+	virtual Variant Construct( void * ptr ) const override
 	{
 		return nullptr;
 	}
 
-	virtual Variant ConstructPtr() const override
+	virtual Variant ConstructPtr( std::shared_ptr<void> ptr ) const override
 	{
 		return nullptr;
 	}

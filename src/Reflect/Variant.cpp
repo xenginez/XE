@@ -143,13 +143,13 @@ XE::Variant::Variant( const Variant & val )
 	Lock();
 }
 
-XE::Variant::Variant( IMetaInfoPtr Meta, UnionData Data, XE::uint32 Flag )
+XE::Variant::Variant( IMetaInfoCPtr Meta, UnionData Data, XE::uint32 Flag )
 	: _Data( Data ), _Meta( Meta ), _Flag( Flag )
 {
 	Lock();
 }
 
-XE::Variant::Variant( IMetaInfoPtr Meta, std::shared_ptr<void> Data, XE::uint32 Flag )
+XE::Variant::Variant( IMetaInfoCPtr Meta, std::shared_ptr<void> Data, XE::uint32 Flag )
 	: _Meta( Meta ), _Flag( Flag )
 {
 	_Data.sp = RegisterSharedPtr( Data );
@@ -318,7 +318,7 @@ XE::uint32 XE::Variant::GetFlag() const
 
 XE::IMetaInfoPtr XE::Variant::GetMeta() const
 {
-	return _Meta;
+	return CP_CAST<IMetaInfo>( _Meta );
 }
 
 XE::Variant::UnionData XE::Variant::GetData() const

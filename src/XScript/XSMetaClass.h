@@ -21,9 +21,9 @@ public:
 	~XSMetaClass();
 
 public:
-	Variant Construct() const override;
+	Variant Construct( void * ptr ) const override;
 
-	Variant ConstructPtr() const override;
+	Variant ConstructPtr( std::shared_ptr<void> ptr ) const override;
 
 	void Destruct( Variant & val ) const override;
 

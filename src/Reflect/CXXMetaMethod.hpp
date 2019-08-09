@@ -29,7 +29,7 @@ public:
 	}
 
 public:
-	virtual Variant _Invoke( InvokeStack * params ) const override
+	virtual Variant Invoke( InvokeStack * params ) const override
 	{
 		_Callback( params->Pop<ParameterType>()... );
 		return Variant();
@@ -51,7 +51,7 @@ public:
 	}
 
 public:
-	virtual Variant _Invoke( InvokeStack * params ) const override
+	virtual Variant Invoke( InvokeStack * params ) const override
 	{
 		return _Callback( params->Pop<ParameterType>()... );
 	}
@@ -72,7 +72,7 @@ public:
 	}
 
 public:
-	virtual Variant _Invoke( InvokeStack * params ) const override
+	virtual Variant Invoke( InvokeStack * params ) const override
 	{
 		( params->Pop<ClassType*>()->*_Callback )( params->Pop<ParameterType>()... );
 		return Variant();
@@ -94,7 +94,7 @@ public:
 	}
 
 public:
-	virtual Variant _Invoke( InvokeStack * params ) const override
+	virtual Variant Invoke( InvokeStack * params ) const override
 	{
 		( params->Pop<ClassType*>()->*_Callback )( params->Pop<ParameterType>()... );
 		return Variant();
@@ -116,7 +116,7 @@ public:
 	}
 
 public:
-	virtual Variant _Invoke( InvokeStack * params ) const override
+	virtual Variant Invoke( InvokeStack * params ) const override
 	{
 		return ( params->Pop<ClassType*>()->*_Callback )( params->Pop<ParameterType>()... );
 	}
@@ -137,7 +137,7 @@ public:
 	}
 
 public:
-	virtual Variant _Invoke( InvokeStack * params ) const override
+	virtual Variant Invoke( InvokeStack * params ) const override
 	{
 		return ( params->Pop<ClassType*>()->*_Callback )( params->Pop<ParameterType>()... );
 	}

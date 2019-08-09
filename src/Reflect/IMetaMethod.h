@@ -39,11 +39,11 @@ public:
 
 		stack.Push( std::forward<Types>( args )... );
 
-		return _Invoke( &stack );
+		return Invoke( &stack );
 	}
 
-protected:
-	virtual Variant _Invoke( InvokeStack * params ) const = 0;
+public:
+	virtual Variant Invoke( InvokeStack * params ) const = 0;
 
 private:
 	bool _IsConst;

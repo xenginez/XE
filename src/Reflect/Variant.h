@@ -228,9 +228,9 @@ public:
 		_Flag = Variant::POINTER;
 	}
 
-	Variant( IMetaInfoPtr Meta, UnionData Data, XE::uint32 Flag );
+	Variant( IMetaInfoCPtr Meta, UnionData Data, XE::uint32 Flag );
 
-	Variant( IMetaInfoPtr Meta, std::shared_ptr<void> Data, XE::uint32 Flag );
+	Variant( IMetaInfoCPtr Meta, std::shared_ptr<void> Data, XE::uint32 Flag );
 
 	~Variant();
 
@@ -322,7 +322,7 @@ private:
 private:
 	UnionData _Data;
 	XE::uint32 _Flag;
-	IMetaInfoPtr _Meta;
+	IMetaInfoCPtr _Meta;
 };
 
 

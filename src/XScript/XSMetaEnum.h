@@ -13,8 +13,13 @@
 
 BEG_XE_NAMESPACE
 
-class XSCRIPT_API XSMetaEnum
+class XSCRIPT_API XSMetaEnum : XE::IMetaEnum
 {
+public:
+	XSMetaEnum( const String & Name, IMetaInfoPtr Owner, const String & ModuleName );
+
+	~XSMetaEnum();
+
 public:
 	void Value( const std::string & name, XE::int64 val );
 };
