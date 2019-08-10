@@ -1,54 +1,48 @@
 #include "Parser.h"
 
-#include "XSMetaEnum.h"
-#include "XSMetaClass.h"
-#include "XSMetaMethod.h"
-#include "XSMetaOperator.h"
-#include "XSMetaProperty.h"
-
-#include "Interpreter.h"
-
 USING_XE
 
-XE::Parser::Parser( InterpreterPtr inter, const std::string & src )
-	: _Lex( src ), _Ast( "" ), _Path( std::filesystem::current_path() ), _Inter( inter )
+Parser::Parser( const std::string & src )
+	:_Lex( src ), _Path( std::filesystem::current_path() )
 {
 
 }
 
-XE::Parser::Parser( InterpreterPtr inter, const std::filesystem::path & path, const std::string & src )
-	: _Lex( src ), _Ast( path.stem().string() ), _Path( path ), _Inter( inter )
+Parser::Parser( const std::filesystem::path & path, const std::string & src )
+	: _Lex( src ), _Path( path )
 {
 
 }
 
-XE::Parser::~Parser()
+Parser::~Parser()
 {
 
 }
 
-const XE::AST & XE::Parser::GetAST() const
+ModuleNodePtr Parser::ParseModule()
 {
-	return _Ast;
-}
+	ModuleNodePtr p = XE::make_shared< ModuleNode >();
 
-const XE::AST & XE::Parser::Parse()
-{
-	while( _Lex.LookToken()._Token != TokenType::UNKNOWN )
+	p->Name = _Path.stem().string();
+
+	while( _Lex.LookToken().Type != TokenType::UNKNOWN )
 	{
-		switch( _Lex.LookToken()._Token )
+		switch( _Lex.LookToken().Type )
 		{
 		case TokenType::IMPORT:
-			Import();
+			p->Imports.push_back( ParseImport() );
 			break;
 		case TokenType::USING:
-			Using();
+			p->Usings.push_back( ParseUsing() );
 			break;
 		case TokenType::ENUM:
-			ParseEnum();
+			p->Enums.push_back( ParseEnum() );
 			break;
 		case TokenType::CLASS:
-			ParseClass();
+			p->Classes.push_back( ParseClass() );
+			break;
+		case TokenType::SEMICOLON:
+			_Lex.NextToken();
 			break;
 		default:
 			throw XE::RuntimeException();
@@ -56,323 +50,711 @@ const XE::AST & XE::Parser::Parse()
 		}
 	}
 
-	return _Ast;
+	return p;
 }
 
-void XE::Parser::Using()
+UsingNodePtr Parser::ParseUsing()
 {
 	Ignore( TokenType::USING );
 
-	_Ast.AddUsing( Check( TokenType::IDENTIFIER )._Value );
+	auto p = XE::make_shared< UsingNode >();
+
+	p->Name = Check( TokenType::IDENTIFIER ).Value;
+
+	return p;
 }
 
-void XE::Parser::Import()
+ImportNodePtr Parser::ParseImport()
 {
 	Ignore( TokenType::IMPORT );
 
-	_Inter.lock()->LoadScript( _Path / Check( TokenType::IDENTIFIER )._Value );
+	auto p = XE::make_shared< ImportNode >();
+
+	p->Str = Check( TokenType::STRING_CONST ).Value;
+
+	return p;
 }
 
-void XE::Parser::ParseEnum()
+EnumNodePtr Parser::ParseEnum()
 {
 	Ignore( TokenType::ENUM );
 
-	auto enu = _Ast.AddEnum( Check( TokenType::IDENTIFIER )._Value );
+	EnumNodePtr p = XE::make_shared<EnumNode>();
 
-	XE::int64 index = 0;
+	p->Name = Check( TokenType::IDENTIFIER ).Value;
 
 	Ignore( TokenType::LBRACE );
 
-	do
+	while( !Look(TokenType::RBRACE) )
 	{
-		enu->Value( Check( TokenType::IDENTIFIER )._Value, index++ );
-	} while( !Skip( TokenType::COMMA ) );
+		p->Values.push_back( Check( TokenType::IDENTIFIER ).Value );
+
+		if( !Skip( TokenType::COMMA ) )
+		{
+			break;
+		}
+	}
 
 	Ignore( TokenType::RBRACE );
+
+	return p;
 }
-				 
-void XE::Parser::ParseClass()
+
+ClassNodePtr Parser::ParseClass()
 {
 	Ignore( TokenType::CLASS );
 
-	std::string name = Check( TokenType::IDENTIFIER )._Value;
-	std::string base;
+	ClassNodePtr p = XE::make_shared<ClassNode>();
+
+	p->Name = Check( TokenType::IDENTIFIER ).Value;
+
 	if( Skip( TokenType::COLON ) )
 	{
-		base = Check( TokenType::IDENTIFIER )._Value;
+		p->Super = Check( TokenType::IDENTIFIER ).Value;
 	}
-
-	auto cls = _Ast.AddClass( name, base );
 
 	Ignore( TokenType::LBRACE );
 
-	do 
+	while( !Look( TokenType::RBRACE ) )
 	{
-		switch( _Lex.LookToken()._Token )
+		switch( _Lex.LookToken().Type )
 		{
+		case TokenType::ENUM:
+			p->Enums.push_back( ParseEnum() );
+			break;
+		case TokenType::CLASS:
+			p->Classes.push_back( ParseClass() );
+			break;
 		case TokenType::FUNCTION:
-			ParseMethod();
+			p->Methods.push_back( ParseMethod() );
 			break;
 		case TokenType::OPERATOR:
-			ParseOperator();
+			p->Operators.push_back( ParseOperator() );
 			break;
 		case TokenType::VARIABLE:
-			ParseProperty();
+			p->Propertys.push_back( ParseProperty() );
 			break;
 		case TokenType::SEMICOLON:
-			Ignore( TokenType::SEMICOLON );
+			_Lex.NextToken();
+			break;
 		default:
 			throw XE::RuntimeException();
 			break;
 		}
-	} while (!Look(TokenType::RBRACE));
+	}
 
 	Ignore( TokenType::RBRACE );
+
+	return p;
 }
 
-void XE::Parser::ParseMethod()
+MethodNodePtr Parser::ParseMethod()
 {
 	Ignore( TokenType::FUNCTION );
 
-	std::string name = Check( TokenType::IDENTIFIER )._Value;
-	List<std::string> params;
+	auto p = XE::make_shared<MethodNode>();
+
+	p->Name = Check( TokenType::IDENTIFIER ).Value;
 
 	Ignore( TokenType::LPAREN );
 
 	while( !Look(TokenType::RPAREN) )
 	{
-		params.emplace_back( Check( TokenType::IDENTIFIER )._Value );
-		
-		if( !Skip( TokenType::COMMA ) && !Look(TokenType::RPAREN) )
+		p->Params.push_back( Check( TokenType::IDENTIFIER ).Value );
+
+		if( !Skip( TokenType::COLON ) )
 		{
-			throw XE::RuntimeException();
+			break;
 		}
 	}
 
 	Ignore( TokenType::RPAREN );
 
-	_Ast.AddMethod( name, std::move( params ) );
+	p->Block = ParseBlock();
 
-	ParseBlock();
+	return p;
 }
-				 
-void XE::Parser::ParseOperator()
+
+OperatorNodePtr Parser::ParseOperator()
 {
 	Ignore( TokenType::OPERATOR );
 
-	std::string name;
-	List<std::string> params;
+	auto p = XE::make_shared<OperatorNode>();
 
-	if( !Look( TokenType::ADD ) || !Look( TokenType::MUL ) || !Look( TokenType::DIV ) ||
-		!Look( TokenType::MOD ) || !Look( TokenType::ADD ) || !Look( TokenType::SUB ) ||
-		!Look( TokenType::L_SHFIT ) || !Look( TokenType::R_SHFIT ) || !Look( TokenType::GREA ) ||
-		!Look( TokenType::GREA_EQUAL ) || !Look( TokenType::LESS ) || !Look( TokenType::LESS_EQUAL ) ||
-		!Look( TokenType::EQUAL ) || !Look( TokenType::NOT_EQUAL ) || !Look( TokenType::B_AND ) ||
-		!Look( TokenType::B_XOR ) || !Look( TokenType::B_OR ) || !Look( TokenType::L_AND ) ||
-		!Look( TokenType::L_OR ) || !Look( TokenType::ASSIGN ) || !Look( TokenType::MUL_ASSIGN ) ||
-		!Look( TokenType::DIV_ASSIGN ) || !Look( TokenType::MOD_ASSIGN ) || !Look( TokenType::ADD_ASSIGN ) ||
-		!Look( TokenType::SUB_ASSIGN ) || !Look( TokenType::AND_ASSIGN ) || !Look( TokenType::XOR_ASSIGN ) ||
-		!Look( TokenType::OR_ASSIGN ) || !Look( TokenType::L_SHFIT_ASSIGN ) || !Look( TokenType::R_SHFIT_ASSIGN ) 
-	)
+	if( Look( TokenType::MUL ) || Look( TokenType::DIV ) || Look( TokenType::MOD ) ||
+		Look( TokenType::ADD ) || Look( TokenType::SUB ) || Look( TokenType::L_SHFIT ) ||
+		Look( TokenType::R_SHFIT ) || Look( TokenType::GREA ) || Look( TokenType::GREA_EQUAL ) ||
+		Look( TokenType::LESS ) || Look( TokenType::LESS_EQUAL ) || Look( TokenType::EQUAL ) ||
+		Look( TokenType::NOT_EQUAL ) || Look( TokenType::B_AND ) || Look( TokenType::B_XOR ) ||
+		Look( TokenType::B_OR ) || Look( TokenType::L_AND ) || Look( TokenType::L_OR ) ||
+		Look( TokenType::ASSIGN ) || Look( TokenType::MUL_ASSIGN ) || Look( TokenType::DIV_ASSIGN ) ||
+		Look( TokenType::MOD_ASSIGN ) || Look( TokenType::ADD_ASSIGN ) || Look( TokenType::SUB_ASSIGN ) ||
+		Look( TokenType::AND_ASSIGN ) || Look( TokenType::XOR_ASSIGN ) || Look( TokenType::OR_ASSIGN ) ||
+		Look( TokenType::L_SHFIT_ASSIGN ) || Look( TokenType::R_SHFIT_ASSIGN ) )
 	{
-		name = Token::TypeToString( _Lex.LookToken()._Token );
+		p->Name = Token::TypeToString( _Lex.LookToken().Type );
+		_Lex.NextToken();
+	}
+	else
+	{
+		throw XE::RuntimeException();
 	}
 
 	Ignore( TokenType::LPAREN );
 
 	while( !Look( TokenType::RPAREN ) )
 	{
-		params.emplace_back( Check( TokenType::IDENTIFIER )._Value );
+		p->Params.push_back( Check( TokenType::IDENTIFIER ).Value );
 
-		if( !Skip( TokenType::COMMA ) && !Look( TokenType::RPAREN ) )
+		if( !Skip( TokenType::COLON ) )
 		{
-			throw XE::RuntimeException();
+			break;
 		}
 	}
 
 	Ignore( TokenType::RPAREN );
 
-	_Ast.AddMethod( name, std::move( params ) );
+	p->Block = ParseBlock();
 
-	ParseBlock();
+	return p;
 }
-				 
-void XE::Parser::ParseProperty()
+
+PropertyNodePtr Parser::ParseProperty()
 {
 	Ignore( TokenType::VARIABLE );
 
-	auto prop = _Ast.AddProperty( Check( TokenType::IDENTIFIER )._Value );
+	auto p = XE::make_shared<PropertyNode>();
+
+	p->Name = Check( TokenType::IDENTIFIER ).Value;
 
 	if( Skip( TokenType::ASSIGN ) )
 	{
-		ParseStatement();
+		p->InitExpr = ParseExpression();
 	}
+
+	return p;
 }
 
-void XE::Parser::ParseBlock()
+StatementNodePtr Parser::ParseStatement()
+{
+	switch( _Lex.LookToken().Type )
+	{
+	case TokenType::IF:
+		return ParseIf();
+	case TokenType::FOR:
+		return ParseFor();
+	case TokenType::WHILE:
+		return ParseWhile();
+	case TokenType::SWITCH:
+		return ParseSwitch();
+	case TokenType::BREAK:
+		return ParseBreak();
+	case TokenType::CONTINUE:
+		return ParseContinue();
+	case TokenType::RETURN:
+		return ParseReturn();
+	case TokenType::LBRACE:
+		return ParseBlock();
+	case TokenType::SEMICOLON:
+		_Lex.NextToken();
+		return ParseStatement();
+	case TokenType::IDENTIFIER:
+	case TokenType::VARIABLE:
+	case TokenType::FUNCTION:
+	case TokenType::ADDADD:
+	case TokenType::SUBSUB:
+		return ParseExpression();
+	}
+
+	throw XE::RuntimeException();
+}
+
+BlockNodePtr Parser::ParseBlock()
 {
 	Ignore( TokenType::LBRACE );
 
-	_Ast.PushBlock();
+	auto p = XE::make_shared<BlockNode>();
 
 	while( !Look( TokenType::RBRACE ) )
 	{
-		ParseStatement();
+		if( _Lex.LookToken().Type == TokenType::SEMICOLON )
+		{
+			_Lex.NextToken();
+		}
+		else
+		{
+			p->Statements.push_back( ParseStatement() );
+		}
 	}
-
-	_Ast.PopBlock();
 
 	Ignore( TokenType::RBRACE );
+
+	return p;
 }
 
-void XE::Parser::ParseStatement()
+IfNodePtr Parser::ParseIf()
 {
-	switch( _Lex.LookToken()._Token )
+	Ignore( TokenType::IF );
+
+	auto p = XE::make_shared<IfNode>();
+
+	p->Expr = ParseExprRelation();
+
+	p->Block = ParseBlock();
+
+	if( Skip( TokenType::ELSE ) )
+	{
+		p->ElseBlock = ParseBlock();
+	}
+
+	return p;
+}
+
+ForNodePtr Parser::ParseFor()
+{
+	Ignore( TokenType::FOR );
+
+	auto p = XE::make_shared<ForNode>();
+
+	Ignore( TokenType::LPAREN );
+	
+	p->Statement = ParseStatement();
+	p->Expr = ParseExpression();
+	p->Iter = ParseExpression();
+	
+	Ignore( TokenType::RPAREN );
+
+	p->Block = ParseBlock();
+
+	return p;
+}
+
+WhileNodePtr Parser::ParseWhile()
+{
+	Ignore( TokenType::WHILE );
+
+	auto p = XE::make_shared<WhileNode>();
+
+	p->Expr = ParseExpression();
+
+	p->Block = ParseBlock();
+
+	return p;
+}
+
+SwitchNodePtr Parser::ParseSwitch()
+{
+	Ignore( TokenType::SWITCH );
+
+	auto p = XE::make_shared<SwitchNode>();
+
+	p->Expr = ParseExpression();
+
+	Ignore( TokenType::LBRACE );
+
+	while( !Look(TokenType::RBRACE) )
+	{
+		if( _Lex.LookToken().Type == TokenType::CASE )
+		{
+			p->Cases.push_back( ParseCase() );
+		}
+		else if( _Lex.LookToken().Type == TokenType::DEFAULT )
+		{
+			p->Default = ParseDefault();
+			break;
+		}
+	}
+
+	Ignore( TokenType::RBRACE );
+
+	return p;
+}
+
+CaseNodePtr Parser::ParseCase()
+{
+	Ignore( TokenType::CASE );
+
+	auto p = XE::make_shared<CaseNode>();
+
+	p->Stat = ParseStatement();
+
+	p->Block = ParseBlock();
+
+	return p;
+}
+
+DefaultNodePtr Parser::ParseDefault()
+{
+	Ignore( TokenType::DEFAULT );
+
+	auto p = XE::make_shared<DefaultNode>();
+
+	p->Block = ParseBlock();
+
+	return p;
+}
+
+BreakNodePtr Parser::ParseBreak()
+{
+	Ignore( TokenType::BREAK );
+
+	return XE::make_shared<BreakNode>();
+}
+
+ContinueNodePtr Parser::ParseContinue()
+{
+	Ignore( TokenType::CONTINUE );
+
+	return XE::make_shared<ContinueNode>();
+}
+
+ReturnNodePtr Parser::ParseReturn()
+{
+	Ignore( TokenType::RETURN );
+
+	auto p = XE::make_shared<ReturnNode>();
+
+	p->Expr = ParseExpression();
+
+	return p;
+}
+
+ExpressionNodePtr Parser::ParseExpression()
+{
+	ExpressionNodePtr node = ParseExprRelation();
+
+	switch( _Lex.LookToken().Type )
+	{
+	case TokenType::ASSIGN:
+	case TokenType::MUL_ASSIGN:
+	case TokenType::DIV_ASSIGN:
+	case TokenType::MOD_ASSIGN:
+	case TokenType::ADD_ASSIGN:
+	case TokenType::SUB_ASSIGN:
+	case TokenType::AND_ASSIGN:
+	case TokenType::XOR_ASSIGN:
+	case TokenType::OR_ASSIGN:
+	case TokenType::L_SHFIT_ASSIGN:
+	case TokenType::R_SHFIT_ASSIGN:
+	{
+		auto p = XE::make_shared<ExprBinaryNode>();
+
+		p->Type = ExprBinaryNode::TokenTypeToBinaryType( _Lex.LookToken().Type );
+		_Lex.NextToken();
+
+		p->Left = node;
+		p->Right = ParseExpression();
+
+		return p;
+	}
+	break;
+	}
+
+	return node;
+}
+
+ExpressionNodePtr Parser::ParseExprRelation()
+{
+	ExpressionNodePtr node = ParseExprShiftition();
+
+	if(
+		_Lex.LookToken().Type == TokenType::EQUAL ||
+		_Lex.LookToken().Type == TokenType::NOT_EQUAL ||
+		_Lex.LookToken().Type == TokenType::GREA ||
+		_Lex.LookToken().Type == TokenType::GREA_EQUAL ||
+		_Lex.LookToken().Type == TokenType::LESS ||
+		_Lex.LookToken().Type == TokenType::LESS_EQUAL
+		)
+	{
+		auto p = XE::make_shared<ExprBinaryNode>();
+
+		p->Type = ExprBinaryNode::TokenTypeToBinaryType( _Lex.LookToken().Type );
+		_Lex.NextToken();
+
+		p->Left = node;
+		p->Right = ParseExprShiftition();
+
+		return p;
+	}
+
+	return node;
+}
+
+ExpressionNodePtr Parser::ParseExprShiftition()
+{
+	ExpressionNodePtr node = ParseExprAddition();
+
+	if(
+		_Lex.LookToken().Type == TokenType::L_SHFIT ||
+		_Lex.LookToken().Type == TokenType::R_SHFIT
+		)
+	{
+		auto p = XE::make_shared<ExprBinaryNode>();
+
+		p->Type = ExprBinaryNode::TokenTypeToBinaryType( _Lex.LookToken().Type );
+		_Lex.NextToken();
+
+		p->Left = node;
+		p->Right = ParseExprAddition();
+
+		return p;
+	}
+
+	return node;
+}
+
+ExpressionNodePtr Parser::ParseExprAddition()
+{
+	ExpressionNodePtr node = ParseExprMultiplication();
+
+	if(
+		_Lex.LookToken().Type == TokenType::ADD ||
+		_Lex.LookToken().Type == TokenType::SUB
+		)
+	{
+		auto p = XE::make_shared<ExprBinaryNode>();
+
+		p->Type = ExprBinaryNode::TokenTypeToBinaryType( _Lex.LookToken().Type );
+		_Lex.NextToken();
+
+		p->Left = node;
+		p->Right = ParseExprMultiplication();
+
+		return p;
+	}
+
+	return node;
+}
+
+ExpressionNodePtr Parser::ParseExprMultiplication()
+{
+	ExpressionNodePtr node = ParseExprUnary2();
+
+	if(
+		_Lex.LookToken().Type == TokenType::MUL ||
+		_Lex.LookToken().Type == TokenType::DIV ||
+		_Lex.LookToken().Type == TokenType::MOD
+		)
+	{
+		auto p = XE::make_shared<ExprBinaryNode>();
+
+		p->Type = ExprBinaryNode::TokenTypeToBinaryType( _Lex.LookToken().Type );
+		_Lex.NextToken();
+
+		p->Left = node;
+		p->Right = ParseExprUnary2();
+
+		return p;
+	}
+
+	return node;
+}
+
+ExpressionNodePtr Parser::ParseExprUnary2()
+{
+	ExpressionNodePtr node = nullptr;
+
+	if(
+		_Lex.LookToken().Type == TokenType::NEW ||
+		_Lex.LookToken().Type == TokenType::DELETE ||
+		_Lex.LookToken().Type == TokenType::SIZEOF ||
+		_Lex.LookToken().Type == TokenType::TYPEOF ||
+		_Lex.LookToken().Type == TokenType::NOT ||
+		_Lex.LookToken().Type == TokenType::REVE ||
+		_Lex.LookToken().Type == TokenType::ADDADD ||
+		_Lex.LookToken().Type == TokenType::SUBSUB
+		)
+	{
+		auto p = XE::make_shared<ExprUnaryNode>();
+
+		p->Type = ExprUnaryNode::TokenTypeToUnaryType( _Lex.LookToken().Type );
+		_Lex.NextToken();
+
+		p->Expr = ParseExprUnary1();
+
+		return p;
+	}
+
+	return node;
+}
+
+ExpressionNodePtr Parser::ParseExprUnary1()
+{
+	ExpressionNodePtr node = ParseExprFactor();
+
+	if( _Lex.LookToken().Type == TokenType::LPAREN  )
+	{
+		auto p = XE::make_shared<ExprCallbackNode>();
+
+		p->Variable = node;
+
+		p->Argument = ParseArgument();
+
+		return p;
+	}
+	else if( _Lex.LookToken().Type == TokenType::LBRACKET )
+	{
+		auto p = XE::make_shared<ExprIndexNode>();
+
+		p->Variable = node;
+
+		p->Expr = ParseExpression();
+
+		return p;
+	}
+	else if( _Lex.LookToken().Type == TokenType::DOT )
+	{
+		auto p = XE::make_shared<ExprVisitNode>();
+
+		p->Variable = node;
+
+		p->Property = ParseExprFactor();
+
+		return p;
+	}
+
+	return node;
+}
+
+ExpressionNodePtr Parser::ParseExprFactor()
+{
+	switch( _Lex.LookToken().Type )
 	{
 	case TokenType::VARIABLE:
-		ParseVariable();
-		break;
-	case TokenType::IF:
-		ParseIf();
-		break;
-	case TokenType::FOR:
-		ParseFor();
-		break;
-	case TokenType::WHILE:
-		ParseWhile();
-		break;
-	case TokenType::SWITCH:
-		ParseSwitch();
-		break;
-	case TokenType::BREAK:
-		ParseBreak();
-		break;
-	case TokenType::CONTINUE:
-		ParseContinue();
-		break;
-	case TokenType::RETURN:
-		ParseReturn();
-		break;
-	case TokenType::FUNCTION:
-		ParseCloseure();
-		break;
-	case TokenType::SEMICOLON:
-		Ignore( TokenType::SEMICOLON );
-		break;
-	default:
-		ParseExpression();
-		break;
+	{
+		return ParseExprVariable();
 	}
+	case TokenType::FUNCTION:
+	{
+		return ParseExprCloseure();
+	}
+	case TokenType::LBRACE:
+	{
+		Ignore( TokenType::LBRACE );
+		auto p = ParseExpression();
+		Ignore( TokenType::RBRACE );
+		return p;
+	}
+	case TokenType::IDENTIFIER:
+	{
+		auto p = XE::make_shared<ExprVariableNode>();
+
+		p->Name = Check( TokenType::IDENTIFIER ).Value;
+
+		return p;
+	}
+	case TokenType::NIL:
+	{
+		_Lex.NextToken();
+		auto p = XE::make_shared<NilNode>();
+		return p;
+	}
+	case TokenType::TRUE:
+	{
+		_Lex.NextToken();
+		auto p = XE::make_shared<BoolNode>();
+		p->Data = true;
+		return p;
+	}
+	case TokenType::FALSE:
+	{
+		_Lex.NextToken();
+		auto p = XE::make_shared<BoolNode>();
+		p->Data = false;
+		return p;
+	}
+	case TokenType::INT_CONST:
+	{
+		auto p = XE::make_shared<IntNode>();
+		p->Data = std::stoi( Check( TokenType::INT_CONST ).Value );
+		return p;
+	}
+	case TokenType::FLOAT_CONST:
+	{
+		auto p = XE::make_shared<FloatNode>();
+		p->Data = std::stof( Check( TokenType::FLOAT_CONST ).Value );
+		return p;
+	}
+	case TokenType::STRING_CONST:
+	{
+		auto p = XE::make_shared<StringNode>();
+		p->Data = Check( TokenType::STRING_CONST ).Value;
+		return p;
+	}
+	}
+
+	return nullptr;
 }
 
-void XE::Parser::ParseVariable()
+ExprArgumentNodePtr Parser::ParseArgument()
 {
+	Ignore( TokenType::LPAREN );
+
+	auto p = XE::make_shared<ExprArgumentNode>();
+
+	while( !Look(TokenType::RPAREN) )
+	{
+		p->Argument.push_back( ParseExpression() );
+	}
+	Ignore( TokenType::RPAREN );
+
+	return p;
+}
+
+ExprVariableNodePtr Parser::ParseExprVariable()
+{
+	Ignore( TokenType::VARIABLE );
+
+	auto p = XE::make_shared< ExprVariableNode>();
+
+	p->Name = Check( TokenType::IDENTIFIER ).Value;
+
+	return p;
+}
+
+ExprCloseureNodePtr Parser::ParseExprCloseure()
+{
+	Ignore( TokenType::FUNCTION );
+
+	auto p = XE::make_shared<ExprCloseureNode>();
+
+	static XE::uint64 index = 0;
+
+	p->Index = index++;
+
+	Ignore( TokenType::LPAREN );
+
+	while( !Look( TokenType::RPAREN ) )
+	{
+		p->Params.push_back( Check( TokenType::IDENTIFIER ).Value );
+
+		if( !Skip( TokenType::COLON ) )
+		{
+			break;
+		}
+	}
+
+	Ignore( TokenType::RPAREN );
+
+	p->Block = ParseBlock();
+
+	return p;
 
 }
 
-void XE::Parser::ParseIf()
+bool Parser::Look( TokenType val ) noexcept
 {
+	if (_Lex.LookToken().Type == val)
+	{
+		return true;
+	}
 
+	return false;
 }
 
-void XE::Parser::ParseFor()
+bool Parser::Skip( TokenType val ) noexcept
 {
-
-}
-
-void XE::Parser::ParseWhile()
-{
-
-}
-
-void XE::Parser::ParseSwitch()
-{
-
-}
-
-void XE::Parser::ParseCase()
-{
-
-}
-
-void XE::Parser::ParseDefault()
-{
-
-}
-
-void XE::Parser::ParseBreak()
-{
-
-}
-
-void XE::Parser::ParseContinue()
-{
-
-}
-
-void XE::Parser::ParseReturn()
-{
-
-}
-
-void XE::Parser::ParseCloseure()
-{
-
-}
-
-void XE::Parser::ParseExpression()
-{
-
-}
-
-void XE::Parser::ParseExprRelation()
-{
-
-}
-
-void XE::Parser::ParseExprShiftition()
-{
-
-}
-
-void XE::Parser::ParseExprAddition()
-{
-
-}
-
-void XE::Parser::ParseExprMultiplication()
-{
-
-}
-
-void XE::Parser::ParseUnary1()
-{
-
-}
-
-void XE::Parser::ParseUnary2()
-{
-
-}
-
-void XE::Parser::ParseFactor()
-{
-
-}
-
-void XE::Parser::ParseArgsList()
-{
-
-}
-
-bool XE::Parser::Look( TokenType val ) noexcept
-{
-	return _Lex.LookToken()._Token == val;
-}
-
-bool XE::Parser::Skip( TokenType val ) noexcept
-{
-	if( _Lex.LookToken()._Token == val )
+	if( _Lex.LookToken().Type == val )
 	{
 		_Lex.NextToken();
 		return true;
@@ -381,9 +763,9 @@ bool XE::Parser::Skip( TokenType val ) noexcept
 	return false;
 }
 
-void XE::Parser::Ignore( TokenType val )
+void Parser::Ignore( TokenType val )
 {
-	if( _Lex.LookToken()._Token == val )
+	if( _Lex.LookToken().Type == val )
 	{
 		_Lex.NextToken();
 	}
@@ -391,11 +773,14 @@ void XE::Parser::Ignore( TokenType val )
 	throw XE::RuntimeException();
 }
 
-const XE::Token & XE::Parser::Check( TokenType val )
+const Token & Parser::Check( TokenType val )
 {
-	if( _Lex.LookToken()._Token == val )
+	const Token & ret = _Lex.LookToken();
+
+	if( ret.Type == val )
 	{
-		return _Lex.NextToken();
+		_Lex.NextToken();
+		return ret;
 	}
 
 	throw XE::RuntimeException();

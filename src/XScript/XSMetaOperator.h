@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class XSCRIPT_API XSMetaOperator : public IMetaOperator
+class XSMetaOperator : public IMetaOperator
 {
 public:
 	XSMetaOperator( const String & Name, IMetaInfoPtr Result, IMetaInfoPtr Parameter, IMetaClassPtr Owner, const String & ModuleName );

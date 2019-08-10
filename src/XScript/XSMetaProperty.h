@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class XSCRIPT_API XSMetaProperty : public XE::IMetaProperty
+class XSMetaProperty : public XE::IMetaProperty
 {
 public:
 	XSMetaProperty( const String & Name, XE::uint8 Flag, IMetaInfoPtr Value, IMetaClassPtr Owner, const String & ModuleName );

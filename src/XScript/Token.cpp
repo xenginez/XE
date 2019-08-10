@@ -3,19 +3,19 @@
 USING_XE
 
 XE::Token::Token()
-	: _Token( TokenType::UNKNOWN ), _Value( 0 )
+	: Type( TokenType::UNKNOWN ), Value( 0 )
 {
 	
 }
 
 XE::Token::Token( TokenType val )
-	: _Token( val )
+	: Type( val )
 {
 
 }
 
 XE::Token::Token( TokenType type, const std::string & val )
-	: _Token( type ), _Value( val )
+	: Type( type ), Value( val )
 {
 
 }
@@ -62,6 +62,8 @@ XE::TokenType XE::Token::StringToType( const std::string & val )
 	{"typeof", TokenType::TYPEOF},
 	{"!", TokenType::NOT},
 	{"~", TokenType::REVE},
+	{"++", TokenType::ADDADD},
+	{"--", TokenType::SUBSUB},
 	{"{", TokenType::LBRACE},
 	{"}", TokenType::RBRACE},
 	{"(", TokenType::LPAREN},
@@ -154,6 +156,8 @@ const std::string & XE::Token::TypeToString( TokenType val )
 	{TokenType::TYPEOF, "typeof"},
 	{TokenType::NOT, "!"},
 	{TokenType::REVE, "~"},
+	{TokenType::ADDADD, "++"},
+	{TokenType::SUBSUB, "--"},
 	{TokenType::LBRACE, "{"},
 	{TokenType::RBRACE, "}"},
 	{TokenType::LPAREN, "("},

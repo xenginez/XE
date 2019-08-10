@@ -21,6 +21,42 @@ DECL_PTR( XSMetaMethod );
 DECL_PTR( XSMetaOperator );
 DECL_PTR( XSMetaProperty );
 
+DECL_PTR( ASTNode );
+DECL_PTR( ImportNode );
+DECL_PTR( UsingNode );
+DECL_PTR( ModuleNode );
+DECL_PTR( EnumNode );
+DECL_PTR( ClassNode );
+DECL_PTR( MethodNode );
+DECL_PTR( OperatorNode );
+DECL_PTR( PropertyNode );
+DECL_PTR( StatementNode );
+DECL_PTR( NilNode );
+DECL_PTR( IntNode );
+DECL_PTR( BoolNode );
+DECL_PTR( FloatNode );
+DECL_PTR( StringNode );
+DECL_PTR( BlockNode );
+DECL_PTR( IfNode );
+DECL_PTR( ForNode );
+DECL_PTR( WhileNode );
+DECL_PTR( SwitchNode );
+DECL_PTR( CaseNode );
+DECL_PTR( DefaultNode );
+DECL_PTR( BreakNode );
+DECL_PTR( ContinueNode );
+DECL_PTR( ReturnNode );
+DECL_PTR( NewNode );
+DECL_PTR( SizeofNode );
+DECL_PTR( TypeofNode );
+DECL_PTR( ExpressionNode );
+DECL_PTR( ExprUnaryNode );
+DECL_PTR( ExprBinaryNode );
+DECL_PTR( ExprVariableNode );
+DECL_PTR( ExprCloseureNode );
+DECL_PTR( ExprArgumentNode );
+
+
 enum class TokenType
 {
 	UNKNOWN = 0,
@@ -72,7 +108,9 @@ enum class TokenType
 	TYPEOF,					// typeof
 	NOT,					// !
 	REVE,					// ~
-	UNARY_END = REVE,
+	ADDADD,					// ++
+	SUBSUB,					// --
+	UNARY_END = SUBSUB,
 
 	SPE_BEG,
 	LBRACE = SPE_BEG,		// {

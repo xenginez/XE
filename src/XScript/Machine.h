@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class XSCRIPT_API Machine
+class Machine
 {
 
 };

@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class XSCRIPT_API XSMetaClass : public XE::IMetaClass
+class XSMetaClass : public XE::IMetaClass
 {
 public:
 	XSMetaClass( const String & Name, XE::uint64 Size, IMetaClassPtr Super, IMetaInfoPtr Owner, const String & ModuleName );

@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class XSCRIPT_API Lexer : public std::enable_shared_from_this< Lexer >, public XE::NonCopyable
+class Lexer : public std::enable_shared_from_this< Lexer >, public XE::NonCopyable
 {
 public:
 	Lexer( const std::string & val );

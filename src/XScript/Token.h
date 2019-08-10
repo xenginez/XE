@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class XSCRIPT_API Token
+class Token
 {
 public:
 	Token();
@@ -28,8 +28,8 @@ public:
 	static const std::string & TypeToString( TokenType val );
 
 public:
-	TokenType _Token;
-	std::string _Value;
+	TokenType Type;
+	std::string Value;
 };
 
 END_XE_NAMESPACE

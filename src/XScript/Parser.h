@@ -9,87 +9,84 @@
 #ifndef PARSER_H__371E59F2_4FF4_41A3_B76F_28F7AC32B2E8
 #define PARSER_H__371E59F2_4FF4_41A3_B76F_28F7AC32B2E8
 
-#include "AST.h"
 #include "Lexer.h"
+#include "ASTNode.h"
 
 BEG_XE_NAMESPACE
 
-class XSCRIPT_API Parser
+class Parser
 {
 public:
-	Parser( InterpreterPtr inter, const std::string & src );
+	Parser( const std::string & src );
 
-	Parser( InterpreterPtr inter, const std::filesystem::path & path, const std::string & src );
+	Parser( const std::filesystem::path & path, const std::string & src );
 
 	~Parser();
 
 public:
-	const AST & GetAST() const;
-
-public:
-	const AST & Parse();
+	ModuleNodePtr ParseModule();
 
 private:
-	void Using();
+	UsingNodePtr ParseUsing();
 
-	void Import();
+	ImportNodePtr ParseImport();
 
 private:
-	void ParseEnum();
+	EnumNodePtr ParseEnum();
 		 
-	void ParseClass();
-		 
-	void ParseMethod();
-		 
-	void ParseProperty();
+	ClassNodePtr ParseClass();
+		
+private:
+	MethodNodePtr ParseMethod();
 
-	void ParseOperator();
+	OperatorNodePtr ParseOperator();
+
+	PropertyNodePtr ParseProperty();
 
 private:
-	void ParseBlock();
+	StatementNodePtr ParseStatement();
 
-	void ParseStatement();
+	BlockNodePtr ParseBlock();
 
-	void ParseVariable();
+	IfNodePtr ParseIf();
 
-	void ParseIf();
+	ForNodePtr ParseFor();
 
-	void ParseFor();
+	WhileNodePtr ParseWhile();
 
-	void ParseWhile();
+	SwitchNodePtr ParseSwitch();
 
-	void ParseSwitch();
+	CaseNodePtr ParseCase();
 
-	void ParseCase();
+	DefaultNodePtr ParseDefault();
 
-	void ParseDefault();
+	BreakNodePtr ParseBreak();
 
-	void ParseBreak();
+	ContinueNodePtr ParseContinue();
 
-	void ParseContinue();
+	ReturnNodePtr ParseReturn();
 
-	void ParseReturn();
+	ExpressionNodePtr ParseExpression();
 
-	void ParseCloseure();
+	ExpressionNodePtr ParseExprRelation();
 
-	void ParseExpression();
+	ExpressionNodePtr ParseExprShiftition();
 
-	void ParseExprRelation();
+	ExpressionNodePtr ParseExprAddition();
 
-	void ParseExprShiftition();
+	ExpressionNodePtr ParseExprMultiplication();
 
-	void ParseExprAddition();
+	ExpressionNodePtr ParseExprUnary2();
 
-	void ParseExprMultiplication();
+	ExpressionNodePtr ParseExprUnary1();
 
-	void ParseUnary1();
+	ExpressionNodePtr ParseExprFactor();
 
-	void ParseUnary2();
+	ExprArgumentNodePtr ParseArgument();
 
-	void ParseFactor();
+	ExprVariableNodePtr ParseExprVariable();
 
-private:
-	void ParseArgsList();
+	ExprCloseureNodePtr ParseExprCloseure();
 
 private:
 	bool Look( TokenType val ) noexcept;
@@ -101,9 +98,7 @@ private:
 	const Token & Check( TokenType val );
 
 private:
-	AST _Ast;
 	Lexer _Lex;
-	InterpreterWPtr _Inter;
 	std::filesystem::path _Path;
 };
 

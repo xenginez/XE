@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class XSCRIPT_API XSMetaMethod : public XE::IMetaMethod
+class XSMetaMethod : public XE::IMetaMethod
 {
 public:
 	XSMetaMethod( const String & Name, IMetaInfoPtr Result, ParameterType && Parameter, IMetaClassPtr Owner, const String & ModuleName );
