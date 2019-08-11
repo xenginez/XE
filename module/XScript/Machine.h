@@ -13,9 +13,24 @@
 
 BEG_XE_NAMESPACE
 
-class Machine
+class RegisterGroup
 {
 
+};
+
+class Machine
+{
+public:
+	Machine();
+
+	~Machine();
+
+public:
+	void Exec( XE::basic_memory_view<XE::uint8> val );
+
+private:
+	Array<void( Machine:: * )( )> _Callbacks;
+	XE::basic_memory_view<XE::uint8>::iterator _Cursor;
 };
 
 END_XE_NAMESPACE

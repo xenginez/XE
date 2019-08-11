@@ -71,5 +71,5 @@ bool XE::Frustum::Intersect( const Frustum & val ) const
 
 std::pair<bool, XE::real> XE::Frustum::Intersect( const Ray & ray, bool discardInside /*= true */ ) const
 {
-	return { false, 0 };
+	return { false, 0.0f };
 }

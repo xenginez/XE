@@ -25,7 +25,7 @@ public:
 	void GenCode( Codegen & val ) override;
 
 public:
-	XE::String Str;
+	XE::String Name;
 };
 
 class UsingNode : public ASTNode
@@ -62,6 +62,7 @@ public:
 	void GenCode( Codegen & val ) override;
 
 public:
+	String Owner;
 	Array<XE::String> Values;
 };
 
@@ -71,6 +72,7 @@ public:
 	void GenCode( Codegen & val ) override;
 
 public:
+	String Owner;
 	XE::String Super;
 	Array<EnumNodePtr> Enums;
 	Array<ClassNodePtr> Classes;
@@ -85,6 +87,7 @@ public:
 	void GenCode( Codegen & val ) override;
 
 public:
+	String Owner;
 	Array<XE::String> Params;
 	BlockNodePtr Block;
 };
@@ -95,6 +98,7 @@ public:
 	void GenCode( Codegen & val ) override;
 
 public:
+	String Owner;
 	Array<XE::String> Params;
 	BlockNodePtr Block;
 };
@@ -105,12 +109,15 @@ public:
 	void GenCode( Codegen & val ) override;
 
 public:
+	String Owner;
+	XE::uint8 Flag;
 	ExpressionNodePtr InitExpr;
 };
 
 
 class StatementNode : public ASTNode
 {
+
 };
 
 class BlockNode : public StatementNode
@@ -130,7 +137,7 @@ public:
 public:
 	ExpressionNodePtr Expr;
 	BlockNodePtr Block;
-	BlockNodePtr ElseBlock;
+	StatementNodePtr Else;
 };
 
 class ForNode : public StatementNode
@@ -139,7 +146,7 @@ public:
 	void GenCode( Codegen & val ) override;
 
 public:
-	StatementNodePtr Statement;
+	StatementNodePtr Stat;
 	ExpressionNodePtr Expr;
 	ExpressionNodePtr Iter;
 	BlockNodePtr Block;
@@ -172,7 +179,7 @@ public:
 	void GenCode( Codegen & val ) override;
 
 public:
-	StatementNodePtr Stat;
+	ExpressionNodePtr Expr;
 	BlockNodePtr Block;
 };
 
@@ -236,6 +243,7 @@ public:
 
 class ExpressionNode : public StatementNode
 {
+
 };
 
 class ExprUnaryNode : public ExpressionNode

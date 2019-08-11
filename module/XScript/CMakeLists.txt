@@ -5,14 +5,11 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${CMAKE_CURRENT_SOURCE_DIR}/../../targe
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_CURRENT_SOURCE_DIR}/../../target/${XE_PLATFORM_PATH}/release/bin/module)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${CMAKE_CURRENT_SOURCE_DIR}/../../target/${XE_PLATFORM_PATH}/release/bin/module)
 
-add_definitions(-DD3DRHI_EXPORT)
+add_definitions(-DXSCRIPT_EXPORT)
 
 FILE(GLOB SOURCE_FILES *.h *.hpp *.cpp *.inc)
-add_library(D3DRHI ${SOURCE_FILES})
+add_library(XScript ${SOURCE_FILES})
 
-target_link_libraries(D3DRHI 
-	Core
-	
-	dxgi
-	d3d12
-	d3dcompiler)
+target_link_libraries(XScript 
+	Reflect
+	)

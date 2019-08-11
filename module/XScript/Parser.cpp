@@ -70,7 +70,7 @@ ImportNodePtr Parser::ParseImport()
 
 	auto p = XE::make_shared< ImportNode >();
 
-	p->Str = Check( TokenType::STRING_CONST ).Value;
+	p->Name = Check( TokenType::STRING_CONST ).Value;
 
 	return p;
 }
@@ -120,19 +120,39 @@ ClassNodePtr Parser::ParseClass()
 		switch( _Lex.LookToken().Type )
 		{
 		case TokenType::ENUM:
-			p->Enums.push_back( ParseEnum() );
+		{
+			auto pp = ParseEnum();
+			pp->Owner = p->Name;
+			p->Enums.push_back( pp );
+		}
 			break;
 		case TokenType::CLASS:
-			p->Classes.push_back( ParseClass() );
+		{
+			auto pp = ParseClass();
+			pp->Owner = p->Name;
+			p->Classes.push_back( pp );
+		}
 			break;
 		case TokenType::FUNCTION:
-			p->Methods.push_back( ParseMethod() );
+		{
+			auto pp = ParseMethod();
+			pp->Owner = p->Name;
+			p->Methods.push_back( pp );
+		}
 			break;
 		case TokenType::OPERATOR:
-			p->Operators.push_back( ParseOperator() );
+		{
+			auto pp = ParseOperator();
+			pp->Owner = p->Name;
+			p->Operators.push_back( pp );
+		}
 			break;
 		case TokenType::VARIABLE:
-			p->Propertys.push_back( ParseProperty() );
+		{
+			auto pp = ParseProperty();
+			pp->Owner = p->Name;
+			p->Propertys.push_back( pp );
+		}
 			break;
 		case TokenType::SEMICOLON:
 			_Lex.NextToken();
@@ -225,6 +245,44 @@ PropertyNodePtr Parser::ParseProperty()
 
 	auto p = XE::make_shared<PropertyNode>();
 
+	if( Look( TokenType::LBRACKET ) )
+	{
+		Ignore( TokenType::LBRACKET );
+
+		while( !Look(TokenType::RBRACKET) )
+		{
+			const std::string& s = Check( TokenType::IDENTIFIER ).Value;
+
+			if( s == "NoClone" )
+			{
+				p->Flag |= IMetaProperty::NoClone;
+			}
+			else if( s == "NoDesign" )
+			{
+				p->Flag |= IMetaProperty::NoClone;
+			}
+			else if( s == "NoRuntime" )
+			{
+				p->Flag |= IMetaProperty::NoClone;
+			}
+			else if( s == "NoSerialize" )
+			{
+				p->Flag |= IMetaProperty::NoClone;
+			}
+			else
+			{
+				throw XE::RuntimeException();
+			}
+
+			if( !Skip( TokenType::COMMA ) )
+			{
+				break;
+			}
+		}
+
+		Ignore( TokenType::RBRACKET );
+	}
+
 	p->Name = Check( TokenType::IDENTIFIER ).Value;
 
 	if( Skip( TokenType::ASSIGN ) )
@@ -304,7 +362,7 @@ IfNodePtr Parser::ParseIf()
 
 	if( Skip( TokenType::ELSE ) )
 	{
-		p->ElseBlock = ParseBlock();
+		p->Else = ParseStatement();
 	}
 
 	return p;
@@ -318,7 +376,7 @@ ForNodePtr Parser::ParseFor()
 
 	Ignore( TokenType::LPAREN );
 	
-	p->Statement = ParseStatement();
+	p->Stat = ParseStatement();
 	p->Expr = ParseExpression();
 	p->Iter = ParseExpression();
 	
@@ -376,7 +434,7 @@ CaseNodePtr Parser::ParseCase()
 
 	auto p = XE::make_shared<CaseNode>();
 
-	p->Stat = ParseStatement();
+	p->Expr = ParseExpression();
 
 	p->Block = ParseBlock();
 

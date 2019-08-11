@@ -64,7 +64,6 @@ add_subdirectory(src)
 
 add_dependencies(Memory		Base)
 add_dependencies(Reflect	Base Memory)
-add_dependencies(XScript	Base Memory Reflect)
 add_dependencies(Utils		Base Memory Reflect)
 add_dependencies(Math		Base Memory Reflect Utils)
 add_dependencies(RHI		Base Memory Reflect Utils Math)
@@ -78,9 +77,9 @@ add_dependencies(Navigation Base Memory Reflect Utils Math RHI Interface)
 add_dependencies(AI			Base Memory Reflect Utils Math RHI Interface World)
 add_dependencies(GUI		Base Memory Reflect Utils Math RHI Interface Graphics)
 add_dependencies(Render		Base Memory Reflect Utils Math RHI Interface Graphics)
-add_dependencies(Components	Base Memory Reflect Utils Math RHI Interface Graphics World Render Audio Physics Animation Navigation AI GUI XScript)
-add_dependencies(Core		Base Memory Reflect Utils Math RHI Interface Graphics World Render Audio Physics Animation Navigation AI GUI XScript Components)
-add_dependencies(XE			Base Memory Reflect Utils Math RHI Interface Graphics World Render Audio Physics Animation Navigation AI GUI XScript Components Core)
+add_dependencies(Components	Base Memory Reflect Utils Math RHI Interface Graphics World Render Audio Physics Animation Navigation AI GUI)
+add_dependencies(Core		Base Memory Reflect Utils Math RHI Interface Graphics World Render Audio Physics Animation Navigation AI GUI Components)
+add_dependencies(XE			Base Memory Reflect Utils Math RHI Interface Graphics World Render Audio Physics Animation Navigation AI GUI Components Core)
 
 target_link_libraries(Base
 
@@ -98,9 +97,6 @@ target_link_libraries(Reflect
 		pugixml
 		)
 		
-target_link_libraries(XScript
-		Reflect)
-
 target_link_libraries(Utils
 		Reflect)
 
@@ -172,7 +168,7 @@ target_link_libraries(Render
 		Graphics)
 
 target_link_libraries(Components
-		Audio Render Physics Animation Navigation AI GUI XScript)
+		Audio Render Physics Animation Navigation AI GUI)
 
 target_link_libraries(Core
 		Components
