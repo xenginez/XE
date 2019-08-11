@@ -18,44 +18,13 @@ void XE::RenderQueue::Flush( CommandListPtr & val )
 
 	SortKeyPair pair;
 
-	while( !_Background.empty() )
+	while( !_Queue.empty() )
 	{
-		pair = _Background.top();
-		DrawCall * call = (DrawCall * )( p + pair.draw );
-		call->Execute( val );
-		_Background.pop();
-	}
+		pair = _Queue.top();
 
-	while( !_Geometry.empty() )
-	{
-		pair = _Geometry.top();
-		DrawCall * call = (DrawCall * )( p + pair.draw );
-		call->Execute( val );
-		_Geometry.pop();
-	}
+		( (DrawCall * )( p + pair.second ) )->Execute( val );
 
-	while( !_AlphaTest.empty() )
-	{
-		pair = _AlphaTest.top();
-		DrawCall * call = (DrawCall * )( p + pair.draw );
-		call->Execute( val );
-		_AlphaTest.pop();
-	}
-
-	while( !_Transparent.empty() )
-	{
-		pair = _Transparent.top();
-		DrawCall * call = (DrawCall * )( p + pair.draw );
-		call->Execute( val );
-		_Transparent.pop();
-	}
-
-	while( !_Overlay.empty() )
-	{
-		pair = _Overlay.top();
-		DrawCall * call = (DrawCall * )( p + pair.draw );
-		call->Execute( val );
-		_Overlay.pop();
+		_Queue.pop();
 	}
 
 	_DrawCalls.clear();

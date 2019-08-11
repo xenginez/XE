@@ -9,18 +9,17 @@
 #ifndef DRAWCALL_H__6689FA03_2D4B_4E73_98E6_984256426120
 #define DRAWCALL_H__6689FA03_2D4B_4E73_98E6_984256426120
 
-#include "Type.h"
+#include "SortKey.h"
 
 BEG_XE_NAMESPACE
 
 class GRAPHICS_API DrawCall : public XE::NonCopyable
 {
 public:
-	SortKey GetSortKey() const;
+	virtual void Execute( CommandListPtr & val ) = 0;
 
 public:
-	virtual void Execute( CommandListPtr & val );
-
+	SortKey _Key;
 };
 
 class GRAPHICS_API RenderDrawCall : public DrawCall
@@ -42,12 +41,6 @@ template< typename ... _DC >class DrawCallPacket : public DrawCall
 {
 public:
 	std::tuple<_DC...> _DrawCalls;
-
-public:
-	SortKey GetSortKey() const
-	{
-		return std::get<0>( _DrawCalls ).GetSortKey();
-	}
 
 public:
 	void Execute( CommandListPtr & val ) override

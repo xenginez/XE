@@ -16,6 +16,9 @@ BEG_XE_NAMESPACE
 class GRAPHICS_API RenderQueue : public std::enable_shared_from_this< RenderQueue > , public NonCopyable
 {
 public:
+	using SortKeyPair = Pair<SortKey, XE::uint64>;
+
+public:
 	RenderQueue();
 
 	virtual ~RenderQueue();
@@ -23,48 +26,25 @@ public:
 public:
 	template<typename _DC> _DC * AddDrawCall()
 	{
-		static_assert( std::is_base_of_v<DrawCall, _DC>, "" );
+		static_assert( std::is_base_of_v<DrawCall, _DC>, "must inherit from \'DrawCall\' !" );
 
 		XE::uint64 size = _DrawCalls.size();
 
 		_DrawCalls.insert( _DrawCalls.end(), sizeof( _DC ), 0 );
 
-		DrawCall * p = new ( _DrawCalls.data() + size ) _DC();
-
-		p->_Queue = this;
-
-		return static_cast< _DC * >( p );
+		return new ( _DrawCalls.data() + size ) _DC();
 	}
 
 	template< typename _DC > void Submit( _DC * val )
 	{
-		static_assert( std::is_base_of_v<DrawCall, _DC>, "" );
+		static_assert( std::is_base_of_v<DrawCall, _DC>, "must inherit from \'DrawCall\' !" );
 
 		SortKeyPair pair;
 
-		pair.key = val->GetSortKey();
-		pair.draw = ( XE::uint64 )val - ( XE::uint64 )_DrawCalls.data();
+		pair.first = val->_Key;
+		pair.second = ( XE::uint64 )val - ( XE::uint64 )_DrawCalls.data();
 
-		if( pair.key.group <= RenderGroup::BACKGROUND )
-		{
-			_Background.push( pair );
-		}
-		else if( pair.key.group <= RenderGroup::GEOMETRY )
-		{
-			_Geometry.push( pair );
-		}
-		else if( pair.key.group <= RenderGroup::ALPHATEST )
-		{
-			_AlphaTest.push( pair );
-		}
-		else if( pair.key.group <= RenderGroup::TRANSPARENT )
-		{
-			_Transparent.push( pair );
-		}
-		else if( pair.key.group <= RenderGroup::OVERLAY )
-		{
-			_Overlay.push( pair );
-		}
+		_Queue.push( std::move( pair ) );
 	}
 
 public:
@@ -72,11 +52,7 @@ public:
 
 private:
 	Array<XE::uint8> _DrawCalls;
-	std::priority_queue<SortKeyPair, Array<SortKeyPair>, BackgroundLess> _Background;
-	std::priority_queue<SortKeyPair, Array<SortKeyPair>, GeometryLess> _Geometry;
-	std::priority_queue<SortKeyPair, Array<SortKeyPair>, AlphaTestLess> _AlphaTest;
-	std::priority_queue<SortKeyPair, Array<SortKeyPair>, TransparentLess> _Transparent;
-	std::priority_queue<SortKeyPair, Array<SortKeyPair>, OverlayLess> _Overlay;
+	std::priority_queue<SortKeyPair, Array<SortKeyPair>> _Queue;
 };
 
 END_XE_NAMESPACE
