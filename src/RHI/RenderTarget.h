@@ -163,8 +163,6 @@ public:
 	void SetTitle( const String & val );
 
 public:
-	SwapChainPtr GetSwapChain() const;
-
 	WindowHandle GetWindowHandle() const;
 
 private:
@@ -175,7 +173,6 @@ private:
 	String _Title = "XE";
 
 	WindowHandle _Handle;
-	SwapChainPtr _SwapChain;
 };
 
 class RHI_API RenderTexture2D : public RenderTarget

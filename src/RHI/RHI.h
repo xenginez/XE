@@ -11,10 +11,8 @@
 
 #include "Image.h"
 #include "Query.h"
-#include "Fence.h"
 #include "Buffer.h"
 #include "Shader.h"
-#include "RenderContext.h"
 #include "Sampler.h"
 #include "Texture.h"
 #include "Viewport.h"
@@ -23,6 +21,7 @@
 #include "InputLayout.h"
 #include "RenderTarget.h"
 #include "PipelineState.h"
+#include "RenderContext.h"
 #include "UnorderedAccess.h"
 
 #endif //__RHI_H__B57E1D98_CE7B_4EF9_BEEC_C2CB1911EEB2

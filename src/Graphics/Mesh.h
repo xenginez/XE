@@ -13,9 +13,28 @@
 
 BEG_XE_NAMESPACE
 
+class GRAPHICS_API SubMesh : public Object
+{
+	OBJECT( SubMesh, Object )
+
+public:
+	SubMesh();
+
+	~SubMesh() override;
+
+public:
+	const AABB & GetBoundingBox() const;
+
+	const IndexBufferPtr & GetIndexBuffer() const;
+
+private:
+	AABB _BoundingBox;
+	IndexBufferPtr _IndexBuffer;
+};
+
 class GRAPHICS_API Mesh : public Object
 {
-	OBJECT(Mesh, Object)
+	OBJECT( Mesh, Object )
 	
 public:
 	Mesh();
@@ -23,18 +42,22 @@ public:
 	~Mesh() override;
 
 public:
-	const AABB & GetBoundingBox() const;
+	AABB GetBoundingBox() const;
 
 	const InputLayoutPtr & GetInputLayout() const;
 
-	const IndexBufferPtr & GetIndexBuffer() const;
-
 	const VertexBufferPtr & GetVertexBuffer() const;
 
+public:
+	XE::uint64 GetSubMeshCount() const;
+
+	const Array<SubMesh> & GetSubMeshs() const;
+
+	const SubMesh & GetSubMesh( XE::uint64 val ) const;
+
 private:
-	AABB _BoundingBox;
+	Array<SubMesh> _SubMesh;
 	InputLayoutPtr _InputLayout;
-	IndexBufferPtr _IndexBuffer;
 	VertexBufferPtr _VertexBuffer;
 };
 

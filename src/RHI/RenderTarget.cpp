@@ -1,8 +1,7 @@
 #include "RenderTarget.h"
 
-#include "RenderContext.h"
 #include "Viewport.h"
-#include "SwapChain.h"
+#include "RenderContext.h"
 
 USING_XE
 
@@ -168,8 +167,6 @@ XE::RenderWindow::RenderWindow()
 
 XE::RenderWindow::~RenderWindow()
 {
-	_SwapChain = nullptr;
-
 	Platform::DestroyWindow( _Handle.GetValue() );
 }
 
@@ -332,11 +329,6 @@ void XE::RenderWindow::SetTitle( const String & val )
 {
 	_Title = val;
 	Platform::SetWindowTitle( _Handle.GetValue(), _Title );
-}
-
-XE::SwapChainPtr XE::RenderWindow::GetSwapChain() const
-{
-	return _SwapChain;
 }
 
 XE::WindowHandle XE::RenderWindow::GetWindowHandle() const

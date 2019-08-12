@@ -44,6 +44,11 @@ public:
 
 };
 
+template< typename T > XE_INLINE SortKey MakeSortKey( const T & val )
+{
+	return SortKey();
+}
+
 END_XE_NAMESPACE
 
 #endif // SORTKEY_H__4EBCA720_61A2_4DB5_8EF8_0A6508E209F6
