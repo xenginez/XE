@@ -34,8 +34,8 @@ public:
 	FenceHandle GetHandle() const;
 
 private:
-	ContextPtr _Device;
 	FenceHandle _Handle;
+	RenderContextPtr _Context;
 };
 
 END_XE_NAMESPACE

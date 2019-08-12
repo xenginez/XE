@@ -12,8 +12,14 @@
 #include "Mesh.h"
 #include "Light.h"
 #include "Camera.h"
+#include "SortKey.h"
+#include "DrawCall.h"
+#include "Skeleton.h"
 #include "Material.h"
 #include "Renderer.h"
+#include "Technique.h"
 #include "Renderable.h"
+#include "RenderPass.h"
+#include "RenderQueue.h"
 
 #endif // __GRAPHICS_H__D87E83EA_7AC7_4BE0_A5B3_A3C721ED83B5

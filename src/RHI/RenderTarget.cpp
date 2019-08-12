@@ -1,6 +1,6 @@
 #include "RenderTarget.h"
 
-#include "Context.h"
+#include "RenderContext.h"
 #include "Viewport.h"
 #include "SwapChain.h"
 
@@ -140,7 +140,7 @@ void XE::RenderTarget::SetAlphaBlendOp( const BlendOperation & val )
 
 void XE::RenderTarget::ClearColor( const Color & val )
 {
-	_Device->ClearColor( _Handle, val );
+	_Context->ClearColor( _Handle, val );
 }
 
 XE::ViewportPtr XE::RenderTarget::GetViewport( XE::uint64 val ) const

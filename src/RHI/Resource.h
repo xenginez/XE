@@ -26,9 +26,9 @@ public:
 	virtual bool Prepare() = 0;
 
 public:
-	ContextPtr GetContext() const;
+	RenderContextPtr GetRenderContext() const;
 
-	void SetContext( const ContextPtr & val );
+	void SetRenderContext( const RenderContextPtr & val );
 
 public:
 	ResourceHandle GetHandle() const;
@@ -39,8 +39,8 @@ protected:
 	void Unmap( XE::uint32 sub_resource, XE::uint64 begin, XE::uint64 end );
 
 private:
-	ContextPtr _Device;
 	ResourceHandle _Handle;
+	RenderContextPtr _Context;
 };
 
 END_XE_NAMESPACE

@@ -59,7 +59,7 @@ DECL_PTR( RenderTexture2D );
 
 DECL_PTR( Image );
 DECL_PTR( Fence );
-DECL_PTR( Context );
+DECL_PTR( RenderContext );
 DECL_PTR( Sampler );
 DECL_PTR( Viewport );
 DECL_PTR( SwapChain );
@@ -165,10 +165,9 @@ enum class AttributeType
 };
 DECL_META_ENUM( RHI_API, AttributeType );
 
-enum class DeviceType
+enum class RenderContextType
 {
 	SOFT,
-	WEBGL,
 	METAL,
 	VULKAN,
 	OPENGL,
@@ -177,7 +176,7 @@ enum class DeviceType
 	DIRECT3D11,
 	DIRECT3D12,
 };
-DECL_META_ENUM( RHI_API, DeviceType );
+DECL_META_ENUM( RHI_API, RenderContextType );
 
 enum class UniformType
 {

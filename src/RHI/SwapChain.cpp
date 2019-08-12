@@ -1,16 +1,16 @@
 #include "SwapChain.h"
 
-#include "Context.h"
+#include "RenderContext.h"
 
-XE::SwapChain::SwapChain( ContextPtr device, WindowHandle handle )
-	:_Device( device )
+XE::SwapChain::SwapChain( RenderContextPtr device, WindowHandle handle )
+	:_Context( device )
 {
 	//_Handle = _Device->CreateSwapChain( handle );
 }
 
 XE::SwapChain::~SwapChain()
 {
-	_Device->DestroySwapChain( _Handle );
+	_Context->DestroySwapChain( _Handle );
 }
 
 XE::SwapChainHandle XE::SwapChain::GetHandle() const

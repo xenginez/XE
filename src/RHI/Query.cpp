@@ -1,6 +1,6 @@
 #include "Query.h"
 
-#include "Context.h"
+#include "RenderContext.h"
 
 USING_XE
 
@@ -19,17 +19,17 @@ XE::Query::~Query()
 
 void XE::Query::Begin( XE::uint32 val )
 {
-	_Device->BeginQuery( _Handle, val );
+	_Context->BeginQuery( _Handle, val );
 }
 
 void XE::Query::End( XE::uint32 val )
 {
-	_Device->EndQuery( _Handle, val );
+	_Context->EndQuery( _Handle, val );
 }
 
 XE::Variant XE::Query::ReadBack() const
 {
-	return _Device->ReadBack( _Handle );
+	return _Context->ReadBack( _Handle );
 }
 
 XE::QueryHandle XE::Query::GetHandle() const

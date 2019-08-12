@@ -1,6 +1,6 @@
 #include "Buffer.h"
 
-#include "Context.h"
+#include "RenderContext.h"
 
 USING_XE
 
@@ -145,17 +145,17 @@ XE::DepthStencilBuffer::~DepthStencilBuffer()
 
 bool XE::DepthStencilBuffer::ClearDepth( XE::real val )
 {
-	return GetContext()->ClearDepth( GetHandle(), val );
+	return GetRenderContext()->ClearDepth( GetHandle(), val );
 }
 
 bool XE::DepthStencilBuffer::ClearStencil( XE::uint32 val )
 {
-	return GetContext()->ClearStencil( GetHandle(), val );
+	return GetRenderContext()->ClearStencil( GetHandle(), val );
 }
 
 bool XE::DepthStencilBuffer::ClearDepthStencil( XE::real depth, XE::uint32 stencil )
 {
-	return GetContext()->ClearDepthStencil( GetHandle(), depth, stencil );
+	return GetRenderContext()->ClearDepthStencil( GetHandle(), depth, stencil );
 }
 
 BEG_META( DynamicIndexBuffer )

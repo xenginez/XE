@@ -94,7 +94,7 @@ private:
 
 	Array<ViewportPtr> _Viewports;
 
-	ContextPtr _Device;
+	RenderContextPtr _Context;
 	RenderTargetHandle _Handle;
 };
 

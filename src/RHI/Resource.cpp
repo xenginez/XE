@@ -1,6 +1,6 @@
 #include "Resource.h"
 
-#include "Context.h"
+#include "RenderContext.h"
 
 USING_XE
 
@@ -17,14 +17,14 @@ XE::Resource::~Resource()
 
 }
 
-XE::ContextPtr XE::Resource::GetContext() const
+XE::RenderContextPtr XE::Resource::GetRenderContext() const
 {
-	return _Device;
+	return _Context;
 }
 
-void XE::Resource::SetContext( const ContextPtr & val )
+void XE::Resource::SetRenderContext( const RenderContextPtr & val )
 {
-	_Device = val;
+	_Context = val;
 }
 
 XE::ResourceHandle XE::Resource::GetHandle() const
@@ -34,10 +34,10 @@ XE::ResourceHandle XE::Resource::GetHandle() const
 
 XE::basic_memory_view<XE::uint8> XE::Resource::Map( XE::uint32 sub_resource, XE::uint64 begin, XE::uint64 end, XE::uint8 * read_data )
 {
-	return _Device->Map( _Handle, sub_resource, begin, end, read_data );
+	return _Context->Map( _Handle, sub_resource, begin, end, read_data );
 }
 
 void XE::Resource::Unmap( XE::uint32 sub_resource, XE::uint64 begin, XE::uint64 end )
 {
-	_Device->Unmap( _Handle, sub_resource, begin, end );
+	_Context->Unmap( _Handle, sub_resource, begin, end );
 }

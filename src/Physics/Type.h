@@ -11,4 +11,16 @@
 
 #include "Global.h"
 
+BEG_XE_NAMESPACE
+
+enum class PhysicsContextType
+{
+	HAVOK,
+	PHYSX,
+	BULLET,
+};
+DECL_META_ENUM( PHYSICS_API, PhysicsContextType );
+
+END_XE_NAMESPACE
+
 #endif // __TYPE_H__1C1C3DA4_0D11_418D_8EC6_B03DB2644537

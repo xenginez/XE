@@ -2,7 +2,7 @@
 
 USING_XE
 
-XE::CommandList::CommandList( ContextRPtr val )
+XE::CommandList::CommandList( RenderContextRPtr val )
 	:_Context( val )
 {
 

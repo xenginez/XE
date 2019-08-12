@@ -16,7 +16,7 @@ BEG_XE_NAMESPACE
 class RHI_API CommandList
 {
 public:
-	CommandList( ContextRPtr val );
+	CommandList( RenderContextRPtr val );
 
 	~CommandList();
 
@@ -126,7 +126,7 @@ public:
 	void ExecuteIndirect( ID3D12CommandSignature * pCommandSignature, XE::uint32 MaxCommandCount, ResourcePtr & pArgumentBuffer, XE::uint64 ArgumentBufferOffset, ResourcePtr & pCountBuffer, XE::uint64 CountBufferOffset );
 	*/
 private:
-	ContextRPtr _Context;
+	RenderContextRPtr _Context;
 };
 
 END_XE_NAMESPACE

@@ -13,14 +13,14 @@
 
 BEG_XE_NAMESPACE
 
-class RHI_API Context : public NonCopyable
+class RHI_API RenderContext : public NonCopyable
 {
-	OBJECT( Context )
+	OBJECT( RenderContext )
 
 public:
-	Context();
+	RenderContext();
 
-	virtual ~Context();
+	virtual ~RenderContext();
 
 public:
 	virtual void Startup() = 0;
@@ -30,7 +30,7 @@ public:
 	virtual void Clearup() = 0;
 
 public:
-	virtual DeviceType GetType() const = 0;
+	virtual RenderContextType GetType() const = 0;
 
 public:
 	virtual SwapChainHandle CreateSwapChain( SwapChainPtr & val ) = 0;

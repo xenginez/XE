@@ -11,7 +11,7 @@ struct XE::RenderService::Private
 {
 	WindowHandle _MainWindow;
 
-	ContextPtr _Context;
+	RenderContextPtr _Context;
 
 	Array<LightPtr> _Lights;
 	Array<XE::CameraPtr> _Cameras;
@@ -33,12 +33,12 @@ void XE::RenderService::Prepare()
 {
 	IMetaClassPtr cls = nullptr;
 
-	Context::GetMetaClassStatic()->VisitDerivedClass( [&]( IMetaClassPtr val )
+	RenderContext::GetMetaClassStatic()->VisitDerivedClass( [&]( IMetaClassPtr val )
 													  {
 														  cls = val;
 													  } );
 
-	_p->_Context = cls->ConstructPtr().Value<ContextPtr>();
+	_p->_Context = cls->ConstructPtr().Value<RenderContextPtr>();
 }
 
 bool XE::RenderService::Startup()
@@ -77,14 +77,14 @@ void XE::RenderService::Clearup()
 	_p->_Context->Startup();
 }
 
-XE::ContextPtr XE::RenderService::GetContext() const
-{
-	return _p->_Context;
-}
-
 XE::WindowHandle XE::RenderService::GetMainWindow() const
 {
 	return _p->_MainWindow;
+}
+
+XE::RenderContextPtr XE::RenderService::GetRenderContext() const
+{
+	return _p->_Context;
 }
 
 void XE::RenderService::RegisterLight( const LightPtr & val )

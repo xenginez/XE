@@ -34,8 +34,8 @@ protected:
 	Variant ReadBack() const;
 
 private:
-	ContextPtr _Device;
 	QueryHandle _Handle;
+	RenderContextPtr _Context;
 };
 
 class RHI_API TimerQuery : public Query

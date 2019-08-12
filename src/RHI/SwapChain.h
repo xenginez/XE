@@ -16,7 +16,7 @@ BEG_XE_NAMESPACE
 class RHI_API SwapChain : public std::enable_shared_from_this< SwapChain >
 {
 public:
-	SwapChain( ContextPtr device, WindowHandle handle );
+	SwapChain( RenderContextPtr device, WindowHandle handle );
 
 	~SwapChain();
 
@@ -24,8 +24,8 @@ public:
 	SwapChainHandle GetHandle() const;
 
 private:
-	ContextPtr _Device;
 	SwapChainHandle _Handle;
+	RenderContextPtr _Context;
 };
 
 END_XE_NAMESPACE

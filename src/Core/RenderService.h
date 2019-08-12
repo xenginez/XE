@@ -35,9 +35,9 @@ public:
 	void Clearup() override;
 
 public:
-	ContextPtr GetContext() const override;
-
 	WindowHandle GetMainWindow() const override;
+
+	RenderContextPtr GetRenderContext() const override;
 
 public:
 	void RegisterLight( const LightPtr & val ) override;
