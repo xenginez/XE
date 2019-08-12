@@ -41,6 +41,7 @@
 /cmake-build-debug
 /CMakeSettings.json
 
+/module
 /module/.vs
 /module/out
 /module/.idea
