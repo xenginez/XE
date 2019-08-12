@@ -15,7 +15,7 @@
 #define XSCRIPT_API DLL_EXPORT
 #else
 #define XSCRIPT_API DLL_IMPORT
-#define LIB_NAME "XSCRIPT"
+#define LIB_NAME "XScript"
 #include <Base/AutoLink.h>
 #endif
 

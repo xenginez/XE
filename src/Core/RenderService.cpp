@@ -77,6 +77,11 @@ void XE::RenderService::Clearup()
 	_p->_Context->Startup();
 }
 
+XE::ContextPtr XE::RenderService::GetContext() const
+{
+	return _p->_Context;
+}
+
 XE::WindowHandle XE::RenderService::GetMainWindow() const
 {
 	return _p->_MainWindow;

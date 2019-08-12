@@ -9,27 +9,27 @@
 #include "ThreadService.h"
 #include "PluginService.h"
 #include "InputService.h"
-
+#include "RenderService.h"
 #include "AssetsService.h"
 
 #include "ProfilerService.h"
 
 #define LOGGER_INDEX		_p->_Services.at(0)
 #define CONFIG_INDEX		_p->_Services.at(1)
-#define LOCAL_INDEX			_p->_Services.at(2)
-#define TIMER_INDEX			_p->_Services.at(3)
-#define EVENT_INDEX			_p->_Services.at(4)
-#define AUDIO_INDEX			_p->_Services.at(5)
-#define THREAD_INDEX		_p->_Services.at(6)
-#define PLUGIN_INDEX		_p->_Services.at(7)
+#define PROFILER_INDEX		_p->_Services.at(2)
+#define LOCAL_INDEX			_p->_Services.at(3)
+#define TIMER_INDEX			_p->_Services.at(4)
+#define EVENT_INDEX			_p->_Services.at(5)
+#define AUDIO_INDEX			_p->_Services.at(6)
+#define THREAD_INDEX		_p->_Services.at(7)
 #define INPUT_INDEX			_p->_Services.at(8)
 #define ASSETS_INDEX		_p->_Services.at(9)
-#define RENDER_INDEX		_p->_Services.at(10)
-#define GUI_INDEX			_p->_Services.at(11)
-#define PHYSICS_INDEX		_p->_Services.at(12)
+#define PHYSICS_INDEX		_p->_Services.at(10)
+#define RENDER_INDEX		_p->_Services.at(11)
+#define GUI_INDEX			_p->_Services.at(12)
 #define NAVIGAT_INDEX		_p->_Services.at(13)
-#define WORLD_INDEX			_p->_Services.at(14)
-#define PROFILER_INDEX		_p->_Services.at(15)
+#define PLUGIN_INDEX		_p->_Services.at(14)
+#define WORLD_INDEX			_p->_Services.at(15)
 
 USING_XE
 
@@ -264,6 +264,7 @@ void XE::CoreFramework::Prepare()
 
 	_p->_Services.push_back( make_shared < LoggerService >() );
 	_p->_Services.push_back( make_shared < ConfigService >() );
+	_p->_Services.push_back( make_shared < ProfilerService >() );
 	_p->_Services.push_back( make_shared < LocalizationService >() );
 	_p->_Services.push_back( make_shared < TimerService >() );
 	_p->_Services.push_back( make_shared < EventService >() );
@@ -271,13 +272,12 @@ void XE::CoreFramework::Prepare()
 	_p->_Services.push_back( make_shared < ThreadService >() );
 	_p->_Services.push_back( make_shared < PluginService >() );
 	_p->_Services.push_back( make_shared < InputService >() );
-	// 	_p->_Services.push_back( make_shared <RenderService>() );
-	// 	_p->_Services.push_back( make_shared <GUIService>() );
 	// 	_p->_Services.push_back( make_shared <PhysicsService>() );
+	_p->_Services.push_back( make_shared <RenderService>() );
+	// 	_p->_Services.push_back( make_shared <GUIService>() );
 	_p->_Services.push_back( make_shared < AssetsService >() );
 	// 	_p->_Services.push_back( make_shared <NavigationService>() );
 	// 	_p->_Services.push_back( make_shared <WorldService>() );
-	_p->_Services.push_back( make_shared < ProfilerService >() );
 
 	for( auto & it : _p->_Services )
 	{

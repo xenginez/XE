@@ -23,10 +23,8 @@ public:
 	virtual ~RenderPass();
 
 public:
-	void Render();
+	virtual void Render() = 0;
 
-protected:
-	virtual void OnRender() = 0;
 };
 
 END_XE_NAMESPACE

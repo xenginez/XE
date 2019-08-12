@@ -14,13 +14,3 @@ XE::RenderPass::~RenderPass()
 {
 
 }
-
-void XE::RenderPass::Render()
-{
-	OnRender();
-}
-
-void XE::RenderPass::OnRender()
-{
-
-}

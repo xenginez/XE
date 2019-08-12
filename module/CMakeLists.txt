@@ -39,14 +39,21 @@ endif ()
 
 include_directories(
 		${CMAKE_CURRENT_SOURCE_DIR}/../src
+		${CMAKE_CURRENT_SOURCE_DIR}/../module
 		${CMAKE_CURRENT_SOURCE_DIR}/../depend/include
 )
 
 link_directories(
 		${CMAKE_CURRENT_SOURCE_DIR}/../target/${XE_PLATFORM_PATH}/${XE_CONFIG}/bin
+		${CMAKE_CURRENT_SOURCE_DIR}/../target/${XE_PLATFORM_PATH}/${XE_CONFIG}/bin/module
 		${CMAKE_CURRENT_SOURCE_DIR}/../depend/bin/${XE_PLATFORM_PATH}/${XE_CONFIG}
 		${CMAKE_CURRENT_SOURCE_DIR}/../depend/lib/${XE_PLATFORM_PATH}/${XE_CONFIG}
 )
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_CURRENT_SOURCE_DIR}/../../target/${XE_PLATFORM_PATH}/debug/bin/module)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${CMAKE_CURRENT_SOURCE_DIR}/../../target/${XE_PLATFORM_PATH}/debug/bin/module)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_CURRENT_SOURCE_DIR}/../../target/${XE_PLATFORM_PATH}/release/bin/module)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${CMAKE_CURRENT_SOURCE_DIR}/../../target/${XE_PLATFORM_PATH}/release/bin/module)
 
 
 if (CMAKE_SYSTEM_NAME MATCHES "Linux")
@@ -63,4 +70,5 @@ else ()
 	message(FATAL_ERROR ${CMAKE_SYSTEM_NAME}" Other")
 endif ()
 
+add_subdirectory(PBRRenderer)
 add_subdirectory(XScript)

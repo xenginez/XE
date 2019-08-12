@@ -1,0 +1,9 @@
+cmake_minimum_required(VERSION 3.12)
+
+add_definitions(-DPBRRENDERER_EXPORT)
+
+FILE(GLOB SOURCE_FILES *.h *.hpp *.cpp *.inc)
+add_library(PBRRenderer ${SOURCE_FILES})
+
+target_link_libraries(PBRRenderer 
+	Interface)

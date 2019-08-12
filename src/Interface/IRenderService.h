@@ -23,6 +23,8 @@ public:
 	~IRenderService() override;
 
 public:
+	virtual ContextPtr GetContext() const = 0;
+
 	virtual WindowHandle GetMainWindow() const = 0;
 
 public:

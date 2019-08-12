@@ -93,85 +93,37 @@ ExprBinaryNode::BinaryType ExprBinaryNode::TokenTypeToBinaryType( TokenType val 
 
 void ImportNode::GenCode( Codegen & val )
 {
-	val.LoadModule( Name );
+
 }
 
 void UsingNode::GenCode( Codegen & val )
 {
-	val.AddUsing( Name );
+
 }
 
 void ModuleNode::GenCode( Codegen & val )
 {
-	// TODO: 
 
-	val.SetModuleName( Name );
-
-	for( auto & it : Imports )
-	{
-		it->GenCode( val );
-	}
-
-	for( auto & it : Usings )
-	{
-		it->GenCode( val );
-	}
-
-	for( auto & it : Enums )
-	{
-		it->GenCode( val );
-	}
-
-	for( auto & it : Classes )
-	{
-		it->GenCode( val );
-	}
 }
 
 void EnumNode::GenCode( Codegen & val )
 {
-	// TODO: 
 
 }
 
 void ClassNode::GenCode( Codegen & val )
 {
-	// TODO: 
 
-	for( auto & it : Enums )
-	{
-		it->GenCode( val );
-	}
-	for( auto & it : Classes )
-	{
-		it->GenCode( val );
-	}
-	for( auto & it : Methods )
-	{
-		it->GenCode( val );
-	}
-	for( auto & it : Operators )
-	{
-		it->GenCode( val );
-	}
-	for( auto & it : Propertys )
-	{
-		it->GenCode( val );
-	}
 }
 
 void MethodNode::GenCode( Codegen & val )
 {
-	// TODO: 
 
-	Block->GenCode( val );
 }
 
 void OperatorNode::GenCode( Codegen & val )
 {
-	// TODO: 
 
-	Block->GenCode( val );
 }
 
 void PropertyNode::GenCode( Codegen & val )
@@ -181,78 +133,27 @@ void PropertyNode::GenCode( Codegen & val )
 
 void BlockNode::GenCode( Codegen & val )
 {
-	val.PushBlock();
 
-	for( auto & it : Statements )
-	{
-		it->GenCode( val );
-	}
-
-	val.PopBlock();
 }
 
 void IfNode::GenCode( Codegen & val )
 {
-	Expr->GenCode( val );
 
-	XE::uint32 index = val.NopI();
-
-	Block->GenCode( val );
-
-//	val.Reset( index, InstructType::IFEQ0, val.CodeIndex() );
-
-	if( Else )
-	{
-		Else->GenCode( val );
-	}
 }
 
 void ForNode::GenCode( Codegen & val )
 {
-	Stat->GenCode( val );
 
-	XE::uint32 beg = val.CodeIndex();
-
-	Expr->GenCode( val );
-
-	XE::uint32 index = val.NopI();
-
-	Block->GenCode( val );
-
-	Iter->GenCode( val );
-
-	val.Insert( InstructType::GOTO, beg );
-
-//	val.Reset( index, InstructType::IFEQ0, val.CodeIndex() );
 }
 
 void WhileNode::GenCode( Codegen & val )
 {
-	XE::uint32 beg = val.CodeIndex();
 
-	Expr->GenCode( val );
-
-	XE::uint32 index = val.NopI();
-
-	Block->GenCode( val );
-
-	val.Insert( InstructType::GOTO, beg );
-
-//	val.Reset( index, InstructType::IFEQ0, val.CodeIndex() );
 }
 
 void SwitchNode::GenCode( Codegen & val )
 {
-	Array<XE::uint32> Indexs( Cases.size() );
 
-	Expr->GenCode( val );
-
-	for( int i = 0; i < Cases.size(); ++i )
-	{
-		Cases[i]->Expr->GenCode( val );
-
-
-	}
 }
 
 void CaseNode::GenCode( Codegen & val )

@@ -57,9 +57,9 @@ private:
 	DynamicVertexBufferPtr _DynamicVertexBuffer;
 };
 
-class GRAPHICS_API SkinnedMesh : public DynamicMesh
+class GRAPHICS_API SkinnedMesh : public Mesh
 {
-	OBJECT( SkinnedMesh, DynamicMesh )
+	OBJECT( SkinnedMesh, Mesh )
 
 public:
 	SkinnedMesh();
