@@ -15,55 +15,293 @@ LRESULT WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
 	{
 		switch( message )
 		{
-		case WM_CREATE:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::CREATE ); break;
-		case WM_DESTROY:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::DESTROY ); break;
-		case WM_MOVE:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::MOVE ); break;
-		case WM_SIZE:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::SIZE ); break;
-		case WM_ACTIVATE:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::ACTIVATE ); break;
-		case WM_SETFOCUS:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::SETFOCUS ); break;
-		case WM_KILLFOCUS:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::KILLFOCUS ); break;
-		case WM_ENABLE:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::ENABLE ); break;
-		case WM_PAINT:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::PAINT ); break;
-		case WM_CLOSE:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::CLOSE ); break;
-		case WM_QUERYENDSESSION:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::QUERYENDSESSION ); break;
-		case WM_QUIT:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::QUIT ); break;
-		case WM_SHOWWINDOW:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::SHOWWINDOW ); break;
-		case WM_ACTIVATEAPP:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::ACTIVATEAPP ); break;
-		case WM_SETCURSOR:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::SETCURSOR ); break;
-		case WM_MOUSEACTIVATE:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::MOUSEACTIVATE ); break;
-		case WM_GETMINMAXINFO:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::GETMINMAXINFO ); break;
-		case WM_NEXTDLGCTL:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::NEXTDLGCTL ); break;
-		case WM_COMPACTING:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::COMPACTING ); break;
-		case WM_WINDOWPOSCHANGING:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::WINDOWPOSCHANGING ); break;
-		case WM_WINDOWPOSCHANGED:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::WINDOWPOSCHANGED ); break;
-		case WM_DISPLAYCHANGE:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::DISPLAYCHANGE ); break;
-		case WM_GETICON:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::GETICON ); break;
-		case WM_SETICON:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::SETICON ); break;
-		case WM_KEYDOWN:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::KEYDOWN ); break;
-		case WM_KEYUP:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::KEYUP ); break;
-		case WM_CHAR:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::CHAR ); break;
-		case WM_DEADCHAR:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::DEADCHAR ); break;
-		case WM_SYSKEYDOWN:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::SYSKEYDOWN ); break;
-		case WM_SYSKEYUP:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::SYSKEYUP ); break;
-		case WM_SYSCHAR:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::SYSCHAR ); break;
-		case WM_SYSDEADCHAR:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::SYSDEADCHAR ); break;
-		case WM_MOUSEMOVE:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::MOUSEMOVE ); break;
-		case WM_LBUTTONDOWN:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::LBUTTONDOWN ); break;
-		case WM_LBUTTONUP:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::LBUTTONUP ); break;
-		case WM_LBUTTONDBLCLK:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::LBUTTONDBLCLK ); break;
-		case WM_RBUTTONDOWN:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::RBUTTONDOWN ); break;
-		case WM_RBUTTONUP:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::RBUTTONUP ); break;
-		case WM_RBUTTONDBLCLK:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::RBUTTONDBLCLK ); break;
-		case WM_MBUTTONDOWN:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::MBUTTONDOWN ); break;
-		case WM_MBUTTONUP:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::MBUTTONUP ); break;
-		case WM_MBUTTONDBLCLK:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::MBUTTONDBLCLK ); break;
-		case WM_MOUSEWHEEL:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::MOUSEWHEEL ); break;
-		case WM_SIZING:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::SIZING ); break;
-		case WM_CAPTURECHANGED:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::CAPTURECHANGED ); break;
-		case WM_MOVING:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::MOVING ); break;
-		case WM_POWERBROADCAST:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::POWERBROADCAST ); break;
-		case WM_DEVICECHANGE:G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::DEVICECHANGE ); break;
-		default:
+		case WM_CREATE:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::CREATE ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_DESTROY:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::DESTROY ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_MOVE:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::MOVE ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_SIZE:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::SIZE ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_ACTIVATE:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::ACTIVATE ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_SETFOCUS:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::SETFOCUS ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_KILLFOCUS:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::KILLFOCUS ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_ENABLE:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::ENABLE ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_PAINT:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::PAINT ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_CLOSE:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::CLOSE ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_QUERYENDSESSION:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::QUERYENDSESSION ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_QUIT:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::QUIT ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_SHOWWINDOW:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::SHOWWINDOW ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_ACTIVATEAPP:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::ACTIVATEAPP ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_SETCURSOR:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::SETCURSOR ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_MOUSEACTIVATE:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::MOUSEACTIVATE ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_GETMINMAXINFO:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::GETMINMAXINFO ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_NEXTDLGCTL:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::NEXTDLGCTL ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_COMPACTING:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::COMPACTING ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_WINDOWPOSCHANGING:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::WINDOWPOSCHANGING ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_WINDOWPOSCHANGED:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::WINDOWPOSCHANGED ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_DISPLAYCHANGE:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::DISPLAYCHANGE ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_GETICON:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::GETICON ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_SETICON:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::SETICON ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_KEYDOWN:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::KEYDOWN ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_KEYUP:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::KEYUP ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_CHAR:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::CHAR ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_DEADCHAR:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::DEADCHAR ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_SYSKEYDOWN:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::SYSKEYDOWN ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_SYSKEYUP:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::SYSKEYUP ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_SYSCHAR:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::SYSCHAR ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_SYSDEADCHAR:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::SYSDEADCHAR ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_MOUSEMOVE:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::MOUSEMOVE ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_LBUTTONDOWN:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::LBUTTONDOWN ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_LBUTTONUP:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::LBUTTONUP ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_LBUTTONDBLCLK:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::LBUTTONDBLCLK ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_RBUTTONDOWN:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::RBUTTONDOWN ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_RBUTTONUP:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::RBUTTONUP ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_RBUTTONDBLCLK:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::RBUTTONDBLCLK ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_MBUTTONDOWN:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::MBUTTONDOWN ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_MBUTTONUP:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::MBUTTONUP ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_MBUTTONDBLCLK:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::MBUTTONDBLCLK ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_MOUSEWHEEL:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::MOUSEWHEEL ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_SIZING:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::SIZING ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_CAPTURECHANGED:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::CAPTURECHANGED ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_MOVING:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::MOVING ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_POWERBROADCAST:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::POWERBROADCAST ) )
+			{
+				return 0;
+			}
+			break;
+		case WM_DEVICECHANGE:
+			if( G_Callback( reinterpret_cast< XE::uint64 >( hWnd ), XE::WindowEvent::DEVICECHANGE ) )
+			{
+				return 0;
+			}
 			break;
 		}
 	}
@@ -221,7 +459,7 @@ XE::Language XE::Platform::GetDefaultLanguage()
 	}
 }
 
-bool XE::Platform::RegisterWindowClass( const String & icon, std::function<bool( WindowHandle, XE::WindowEvent )> callback )
+bool XE::Platform::RegisterWindowClass( std::function<bool( WindowHandle, XE::WindowEvent )> callback )
 {
 	WNDCLASSEX wce = { 0 };
 	wce.cbSize = sizeof( wce );
@@ -230,8 +468,8 @@ bool XE::Platform::RegisterWindowClass( const String & icon, std::function<bool(
 	wce.hInstance = GetModuleHandle( NULL );
 	wce.hbrBackground = (HBRUSH )( COLOR_WINDOW + 1 );
 	wce.hCursor = LoadCursor( NULL, IDC_ARROW );
-	wce.hIcon = LoadIcon( wce.hInstance, icon.ToCString() );
-	wce.hIconSm = LoadIcon( wce.hInstance, icon.ToCString() );
+	wce.hIcon = LoadIcon( NULL, IDI_APPLICATION );
+	wce.hIconSm = LoadCursor( NULL, IDC_ARROW );
 	wce.lpfnWndProc = WndProc;
 	wce.lpszClassName = "XE";
 	wce.lpszMenuName = NULL;

@@ -44,6 +44,10 @@ public:
 
 	void SetNear( XE::float32 val );
 
+	XE::float32 GetDepth() const;
+
+	void SetDepth( XE::float32 val );
+
 	XE::float32 GetAspect() const;
 
 	void SetAspect( XE::float32 val );
@@ -78,6 +82,7 @@ private:
 	XE::float32 _FOV;
 	XE::float32 _Far;
 	XE::float32 _Near;
+	XE::float32 _Depth;
 	XE::float32 _Aspect;
 	Mat4 _Transform;
 	Mat4 _ProjMatrix;

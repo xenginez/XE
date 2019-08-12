@@ -66,6 +66,16 @@ void XE::Camera::SetNear( XE::float32 val )
 	_Near = val;
 }
 
+XE::float32 XE::Camera::GetDepth() const
+{
+	return _Depth;
+}
+
+void XE::Camera::SetDepth( XE::float32 val )
+{
+	_Depth = val;
+}
+
 XE::float32 XE::Camera::GetAspect() const
 {
 	return _Aspect;

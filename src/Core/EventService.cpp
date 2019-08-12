@@ -96,7 +96,7 @@ void XE::EventService::PostEvent( EventPtr val )
 			{
 				var( val );
 
-				if ( val->ignore )
+				if ( val->accept )
 				{
 					return;
 				}

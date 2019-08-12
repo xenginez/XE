@@ -23,6 +23,28 @@ public:
 	~IRenderService() override;
 
 public:
+	virtual WindowHandle GetMainWindow() const = 0;
+
+public:
+	virtual void RegisterLight( const LightPtr & val ) = 0;
+
+	virtual void UnregisterLight( const LightPtr & val ) = 0;
+
+	virtual void RegisterCamera( const CameraPtr & val ) = 0;
+
+	virtual void UnregisterCamera( const CameraPtr & val ) = 0;
+
+	virtual void RegisterRenderable( const RenderablePtr & val ) = 0;
+
+	virtual void UnregisterRenderable( const RenderablePtr & val ) = 0;
+
+public:
+	virtual const Array<LightPtr> & GetLights() const = 0;
+
+	virtual const Array<CameraPtr> & GetCameras() const = 0;
+
+	virtual const Array<RenderablePtr> & GetRenderables() const = 0;
+
 };
 
 END_XE_NAMESPACE

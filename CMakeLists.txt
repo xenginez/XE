@@ -67,19 +67,19 @@ add_dependencies(Reflect	Base Memory)
 add_dependencies(Utils		Base Memory Reflect)
 add_dependencies(Math		Base Memory Reflect Utils)
 add_dependencies(RHI		Base Memory Reflect Utils Math)
-add_dependencies(Interface	Base Memory Reflect Utils Math RHI)
+add_dependencies(Graphics	Base Memory Reflect Utils Math RHI)
+add_dependencies(Interface	Base Memory Reflect Utils Math RHI Graphics)
 add_dependencies(World		Base Memory Reflect Utils Math RHI Interface)
 add_dependencies(Audio		Base Memory Reflect Utils Math RHI Interface)
 add_dependencies(Physics	Base Memory Reflect Utils Math RHI Interface)
-add_dependencies(Graphics	Base Memory Reflect Utils Math RHI Interface)
-add_dependencies(Animation	Base Memory Reflect Utils Math RHI Interface)
 add_dependencies(Navigation Base Memory Reflect Utils Math RHI Interface)
 add_dependencies(AI			Base Memory Reflect Utils Math RHI Interface World)
-add_dependencies(GUI		Base Memory Reflect Utils Math RHI Interface Graphics)
-add_dependencies(Render		Base Memory Reflect Utils Math RHI Interface Graphics)
-add_dependencies(Components	Base Memory Reflect Utils Math RHI Interface Graphics World Render Audio Physics Animation Navigation AI GUI)
-add_dependencies(Core		Base Memory Reflect Utils Math RHI Interface Graphics World Render Audio Physics Animation Navigation AI GUI Components)
-add_dependencies(XE			Base Memory Reflect Utils Math RHI Interface Graphics World Render Audio Physics Animation Navigation AI GUI Components Core)
+add_dependencies(GUI		Base Memory Reflect Utils Math RHI Graphics Interface)
+add_dependencies(Render		Base Memory Reflect Utils Math RHI Graphics Interface)
+add_dependencies(Animation	Base Memory Reflect Utils Math RHI Graphics Interface)
+add_dependencies(Components	Base Memory Reflect Utils Math RHI Graphics Interface World Render Audio Physics Animation Navigation AI GUI)
+add_dependencies(Core		Base Memory Reflect Utils Math RHI Graphics Interface World Render Audio Physics Animation Navigation AI GUI Components)
+add_dependencies(XE			Base Memory Reflect Utils Math RHI Graphics Interface World Render Audio Physics Animation Navigation AI GUI Components Core)
 
 target_link_libraries(Base
 
@@ -106,8 +106,11 @@ target_link_libraries(Math
 target_link_libraries(RHI
 		Math)
 
-target_link_libraries(Interface
+target_link_libraries(Graphics
 		RHI)
+
+target_link_libraries(Interface
+		Graphics)
 
 target_link_libraries(World
 		Interface)
@@ -142,12 +145,6 @@ target_link_libraries(Physics
 		BulletInverseDynamics
 		)
 
-target_link_libraries(Graphics
-		Interface)
-
-target_link_libraries(Animation
-		Interface)
-
 target_link_libraries(Navigation
 		Interface
 
@@ -165,6 +162,9 @@ target_link_libraries(GUI
 		Graphics)
 
 target_link_libraries(Render
+		Graphics)
+
+target_link_libraries(Animation
 		Graphics)
 
 target_link_libraries(Components

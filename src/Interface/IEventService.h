@@ -23,8 +23,8 @@ public:
 	Event( XE::uint64 id, const Variant& parameter = Variant() );
 
 public:
+	bool accept;
 	XE::uint64 id;
-	bool ignore;
 	Variant parameter;
 };
 DECL_META_CLASS( INTERFACE_API, Event );
@@ -44,9 +44,9 @@ public:
 public:
 	virtual void PostEvent( EventPtr val ) = 0;
 
-	virtual void PostEvent( XE::uint64 frame, EventPtr val ) = 0;
-
 	virtual void PostEvent( XE::real dt, EventPtr val ) = 0;
+
+	virtual void PostEvent( XE::uint64 frame, EventPtr val ) = 0;
 
 public:
 	virtual XE::uint64 RegisterListener( XE::uint64 event, ListenerType listener ) = 0;

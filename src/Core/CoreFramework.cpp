@@ -59,11 +59,11 @@ XE::CoreFramework::~CoreFramework()
 
 int XE::CoreFramework::Exec()
 {
-	Platform::RegisterWindowClass( "", [&]( WindowHandle handle, WindowEvent event )
+	Platform::RegisterWindowClass( [&]( WindowHandle handle, WindowEvent event )
 								   {
 									   if( GetEventService() )
 									   {
-										   EventPtr e = XE::make_shared<Event>( EVENT_WINDOW, event );
+										   EventPtr e = XE::make_shared<Event>( EVENT_WINDOW, std::make_pair( handle, event ) );
 
 										   GetEventService()->PostEvent( e );
 									   }
