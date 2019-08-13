@@ -24,8 +24,7 @@ public:
 			XE::uint64 layer : 3;
 			XE::uint64 order : 12;
 			XE::uint64 blend : 1;
-			XE::uint64 program : 12;
-			XE::uint64 texture : 12;
+			XE::uint64 state : 24;
 			XE::uint64 depth : 24;
 		};
 	};

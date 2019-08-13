@@ -18,6 +18,11 @@ class REFLECT_API InvokeStack
 public:
 	InvokeStack();
 
+	template< typename ...Types > InvokeStack( Types && ...val )
+	{
+		Push( std::move( val )... );
+	}
+
 	~InvokeStack();
 
 public:

@@ -11,6 +11,8 @@
 
 #include "Variant.h"
 #include "Archive.h"
+#include "InvokeStack.h"
+#include "ParameterType.hpp"
 
 BEG_XE_NAMESPACE
 
@@ -32,6 +34,16 @@ public:
 	Variant GetProperty( const String& name );
 
 	void SetProperty( const String& name, const Variant& val );
+
+	template< typename ... _Args > Variant Invoke( const String & name, _Args && ...args )
+	{
+		InvokeStack params( this, args.. );
+
+		if( auto method = GetMetaClass()->FindMethod( name, MakeParameterType<_Args...>() ) )
+		{
+			return method->Invoke( &params );
+		}
+	}
 
 public:
 	virtual ObjectPtr Clone() const;

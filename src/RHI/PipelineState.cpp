@@ -480,12 +480,32 @@ void XE::GraphicsPipelineState::SetSampleMask( XE::uint32 val )
 	_SampleMask = val;
 }
 
-XE::FrameBufferPtr XE::GraphicsPipelineState::GetFrameBuffer() const
+XE::uint64 XE::GraphicsPipelineState::GetRenderTargetFormatCount() const
 {
-	return _FrameBuffer;
+	return _RenderTargetCount;
 }
 
-void XE::GraphicsPipelineState::SetFrameBuffer( const FrameBufferPtr & val )
+void XE::GraphicsPipelineState::SetRenderTargetFormatCount( XE::uint64 val )
 {
-	_FrameBuffer = val;
+	_RenderTargetCount = val;
+}
+
+XE::TextureFormat XE::GraphicsPipelineState::GetRenderTargetFormat( XE::uint64 index ) const
+{
+	return _RenderTargetFmt[index];
+}
+
+void XE::GraphicsPipelineState::SetRenderTargetFormat( XE::uint64 index, TextureFormat val )
+{
+	_RenderTargetFmt[index] = val;
+}
+
+XE::TextureFormat XE::GraphicsPipelineState::GetDepthStencilFormat() const
+{
+	return _DepthStencilFmt;
+}
+
+void XE::GraphicsPipelineState::SetDepthStencilFormat( TextureFormat val )
+{
+	_DepthStencilFmt = val;
 }

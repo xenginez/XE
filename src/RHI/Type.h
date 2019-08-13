@@ -450,6 +450,13 @@ enum class ResourceState
 	VIDEO_ENCODE_WRITE = 0x800000
 };
 
+enum class StripCutValue
+{
+	DISABLED ,
+	FFFF,
+	FFFFFFFF,
+};
+
 END_XE_NAMESPACE
 
 #endif //__TYPE_H__6580A518_948A_4162_A63F_E02DCC393EC9

@@ -280,9 +280,18 @@ private:
 
 	void SetSampleMask( XE::uint32 val );
 
-	FrameBufferPtr GetFrameBuffer() const;
+public:
+	XE::uint64 GetRenderTargetFormatCount() const;
 
-	void SetFrameBuffer( const FrameBufferPtr & val );
+	void SetRenderTargetFormatCount( XE::uint64 val );
+
+	TextureFormat GetRenderTargetFormat( XE::uint64 index ) const;
+
+	void SetRenderTargetFormat( XE::uint64 index, TextureFormat val );
+
+	TextureFormat GetDepthStencilFormat() const;
+
+	void SetDepthStencilFormat( TextureFormat val );
 
 private:
 	HullShaderPtr _HS;
@@ -299,8 +308,11 @@ private:
 	TopologyType _PrimitiveTopology;
 
 	XE::uint32 _SampleMask;
+	StripCutValue _IBStripCutValue;
 
-	FrameBufferPtr _FrameBuffer;
+	XE::uint64 _RenderTargetCount;
+	TextureFormat _DepthStencilFmt;
+	TextureFormat _RenderTargetFmt[8];
 };
 
 END_XE_NAMESPACE
