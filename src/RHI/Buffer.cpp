@@ -1,7 +1,5 @@
 #include "Buffer.h"
 
-#include "RenderContext.h"
-
 USING_XE
 
 BEG_META(Buffer)
@@ -15,23 +13,6 @@ XE::Buffer::Buffer()
 XE::Buffer::~Buffer()
 {
 
-}
-
-XE::basic_memory_view<XE::uint8> XE::Buffer::Map( XE::AccessType val )
-{
-	_Access = val;
-
-	Resource::Map( 0, 0, 0, _Data.data() );
-
-	return basic_memory_view<XE::uint8>( _Data.data(), _Data.size() );
-}
-
-void XE::Buffer::Unmap()
-{
-	Resource::Unmap( 0, 0, 0 );
-
-	_Data.clear();
-	_Data.shrink_to_fit();
 }
 
 XE::uint64 XE::Buffer::GetSize() const
@@ -141,21 +122,6 @@ XE::DepthStencilBuffer::DepthStencilBuffer()
 XE::DepthStencilBuffer::~DepthStencilBuffer()
 {
 
-}
-
-bool XE::DepthStencilBuffer::ClearDepth( XE::real val )
-{
-	return GetRenderContext()->ClearDepth( GetHandle(), val );
-}
-
-bool XE::DepthStencilBuffer::ClearStencil( XE::uint32 val )
-{
-	return GetRenderContext()->ClearStencil( GetHandle(), val );
-}
-
-bool XE::DepthStencilBuffer::ClearDepthStencil( XE::real depth, XE::uint32 stencil )
-{
-	return GetRenderContext()->ClearDepthStencil( GetHandle(), depth, stencil );
 }
 
 BEG_META( DynamicIndexBuffer )

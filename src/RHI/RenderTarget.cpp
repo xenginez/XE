@@ -10,11 +10,6 @@ END_META()
 
 XE::RenderTarget::RenderTarget()
 {
-	auto viewport = XE::make_shared<Viewport>();
-
-	viewport->SetRect( Rect( 0, 0, 1, 1 ) );
-
-	_Viewports.push_back( viewport );
 }
 
 XE::RenderTarget::~RenderTarget()
@@ -35,11 +30,6 @@ void XE::RenderTarget::SetWriteRed( bool WriteRed )
 bool XE::RenderTarget::GetWriteGreen() const
 {
 	return _WriteGreen;
-}
-
-XE::RenderTargetHandle XE::RenderTarget::GetHandle() const
-{
-	return _Handle;
 }
 
 void XE::RenderTarget::SetWriteGreen( bool val )
@@ -137,32 +127,12 @@ void XE::RenderTarget::SetAlphaBlendOp( const BlendOperation & val )
 	_AlphaBlendOp = val;
 }
 
-void XE::RenderTarget::ClearColor( const Color & val )
-{
-	_Context->ClearColor( _Handle, val );
-}
-
-XE::ViewportPtr XE::RenderTarget::GetViewport( XE::uint64 val ) const
-{
-	return _Viewports[val];
-}
-
-const XE::Array<XE::ViewportPtr> & XE::RenderTarget::GetViewports() const
-{
-	return _Viewports;
-}
-
-void XE::RenderTarget::SetViewports( const Array<ViewportPtr> & val )
-{
-	_Viewports = val;
-}
-
 BEG_META( RenderWindow )
 END_META()
 
 XE::RenderWindow::RenderWindow()
 {
-	_Handle = Platform::ConstructWindow( _Title, static_cast< XE::uint32 >( _Rect.x ), static_cast< XE::uint32 >( _Rect.y ), static_cast< XE::uint32 >( _Rect.width ), static_cast< XE::uint32 >( _Rect.height ) );
+	_Handle = Platform::CreateWindow( _Title, static_cast< XE::uint32 >( _Rect.x ), static_cast< XE::uint32 >( _Rect.y ), static_cast< XE::uint32 >( _Rect.width ), static_cast< XE::uint32 >( _Rect.height ) );
 }
 
 XE::RenderWindow::~RenderWindow()

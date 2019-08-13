@@ -58,29 +58,17 @@ DECL_PTR( RenderWindow );
 DECL_PTR( RenderTexture2D );
 
 DECL_PTR( Image );
-DECL_PTR( Fence );
-DECL_PTR( RenderContext );
 DECL_PTR( Sampler );
 DECL_PTR( Viewport );
-DECL_PTR( SwapChain );
 DECL_PTR( InputLayout );
 DECL_PTR( CommandList );
+DECL_PTR( RenderContext );
 DECL_PTR( UnorderedAccess );
 
 
-DECL_HANDLE( RHI_API, Fence );
-DECL_HANDLE( RHI_API, Query );
-DECL_HANDLE( RHI_API, Sampler );
-DECL_HANDLE( RHI_API, Viewport );
 DECL_HANDLE( RHI_API, Resource );
-DECL_HANDLE( RHI_API, SwapChain );
-DECL_HANDLE( RHI_API, InputLayout );
-DECL_HANDLE( RHI_API, FrameBuffer );
-DECL_HANDLE( RHI_API, RenderTarget );
+DECL_HANDLE( RHI_API, CommandList );
 DECL_HANDLE( RHI_API, PipelineState );
-
-
-DECL_ALLOCATOR_FRAME( FrameBuffer );
 
 
 enum class FillType
@@ -407,11 +395,59 @@ enum class StencilOperation
 DECL_META_ENUM( RHI_API, StencilOperation );
 
 
-enum ClearType
+enum class ClearType
 {
-	CLAER_COLOR = 1 << 1,
-	CLAER_DEPTH = 1 << 2,
-	CLAER_STENCIL = 1 << 3,
+	CLAER_COLOR,
+	CLAER_DEPTH,
+	CLAER_STENCIL,
+	CLAER_COLOR_DEPTH,
+	CLAER_COLOR_STENCIL,
+	CLAER_DEPTH_STENCIL,
+	CLAER_COLOR_DEPTH_STENCIL,
+};
+
+enum class TileCopyType
+{
+	NONE,
+	NO_HAZARD,
+	LINEAR_TO_SWIZZLED,
+	SWIZZLED_TO_LINEAR,
+};
+
+enum class BarrierFlag
+{
+	NONE,
+	BEG_ONLY,
+	END_ONLY
+};
+
+enum class ResourceState
+{
+	COMMON = 0,
+	VERTEX_AND_CONSTANT_BUFFER = 0x1,
+	INDEX_BUFFER = 0x2,
+	RENDER_TARGET = 0x4,
+	UNORDERED_ACCESS = 0x8,
+	DEPTH_WRITE = 0x10,
+	DEPTH_READ = 0x20,
+	NON_PIXEL_SHADER_RESOURCE = 0x40,
+	PIXEL_SHADER_RESOURCE = 0x80,
+	STREAM_OUT = 0x100,
+	INDIRECT_ARGUMENT = 0x200,
+	COPY_DEST = 0x400,
+	COPY_SOURCE = 0x800,
+	RESOLVE_DEST = 0x1000,
+	RESOLVE_SOURCE = 0x2000,
+	RAYTRACING_ACCELERATION_STRUCTURE = 0x400000,
+	GENERIC_READ = ( ( ( ( ( 0x1 | 0x2 ) | 0x40 ) | 0x80 ) | 0x200 ) | 0x800 ),
+	PRESENT = 0,
+	PREDICATION = 0x200,
+	VIDEO_DECODE_READ = 0x10000,
+	VIDEO_DECODE_WRITE = 0x20000,
+	VIDEO_PROCESS_READ = 0x40000,
+	VIDEO_PROCESS_WRITE = 0x80000,
+	VIDEO_ENCODE_READ = 0x200000,
+	VIDEO_ENCODE_WRITE = 0x800000
 };
 
 END_XE_NAMESPACE

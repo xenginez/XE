@@ -13,29 +13,15 @@
 
 BEG_XE_NAMESPACE
 
-class RHI_API Query : std::enable_shared_from_this< Query >
+class RHI_API Query : public Resource
 {
-	OBJECT( Query )
+	OBJECT( Query, Resource )
 
 public:
 	Query();
 
 	virtual ~Query();
 
-public:
-	void Begin( XE::uint32 val );
-
-	void End( XE::uint32 val );
-
-public:
-	QueryHandle GetHandle() const;
-
-protected:
-	Variant ReadBack() const;
-
-private:
-	QueryHandle _Handle;
-	RenderContextPtr _Context;
 };
 
 class RHI_API TimerQuery : public Query
@@ -47,8 +33,6 @@ public:
 
 	~TimerQuery() override;
 
-public:
-	XE::float64 TimeElapsed() const;
 };
 
 class RHI_API OcclusionQuery : public Query
@@ -60,8 +44,6 @@ public:
 
 	~OcclusionQuery() override;
 
-public:
-	XE::uint64 SamplesPassed() const;
 };
 
 class RHI_API ConditionQuery : public Query
@@ -73,8 +55,6 @@ public:
 
 	~ConditionQuery() override;
 
-public:
-	bool SamplesPassed() const;
 };
 
 class RHI_API SOStatisticsQuery : public Query
@@ -86,8 +66,6 @@ public:
 
 	~SOStatisticsQuery() override;
 
-public:
-	XE::uint64 WritePrimitivesCount() const;
 };
 
 END_XE_NAMESPACE

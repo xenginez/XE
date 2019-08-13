@@ -1,13 +1,13 @@
 /*!
- * \file   Handle.h
+ * \file   Handle.hpp
  *
  * \author ZhengYuanQing
  * \date   2019/02/24
  * \email  zhengyuanqing.95@gmail.com
  *
  */
-#ifndef __HANDLE_H__7920C1A9_2044_45F0_84C4_221961C006AF
-#define __HANDLE_H__7920C1A9_2044_45F0_84C4_221961C006AF
+#ifndef __HANDLE_HPP__7920C1A9_2044_45F0_84C4_221961C006AF
+#define __HANDLE_HPP__7920C1A9_2044_45F0_84C4_221961C006AF
 
 #include "Type.h"
 
@@ -182,4 +182,4 @@ template< typename T > bool operator==( XE::uint64 left, XE::Handle< T > right )
 
 template< typename T > const XE::Handle<T> XE::Handle<T>::Invalid( std::numeric_limits<XE::uint64>::max() );
 
-#endif // __HANDLE_H__7920C1A9_2044_45F0_84C4_221961C006AF
+#endif // __HANDLE_HPP__7920C1A9_2044_45F0_84C4_221961C006AF

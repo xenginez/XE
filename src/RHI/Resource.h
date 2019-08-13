@@ -13,9 +13,9 @@
 
 BEG_XE_NAMESPACE
 
-class RHI_API Resource : public std::enable_shared_from_this< Resource >
+class RHI_API Resource : public XE::Object
 {
-	OBJECT(Resource)
+	OBJECT( Resource, Object )
 
 public:
 	Resource();
@@ -26,21 +26,10 @@ public:
 	virtual bool Prepare() = 0;
 
 public:
-	RenderContextPtr GetRenderContext() const;
-
-	void SetRenderContext( const RenderContextPtr & val );
-
-public:
 	ResourceHandle GetHandle() const;
-
-protected:
-	XE::basic_memory_view<XE::uint8> Map( XE::uint32 sub_resource, XE::uint64 begin, XE::uint64 end, XE::uint8 * read_data );
-
-	void Unmap( XE::uint32 sub_resource, XE::uint64 begin, XE::uint64 end );
 
 private:
 	ResourceHandle _Handle;
-	RenderContextPtr _Context;
 };
 
 END_XE_NAMESPACE

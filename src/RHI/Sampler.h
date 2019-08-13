@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class RHI_API Sampler : public std::enable_shared_from_this< Sampler >
+class RHI_API Sampler : public Resource
 {
 	OBJECT( Sampler )
 	
@@ -21,9 +21,6 @@ public:
 	Sampler();
 	
 	~Sampler();
-
-public:
-	SamplerHandle GetHandle() const;
 
 public:
 	SamplerFilter GetMinFilter() const;
@@ -89,8 +86,6 @@ private:
 	
 	XE::real _MinLOD;
 	XE::real _MaxLOD;
-
-	SamplerHandle _Handle;
 };
 
 END_XE_NAMESPACE

@@ -9,7 +9,7 @@
 #ifndef __PLATFORM_H__BDD7C650_EC23_41CF_A4EA_7CDBFE3B0135
 #define __PLATFORM_H__BDD7C650_EC23_41CF_A4EA_7CDBFE3B0135
 
-#include "Handle.h"
+#include "Handle.hpp"
 
 BEG_XE_NAMESPACE
 
@@ -26,7 +26,7 @@ public:
 
 	static void UnregisterWindowClass();
 
-	static WindowHandle ConstructWindow( const String & title, XE::uint32 x, XE::uint32 y, XE::uint32 w, XE::uint32 h );
+	static WindowHandle CreateWindow( const String & title, XE::uint32 x, XE::uint32 y, XE::uint32 w, XE::uint32 h );
 
 	static bool DestroyWindow( WindowHandle handle );
 
@@ -54,7 +54,7 @@ public:
 	static bool HideMouse();
 
 public:
-	static ProcessHandle ConstructProcess( const std::filesystem::path & app, const std::string & cmd, bool inherit, XE::uint32 flag );
+	static ProcessHandle CreateProcess( const std::filesystem::path & app, const std::string & cmd, bool inherit, XE::uint32 flag );
 
 	static bool DestroyProcess( ProcessHandle handle, XE::uint32 code );
 

@@ -489,9 +489,12 @@ void XE::Platform::UnregisterWindowClass()
 	G_Callback = nullptr;
 }
 
-WindowHandle XE::Platform::ConstructWindow( const String & title, XE::uint32 x, XE::uint32 y, XE::uint32 w, XE::uint32 h )
+#ifdef CreateWindow
+#undef CreateWindow
+#endif
+WindowHandle XE::Platform::CreateWindow( const String & title, XE::uint32 x, XE::uint32 y, XE::uint32 w, XE::uint32 h )
 {
-	HWND hwnd = ::CreateWindow( "XE", title.ToCString(), WS_OVERLAPPEDWINDOW, x, y, w, h, nullptr, nullptr, GetModuleHandle( NULL ), nullptr );
+	HWND hwnd = ::CreateWindowExA( 0, "XE", title.ToCString(), WS_OVERLAPPEDWINDOW, x, y, w, h, nullptr, nullptr, GetModuleHandle( NULL ), nullptr );
 
 	if( hwnd )
 	{
@@ -576,12 +579,15 @@ bool XE::Platform::HideMouse()
 	return true;
 }
 
-XE::ProcessHandle XE::Platform::ConstructProcess( const std::filesystem::path & app, const std::string & cmd, bool inherit, XE::uint32 flag )
+#ifdef CreateProcess
+#undef CreateProcess
+#endif
+XE::ProcessHandle XE::Platform::CreateProcess( const std::filesystem::path & app, const std::string & cmd, bool inherit, XE::uint32 flag )
 {
 	STARTUPINFO startup = {};
 	PROCESS_INFORMATION * info = new PROCESS_INFORMATION();
 
-	if( ::CreateProcess( app.string().c_str(), const_cast< char * >( cmd.c_str() ), nullptr, nullptr, inherit, flag, nullptr, nullptr, &startup, info ) )
+	if( ::CreateProcessA( app.string().c_str(), const_cast< char * >( cmd.c_str() ), nullptr, nullptr, inherit, flag, nullptr, nullptr, &startup, info ) )
 	{
 		return reinterpret_cast< XE::uint64 >( info );
 	}

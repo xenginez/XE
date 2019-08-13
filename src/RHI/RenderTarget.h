@@ -13,17 +13,14 @@
 
 BEG_XE_NAMESPACE
 
-class RHI_API RenderTarget : std::enable_shared_from_this< RenderTarget >
+class RHI_API RenderTarget : public Resource
 {
-	OBJECT( RenderTarget )
+	OBJECT( RenderTarget, Resource )
 
 public:
 	RenderTarget();
 
 	virtual ~RenderTarget();
-
-public:
-	RenderTargetHandle GetHandle() const;
 
 public:
 	bool GetWriteRed() const;
@@ -70,15 +67,6 @@ public:
 
 	void SetAlphaBlendOp( const BlendOperation & AlphaBlendOp );
 
-public:
-	void ClearColor( const Color & val );
-
-	ViewportPtr GetViewport( XE::uint64 val )const;
-
-	const Array<ViewportPtr> & GetViewports() const;
-
-	void SetViewports( const Array<ViewportPtr> & val );
-
 private:
 	bool _WriteRed;
 	bool _WriteGreen;
@@ -91,11 +79,6 @@ private:
 	BlendFactor _DstAlphaFunc;
 	BlendOperation _RgbBlendOp;
 	BlendOperation _AlphaBlendOp;
-
-	Array<ViewportPtr> _Viewports;
-
-	RenderContextPtr _Context;
-	RenderTargetHandle _Handle;
 };
 
 class RHI_API RenderWindow : public RenderTarget
@@ -191,7 +174,6 @@ public:
 private:
 	Texture2DPtr _Texture;
 };
-
 
 END_XE_NAMESPACE
 

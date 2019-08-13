@@ -23,10 +23,6 @@ public:
     ~Buffer() override;
 
 public:
-    basic_memory_view<XE::uint8> Map(AccessType val);
-
-    void Unmap();
-
     XE::uint64 GetSize() const;
 
 private:
@@ -112,13 +108,6 @@ public:
 	DepthStencilBuffer();
 
 	~DepthStencilBuffer() override;
-
-public:
-	bool ClearDepth( XE::real val );
-
-	bool ClearStencil( XE::uint32 val );
-
-	bool ClearDepthStencil( XE::real depth, XE::uint32 stencil );
 
 };
 

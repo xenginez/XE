@@ -1,5 +1,10 @@
 #include "InputLayout.h"
 
+USING_XE
+
+BEG_META( InputLayout )
+END_META()
+
 XE::InputLayout::InputLayout()
 {
 

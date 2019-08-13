@@ -20,7 +20,7 @@ bool SortKey::operator<( const SortKey & val ) const
 		layer < val.layer ||
 		order < val.order ||
 		blend < val.blend ||
-		shader < val.shader ||
+		program < val.program ||
 		texture < val.texture ||
 		(
 			blend == 1 ?

@@ -9,38 +9,108 @@
 #ifndef DRAWCALL_H__6689FA03_2D4B_4E73_98E6_984256426120
 #define DRAWCALL_H__6689FA03_2D4B_4E73_98E6_984256426120
 
-#include "SortKey.h"
+#include "Type.h"
 
 BEG_XE_NAMESPACE
 
 class GRAPHICS_API DrawCall : public XE::NonCopyable
 {
 public:
+	DrawCall();
+
+	virtual ~DrawCall();
+
+public:
 	virtual void Execute( CommandListPtr & val ) = 0;
 
 public:
-	SortKey _Key;
+	PipelineStatePtr _State;
 };
 
 class GRAPHICS_API RenderDrawCall : public DrawCall
 {
+public:
+	RenderDrawCall();
+
+	~RenderDrawCall() override;
+
+public:
+	void Execute( CommandListPtr & val ) override;
+
 public:
 	IndexBufferPtr _IndexBuffer;
 	VertexBufferPtr _VertexBuffer;
 	GraphicsPipelineStatePtr _PipelineState;
 };
 
+class GRAPHICS_API IndirectDrawcall : public DrawCall
+{
+public:
+	IndirectDrawcall();
+
+	~IndirectDrawcall() override;
+
+public:
+	void Execute( CommandListPtr & val ) override;
+
+public:
+	IndirectBufferPtr _IndirectBuffer;
+};
+
+class GRAPHICS_API InstanceDrawcall : public DrawCall
+{
+public:
+	InstanceDrawcall();
+
+	~InstanceDrawcall() override;
+
+public:
+	void Execute( CommandListPtr & val ) override;
+
+public:
+	InstanceBufferPtr _InstanceBuffer;
+};
+
+class GRAPHICS_API IndexInstanceDrawcall : public InstanceDrawcall
+{
+public:
+	IndexInstanceDrawcall();
+
+	~IndexInstanceDrawcall() override;
+
+public:
+	void Execute( CommandListPtr & val ) override;
+
+public:
+	XE::uint64 BegIndex;
+	XE::uint64 EndIndex;
+};
+
 class GRAPHICS_API ComputeDrawCall : public DrawCall
 {
+public:
+	ComputeDrawCall();
+
+	~ComputeDrawCall() override;
+
+public:
+	void Execute( CommandListPtr & val ) override;
+
 public:
 	ComputeBufferPtr _ComputeBuffer;
 	ComputePipelineStatePtr _PipelineState;
 };
 
-template< typename ... _DC >class DrawCallPacket : public DrawCall
+template< typename ... _DC > class PacketDrawCall : public DrawCall
 {
 public:
-	std::tuple<_DC...> _DrawCalls;
+	PacketDrawCall()
+	{ 
+	}
+
+	~PacketDrawCall() override
+	{
+	}
 
 public:
 	void Execute( CommandListPtr & val ) override
@@ -50,6 +120,9 @@ public:
 							   draw_call.Execute( val );
 						   } );
 	}
+
+public:
+	std::tuple<_DC...> _DrawCalls;
 
 private:
 	template<class F, std::size_t...Is> void for_each_in_tuple( F func, std::index_sequence<Is...> )

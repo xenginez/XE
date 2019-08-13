@@ -9,7 +9,7 @@
 #ifndef SORTKEY_H__4EBCA720_61A2_4DB5_8EF8_0A6508E209F6
 #define SORTKEY_H__4EBCA720_61A2_4DB5_8EF8_0A6508E209F6
 
-#include "Type.h"
+#include "DrawCall.h"
 
 BEG_XE_NAMESPACE
 
@@ -21,10 +21,10 @@ public:
 		XE::uint64 key;
 		struct
 		{
-			XE::uint64 layer : 4;
+			XE::uint64 layer : 3;
 			XE::uint64 order : 12;
 			XE::uint64 blend : 1;
-			XE::uint64 shader : 11;
+			XE::uint64 program : 12;
 			XE::uint64 texture : 12;
 			XE::uint64 depth : 24;
 		};
@@ -44,10 +44,37 @@ public:
 
 };
 
-template< typename T > XE_INLINE SortKey MakeSortKey( const T & val )
+template< typename T > XE_INLINE SortKey MakeSortKey( const T & val );
+
+XE_INLINE SortKey MakeSortKey( const RenderDrawCall & val )
 {
 	return SortKey();
-}
+};
+
+XE_INLINE SortKey MakeSortKey( const IndirectDrawcall & val )
+{
+	return SortKey();
+};
+
+XE_INLINE SortKey MakeSortKey( const InstanceDrawcall & val )
+{
+	return SortKey();
+};
+
+XE_INLINE SortKey MakeSortKey( const IndexInstanceDrawcall & val )
+{
+	return SortKey();
+};
+
+XE_INLINE SortKey MakeSortKey( const ComputeDrawCall & val )
+{
+	return SortKey();
+};
+
+template< typename ... T > XE_INLINE SortKey MakeSortKey( const PacketDrawCall< T... > & val )
+{
+	return MakeSortKey( std::get<0>( val._DrawCalls ) );
+};
 
 END_XE_NAMESPACE
 

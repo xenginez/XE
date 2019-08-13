@@ -13,8 +13,10 @@
 
 BEG_XE_NAMESPACE
 
-class RHI_API InputLayout
+class RHI_API InputLayout : public XE::Object
 {
+	OBJECT( InputLayout, Object )
+
 public:
 	struct Element
 	{

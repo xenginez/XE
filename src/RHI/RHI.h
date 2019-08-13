@@ -17,6 +17,7 @@
 #include "Texture.h"
 #include "Viewport.h"
 #include "Resource.h"
+#include "CommandList.h"
 #include "FrameBuffer.h"
 #include "InputLayout.h"
 #include "RenderTarget.h"

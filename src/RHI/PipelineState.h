@@ -9,13 +9,13 @@
 #ifndef PIPELINESTATE_H__9370F22B_2DBA_453B_AC42_68E23F3A5B09
 #define PIPELINESTATE_H__9370F22B_2DBA_453B_AC42_68E23F3A5B09
 
-#include "Resource.h"
+#include "Type.h"
 
 BEG_XE_NAMESPACE
 
-class RHI_API BlendState : public std::enable_shared_from_this< BlendState >
+class RHI_API BlendState : public XE::Object
 {
-	OBJECT( BlendState )
+	OBJECT( BlendState, Object )
 
 public:
 	BlendState();
@@ -32,13 +32,14 @@ public:
 	void SetAlphaToCoverageEnabled( bool val );
 
 private:
+	PipelineStateHandle _Handle;
 	bool _EnableIndependentBlend;
 	bool _AlphaToCoverageEnabled;
 };
 
-class RHI_API RasterizerState : public std::enable_shared_from_this< RasterizerState >
+class RHI_API RasterizerState : public XE::Object
 {
-	OBJECT( RasterizerState )
+	OBJECT( RasterizerState, Object )
 
 public:
 	RasterizerState();
@@ -104,9 +105,9 @@ private:
 	bool _ConservativeRaster;
 };
 
-class RHI_API DepthStencilState : public std::enable_shared_from_this< DepthStencilState >
+class RHI_API DepthStencilState : public XE::Object
 {
-	OBJECT( DepthStencilState )
+	OBJECT( DepthStencilState, Object )
 
 public:
 	DepthStencilState();
@@ -189,9 +190,9 @@ private:
 	StencilOperation _StencilBackDepthFailOp;
 };
 
-class RHI_API PipelineState : public std::enable_shared_from_this< PipelineState >
+class RHI_API PipelineState : public XE::Object
 {
-	OBJECT( PipelineState )
+	OBJECT( PipelineState, Object )
 
 public:
 	PipelineState();

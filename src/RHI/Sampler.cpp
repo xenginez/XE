@@ -15,11 +15,6 @@ Sampler::~Sampler()
 
 }
 
-XE::SamplerHandle XE::Sampler::GetHandle() const
-{
-	return _Handle;
-}
-
 SamplerFilter Sampler::GetMinFilter() const
 {
 	return _MinFilter;
