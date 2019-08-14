@@ -266,6 +266,8 @@ enum class TextureFormat
 	ASTC8x6,      /// ASTC 8x6 2.67 BPP
 	ASTC10x5,     /// ASTC 10x5 2.56 BPP
 
+	UNKNOWN,      /// Compressed formats above.
+
 	R1,
 	A8,
 	R8,
@@ -315,6 +317,8 @@ enum class TextureFormat
 	RGB5A1,
 	RGB10A2,
 	RG11B10F,
+
+	UNKNOWN_DEPTH, /// Depth formats below.
 
 	D16,
 	D24,
@@ -397,13 +401,9 @@ DECL_META_ENUM( RHI_API, StencilOperation );
 
 enum class ClearType
 {
-	CLAER_COLOR,
 	CLAER_DEPTH,
 	CLAER_STENCIL,
-	CLAER_COLOR_DEPTH,
-	CLAER_COLOR_STENCIL,
 	CLAER_DEPTH_STENCIL,
-	CLAER_COLOR_DEPTH_STENCIL,
 };
 
 enum class TileCopyType

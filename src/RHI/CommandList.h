@@ -16,7 +16,7 @@ BEG_XE_NAMESPACE
 class RHI_API CommandList
 {
 public:
-	CommandList( RenderContextRPtr val );
+	CommandList( RenderContextRPtr context, CommandListHandle handle );
 
 	~CommandList();
 
@@ -86,8 +86,6 @@ public:
 	void DrawInstanced( XE::uint32 VertexCountPerInstance, XE::uint32 InstanceCount, XE::uint32 StartVertexLocation, XE::uint32 StartInstanceLocation );
 
 	void DrawIndexedInstanced( XE::uint32 IndexCountPerInstance, XE::uint32 InstanceCount, XE::uint32 StartIndexLocation, XE::int32 BaseVertexLocation, XE::uint32 StartInstanceLocation );
-
-	void ResolveSubresource( ResourcePtr & dst, XE::uint32 DstSubresource, ResourcePtr & src, XE::uint32 SrcSubresource, TextureFormat Format );
 
 	void SetPrimitiveTopology( TopologyType PrimitiveTopology );
 

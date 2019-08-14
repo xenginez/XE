@@ -20,12 +20,8 @@ bool SortKey::operator<( const SortKey & val ) const
 		layer < val.layer ||
 		order < val.order ||
 		blend < val.blend ||
-		program < val.program ||
-		texture < val.texture ||
-		(
-			blend == 1 ?
-			( depth > val.depth ) :
-			( depth < val.depth ) );
+		state < val.state ||
+		( blend == 1 ? ( depth > val.depth ) : ( depth < val.depth ) );
 }
 
 bool SortKey::operator!=( const SortKey & val ) const
