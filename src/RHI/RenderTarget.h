@@ -20,7 +20,7 @@ class RHI_API RenderTarget : public Resource
 public:
 	RenderTarget();
 
-	virtual ~RenderTarget();
+	~RenderTarget() override;
 
 public:
 	bool GetWriteRed() const;

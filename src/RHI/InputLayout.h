@@ -28,7 +28,7 @@ public:
 public:
 	InputLayout();
 	
-	~InputLayout();
+	~InputLayout() override;
 
 public:
 	InputLayout &Add( const String &name, XE::uint32 offset, LayoutFormat format );

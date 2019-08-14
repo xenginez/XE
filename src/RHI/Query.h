@@ -20,7 +20,7 @@ class RHI_API Query : public Resource
 public:
 	Query();
 
-	virtual ~Query();
+	~Query() override;
 
 };
 

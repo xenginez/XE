@@ -15,7 +15,7 @@ BEG_XE_NAMESPACE
 
 class RHI_API Image
 {
-	OBJECT(Image)
+	OBJECT( Image )
 	
 public:
 	Image();

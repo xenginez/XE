@@ -20,10 +20,12 @@ class RHI_API Resource : public XE::Object
 public:
 	Resource();
 
-	virtual ~Resource();
+	~Resource() override;
 
 public:
-	virtual bool Prepare() = 0;
+	virtual void Startup( RenderContextRPtr context ) = 0;
+
+	virtual void Clearup( RenderContextRPtr context ) = 0;
 
 public:
 	ResourceHandle GetHandle() const;

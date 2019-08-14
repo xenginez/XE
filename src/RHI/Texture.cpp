@@ -15,16 +15,6 @@ XE::Texture::~Texture()
 
 }
 
-XE::basic_memory_view<XE::uint8> XE::Texture::Map( AccessType val )
-{
-	return basic_memory_view<XE::uint8>();
-}
-
-void XE::Texture::Unmap()
-{
-
-}
-
 XE::TextureFormat XE::Texture::GetFormat() const
 {
 	return _Format;

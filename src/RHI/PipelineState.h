@@ -20,7 +20,7 @@ class RHI_API BlendState : public XE::Object
 public:
 	BlendState();
 
-	~BlendState();
+	~BlendState() override;
 
 public:
 	bool GetEnableIndependentBlend() const;
@@ -44,7 +44,7 @@ class RHI_API RasterizerState : public XE::Object
 public:
 	RasterizerState();
 
-	~RasterizerState();
+	~RasterizerState() override;
 
 public:
 	XE::FillType GetFillMode() const;
@@ -112,7 +112,7 @@ class RHI_API DepthStencilState : public XE::Object
 public:
 	DepthStencilState();
 
-	~DepthStencilState();
+	~DepthStencilState() override;
 
 public:
 	bool GetDepthEnable() const;
@@ -197,7 +197,12 @@ class RHI_API PipelineState : public XE::Object
 public:
 	PipelineState();
 
-	virtual ~PipelineState();
+	~PipelineState() override;
+
+public:
+	virtual void Startup( RenderContextRPtr context ) = 0;
+
+	virtual void Clearup( RenderContextRPtr context ) = 0;
 
 public:
 	PipelineStateHandle GetHandle() const;

@@ -13,12 +13,15 @@
 
 BEG_XE_NAMESPACE
 
-class RHI_API CommandList
+class RHI_API CommandList : public std::enable_shared_from_this< CommandList >, public XE::NonCopyable
 {
 public:
-	CommandList( RenderContextRPtr context, CommandListHandle handle );
+	CommandList( RenderContextRPtr context, CommandListType type, CommandListHandle handle );
 
 	~CommandList();
+
+public:
+	CommandListType GetType() const;
 
 public:
 	void Dispatch( XE::uint32 ThreadGroupCountX, XE::uint32 ThreadGroupCountY, XE::uint32 ThreadGroupCountZ );
@@ -122,6 +125,7 @@ public:
 	void ClearDepthStencilView( DepthStencilBufferPtr DepthStencilView, ClearType ClearFlags, XE::float32 Depth, XE::uint8 Stencil, XE::basic_memory_view<Rect> pRects );
 
 private:
+	CommandListType _Type;
 	CommandListHandle _Handle;
 	RenderContextRPtr _Context;
 };

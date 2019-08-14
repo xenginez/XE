@@ -20,7 +20,7 @@ class RHI_API Sampler : public Resource
 public:
 	Sampler();
 	
-	~Sampler();
+	~Sampler() override;
 
 public:
 	SamplerFilter GetMinFilter() const;

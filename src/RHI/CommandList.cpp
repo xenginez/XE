@@ -4,8 +4,8 @@
 
 USING_XE
 
-XE::CommandList::CommandList( RenderContextRPtr context, CommandListHandle handle )
-	:_Context( context ), _Handle( handle )
+XE::CommandList::CommandList( RenderContextRPtr context, CommandListType type, CommandListHandle handle )
+	:_Context( context ), _Type( type ), _Handle( handle )
 {
 
 }
@@ -13,6 +13,11 @@ XE::CommandList::CommandList( RenderContextRPtr context, CommandListHandle handl
 XE::CommandList::~CommandList()
 {
 
+}
+
+XE::CommandListType XE::CommandList::GetType() const
+{
+	return _Type;
 }
 
 void XE::CommandList::Dispatch( XE::uint32 ThreadGroupCountX, XE::uint32 ThreadGroupCountY, XE::uint32 ThreadGroupCountZ )

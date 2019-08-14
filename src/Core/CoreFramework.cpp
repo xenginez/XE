@@ -258,7 +258,10 @@ void XE::CoreFramework::Prepare()
 	{
 		if( !std::filesystem::is_directory( file.path() ) )
 		{
-			_p->_Libs.push_back( Library::Open( file.path().string() ) );
+			if( file.path().extension().string() == DLL_EXT_NAME )
+			{
+				_p->_Libs.push_back( Library::Open( file.path().string() ) );
+			}
 		}
 	}
 

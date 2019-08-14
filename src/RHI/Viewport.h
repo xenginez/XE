@@ -56,16 +56,9 @@ public:
 
 	void SetDepth( const Vec2 & val );
 
-public:
-	RenderTargetPtr GetRenderTarget() const;
-
-private:
-	void SetRenderTarget( const RenderTargetPtr & val );
-
 private:
 	Rect _Rect;
 	Vec2 _Depth;
-	RenderTargetWPtr _RenderTarget;
 };
 
 END_XE_NAMESPACE

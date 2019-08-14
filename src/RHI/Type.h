@@ -457,6 +457,17 @@ enum class StripCutValue
 	FFFFFFFF,
 };
 
+
+enum CommandListType
+{
+	DIRECT,
+	BUNDLE,
+	COMPUTE,
+	COPY,
+	VIDEO_DECODE,
+	VIDEO_PROCESS,
+};
+
 END_XE_NAMESPACE
 
 #endif //__TYPE_H__6580A518_948A_4162_A63F_E02DCC393EC9

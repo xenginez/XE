@@ -61,13 +61,14 @@ public:
 
 	virtual bool DestoryQuery( QueryPtr & val ) = 0;
 
-	virtual CommandListHandle CreateCommandList( CommandListPtr & val ) = 0;
-
-	virtual void DestoryCommandList( CommandListHandle val ) = 0;
-
 	virtual PipelineStateHandle CreatePipelineState( PipelineStatePtr & val ) = 0;
 
 	virtual void DestoryPipelineState( PipelineStateHandle val ) = 0;
+
+public:
+	virtual CommandListPtr CreateCommandList( CommandListType val ) = 0;
+
+	virtual void DestoryCommandList( CommandListPtr val ) = 0;
 
 	/// CommandList Method
 public:

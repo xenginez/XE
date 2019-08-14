@@ -94,13 +94,3 @@ void XE::Viewport::SetDepth( const Vec2 & val )
 {
 	_Depth = val;
 }
-
-XE::RenderTargetPtr XE::Viewport::GetRenderTarget() const
-{
-	return _RenderTarget.lock();
-}
-
-void XE::Viewport::SetRenderTarget( const RenderTargetPtr & val )
-{
-	_RenderTarget = val;
-}
