@@ -23,8 +23,6 @@ public:
 	~IRenderService() override;
 
 public:
-	virtual WindowHandle GetMainWindow() const = 0;
-
 	virtual RenderContextPtr GetRenderContext() const = 0;
 
 public:

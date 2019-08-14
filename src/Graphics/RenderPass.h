@@ -18,13 +18,25 @@ class GRAPHICS_API RenderPass : public std::enable_shared_from_this< RenderPass 
 	OBJECT( RenderPass )
 
 public:
+	friend class Technique;
+
+public:
 	RenderPass();
 
 	virtual ~RenderPass();
 
 public:
-	virtual void Render() = 0;
+	TechniquePtr GetTechnuque() const;
 
+public:
+	virtual void Startup( RenderContextPtr & context ) = 0;
+
+	virtual void Render( RenderContextPtr & context ) = 0;
+
+	virtual void Clearup( RenderContextPtr & context ) = 0;
+
+private:
+	TechniqueWPtr _Technique;
 };
 
 END_XE_NAMESPACE

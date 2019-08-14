@@ -25,20 +25,19 @@ public:
 public:
 	void Startup();
 
-	void Render( const CameraPtr & camera );
+	void Render( RenderContextPtr & context, CameraPtr & camera );
 
 	void Clearup();
 
 protected:
 	virtual void OnStartup() = 0;
 
-	virtual void BeginRender( const CameraPtr & camera ) = 0;
-
-	virtual void OnRender( const CameraPtr & camera ) = 0;
-
-	virtual void EndRender( const CameraPtr & camera ) = 0;
+	virtual void OnRender( RenderContextPtr & context, CameraPtr & camera ) = 0;
 
 	virtual void OnClearup() = 0;
+
+private:
+	RenderQueuePtr _Queue;
 };
 
 END_XE_NAMESPACE

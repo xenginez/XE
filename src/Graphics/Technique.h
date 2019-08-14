@@ -23,11 +23,21 @@ public:
 	~Technique() override;
 
 public:
-	virtual void Startup() = 0;
+	void Startup( RenderContextPtr & context );
 
-	virtual void Render() = 0;
+	void Render( RenderContextPtr & context );
 
-	virtual void Clearup() = 0;
+	void Clearup( RenderContextPtr & context );
+
+protected:
+	virtual void OnStartup( RenderContextPtr & context ) = 0;
+
+	virtual void OnRender( RenderContextPtr & context ) = 0;
+
+	virtual void OnClearup( RenderContextPtr & context ) = 0;
+
+private:
+	Array<RenderPassPtr> _Passes;
 };
 
 END_XE_NAMESPACE

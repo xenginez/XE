@@ -9,8 +9,6 @@ END_META()
 
 struct XE::RenderService::Private
 {
-	WindowHandle _MainWindow;
-
 	RenderContextPtr _Context;
 
 	Array<LightPtr> _Lights;
@@ -62,7 +60,7 @@ void XE::RenderService::Update()
 
 	tbb::parallel_for( XE::uint64( 0 ), _p->_Cameras.size(), [&]( XE::uint64 i )
 					   {
-						   _p->_Cameras[i]->GetRenderer()->Render( _p->_Cameras[i] );
+						   _p->_Cameras[i]->GetRenderer()->Render( _p->_Context, _p->_Cameras[i] );
 					   } );
 
 	_p->_Context->Present();
@@ -75,11 +73,6 @@ void XE::RenderService::Clearup()
 	_p->_Renderables.clear();
 
 	_p->_Context->Startup();
-}
-
-XE::WindowHandle XE::RenderService::GetMainWindow() const
-{
-	return _p->_MainWindow;
 }
 
 XE::RenderContextPtr XE::RenderService::GetRenderContext() const
@@ -155,4 +148,3 @@ const XE::Array<XE::RenderablePtr> & XE::RenderService::GetRenderables() const
 {
 	return _p->_Renderables;
 }
-

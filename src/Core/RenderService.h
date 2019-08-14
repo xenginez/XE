@@ -35,8 +35,6 @@ public:
 	void Clearup() override;
 
 public:
-	WindowHandle GetMainWindow() const override;
-
 	RenderContextPtr GetRenderContext() const override;
 
 public:

@@ -25,6 +25,7 @@ DECL_PTR( Skeleton );
 DECL_PTR( Technique );
 DECL_PTR( RenderPass );
 DECL_PTR( Renderable );
+DECL_PTR( RenderQueue );
 
 
 enum class CameraType
