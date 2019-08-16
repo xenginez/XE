@@ -1,6 +1,3 @@
-[submodule "3rdparty/zipper"]
-	path = 3rdparty/zipper
-	url = https://github.com/sebastiandev/zipper.git
 [submodule "3rdparty/openal-soft"]
 	path = 3rdparty/openal-soft
 	url = https://github.com/kcat/openal-soft.git
@@ -13,18 +10,15 @@
 [submodule "3rdparty/tbb"]
 	path = 3rdparty/tbb
 	url = https://github.com/intel/tbb.git
-[submodule "3rdparty/bullet3"]
-	path = 3rdparty/bullet3
-	url = https://github.com/bulletphysics/bullet3.git
 [submodule "3rdparty/rapidjson"]
 	path = 3rdparty/rapidjson
 	url = https://github.com/Tencent/rapidjson.git
-[submodule "3rdparty/zlib"]
-	path = 3rdparty/zlib
-	url = https://github.com/madler/zlib.git
 [submodule "3rdparty/sqlite3-cmake"]
 	path = 3rdparty/sqlite3-cmake
 	url = https://github.com/alex85k/sqlite3-cmake.git
 [submodule "3rdparty/stb"]
 	path = 3rdparty/stb
 	url = https://github.com/nothings/stb.git
+[submodule "3rdparty/ozz-animation"]
+	path = 3rdparty/ozz-animation
+	url = https://github.com/guillaumeblanc/ozz-animation.git

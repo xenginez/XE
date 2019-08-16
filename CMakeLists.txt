@@ -123,26 +123,6 @@ target_link_libraries(Audio
 
 target_link_libraries(Physics
 		Interface
-
-		Bullet2FileLoader
-		BulletInverseDynamicsUtils
-		Bullet3Collision
-		BulletRobotics
-		Bullet3Common
-		BulletSoftBody
-		Bullet3Dynamics
-		BulletWorldImporter
-		Bullet3Geometry
-		BulletXmlWorldImporter
-		Bullet3OpenCL_clew
-		ConvexDecomposition
-		BulletCollision
-		GIMPACTUtils
-		BulletDynamics
-		HACD
-		BulletFileLoader
-		LinearMath
-		BulletInverseDynamics
 		)
 
 target_link_libraries(Navigation
@@ -174,7 +154,6 @@ target_link_libraries(Core
 		Components
 
 		sqlite3
-		libZipper-static
 		)
 
 target_link_libraries(XE
