@@ -13,9 +13,9 @@
 
 BEG_XE_NAMESPACE
 
-class COMPONENTS_API DecalComponent : public XE::RenderComponent
+class COMPONENTS_API DecalComponent : public XE::SceneComponent
 {
-	OBJECT( DecalComponent, RenderComponent )
+	OBJECT( DecalComponent, SceneComponent )
 
 public:
 	DecalComponent();

@@ -13,9 +13,9 @@
 
 BEG_XE_NAMESPACE
 
-class COMPONENTS_API BillboardComponent : public XE::RenderComponent
+class COMPONENTS_API BillboardComponent : public XE::SceneComponent
 {
-	OBJECT( BillboardComponent, RenderComponent )
+	OBJECT( BillboardComponent, SceneComponent )
 
 public:
 	BillboardComponent();

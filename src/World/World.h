@@ -13,7 +13,6 @@
 #include "GameObject.h"
 #include "WorldObject.h"
 #include "SceneComponent.h"
-#include "RenderComponent.h"
 #include "BehaviorComponent.h"
 
 #endif // __WORLD_H__CED80CA4_A3DE_4235_884D_DB3BD71D3C81

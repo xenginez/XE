@@ -13,9 +13,9 @@
 
 BEG_XE_NAMESPACE
 
-class COMPONENTS_API ParticleComponent : public XE::RenderComponent
+class COMPONENTS_API ParticleComponent : public XE::SceneComponent
 {
-	OBJECT( ParticleComponent, RenderComponent )
+	OBJECT( ParticleComponent, SceneComponent )
 
 public:
 	ParticleComponent();

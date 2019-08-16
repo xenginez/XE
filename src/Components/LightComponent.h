@@ -13,9 +13,9 @@
 
 BEG_XE_NAMESPACE
 
-class COMPONENTS_API LightComponent : public XE::RenderComponent
+class COMPONENTS_API LightComponent : public XE::SceneComponent
 {
-	OBJECT( LightComponent, RenderComponent )
+	OBJECT( LightComponent, SceneComponent )
 
 public:
 	LightComponent();

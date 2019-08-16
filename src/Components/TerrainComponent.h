@@ -13,9 +13,9 @@
 
 BEG_XE_NAMESPACE
 
-class COMPONENTS_API TerrainComponent : public XE::RenderComponent
+class COMPONENTS_API TerrainComponent : public XE::SceneComponent
 {
-	OBJECT( TerrainComponent, RenderComponent )
+	OBJECT( TerrainComponent, SceneComponent )
 
 public:
 	TerrainComponent();

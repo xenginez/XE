@@ -13,9 +13,9 @@
 
 BEG_XE_NAMESPACE
 
-class COMPONENTS_API CameraComponent : public XE::RenderComponent
+class COMPONENTS_API CameraComponent : public XE::SceneComponent
 {
-	OBJECT( CameraComponent, RenderComponent )
+	OBJECT( CameraComponent, SceneComponent )
 
 public:
 	CameraComponent();

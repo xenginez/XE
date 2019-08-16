@@ -13,14 +13,15 @@
 
 BEG_XE_NAMESPACE
 
-class GRAPHICS_API Bone
+class GRAPHICS_API Joint
 {
 public:
-	String Name;
-	Mat4 Transform;
+	XE::String Name;
 	XE::uint64 Parent;
+	XE::Mat4 Transform;
+	XE::Array<XE::uint64> Children;
 };
-DECL_META_CLASS( GRAPHICS_API, Bone );
+DECL_META_CLASS( GRAPHICS_API, Joint );
 
 class GRAPHICS_API Skeleton : public XE::Object
 {
@@ -35,23 +36,26 @@ public:
 	~Skeleton() override;
 
 public:
-	XE::uint64 GetBoneCount() const;
+	XE::uint64 GetJointCount() const;
 
-	XE::uint64 FindBoneIndex( const String & val ) const;
+	XE::uint64 FindJointIndex( const XE::String & val ) const;
 
-	const String & GetBoneName( XE::uint64 val ) const;
+	const XE::String & GetJointName( XE::uint64 val ) const;
 
-	XE::uint64 GetBoneParent( XE::uint64 val ) const;
+	XE::uint64 GetJointParent( XE::uint64 val ) const;
 
-	const Array<Bone> & GetBones() const;
+	const XE::Mat4 & GetJointTransform( XE::uint64 val ) const;
+
+	const XE::Array<XE::uint64> & GetJointChildren( XE::uint64 val ) const;
 
 public:
-	const Mat4 & GetBoneTransform( XE::uint64 val ) const;
+	const XE::Array<XE::Joint> & GetJoints() const;
 
-	void SetBoneTransform( XE::uint64 val, const Mat4 & mat );
+public:
+	void SetJointTransform( XE::uint64 val, const XE::Mat4 & mat );
 
 private:
-	Array<Bone> _Bones;
+	XE::Array<XE::Joint> _Joints;
 };
 
 END_XE_NAMESPACE

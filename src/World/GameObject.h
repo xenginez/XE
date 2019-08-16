@@ -9,7 +9,7 @@
 #ifndef __GAMEOBJECT_H__ECCC67A6_5AD3_4306_8C14_915D53744BBA
 #define __GAMEOBJECT_H__ECCC67A6_5AD3_4306_8C14_915D53744BBA
 
-#include "Transform.h"
+#include "Type.h"
 
 BEG_XE_NAMESPACE
 
@@ -37,9 +37,55 @@ public:
 	void SetFramework( IFrameworkPtr val );
 
 public:
-	XE::AABB GetBoundingBox() const;
+	const XE::AABB & GetBoundingBox() const;
 
-	Transform * GetTransform();
+public:
+	Vec3 GetWorldUp();
+
+	Vec3 GetWorldRight();
+
+	Vec3 GetWorldForward();
+
+	Vec3 GetRelativeUp() const;
+
+	Vec3 GetRelativeRight() const;
+
+	Vec3 GetRelativeForward() const;
+
+public:
+	const Vec3 & GetWorldScale();
+
+	void SetWorldScale( const Vec3 & val );
+
+	const Vec3 & GetWorldPosition();
+
+	void SetWorldPosition( const Vec3 & val );
+
+	const Quat & GetWorldRotation();
+
+	void SetWorldRotation( const Quat & val );
+
+public:
+	const Vec3 & GetRelativeScale() const;
+
+	void SetRelativeScale( const Vec3 & val );
+
+	const Vec3 & GetRelativePosition() const;
+
+	void SetRelativePosition( const Vec3 & val );
+
+	const Quat & GetRelativeRotation() const;
+
+	void SetRelativeRotation( const Quat & val );
+
+public:
+	const Mat4 & GetWorldTransform() const;
+
+	void SetWorldTransform( const Mat4 & val );
+
+	const Mat4 & GetRelativeTransform() const;
+
+	void SetRelativeTransform( const Mat4 & val );
 
 	SceneComponentPtr GetSceneComponent() const;
 

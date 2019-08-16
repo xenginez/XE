@@ -13,9 +13,9 @@
 
 BEG_XE_NAMESPACE
 
-class COMPONENTS_API MeshComponent : public XE::RenderComponent
+class COMPONENTS_API MeshComponent : public XE::SceneComponent
 {
-	OBJECT( MeshComponent, RenderComponent )
+	OBJECT( MeshComponent, SceneComponent )
 
 public:
 	MeshComponent();

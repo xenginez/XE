@@ -13,9 +13,9 @@
 
 BEG_XE_NAMESPACE
 
-class COMPONENTS_API SkyComponent : public XE::RenderComponent
+class COMPONENTS_API SkyComponent : public XE::SceneComponent
 {
-	OBJECT( SkyComponent, RenderComponent )
+	OBJECT( SkyComponent, SceneComponent )
 
 public:
 	SkyComponent();

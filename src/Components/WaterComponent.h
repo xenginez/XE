@@ -13,9 +13,9 @@
 
 BEG_XE_NAMESPACE
 
-class COMPONENTS_API WaterComponent : public XE::RenderComponent
+class COMPONENTS_API WaterComponent : public XE::SceneComponent
 {
-	OBJECT( WaterComponent, RenderComponent )
+	OBJECT( WaterComponent, SceneComponent )
 
 public:
 	WaterComponent();
