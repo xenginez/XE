@@ -267,7 +267,7 @@ void XE::WorldObject::Startup()
 	_DynmicTree.Rebuild( dynmic_objs.begin(), dynmic_objs.end() );
 }
 
-void XE::WorldObject::Update( XE::real dt )
+void XE::WorldObject::Update( XE::float32 dt )
 {
 	FArray<GameObjectPtr> dynmic_objs;
 

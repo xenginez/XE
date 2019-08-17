@@ -12,8 +12,8 @@ END_META()
 struct XEPTimeEvent
 {
 	EventPtr _Event;
-	XE::real _Duration;
-	XE::real _StartTime;
+	XE::float32 _Duration;
+	XE::float32 _StartTime;
 };
 template<> struct std::less<XEPTimeEvent>
 {
@@ -120,7 +120,7 @@ void XE::EventService::PostEvent( XE::uint64 frame, EventPtr val )
 	_p->_FrameEvents.push( std::move( evt ) );
 }
 
-void XE::EventService::PostEvent( XE::real dt, EventPtr val )
+void XE::EventService::PostEvent( XE::float32 dt, EventPtr val )
 {
 	if( dt <= Mathf::Epsilon )
 	{
@@ -167,7 +167,7 @@ void XE::EventService::UnregisterListener( XE::uint64 event, XE::uint64 index )
 
 void XE::EventService::ProcessTimeEvent()
 {
-	XE::real NowTime = GetFramework()->GetTimerService()->GetTime();
+	XE::float32 NowTime = GetFramework()->GetTimerService()->GetTime();
 
 	XEPTimeEvent event;
 	while ( _p->_TimeEvents.try_pop( event ) )

@@ -19,7 +19,7 @@ XE::AudioListenerComponent::~AudioListenerComponent()
 
 }
 
-void XE::AudioListenerComponent::OnUpdate( XE::real dt )
+void XE::AudioListenerComponent::OnUpdate( XE::float32 dt )
 {
 	Super::OnUpdate( dt );
 

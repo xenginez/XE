@@ -28,7 +28,7 @@ public:
 public:
 	virtual void OnStartup() override;
 
-	virtual void OnUpdate( XE::real dt ) override;
+	virtual void OnUpdate( XE::float32 dt ) override;
 
 	virtual void OnClearup() override;
 
@@ -49,7 +49,7 @@ public:
 public:
 	virtual void OnStartup() override;
 
-	virtual void OnUpdate( XE::real dt ) override;
+	virtual void OnUpdate( XE::float32 dt ) override;
 
 private:
 	XE::int64 _Count;
@@ -68,7 +68,7 @@ public:
 public:
 	virtual void OnStartup() override;
 
-	virtual void OnUpdate( XE::real dt ) override;
+	virtual void OnUpdate( XE::float32 dt ) override;
 
 };
 
@@ -84,7 +84,7 @@ public:
 public:
 	virtual void OnStartup() override;
 
-	virtual void OnUpdate( XE::real dt ) override;
+	virtual void OnUpdate( XE::float32 dt ) override;
 
 };
 
@@ -100,7 +100,7 @@ public:
 public:
 	virtual void OnStartup() override;
 
-	virtual void OnUpdate( XE::real dt ) override;
+	virtual void OnUpdate( XE::float32 dt ) override;
 
 };
 
@@ -116,11 +116,11 @@ public:
 public:
 	virtual void OnStartup() override;
 
-	virtual void OnUpdate( XE::real dt ) override;
+	virtual void OnUpdate( XE::float32 dt ) override;
 
 private:
-	XE::real _DetlaTime;
-	XE::real _Dt;
+	XE::float32 _DetlaTime;
+	XE::float32 _Dt;
 };
 
 END_XE_NAMESPACE

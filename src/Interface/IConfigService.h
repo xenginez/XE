@@ -59,9 +59,9 @@ public:
 	
 	XE::uint64 GetUInt64( const String& key, XE::uint64 def = 0 ) const;
 
-	void Setreal( const String& key, XE::real val );
+	void SetFloat32( const String& key, XE::float32 val );
 	
-	XE::real Getreal( const String& key, XE::real def = 0.0f ) const;
+	XE::float32 GetFloat32( const String& key, XE::float32 def = 0.0f ) const;
 
 	void SetFloat64( const String& key, XE::float64 val );
 	

@@ -27,23 +27,23 @@ public:
 
 	void SetLODCount( XE::uint64 val );
 
-	XE::real GetLowerDistance( XE::uint64 lod );
+	XE::float32 GetLowerDistance( XE::uint64 lod );
 
-	void SetLowerDistance( XE::uint64 lod, XE::real val );
+	void SetLowerDistance( XE::uint64 lod, XE::float32 val );
 
-	XE::real GetUpperDistance( XE::uint64 lod );
+	XE::float32 GetUpperDistance( XE::uint64 lod );
 
-	void SetUpperDistance( XE::uint64 lod, XE::real val );
+	void SetUpperDistance( XE::uint64 lod, XE::float32 val );
 
-	const Array<Pair<XE::real, XE::real>>& GetLODs() const;
+	const Array<Pair<XE::float32, XE::float32>>& GetLODs() const;
 
-	void SetLODs( const Array<Pair<XE::real, XE::real>> & val );
+	void SetLODs( const Array<Pair<XE::float32, XE::float32>> & val );
 
 public:
-	XE::uint64 GetLODLimits( XE::real val ) const;
+	XE::uint64 GetLODLimits( XE::float32 val ) const;
 	
 private:
-	Array<Pair<XE::real, XE::real>> _Lods;
+	Array<Pair<XE::float32, XE::float32>> _Lods;
 };
 DECL_META_CLASS( UTILS_API, LOD );
 

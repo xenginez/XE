@@ -123,14 +123,14 @@ void IConfigService::SetUInt64( const String &key, XE::uint64 val )
 	SetValue(key, std::to_string(val));
 }
 
-XE::real IConfigService::Getreal( const String &key, XE::real def ) const
+XE::float32 IConfigService::GetFloat32( const String &key, XE::float32 def ) const
 {
 	String s = GetValue(key);
 	
 	return s == "" ? def : std::stof(s);
 }
 
-void IConfigService::Setreal( const String &key, XE::real val )
+void IConfigService::SetFloat32( const String &key, XE::float32 val )
 {
 	SetValue(key, std::to_string(val));
 }

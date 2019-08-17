@@ -25,7 +25,7 @@ void XE::SubState::OnStartup()
 	_SubAI->Startup();
 }
 
-void XE::SubState::OnUpdate( XE::real dt )
+void XE::SubState::OnUpdate( XE::float32 dt )
 {
 	_SubAI->Update( dt );
 }

@@ -71,7 +71,7 @@ void XE::Component::Startup()
 	OnStartup();
 }
 
-void XE::Component::Update( XE::real dt )
+void XE::Component::Update( XE::float32 dt )
 {
 	if ( _Enabled == false || _Update == false )
 	{
@@ -91,7 +91,7 @@ void XE::Component::OnStartup()
 
 }
 
-void XE::Component::OnUpdate( XE::real dt )
+void XE::Component::OnUpdate( XE::float32 dt )
 {
 
 }

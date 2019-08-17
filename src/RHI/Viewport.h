@@ -23,34 +23,34 @@ public:
 	~Viewport();
 
 public:
-	XE::real GetX() const;
+	XE::float32 GetX() const;
 
-	void SetX( XE::real val );
+	void SetX( XE::float32 val );
 
-	XE::real GetY() const;
+	XE::float32 GetY() const;
 
-	void SetY( XE::real val );
+	void SetY( XE::float32 val );
 
-	XE::real GetWidth() const;
+	XE::float32 GetWidth() const;
 
-	void SetWidth( XE::real val );
+	void SetWidth( XE::float32 val );
 
-	XE::real GetHeight() const;
+	XE::float32 GetHeight() const;
 
-	void SetHeight( XE::real val );
+	void SetHeight( XE::float32 val );
 
 	const Rect & GetRect() const;
 
 	void SetRect( const Rect & val );
 
 public:
-	XE::real GetMinDepth() const;
+	XE::float32 GetMinDepth() const;
 
-	void SetMinDepth( XE::real val );
+	void SetMinDepth( XE::float32 val );
 
-	XE::real GetMaxDepth() const;
+	XE::float32 GetMaxDepth() const;
 
-	void SetMaxDepth( XE::real val );
+	void SetMaxDepth( XE::float32 val );
 
 	const Vec2 & GetDepth() const;
 

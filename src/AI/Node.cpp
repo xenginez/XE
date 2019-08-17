@@ -66,7 +66,7 @@ void XE::Node::Startup()
 	OnStartup();
 }
 
-void XE::Node::Update( XE::real dt )
+void XE::Node::Update( XE::float32 dt )
 {
 	if ( _PreCondition && _ConditionStatus == ConditionStatus::Always )
 	{
@@ -91,7 +91,7 @@ void XE::Node::OnStartup()
 	SetStatus( NodeStatus::Running );
 }
 
-void XE::Node::OnUpdate( XE::real dt )
+void XE::Node::OnUpdate( XE::float32 dt )
 {
 
 }

@@ -15,42 +15,42 @@ XE::Viewport::~Viewport()
 
 }
 
-XE::real XE::Viewport::GetX() const
+XE::float32 XE::Viewport::GetX() const
 {
 	return _Rect.x;
 }
 
-void XE::Viewport::SetX( XE::real val )
+void XE::Viewport::SetX( XE::float32 val )
 {
 	_Rect.x = val;
 }
 
-XE::real XE::Viewport::GetY() const
+XE::float32 XE::Viewport::GetY() const
 {
 	return _Rect.y;
 }
 
-void XE::Viewport::SetY( XE::real val )
+void XE::Viewport::SetY( XE::float32 val )
 {
 	_Rect.y = val;
 }
 
-XE::real XE::Viewport::GetWidth() const
+XE::float32 XE::Viewport::GetWidth() const
 {
 	return _Rect.width;
 }
 
-void XE::Viewport::SetWidth( XE::real val )
+void XE::Viewport::SetWidth( XE::float32 val )
 {
 	_Rect.width = val;
 }
 
-XE::real XE::Viewport::GetHeight() const
+XE::float32 XE::Viewport::GetHeight() const
 {
 	return _Rect.height;
 }
 
-void XE::Viewport::SetHeight( XE::real val )
+void XE::Viewport::SetHeight( XE::float32 val )
 {
 	_Rect.height = val;
 }
@@ -65,22 +65,22 @@ void XE::Viewport::SetRect( const Rect & val )
 	_Rect = val;
 }
 
-XE::real XE::Viewport::GetMinDepth() const
+XE::float32 XE::Viewport::GetMinDepth() const
 {
 	return _Depth.x;
 }
 
-void XE::Viewport::SetMinDepth( XE::real val )
+void XE::Viewport::SetMinDepth( XE::float32 val )
 {
 	_Depth.x = val;
 }
 
-XE::real XE::Viewport::GetMaxDepth() const
+XE::float32 XE::Viewport::GetMaxDepth() const
 {
 	return _Depth.y;
 }
 
-void XE::Viewport::SetMaxDepth( XE::real val )
+void XE::Viewport::SetMaxDepth( XE::float32 val )
 {
 	_Depth.y = val;
 }

@@ -211,7 +211,7 @@ XE::uint32 XE::RenderWindow::GetPosX() const
 
 void XE::RenderWindow::SetPosX( XE::uint32 x )
 {
-	_Rect.x = static_cast< XE::real >( x );
+	_Rect.x = static_cast< XE::float32 >( x );
 
 	Platform::SetWindowRect( _Handle.GetValue(), static_cast< XE::uint32 >( _Rect.x ), static_cast< XE::uint32 >( _Rect.y ), static_cast< XE::uint32 >( _Rect.width ), static_cast< XE::uint32 >( _Rect.height ), false );
 }
@@ -223,7 +223,7 @@ XE::uint32 XE::RenderWindow::GetPosY() const
 
 void XE::RenderWindow::SetPosY( XE::uint32 y )
 {
-	_Rect.y = static_cast< XE::real >( y );
+	_Rect.y = static_cast< XE::float32 >( y );
 
 	Platform::SetWindowRect( _Handle.GetValue(), static_cast< XE::uint32 >( _Rect.x ), static_cast< XE::uint32 >( _Rect.y ), static_cast< XE::uint32 >( _Rect.width ), static_cast< XE::uint32 >( _Rect.height ), false );
 }
@@ -235,7 +235,7 @@ XE::uint32 XE::RenderWindow::GetWidth() const
 
 void XE::RenderWindow::SetWidth( XE::uint32 w )
 {
-	_Rect.width = static_cast< XE::real >( w );
+	_Rect.width = static_cast< XE::float32 >( w );
 
 	Platform::SetWindowRect( _Handle.GetValue(), static_cast< XE::uint32 >( _Rect.x ), static_cast< XE::uint32 >( _Rect.y ), static_cast< XE::uint32 >( _Rect.width ), static_cast< XE::uint32 >( _Rect.height ), false );
 }
@@ -247,7 +247,7 @@ XE::uint32 XE::RenderWindow::GetHeight() const
 
 void XE::RenderWindow::SetHeight( XE::uint32 h )
 {
-	_Rect.height = static_cast< XE::real >( h );
+	_Rect.height = static_cast< XE::float32 >( h );
 
 	Platform::SetWindowRect( _Handle.GetValue(), static_cast< XE::uint32 >( _Rect.x ), static_cast< XE::uint32 >( _Rect.y ), static_cast< XE::uint32 >( _Rect.width ), static_cast< XE::uint32 >( _Rect.height ), false );
 }

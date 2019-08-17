@@ -63,13 +63,13 @@ public:
 
 	void SetDepthBias( XE::int32 val );
 
-	XE::real GetDepthBiasClamp() const;
+	XE::float32 GetDepthBiasClamp() const;
 
-	void SetDepthBiasClamp( XE::real val );
+	void SetDepthBiasClamp( XE::float32 val );
 
-	XE::real GetSlopeSacleDepthBias() const;
+	XE::float32 GetSlopeSacleDepthBias() const;
 
-	void SetSlopeSacleDepthBias( XE::real val );
+	void SetSlopeSacleDepthBias( XE::float32 val );
 
 	bool GetDepthClipEnable() const;
 
@@ -96,8 +96,8 @@ private:
 	CullType _CullMode;
 	bool _FrontCountClockwise;
 	XE::int32 _DepthBias;
-	XE::real _DepthBiasClamp;
-	XE::real _SlopeSacleDepthBias;
+	XE::float32 _DepthBiasClamp;
+	XE::float32 _SlopeSacleDepthBias;
 	bool _DepthClipEnable;
 	bool _MultisampleEnable;
 	bool _AntialiasedLineEnable;

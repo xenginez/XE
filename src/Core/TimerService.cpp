@@ -9,9 +9,9 @@ struct TimerService::Private
 {
 	bool _IsPause;
 	XE::uint64 _FrameCount;
-	XE::real _TimeScale;
-	XE::real _DetlaTime;
-	XE::real _FixedDetlaTime;
+	XE::float32 _TimeScale;
+	XE::float32 _DetlaTime;
+	XE::float32 _FixedDetlaTime;
 	std::chrono::high_resolution_clock::time_point _StartTime;
 	std::chrono::high_resolution_clock::time_point _FrameTime;
 };
@@ -80,37 +80,37 @@ XE::uint64 XE::TimerService::GetFrameCount() const
 	return _p->_FrameCount;
 }
 
-XE::real XE::TimerService::GetTimeScale() const
+XE::float32 XE::TimerService::GetTimeScale() const
 {
 	return _p->_TimeScale;
 }
 
-void XE::TimerService::SetTimeScale( XE::real val )
+void XE::TimerService::SetTimeScale( XE::float32 val )
 {
 	_p->_TimeScale = val;
 }
 
-XE::real XE::TimerService::GetTime() const
+XE::float32 XE::TimerService::GetTime() const
 {
 	return ( std::chrono::duration_cast<std::chrono::milliseconds>( _p->_FrameTime - _p->_StartTime ).count() ) / 1000.0f;
 }
 
-XE::real XE::TimerService::GetDeltaTime() const
+XE::float32 XE::TimerService::GetDeltaTime() const
 {
 	return _p->_DetlaTime * _p->_TimeScale;
 }
 
-XE::real XE::TimerService::GetFixedDeltaTime() const
+XE::float32 XE::TimerService::GetFixedDeltaTime() const
 {
 	return _p->_FixedDetlaTime * _p->_TimeScale;
 }
 
-XE::real XE::TimerService::GetUnscaleDeltaTime() const
+XE::float32 XE::TimerService::GetUnscaleDeltaTime() const
 {
 	return _p->_DetlaTime;
 }
 
-XE::real XE::TimerService::GetUnscaleFixedDeltaTime() const
+XE::float32 XE::TimerService::GetUnscaleFixedDeltaTime() const
 {
 	return _p->_FixedDetlaTime;
 }

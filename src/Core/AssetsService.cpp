@@ -26,7 +26,7 @@ type->Property( "Dependent", &XEPAsset::Dependent );
 END_META()
 
 
-using AssetTuple = std::tuple < AssetStatus, ObjectPtr, XE::real >;
+using AssetTuple = std::tuple < AssetStatus, ObjectPtr, XE::float32 >;
 using AssetMap = tbb::concurrent_hash_map < String, AssetTuple, StringHashCompare >;
 using DirectoryMap = Map < String, XEPAsset >;
 

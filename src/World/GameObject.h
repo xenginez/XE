@@ -137,14 +137,14 @@ public:
 protected:
 	void Startup();
 
-	void Update( XE::real dt );
+	void Update( XE::float32 dt );
 
 	void Clearup();
 
 protected:
 	virtual void OnStartup();
 
-	virtual void OnUpdate( XE::real dt );
+	virtual void OnUpdate( XE::float32 dt );
 
 	virtual void OnClearup();
 

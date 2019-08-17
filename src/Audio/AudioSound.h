@@ -25,7 +25,7 @@ public:
 public:
 	const String& GetName() const;
 
-	XE::real GetDuration() const;
+	XE::float32 GetDuration() const;
 
 	XE::uint32 GetChannels() const;
 
@@ -42,7 +42,7 @@ private:
 
 private:
 	String _Name;
-	XE::real _Duration;
+	XE::float32 _Duration;
 	XE::uint32 _Channels;
 	XE::uint32 _SampleRate;
 	XE::uint8 _BytesPerSample;

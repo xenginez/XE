@@ -53,7 +53,7 @@ public:
 public:
 	virtual XE::int32 GetPov( const String& val ) const = 0;
 
-	virtual XE::real GetAxis( const String& val ) const = 0;
+	virtual XE::float32 GetAxis( const String& val ) const = 0;
 
 	virtual XE::int32 GetButton( const String& val ) const = 0;
 
@@ -62,7 +62,7 @@ public:
 public:
 	virtual XE::int32 GetPov( KeyCode val ) const = 0;
 
-	virtual XE::real GetAxis( KeyCode val ) const = 0;
+	virtual XE::float32 GetAxis( KeyCode val ) const = 0;
 
 	virtual XE::int32 GetButton( KeyCode val ) const = 0;
 

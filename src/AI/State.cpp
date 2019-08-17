@@ -41,7 +41,7 @@ void XE::State::Startup()
 	OnStartup();
 }
 
-void XE::State::Update( XE::real dt )
+void XE::State::Update( XE::float32 dt )
 {
 	OnUpdate( dt );
 }
@@ -56,7 +56,7 @@ void XE::State::OnStartup()
 
 }
 
-void XE::State::OnUpdate( XE::real dt )
+void XE::State::OnUpdate( XE::float32 dt )
 {
 
 }

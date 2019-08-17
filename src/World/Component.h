@@ -47,14 +47,14 @@ public:
 protected:
 	virtual void Startup();
 
-	virtual void Update( XE::real dt );
+	virtual void Update( XE::float32 dt );
 
 	virtual void Clearup();
 
 protected:
 	virtual void OnStartup();
 
-	virtual void OnUpdate( XE::real dt );
+	virtual void OnUpdate( XE::float32 dt );
 
 	virtual void OnClearup();
 

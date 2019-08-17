@@ -47,9 +47,9 @@ public:
 	
 	void SetAddressW( SamplerAddressType val );
 	
-	XE::real GetMipLodBias() const;
+	XE::float32 GetMipLodBias() const;
 	
-	void SetMipLodBias( XE::real val );
+	void SetMipLodBias( XE::float32 val );
 	
 	XE::uint32 GetMaxAnisotropy() const;
 	
@@ -59,15 +59,15 @@ public:
 	
 	void SetComparisonFunc( CompareType val );
 	
-	const XE::real * GetBorderColor() const;
+	const XE::float32 * GetBorderColor() const;
 	
-	XE::real GetMinLOD() const;
+	XE::float32 GetMinLOD() const;
 	
-	void SetMinLOD( XE::real val );
+	void SetMinLOD( XE::float32 val );
 	
-	XE::real GetMaxLOD() const;
+	XE::float32 GetMaxLOD() const;
 	
-	void SetMaxLOD( XE::real val );
+	void SetMaxLOD( XE::float32 val );
 
 private:
 	SamplerFilter _MinFilter;
@@ -78,14 +78,14 @@ private:
 	SamplerAddressType _AddressV;
 	SamplerAddressType _AddressW;
 	
-	XE::real _MipLODBias;
+	XE::float32 _MipLODBias;
 	XE::uint32 _MaxAnisotropy;
 	CompareType _ComparisonFunc;
 	
-	XE::real _BorderColor[4];
+	XE::float32 _BorderColor[4];
 	
-	XE::real _MinLOD;
-	XE::real _MaxLOD;
+	XE::float32 _MinLOD;
+	XE::float32 _MaxLOD;
 };
 
 END_XE_NAMESPACE

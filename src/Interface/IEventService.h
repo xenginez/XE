@@ -44,7 +44,7 @@ public:
 public:
 	virtual void PostEvent( EventPtr val ) = 0;
 
-	virtual void PostEvent( XE::real dt, EventPtr val ) = 0;
+	virtual void PostEvent( XE::float32 dt, EventPtr val ) = 0;
 
 	virtual void PostEvent( XE::uint64 frame, EventPtr val ) = 0;
 
