@@ -11,11 +11,11 @@
 
 #include <Base/Base.h>
 
-#ifdef MEMORY_EXPORT
-#define MEMORY_API DLL_EXPORT
+#ifdef GC_EXPORT
+#define GC_API DLL_EXPORT
 #else
-#define MEMORY_API DLL_IMPORT
-#define LIB_NAME "Memory"
+#define GC_API DLL_IMPORT
+#define LIB_NAME "GC"
 #include <Base/AutoLink.h>
 #endif
 

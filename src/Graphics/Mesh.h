@@ -23,13 +23,13 @@ public:
 	~SubMesh() override;
 
 public:
-	const AABB & GetBoundingBox() const;
+	XE::uint32 GetIndexStart() const;
 
-	const IndexBufferPtr & GetIndexBuffer() const;
+	XE::uint32 GetIndexCount() const;
 
 private:
-	AABB _BoundingBox;
-	IndexBufferPtr _IndexBuffer;
+	XE::uint32 _IndexStart;
+	XE::uint32 _IndexCount;
 };
 
 class GRAPHICS_API Mesh : public Object
@@ -42,11 +42,7 @@ public:
 	~Mesh() override;
 
 public:
-	AABB GetBoundingBox() const;
-
 	const InputLayoutPtr & GetInputLayout() const;
-
-	const VertexBufferPtr & GetVertexBuffer() const;
 
 public:
 	XE::uint64 GetSubMeshCount() const;
@@ -55,9 +51,27 @@ public:
 
 	const SubMesh & GetSubMesh( XE::uint64 val ) const;
 
-private:
+protected:
 	Array<SubMesh> _SubMesh;
 	InputLayoutPtr _InputLayout;
+};
+
+class GRAPHICS_API StaticMesh : public Mesh
+{
+	OBJECT( StaticMesh, Mesh )
+
+public:
+	StaticMesh();
+
+	~StaticMesh() override;
+
+public:
+	const IndexBufferPtr & GetIndexBuffer() const;
+
+	const VertexBufferPtr & GetVertexBuffer() const;
+
+private:
+	IndexBufferPtr _IndexBuffer;
 	VertexBufferPtr _VertexBuffer;
 };
 
@@ -80,9 +94,9 @@ private:
 	DynamicVertexBufferPtr _DynamicVertexBuffer;
 };
 
-class GRAPHICS_API SkinnedMesh : public Mesh
+class GRAPHICS_API SkinnedMesh : public StaticMesh
 {
-	OBJECT( SkinnedMesh, Mesh )
+	OBJECT( SkinnedMesh, StaticMesh )
 
 public:
 	SkinnedMesh();

@@ -211,26 +211,6 @@ DECL_META_ENUM( RHI_API, TextureType );
 
 enum class LayoutFormat
 {
-	INT8,
-	INT16,
-	INT32,
-	INT64,
-	UINT8,
-	UINT16,
-	UINT32,
-	UINT64,
-	FLOAT16,
-	FLOAT32,
-	FLOAT64,
-	VEC2,
-	VEC3,
-	VEC4,
-	QUAT,
-	RECT,
-	MAT3,
-	MAT4,
-	COLOR,
-
 	POSITION,
 	NORMAL,
 	TANGENT,
@@ -251,6 +231,29 @@ enum class LayoutFormat
 	TEXCOORD7,
 };
 DECL_META_ENUM( RHI_API, LayoutFormat );
+
+enum class LayoutElementType
+{
+	INT8,
+	INT16,
+	INT32,
+	INT64,
+	UINT8,
+	UINT16,
+	UINT32,
+	UINT64,
+	FLOAT16,
+	FLOAT32,
+	FLOAT64,
+	VEC2,
+	VEC3,
+	VEC4,
+	QUAT,
+	RECT,
+	MAT3,
+	MAT4,
+};
+DECL_META_ENUM( RHI_API, LayoutElementType );
 
 enum class TextureFormat
 {

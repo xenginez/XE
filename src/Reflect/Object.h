@@ -16,7 +16,7 @@
 
 BEG_XE_NAMESPACE
 
-class REFLECT_API Object : public std::enable_shared_from_this< Object >, public XE::NonCopyable
+class REFLECT_API Object : public XE::GCObject, public XE::NonCopyable
 {
 	template< typename T > friend struct MetaDataCollector;
 

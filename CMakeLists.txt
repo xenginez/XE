@@ -62,24 +62,24 @@ link_directories(
 
 add_subdirectory(src)
 
-add_dependencies(Memory		Base)
-add_dependencies(Reflect	Base Memory)
-add_dependencies(Utils		Base Memory Reflect)
-add_dependencies(Math		Base Memory Reflect Utils)
-add_dependencies(RHI		Base Memory Reflect Utils Math)
-add_dependencies(Graphics	Base Memory Reflect Utils Math RHI)
-add_dependencies(Interface	Base Memory Reflect Utils Math RHI Graphics)
-add_dependencies(World		Base Memory Reflect Utils Math RHI Interface)
-add_dependencies(Audio		Base Memory Reflect Utils Math RHI Interface)
-add_dependencies(Physics	Base Memory Reflect Utils Math RHI Interface)
-add_dependencies(Navigation Base Memory Reflect Utils Math RHI Interface)
-add_dependencies(AI			Base Memory Reflect Utils Math RHI Interface World)
-add_dependencies(GUI		Base Memory Reflect Utils Math RHI Graphics Interface)
-add_dependencies(Render		Base Memory Reflect Utils Math RHI Graphics Interface)
-add_dependencies(Animation	Base Memory Reflect Utils Math RHI Graphics Interface)
-add_dependencies(Components	Base Memory Reflect Utils Math RHI Graphics Interface World Render Audio Physics Animation Navigation AI GUI)
-add_dependencies(Core		Base Memory Reflect Utils Math RHI Graphics Interface World Render Audio Physics Animation Navigation AI GUI Components)
-add_dependencies(XE			Base Memory Reflect Utils Math RHI Graphics Interface World Render Audio Physics Animation Navigation AI GUI Components Core)
+add_dependencies(GC			Base)
+add_dependencies(Reflect	Base GC)
+add_dependencies(Utils		Base GC Reflect)
+add_dependencies(Math		Base GC Reflect Utils)
+add_dependencies(RHI		Base GC Reflect Utils Math)
+add_dependencies(Graphics	Base GC Reflect Utils Math RHI)
+add_dependencies(Interface	Base GC Reflect Utils Math RHI Graphics)
+add_dependencies(World		Base GC Reflect Utils Math RHI Interface)
+add_dependencies(Audio		Base GC Reflect Utils Math RHI Interface)
+add_dependencies(Physics	Base GC Reflect Utils Math RHI Interface)
+add_dependencies(Navigation Base GC Reflect Utils Math RHI Interface)
+add_dependencies(AI			Base GC Reflect Utils Math RHI Interface World)
+add_dependencies(GUI		Base GC Reflect Utils Math RHI Graphics Interface)
+add_dependencies(Render		Base GC Reflect Utils Math RHI Graphics Interface)
+add_dependencies(Animation	Base GC Reflect Utils Math RHI Graphics Interface)
+add_dependencies(Components	Base GC Reflect Utils Math RHI Graphics Interface World Render Audio Physics Animation Navigation AI GUI)
+add_dependencies(Core		Base GC Reflect Utils Math RHI Graphics Interface World Render Audio Physics Animation Navigation AI GUI Components)
+add_dependencies(XE			Base GC Reflect Utils Math RHI Graphics Interface World Render Audio Physics Animation Navigation AI GUI Components Core)
 
 target_link_libraries(Base
 
@@ -88,11 +88,11 @@ target_link_libraries(Base
 		tbbmalloc_proxy${XE_TBB_POSTFIX}
 		)
 
-target_link_libraries(Memory
+target_link_libraries(GC
 		Base)
 
 target_link_libraries(Reflect
-		Memory
+		GC
 		
 		pugixml
 		)

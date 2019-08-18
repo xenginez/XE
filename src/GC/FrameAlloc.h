@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class MEMORY_API FrameAlloc : public XE::Singleton< FrameAlloc >
+class GC_API FrameAlloc : public XE::Singleton< FrameAlloc >
 {
 private:
 	struct Private;

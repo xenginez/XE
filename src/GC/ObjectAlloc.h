@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class MEMORY_API ObjectAlloc : public XE::Singleton< ObjectAlloc >
+class GC_API ObjectAlloc : public XE::Singleton< ObjectAlloc >
 {
 private:
 	struct Private;

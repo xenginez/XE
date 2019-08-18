@@ -1,13 +1,13 @@
 /*!
- * \file   Memory.h
+ * \file	GC.h
  *
- * \author ZhengYuanQing
- * \date   2019/1/10
- * \email  zhengyuanqing.95@gmail.com
+ * \author	ZhengYuanQing
+ * \date	2019/08/18
+ * \email	zhengyuanqing.95@gmail.com
  *
  */
-#ifndef __MEMORY_H__32A3DBEA_AF97_44CA_B481_147D90DC8B33
-#define __MEMORY_H__32A3DBEA_AF97_44CA_B481_147D90DC8B33
+#ifndef GC_H__23E4C3C2_7560_44FC_949E_DACFAF9F36EC
+#define GC_H__23E4C3C2_7560_44FC_949E_DACFAF9F36EC
 
 #include "Alloc.h"
 #include "FrameAlloc.h"
@@ -15,6 +15,8 @@
 #include "Allocator.hpp"
 #include "FrameAllocator.hpp"
 #include "ObjectAllocator.hpp"
+
+#include "GCObject.h"
 
 BEG_XE_NAMESPACE
 
@@ -56,4 +58,4 @@ public: \
 #define RP_CAST std::reinterpret_pointer_cast
 #define XE_THIS(TYPE) std::static_pointer_cast<TYPE>( shared_from_this() )
 
-#endif // __MEMORY_H__32A3DBEA_AF97_44CA_B481_147D90DC8B33
+#endif // GC_H__23E4C3C2_7560_44FC_949E_DACFAF9F36EC

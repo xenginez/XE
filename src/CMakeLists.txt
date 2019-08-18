@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.12)
 
 add_subdirectory(Base)
-add_subdirectory(Memory)
+add_subdirectory(GC)
 add_subdirectory(Reflect)
 add_subdirectory(Utils)
 add_subdirectory(Math)

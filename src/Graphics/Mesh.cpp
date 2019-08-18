@@ -15,14 +15,14 @@ SubMesh::~SubMesh()
 
 }
 
-const AABB & SubMesh::GetBoundingBox() const
+XE::uint32 XE::SubMesh::GetIndexStart() const
 {
-	return _BoundingBox;
+	return _IndexStart;
 }
 
-const XE::IndexBufferPtr & XE::SubMesh::GetIndexBuffer() const
+XE::uint32 XE::SubMesh::GetIndexCount() const
 {
-	return _IndexBuffer;
+	return _IndexCount;
 }
 
 BEG_META(Mesh)
@@ -38,26 +38,9 @@ XE::Mesh::~Mesh()
 
 }
 
-XE::AABB XE::Mesh::GetBoundingBox() const
-{
-	XE::AABB ret;
-
-	for( const auto & sub : _SubMesh )
-	{
-		ret.Merge( sub.GetBoundingBox() );
-	}
-
-	return ret;
-}
-
 const XE::InputLayoutPtr & XE::Mesh::GetInputLayout() const
 {
 	return _InputLayout;
-}
-
-const XE::VertexBufferPtr & XE::Mesh::GetVertexBuffer() const
-{
-	return _VertexBuffer;
 }
 
 XE::uint64 XE::Mesh::GetSubMeshCount() const
@@ -73,6 +56,29 @@ const Array<SubMesh> & XE::Mesh::GetSubMeshs() const
 const XE::SubMesh & XE::Mesh::GetSubMesh( XE::uint64 val ) const
 {
 	return _SubMesh[val];
+}
+
+BEG_META( StaticMesh )
+END_META()
+
+XE::StaticMesh::StaticMesh()
+{
+
+}
+
+XE::StaticMesh::~StaticMesh()
+{
+
+}
+
+const IndexBufferPtr & XE::StaticMesh::GetIndexBuffer() const
+{
+	return _IndexBuffer;
+}
+
+const XE::VertexBufferPtr & XE::StaticMesh::GetVertexBuffer() const
+{
+	return _VertexBuffer;
 }
 
 BEG_META( DynamicMesh )
