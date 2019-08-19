@@ -14,8 +14,8 @@
 
 #include "ProfilerService.h"
 
-#define LOGGER_INDEX		_p->_Services.at(0)
-#define CONFIG_INDEX		_p->_Services.at(1)
+#define CONFIG_INDEX		_p->_Services.at(0)
+#define LOGGER_INDEX		_p->_Services.at(1)
 #define PROFILER_INDEX		_p->_Services.at(2)
 #define LOCAL_INDEX			_p->_Services.at(3)
 #define TIMER_INDEX			_p->_Services.at(4)
@@ -39,8 +39,8 @@ END_META()
 struct XE::CoreFramework::Private
 {
 	std::atomic_bool _Exit = false;
-	Array<XE::uint64> _Libs;
 	Array < IServicePtr > _Services;
+	Map<String, XE::LibraryHandle> _Modules;
 };
 
 XE::CoreFramework::CoreFramework()
@@ -59,18 +59,6 @@ XE::CoreFramework::~CoreFramework()
 
 int XE::CoreFramework::Exec()
 {
-	Platform::RegisterWindowClass( [&]( WindowHandle handle, WindowEvent event )
-								   {
-									   if( GetEventService() )
-									   {
-										   EventPtr e = XE::make_shared<Event>( EVENT_WINDOW, std::make_pair( handle, event ) );
-
-										   GetEventService()->PostEvent( e );
-									   }
-
-									   return true;
-								   } );
-
 	Prepare();
 
 	Startup();
@@ -78,8 +66,6 @@ int XE::CoreFramework::Exec()
 	Update();
 
 	Clearup();
-
-	Platform::UnregisterWindowClass();
 
 	return 0;
 }
@@ -237,6 +223,11 @@ std::filesystem::path XE::CoreFramework::GetPluginPath() const
 	return GetApplicationPath() / "plugin";
 }
 
+std::filesystem::path XE::CoreFramework::GetModulePath() const
+{
+	return GetApplicationPath() / "module";
+}
+
 std::filesystem::path XE::CoreFramework::GetAssetsPath() const
 {
 	return GetApplicationPath().parent_path() / "assets";
@@ -254,19 +245,8 @@ std::filesystem::path XE::CoreFramework::GetApplicationPath() const
 
 void XE::CoreFramework::Prepare()
 {
-	for(auto & file : std::filesystem::recursive_directory_iterator( GetApplicationPath() / "module" ) )
-	{
-		if( !std::filesystem::is_directory( file.path() ) )
-		{
-			if( file.path().extension().string() == DLL_EXT_NAME )
-			{
-				_p->_Libs.push_back( Library::Open( file.path().string() ) );
-			}
-		}
-	}
-
-	_p->_Services.push_back( make_shared < LoggerService >() );
 	_p->_Services.push_back( make_shared < ConfigService >() );
+	_p->_Services.push_back( make_shared < LoggerService >() );
 	_p->_Services.push_back( make_shared < ProfilerService >() );
 	_p->_Services.push_back( make_shared < LocalizationService >() );
 	_p->_Services.push_back( make_shared < TimerService >() );
@@ -282,10 +262,17 @@ void XE::CoreFramework::Prepare()
 	// 	_p->_Services.push_back( make_shared <NavigationService>() );
 	// 	_p->_Services.push_back( make_shared <WorldService>() );
 
-	for( auto & it : _p->_Services )
+	// load ConfigService and load modules
 	{
-		it->SetFramework( this );
-		it->Prepare();
+		_p->_Services[0]->SetFramework( this );
+		_p->_Services[0]->Prepare();
+		LoadModules();
+	}
+
+	for( int i = 1; i < _p->_Services.size(); ++i )
+	{
+		_p->_Services[i]->SetFramework( this );
+		_p->_Services[i]->Prepare();
 	}
 }
 
@@ -333,9 +320,26 @@ void XE::CoreFramework::Clearup()
 	}
 	_p->_Services.clear();
 
-	for( auto lib : _p->_Libs )
+	for( auto lib : _p->_Modules )
 	{
-		Library::Close( lib );
+		Library::Close( lib.second );
 	}
-	_p->_Libs.clear();
+	_p->_Modules.clear();
+}
+
+void XE::CoreFramework::LoadModules()
+{
+	String modules = GetConfigService()->GetString( "System.Modules" );
+	auto module_list = StringUtils::Split( modules, "," );
+
+	for( auto module_name : module_list )
+	{
+		auto path = GetModulePath() / module_name;
+		if( std::filesystem::is_directory( path ) )
+		{
+			path = path / ( module_name + DLL_EXT_NAME );
+
+			_p->_Modules[module_name] = Library::Open( path.u8string() );
+		}
+	}
 }

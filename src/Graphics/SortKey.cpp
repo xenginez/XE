@@ -16,12 +16,20 @@ SortKey::SortKey( XE::uint64 val )
 
 bool SortKey::operator<( const SortKey & val ) const
 {
+	if( layer == RenderLayer::TRANSPARENT )
+	{
+		return
+			layer < val.layer ||
+			order < val.order ||
+			depth > val.depth ||
+			state < val.state;
+	}
+
 	return
 		layer < val.layer ||
 		order < val.order ||
-		blend < val.blend ||
 		state < val.state ||
-		( blend == 1 ? ( depth > val.depth ) : ( depth < val.depth ) );
+		depth < val.depth;
 }
 
 bool SortKey::operator!=( const SortKey & val ) const

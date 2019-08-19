@@ -112,8 +112,8 @@ std::vector<std::string> XE::StringUtils::Split( const std::string& src, const s
 {
 	std::vector<std::string> ret;
 
-	std::regex regex( src );
-	std::sregex_token_iterator p( sep.cbegin(), sep.cend(), regex, -1 );
+	std::regex regex( sep );
+	std::sregex_token_iterator p( src.cbegin(), src.cend(), regex, -1 );
 	std::sregex_token_iterator end;
 
 	for ( ; p != end; ++p )

@@ -143,13 +143,13 @@ XE::Variant::Variant( const Variant & val )
 	Lock();
 }
 
-XE::Variant::Variant( IMetaInfoCPtr Meta, UnionData Data, XE::uint32 Flag )
+XE::Variant::Variant( IMetaInfoPtr Meta, UnionData Data, XE::uint32 Flag )
 	: _Data( Data ), _Meta( Meta ), _Flag( Flag )
 {
 	Lock();
 }
 
-XE::Variant::Variant( IMetaInfoCPtr Meta, std::shared_ptr<void> Data, XE::uint32 Flag )
+XE::Variant::Variant( IMetaInfoPtr Meta, std::shared_ptr<void> Data, XE::uint32 Flag )
 	: _Meta( Meta ), _Flag( Flag )
 {
 	_Data.sp = RegisterSharedPtr( Data );
@@ -238,6 +238,23 @@ bool XE::Variant::IsFundamental() const
 	return ( _Flag & FUNDAMENTAL );
 }
 
+bool XE::Variant::IsCanConvert( IMetaInfoPtr val ) const
+{
+	if( _Meta == val )
+	{
+		return true;
+	}
+	else if( _Meta->GetType() == MetaType::CLASS && val->GetType() == MetaType::CLASS )
+	{
+		if( auto cls = SP_CAST<IMetaClass>( _Meta ) )
+		{
+			return cls->CanConvert( SP_CAST<IMetaClass>( val ) );
+		}
+	}
+
+	return false;
+}
+
 void * XE::Variant::ToPointer() const
 {
 	if ( _Data.p == nullptr )
@@ -318,7 +335,7 @@ XE::uint32 XE::Variant::GetFlag() const
 
 XE::IMetaInfoPtr XE::Variant::GetMeta() const
 {
-	return CP_CAST<IMetaInfo>( _Meta );
+	return _Meta;
 }
 
 XE::Variant::UnionData XE::Variant::GetData() const
@@ -405,7 +422,6 @@ std::shared_ptr<void> * XE::Variant::RegisterSharedPtr( const std::shared_ptr<vo
 {
 	return VariantSharedPool::Register( p );
 }
-
 
 XE::VariantException::VariantException( const Variant& val, const String& msg )
 	:_Value( val ), _Msg( msg )

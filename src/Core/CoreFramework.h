@@ -74,6 +74,8 @@ public:
 	
 	std::filesystem::path GetPluginPath() const override;
 
+	std::filesystem::path GetModulePath() const override;
+
 	std::filesystem::path GetAssetsPath() const override;
 
 	std::filesystem::path GetUserDataPath() const override;
@@ -88,6 +90,9 @@ private:
 	void Update();
 
 	void Clearup();
+
+protected:
+	virtual void LoadModules();
 
 private:
 	Private * _p;

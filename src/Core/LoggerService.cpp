@@ -47,7 +47,8 @@ void XE::LoggerService::Log( LoggerLevel level, const String& file, XE::uint64 l
 	if( _p->_Listeners.empty() )
 	{
 		std::cout 
-			<< "[" << EnumID<LoggerLevel>::Get()->FindName( static_cast< int64 >( level ) )
+			<< "["
+			<< EnumID<LoggerLevel>::Get()->FindName( level )
 			<< "]\t"
 			<< std::to_string( log->Time )
 			<< " "

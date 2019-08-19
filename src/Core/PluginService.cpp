@@ -79,7 +79,7 @@ void XE::PluginService::RegisterPlugin( const String & name )
 
 	PluginDesc Desc = LoadPlugin( name );
 
-	if( Desc.Library == 0 )
+	if( Desc.Library == LibraryHandle::Invalid )
 	{
 		XE_LOG( LoggerLevel::Error, "%1 plugin load error!", name );
 		return;

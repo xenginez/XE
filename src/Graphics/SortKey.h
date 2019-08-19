@@ -21,11 +21,10 @@ public:
 		XE::uint64 key;
 		struct
 		{
-			XE::uint64 layer : 3;
-			XE::uint64 order : 12;
-			XE::uint64 blend : 1;
-			XE::uint64 state : 24;
-			XE::uint64 depth : 24;
+			XE::uint8 layer : 4;
+			XE::uint16 order : 12;
+			XE::uint32 state : 24;
+			XE::uint32 depth : 24;
 		};
 	};
 

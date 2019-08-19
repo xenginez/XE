@@ -74,8 +74,10 @@ public:
 	virtual bool IsExit() const = 0;
 
 	virtual Language GetSystemLanguage() const = 0;
-	
+
 	virtual std::filesystem::path GetPluginPath() const = 0;
+
+	virtual std::filesystem::path GetModulePath() const = 0;
 
 	virtual std::filesystem::path GetAssetsPath() const = 0;
 

@@ -9,7 +9,7 @@ END_META()
 
 struct ConfigService::Private
 {
-	std::map < String, String > Values;
+	Map < String, String > Values;
 };
 
 XE::ConfigService::ConfigService()
@@ -21,6 +21,11 @@ XE::ConfigService::ConfigService()
 XE::ConfigService::~ConfigService()
 {
 	delete _p;
+}
+
+void XE::ConfigService::Prepare()
+{
+	Startup();
 }
 
 bool XE::ConfigService::Startup()
@@ -107,9 +112,4 @@ void XE::ConfigService::Load( const pugi::xml_node_iterator & parent, const std:
 	{
 		Load( it, this_name );
 	}
-}
-
-void XE::ConfigService::Prepare()
-{
-
 }

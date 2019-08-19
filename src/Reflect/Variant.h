@@ -228,9 +228,9 @@ public:
 		_Flag = Variant::POINTER;
 	}
 
-	Variant( IMetaInfoCPtr Meta, UnionData Data, XE::uint32 Flag );
+	Variant( IMetaInfoPtr Meta, UnionData Data, XE::uint32 Flag );
 
-	Variant( IMetaInfoCPtr Meta, std::shared_ptr<void> Data, XE::uint32 Flag );
+	Variant( IMetaInfoPtr Meta, std::shared_ptr<void> Data, XE::uint32 Flag );
 
 	~Variant();
 
@@ -265,6 +265,8 @@ public:
 
 	bool IsFundamental() const;
 
+	bool IsCanConvert( IMetaInfoPtr val ) const;
+
 public:
 	void * ToPointer() const;
 
@@ -289,25 +291,15 @@ public:
 
 		if constexpr ( std::is_shared_ptr_v<T> )
 		{
-			if constexpr ( std::is_pointer_v<T> )
-			{
-				return VariantCast< std::shared_ptr< type > >::Cast( this );
-			}
-			else
-			{
-				return *( VariantCast< std::shared_ptr< type > >::Cast( this ) );
-			}
+			return *( VariantCast< std::shared_ptr< type > >::Cast( this ) );
+		}
+		else if constexpr( std::is_pointer_v<T> )
+		{
+			return VariantCast< type >::Cast( this );
 		}
 		else
 		{
-			if constexpr ( std::is_pointer_v<T> )
-			{
-				return VariantCast< type >::Cast( this );
-			}
-			else
-			{
-				return *( VariantCast< type >::Cast( this ) );
-			}
+			return *( VariantCast< type >::Cast( this ) );
 		}
 	}
 
@@ -322,7 +314,7 @@ private:
 private:
 	UnionData _Data;
 	XE::uint32 _Flag;
-	IMetaInfoCPtr _Meta;
+	IMetaInfoPtr _Meta;
 };
 
 
@@ -414,24 +406,9 @@ template< typename T > struct VariantCast
 	{
 		using type = typename TypeTraits<T>::raw_t;
 
-		if ( val->GetMeta() == MetaID< type >::Get() )
+		if( val->IsCanConvert( MetaID< type >::Get() ) )
 		{
 			return ( T * )val->ToPointer();
-		}
-
-		throw VariantException( *val, "cast fail" );
-	}
-};
-
-template< typename T > struct VariantCast<std::weak_ptr<T>>
-{
-	static std::shared_ptr<T> * Cast( const Variant * val )
-	{
-		using type = typename TypeTraits<T>::raw_t;
-
-		if ( val->GetMeta() == MetaID< type >::Get() && val->IsSharedPtr() )
-		{
-			return (std::shared_ptr<T> *)( val->_Data.sp );
 		}
 
 		throw VariantException( *val, "cast fail" );
@@ -444,7 +421,7 @@ template< typename T > struct VariantCast<std::shared_ptr<T>>
 	{
 		using type = typename TypeTraits<T>::raw_t;
 
-		if ( val->GetMeta() == MetaID< type >::Get() && val->IsSharedPtr() )
+		if( val->IsSharedPtr() && val->IsCanConvert( MetaID< type >::Get() ) )
 		{
 			return (std::shared_ptr<T> *)( val->_Data.sp );
 		}

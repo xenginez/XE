@@ -15,9 +15,9 @@ BEG_XE_NAMESPACE
 
 struct CORE_API PluginDesc
 {
-	String Name = "";
-	XE::uint64 Library = 0;
-	String Description = "";
+	String Name;
+	String Description;
+	XE::LibraryHandle Library;
 };
 
 class CORE_API PluginService : public IPluginService
