@@ -781,6 +781,18 @@ enum class AssetStatus
 };
 DECL_META_ENUM( INTERFACE_API, AssetStatus );
 
+enum class ThreadType
+{
+	IO,
+	MAIN,
+	GAME,
+	RENDER,
+	PHYSICS,
+	NAVIGATION,
+	WORKS,
+};
+DECL_META_ENUM( INTERFACE_API, ThreadType );
+
 enum class ThreadPriority
 {
 	MAX = 0,

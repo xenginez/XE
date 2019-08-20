@@ -31,14 +31,14 @@ public:
 public:
 	static const std::string * Register( const std::string& val )
 	{
-		tbb::concurrent_unordered_set<std::string>::const_iterator it = This()->_Strings.find( val );
+		tbb::concurrent_unordered_set<std::string>::const_iterator it = Instance()->_Strings.find( val );
 
-		if( it != This()->_Strings.end() )
+		if( it != Instance()->_Strings.end() )
 		{
 			return &( *it );
 		}
 
-		return &( *This()->_Strings.insert( val ).first );
+		return &( *Instance()->_Strings.insert( val ).first );
 	}
 
 private:

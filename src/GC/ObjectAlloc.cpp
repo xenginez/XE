@@ -223,11 +223,11 @@ void * XE::ObjectAlloc::Allocate( XE::uint64 hash_code, XE::uint64 size, XE::uin
 
 	tbb::concurrent_hash_map< XE::uint64, Block >::accessor accessor;
 
-	if( This()->_p->Blocks.find( accessor, hash_code ) )
+	if( Instance()->_p->Blocks.find( accessor, hash_code ) )
 	{
 		return accessor->second.Allocate();
 	}
-	else if( This()->_p->Blocks.insert( accessor, { hash_code, Block( size ) } ) )
+	else if( Instance()->_p->Blocks.insert( accessor, { hash_code, Block( size ) } ) )
 	{
 		return accessor->second.Allocate();
 	}
@@ -238,7 +238,7 @@ void * XE::ObjectAlloc::Allocate( XE::uint64 hash_code, XE::uint64 size, XE::uin
 void XE::ObjectAlloc::Deallocate( void * ptr, XE::uint64 hash_code )
 {
 	tbb::concurrent_hash_map< XE::uint64, Block >::accessor accessor;
-	if( This()->_p->Blocks.find( accessor, hash_code ) )
+	if( Instance()->_p->Blocks.find( accessor, hash_code ) )
 	{
 		return accessor->second.Deallocate( ptr );
 	}
@@ -246,12 +246,12 @@ void XE::ObjectAlloc::Deallocate( void * ptr, XE::uint64 hash_code )
 
 void XE::ObjectAlloc::Clear()
 {
-	This()->_p->Blocks.clear();
+	Instance()->_p->Blocks.clear();
 }
 
 void XE::ObjectAlloc::ShrinkToFit()
 {
-	for( auto it = This()->_p->Blocks.begin(); it != This()->_p->Blocks.end(); ++it )
+	for( auto it = Instance()->_p->Blocks.begin(); it != Instance()->_p->Blocks.end(); ++it )
 	{
 		it->second.ShrinkToFit();
 	}

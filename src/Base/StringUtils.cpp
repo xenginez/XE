@@ -110,18 +110,12 @@ std::string XE::StringUtils::GBKToUTF8( const std::string & val )
 
 std::vector<std::string> XE::StringUtils::Split( const std::string& src, const std::string& sep )
 {
-	std::vector<std::string> ret;
+	std::regex re{ sep };
 
-	std::regex regex( sep );
-	std::sregex_token_iterator p( src.cbegin(), src.cend(), regex, -1 );
-	std::sregex_token_iterator end;
-
-	for ( ; p != end; ++p )
-	{
-		ret.push_back( p->str() );
-	}
-
-	return ret;
+	return std::vector<std::string> {
+		std::sregex_token_iterator( src.begin(), src.end(), re, -1 ),
+			std::sregex_token_iterator()
+	};
 }
 
 XE::uint64 XE::StringUtils::UTF8CharacterCount( const std::string & val )

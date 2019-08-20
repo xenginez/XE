@@ -36,7 +36,7 @@ void XE::RenderService::Prepare()
 														  cls = val;
 													  } );
 
-	_p->_Context = cls->ConstructPtr().Value<RenderContextPtr>();
+	_p->_Context = SP_CAST<RenderContext>( cls->ConstructPtr().DetachPtr() );
 }
 
 bool XE::RenderService::Startup()
@@ -72,7 +72,7 @@ void XE::RenderService::Clearup()
 	_p->_Cameras.clear();
 	_p->_Renderables.clear();
 
-	_p->_Context->Startup();
+	_p->_Context->Clearup();
 }
 
 XE::RenderContextPtr XE::RenderService::GetRenderContext() const

@@ -35,22 +35,7 @@ public:
 	void Clearup() override;
 
 public:
-	thread_id GetIOThread() const override;
-
-	thread_id GetMainThread() const override;
-
-	thread_id GetGameThread() const override;
-
-	thread_id GetRenderThread() const override;
-
-	thread_id GetPhysicsThread() const override;
-
-	thread_id GetNavigationThread() const override;
-
-	thread_id GetWorkThread( XE::uint64 val ) const override;
-
-public:
-	bool RegisterTask( TaskType task, thread_id tid = std::this_thread::get_id(), ThreadPriority pri = ThreadPriority::NORM ) override;
+	bool PostTask( TaskType task, ThreadType type, ThreadPriority pri = ThreadPriority::NORM ) override;
 
 private:
 	Private * _p;

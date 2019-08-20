@@ -734,6 +734,16 @@ type->Value( "Loading", AssetStatus::Loading );
 type->Value( "Ready", AssetStatus::Ready );
 END_META()
 
+BEG_META( ThreadType )
+type->Value( "IO", ThreadType::IO );
+type->Value( "MAIN", ThreadType::MAIN );
+type->Value( "GAME", ThreadType::GAME );
+type->Value( "RENDER", ThreadType::RENDER );
+type->Value( "PHYSICS", ThreadType::PHYSICS );
+type->Value( "NAVIGATION", ThreadType::NAVIGATION );
+type->Value( "WORKS", ThreadType::WORKS );
+END_META()
+
 BEG_META( ThreadPriority )
 type->Value( "MAX", ThreadPriority::MAX );
 type->Value( "NORM", ThreadPriority::NORM );

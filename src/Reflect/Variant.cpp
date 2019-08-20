@@ -14,11 +14,17 @@ public:
 	};
 
 public:
-	static std::shared_ptr<void> * Register( std::shared_ptr<void> val )
+	~VariantSharedPool()
 	{
-		std::lock_guard<std::mutex> lock( This()->_Lock );
+		int i = 0;
+	}
 
-		Data &d = This()->_Ptr[val.get()];
+public:
+	std::shared_ptr<void> * Register( std::shared_ptr<void> val )
+	{
+		std::lock_guard<std::mutex> lock( Instance()->_Lock );
+
+		Data& d = _Ptr[val.get()];
 
 		d.Count = 0;
 		d.Ptr = val;
@@ -26,28 +32,28 @@ public:
 		return &( d.Ptr );
 	}
 
-	static void Lock( std::shared_ptr<void> * val )
+	void Lock( std::shared_ptr<void> * val )
 	{
-		std::lock_guard<std::mutex> lock( This()->_Lock );
+		std::lock_guard<std::mutex> lock( Instance()->_Lock );
 
-		auto it = This()->_Ptr.find( val->get() );
-		if (it != This()->_Ptr.end())
+		auto it = _Ptr.find( val->get() );
+		if( it != _Ptr.end() )
 		{
 			it->second.Count++;
 		}
 	}
 
-	static void Unlock( std::shared_ptr<void> * val )
+	void Unlock( std::shared_ptr<void> * val )
 	{
-		std::lock_guard<std::mutex> lock( This()->_Lock );
+		std::lock_guard<std::mutex> lock( Instance()->_Lock );
 
-		auto it = This()->_Ptr.find( val->get() );
-		if ( it != This()->_Ptr.end() )
+		auto it = _Ptr.find( val->get() );
+		if( it != _Ptr.end() )
 		{
 			it->second.Count--;
 			if ( it->second.Count == 0 )
 			{
-				This()->_Ptr.erase( val );
+				_Ptr.erase( it );
 			}
 		}
 	}
@@ -153,6 +159,8 @@ XE::Variant::Variant( IMetaInfoPtr Meta, std::shared_ptr<void> Data, XE::uint32 
 	: _Meta( Meta ), _Flag( Flag )
 {
 	_Data.sp = RegisterSharedPtr( Data );
+
+	Lock();
 }
 
 XE::Variant::~Variant()
@@ -371,7 +379,7 @@ void * XE::Variant::Detach()
 		p = _Data.p;
 	}
 
-	Unlock();
+	Reset();
 
 	return p;
 }
@@ -381,18 +389,25 @@ std::shared_ptr<void> XE::Variant::DetachPtr()
 	if ( _Flag & SHAREDPTR )
 	{
 		std::shared_ptr<void> p = *_Data.sp;
-		Unlock();
+
+		Reset();
+
 		return p;
 	}
 
 	throw VariantException( *this, "detach fail" );
 }
 
+std::shared_ptr<void> * XE::Variant::RegisterSharedPtr( const std::shared_ptr<void>& p )
+{
+	return VariantSharedPool::Instance()->Register( p );
+}
+
 void XE::Variant::Lock()
 {
 	if (_Flag & SHAREDPTR)
 	{
-		VariantSharedPool::Lock( _Data.sp );
+		VariantSharedPool::Instance()->Lock( _Data.sp );
 	}
 
 	if (_Flag & PRIVATEPTR)
@@ -405,7 +420,7 @@ void XE::Variant::Unlock()
 {
 	if ( _Flag & SHAREDPTR )
 	{
-		VariantSharedPool::Unlock( _Data.sp );
+		VariantSharedPool::Instance()->Unlock( _Data.sp );
 	}
 
 	if ( _Flag & PRIVATEPTR )
@@ -413,14 +428,8 @@ void XE::Variant::Unlock()
 		if ( _Data.pp->Unlock() == 0 )
 		{
 			delete _Data.pp;
-			_Data.pp = nullptr;
 		}
 	}
-}
-
-std::shared_ptr<void> * XE::Variant::RegisterSharedPtr( const std::shared_ptr<void>& p )
-{
-	return VariantSharedPool::Register( p );
 }
 
 XE::VariantException::VariantException( const Variant& val, const String& msg )

@@ -62,14 +62,14 @@ void XE::ConfigService::Clearup()
 	
 	for( const auto &it : _p->Values )
 	{
-		std::vector<std::string> path_list = StringUtils::Split( it.first, "." );
+		std::vector<std::string> path_list = StringUtils::Split( it.first, "\\." );
 
 		if( !path_list.empty() )
 		{
-			pugi::xml_node node = doc.child( path_list[0].c_str() );
+			pugi::xml_node node = doc.append_child( path_list[0].c_str() );
 			for( int i = 1; i < path_list.size(); ++i )
 			{
-				node = node.child( path_list[i].c_str() );
+				node = node.append_child( path_list[i].c_str() );
 			}
 
 			node.append_attribute( "value" ).set_value( it.second.ToCString() );

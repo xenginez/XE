@@ -34,7 +34,22 @@ template<> struct std::less<XEPTask>
 	}
 };
 
-struct XEPMainThread
+struct XEPThread
+{
+	XEPThread() = default;
+
+	~XEPThread() = default;
+
+	virtual void Handler() = 0;
+
+	virtual void PushTask( XEPTask && val ) = 0;
+
+	virtual XE::uint64 QueueSize() = 0;
+
+	virtual void Notify() = 0;
+};
+
+struct XEPMainThread : public XEPThread
 {
 	XEPMainThread()
 		:_CurrentTasks( 0 )
@@ -42,87 +57,200 @@ struct XEPMainThread
 
 	}
 
-	XEPMainThread( thread_id id )
-		:_CurrentTasks( 0 ), _Tid( id )
-	{
-
-	}
-
-	~XEPMainThread()
-	{
-
-	}
-
-	void Handler()
+	void Handler() override
 	{
 		tbb::concurrent_priority_queue<XEPTask> * Tasks = _CurrentTasks == 0 ? &_FrontTasks : &_BackTasks;
-
 		_CurrentTasks = ( _CurrentTasks + 1 ) % 2;
 
 		XEPTask task;
-		while ( Tasks->try_pop( task ) )
+		while( Tasks->try_pop( task ) )
 		{
-			if ( task.Task )
+			if( task.Task )
 			{
-				task.Task();
+				if( task.Task() )
+				{
+					PushTask( std::move( task ) );
+				}
 			}
 		}
 	}
 
-	void PushTask( XEPTask && val )
+	void PushTask( XEPTask && val ) override
 	{
 		_CurrentTasks == 0 ? _FrontTasks.push( val ) : _BackTasks.push( val );
 	}
 
-	thread_id _Tid;
-	XE::uint64 _CurrentTasks;
+	XE::uint64 QueueSize() override
+	{
+		return _CurrentTasks == 0 ? _FrontTasks.size() : _BackTasks.size();
+	}
+
+	void Notify() override
+	{
+
+	}
+
+	std::atomic<XE::uint64> _CurrentTasks;
 	tbb::concurrent_priority_queue<XEPTask> _FrontTasks;
 	tbb::concurrent_priority_queue<XEPTask> _BackTasks;
 };
 
-struct XEPWorkThread : public XEPMainThread
+struct XEPSpecialThread : public XEPThread
 {
-	XEPWorkThread()
-		:_Exit( false ), _Thread( &XEPWorkThread::Handler2, this )
+	XEPSpecialThread()
+		:_Thread( &XEPSpecialThread::Handler, this )
 	{
-		_Tid = _Thread.get_id();
+
 	}
 
-	~XEPWorkThread()
+	~XEPSpecialThread()
 	{
-		if ( _Thread.joinable() )
+		_Exit = true;
+
+		_Variable.notify_all();
+
+		if( _Thread.joinable() )
 		{
 			_Thread.join();
 		}
 	}
 
-	void Handler2()
+	void Handler() override
 	{
 		std::unique_lock<std::mutex> Lock( _Lock );
 
-		while ( !_Exit )
+		while( !_Exit )
 		{
-			Handler();
+			if( QueueSize() == 0 )
+			{
+				_Variable.wait( Lock );
+			}
 
-			if ( _Exit )
+			if( _Exit )
 			{
 				return;
 			}
 
-			_Variable.wait( Lock );
+			XEPTask task;
+			while( _Tasks.try_pop( task ) )
+			{
+				if( task.Task )
+				{
+					if( task.Task() )
+					{
+						PushTask( std::move( task ) );
+					}
+				}
+			}
+
+
 		}
 	}
 
-	bool _Exit;
+	virtual void PushTask( XEPTask && val ) override
+	{
+		_Tasks.push( val );
+	}
+
+	virtual XE::uint64 QueueSize() override
+	{
+		return _Tasks.size();
+	}
+
+	virtual void Notify() override
+	{
+		_Variable.notify_one();
+	}
+
+	bool _Exit = false;
 	std::mutex _Lock;
 	std::thread _Thread;
 	std::condition_variable _Variable;
+	tbb::concurrent_priority_queue<XEPTask> _Tasks;
 };
+
+struct XEPWorkThread : public XEPThread
+{
+	XEPWorkThread()
+	{
+		for( XE::uint64 i = 0; i < std::thread::hardware_concurrency(); ++i )
+		{
+			_Threads.push_back( std::thread( &XEPWorkThread::Handler, this ) );
+		}
+	}
+
+	~XEPWorkThread()
+	{
+		_Exit = true;
+
+		_Variable.notify_all();
+
+		for( int i = 0; i < _Threads.size(); ++i )
+		{
+			if( _Threads[i].joinable() )
+			{
+				_Threads[i].join();
+			}
+		}
+	}
+
+	void Handler()
+	{
+		std::unique_lock<std::mutex> Lock( _Lock );
+
+		while( !_Exit )
+		{
+			if( QueueSize() == 0 )
+			{
+				_Variable.wait( Lock );
+			}
+
+			if( _Exit )
+			{
+				return;
+			}
+
+			XEPTask task;
+			while( _Tasks.try_pop( task ) )
+			{
+				if( task.Task )
+				{
+					if( task.Task() )
+					{
+						PushTask( std::move( task ) );
+					}
+				}
+			}
+
+		}
+	}
+
+	virtual void PushTask( XEPTask && val ) override
+	{
+		_Tasks.push( val );
+	}
+
+	virtual XE::uint64 QueueSize() override
+	{
+		return _Tasks.size();
+	}
+
+	virtual void Notify() override
+	{
+		_Variable.notify_one();
+	}
+
+	bool _Exit = false;
+	std::mutex _Lock;
+	Array<std::thread> _Threads;
+	std::condition_variable _Variable;
+	tbb::concurrent_priority_queue<XEPTask> _Tasks;
+};
+
 
 struct ThreadService::Private
 {
-	XEPMainThread * _MainThread = nullptr;
-	XEPWorkThread ** _Threads = nullptr;
+	Array<XEPThread *> _Threads;
 };
 
 XE::ThreadService::ThreadService()
@@ -138,96 +266,44 @@ XE::ThreadService::~ThreadService()
 
 bool XE::ThreadService::Startup()
 {
-	_p->_MainThread = new XEPMainThread( std::this_thread::get_id() );
+	_p->_Threads.resize( EnumID<ThreadType>::Get()->GetEnumCount() );
 
-	_p->_Threads = (XEPWorkThread**)( new XEPWorkThread[THREAD_COUNT] );
+	_p->_Threads[( XE::uint64 )ThreadType::IO] = new XEPSpecialThread();
+	_p->_Threads[( XE::uint64 )ThreadType::MAIN] = new XEPMainThread();
+	_p->_Threads[( XE::uint64 )ThreadType::GAME] = new XEPSpecialThread();
+	_p->_Threads[( XE::uint64 )ThreadType::RENDER] = new XEPSpecialThread();
+	_p->_Threads[( XE::uint64 )ThreadType::PHYSICS] = new XEPSpecialThread();
+	_p->_Threads[( XE::uint64 )ThreadType::NAVIGATION] = new XEPSpecialThread();
+	_p->_Threads[( XE::uint64 )ThreadType::WORKS] = new XEPWorkThread();
 
 	return true;
 }
 
 void XE::ThreadService::Update()
 {
-	_p->_MainThread->Handler();
+	_p->_Threads[( XE::uint64 )ThreadType::MAIN]->Handler();
 }
 
 void XE::ThreadService::Clearup()
 {
-	if( _p->_MainThread )
+	for( auto p : _p->_Threads )
 	{
-		delete _p->_MainThread;
+		delete p;
 	}
 
-	if( _p->_Threads )
-	{
-		for( XE::uint64 i = 0; i < THREAD_COUNT; i++ )
-		{
-			_p->_Threads[i]->_Exit = true;
-		}
-
-		delete[]( (XEPWorkThread * )_p->_Threads );
-	}
+	_p->_Threads.clear();
 }
 
-XE::thread_id XE::ThreadService::GetIOThread() const
-{
-	return _p->_Threads[IO_INDEX]->_Tid;
-}
-
-XE::thread_id XE::ThreadService::GetMainThread() const
-{
-	return _p->_MainThread->_Tid;
-}
-
-XE::thread_id XE::ThreadService::GetGameThread() const
-{
-	return _p->_Threads[GAME_INDEX]->_Tid;
-}
-
-XE::thread_id XE::ThreadService::GetRenderThread() const
-{
-	return _p->_Threads[RENDER_INDEX]->_Tid;
-}
-
-XE::thread_id XE::ThreadService::GetPhysicsThread() const
-{
-	return _p->_Threads[PHYSICS_INDEX]->_Thread.get_id();
-}
-
-XE::thread_id XE::ThreadService::GetNavigationThread() const
-{
-	return _p->_Threads[NAVIGATION_INDEX]->_Tid;
-}
-
-XE::thread_id XE::ThreadService::GetWorkThread( XE::uint64 val ) const
-{
-	XE_ASSERT( val < std::thread::hardware_concurrency() );
-
-	return _p->_Threads[TOOL_THREAD + val]->_Tid;
-}
-
-bool XE::ThreadService::RegisterTask( TaskType task, thread_id tid /*= std::this_thread::get_id() */, ThreadPriority pri /*= ThreadPriority::NORM*/ )
+bool XE::ThreadService::PostTask( TaskType task, ThreadType type, ThreadPriority pri /*= ThreadPriority::NORM*/ )
 {
 	XEPTask tk;
 	tk.Pri = pri;
 	tk.Task = task;
 
-	if ( tid == _p->_MainThread->_Tid )
-	{
-		_p->_MainThread->PushTask( std::move( tk ) );
-		return true;
-	}
+	_p->_Threads[( XE::uint64 )type]->PushTask( std::move( tk ) );
+	_p->_Threads[( XE::uint64 )type]->Notify();
 
-	for ( XE::uint64 i = 0; i < THREAD_COUNT; ++i )
-	{
-		if ( tid == _p->_Threads[i]->_Tid )
-		{
-			_p->_Threads[i]->PushTask( std::move( tk ) );
-			_p->_Threads[i]->_Variable.notify_one();
-			return true;
-		}
-	}
-
-	return false;
+	return true;
 }
 
 void XE::ThreadService::Prepare()

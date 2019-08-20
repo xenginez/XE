@@ -40,7 +40,6 @@ struct XE::CoreFramework::Private
 {
 	std::atomic_bool _Exit = false;
 	Array < IServicePtr > _Services;
-	Map<String, XE::LibraryHandle> _Modules;
 };
 
 XE::CoreFramework::CoreFramework()
@@ -53,6 +52,7 @@ XE::CoreFramework::~CoreFramework()
 {
 	delete _p;
 
+	Reflection::Clear();
 	FrameAlloc::Clear();
 	ObjectAlloc::Clear();
 }
@@ -319,12 +319,6 @@ void XE::CoreFramework::Clearup()
 		}
 	}
 	_p->_Services.clear();
-
-	for( auto lib : _p->_Modules )
-	{
-		Library::Close( lib.second );
-	}
-	_p->_Modules.clear();
 }
 
 void XE::CoreFramework::LoadModules()
@@ -339,7 +333,7 @@ void XE::CoreFramework::LoadModules()
 		{
 			path = path / ( module_name + DLL_EXT_NAME );
 
-			_p->_Modules[module_name] = Library::Open( path.u8string() );
+			Library::Open( path.u8string() );
 		}
 	}
 }

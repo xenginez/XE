@@ -68,7 +68,11 @@ void XE::AssetsService::Update()
 	{
 		for( auto it : _p->_Erase )
 		{
-			threadService->RegisterTask( std::bind( &AssetsService::UnloadAsset, this, it ), GetFramework()->GetThreadService()->GetIOThread() );
+			threadService->PostTask( [&]()
+									 {
+										 UnloadAsset( it );
+										 return false;
+									 }, ThreadType::IO );
 		}
 	}
 	_p->_Erase.clear();
@@ -111,7 +115,11 @@ XE::Prefab XE::AssetsService::AsynLoad( const String & val )
 	auto obj = GetAsset( val );
 	if( obj == nullptr )
 	{
-		GetFramework()->GetThreadService()->RegisterTask( std::bind( &AssetsService::LoadAsset, this, val ), GetFramework()->GetThreadService()->GetIOThread() );
+		GetFramework()->GetThreadService()->PostTask( [&]()
+													  {
+														  LoadAsset( val );
+														  return false;
+													  }, ThreadType::IO );
 		_p->_Assets.insert( std::make_pair( val, std::make_tuple( AssetStatus::Loading, nullptr, GetFramework()->GetTimerService()->GetTime() ) ) );
 	}
 
@@ -120,7 +128,11 @@ XE::Prefab XE::AssetsService::AsynLoad( const String & val )
 
 void XE::AssetsService::Unload( const String & val )
 {
-	GetFramework()->GetThreadService()->RegisterTask( std::bind( &AssetsService::UnloadAsset, this, val ), GetFramework()->GetThreadService()->GetIOThread() );
+	GetFramework()->GetThreadService()->PostTask( [&]()
+												  {
+													  UnloadAsset( val );
+													  return false;
+												  }, ThreadType::IO );
 }
 
 XE::ObjectPtr XE::AssetsService::GetAsset( const String & val ) const

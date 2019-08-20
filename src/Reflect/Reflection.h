@@ -44,6 +44,9 @@ public:
 	};
 
 public:
+	static void Clear();
+
+public:
 	static void RegisterMetaInfo( IMetaInfoPtr val );
 
 public:

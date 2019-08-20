@@ -13,13 +13,13 @@
 
 BEG_XE_NAMESPACE
 
-#define _D() auto _d = This()
-#define _P() auto _p = This()->_p
+#define _D() auto _d = Instance()
+#define _P() auto _p = Instance()->_p
 
 template< typename T > class Singleton : public NonCopyable
 {
-protected:
-	static T * This()
+public:
+	static T * Instance()
 	{
 		static T value;
 		return &value;
