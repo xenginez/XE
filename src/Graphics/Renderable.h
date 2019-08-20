@@ -41,18 +41,8 @@ public:
 
 	void SetTransform( const Mat4 & val );
 
-	MeshPtr GetMesh() const;
-
-	void SetMesh( const MeshPtr & val );
-
-	MaterialPtr GetMaterial() const;
-
-	void SetMaterial( const MaterialPtr & val );
-
 private:
-	MeshPtr _Mesh;
 	Mat4 _Transform;
-	MaterialPtr _Material;
 };
 
 END_XE_NAMESPACE
