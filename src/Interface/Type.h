@@ -790,6 +790,7 @@ enum class ThreadType
 	PHYSICS,
 	NAVIGATION,
 	WORKS,
+	UNKNOWN,
 };
 DECL_META_ENUM( INTERFACE_API, ThreadType );
 

@@ -35,6 +35,9 @@ public:
 	void Clearup() override;
 
 public:
+	ThreadType GetCurrentThreadType() const override;
+
+public:
 	bool PostTask( TaskType task, ThreadType type, ThreadPriority pri = ThreadPriority::NORM ) override;
 
 private:

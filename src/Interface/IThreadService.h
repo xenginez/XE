@@ -26,6 +26,9 @@ public:
 	~IThreadService() override;
 
 public:
+	virtual ThreadType GetCurrentThreadType() const = 0;
+
+public:
 	virtual bool PostTask( TaskType task, ThreadType type, ThreadPriority pri = ThreadPriority::NORM ) = 0;
 
 };

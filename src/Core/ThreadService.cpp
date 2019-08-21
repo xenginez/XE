@@ -47,12 +47,15 @@ struct XEPThread
 	virtual XE::uint64 QueueSize() = 0;
 
 	virtual void Notify() = 0;
+
+	virtual bool HasThreadID( const thread_id & val ) = 0;
+
 };
 
 struct XEPMainThread : public XEPThread
 {
 	XEPMainThread()
-		:_CurrentTasks( 0 )
+		:_CurrentTasks( 0 ), _ID( std::this_thread::get_id() )
 	{
 
 	}
@@ -90,6 +93,12 @@ struct XEPMainThread : public XEPThread
 
 	}
 
+	bool HasThreadID( const thread_id & val )  override
+	{
+		return _ID == val;
+	}
+
+	thread_id _ID;
 	std::atomic<XE::uint64> _CurrentTasks;
 	tbb::concurrent_priority_queue<XEPTask> _FrontTasks;
 	tbb::concurrent_priority_queue<XEPTask> _BackTasks;
@@ -160,6 +169,11 @@ struct XEPSpecialThread : public XEPThread
 	virtual void Notify() override
 	{
 		_Variable.notify_one();
+	}
+
+	bool HasThreadID( const thread_id & val )  override
+	{
+		return _Thread.get_id() == val;
 	}
 
 	bool _Exit = false;
@@ -240,6 +254,19 @@ struct XEPWorkThread : public XEPThread
 		_Variable.notify_one();
 	}
 
+	bool HasThreadID( const thread_id & val )  override
+	{
+		for( const auto & it : _Threads )
+		{
+			if( it.get_id() == val )
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	bool _Exit = false;
 	std::mutex _Lock;
 	Array<std::thread> _Threads;
@@ -262,6 +289,11 @@ XE::ThreadService::ThreadService()
 XE::ThreadService::~ThreadService()
 {
 	delete _p;
+}
+
+void XE::ThreadService::Prepare()
+{
+
 }
 
 bool XE::ThreadService::Startup()
@@ -294,6 +326,21 @@ void XE::ThreadService::Clearup()
 	_p->_Threads.clear();
 }
 
+XE::ThreadType XE::ThreadService::GetCurrentThreadType() const
+{
+	auto id = std::this_thread::get_id();
+
+	for( XE::uint64 i = 0; i < _p->_Threads.size(); ++i )
+	{
+		if( _p->_Threads[i]->HasThreadID( id ) )
+		{
+			return ( XE::ThreadType )( i );
+		}
+	}
+
+	return XE::ThreadType::UNKNOWN;
+}
+
 bool XE::ThreadService::PostTask( TaskType task, ThreadType type, ThreadPriority pri /*= ThreadPriority::NORM*/ )
 {
 	XEPTask tk;
@@ -304,9 +351,4 @@ bool XE::ThreadService::PostTask( TaskType task, ThreadType type, ThreadPriority
 	_p->_Threads[( XE::uint64 )type]->Notify();
 
 	return true;
-}
-
-void XE::ThreadService::Prepare()
-{
-
 }

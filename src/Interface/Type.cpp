@@ -742,6 +742,7 @@ type->Value( "RENDER", ThreadType::RENDER );
 type->Value( "PHYSICS", ThreadType::PHYSICS );
 type->Value( "NAVIGATION", ThreadType::NAVIGATION );
 type->Value( "WORKS", ThreadType::WORKS );
+type->Value( "WORKS", ThreadType::UNKNOWN );
 END_META()
 
 BEG_META( ThreadPriority )
