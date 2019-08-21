@@ -91,7 +91,7 @@ namespace std
 
 		const char * put_time_format = "%Y-%m-%d %X";
 
-	#if PLATFORM_OS == OS_WINDOWS
+	#if PLATFORM_OS & OS_WINDOWS
 		std::tm tm;
 		gmtime_s( &tm, &t );
 		localtime_s( &tm, &t );
@@ -120,7 +120,7 @@ namespace std
 			tm.tm_min = std::stoi( _Val.substr( 14, 2 ) );
 			tm.tm_sec = std::stoi( _Val.substr( 17, 2 ) );
 
-		#if PLATFORM_OS == OS_WINDOWS
+		#if PLATFORM_OS & OS_WINDOWS
 			const std::time_t t = _mkgmtime( &tm );
 		#else
 			const std::time_t t = timegm( &tm );

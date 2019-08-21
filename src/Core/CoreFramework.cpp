@@ -262,14 +262,9 @@ void XE::CoreFramework::Prepare()
 	// 	_p->_Services.push_back( make_shared <NavigationService>() );
 	// 	_p->_Services.push_back( make_shared <WorldService>() );
 
-	// load ConfigService and load modules
-	{
-		_p->_Services[0]->SetFramework( this );
-		_p->_Services[0]->Prepare();
-		LoadModules();
-	}
+	LoadModules();
 
-	for( int i = 1; i < _p->_Services.size(); ++i )
+	for( int i = 0; i < _p->_Services.size(); ++i )
 	{
 		_p->_Services[i]->SetFramework( this );
 		_p->_Services[i]->Prepare();
@@ -311,27 +306,27 @@ void XE::CoreFramework::Update()
 
 void XE::CoreFramework::Clearup()
 {
-	for( auto & service : _p->_Services )
+	for( auto it = _p->_Services.rbegin(); it != _p->_Services.rend(); ++it )
 	{
-		if( service != nullptr )
+		if( *it != nullptr )
 		{
-			service->Clearup();
+			( *it )->Clearup();
 		}
 	}
+
 	_p->_Services.clear();
 }
 
 void XE::CoreFramework::LoadModules()
 {
-	String modules = GetConfigService()->GetString( "System.Modules" );
-	auto module_list = StringUtils::Split( modules, "," );
+	auto module_path = GetModulePath();
 
-	for( auto module_name : module_list )
+	for( std::filesystem::directory_iterator beg_it( module_path ), end_it; beg_it != end_it; ++beg_it )
 	{
-		auto path = GetModulePath() / module_name;
-		if( std::filesystem::is_directory( path ) )
+		if( beg_it->is_directory() )
 		{
-			path = path / ( module_name + DLL_EXT_NAME );
+			auto path = beg_it->path();
+			path = path / ( path.stem().u8string() + DLL_EXT_NAME );
 
 			Library::Open( path.u8string() );
 		}

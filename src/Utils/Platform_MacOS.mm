@@ -1,6 +1,6 @@
 #include "Platform.h"
 
-#if PLATFORM_OS == OS_MAC
+#if PLATFORM_OS & OS_MAC
 
 #import <Cocoa/Cocoa.h>
 

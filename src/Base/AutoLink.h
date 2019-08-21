@@ -9,7 +9,7 @@
 
 #include "Config.h"
 
-#if PLATFORM_OS == OS_WINDOWS
+#if PLATFORM_OS & OS_WINDOWS
 	#ifdef LIB_NAME
 		#pragma comment(lib, LIB_NAME ".lib")
 		#pragma message ("linking to lib file: " LIB_NAME ".lib")

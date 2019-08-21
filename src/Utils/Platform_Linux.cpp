@@ -1,5 +1,5 @@
 #include "Platform.h"
-#if PLATFORM_OS == OS_LINUX
+#if PLATFORM_OS & OS_LINUX
 
 USING_XE
 

@@ -36,14 +36,14 @@
 #include <condition_variable>
 
 #include "Config.h"
-#if PLATFORM_OS == OS_MAC
+#if PLATFORM_OS & OS_MAC
 #include <boost/filesystem.hpp>
 namespace std{namespace filesystem = boost::filesystem;}
 #else
 #include <filesystem>	
 #endif
 
-#if PLATFORM_OS == OS_WINDOWS
+#if PLATFORM_OS & OS_WINDOWS
 #define __TBB_NO_IMPLICIT_LINKAGE 1
 #define __TBBMALLOC_NO_IMPLICIT_LINKAGE 1
 #endif

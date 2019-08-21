@@ -2,7 +2,7 @@
 
 USING_XE
 
-#if PLATFORM_OS == OS_WINDOWS
+#if PLATFORM_OS & OS_WINDOWS
 
 #include <Windows.h>
 

@@ -29,14 +29,45 @@ XE::RenderService::~RenderService()
 
 void XE::RenderService::Prepare()
 {
-	IMetaClassPtr cls = nullptr;
+	String ContextName;
+#if PLATFORM_OS & OS_WINDOWS
+#	if PLATFORM_OS & OS_WINDOWS_10
+	ContextName = "XE::D3D12RenderContext";
+#	else
+	ContextName = "XE::D3D11RenderContext";
+#	endif
+#elif PLATFORM_OS & OS_MAC
+#	if PLATFORM_OS > OS_MAC_10_8
+	ContextName = "XE::MetalRenderContext";
+#	else
+	ContextName = "XE::GLES3RenderContext";
+#	endif
+#elif PLATFORM_OS & OS_IOS
+#	if PLATFORM_OS > OS_IOS_8
+	ContextName = "XE::MetalRenderContext";
+#	else
+	ContextName = "XE::GLES3RenderContext";
+#	endif
+#elif PLATFORM_OS & OS_ANDROID
+	ContextName = "XE::GLES2RenderContext";
+#elif PLATFORM_OS & OS_XBOXONE
+	ContextName = "XE::D3D12RenderContext";
+#elif PLATFORM_OS & OS_LINUX
+	ContextName = "XE::OGLRenderContext";
+#elif PLATFORM_OS & OS_PS4
+	ContextName = "XE::OGLRenderContext";
+#else
+	ContextName = "XE::EmptyRenderContext";
+#endif
 
-	RenderContext::GetMetaClassStatic()->VisitDerivedClass( [&]( IMetaClassPtr val )
-													  {
-														  cls = val;
-													  } );
-
-	_p->_Context = SP_CAST<RenderContext>( cls->ConstructPtr().DetachPtr() );
+	if( IMetaClassPtr cls = Reflection::FindClass( ContextName ) )
+	{
+		_p->_Context = SP_CAST<RenderContext>( cls->ConstructPtr().DetachPtr() );
+	}
+	else
+	{
+		throw XE::RuntimeException();
+	}
 }
 
 bool XE::RenderService::Startup()

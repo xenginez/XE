@@ -19,17 +19,17 @@
 #define CPU_JIT 6
 
 #if defined(__arm__) || defined(__aarch64__) || defined(_M_ARM)
-#define CPU CPU_ARM
+#	define CPU CPU_ARM
 #elif defined(_M_PPC) || defined(__powerpc__) || defined(__powerpc64__)
-#define CPU CPU_PPC
+#	define CPU CPU_PPC
 #elif defined(_M_IX86) || defined(_M_X64) || defined(__i386__) || defined(__x86_64__)
-#define CPU CPU_X86
+#	define CPU CPU_X86
 #elif defined(__MIPSEL__) || defined(__mips_isa_rev) || defined(__mips64)
-#define CPU CPU_MIPS
+#	define CPU CPU_MIPS
 #elif defined(__riscv) || defined(__riscv__) || defined(RISCVEL)
-#define CPU CPU_RISCV
+#	define CPU CPU_RISCV
 #else
-#define CPU CPU_JIT
+#	define CPU CPU_JIT
 #endif
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -40,13 +40,13 @@
 #define ENDIAN_LITTLE 2
 
 #if CPU == CPU_PPC
-#if _LITTLE_ENDIAN
-#define ENDIAN ENDIAN_LITTLE
+#	if _LITTLE_ENDIAN
+#		define ENDIAN ENDIAN_LITTLE
+#	else
+#		define ENDIAN ENDIAN_BIG
+#	endif
 #else
-#define ENDIAN ENDIAN_BIG
-#endif
-#else
-#define ENDIAN ENDIAN_LITTLE
+#	define ENDIAN ENDIAN_LITTLE
 #endif
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -54,28 +54,77 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 /// PLATFORM OS
 
-#define OS_PS4 1
-#define OS_MAC 2
-#define OS_IOS 3
-#define OS_LINUX 4
-#define OS_ANDROID 5
-#define OS_XBOXONE 6
-#define OS_WINDOWS 7
+#define OS_WINDOWS		1 << 0
+#define OS_WINDOWS_7	1 << 1
+#define OS_WINDOWS_8	1 << 2
+#define OS_WINDOWS_10	1 << 3
+#define OS_MAC			1 << 4
+#define OS_MAC_10_8		1 << 5
+#define OS_MAC_10_9		1 << 6
+#define OS_MAC_10_10	1 << 7
+#define OS_MAC_10_11	1 << 8
+#define OS_MAC_10_12	1 << 9
+#define OS_MAC_10_13	1 << 10
+#define OS_IOS			1 << 11
+#define OS_IOS_8		1 << 12
+#define OS_IOS_9		1 << 13
+#define OS_IOS_10		1 << 14
+#define OS_IOS_11		1 << 15
+#define OS_IOS_12		1 << 16
+#define OS_ANDROID		1 << 17
+#define OS_XBOXONE		1 << 18
+#define OS_LINUX		1 << 19
+#define OS_PS4			1 << 20
 
-#if defined(__ORBIS__)
-#define PLATFORM_OS OS_PS4
-#elif defined(_IOS)
-#define PLATFORM_OS OS_IOS
+#if defined(_WIN32)
+#	include <sdkddkver.h>
+#	if   WINVER >= 0x0A00 //win10
+#		define PLATFORM_OS (OS_WINDOWS | OS_WINDOWS_10)
+#	elif WINVER >= 0x0602 //win8
+#		define PLATFORM_OS (OS_WINDOWS | OS_WINDOWS_8)
+#	elif WINVER >= 0x0601 //win7
+#		define PLATFORM_OS (OS_WINDOWS | OS_WINDOWS_7)
+#	else
+#		define PLATFORM_OS OS_WINDOWS
+#	endif
 #elif defined(__APPLE__)
-#define PLATFORM_OS OS_MAC
+#	if   __MAC_OS_X_VERSION_MAX_REQUIRED >= __MAC_10_13
+#		define PLATFORM_OS (OS_MAC | OS_MAC_10_13)
+#	elif __MAC_OS_X_VERSION_MAX_REQUIRED >= __MAC_10_12
+#		define PLATFORM_OS (OS_MAC | OS_MAC_10_12)
+#	elif __MAC_OS_X_VERSION_MAX_REQUIRED >= __MAC_10_11
+#		define PLATFORM_OS (OS_MAC | OS_MAC_10_11)
+#	elif __MAC_OS_X_VERSION_MAX_REQUIRED >= __MAC_10_10
+#		define PLATFORM_OS (OS_MAC | OS_MAC_10_10)
+#	elif __MAC_OS_X_VERSION_MAX_REQUIRED >= __MAC_10_9
+#		define PLATFORM_OS (OS_MAC | OS_MAC_10_9)
+#	elif __MAC_OS_X_VERSION_MAX_REQUIRED >= __MAC_10_8
+#		define PLATFORM_OS (OS_MAC | OS_MAC_10_8)
+#	else
+#		define PLATFORM_OS OS_MAC
+#	endif
+#elif defined(_IOS)
+#	if   __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_12_0
+#		define PLATFORM_OS (OS_IOS | OS_IOS_12)
+#	elif __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_11_0
+#		define PLATFORM_OS (OS_IOS | OS_IOS_11)
+#	elif __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
+#		define PLATFORM_OS (OS_IOS | OS_IOS_10)
+#	elif __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_9_0
+#		define PLATFORM_OS (OS_IOS | OS_IOS_9)
+#	elif __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
+#		define PLATFORM_OS (OS_IOS | OS_IOS_8)
+#	else
+#		define PLATFORM_OS OS_IOS
+#	endif
 #elif defined(__ANDROID__)
-#define PLATFORM_OS OS_ANDROID
-#elif defined(_LINUX)
-#define PLATFORM_OS OS_LINUX
+#	define PLATFORM_OS OS_ANDROID
 #elif defined(_XBOX_ONE)
-#define PLATFORM_OS OS_XBOXONE
-#elif defined(_WIN32)
-#define PLATFORM_OS OS_WINDOWS
+#	define PLATFORM_OS OS_XBOXONE
+#elif defined(_LINUX)
+#	define PLATFORM_OS OS_LINUX
+#elif defined(__ORBIS__)
+#	define PLATFORM_OS OS_PS4
 #else
 #   error "unknown platform os !"
 #endif
@@ -121,11 +170,11 @@
 #define SIMD_NEON 2
 
 #if (defined (_M_IX86) || defined (_M_X64)) && !defined(_CHPE_ONLY_)
-#define SIMD_TYPE SIMD_SSE
+#	define SIMD_TYPE SIMD_SSE
 #elif defined (_M_ARM) || defined (_M_ARM64) || defined(_M_HYBRID_X86_ARM64)
-#define SIMD_TYPE SIMD_NEON
+#	define SIMD_TYPE SIMD_NEON
 #else
-#define SIMD_TYPE SIMD_SSE
+#	define SIMD_TYPE SIMD_SSE
 //#   error "unknown SIMD !"
 #endif
 
@@ -157,19 +206,19 @@
 #   define DLL_VAR_WEAK __attribute__((weak))
 #endif
 
-#if PLATFORM_OS == OS_WINDOWS
+#if PLATFORM_OS & OS_WINDOWS
 #	define DLL_EXT_NAME ".dll"
-#elif PLATFORM_OS == OS_XBOXONE
+#elif PLATFORM_OS & OS_XBOXONE
 #	define DLL_EXT_NAME ".dll"
-#elif PLATFORM_OS == OS_ANDROID
+#elif PLATFORM_OS & OS_ANDROID
 #	define DLL_EXT_NAME ".so"
-#elif PLATFORM_OS == OS_LINUX
+#elif PLATFORM_OS & OS_LINUX
 #	define DLL_EXT_NAME ".so"
-#elif PLATFORM_OS == OS_IOS
+#elif PLATFORM_OS & OS_IOS
 #	define DLL_EXT_NAME ".dylib"
-#elif PLATFORM_OS == OS_MAC
+#elif PLATFORM_OS & OS_MAC
 #	define DLL_EXT_NAME ".dylib"
-#elif PLATFORM_OS == OS_PS4
+#elif PLATFORM_OS & OS_PS4
 #	define DLL_EXT_NAME ".so"
 #endif
 
@@ -201,8 +250,7 @@
 /// DEBUG
 
 #if defined(DEBUG) || defined(_DEBUG)
-#undef DEBUG
-#define DEBUG
+#	define XE_DEBUG 1
 #endif // DEBUG
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -210,14 +258,14 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 /// ASSERT
 
-#ifndef DEBUG
-#define XE_ASSERT(x) { (void)0; }
+#ifndef XE_DEBUG
+#	define XE_ASSERT(x) { (void)0; }
 #else
-#if PLATFORM_OS == OS_WINDOWS
-#define XE_ASSERT(x) { if(!(x)) __debugbreak(); }
-#else
-#define XE_ASSERT(x) { if(!(x)) raise(SIGTRAP); }
-#endif
+#	if PLATFORM_OS & OS_WINDOWS
+#		define XE_ASSERT(x) { if(!(x)) __debugbreak(); }
+#	else
+#		define XE_ASSERT(x) { if(!(x)) raise(SIGTRAP); }
+#	endif
 #endif
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -264,11 +312,11 @@
 /// IGNORED WARNING
 
 #if COMPILER == COMPILER_MSVC
-#pragma warning(disable : 4251)
-#pragma warning(disable : 4996)
-#pragma warning(disable : 4091)
+#	pragma warning(disable : 4251)
+#	pragma warning(disable : 4996)
+#	pragma warning(disable : 4091)
 #elif COMPILER == COMPILER_CLANG
-#pragma clang diagnostic ignored"-Winconsistent-missing-override"
+#	pragma clang diagnostic ignored"-Winconsistent-missing-override"
 #else
 #endif
 

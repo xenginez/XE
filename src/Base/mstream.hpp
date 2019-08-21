@@ -25,7 +25,7 @@ public:
 	using reference         = const value_type &;
 
 	constexpr _Memory_view_iterator() noexcept
-	#ifdef DEBUG
+	#ifdef XE_DEBUG
 		: _Mydata(), _Mysize( 0 ), _Myoff( 0 )
 	#else
 		: _Myptr()
@@ -36,7 +36,7 @@ public:
 private:
 	friend basic_memory_view<value_type, _Traits>;
 
-#ifdef DEBUG
+#ifdef XE_DEBUG
 	constexpr _Memory_view_iterator( const pointer _Data, const size_t _Size, const size_t _Off ) noexcept
 		: _Mydata( _Data ), _Mysize( _Size ), _Myoff( _Off )
 	{
@@ -53,7 +53,7 @@ public:
 	{
 		XE_ASSERT( _Mydata && "cannot dereference value-initialized basic_memory_view<XE::uint8> iterator" );
 		XE_ASSERT( _Myoff < _Mysize && "cannot dereference end basic_memory_view<XE::uint8> iterator" );
-	#ifdef DEBUG
+	#ifdef XE_DEBUG
 		return _Mydata[_Myoff];
 	#else
 		return *_Myptr;
@@ -64,7 +64,7 @@ public:
 	{
 		XE_ASSERT( _Mydata && "cannot dereference value-initialized basic_memory_view<XE::uint8> iterator" );
 		XE_ASSERT( _Myoff < _Mysize && "cannot dereference end basic_memory_view<XE::uint8> iterator" );
-	#ifdef DEBUG
+	#ifdef XE_DEBUG
 		return _Mydata + _Myoff;
 	#else 
 		return _Myptr;
@@ -75,7 +75,7 @@ public:
 	{
 		XE_ASSERT( _Mydata && "cannot increment value-initialized basic_memory_view<XE::uint8> iterator" );
 		XE_ASSERT( _Myoff < _Mysize && "cannot increment basic_memory_view<XE::uint8> iterator past end" );
-	#ifdef DEBUG
+	#ifdef XE_DEBUG
 		++_Myoff;
 	#else 
 		++_Myptr;
@@ -94,7 +94,7 @@ public:
 	{
 		XE_ASSERT( _Mydata && "cannot decrement value-initialized basic_memory_view<XE::uint8> iterator" );
 		XE_ASSERT( _Myoff != 0 && "cannot decrement basic_memory_view<XE::uint8> iterator before begin" );
-	#ifdef DEBUG
+	#ifdef XE_DEBUG
 		--_Myoff;
 	#else 
 		--_Myptr;
@@ -111,7 +111,7 @@ public:
 
 	constexpr _Memory_view_iterator & operator+=( const difference_type _Off ) noexcept
 	{
-	#ifdef DEBUG
+	#ifdef XE_DEBUG
 		_Verify_offset( _Off );
 		_Myoff += _Off;
 	#else 
@@ -131,7 +131,7 @@ public:
 
 	constexpr _Memory_view_iterator & operator-=( const difference_type _Off ) noexcept
 	{ // decrement by integer
-	#ifdef DEBUG
+	#ifdef XE_DEBUG
 		if( _Off != 0 )
 		{
 			XE_ASSERT( _Mydata && "cannot seek value-initialized basic_memory_view<XE::uint8> iterator" );
@@ -168,7 +168,7 @@ public:
 		noexcept
 	{
 		XE_ASSERT( _Mydata == _Right._Mydata && _Mysize == _Right._Mysize && "cannot subtract incompatible basic_memory_view<XE::uint8> iterators" );
-	#ifdef DEBUG
+	#ifdef XE_DEBUG
 		return static_cast<difference_type>( _Myoff - _Right._Myoff );
 	#else 
 		return _Myptr - _Right._Myptr;
@@ -184,7 +184,7 @@ public:
 		noexcept
 	{
 		XE_ASSERT( _Mydata == _Right._Mydata && _Mysize == _Right._Mysize && "cannot compare incompatible basic_memory_view<XE::uint8> iterators for equality" );
-	#ifdef DEBUG
+	#ifdef XE_DEBUG
 		return _Myoff == _Right._Myoff;
 	#else 
 		return _Myptr == _Right._Myptr;
@@ -200,7 +200,7 @@ public:
 	constexpr bool operator<( const _Memory_view_iterator & _Right ) const noexcept
 	{
 		XE_ASSERT( _Mydata == _Right._Mydata && _Mysize == _Right._Mysize && "cannot compare incompatible basic_memory_view<XE::uint8> iterators" );
-	#ifdef DEBUG
+	#ifdef XE_DEBUG
 		return _Myoff < _Right._Myoff;
 	#else 
 		return _Myptr < _Right._Myptr;
@@ -222,11 +222,11 @@ public:
 		return !( *this < _Right );
 	}
 
-#ifdef DEBUG
+#ifdef XE_DEBUG
 private:
 	constexpr void _Verify_offset( const difference_type _Off ) const noexcept
 	{
-	#ifdef DEBUG
+	#ifdef XE_DEBUG
 		if( _Off != 0 )
 		{
 			XE_ASSERT( _Mydata && "cannot seek value-initialized basic_memory_view<XE::uint8> iterator" );
@@ -249,7 +249,7 @@ private:
 #endif
 
 private:
-#ifdef DEBUG
+#ifdef XE_DEBUG
 	pointer _Mydata;
 	size_t _Mysize;
 	size_t _Myoff;
@@ -292,7 +292,7 @@ public:
 
 	constexpr const_iterator begin() const noexcept
 	{
-	#ifdef DEBUG
+	#ifdef XE_DEBUG
 		return const_iterator( _Mydata, _Mysize, 0 );
 	#else 
 		return const_iterator( _Mydata );
@@ -301,7 +301,7 @@ public:
 
 	constexpr const_iterator end() const noexcept
 	{
-	#ifdef DEBUG
+	#ifdef XE_DEBUG
 		return const_iterator( _Mydata, _Mysize, _Mysize );
 	#else 
 		return const_iterator( _Mydata + _Mysize );

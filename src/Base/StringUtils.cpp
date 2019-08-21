@@ -1,6 +1,6 @@
 #include "StringUtils.h"
 
-#if PLATFORM_OS == OS_WINDOWS
+#if PLATFORM_OS & OS_WINDOWS
 #include <Windows.h>
 #endif
 
@@ -8,7 +8,7 @@ USING_XE
 
 std::string XE::StringUtils::UTF16ToUTF8( const std::wstring & val )
 {
-#if PLATFORM_OS == OS_WINDOWS
+#if PLATFORM_OS & OS_WINDOWS
 	std::string s;
 	int len = WideCharToMultiByte( CP_UTF8, 0, val.c_str(), (int )val.length(), NULL, 0, NULL, NULL );
 	if( len <= 0 )
@@ -31,7 +31,7 @@ std::string XE::StringUtils::UTF16ToUTF8( const std::wstring & val )
 
 std::wstring XE::StringUtils::UTF8ToUTF16( const std::string & val )
 {
-#if PLATFORM_OS == OS_WINDOWS
+#if PLATFORM_OS & OS_WINDOWS
 	std::wstring s;
 	int len = MultiByteToWideChar( CP_UTF8, 0, val.c_str(), (int )val.length(), NULL, 0 );
 	if( len <= 0 )
@@ -54,7 +54,7 @@ std::wstring XE::StringUtils::UTF8ToUTF16( const std::string & val )
 
 std::string XE::StringUtils::UTF16ToGBK( const std::wstring & val )
 {
-#if PLATFORM_OS == OS_WINDOWS
+#if PLATFORM_OS & OS_WINDOWS
 	std::string s;
 	int len = WideCharToMultiByte( CP_ACP, 0, val.c_str(), (int )val.length(), NULL, 0, NULL, NULL );
 	if( len <= 0 )
@@ -77,7 +77,7 @@ std::string XE::StringUtils::UTF16ToGBK( const std::wstring & val )
 
 std::wstring XE::StringUtils::GBKToUTF16( const std::string & val )
 {
-#if PLATFORM_OS == OS_WINDOWS
+#if PLATFORM_OS & OS_WINDOWS
 	std::wstring s;
 	int len = MultiByteToWideChar( CP_ACP, 0, val.c_str(), (int )val.length(), NULL, 0 );
 	if( len <= 0 )

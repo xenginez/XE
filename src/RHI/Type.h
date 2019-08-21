@@ -180,7 +180,7 @@ DECL_META_ENUM( RHI_API, AttributeType );
 
 enum class RenderContextType
 {
-	SOFT,
+	EMPTY,
 	METAL,
 	VULKAN,
 	OPENGL,
