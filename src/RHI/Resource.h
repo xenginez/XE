@@ -30,6 +30,9 @@ public:
 public:
 	ResourceHandle GetHandle() const;
 
+protected:
+	void SetHandle( ResourceHandle handle );
+
 private:
 	ResourceHandle _Handle;
 };

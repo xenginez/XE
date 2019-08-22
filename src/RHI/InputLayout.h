@@ -35,6 +35,8 @@ public:
 	InputLayout & Add( const String & name, XE::uint32 offset, LayoutFormat format, LayoutElementType type );
 
 public:
+	XE::uint64 ElementSize() const;
+
 	XE::uint64 ElementCount() const;
 
 public:

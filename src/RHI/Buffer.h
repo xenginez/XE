@@ -10,6 +10,7 @@
 #define __BUFFER_H__D9EB5BDB_5A01_4C5C_8262_008E86007DFD
 
 #include "Resource.h"
+#include "InputLayout.h"
 
 BEG_XE_NAMESPACE
 
@@ -25,6 +26,14 @@ public:
 public:
     XE::uint64 GetSize() const;
 
+public:
+	void Startup( RenderContextRPtr context ) override;
+
+	void Clearup( RenderContextRPtr context ) override;
+
+public:
+	virtual XE::basic_memory_view<XE::int8> GetMemoryView() = 0;
+
 private:
 	AccessType _Access;
 	Array<XE::uint8> _Data;
@@ -38,6 +47,13 @@ public:
 	IndexBuffer();
 
 	~IndexBuffer() override;
+
+public:
+	TextureFormat GetFormat() const;
+
+private:
+	// TextureFormat::R16U | TextureFormat::R32U
+	TextureFormat _Format;
 };
 
 class RHI_API VertexBuffer : public Buffer
@@ -48,6 +64,12 @@ public:
 	VertexBuffer();
 
 	~VertexBuffer() override;
+
+public:
+	const InputLayoutPtr & GetInputLayout() const;
+
+private:
+	InputLayoutPtr _InputLayout;
 };
 
 class RHI_API UniformBuffer : public Buffer
@@ -98,17 +120,6 @@ public:
 	InstanceBuffer();
 
 	~InstanceBuffer() override;
-};
-
-class RHI_API DepthStencilBuffer : public Buffer
-{
-	OBJECT( DepthStencilBuffer, Buffer )
-
-public:
-	DepthStencilBuffer();
-
-	~DepthStencilBuffer() override;
-
 };
 
 class RHI_API DynamicIndexBuffer : public IndexBuffer

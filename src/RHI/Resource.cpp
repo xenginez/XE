@@ -19,3 +19,8 @@ XE::ResourceHandle XE::Resource::GetHandle() const
 {
 	return _Handle;
 }
+
+void XE::Resource::SetHandle( ResourceHandle handle )
+{
+	_Handle = handle;
+}

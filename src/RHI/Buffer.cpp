@@ -1,5 +1,7 @@
 #include "Buffer.h"
 
+#include "RenderContext.h"
+
 USING_XE
 
 BEG_META(Buffer)
@@ -20,6 +22,22 @@ XE::uint64 XE::Buffer::GetSize() const
 	return _Data.size();
 }
 
+XE::basic_memory_view<XE::int8> XE::Buffer::GetMemoryView()
+{
+	return XE::basic_memory_view<XE::int8>();
+}
+
+void XE::Buffer::Startup( RenderContextRPtr context )
+{
+	SetHandle( context->CreateBuffer( XE_THIS( Buffer ) ) );
+}
+
+void XE::Buffer::Clearup( RenderContextRPtr context )
+{
+	context->DestoryBuffer( XE_THIS( Buffer ) );
+	SetHandle( ResourceHandle::Invalid );
+}
+
 BEG_META( IndexBuffer )
 END_META()
 
@@ -33,6 +51,11 @@ XE::IndexBuffer::~IndexBuffer()
 
 }
 
+TextureFormat XE::IndexBuffer::GetFormat() const
+{
+	return _Format;
+}
+
 BEG_META( VertexBuffer )
 END_META()
 
@@ -44,6 +67,11 @@ XE::VertexBuffer::VertexBuffer()
 XE::VertexBuffer::~VertexBuffer()
 {
 
+}
+
+const XE::InputLayoutPtr & XE::VertexBuffer::GetInputLayout() const
+{
+	return _InputLayout;
 }
 
 BEG_META( UniformBuffer )
@@ -107,19 +135,6 @@ XE::InstanceBuffer::InstanceBuffer()
 }
 
 XE::InstanceBuffer::~InstanceBuffer()
-{
-
-}
-
-BEG_META( DepthStencilBuffer )
-END_META()
-
-XE::DepthStencilBuffer::DepthStencilBuffer()
-{
-
-}
-
-XE::DepthStencilBuffer::~DepthStencilBuffer()
 {
 
 }

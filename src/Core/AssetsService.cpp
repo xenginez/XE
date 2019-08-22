@@ -115,12 +115,20 @@ XE::Prefab XE::AssetsService::AsynLoad( const String & val )
 	auto obj = GetAsset( val );
 	if( obj == nullptr )
 	{
-		GetFramework()->GetThreadService()->PostTask( [&]()
-													  {
-														  LoadAsset( val );
-														  return false;
-													  }, ThreadType::IO );
-		_p->_Assets.insert( std::make_pair( val, std::make_tuple( AssetStatus::Loading, nullptr, GetFramework()->GetTimerService()->GetTime() ) ) );
+		if( GetFramework()->GetThreadService()->GetCurrentThreadType() == ThreadType::IO )
+		{
+			LoadAsset(val);
+			_p->_Assets.insert( std::make_pair( val, std::make_tuple( AssetStatus::Ready, nullptr, GetFramework()->GetTimerService()->GetTime() ) ) );
+		}
+		else
+		{
+			GetFramework()->GetThreadService()->PostTask( [&]()
+														  {
+															  LoadAsset( val );
+															  return false;
+														  }, ThreadType::IO );
+			_p->_Assets.insert( std::make_pair( val, std::make_tuple( AssetStatus::Loading, nullptr, GetFramework()->GetTimerService()->GetTime() ) ) );
+		}
 	}
 
 	return CreatePrefab( val );
@@ -128,11 +136,18 @@ XE::Prefab XE::AssetsService::AsynLoad( const String & val )
 
 void XE::AssetsService::Unload( const String & val )
 {
-	GetFramework()->GetThreadService()->PostTask( [&]()
-												  {
-													  UnloadAsset( val );
-													  return false;
-												  }, ThreadType::IO );
+	if( GetFramework()->GetThreadService()->GetCurrentThreadType() == ThreadType::IO )
+	{
+		UnloadAsset( val );
+	}
+	else
+	{
+		GetFramework()->GetThreadService()->PostTask( [&]()
+													  {
+														  UnloadAsset( val );
+														  return false;
+													  }, ThreadType::IO );
+	}
 }
 
 XE::ObjectPtr XE::AssetsService::GetAsset( const String & val ) const

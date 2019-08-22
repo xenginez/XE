@@ -29,6 +29,40 @@ XE::InputLayout & XE::InputLayout::Add( const String & name, XE::uint32 offset, 
 	return *this;
 }
 
+XE::uint64 XE::InputLayout::ElementSize() const
+{
+	static constexpr XE::uint64 type_size[] =
+	{
+		1,
+		2,
+		4,
+		8,
+		1,
+		2,
+		4,
+		8,
+		2,
+		4,
+		8,
+		8,
+		12,
+		16,
+		16,
+		16,
+		36,
+		64
+	};
+
+	XE::uint64 size = 0;
+
+	for( auto elem : _Elements )
+	{
+		size += type_size[( XE::uint64 )elem.Type];
+	}
+
+	return size;
+}
+
 XE::uint64 XE::InputLayout::ElementCount() const
 {
 	return _Elements.size();

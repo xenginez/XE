@@ -139,13 +139,13 @@ public:
 
 		if( _Off > 0 )
 		{
-			XE_ASSERT( _Myoff >= static_cast<size_t>( _Off ) && "cannot seek basic_memory_view<XE::uint8> iterator before begin" );
+			XE_ASSERT( _Myoff >= static_cast< size_t >( _Off ) && "cannot seek basic_memory_view<XE::uint8> iterator before begin" );
 		}
 
 		if( _Off < 0 )
 		{
 		#pragma warning(suppress : 4146)
-			XE_ASSERT( _Mysize - _Myoff >= -static_cast<size_t>( _Off ) && "cannot seek basic_memory_view<XE::uint8> iterator after end" );
+			XE_ASSERT( _Mysize - _Myoff >= -static_cast< size_t >( _Off ) && "cannot seek basic_memory_view<XE::uint8> iterator after end" );
 		}
 
 		_Myoff -= _Off;
@@ -169,7 +169,7 @@ public:
 	{
 		XE_ASSERT( _Mydata == _Right._Mydata && _Mysize == _Right._Mysize && "cannot subtract incompatible basic_memory_view<XE::uint8> iterators" );
 	#ifdef XE_DEBUG
-		return static_cast<difference_type>( _Myoff - _Right._Myoff );
+		return static_cast< difference_type >( _Myoff - _Right._Myoff );
 	#else 
 		return _Myptr - _Right._Myptr;
 	#endif 
@@ -235,15 +235,15 @@ private:
 		if( _Off < 0 )
 		{
 		#pragma warning(suppress : 4146)
-			XE_ASSERT( _Myoff >= -static_cast<size_t>( _Off ) && "cannot seek basic_memory_view<XE::uint8> iterator before begin" );
+			XE_ASSERT( _Myoff >= -static_cast< size_t >( _Off ) && "cannot seek basic_memory_view<XE::uint8> iterator before begin" );
 		}
 
 		if( _Off > 0 )
 		{
-			XE_ASSERT( _Mysize - _Myoff >= static_cast<size_t>( _Off ) && "cannot seek basic_memory_view<XE::uint8> iterator after end" );
+			XE_ASSERT( _Mysize - _Myoff >= static_cast< size_t >( _Off ) && "cannot seek basic_memory_view<XE::uint8> iterator after end" );
 		}
 	#else 
-		( void) _Off;
+		(void )_Off;
 	#endif
 	}
 #endif
@@ -276,7 +276,7 @@ public:
 	using difference_type        = ptrdiff_t;
 
 
-	static constexpr auto npos{ static_cast<size_type>( -1 ) };
+	static constexpr auto npos{ static_cast< size_type >( -1 ) };
 
 	constexpr basic_memory_view() noexcept : _Mydata(), _Mysize( 0 )
 	{
@@ -360,7 +360,7 @@ public:
 
 	constexpr size_type max_size() const noexcept
 	{
-		return _Min_value( static_cast<size_t>( PTRDIFF_MAX ), static_cast<size_t>( -1 ) / sizeof( _Elem ) );
+		return _Min_value( static_cast< size_t >( PTRDIFF_MAX ), static_cast< size_t >( -1 ) / sizeof( _Elem ) );
 	}
 
 	constexpr const_reference operator[]( const size_type _Off ) const noexcept
@@ -535,12 +535,12 @@ public:
 		if( !( _Mystate & _Constant ) && _Mysb::pptr() != nullptr )
 		{
 			const auto _Base = _Mysb::pbase();
-			return _Myview( _Base, static_cast<_Mysize_type>( _Max_value( _Mysb::pptr(), _Seekhigh ) - _Base ) );
+			return _Myview( _Base, static_cast< _Mysize_type >( _Max_value( _Mysb::pptr(), _Seekhigh ) - _Base ) );
 		}
 		else if( !( _Mystate & _Noread ) && _Mysb::gptr() != nullptr )
 		{
 			const auto _Base = _Mysb::eback();
-			return _Myview( _Base, static_cast<_Mysize_type>( _Mysb::egptr() - _Base ) );
+			return _Myview( _Base, static_cast< _Mysize_type >( _Mysb::egptr() - _Base ) );
 		}
 
 		return _Myview();
@@ -551,7 +551,7 @@ public:
 		_Tidy();
 		_Init( _Newview.data(), _Newview.size(), _Mystate );
 	}
-	
+
 protected:
 	virtual int_type overflow( int_type _Meta = _Traits::eof() )
 	{
@@ -578,7 +578,7 @@ protected:
 		const auto _Oldptr = _Mysb::eback();
 		if( _Pptr != nullptr )
 		{
-			_Oldsize = static_cast<size_t>( _Epptr - _Oldptr );
+			_Oldsize = static_cast< size_t >( _Epptr - _Oldptr );
 		}
 
 		size_t _Newsize;
@@ -630,7 +630,7 @@ protected:
 		const auto _Gptr = _Mysb::gptr();
 		if( _Gptr == nullptr || _Gptr <= _Mysb::eback()
 			|| ( !_Traits::eq_int_type( _Traits::eof(), _Meta ) && !_Traits::eq( _Traits::to_char_type( _Meta ), _Gptr[-1] )
-			&& ( _Mystate & _Constant ) ) )
+				 && ( _Mystate & _Constant ) ) )
 		{
 			return _Traits::eof();
 		}
@@ -719,7 +719,7 @@ protected:
 			return pos_type( off_type( -1 ) );
 		}
 
-		if( static_cast<unsigned long long>( _Off ) + _Newoff > static_cast<unsigned long long>( _Seekdist ) )
+		if( static_cast< unsigned long long >( _Off ) + _Newoff > static_cast< unsigned long long >( _Seekdist ) )
 		{
 			return pos_type( off_type( -1 ) );
 		}
@@ -727,7 +727,7 @@ protected:
 		_Off += _Newoff;
 		if( _Off != 0
 			&& ( ( ( _Mode & std::ios_base::in ) && _Gptr_old == nullptr )
-			|| ( ( _Mode & std::ios_base::out ) && _Pptr_old == nullptr ) ) )
+				 || ( ( _Mode & std::ios_base::out ) && _Pptr_old == nullptr ) ) )
 		{
 			return pos_type( off_type( -1 ) );
 		}
@@ -748,7 +748,7 @@ protected:
 
 	virtual pos_type seekpos( pos_type _Pos, std::ios_base::openmode _Mode = std::ios_base::in | std::ios_base::out )
 	{
-		const auto _Off = static_cast<std::streamoff>( _Pos );
+		const auto _Off = static_cast< std::streamoff >( _Pos );
 		const auto _Gptr_old = _Mysb::gptr();
 		const auto _Pptr_old = _Mysb::pptr();
 		if( _Pptr_old != nullptr && _Seekhigh < _Pptr_old )
@@ -758,14 +758,14 @@ protected:
 
 		const auto _Seeklow = _Mysb::eback();
 		const auto _Seekdist = _Seekhigh - _Seeklow;
-		if( static_cast<unsigned long long>( _Off ) > static_cast<unsigned long long>( _Seekdist ) )
+		if( static_cast< unsigned long long >( _Off ) > static_cast< unsigned long long >( _Seekdist ) )
 		{
 			return pos_type( off_type( -1 ) );
 		}
 
 		if( _Off != 0
 			&& ( ( ( _Mode & std::ios_base::in ) && _Gptr_old == nullptr )
-			|| ( ( _Mode & std::ios_base::out ) && _Pptr_old == nullptr ) ) )
+				 || ( ( _Mode & std::ios_base::out ) && _Pptr_old == nullptr ) ) )
 		{
 			return pos_type( off_type( -1 ) );
 		}
@@ -826,7 +826,7 @@ protected:
 		if( _Mystate & _Allocated )
 		{
 			_Al.deallocate( _Ptr_traits::pointer_to( *_Mysb::eback() ),
-							static_cast<typename std::allocator_traits<allocator_type>::size_type>(
+							static_cast< typename std::allocator_traits<allocator_type>::size_type >(
 							( _Mysb::pptr() != nullptr ? _Mysb::epptr() : _Mysb::egptr() ) - _Mysb::eback() ) );
 		}
 
@@ -835,7 +835,7 @@ protected:
 		_Seekhigh = nullptr;
 		_Mystate &= ~_Allocated;
 	}
-	
+
 private:
 	using _Ptr_traits = std::pointer_traits<typename std::allocator_traits<allocator_type>::pointer>;
 
@@ -874,12 +874,6 @@ private:
 	int _Mystate;
 	allocator_type _Al;
 };
-
-template <class _Elem, class _Traits = XE::memory_traits<_Elem>, class _Alloc = std::allocator<_Elem>>
-inline void swap( basic_memorybuf<_Elem, _Traits, _Alloc> & _Left, basic_memorybuf<_Elem, _Traits, _Alloc> & _Right )
-{
-	_Left.swap( _Right );
-}
 
 template <class _Elem, class _Traits = XE::memory_traits<_Elem>, class _Alloc = std::allocator<_Elem>>
 class basic_imemorystream : public std::basic_istream<_Elem, _Traits>
@@ -939,7 +933,7 @@ public:
 
 	_Mysb * rdbuf() const
 	{
-		return ( _Mysb *) & _Memorybuffer;
+		return (_Mysb * )& _Memorybuffer;
 	}
 
 	_Myview view() const
@@ -955,12 +949,6 @@ public:
 private:
 	_Mysb _Memorybuffer;
 };
-
-template <class _Elem, class _Traits = XE::memory_traits<_Elem>, class _Alloc = std::allocator<_Elem>>
-inline void swap( basic_imemorystream<_Elem, _Traits, _Alloc> & _Left, basic_imemorystream<_Elem, _Traits, _Alloc> & _Right )
-{
-	_Left.swap( _Right );
-}
 
 template <class _Elem, class _Traits = XE::memory_traits<_Elem>, class _Alloc = std::allocator<_Elem>>
 class basic_omemorystream : public std::basic_ostream<_Elem, _Traits>
@@ -1021,7 +1009,7 @@ public:
 
 	_Mysb * rdbuf() const
 	{
-		return ( _Mysb *) & _Memorybuffer;
+		return (_Mysb * )& _Memorybuffer;
 	}
 
 	_Myview view() const
@@ -1037,13 +1025,6 @@ public:
 private:
 	_Mysb _Memorybuffer;
 };
-
-template <class _Elem, class _Traits = XE::memory_traits<_Elem>, class _Alloc = std::allocator<_Elem>>
-inline void swap( basic_omemorystream<_Elem, _Traits, _Alloc> & _Left,
-				  basic_omemorystream<_Elem, _Traits, _Alloc> & _Right )
-{
-	_Left.swap( _Right );
-}
 
 template <class _Elem, class _Traits = XE::memory_traits<_Elem>, class _Alloc = std::allocator<_Elem>>
 class basic_memorystream : public std::basic_iostream<_Elem, _Traits>
@@ -1107,7 +1088,7 @@ public:
 
 	_Mysb * rdbuf() const
 	{
-		return ( _Mysb *) & _Stringbuffer;
+		return (_Mysb * )& _Stringbuffer;
 	}
 
 	_Myview view() const
@@ -1124,13 +1105,43 @@ private:
 	_Mysb _Stringbuffer;
 };
 
-template <class _Elem, class _Traits = XE::memory_traits<_Elem>, class _Alloc = std::allocator<_Elem>>
-inline void swap( basic_memorystream<_Elem, _Traits, _Alloc> & _Left, basic_memorystream<_Elem, _Traits, _Alloc> & _Right )
-{
-	_Left.swap( _Right );
-}
+using memory_view = XE::basic_memory_view<XE::int8>;
+using memorystream = XE::basic_memorystream<XE::int8>;
+using imemorystream = XE::basic_imemorystream<XE::int8>;
+using omemorystream = XE::basic_omemorystream<XE::int8>;
 
 END_XE_NAMESPACE
+
+namespace std
+{
+	template <class _Elem, class _Traits = XE::memory_traits<_Elem>, class _Alloc = std::allocator<_Elem>>
+	inline void swap( XE::basic_memorybuf<_Elem, _Traits, _Alloc> & _Left,
+					  XE::basic_memorybuf<_Elem, _Traits, _Alloc> & _Right )
+	{
+		_Left.swap( _Right );
+	}
+
+	template <class _Elem, class _Traits = XE::memory_traits<_Elem>, class _Alloc = std::allocator<_Elem>>
+	inline void swap( XE::basic_imemorystream<_Elem, _Traits, _Alloc> & _Left,
+					  XE::basic_imemorystream<_Elem, _Traits, _Alloc> & _Right )
+	{
+		_Left.swap( _Right );
+	}
+
+	template <class _Elem, class _Traits = XE::memory_traits<_Elem>, class _Alloc = std::allocator<_Elem>>
+	inline void swap( XE::basic_omemorystream<_Elem, _Traits, _Alloc> & _Left,
+					  XE::basic_omemorystream<_Elem, _Traits, _Alloc> & _Right )
+	{
+		_Left.swap( _Right );
+	}
+
+	template <class _Elem, class _Traits = XE::memory_traits<_Elem>, class _Alloc = std::allocator<_Elem>>
+	inline void swap( XE::basic_memorystream<_Elem, _Traits, _Alloc> & _Left,
+					  XE::basic_memorystream<_Elem, _Traits, _Alloc> & _Right )
+	{
+		_Left.swap( _Right );
+	}
+}
 
 template <class _Elem, class _Traits, class _Alloc>
 XE::basic_imemorystream<_Elem, _Traits, _Alloc> & operator >>( XE::basic_imemorystream<_Elem, _Traits, _Alloc> & _Left, std::string & _Right )
@@ -1147,6 +1158,27 @@ XE::basic_imemorystream<_Elem, _Traits, _Alloc> & operator >>( XE::basic_imemory
 
 template <class _Elem, class _Traits, class _Alloc>
 XE::basic_omemorystream<_Elem, _Traits, _Alloc> & operator <<( XE::basic_omemorystream<_Elem, _Traits, _Alloc> & _Left, const std::string & _Right )
+{
+	_Left.write( reinterpret_cast< const _Elem * >( _Right.c_str() ), _Right.size() / sizeof( _Elem ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_memorystream<_Elem, _Traits, _Alloc> & operator >>( XE::basic_memorystream<_Elem, _Traits, _Alloc> & _Left, std::string & _Right )
+{
+	XE::uint64 size;
+	_Left >> size;
+
+	_Right.resize( size );
+
+	_Left.read( reinterpret_cast< _Elem * >( _Right.data() ), size / sizeof( _Elem ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_memorystream<_Elem, _Traits, _Alloc> & operator <<( XE::basic_memorystream<_Elem, _Traits, _Alloc> & _Left, const std::string & _Right )
 {
 	_Left.write( reinterpret_cast< const _Elem * >( _Right.c_str() ), _Right.size() / sizeof( _Elem ) );
 

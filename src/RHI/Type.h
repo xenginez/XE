@@ -259,11 +259,11 @@ enum class TextureFormat
 {
 	///       RGBA16S
 	///       ^   ^ ^
-	///       |   | +-- [ ]Unorm
-	///       |   |     [F]loat
-	///       |   |     [S]norm
-	///       |   |     [I]nt
-	///       |   |     [U]int
+	///       |   | +-- [ ]unorm
+	///       |   |     [F]float
+	///       |   |     [S]snorm
+	///       |   |     [I]int
+	///       |   |     [U]uint
 	///       |   +---- Number of bits per component
 	///       +-------- Components
 
