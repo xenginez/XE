@@ -51,6 +51,11 @@ public:
 public:
 	virtual void Serialize( Archive &val );
 
+public:
+	const String & GetUUID() const;
+
+public:
+	String _UUID;
 };
 
 END_XE_NAMESPACE

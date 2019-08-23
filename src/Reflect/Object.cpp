@@ -11,6 +11,8 @@ template<> struct XE::MetaDataCollector< Object >
 	{
 		auto type = std::conditional_t<std::is_enum<ThisType>::value, Reflection::Enum<ThisType>, Reflection::Class<ThisType>>::Get();
 
+		type->Property( "UUID", &Object::_UUID, IMetaProperty::NoDesign | IMetaProperty::NoRuntime );
+
 		Reflection::RegisterMetaInfo( type );
 	}
 	static void Use()
@@ -67,4 +69,9 @@ void XE::Object::Serialize( Archive &val )
 {
 	XE::Variant v(this);
 	GetMetaClass()->Serialize(&val, v);
+}
+
+const String & XE::Object::GetUUID() const
+{
+	return _UUID;
 }

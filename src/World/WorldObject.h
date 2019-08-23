@@ -15,7 +15,7 @@ BEG_XE_NAMESPACE
 
 class WorldService;
 
-class WORLD_API WorldObject : public Object
+class WORLD_API WorldObject : public XE::Object
 {
 	OBJECT( WorldObject, Object )
 

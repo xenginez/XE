@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class GRAPHICS_API Material : public Object
+class GRAPHICS_API Material : public XE::Object
 {
 	OBJECT(Material, Object)
 	

@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class GRAPHICS_API SubMesh : public Object
+class GRAPHICS_API SubMesh : public XE::Object
 {
 	OBJECT( SubMesh, Object )
 
@@ -32,7 +32,7 @@ private:
 	XE::uint32 _IndexCount;
 };
 
-class GRAPHICS_API Mesh : public Object
+class GRAPHICS_API Mesh : public XE::Object
 {
 	OBJECT( Mesh, Object )
 	

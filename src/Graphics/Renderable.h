@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class GRAPHICS_API Renderable : public Object
+class GRAPHICS_API Renderable : public XE::Object
 {
 	OBJECT( Renderable, Object )
 	

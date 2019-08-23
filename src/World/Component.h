@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class WORLD_API Component : public Object
+class WORLD_API Component : public XE::Object
 {
 	OBJECT( Component, Object )
 
