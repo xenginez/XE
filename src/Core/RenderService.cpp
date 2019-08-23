@@ -30,35 +30,25 @@ XE::RenderService::~RenderService()
 void XE::RenderService::Prepare()
 {
 	String ContextName;
+
 #if PLATFORM_OS & OS_WINDOWS
-#	if PLATFORM_OS & OS_WINDOWS_10
 	ContextName = "XE::D3D12RenderContext";
-#	else
-	ContextName = "XE::D3D11RenderContext";
-#	endif
 #elif PLATFORM_OS & OS_MAC
-#	if PLATFORM_OS > OS_MAC_10_8
 	ContextName = "XE::MetalRenderContext";
-#	else
-	ContextName = "XE::GLES3RenderContext";
-#	endif
 #elif PLATFORM_OS & OS_IOS
-#	if PLATFORM_OS > OS_IOS_8
 	ContextName = "XE::MetalRenderContext";
-#	else
-	ContextName = "XE::GLES3RenderContext";
-#	endif
 #elif PLATFORM_OS & OS_ANDROID
-	ContextName = "XE::GLES2RenderContext";
+	ContextName = "XE::VulkanRenderContext";
 #elif PLATFORM_OS & OS_XBOXONE
 	ContextName = "XE::D3D12RenderContext";
 #elif PLATFORM_OS & OS_LINUX
-	ContextName = "XE::OGLRenderContext";
-#elif PLATFORM_OS & OS_PS4
-	ContextName = "XE::OGLRenderContext";
-#else
-	ContextName = "XE::EmptyRenderContext";
+	ContextName = "XE::VulkanRenderContext";
 #endif
+
+	if( ContextName == "" )
+	{
+		ContextName = "XE::EmptyRenderContext";
+	}
 
 	if( IMetaClassPtr cls = Reflection::FindClass( ContextName ) )
 	{
