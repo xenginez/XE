@@ -22,31 +22,6 @@ public:
 
 	~IGUIService() override;
 
-public:
-	virtual XE::uint64 GetWidth() const = 0;
-
-	virtual void SetWidth( XE::uint64 val ) = 0;
-
-	virtual XE::uint64 GetHeight() const = 0;
-
-	virtual void SetHeight( XE::uint64 val ) = 0;
-
-	virtual XE::int32 GetPositionX() const = 0;
-
-	virtual void SetPositionX( XE::int32 val ) = 0;
-
-	virtual XE::int32 GetPositionY() const = 0;
-
-	virtual void SetPositionY( XE::int32 val ) = 0;
-
-public:
-	virtual void IsFullScreen() const = 0;
-
-	virtual void SetFullScreen( bool val ) = 0;
-
-public:
-	virtual std::intptr_t GetWindowHandle() const = 0;
-
 };
 
 END_XE_NAMESPACE

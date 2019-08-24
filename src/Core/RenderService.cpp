@@ -29,43 +29,24 @@ XE::RenderService::~RenderService()
 
 void XE::RenderService::Prepare()
 {
-	String ContextName;
 
-#if PLATFORM_OS & OS_WINDOWS
-	ContextName = "XE::D3D12RenderContext";
-#elif PLATFORM_OS & OS_MAC
-	ContextName = "XE::MetalRenderContext";
-#elif PLATFORM_OS & OS_IOS
-	ContextName = "XE::MetalRenderContext";
-#elif PLATFORM_OS & OS_ANDROID
-	ContextName = "XE::VulkanRenderContext";
-#elif PLATFORM_OS & OS_XBOXONE
-	ContextName = "XE::D3D12RenderContext";
-#elif PLATFORM_OS & OS_LINUX
-	ContextName = "XE::VulkanRenderContext";
-#endif
-
-	if( ContextName == "" )
-	{
-		ContextName = "XE::EmptyRenderContext";
-	}
-
-	if( IMetaClassPtr cls = Reflection::FindClass( ContextName ) )
-	{
-		_p->_Context = SP_CAST<RenderContext>( cls->ConstructPtr().DetachPtr() );
-	}
-	else
-	{
-		throw XE::RuntimeException();
-	}
 }
 
 bool XE::RenderService::Startup()
 {
-	if(_p->_Context )
+	IMetaClassPtr cls;
+	ClassID<XE::RenderContext>::Get()->VisitDerivedClass( [&]( IMetaClassPtr val )
+														  {
+															  cls = val;
+														  } );
+
+	if( cls != nullptr )
 	{
-		_p->_Context->Startup();
-		return true;
+		if( _p->_Context = SP_CAST<RenderContext>( cls->ConstructPtr().DetachPtr() ) )
+		{
+			_p->_Context->Startup();
+			return true;
+		}
 	}
 
 	return false;

@@ -25,15 +25,10 @@ XE::ConfigService::~ConfigService()
 
 void XE::ConfigService::Prepare()
 {
-	Startup();
-}
-
-bool XE::ConfigService::Startup()
-{
 	auto path = GetFramework()->GetUserDataPath() / "config.xml";
 
 	pugi::xml_document doc;
-	if( doc.load_file(path.string().c_str()).status == pugi::status_ok )
+	if( doc.load_file( path.string().c_str() ).status == pugi::status_ok )
 	{
 		for( auto it = doc.begin(); it != doc.end(); ++it )
 		{
@@ -42,11 +37,12 @@ bool XE::ConfigService::Startup()
 				Load( it2, it->name() );
 			}
 		}
-
-		return true;
 	}
-	
-	return false;
+}
+
+bool XE::ConfigService::Startup()
+{
+	return true;
 }
 
 void XE::ConfigService::Update()
