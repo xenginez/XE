@@ -36,7 +36,7 @@ void XE::Renderer::Render( RenderContextPtr & context, CameraPtr & camera )
 
 	list->Close();
 
-	context->DestoryCommandList( list );
+//	context->DestoryCommandList( list );
 }
 
 void XE::Renderer::Clearup()

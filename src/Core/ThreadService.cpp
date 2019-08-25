@@ -130,6 +130,8 @@ struct XEPSpecialThread : public XEPThread
 
 		while( !_Exit )
 		{
+			FrameAlloc::Reset();
+
 			if( QueueSize() == 0 )
 			{
 				_Variable.wait( Lock );
@@ -151,8 +153,6 @@ struct XEPSpecialThread : public XEPThread
 					}
 				}
 			}
-
-
 		}
 	}
 
@@ -214,6 +214,8 @@ struct XEPWorkThread : public XEPThread
 
 		while( !_Exit )
 		{
+			FrameAlloc::Reset();
+
 			if( QueueSize() == 0 )
 			{
 				_Variable.wait( Lock );
@@ -273,7 +275,6 @@ struct XEPWorkThread : public XEPThread
 	std::condition_variable _Variable;
 	tbb::concurrent_priority_queue<XEPTask> _Tasks;
 };
-
 
 struct ThreadService::Private
 {

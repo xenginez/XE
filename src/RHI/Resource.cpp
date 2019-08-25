@@ -24,3 +24,13 @@ void XE::Resource::SetHandle( ResourceHandle handle )
 {
 	_Handle = handle;
 }
+
+void XE::Resource::Preinitialize( RenderContextRPtr context )
+{
+	_RenderContext = context;
+}
+
+RenderContextRPtr XE::Resource::GetRenderContext() const
+{
+	return _RenderContext;
+}

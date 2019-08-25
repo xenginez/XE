@@ -27,17 +27,6 @@ XE::basic_memory_view<XE::int8> XE::Buffer::GetMemoryView()
 	return XE::basic_memory_view<XE::int8>();
 }
 
-void XE::Buffer::Startup( RenderContextRPtr context )
-{
-	SetHandle( context->CreateBuffer( XE_THIS( Buffer ) ) );
-}
-
-void XE::Buffer::Clearup( RenderContextRPtr context )
-{
-	context->DestoryBuffer( XE_THIS( Buffer ) );
-	SetHandle( ResourceHandle::Invalid );
-}
-
 BEG_META( IndexBuffer )
 END_META()
 
@@ -48,12 +37,19 @@ XE::IndexBuffer::IndexBuffer()
 
 XE::IndexBuffer::~IndexBuffer()
 {
-
+	GetRenderContext()->DestoryIndexBuffer( GetHandle() );
 }
 
 TextureFormat XE::IndexBuffer::GetFormat() const
 {
 	return _Format;
+}
+
+void XE::IndexBuffer::Preinitialize( RenderContextRPtr context )
+{
+	Super::Preinitialize( context );
+
+	SetHandle( context->CreateIndexBuffer( XE_THIS( IndexBuffer ) ) );
 }
 
 BEG_META( VertexBuffer )
@@ -66,12 +62,19 @@ XE::VertexBuffer::VertexBuffer()
 
 XE::VertexBuffer::~VertexBuffer()
 {
-
+	GetRenderContext()->DestoryVertexBuffer( GetHandle() );
 }
 
 const XE::InputLayoutPtr & XE::VertexBuffer::GetInputLayout() const
 {
 	return _InputLayout;
+}
+
+void XE::VertexBuffer::Preinitialize( RenderContextRPtr context )
+{
+	Super::Preinitialize( context );
+
+	SetHandle( context->CreateVertexBuffer( XE_THIS( VertexBuffer ) ) );
 }
 
 BEG_META( UniformBuffer )
@@ -84,7 +87,14 @@ XE::UniformBuffer::UniformBuffer()
 
 XE::UniformBuffer::~UniformBuffer()
 {
+	GetRenderContext()->DestoryUniformBuffer( GetHandle() );
+}
 
+void XE::UniformBuffer::Preinitialize( RenderContextRPtr context )
+{
+	Super::Preinitialize( context );
+
+	SetHandle( context->CreateUniformBuffer( XE_THIS( UniformBuffer ) ) );
 }
 
 BEG_META( ComputeBuffer )
@@ -97,7 +107,7 @@ XE::ComputeBuffer::ComputeBuffer()
 
 XE::ComputeBuffer::~ComputeBuffer()
 {
-
+	GetRenderContext()->DestoryComputeBuffer( GetHandle() );
 }
 
 BEG_META( ConstantBuffer )
@@ -110,7 +120,14 @@ XE::ConstantBuffer::ConstantBuffer()
 
 XE::ConstantBuffer::~ConstantBuffer()
 {
+	GetRenderContext()->DestoryConstantBuffer( GetHandle() );
+}
 
+void XE::ConstantBuffer::Preinitialize( RenderContextRPtr context )
+{
+	Super::Preinitialize( context );
+
+	SetHandle( context->CreateConstantBuffer( XE_THIS( ConstantBuffer ) ) );
 }
 
 BEG_META( IndirectBuffer )
@@ -123,7 +140,7 @@ XE::IndirectBuffer::IndirectBuffer()
 
 XE::IndirectBuffer::~IndirectBuffer()
 {
-
+	GetRenderContext()->DestoryIndirectBuffer( GetHandle() );
 }
 
 BEG_META( InstanceBuffer )
@@ -136,7 +153,14 @@ XE::InstanceBuffer::InstanceBuffer()
 
 XE::InstanceBuffer::~InstanceBuffer()
 {
+	GetRenderContext()->DestoryInstanceBuffer( GetHandle() );
+}
 
+void XE::InstanceBuffer::Preinitialize( RenderContextRPtr context )
+{
+	Super::Preinitialize( context );
+
+	SetHandle( context->CreateInstanceBuffer( XE_THIS( InstanceBuffer ) ) );
 }
 
 BEG_META( DynamicIndexBuffer )
@@ -149,7 +173,14 @@ XE::DynamicIndexBuffer::DynamicIndexBuffer()
 
 XE::DynamicIndexBuffer::~DynamicIndexBuffer()
 {
+	GetRenderContext()->DestoryDynamicIndexBuffer( GetHandle() );
+}
 
+void XE::DynamicIndexBuffer::Preinitialize( RenderContextRPtr context )
+{
+	Super::Preinitialize( context );
+
+	SetHandle( context->CreateDynamicIndexBuffer( XE_THIS( DynamicIndexBuffer ) ) );
 }
 
 BEG_META( DynamicVertexBuffer )
@@ -162,5 +193,12 @@ XE::DynamicVertexBuffer::DynamicVertexBuffer()
 
 XE::DynamicVertexBuffer::~DynamicVertexBuffer()
 {
+	GetRenderContext()->DestoryDynamicVertexBuffer( GetHandle() );
+}
 
+void XE::DynamicVertexBuffer::Preinitialize( RenderContextRPtr context )
+{
+	Super::Preinitialize( context );
+
+	SetHandle( context->CreateDynamicVertexBuffer( XE_THIS( DynamicVertexBuffer ) ) );
 }

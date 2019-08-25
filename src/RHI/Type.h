@@ -52,10 +52,12 @@ DECL_PTR( Texture2DArray );
 DECL_PTR( Query );
 DECL_PTR( TimerQuery );
 DECL_PTR( OcclusionQuery );
+DECL_PTR( ConditionQuery );
+DECL_PTR( SOStatisticsQuery );
 
 DECL_PTR( RenderTarget );
 DECL_PTR( RenderWindow );
-DECL_PTR( RenderTexture2D );
+DECL_PTR( RenderTexture );
 
 DECL_PTR( Image );
 DECL_PTR( Sampler );

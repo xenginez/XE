@@ -158,18 +158,18 @@ private:
 	WindowHandle _Handle;
 };
 
-class RHI_API RenderTexture2D : public RenderTarget
+class RHI_API RenderTexture : public RenderTarget
 {
-	OBJECT( RenderTexture2D, RenderTarget )
+	OBJECT( RenderTexture, RenderTarget )
 public:
-	RenderTexture2D();
+	RenderTexture();
 
-	~RenderTexture2D() override;
+	~RenderTexture() override;
 
 public:
-	Texture2DPtr GetTexture2D() const;
+	Texture2DPtr GetTexture() const;
 
-	void SetTexture2D( const Texture2DPtr & val );
+	void SetTexture( const Texture2DPtr & val );
 
 private:
 	Texture2DPtr _Texture;

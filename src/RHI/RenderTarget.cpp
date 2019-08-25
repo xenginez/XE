@@ -306,25 +306,25 @@ XE::WindowHandle XE::RenderWindow::GetWindowHandle() const
 	return _Handle;
 }
 
-BEG_META( RenderTexture2D )
+BEG_META( RenderTexture )
 END_META()
 
-XE::RenderTexture2D::RenderTexture2D()
+XE::RenderTexture::RenderTexture()
 {
 
 }
 
-XE::RenderTexture2D::~RenderTexture2D()
+XE::RenderTexture::~RenderTexture()
 {
 
 }
 
-XE::Texture2DPtr XE::RenderTexture2D::GetTexture2D() const
+XE::Texture2DPtr XE::RenderTexture::GetTexture() const
 {
 	return _Texture;
 }
 
-void XE::RenderTexture2D::SetTexture2D( const Texture2DPtr & val )
+void XE::RenderTexture::SetTexture( const Texture2DPtr & val )
 {
 	_Texture = val;
 }

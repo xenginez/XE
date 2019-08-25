@@ -16,7 +16,7 @@ BEG_XE_NAMESPACE
 
 class RHI_API Buffer : public Resource
 {
-	OBJECT(Buffer, Resource)
+	OBJECT( Buffer, Resource )
 	
 public:
     Buffer();
@@ -25,11 +25,6 @@ public:
 
 public:
     XE::uint64 GetSize() const;
-
-public:
-	void Startup( RenderContextRPtr context ) override;
-
-	void Clearup( RenderContextRPtr context ) override;
 
 public:
 	virtual XE::basic_memory_view<XE::int8> GetMemoryView() = 0;
@@ -49,6 +44,9 @@ public:
 	~IndexBuffer() override;
 
 public:
+	void Preinitialize( RenderContextRPtr context ) override;
+
+public:
 	TextureFormat GetFormat() const;
 
 private:
@@ -66,6 +64,9 @@ public:
 	~VertexBuffer() override;
 
 public:
+	void Preinitialize( RenderContextRPtr context ) override;
+
+public:
 	const InputLayoutPtr & GetInputLayout() const;
 
 private:
@@ -80,6 +81,10 @@ public:
 	UniformBuffer();
 
 	~UniformBuffer() override;
+
+public:
+	void Preinitialize( RenderContextRPtr context ) override;
+
 };
 
 class RHI_API ComputeBuffer : public Buffer
@@ -100,6 +105,10 @@ public:
 	ConstantBuffer();
 
 	~ConstantBuffer() override;
+
+public:
+	void Preinitialize( RenderContextRPtr context ) override;
+
 };
 
 class RHI_API IndirectBuffer : public Buffer
@@ -120,6 +129,10 @@ public:
 	InstanceBuffer();
 
 	~InstanceBuffer() override;
+
+public:
+	void Preinitialize( RenderContextRPtr context ) override;
+
 };
 
 class RHI_API DynamicIndexBuffer : public IndexBuffer
@@ -130,6 +143,10 @@ public:
 	DynamicIndexBuffer();
 
 	~DynamicIndexBuffer() override;
+
+public:
+	void Preinitialize( RenderContextRPtr context ) override;
+
 };
 
 class RHI_API DynamicVertexBuffer : public VertexBuffer
@@ -140,6 +157,10 @@ public:
 	DynamicVertexBuffer();
 
 	~DynamicVertexBuffer() override;
+
+public:
+	void Preinitialize( RenderContextRPtr context ) override;
+
 };
 
 END_XE_NAMESPACE

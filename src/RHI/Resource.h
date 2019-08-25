@@ -23,9 +23,7 @@ public:
 	~Resource() override;
 
 public:
-	virtual void Startup( RenderContextRPtr context ) = 0;
-
-	virtual void Clearup( RenderContextRPtr context ) = 0;
+	virtual void Preinitialize( RenderContextRPtr context );
 
 public:
 	ResourceHandle GetHandle() const;
@@ -33,8 +31,11 @@ public:
 protected:
 	void SetHandle( ResourceHandle handle );
 
+	RenderContextRPtr GetRenderContext() const;
+
 private:
 	ResourceHandle _Handle;
+	RenderContextRPtr _RenderContext;
 };
 
 END_XE_NAMESPACE

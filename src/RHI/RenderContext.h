@@ -33,42 +33,135 @@ public:
 	virtual RenderContextType GetType() const = 0;
 
 public:
-	virtual ResourceHandle CreateBuffer( BufferPtr & val ) = 0;
+	virtual ResourceHandle CreateIndexBuffer( IndexBufferPtr & val ) = 0;
 
-	virtual bool DestoryBuffer( BufferPtr & val ) = 0;
+	virtual bool DestoryIndexBuffer( ResourceHandle & val ) = 0;
 
-	virtual ResourceHandle CreateShader( ShaderPtr & val ) = 0;
+	virtual ResourceHandle CreateVertexBuffer( VertexBufferPtr & val ) = 0;
 
-	virtual bool DestoryShader( ShaderPtr & val ) = 0;
+	virtual bool DestoryVertexBuffer( ResourceHandle & val ) = 0;
 
+	virtual ResourceHandle CreateUniformBuffer( UniformBufferPtr & val ) = 0;
+
+	virtual bool DestoryUniformBuffer( ResourceHandle & val ) = 0;
+
+	virtual ResourceHandle CreateComputeBuffer( ComputeBufferPtr & val ) = 0;
+
+	virtual bool DestoryComputeBuffer( ResourceHandle & val ) = 0;
+
+	virtual ResourceHandle CreateConstantBuffer( ConstantBufferPtr & val ) = 0;
+
+	virtual bool DestoryConstantBuffer( ResourceHandle & val ) = 0;
+
+	virtual ResourceHandle CreateIndirectBuffer( IndirectBufferPtr & val ) = 0;
+
+	virtual bool DestoryIndirectBuffer( ResourceHandle & val ) = 0;
+
+	virtual ResourceHandle CreateInstanceBuffer( InstanceBufferPtr & val ) = 0;
+
+	virtual bool DestoryInstanceBuffer( ResourceHandle & val ) = 0;
+
+	virtual ResourceHandle CreateDynamicIndexBuffer( DynamicIndexBufferPtr & val ) = 0;
+
+	virtual bool DestoryDynamicIndexBuffer( ResourceHandle & val ) = 0;
+
+	virtual ResourceHandle CreateDynamicVertexBuffer( DynamicVertexBufferPtr & val ) = 0;
+
+	virtual bool DestoryDynamicVertexBuffer( ResourceHandle & val ) = 0;
+
+public:
+	virtual ResourceHandle CreateHullShader( HullShaderPtr & val ) = 0;
+
+	virtual bool DestoryHullShader( ResourceHandle & val ) = 0;
+
+	virtual ResourceHandle CreatePixelShader( PixelShaderPtr & val ) = 0;
+
+	virtual bool DestoryPixelShader( ResourceHandle & val ) = 0;
+
+	virtual ResourceHandle CreateVertexShader( VertexShaderPtr & val ) = 0;
+
+	virtual bool DestoryVertexShader( ResourceHandle & val ) = 0;
+
+	virtual ResourceHandle CreateDomainShader( DomainShaderPtr & val ) = 0;
+
+	virtual bool DestoryDomainShader( ResourceHandle & val ) = 0;
+
+	virtual ResourceHandle CreateComputeShader( ComputeShaderPtr & val ) = 0;
+
+	virtual bool DestoryComputeShader( ResourceHandle & val ) = 0;
+
+	virtual ResourceHandle CreateGeometryShader( GeometryShaderPtr & val ) = 0;
+
+	virtual bool DestoryGeometryShader( ResourceHandle & val ) = 0;
+
+public:
 	virtual ResourceHandle CreateTexture( TexturePtr & val ) = 0;
 
-	virtual bool DestoryTexture( TexturePtr & val ) = 0;
+	virtual bool DestoryTexture( ResourceHandle & val ) = 0;
 
-	virtual ResourceHandle CreateUnorderedAccess( UnorderedAccessPtr & val ) = 0;
+	virtual ResourceHandle CreateTexture2D( Texture2DPtr & val ) = 0;
 
-	virtual bool DestoryUnorderedAccess( UnorderedAccessPtr & val ) = 0;
+	virtual bool DestoryTexture2D( ResourceHandle & val ) = 0;
 
+	virtual ResourceHandle CreateTexture3D( Texture3DPtr & val ) = 0;
+
+	virtual bool DestoryTexture3D( ResourceHandle & val ) = 0;
+
+	virtual ResourceHandle CreateTextureCube( TextureCubePtr & val ) = 0;
+
+	virtual bool DestoryTextureCube( ResourceHandle & val ) = 0;
+
+	virtual ResourceHandle CreateTexture2DArray( Texture2DArrayPtr & val ) = 0;
+
+	virtual bool DestoryTexture2DArray( ResourceHandle & val ) = 0;
+
+public:
+	virtual ResourceHandle CreateRenderWindow( RenderWindowPtr & val ) = 0;
+
+	virtual bool DestroyRenderWindow( ResourceHandle & val ) = 0;
+
+	virtual ResourceHandle CreateRenderTexture( RenderTexturePtr & val ) = 0;
+
+	virtual bool DestroyRenderTexture( ResourceHandle & val ) = 0;
+
+public:
+	virtual ResourceHandle CreateTimerQuery( TimerQueryPtr & val ) = 0;
+
+	virtual bool DestoryTimerQuery( ResourceHandle & val ) = 0;
+
+	virtual ResourceHandle CreateOcclusionQuery( OcclusionQueryPtr & val ) = 0;
+
+	virtual bool DestoryOcclusionQuery( ResourceHandle & val ) = 0;
+
+	virtual ResourceHandle CreateConditionQuery( ConditionQueryPtr & val ) = 0;
+
+	virtual bool DestoryConditionQuery( ResourceHandle & val ) = 0;
+
+	virtual ResourceHandle CreateSOStatisticsQuery( SOStatisticsQueryPtr & val ) = 0;
+
+	virtual bool DestorySOStatisticsQuery( ResourceHandle & val ) = 0;
+
+public:
+	virtual PipelineStateHandle CreateComputePipelineState( ComputePipelineStatePtr & val ) = 0;
+
+	virtual void DestoryComputePipelineState( PipelineStateHandle val ) = 0;
+
+	virtual PipelineStateHandle CreateGraphicsPipelineState( GraphicsPipelineStatePtr & val ) = 0;
+
+	virtual void DestoryGraphicsPipelineState( PipelineStateHandle val ) = 0;
+
+public:
 	virtual ResourceHandle CreateSampler( SamplerPtr & val ) = 0;
 
-	virtual bool DestroySampler( SamplerPtr & val ) = 0;
+	virtual bool DestroySampler( ResourceHandle & val ) = 0;
 
-	virtual ResourceHandle CreateRenderTarget( RenderTargetPtr & val ) = 0;
+public:
+	virtual ResourceHandle CreateUnorderedAccess( UnorderedAccessPtr & val ) = 0;
 
-	virtual bool DestroyRenderTarget( RenderTargetPtr & val ) = 0;
-
-	virtual ResourceHandle CreateQuery( QueryPtr & val ) = 0;
-
-	virtual bool DestoryQuery( QueryPtr & val ) = 0;
-
-	virtual PipelineStateHandle CreatePipelineState( PipelineStatePtr & val ) = 0;
-
-	virtual void DestoryPipelineState( PipelineStateHandle val ) = 0;
+	virtual bool DestoryUnorderedAccess( ResourceHandle & val ) = 0;
 
 public:
 	virtual CommandListPtr CreateCommandList( CommandListType val ) = 0;
-
-	virtual void DestoryCommandList( CommandListPtr val ) = 0;
 
 	/// CommandList Method
 public:
