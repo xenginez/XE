@@ -175,7 +175,7 @@ public:
 
 	virtual void SetCompute32BitConstant( CommandListHandle handle, XE::uint32 RootParameterIndex, XE::uint32 SrcData, XE::uint32 DestOffsetIn32BitValues ) = 0;
 
-	virtual void SetCompute32BitConstants( CommandListHandle handle, XE::uint32 RootParameterIndex, XE::basic_memory_view<XE::uint8> pSrcData, XE::uint32 DestOffsetIn32BitValues ) = 0;
+	virtual void SetCompute32BitConstants( CommandListHandle handle, XE::uint32 RootParameterIndex, XE::memory_view pSrcData, XE::uint32 DestOffsetIn32BitValues ) = 0;
 
 	virtual bool Close( CommandListHandle handle ) = 0;
 
@@ -211,13 +211,13 @@ public:
 
 	virtual void EndQuery( CommandListHandle handle, QueryPtr Query, XE::uint32 Index ) = 0;
 
-	virtual void BeginEvent( CommandListHandle handle, XE::uint32 Metadata, XE::basic_memory_view<XE::int8> pData ) = 0;
+	virtual void BeginEvent( CommandListHandle handle, XE::uint32 Metadata, XE::memory_view pData ) = 0;
 
 	virtual void EndEvent( CommandListHandle handle ) = 0;
 
 	virtual void SetPredication( CommandListHandle handle, ResourcePtr & pBuffer, XE::uint64 AlignedBufferOffset, bool Equal ) = 0;
 
-	virtual void SetMarker( CommandListHandle handle, XE::uint32 Metadata, XE::basic_memory_view<XE::int8> pData ) = 0;
+	virtual void SetMarker( CommandListHandle handle, XE::uint32 Metadata, XE::memory_view pData ) = 0;
 
 	virtual void ResolveQueryData( CommandListHandle handle, QueryPtr Query, XE::uint32 StartIndex, XE::uint32 NumQueries, ResourcePtr & pDestinationBuffer, XE::uint64 AlignedDestinationBufferOffset ) = 0;
 
@@ -247,7 +247,7 @@ public:
 
 	virtual void SetGraphics32BitConstant( CommandListHandle handle, XE::uint32 RootParameterIndex, XE::uint32 SrcData, XE::uint32 DestOffsetIn32BitValues ) = 0;
 
-	virtual void SetGraphics32BitConstants( CommandListHandle handle, XE::uint32 RootParameterIndex, XE::basic_memory_view<XE::uint8> pSrcData, XE::uint32 DestOffsetIn32BitValues ) = 0;
+	virtual void SetGraphics32BitConstants( CommandListHandle handle, XE::uint32 RootParameterIndex, XE::memory_view pSrcData, XE::uint32 DestOffsetIn32BitValues ) = 0;
 
 	virtual void SetIndexBuffer( CommandListHandle handle, IndexBufferPtr & pView ) = 0;
 

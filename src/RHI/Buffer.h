@@ -27,7 +27,7 @@ public:
     XE::uint64 GetSize() const;
 
 public:
-	virtual XE::basic_memory_view<XE::int8> GetMemoryView() = 0;
+	virtual XE::memory_view GetMemoryView() = 0;
 
 private:
 	AccessType _Access;

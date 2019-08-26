@@ -1105,10 +1105,10 @@ private:
 	_Mysb _Stringbuffer;
 };
 
-using memory_view = XE::basic_memory_view<XE::int8>;
-using memorystream = XE::basic_memorystream<XE::int8>;
-using imemorystream = XE::basic_imemorystream<XE::int8>;
-using omemorystream = XE::basic_omemorystream<XE::int8>;
+using memory_view = XE::basic_memory_view<std::byte>;
+using memorystream = XE::basic_memorystream<std::byte>;
+using imemorystream = XE::basic_imemorystream<std::byte>;
+using omemorystream = XE::basic_omemorystream<std::byte>;
 
 END_XE_NAMESPACE
 
@@ -1144,6 +1144,94 @@ namespace std
 }
 
 template <class _Elem, class _Traits, class _Alloc>
+XE::basic_imemorystream<_Elem, _Traits, _Alloc> & operator >>( XE::basic_imemorystream<_Elem, _Traits, _Alloc> & _Left, bool & _Right )
+{
+	_Left.read( reinterpret_cast< _Elem * >( &_Right ), sizeof( bool ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_imemorystream<_Elem, _Traits, _Alloc> & operator >>( XE::basic_imemorystream<_Elem, _Traits, _Alloc> & _Left, XE::int8 & _Right )
+{
+	_Left.read( reinterpret_cast< _Elem * >( &_Right ), sizeof( XE::int8 ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_imemorystream<_Elem, _Traits, _Alloc> & operator >>( XE::basic_imemorystream<_Elem, _Traits, _Alloc> & _Left, XE::int16 & _Right )
+{
+	_Left.read( reinterpret_cast< _Elem * >( &_Right ), sizeof( XE::int16 ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_imemorystream<_Elem, _Traits, _Alloc> & operator >>( XE::basic_imemorystream<_Elem, _Traits, _Alloc> & _Left, XE::int32 & _Right )
+{
+	_Left.read( reinterpret_cast< _Elem * >( &_Right ), sizeof( XE::int32 ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_imemorystream<_Elem, _Traits, _Alloc> & operator >>( XE::basic_imemorystream<_Elem, _Traits, _Alloc> & _Left, XE::int64 & _Right )
+{
+	_Left.read( reinterpret_cast< _Elem * >( &_Right ), sizeof( XE::int64 ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_imemorystream<_Elem, _Traits, _Alloc> & operator >>( XE::basic_imemorystream<_Elem, _Traits, _Alloc> & _Left, XE::uint8 & _Right )
+{
+	_Left.read( reinterpret_cast< _Elem * >( &_Right ), sizeof( XE::uint8 ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_imemorystream<_Elem, _Traits, _Alloc> & operator >>( XE::basic_imemorystream<_Elem, _Traits, _Alloc> & _Left, XE::uint16 & _Right )
+{
+	_Left.read( reinterpret_cast< _Elem * >( &_Right ), sizeof( XE::uint16 ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_imemorystream<_Elem, _Traits, _Alloc> & operator >>( XE::basic_imemorystream<_Elem, _Traits, _Alloc> & _Left, XE::uint32 & _Right )
+{
+	_Left.read( reinterpret_cast< _Elem * >( &_Right ), sizeof( XE::uint32 ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_imemorystream<_Elem, _Traits, _Alloc> & operator >>( XE::basic_imemorystream<_Elem, _Traits, _Alloc> & _Left, XE::uint64 & _Right )
+{
+	_Left.read( reinterpret_cast< _Elem * >( &_Right ), sizeof( XE::uint64 ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_imemorystream<_Elem, _Traits, _Alloc> & operator >>( XE::basic_imemorystream<_Elem, _Traits, _Alloc> & _Left, XE::float32 & _Right )
+{
+	_Left.read( reinterpret_cast< _Elem * >( &_Right ), sizeof( XE::float32 ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_imemorystream<_Elem, _Traits, _Alloc> & operator >>( XE::basic_imemorystream<_Elem, _Traits, _Alloc> & _Left, XE::float64 & _Right )
+{
+	_Left.read( reinterpret_cast< _Elem * >( &_Right ), sizeof( XE::float64 ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
 XE::basic_imemorystream<_Elem, _Traits, _Alloc> & operator >>( XE::basic_imemorystream<_Elem, _Traits, _Alloc> & _Left, std::string & _Right )
 {
 	XE::uint64 size;
@@ -1156,10 +1244,188 @@ XE::basic_imemorystream<_Elem, _Traits, _Alloc> & operator >>( XE::basic_imemory
 	return _Left;
 }
 
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_omemorystream<_Elem, _Traits, _Alloc> & operator <<( XE::basic_omemorystream<_Elem, _Traits, _Alloc> & _Left, const bool & _Right )
+{
+	_Left.write( reinterpret_cast< const _Elem * >( &_Right ), sizeof( bool ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_omemorystream<_Elem, _Traits, _Alloc> & operator <<( XE::basic_omemorystream<_Elem, _Traits, _Alloc> & _Left, const XE::int8 & _Right )
+{
+	_Left.write( reinterpret_cast< const _Elem * >( &_Right ), sizeof( XE::int8 ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_omemorystream<_Elem, _Traits, _Alloc> & operator <<( XE::basic_omemorystream<_Elem, _Traits, _Alloc> & _Left, const XE::int16 & _Right )
+{
+	_Left.write( reinterpret_cast< const _Elem * >( &_Right ), sizeof( XE::int16 ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_omemorystream<_Elem, _Traits, _Alloc> & operator <<( XE::basic_omemorystream<_Elem, _Traits, _Alloc> & _Left, const XE::int32 & _Right )
+{
+	_Left.write( reinterpret_cast< const _Elem * >( &_Right ), sizeof( XE::int32 ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_omemorystream<_Elem, _Traits, _Alloc> & operator <<( XE::basic_omemorystream<_Elem, _Traits, _Alloc> & _Left, const XE::int64 & _Right )
+{
+	_Left.write( reinterpret_cast< const _Elem * >( &_Right ), sizeof( XE::int64 ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_omemorystream<_Elem, _Traits, _Alloc> & operator <<( XE::basic_omemorystream<_Elem, _Traits, _Alloc> & _Left, const XE::uint8 & _Right )
+{
+	_Left.write( reinterpret_cast< const _Elem * >( &_Right ), sizeof( XE::uint8 ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_omemorystream<_Elem, _Traits, _Alloc> & operator <<( XE::basic_omemorystream<_Elem, _Traits, _Alloc> & _Left, const XE::uint16 & _Right )
+{
+	_Left.write( reinterpret_cast< const _Elem * >( &_Right ), sizeof( XE::uint16 ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_omemorystream<_Elem, _Traits, _Alloc> & operator <<( XE::basic_omemorystream<_Elem, _Traits, _Alloc> & _Left, const XE::uint32 & _Right )
+{
+	_Left.write( reinterpret_cast< const _Elem * >( &_Right ), sizeof( XE::uint32 ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_omemorystream<_Elem, _Traits, _Alloc> & operator <<( XE::basic_omemorystream<_Elem, _Traits, _Alloc> & _Left, const XE::uint64 & _Right )
+{
+	_Left.write( reinterpret_cast< const _Elem * >( &_Right ), sizeof( XE::uint64 ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_omemorystream<_Elem, _Traits, _Alloc> & operator <<( XE::basic_omemorystream<_Elem, _Traits, _Alloc> & _Left, const XE::float32 & _Right )
+{
+	_Left.write( reinterpret_cast< const _Elem * >( &_Right ), sizeof( XE::float32 ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_omemorystream<_Elem, _Traits, _Alloc> & operator <<( XE::basic_omemorystream<_Elem, _Traits, _Alloc> & _Left, const XE::float64 & _Right )
+{
+	_Left.write( reinterpret_cast< const _Elem * >( &_Right ), sizeof( XE::float64 ) );
+
+	return _Left;
+}
+
 template <class _Elem, class _Traits, class _Alloc>
 XE::basic_omemorystream<_Elem, _Traits, _Alloc> & operator <<( XE::basic_omemorystream<_Elem, _Traits, _Alloc> & _Left, const std::string & _Right )
 {
 	_Left.write( reinterpret_cast< const _Elem * >( _Right.c_str() ), _Right.size() / sizeof( _Elem ) );
+
+	return _Left;
+}
+
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_memorystream<_Elem, _Traits, _Alloc> & operator >>( XE::basic_memorystream<_Elem, _Traits, _Alloc> & _Left, bool & _Right )
+{
+	_Left.read( reinterpret_cast< _Elem * >( &_Right ), sizeof( bool ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_memorystream<_Elem, _Traits, _Alloc> & operator >>( XE::basic_memorystream<_Elem, _Traits, _Alloc> & _Left, XE::int8 & _Right )
+{
+	_Left.read( reinterpret_cast< _Elem * >( &_Right ), sizeof( XE::int8 ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_memorystream<_Elem, _Traits, _Alloc> & operator >>( XE::basic_memorystream<_Elem, _Traits, _Alloc> & _Left, XE::int16 & _Right )
+{
+	_Left.read( reinterpret_cast< _Elem * >( &_Right ), sizeof( XE::int16 ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_memorystream<_Elem, _Traits, _Alloc> & operator >>( XE::basic_memorystream<_Elem, _Traits, _Alloc> & _Left, XE::int32 & _Right )
+{
+	_Left.read( reinterpret_cast< _Elem * >( &_Right ), sizeof( XE::int32 ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_memorystream<_Elem, _Traits, _Alloc> & operator >>( XE::basic_memorystream<_Elem, _Traits, _Alloc> & _Left, XE::int64 & _Right )
+{
+	_Left.read( reinterpret_cast< _Elem * >( &_Right ), sizeof( XE::int64 ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_memorystream<_Elem, _Traits, _Alloc> & operator >>( XE::basic_memorystream<_Elem, _Traits, _Alloc> & _Left, XE::uint8 & _Right )
+{
+	_Left.read( reinterpret_cast< _Elem * >( &_Right ), sizeof( XE::uint8 ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_memorystream<_Elem, _Traits, _Alloc> & operator >>( XE::basic_memorystream<_Elem, _Traits, _Alloc> & _Left, XE::uint16 & _Right )
+{
+	_Left.read( reinterpret_cast< _Elem * >( &_Right ), sizeof( XE::uint16 ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_memorystream<_Elem, _Traits, _Alloc> & operator >>( XE::basic_memorystream<_Elem, _Traits, _Alloc> & _Left, XE::uint32 & _Right )
+{
+	_Left.read( reinterpret_cast< _Elem * >( &_Right ), sizeof( XE::uint32 ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_memorystream<_Elem, _Traits, _Alloc> & operator >>( XE::basic_memorystream<_Elem, _Traits, _Alloc> & _Left, XE::uint64 & _Right )
+{
+	_Left.read( reinterpret_cast< _Elem * >( &_Right ), sizeof( XE::uint64 ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_memorystream<_Elem, _Traits, _Alloc> & operator >>( XE::basic_memorystream<_Elem, _Traits, _Alloc> & _Left, XE::float32 & _Right )
+{
+	_Left.read( reinterpret_cast< _Elem * >( &_Right ), sizeof( XE::float32 ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_memorystream<_Elem, _Traits, _Alloc> & operator >>( XE::basic_memorystream<_Elem, _Traits, _Alloc> & _Left, XE::float64 & _Right )
+{
+	_Left.read( reinterpret_cast< _Elem * >( &_Right ), sizeof( XE::float64 ) );
 
 	return _Left;
 }
@@ -1173,6 +1439,95 @@ XE::basic_memorystream<_Elem, _Traits, _Alloc> & operator >>( XE::basic_memoryst
 	_Right.resize( size );
 
 	_Left.read( reinterpret_cast< _Elem * >( _Right.data() ), size / sizeof( _Elem ) );
+
+	return _Left;
+}
+
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_memorystream<_Elem, _Traits, _Alloc> & operator <<( XE::basic_memorystream<_Elem, _Traits, _Alloc> & _Left, const bool & _Right )
+{
+	_Left.write( reinterpret_cast< const _Elem * >( &_Right ), sizeof( bool ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_memorystream<_Elem, _Traits, _Alloc> & operator <<( XE::basic_memorystream<_Elem, _Traits, _Alloc> & _Left, const XE::int8 & _Right )
+{
+	_Left.write( reinterpret_cast< const _Elem * >( &_Right ), sizeof( XE::int8 ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_memorystream<_Elem, _Traits, _Alloc> & operator <<( XE::basic_memorystream<_Elem, _Traits, _Alloc> & _Left, const XE::int16 & _Right )
+{
+	_Left.write( reinterpret_cast< const _Elem * >( &_Right ), sizeof( XE::int16 ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_memorystream<_Elem, _Traits, _Alloc> & operator <<( XE::basic_memorystream<_Elem, _Traits, _Alloc> & _Left, const XE::int32 & _Right )
+{
+	_Left.write( reinterpret_cast< const _Elem * >( &_Right ), sizeof( XE::int32 ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_memorystream<_Elem, _Traits, _Alloc> & operator <<( XE::basic_memorystream<_Elem, _Traits, _Alloc> & _Left, const XE::int64 & _Right )
+{
+	_Left.write( reinterpret_cast< const _Elem * >( &_Right ), sizeof( XE::int64 ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_memorystream<_Elem, _Traits, _Alloc> & operator <<( XE::basic_memorystream<_Elem, _Traits, _Alloc> & _Left, const XE::uint8 & _Right )
+{
+	_Left.write( reinterpret_cast< const _Elem * >( &_Right ), sizeof( XE::uint8 ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_memorystream<_Elem, _Traits, _Alloc> & operator <<( XE::basic_memorystream<_Elem, _Traits, _Alloc> & _Left, const XE::uint16 & _Right )
+{
+	_Left.write( reinterpret_cast< const _Elem * >( &_Right ), sizeof( XE::uint16 ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_memorystream<_Elem, _Traits, _Alloc> & operator <<( XE::basic_memorystream<_Elem, _Traits, _Alloc> & _Left, const XE::uint32 & _Right )
+{
+	_Left.write( reinterpret_cast< const _Elem * >( &_Right ), sizeof( XE::uint32 ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_memorystream<_Elem, _Traits, _Alloc> & operator <<( XE::basic_memorystream<_Elem, _Traits, _Alloc> & _Left, const XE::uint64 & _Right )
+{
+	_Left.write( reinterpret_cast< const _Elem * >( &_Right ), sizeof( XE::uint64 ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_memorystream<_Elem, _Traits, _Alloc> & operator <<( XE::basic_memorystream<_Elem, _Traits, _Alloc> & _Left, const XE::float32 & _Right )
+{
+	_Left.write( reinterpret_cast< const _Elem * >( &_Right ), sizeof( XE::float32 ) );
+
+	return _Left;
+}
+
+template <class _Elem, class _Traits, class _Alloc>
+XE::basic_memorystream<_Elem, _Traits, _Alloc> & operator <<( XE::basic_memorystream<_Elem, _Traits, _Alloc> & _Left, const XE::float64 & _Right )
+{
+	_Left.write( reinterpret_cast< const _Elem * >( &_Right ), sizeof( XE::float64 ) );
 
 	return _Left;
 }

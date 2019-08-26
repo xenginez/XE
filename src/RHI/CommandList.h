@@ -34,7 +34,7 @@ public:
 
 	void SetCompute32BitConstant( XE::uint32 RootParameterIndex, XE::uint32 SrcData, XE::uint32 DestOffsetIn32BitValues );
 
-	void SetCompute32BitConstants( XE::uint32 RootParameterIndex, XE::basic_memory_view<XE::uint8> pSrcData, XE::uint32 DestOffsetIn32BitValues );
+	void SetCompute32BitConstants( XE::uint32 RootParameterIndex, XE::memory_view pSrcData, XE::uint32 DestOffsetIn32BitValues );
 
 public:
 	bool Close();
@@ -73,13 +73,13 @@ public:
 
 	void EndQuery( QueryPtr Query, XE::uint32 Index );
 
-	void BeginEvent( XE::uint32 Metadata, XE::basic_memory_view<XE::int8> pData );
+	void BeginEvent( XE::uint32 Metadata, XE::memory_view pData );
 
 	void EndEvent();
 
 	void SetPredication( ResourcePtr & pBuffer, XE::uint64 AlignedBufferOffset, bool Equal );
 
-	void SetMarker( XE::uint32 Metadata, XE::basic_memory_view<XE::int8> pData );
+	void SetMarker( XE::uint32 Metadata, XE::memory_view pData );
 
 	void ResolveQueryData( QueryPtr Query, XE::uint32 StartIndex, XE::uint32 NumQueries, ResourcePtr & pDestinationBuffer, XE::uint64 AlignedDestinationBufferOffset );
 	
@@ -110,7 +110,7 @@ public:
 
 	void SetGraphics32BitConstant( XE::uint32 RootParameterIndex, XE::uint32 SrcData, XE::uint32 DestOffsetIn32BitValues );
 
-	void SetGraphics32BitConstants( XE::uint32 RootParameterIndex, XE::basic_memory_view<XE::uint8> pSrcData, XE::uint32 DestOffsetIn32BitValues );
+	void SetGraphics32BitConstants( XE::uint32 RootParameterIndex, XE::memory_view pSrcData, XE::uint32 DestOffsetIn32BitValues );
 
 	void SetIndexBuffer( IndexBufferPtr & pView );
 

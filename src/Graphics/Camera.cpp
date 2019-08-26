@@ -4,7 +4,11 @@
 
 USING_XE
 
+BEG_META( Camera )
+END_META()
+
 XE::Camera::Camera()
+	:_Active( true ), _Type( CameraType::ORTHOGRAPHIC ), _FOV( 60.0f ), _Far( 1000.0f ), _Near( 0.1f ), _Depth( 0 ), _Aspect( 1.333f )
 {
 
 }
@@ -14,16 +18,14 @@ XE::Camera::~Camera()
 
 }
 
-void XE::Camera::Startup()
+bool XE::Camera::GetActive() const
 {
-	_Renderer->Startup();
+	return _Active;
 }
 
-void XE::Camera::Clearup()
+void XE::Camera::SetActive( bool val )
 {
-	_Renderer->Clearup();
-
-	_Viewport = nullptr;
+	_Active = val;
 }
 
 XE::CameraType XE::Camera::GetType() const
@@ -134,14 +136,4 @@ const XE::ViewportPtr & XE::Camera::GetViewport() const
 void XE::Camera::SetViewport( const ViewportPtr & val )
 {
 	_Viewport = val;
-}
-
-const XE::RendererPtr & XE::Camera::GetRenderer() const
-{
-	return _Renderer;
-}
-
-void XE::Camera::SetRenderer( const RendererPtr & val )
-{
-	_Renderer = val;
 }

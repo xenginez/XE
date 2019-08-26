@@ -20,7 +20,7 @@ class RHI_API Image
 public:
 	Image();
 
-	Image( XE::basic_memory_view<XE::uint8> & val );
+	Image( XE::memory_view & val );
 
 	Image( const std::filesystem::path & val );
 
@@ -31,7 +31,7 @@ public:
 	~Image();
 
 public:
-	bool Load( XE::basic_memory_view<XE::uint8> val );
+	bool Load( XE::memory_view val );
 
 	bool Load( const std::filesystem::path& val );
 
@@ -62,7 +62,7 @@ public:
 	void SetHDRPixel( XE::uint32 x, XE::uint32 y, const FColor & val );
 
 public:
-	XE::basic_memory_view<XE::uint8> GetPixels() const;
+	XE::memory_view GetPixels() const;
 
 	XE::basic_memory_view<XE::float32> GetHDRPixels() const;
 

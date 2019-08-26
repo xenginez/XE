@@ -45,7 +45,7 @@ void XE::CommandList::SetCompute32BitConstant( XE::uint32 RootParameterIndex, XE
 	_Context->SetCompute32BitConstant( _Handle, RootParameterIndex, SrcData, DestOffsetIn32BitValues );
 }
 
-void XE::CommandList::SetCompute32BitConstants( XE::uint32 RootParameterIndex, XE::basic_memory_view<XE::uint8> pSrcData, XE::uint32 DestOffsetIn32BitValues )
+void XE::CommandList::SetCompute32BitConstants( XE::uint32 RootParameterIndex, XE::memory_view pSrcData, XE::uint32 DestOffsetIn32BitValues )
 {
 	_Context->SetCompute32BitConstants( _Handle, RootParameterIndex, pSrcData, DestOffsetIn32BitValues );
 }
@@ -135,7 +135,7 @@ void XE::CommandList::EndQuery( QueryPtr Query, XE::uint32 Index )
 	_Context->EndQuery( _Handle, Query, Index );
 }
 
-void XE::CommandList::BeginEvent( XE::uint32 Metadata, XE::basic_memory_view<XE::int8> pData )
+void XE::CommandList::BeginEvent( XE::uint32 Metadata, XE::memory_view pData )
 {
 	_Context->BeginEvent( _Handle, Metadata, pData );
 }
@@ -150,7 +150,7 @@ void XE::CommandList::SetPredication( ResourcePtr & pBuffer, XE::uint64 AlignedB
 	_Context->SetPredication( _Handle, pBuffer, AlignedBufferOffset, Equal );
 }
 
-void XE::CommandList::SetMarker( XE::uint32 Metadata, XE::basic_memory_view<XE::int8> pData )
+void XE::CommandList::SetMarker( XE::uint32 Metadata, XE::memory_view pData )
 {
 	_Context->SetMarker( _Handle, Metadata, pData );
 }
@@ -225,7 +225,7 @@ void XE::CommandList::SetGraphics32BitConstant( XE::uint32 RootParameterIndex, X
 	_Context->SetGraphics32BitConstant( _Handle, RootParameterIndex, SrcData, DestOffsetIn32BitValues );
 }
 
-void XE::CommandList::SetGraphics32BitConstants( XE::uint32 RootParameterIndex, XE::basic_memory_view<XE::uint8> pSrcData, XE::uint32 DestOffsetIn32BitValues )
+void XE::CommandList::SetGraphics32BitConstants( XE::uint32 RootParameterIndex, XE::memory_view pSrcData, XE::uint32 DestOffsetIn32BitValues )
 {
 	_Context->SetGraphics32BitConstants( _Handle, RootParameterIndex, pSrcData, DestOffsetIn32BitValues );
 }

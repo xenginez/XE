@@ -23,11 +23,10 @@ public:
 	~Camera();
 
 public:
-	void Startup();
+	bool GetActive() const;
 
-	void Clearup();
+	void SetActive( bool val );
 
-public:
 	XE::CameraType GetType() const;
 
 	void SetType( XE::CameraType val );
@@ -73,11 +72,8 @@ public:
 
 	void SetViewport( const ViewportPtr & val );
 
-	const RendererPtr & GetRenderer() const;
-
-	void SetRenderer( const RendererPtr & val );
-
 private:
+	bool _Active;
 	CameraType _Type;
 	XE::float32 _FOV;
 	XE::float32 _Far;
@@ -90,7 +86,6 @@ private:
 	Frustum _Frustum;
 
 	ViewportPtr _Viewport;
-	RendererPtr _Renderer;
 };
 
 END_XE_NAMESPACE

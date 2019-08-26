@@ -13,9 +13,9 @@
 
 BEG_XE_NAMESPACE
 
-class RHI_API Viewport
+class RHI_API Viewport : public XE::Object
 {
-	OBJECT( Viewport )
+	OBJECT( Viewport, Object )
 
 public:
 	Viewport();
@@ -56,9 +56,13 @@ public:
 
 	void SetDepth( const Vec2 & val );
 
+public:
+	RenderTargetPtr GetRenderTarget() const;
+
 private:
 	Rect _Rect;
 	Vec2 _Depth;
+	RenderTargetWPtr _RenderTarget;
 };
 
 END_XE_NAMESPACE

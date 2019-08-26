@@ -23,9 +23,15 @@ public:
 	~Texture() override;
 
 public:
+	XE::uint64 GetSize() const;
+
+	XE::uint32 GetMipCount() const;
+
 	TextureFormat GetFormat() const;
 
 protected:
+	XE::uint64 _Size;
+	XE::uint32 _MipLevel;
 	TextureFormat _Format;
 };
 
@@ -39,8 +45,6 @@ public:
 	~Texture2D() override;
 
 public:
-	XE::uint32 GetMipCount() const;
-
 	XE::uint32 GetWidth( XE::uint32 mip = 1 ) const;
 
 	XE::uint32 GetHeight( XE::uint32 mip = 1 ) const;
@@ -48,7 +52,6 @@ public:
 protected:
 	XE::uint32 _Width;
 	XE::uint32 _Height;
-	XE::uint32 _MipLevel;
 };
 
 class RHI_API Texture3D : public Texture2D
@@ -76,11 +79,6 @@ public:
 
 	~TextureCube() override;
 
-public:
-	XE::uint32 GetSize() const;
-
-private:
-	XE::uint32 _Size;
 };
 
 class RHI_API Texture2DArray : public Texture2D
@@ -92,11 +90,6 @@ public:
 
 	~Texture2DArray() override;
 
-public:
-	XE::uint32 GetSize() const;
-
-private:
-	XE::uint32 _Size;
 };
 
 END_XE_NAMESPACE

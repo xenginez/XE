@@ -15,6 +15,16 @@ XE::Texture::~Texture()
 
 }
 
+XE::uint64 XE::Texture::GetSize() const
+{
+	return _Size;
+}
+
+XE::uint32 XE::Texture::GetMipCount() const
+{
+	return _MipLevel;
+}
+
 XE::TextureFormat XE::Texture::GetFormat() const
 {
 	return _Format;

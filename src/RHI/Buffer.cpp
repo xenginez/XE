@@ -22,9 +22,9 @@ XE::uint64 XE::Buffer::GetSize() const
 	return _Data.size();
 }
 
-XE::basic_memory_view<XE::int8> XE::Buffer::GetMemoryView()
+XE::memory_view XE::Buffer::GetMemoryView()
 {
-	return XE::basic_memory_view<XE::int8>();
+	return XE::memory_view();
 }
 
 BEG_META( IndexBuffer )

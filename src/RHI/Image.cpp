@@ -16,7 +16,7 @@ XE::Image::Image()
 	
 }
 
-XE::Image::Image( XE::basic_memory_view<XE::uint8> & val )
+XE::Image::Image( XE::memory_view & val )
 	: _Width( 0 ), _Height( 0 ), _Channels( 0 ), _IsHDR( false )
 {
 	Load( val );
@@ -52,13 +52,13 @@ XE::Image::~Image()
 
 }
 
-bool XE::Image::Load( XE::basic_memory_view<XE::uint8> val )
+bool XE::Image::Load( XE::memory_view val )
 {
-	_IsHDR = ( stbi_is_hdr_from_memory( val.data(), ( int )val.size() ) != 0 );
+	_IsHDR = ( stbi_is_hdr_from_memory( reinterpret_cast< const stbi_uc * >( val.data() ), (int )val.size() ) != 0 );
 
 	if( _IsHDR )
 	{
-		auto data = stbi_loadf_from_memory( val.data(), ( int )val.size(), &_Width, &_Height, &_Channels, 0 );
+		auto data = stbi_loadf_from_memory( reinterpret_cast< const stbi_uc * >( val.data() ), (int )val.size(), &_Width, &_Height, &_Channels, 0 );
 
 		if( data != nullptr )
 		{
@@ -73,7 +73,7 @@ bool XE::Image::Load( XE::basic_memory_view<XE::uint8> val )
 	}
 	else
 	{
-		auto data = stbi_load_from_memory( (const stbi_uc * )( val.data() ), ( int )val.size(), &_Width, &_Height, &_Channels, 0 );
+		auto data = stbi_load_from_memory( reinterpret_cast< const stbi_uc * >( val.data() ), ( int )val.size(), &_Width, &_Height, &_Channels, 0 );
 
 		if( data != nullptr )
 		{
@@ -293,9 +293,9 @@ void XE::Image::SetHDRPixel( XE::uint32 x, XE::uint32 y, const FColor & val )
 	}
 }
 
-XE::basic_memory_view<XE::uint8> XE::Image::GetPixels() const
+XE::memory_view XE::Image::GetPixels() const
 {
-	return XE::basic_memory_view<XE::uint8>( _Data.data(), _Data.size() );
+	return XE::memory_view( reinterpret_cast< const std::byte * >( _Data.data() ), _Data.size() );
 }
 
 XE::basic_memory_view<XE::float32> XE::Image::GetHDRPixels() const
