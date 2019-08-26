@@ -32,11 +32,6 @@ public:
 	GameObjectHandle GetHandle() const;
 
 public:
-	IFrameworkPtr GetFramework() const;
-
-	void SetFramework( IFrameworkPtr val );
-
-public:
 	const XE::AABB & GetBoundingBox() const;
 
 public:
@@ -155,7 +150,6 @@ private:
 	GameObjectType _Type;
 	WorldObjectWPtr _World;
 	GameObjectHandle _Handle;
-	IFrameworkPtr _Framework;
 	SceneComponentPtr _SceneComponent;
 	std::vector< ComponentPtr > _Components;
 };

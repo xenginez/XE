@@ -23,11 +23,11 @@ public:
 	virtual ~Model();
 
 protected:
-	void OnStartup( RenderContextPtr & context ) override;
+	void OnStartup( IRenderContextPtr & context ) override;
 
-	void OnRender( RenderContextPtr & context, RenderQueuePtr & queue ) override;
+	void OnRender( IRenderContextPtr & context, RenderQueuePtr & queue ) override;
 
-	void OnClearup( RenderContextPtr & context ) override;
+	void OnClearup( IRenderContextPtr & context ) override;
 
 public:
 	MeshPtr GetMesh() const;

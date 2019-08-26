@@ -64,7 +64,7 @@ DECL_PTR( Sampler );
 DECL_PTR( Viewport );
 DECL_PTR( InputLayout );
 DECL_PTR( CommandList );
-DECL_PTR( RenderContext );
+DECL_PTR( IRenderContext );
 DECL_PTR( UnorderedAccess );
 
 

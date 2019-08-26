@@ -35,7 +35,7 @@ public:
 	void Clearup() override;
 
 public:
-	RenderContextPtr GetRenderContext() const override;
+	IRenderContextPtr GetRenderContext() const override;
 
 public:
 	void RegisterLight( const LightPtr & val ) override;

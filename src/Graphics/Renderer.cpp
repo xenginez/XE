@@ -24,7 +24,7 @@ void XE::Renderer::Startup()
 	OnStartup();
 }
 
-void XE::Renderer::Render( RenderContextPtr & context, CameraPtr & camera )
+void XE::Renderer::Render( IRenderContextPtr & context, CameraPtr & camera )
 {
 	OnRender( context, camera );
 

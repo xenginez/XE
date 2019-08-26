@@ -13,8 +13,6 @@
 
 BEG_XE_NAMESPACE
 
-class WorldService;
-
 class WORLD_API WorldObject : public XE::Object
 {
 	OBJECT( WorldObject, Object )
@@ -31,10 +29,6 @@ public:
 	const String& GetName() const;
 
 	void SetName( const String& val );
-
-	IFrameworkPtr GetFramework() const;
-
-	void SetFramework( IFrameworkPtr val );
 
 public:
 	bool AddGameObject( const GameObjectPtr & val );
@@ -80,7 +74,6 @@ protected:
 
 private:
 	String _Name;
-	IFrameworkPtr _Framework;
 	static XE::uint64 _HandleTable;
 	OCTree<GameObjectPtr> _StaticTree;
 	OCTree<GameObjectPtr> _DynmicTree;

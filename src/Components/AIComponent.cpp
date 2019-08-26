@@ -22,8 +22,6 @@ void XE::AIComponent::OnStartup()
 
 	for ( auto ai : _AIModules )
 	{
-		ai->SetGameObject( GetGameObject() );
-
 		ai->Startup();
 	}
 }

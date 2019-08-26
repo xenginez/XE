@@ -51,16 +51,6 @@ XE::WorldObjectPtr XE::GameObject::GetWorld() const
 	return _World.lock();
 }
 
-XE::IFrameworkPtr XE::GameObject::GetFramework() const
-{
-	return _Framework;
-}
-
-void XE::GameObject::SetFramework( IFrameworkPtr val )
-{
-	_Framework = val;
-}
-
 bool XE::GameObject::GetEnabled() const
 {
 	return _Enabled;

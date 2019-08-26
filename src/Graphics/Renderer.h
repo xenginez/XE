@@ -25,14 +25,14 @@ public:
 public:
 	void Startup();
 
-	void Render( RenderContextPtr & context, CameraPtr & camera );
+	void Render( IRenderContextPtr & context, CameraPtr & camera );
 
 	void Clearup();
 
 protected:
 	virtual void OnStartup() = 0;
 
-	virtual void OnRender( RenderContextPtr & context, CameraPtr & camera ) = 0;
+	virtual void OnRender( IRenderContextPtr & context, CameraPtr & camera ) = 0;
 
 	virtual void OnClearup() = 0;
 

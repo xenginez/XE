@@ -1,26 +1,26 @@
 /*!
- * \file	Context.h
+ * \file	IRenderContext.h
  *
  * \author	ZhengYuanQing
- * \date	2019/07/17
+ * \date	2019/08/26
  * \email	zhengyuanqing.95@gmail.com
  *
  */
-#ifndef CONTEXT_H__D80BEEA9_CB5A_4757_89F8_785D078A7BDB
-#define CONTEXT_H__D80BEEA9_CB5A_4757_89F8_785D078A7BDB
+#ifndef IRENDERCONTEXT_H__2A432E01_836A_457E_A061_58BD721E11C7
+#define IRENDERCONTEXT_H__2A432E01_836A_457E_A061_58BD721E11C7
 
 #include "Type.h"
 
 BEG_XE_NAMESPACE
 
-class RHI_API RenderContext : public NonCopyable
+class RHI_API IRenderContext : public XE::Object, public NonCopyable
 {
-	OBJECT( RenderContext )
+	OBJECT( IRenderContext, Object )
 
 public:
-	RenderContext();
+	IRenderContext();
 
-	virtual ~RenderContext();
+	virtual ~IRenderContext();
 
 public:
 	virtual void Startup() = 0;
@@ -265,4 +265,4 @@ public:
 
 END_XE_NAMESPACE
 
-#endif // CONTEXT_H__D80BEEA9_CB5A_4757_89F8_785D078A7BDB
+#endif // IRENDERCONTEXT_H__2A432E01_836A_457E_A061_58BD721E11C7

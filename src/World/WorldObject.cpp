@@ -31,16 +31,6 @@ void XE::WorldObject::SetName( const String & val )
 	_Name = val;
 }
 
-XE::IFrameworkPtr XE::WorldObject::GetFramework() const
-{
-	return _Framework;
-}
-
-void XE::WorldObject::SetFramework( IFrameworkPtr val )
-{
-	_Framework = val;
-}
-
 bool XE::WorldObject::AddGameObject( const GameObjectPtr & val )
 {
 	for( const auto & obj : _AllGameObjects )
@@ -52,7 +42,6 @@ bool XE::WorldObject::AddGameObject( const GameObjectPtr & val )
 	}
 
 	val->_Handle = _HandleTable++;
-	val->_Framework = _Framework;
 	val->_World = XE_THIS( WorldObject );
 
 	val->Startup();
@@ -239,18 +228,12 @@ XE::Array<XE::GameObjectPtr> XE::WorldObject::Intersects( const Frustum & val ) 
 
 void XE::WorldObject::Startup()
 {
-	if( _HandleTable == 0 )
-	{
-		_HandleTable = GetFramework()->GetConfigService()->GetUInt64( "Static.GameObjectHandleTable" );
-	}
-
 	FArray<GameObjectPtr> static_objs;
 	FArray<GameObjectPtr> dynmic_objs;
 
 	for( auto obj : _AllGameObjects )
 	{
 		obj->_World = XE_THIS( WorldObject );
-		obj->SetFramework( GetFramework() );
 		obj->Startup();
 
 		if( obj->GetType() == GameObjectType::STATIC )

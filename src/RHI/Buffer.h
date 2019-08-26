@@ -44,7 +44,7 @@ public:
 	~IndexBuffer() override;
 
 public:
-	void Preinitialize( RenderContextRPtr context ) override;
+	void Preinitialize( IRenderContextRPtr context ) override;
 
 public:
 	TextureFormat GetFormat() const;
@@ -64,7 +64,7 @@ public:
 	~VertexBuffer() override;
 
 public:
-	void Preinitialize( RenderContextRPtr context ) override;
+	void Preinitialize( IRenderContextRPtr context ) override;
 
 public:
 	const InputLayoutPtr & GetInputLayout() const;
@@ -83,7 +83,7 @@ public:
 	~UniformBuffer() override;
 
 public:
-	void Preinitialize( RenderContextRPtr context ) override;
+	void Preinitialize( IRenderContextRPtr context ) override;
 
 };
 
@@ -107,7 +107,7 @@ public:
 	~ConstantBuffer() override;
 
 public:
-	void Preinitialize( RenderContextRPtr context ) override;
+	void Preinitialize( IRenderContextRPtr context ) override;
 
 };
 
@@ -131,7 +131,7 @@ public:
 	~InstanceBuffer() override;
 
 public:
-	void Preinitialize( RenderContextRPtr context ) override;
+	void Preinitialize( IRenderContextRPtr context ) override;
 
 };
 
@@ -145,7 +145,7 @@ public:
 	~DynamicIndexBuffer() override;
 
 public:
-	void Preinitialize( RenderContextRPtr context ) override;
+	void Preinitialize( IRenderContextRPtr context ) override;
 
 };
 
@@ -159,7 +159,7 @@ public:
 	~DynamicVertexBuffer() override;
 
 public:
-	void Preinitialize( RenderContextRPtr context ) override;
+	void Preinitialize( IRenderContextRPtr context ) override;
 
 };
 

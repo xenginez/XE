@@ -9,7 +9,7 @@
 #ifndef __GLOBAL_H__B570A5F2_E5DF_4723_BB42_4616AC6080F8
 #define __GLOBAL_H__B570A5F2_E5DF_4723_BB42_4616AC6080F8
 
-#include <World/World.h>
+#include <Math/Math.h>
 
 #ifdef AI_EXPORT
 #define AI_API DLL_EXPORT

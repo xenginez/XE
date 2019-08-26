@@ -67,19 +67,19 @@ add_dependencies(Reflect	Base GC)
 add_dependencies(Utils		Base GC Reflect)
 add_dependencies(Math		Base GC Reflect Utils)
 add_dependencies(RHI		Base GC Reflect Utils Math)
+add_dependencies(Audio		Base GC Reflect Utils Math)
+add_dependencies(World		Base GC Reflect Utils Math)
+add_dependencies(Physics	Base GC Reflect Utils Math)
+add_dependencies(AI			Base GC Reflect Utils Math RHI)
 add_dependencies(Graphics	Base GC Reflect Utils Math RHI)
-add_dependencies(Interface	Base GC Reflect Utils Math RHI Graphics)
-add_dependencies(World		Base GC Reflect Utils Math RHI Interface)
-add_dependencies(Audio		Base GC Reflect Utils Math RHI Interface)
-add_dependencies(Physics	Base GC Reflect Utils Math RHI Interface)
-add_dependencies(Navigation Base GC Reflect Utils Math RHI Interface)
-add_dependencies(AI			Base GC Reflect Utils Math RHI Interface World)
-add_dependencies(GUI		Base GC Reflect Utils Math RHI Graphics Interface)
-add_dependencies(Render		Base GC Reflect Utils Math RHI Graphics Interface)
-add_dependencies(Animation	Base GC Reflect Utils Math RHI Graphics Interface)
-add_dependencies(Components	Base GC Reflect Utils Math RHI Graphics Interface World Render Audio Physics Animation Navigation AI GUI)
-add_dependencies(Core		Base GC Reflect Utils Math RHI Graphics Interface World Render Audio Physics Animation Navigation AI GUI Components)
-add_dependencies(XE			Base GC Reflect Utils Math RHI Graphics Interface World Render Audio Physics Animation Navigation AI GUI Components Core)
+add_dependencies(Navigation Base GC Reflect Utils Math RHI)
+add_dependencies(Render		Base GC Reflect Utils Math RHI Graphics)
+add_dependencies(GUI		Base GC Reflect Utils Math RHI Graphics Render)
+add_dependencies(Animation	Base GC Reflect Utils Math RHI Graphics Render)
+add_dependencies(Interface	Base GC Reflect Utils Math RHI Audio World AI Physics Graphics Navigation Render GUI Animation)
+add_dependencies(Components	Base GC Reflect Utils Math RHI Audio World AI Physics Graphics Navigation Render GUI Animation Interface)
+add_dependencies(Core		Base GC Reflect Utils Math RHI Audio World AI Physics Graphics Navigation Render GUI Animation Interface Components)
+add_dependencies(XE			Base GC Reflect Utils Math RHI Audio World AI Physics Graphics Navigation Render GUI Animation Interface Components Core)
 
 target_link_libraries(Base
 
@@ -96,7 +96,7 @@ target_link_libraries(Reflect
 		
 		pugixml
 		)
-		
+
 target_link_libraries(Utils
 		Reflect)
 
@@ -106,27 +106,27 @@ target_link_libraries(Math
 target_link_libraries(RHI
 		Math)
 
-target_link_libraries(Graphics
-		RHI)
-
-target_link_libraries(Interface
-		Graphics)
-
-target_link_libraries(World
-		Interface)
-
 target_link_libraries(Audio
-		Interface
+		Math
 
 		OpenAL32
 		)
 
+target_link_libraries(World
+		Math)
+
 target_link_libraries(Physics
-		Interface
+		Math
 		)
 
+target_link_libraries(AI
+		RHI)
+
+target_link_libraries(Graphics
+		RHI)
+
 target_link_libraries(Navigation
-		Interface
+		RHI
 
 		DebugUtils
 		DetourCrowd
@@ -135,20 +135,26 @@ target_link_libraries(Navigation
 		DetourTileCache
 		)
 
-target_link_libraries(AI
-		World)
-
-target_link_libraries(GUI
-		Graphics)
-
 target_link_libraries(Render
 		Graphics)
 
+target_link_libraries(GUI
+		Render)
+
 target_link_libraries(Animation
-		Graphics)
+		Render)
+
+target_link_libraries(Interface
+		 Audio
+		 World
+		 AI
+		 Physics
+		 Navigation
+		 GUI
+		 Animation)
 
 target_link_libraries(Components
-		Audio Render Physics Animation Navigation AI GUI)
+		Interface)
 
 target_link_libraries(Core
 		Components

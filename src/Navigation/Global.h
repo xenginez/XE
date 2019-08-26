@@ -9,7 +9,7 @@
 #ifndef __GLOBAL_H__77E2A866_AA34_4D76_8807_A2F0EEAE8A57
 #define __GLOBAL_H__77E2A866_AA34_4D76_8807_A2F0EEAE8A57
 
-#include <Interface/Interface.h>
+#include <Math/Math.h>
 
 #ifdef NAVIGATION_EXPORT
 #define NAVIGATION_API DLL_EXPORT

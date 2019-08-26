@@ -1,10 +1,10 @@
 #include "CommandList.h"
 
-#include "RenderContext.h"
+#include "IRenderContext.h"
 
 USING_XE
 
-XE::CommandList::CommandList( RenderContextRPtr context, CommandListType type, CommandListHandle handle )
+XE::CommandList::CommandList( IRenderContextRPtr context, CommandListType type, CommandListHandle handle )
 	:_Context( context ), _Type( type ), _Handle( handle )
 {
 

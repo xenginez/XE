@@ -14,13 +14,3 @@ XE::AIModule::~AIModule()
 {
 
 }
-
-XE::GameObjectPtr XE::AIModule::GetGameObject() const
-{
-	return _GameObject.lock();
-}
-
-void XE::AIModule::SetGameObject( GameObjectPtr val )
-{
-	_GameObject = val;
-}

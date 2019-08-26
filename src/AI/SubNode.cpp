@@ -20,8 +20,6 @@ XE::SubNode::~SubNode()
 
 void XE::SubNode::OnStartup()
 {
-	_SubAI->SetGameObject( GetBehaviorTree()->GetGameObject() );
-
 	_SubAI->Startup();
 }
 

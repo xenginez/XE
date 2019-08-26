@@ -20,8 +20,6 @@ XE::SubState::~SubState()
 
 void XE::SubState::OnStartup()
 {
-	_SubAI->SetGameObject( GetStateMachine()->GetGameObject() );
-
 	_SubAI->Startup();
 }
 

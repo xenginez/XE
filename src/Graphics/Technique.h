@@ -23,18 +23,18 @@ public:
 	~Technique() override;
 
 public:
-	void Startup( RenderContextPtr & context );
+	void Startup( IRenderContextPtr & context );
 
-	void Render( RenderContextPtr & context );
+	void Render( IRenderContextPtr & context );
 
-	void Clearup( RenderContextPtr & context );
+	void Clearup( IRenderContextPtr & context );
 
 protected:
-	virtual void OnStartup( RenderContextPtr & context ) = 0;
+	virtual void OnStartup( IRenderContextPtr & context ) = 0;
 
-	virtual void OnRender( RenderContextPtr & context ) = 0;
+	virtual void OnRender( IRenderContextPtr & context ) = 0;
 
-	virtual void OnClearup( RenderContextPtr & context ) = 0;
+	virtual void OnClearup( IRenderContextPtr & context ) = 0;
 
 private:
 	Array<RenderPassPtr> _Passes;

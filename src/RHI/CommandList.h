@@ -16,7 +16,7 @@ BEG_XE_NAMESPACE
 class RHI_API CommandList : public std::enable_shared_from_this< CommandList >, public XE::NonCopyable
 {
 public:
-	CommandList( RenderContextRPtr context, CommandListType type, CommandListHandle handle );
+	CommandList( IRenderContextRPtr context, CommandListType type, CommandListHandle handle );
 
 	~CommandList();
 
@@ -127,7 +127,7 @@ public:
 private:
 	CommandListType _Type;
 	CommandListHandle _Handle;
-	RenderContextRPtr _Context;
+	IRenderContextRPtr _Context;
 };
 
 END_XE_NAMESPACE

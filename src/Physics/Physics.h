@@ -11,4 +11,6 @@
 
 #include "Type.h"
 
+#include "IPhysicsContext.h"
+
 #endif // __PHYSICS_H__CAF753C8_9232_4313_B028_7EE340B723A0

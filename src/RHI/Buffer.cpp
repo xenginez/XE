@@ -1,6 +1,6 @@
 #include "Buffer.h"
 
-#include "RenderContext.h"
+#include "IRenderContext.h"
 
 USING_XE
 
@@ -45,7 +45,7 @@ TextureFormat XE::IndexBuffer::GetFormat() const
 	return _Format;
 }
 
-void XE::IndexBuffer::Preinitialize( RenderContextRPtr context )
+void XE::IndexBuffer::Preinitialize( IRenderContextRPtr context )
 {
 	Super::Preinitialize( context );
 
@@ -70,7 +70,7 @@ const XE::InputLayoutPtr & XE::VertexBuffer::GetInputLayout() const
 	return _InputLayout;
 }
 
-void XE::VertexBuffer::Preinitialize( RenderContextRPtr context )
+void XE::VertexBuffer::Preinitialize( IRenderContextRPtr context )
 {
 	Super::Preinitialize( context );
 
@@ -90,7 +90,7 @@ XE::UniformBuffer::~UniformBuffer()
 	GetRenderContext()->DestoryUniformBuffer( GetHandle() );
 }
 
-void XE::UniformBuffer::Preinitialize( RenderContextRPtr context )
+void XE::UniformBuffer::Preinitialize( IRenderContextRPtr context )
 {
 	Super::Preinitialize( context );
 
@@ -123,7 +123,7 @@ XE::ConstantBuffer::~ConstantBuffer()
 	GetRenderContext()->DestoryConstantBuffer( GetHandle() );
 }
 
-void XE::ConstantBuffer::Preinitialize( RenderContextRPtr context )
+void XE::ConstantBuffer::Preinitialize( IRenderContextRPtr context )
 {
 	Super::Preinitialize( context );
 
@@ -156,7 +156,7 @@ XE::InstanceBuffer::~InstanceBuffer()
 	GetRenderContext()->DestoryInstanceBuffer( GetHandle() );
 }
 
-void XE::InstanceBuffer::Preinitialize( RenderContextRPtr context )
+void XE::InstanceBuffer::Preinitialize( IRenderContextRPtr context )
 {
 	Super::Preinitialize( context );
 
@@ -176,7 +176,7 @@ XE::DynamicIndexBuffer::~DynamicIndexBuffer()
 	GetRenderContext()->DestoryDynamicIndexBuffer( GetHandle() );
 }
 
-void XE::DynamicIndexBuffer::Preinitialize( RenderContextRPtr context )
+void XE::DynamicIndexBuffer::Preinitialize( IRenderContextRPtr context )
 {
 	Super::Preinitialize( context );
 
@@ -196,7 +196,7 @@ XE::DynamicVertexBuffer::~DynamicVertexBuffer()
 	GetRenderContext()->DestoryDynamicVertexBuffer( GetHandle() );
 }
 
-void XE::DynamicVertexBuffer::Preinitialize( RenderContextRPtr context )
+void XE::DynamicVertexBuffer::Preinitialize( IRenderContextRPtr context )
 {
 	Super::Preinitialize( context );
 

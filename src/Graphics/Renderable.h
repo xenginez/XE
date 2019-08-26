@@ -23,18 +23,18 @@ public:
 	virtual ~Renderable();
 
 public:
-	virtual void Startup( RenderContextPtr & context );
+	virtual void Startup( IRenderContextPtr & context );
 
-	virtual void Render( RenderContextPtr & context, RenderQueuePtr & queue );
+	virtual void Render( IRenderContextPtr & context, RenderQueuePtr & queue );
 
-	virtual void Clearup( RenderContextPtr & context );
+	virtual void Clearup( IRenderContextPtr & context );
 
 protected:
-	virtual void OnStartup( RenderContextPtr & context ) = 0;
+	virtual void OnStartup( IRenderContextPtr & context ) = 0;
 
-	virtual void OnRender( RenderContextPtr & context, RenderQueuePtr & queue ) = 0;
+	virtual void OnRender( IRenderContextPtr & context, RenderQueuePtr & queue ) = 0;
 
-	virtual void OnClearup( RenderContextPtr & context ) = 0;
+	virtual void OnClearup( IRenderContextPtr & context ) = 0;
 
 public:
 	const Mat4 & GetTransform() const;

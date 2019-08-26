@@ -9,7 +9,7 @@
 #ifndef __GLOBAL_H__6A6AC972_C99D_4550_9FD3_66459F5AA0D0
 #define __GLOBAL_H__6A6AC972_C99D_4550_9FD3_66459F5AA0D0
 
-#include <Graphics/Graphics.h>
+#include <Render/Render.h>
 
 #ifdef GUI_EXPORT
 #define GUI_API DLL_EXPORT

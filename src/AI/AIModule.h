@@ -29,13 +29,6 @@ public:
 
 	virtual void Clearup() = 0;
 
-public:
-	GameObjectPtr GetGameObject() const;
-
-	void SetGameObject( GameObjectPtr val );
-
-private:
-	GameObjectWPtr _GameObject;
 };
 
 END_XE_NAMESPACE

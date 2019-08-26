@@ -1,7 +1,7 @@
 #include "RenderTarget.h"
 
 #include "Viewport.h"
-#include "RenderContext.h"
+#include "IRenderContext.h"
 
 USING_XE
 

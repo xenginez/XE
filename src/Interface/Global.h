@@ -9,7 +9,13 @@
 #ifndef __GLOBAL_H__21F78FED_A550_4FF5_9C6A_18EF55BC2565
 #define __GLOBAL_H__21F78FED_A550_4FF5_9C6A_18EF55BC2565
 
-#include <Graphics/Graphics.h>
+#include <Audio/Audio.h>
+#include <World/World.h>
+#include <AI/AI.h>
+#include <Physics/Physics.h>
+#include <Navigation/Navigation.h>
+#include <GUI/GUI.h>
+#include <Animation/Animation.h>
 
 #ifdef INTERFACE_EXPORT
 #define INTERFACE_API DLL_EXPORT

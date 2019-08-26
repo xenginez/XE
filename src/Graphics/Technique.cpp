@@ -17,7 +17,7 @@ XE::Technique::~Technique()
 
 }
 
-void XE::Technique::Startup( RenderContextPtr & context )
+void XE::Technique::Startup( IRenderContextPtr & context )
 {
 	for( auto & pass : _Passes )
 	{
@@ -28,7 +28,7 @@ void XE::Technique::Startup( RenderContextPtr & context )
 	OnStartup( context );
 }
 
-void XE::Technique::Render( RenderContextPtr & context )
+void XE::Technique::Render( IRenderContextPtr & context )
 {
 	for( auto & pass : _Passes )
 	{
@@ -38,7 +38,7 @@ void XE::Technique::Render( RenderContextPtr & context )
 	OnRender( context );
 }
 
-void XE::Technique::Clearup( RenderContextPtr & context )
+void XE::Technique::Clearup( IRenderContextPtr & context )
 {
 	for( auto & pass : _Passes )
 	{

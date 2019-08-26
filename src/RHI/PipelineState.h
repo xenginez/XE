@@ -200,9 +200,9 @@ public:
 	~PipelineState() override;
 
 public:
-	virtual void Startup( RenderContextRPtr context ) = 0;
+	virtual void Startup( IRenderContextRPtr context ) = 0;
 
-	virtual void Clearup( RenderContextRPtr context ) = 0;
+	virtual void Clearup( IRenderContextRPtr context ) = 0;
 
 public:
 	PipelineStateHandle GetHandle() const;

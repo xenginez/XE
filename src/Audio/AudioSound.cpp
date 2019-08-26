@@ -81,7 +81,7 @@ XE::int32 XE::AudioSound::GetFormat()
 			format = AL_FORMAT_MONO16;
 			break;
 		default:
-			XE_LOG( LoggerLevel::Error, "unsupported bytes per sample count : %1", _BytesPerSample );
+			throw XE::RuntimeException(); // XE_LOG( LoggerLevel::Error, "unsupported bytes per sample count : %1", _BytesPerSample );
 			break;
 		}
 	}
@@ -97,13 +97,13 @@ XE::int32 XE::AudioSound::GetFormat()
 			format = AL_FORMAT_STEREO16;
 			break;
 		default:
-			XE_LOG( LoggerLevel::Error, "unsupported bytes per sample count : %1", _BytesPerSample );
+			throw XE::RuntimeException(); // XE_LOG( LoggerLevel::Error, "unsupported bytes per sample count : %1", _BytesPerSample );
 			break;
 		}
 	}
 	break;
 	default:
-		XE_LOG( LoggerLevel::Error, "unsupported channel count : %1", _Channels );
+		throw XE::RuntimeException(); // XE_LOG( LoggerLevel::Error, "unsupported channel count : %1", _Channels );
 		break;
 	}
 
