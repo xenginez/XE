@@ -17,7 +17,6 @@ class GC_API FrameAlloc : public XE::Singleton< FrameAlloc >
 {
 private:
 	struct Private;
-	struct LocalThreadData;
 
 public:
 	FrameAlloc();
@@ -29,17 +28,9 @@ public:
 
 	static void Reset();
 
-	static void Clear();
-
 private:
-	static XE::FrameAlloc::LocalThreadData * GetLocalThreadData();
+	static XE::FrameAlloc::Private * GetPrivate();
 
-	static void RegisterLocalThreadData( XE::FrameAlloc::LocalThreadData * val );
-
-	static void UnregisterLocalThreadData( XE::FrameAlloc::LocalThreadData * val );
-
-private:
-	Private * _p;
 };
 
 END_XE_NAMESPACE

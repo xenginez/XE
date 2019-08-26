@@ -4,25 +4,32 @@ USING_XE
 
 struct XE::FrameAlloc::Private
 {
-	std::list< std::pair<std::thread::id, LocalThreadData * > > _Data;
-};
-
-struct XE::FrameAlloc::LocalThreadData
-{
-	LocalThreadData()
+	Private()
+		:Mask( 1 ), Count( 0xFE )
 	{
-		FrameAlloc::RegisterLocalThreadData( this );
 	}
 
-	~LocalThreadData()
+	~Private()
 	{
-		clear();
-		FrameAlloc::UnregisterLocalThreadData( this );
+
 	}
 
 	void * allocate( XE::uint64 size )
 	{
-		for( auto & data : Datas )
+		Count |= 1;
+
+		std::list<Data> * data_list = nullptr;
+
+		if( Mask == 1 )
+		{
+			data_list = &Data1;
+		}
+		else
+		{
+			data_list = &Data2;
+		}
+
+		for( auto & data : *data_list )
 		{
 			if( XE::uint64( data._end - data._cur ) >= size )
 			{
@@ -34,27 +41,48 @@ struct XE::FrameAlloc::LocalThreadData
 
 		capacity( size );
 
-		void * p = Datas.back()._cur;
-		Datas.back()._cur += size;
+		void * p = data_list->back()._cur;
+		data_list->back()._cur += size;
 		return p;
 	}
 
 	void capacity( XE::uint64 size )
 	{
-		size = std::max( size, ( XE::uint64 )MBYTE( 2 ) );
+		size = std::max( size, ( XE::uint64 )MBYTE( 1 ) );
 
-		Datas.emplace_back( Data( size ) );
+		Mask == 1 ? Data1.emplace_back( Data( size ) ) : Data2.emplace_back( Data( size ) );
 	}
 
 	void reset()
 	{
-		Datas.resize( 1 );
-		Datas.front()._cur = Datas.front()._beg;
-	}
+		if( ( Count & 1 ) == 0 )
+		{
+			Count <<= 1;
+		}
 
-	void clear()
-	{
-		Datas.clear();
+		if( Count == 0 )
+		{
+			Count = 0xFE;
+			Data1.resize( 1 );
+			Data2.resize( 1 );
+		}
+
+		Mask = ( Mask == 1 ? 2 : 1 );
+
+		if( Mask == 1 )
+		{
+			for( auto & data : Data1 )
+			{
+				data._cur = data._beg;
+			}
+		}
+		else
+		{
+			for( auto & data : Data2 )
+			{
+				data._cur = data._beg;
+			}
+		}
 	}
 
 	struct Data
@@ -86,63 +114,32 @@ struct XE::FrameAlloc::LocalThreadData
 		XE::uint8 * _end;
 	};
 
-	std::list<Data> Datas;
+	XE::uint8 Mask;
+	XE::uint8 Count;
+	std::list<Data> Data1;
+	std::list<Data> Data2;
 };
 
 XE::FrameAlloc::FrameAlloc()
-	:_p( new Private )
 {
-
 }
 
 XE::FrameAlloc::~FrameAlloc()
 {
-	delete _p;
 }
 
 void * XE::FrameAlloc::Allocate( const XE::uint64 _Count )
 {
-	return GetLocalThreadData()->allocate( _Count );
+	return GetPrivate()->allocate( _Count );
 }
 
 void XE::FrameAlloc::Reset()
 {
-	GetLocalThreadData()->reset();
+	GetPrivate()->reset();
 }
 
-XE::FrameAlloc::LocalThreadData * XE::FrameAlloc::GetLocalThreadData()
+XE::FrameAlloc::Private * XE::FrameAlloc::GetPrivate()
 {
-	thread_local XE::FrameAlloc::LocalThreadData data;
+	thread_local XE::FrameAlloc::Private data;
 	return &data;
-}
-
-void XE::FrameAlloc::Clear()
-{
-	_P();
-
-	for( auto data : _p->_Data )
-	{
-		data.second->clear();
-	}
-}
-
-void XE::FrameAlloc::RegisterLocalThreadData( XE::FrameAlloc::LocalThreadData * val )
-{
-	_P();
-
-	_p->_Data.push_back( { std::this_thread::get_id(), val } );
-}
-
-void XE::FrameAlloc::UnregisterLocalThreadData( XE::FrameAlloc::LocalThreadData * val )
-{
-	_P();
-
-	for( auto it = _p->_Data.begin(); it != _p->_Data.end(); ++it )
-	{
-		if( it->second == val )
-		{
-			_p->_Data.erase( it );
-			return;
-		}
-	}
 }

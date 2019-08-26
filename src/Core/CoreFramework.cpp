@@ -57,7 +57,6 @@ XE::CoreFramework::~CoreFramework()
 	delete _p;
 
 	Reflection::Clear();
-	FrameAlloc::Clear();
 	ObjectAlloc::Clear();
 }
 
