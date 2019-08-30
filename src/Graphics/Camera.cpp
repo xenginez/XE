@@ -127,13 +127,3 @@ void XE::Camera::SetFrustum( const Frustum & val )
 {
 	_Frustum = val;
 }
-
-const XE::ViewportPtr & XE::Camera::GetViewport() const
-{
-	return _Viewport;
-}
-
-void XE::Camera::SetViewport( const ViewportPtr & val )
-{
-	_Viewport = val;
-}

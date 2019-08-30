@@ -30,9 +30,9 @@ void XE::Renderable::Startup( IRenderContextPtr & context )
 	OnStartup( context );
 }
 
-void XE::Renderable::Render( IRenderContextPtr & context, RenderQueuePtr & queue )
+void XE::Renderable::Render( IRenderContextPtr & context )
 {
-	OnRender( context, queue );
+	OnRender( context );
 }
 
 void XE::Renderable::Clearup( IRenderContextPtr & context )

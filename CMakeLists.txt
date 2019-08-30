@@ -93,8 +93,6 @@ target_link_libraries(GC
 
 target_link_libraries(Reflect
 		GC
-		
-		pugixml
 		)
 
 target_link_libraries(Utils

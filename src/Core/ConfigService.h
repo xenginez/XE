@@ -11,10 +11,8 @@
 
 #include "Type.h"
 
-namespace pugi
-{
-	class xml_node_iterator;
-}
+#include <rapidjson/rapidjson.h>
+#include <rapidjson/document.h>
 
 BEG_XE_NAMESPACE
 
@@ -45,7 +43,7 @@ protected:
 	void SetValue( const String& key, const String& val ) const override;
 
 private:
-	void Load( const pugi::xml_node_iterator & parent, const std::string & parent_name );
+	void Load( const rapidjson::Value::ConstMemberIterator & parent, const std::string & parent_name );
 
 private:
 	Private * _p;

@@ -123,40 +123,6 @@ protected:
 
 };
 
-class REFLECT_API XmlLoadArchive : public Archive
-{
-	struct Private;
-
-public:
-	XmlLoadArchive( std::istream & val );
-
-	~XmlLoadArchive() override;
-
-protected:
-	void Serialize( NameValue & val ) override;
-
-private:
-	Private * _p;
-};
-
-class REFLECT_API XmlSaveArchive : public Archive
-{
-	struct Private;
-public:
-	XmlSaveArchive();
-
-	~XmlSaveArchive() override;
-
-public:
-	void Save( std::ostream & val ) const;
-
-protected:
-	void Serialize( NameValue & val ) override;
-
-private:
-	Private * _p;
-};
-
 class REFLECT_API JsonLoadArchive : public Archive
 {
 	struct Private;

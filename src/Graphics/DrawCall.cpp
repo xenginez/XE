@@ -22,7 +22,7 @@ RenderDrawCall::~RenderDrawCall()
 
 }
 
-void XE::RenderDrawCall::Execute( CommandListPtr & val )
+void XE::RenderDrawCall::Execute( IRenderContextPtr & val )
 {
 
 }
@@ -37,7 +37,7 @@ IndirectDrawcall::~IndirectDrawcall()
 
 }
 
-void XE::IndirectDrawcall::Execute( CommandListPtr & val )
+void XE::IndirectDrawcall::Execute( IRenderContextPtr & val )
 {
 
 }
@@ -52,7 +52,7 @@ InstanceDrawcall::~InstanceDrawcall()
 
 }
 
-void XE::InstanceDrawcall::Execute( CommandListPtr & val )
+void XE::InstanceDrawcall::Execute( IRenderContextPtr & val )
 {
 
 }
@@ -67,7 +67,7 @@ IndexInstanceDrawcall::~IndexInstanceDrawcall()
 
 }
 
-void XE::IndexInstanceDrawcall::Execute( CommandListPtr & val )
+void XE::IndexInstanceDrawcall::Execute( IRenderContextPtr & val )
 {
 
 }
@@ -82,7 +82,7 @@ ComputeDrawCall::~ComputeDrawCall()
 
 }
 
-void XE::ComputeDrawCall::Execute( CommandListPtr & val )
+void XE::ComputeDrawCall::Execute( IRenderContextPtr & val )
 {
 
 }

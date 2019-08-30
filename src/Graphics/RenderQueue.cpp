@@ -12,7 +12,7 @@ XE::RenderQueue::~RenderQueue()
 
 }
 
-void XE::RenderQueue::Flush( CommandListPtr & val )
+void XE::RenderQueue::Flush( IRenderContextPtr & val )
 {
 	XE::uint8 * beg = _DrawCalls.data();
 

@@ -25,7 +25,7 @@ public:
 protected:
 	void OnStartup( IRenderContextPtr & context ) override;
 
-	void OnRender( IRenderContextPtr & context, RenderQueuePtr & queue ) override;
+	void OnRender( IRenderContextPtr & context ) override;
 
 	void OnClearup( IRenderContextPtr & context ) override;
 

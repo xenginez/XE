@@ -21,10 +21,8 @@ public:
 	virtual ~DrawCall();
 
 public:
-	virtual void Execute( CommandListPtr & val ) = 0;
+	virtual void Execute( IRenderContextPtr & val ) = 0;
 
-public:
-	PipelineStatePtr _State;
 };
 
 class GRAPHICS_API RenderDrawCall : public DrawCall
@@ -35,12 +33,8 @@ public:
 	~RenderDrawCall() override;
 
 public:
-	void Execute( CommandListPtr & val ) override;
+	void Execute( IRenderContextPtr & val ) override;
 
-public:
-	IndexBufferPtr _IndexBuffer;
-	VertexBufferPtr _VertexBuffer;
-	GraphicsPipelineStatePtr _PipelineState;
 };
 
 class GRAPHICS_API IndirectDrawcall : public DrawCall
@@ -51,10 +45,8 @@ public:
 	~IndirectDrawcall() override;
 
 public:
-	void Execute( CommandListPtr & val ) override;
+	void Execute( IRenderContextPtr & val ) override;
 
-public:
-	IndirectBufferPtr _IndirectBuffer;
 };
 
 class GRAPHICS_API InstanceDrawcall : public DrawCall
@@ -65,10 +57,8 @@ public:
 	~InstanceDrawcall() override;
 
 public:
-	void Execute( CommandListPtr & val ) override;
+	void Execute( IRenderContextPtr & val ) override;
 
-public:
-	InstanceBufferPtr _InstanceBuffer;
 };
 
 class GRAPHICS_API IndexInstanceDrawcall : public InstanceDrawcall
@@ -79,7 +69,7 @@ public:
 	~IndexInstanceDrawcall() override;
 
 public:
-	void Execute( CommandListPtr & val ) override;
+	void Execute( IRenderContextPtr & val ) override;
 
 public:
 	XE::uint64 BegIndex;
@@ -94,11 +84,8 @@ public:
 	~ComputeDrawCall() override;
 
 public:
-	void Execute( CommandListPtr & val ) override;
+	void Execute( IRenderContextPtr & val ) override;
 
-public:
-	ComputeBufferPtr _ComputeBuffer;
-	ComputePipelineStatePtr _PipelineState;
 };
 
 template< typename ... _DC > class PacketDrawCall : public DrawCall
@@ -113,7 +100,7 @@ public:
 	}
 
 public:
-	void Execute( CommandListPtr & val ) override
+	void Execute( IRenderContextPtr & val ) override
 	{
 		for_each_in_tuple( [val]( auto & draw_call )
 						   {

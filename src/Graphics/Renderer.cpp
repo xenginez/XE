@@ -32,11 +32,7 @@ void XE::Renderer::Render( IRenderContextPtr & context, CameraPtr & camera )
 
 	// TODO: set commandlist viewport rendertarget ...
 
-	_Queue->Flush( list );
-
-	list->Close();
-
-//	context->DestoryCommandList( list );
+	context->Destory( list );
 }
 
 void XE::Renderer::Clearup()

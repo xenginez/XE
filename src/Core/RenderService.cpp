@@ -48,10 +48,6 @@ bool XE::RenderService::Startup()
 
 void XE::RenderService::Update()
 {
-	tbb::parallel_for( XE::uint64( 0 ), _p->_Cameras.size(), [&]( XE::uint64 i )
-					   {
-						   //_p->_Cameras[i]->GetRenderer()->Render( _p->_Context, _p->_Cameras[i] );
-					   } );
 
 	_p->_Context->Present();
 }

@@ -40,7 +40,7 @@ void XE::Model::OnStartup( IRenderContextPtr & context )
 
 }
 
-void XE::Model::OnRender( IRenderContextPtr & context, RenderQueuePtr & queue )
+void XE::Model::OnRender( IRenderContextPtr & context )
 {
 
 }

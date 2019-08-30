@@ -25,14 +25,14 @@ public:
 public:
 	virtual void Startup( IRenderContextPtr & context );
 
-	virtual void Render( IRenderContextPtr & context, RenderQueuePtr & queue );
+	virtual void Render( IRenderContextPtr & context );
 
 	virtual void Clearup( IRenderContextPtr & context );
 
 protected:
 	virtual void OnStartup( IRenderContextPtr & context ) = 0;
 
-	virtual void OnRender( IRenderContextPtr & context, RenderQueuePtr & queue ) = 0;
+	virtual void OnRender( IRenderContextPtr & context ) = 0;
 
 	virtual void OnClearup( IRenderContextPtr & context ) = 0;
 

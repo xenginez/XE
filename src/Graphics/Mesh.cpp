@@ -38,11 +38,6 @@ XE::Mesh::~Mesh()
 
 }
 
-const XE::InputLayoutPtr & XE::Mesh::GetInputLayout() const
-{
-	return _InputLayout;
-}
-
 XE::uint64 XE::Mesh::GetSubMeshCount() const
 {
 	return _SubMesh.size();
@@ -71,16 +66,6 @@ XE::StaticMesh::~StaticMesh()
 
 }
 
-const IndexBufferPtr & XE::StaticMesh::GetIndexBuffer() const
-{
-	return _IndexBuffer;
-}
-
-const XE::VertexBufferPtr & XE::StaticMesh::GetVertexBuffer() const
-{
-	return _VertexBuffer;
-}
-
 BEG_META( DynamicMesh )
 END_META()
 
@@ -92,16 +77,6 @@ XE::DynamicMesh::DynamicMesh()
 XE::DynamicMesh::~DynamicMesh()
 {
 
-}
-
-const XE::DynamicIndexBufferPtr & XE::DynamicMesh::GetDynamicIndexBuffer() const
-{
-	return _DynamicIndexBuffer;
-}
-
-const XE::DynamicVertexBufferPtr & XE::DynamicMesh::GetDynamicVertexBuffer() const
-{
-	return _DynamicVertexBuffer;
 }
 
 BEG_META( SkinnedMesh )

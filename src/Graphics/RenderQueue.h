@@ -50,7 +50,7 @@ public:
 	}
 
 public:
-	void Flush( CommandListPtr & val );
+	void Flush( IRenderContextPtr & val );
 
 private:
 	Array<XE::uint8> _DrawCalls;

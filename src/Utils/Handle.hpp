@@ -38,6 +38,11 @@ public:
 	}
 
 public:
+	operator bool() const
+	{
+		return _value != Invalid._value;
+	}
+
 	operator XE::uint64() const
 	{
 		return _value;
@@ -119,7 +124,6 @@ public:
 
 private:
 	XE::uint64 _value;
-
 };
 
 template< typename T > struct VariantCreate<Handle<T>>

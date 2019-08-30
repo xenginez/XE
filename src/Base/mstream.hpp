@@ -275,14 +275,20 @@ public:
 	using size_type              = size_t;
 	using difference_type        = ptrdiff_t;
 
-
+public:
 	static constexpr auto npos{ static_cast< size_type >( -1 ) };
 
+public:
 	constexpr basic_memory_view() noexcept : _Mydata(), _Mysize( 0 )
+	{
+	}
+	
+	constexpr basic_memory_view( std::nullptr_t ) noexcept : _Mydata(), _Mysize( 0 )
 	{
 	}
 
 	constexpr basic_memory_view( const basic_memory_view & ) noexcept = default;
+	
 	constexpr basic_memory_view & operator=( const basic_memory_view & ) noexcept = default;
 
 	constexpr basic_memory_view( const_pointer _Cts, size_type _Count ) noexcept
@@ -290,6 +296,7 @@ public:
 	{
 	}
 
+public:
 	constexpr const_iterator begin() const noexcept
 	{
 	#ifdef XE_DEBUG
@@ -338,6 +345,7 @@ public:
 		return rend();
 	}
 
+public:
 	constexpr size_type size() const noexcept
 	{
 		return _Mysize;
@@ -353,6 +361,7 @@ public:
 		return _Mysize == 0;
 	}
 
+public:
 	constexpr const_pointer data() const noexcept
 	{
 		return _Mydata;
@@ -363,6 +372,7 @@ public:
 		return _Min_value( static_cast< size_t >( PTRDIFF_MAX ), static_cast< size_t >( -1 ) / sizeof( _Elem ) );
 	}
 
+public:
 	constexpr const_reference operator[]( const size_type _Off ) const noexcept
 	{
 		XE_ASSERT( _Off < _Mysize && "basic_memory_view<XE::uint8> subscript out of range" );
@@ -390,6 +400,7 @@ public:
 		return _Mydata[_Mysize - 1];
 	}
 
+public:
 	constexpr void remove_prefix( const size_type _Count ) noexcept
 	{
 		XE_ASSERT( _Mysize >= _Count && "cannot remove prefix longer than total size" );
@@ -405,6 +416,7 @@ public:
 		_Mysize -= _Count;
 	}
 
+public:
 	constexpr void swap( basic_memory_view & _Other ) noexcept
 	{
 		const basic_memory_view _Tmp{ _Other };

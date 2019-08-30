@@ -67,11 +67,6 @@ public:
 
 	void SetFrustum( const Frustum & val );
 
-public:
-	const ViewportPtr & GetViewport() const;
-
-	void SetViewport( const ViewportPtr & val );
-
 private:
 	bool _Active;
 	CameraType _Type;
@@ -84,8 +79,6 @@ private:
 	Mat4 _ProjMatrix;
 	Mat4 _ViewMatrix;
 	Frustum _Frustum;
-
-	ViewportPtr _Viewport;
 };
 
 END_XE_NAMESPACE

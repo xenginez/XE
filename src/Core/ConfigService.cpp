@@ -1,6 +1,8 @@
 #include "ConfigService.h"
 
-#include <pugixml/pugixml.hpp>
+#include <rapidjson/writer.h>
+#include <rapidjson/istreamwrapper.h>
+#include <rapidjson/ostreamwrapper.h>
 
 USING_XE
 
@@ -25,19 +27,26 @@ XE::ConfigService::~ConfigService()
 
 void XE::ConfigService::Prepare()
 {
-	auto path = GetFramework()->GetUserDataPath() / "config.xml";
+	auto path = GetFramework()->GetUserDataPath() / "config.json";
 
-	pugi::xml_document doc;
-	if( doc.load_file( path.string().c_str() ).status == pugi::status_ok )
+	std::ifstream ifs( path.string() );
+	if( ifs.is_open() )
 	{
-		for( auto it = doc.begin(); it != doc.end(); ++it )
+		rapidjson::Document doc;
+		rapidjson::IStreamWrapper wrapper( ifs );
+		doc.ParseStream( wrapper );
+		if( !doc.HasParseError() )
 		{
-			for( auto it2 = it->begin(); it2 != it->end(); ++it2 )
+			for( rapidjson::Value::ConstMemberIterator iter = doc.MemberBegin(); iter != doc.MemberEnd(); ++iter )
 			{
-				Load( it2, it->name() );
+				for( rapidjson::Value::ConstMemberIterator it = iter->value.MemberBegin(); it != iter->value.MemberEnd(); ++it )
+				{
+					Load( it, iter->name.GetString() );
+				}
 			}
 		}
 	}
+	ifs.close();
 }
 
 bool XE::ConfigService::Startup()
@@ -52,27 +61,33 @@ void XE::ConfigService::Update()
 
 void XE::ConfigService::Clearup()
 {
-	auto path = GetFramework()->GetUserDataPath() / "config.xml";
+	auto path = GetFramework()->GetUserDataPath() / "config.json";
 	
-	pugi::xml_document doc;
-	
-	for( const auto &it : _p->Values )
+	rapidjson::Document doc;
+	doc.Parse( "{}" );
+
+	for( const auto & it : _p->Values )
 	{
-		std::vector<std::string> path_list = StringUtils::Split( it.first, "\\." );
+		auto list = StringUtils::Split( it.first, "\\." );
 
-		if( !path_list.empty() )
+		rapidjson::Value * value = &doc;
+
+		for( XE::uint64 i = 0; i < list.size() - 1; ++i )
 		{
-			pugi::xml_node node = doc.append_child( path_list[0].c_str() );
-			for( int i = 1; i < path_list.size(); ++i )
-			{
-				node = node.append_child( path_list[i].c_str() );
-			}
-
-			node.append_attribute( "value" ).set_value( it.second.ToCString() );
+			value = &( value->AddMember( rapidjson::StringRef( list[i].c_str() ), rapidjson::Value().SetObject().Move(), doc.GetAllocator() ) );
 		}
+
+		value->AddMember( rapidjson::StringRef( list.back().c_str() ), rapidjson::StringRef( it.second.ToCString() ), doc.GetAllocator() );
 	}
-	
-	doc.save_file(path.string().c_str());
+
+	std::ofstream ofs( path.string() );
+	if( ofs.is_open() )
+	{
+		rapidjson::OStreamWrapper wrapper( ofs );
+		rapidjson::Writer<rapidjson::OStreamWrapper> writer( wrapper );
+		doc.Accept( writer );
+	}
+	ofs.close();
 
 	_p->Values.clear();
 }
@@ -94,18 +109,19 @@ void XE::ConfigService::SetValue( const String &key, const String &val ) const
 	_p->Values[key] = val;
 }
 
-void XE::ConfigService::Load( const pugi::xml_node_iterator & parent, const std::string & parent_name )
+void XE::ConfigService::Load( const rapidjson::Value::ConstMemberIterator & parent, const std::string & parent_name )
 {
-	std::string this_name = parent_name + "." + parent->name();
+	std::string this_name = parent_name + "." + parent->name.GetString();
 
-	auto attr = parent->attribute( "value" );
-	if( !attr.empty() )
+	if( parent->value.IsObject() )
 	{
-		_p->Values.insert( { this_name, attr.value() } );
+		for( rapidjson::Value::ConstMemberIterator it = parent->value.MemberBegin(); it != parent->value.MemberEnd(); ++it )
+		{
+			Load( it, this_name );
+		}
 	}
-
-	for( auto it = parent->begin(); it != parent->end(); ++it )
+	else
 	{
-		Load( it, this_name );
+		_p->Values.insert( { this_name, parent->value.GetString() } );
 	}
 }

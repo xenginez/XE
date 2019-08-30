@@ -13,64 +13,35 @@
 
 BEG_XE_NAMESPACE
 
-DECL_PTR( Resource );
-
-DECL_PTR( Buffer );
-DECL_PTR( FrameBuffer );
-DECL_PTR( IndexBuffer );
-DECL_PTR( VertexBuffer );
-DECL_PTR( UniformBuffer );
-DECL_PTR( ComputeBuffer );
-DECL_PTR( ConstantBuffer );
-DECL_PTR( IndirectBuffer );
-DECL_PTR( InstanceBuffer );
-DECL_PTR( DepthStencilBuffer );
-DECL_PTR( DynamicIndexBuffer );
-DECL_PTR( DynamicVertexBuffer );
-
-DECL_PTR( Shader );
-DECL_PTR( HullShader );
-DECL_PTR( PixelShader );
-DECL_PTR( VertexShader );
-DECL_PTR( DomainShader );
-DECL_PTR( ComputeShader );
-DECL_PTR( GeometryShader );
-
-DECL_PTR( BlendState );
-DECL_PTR( PipelineState );
-DECL_PTR( RasterizerState );
-DECL_PTR( DepthStencilState );
-DECL_PTR( ComputePipelineState );
-DECL_PTR( GraphicsPipelineState );
-
-DECL_PTR( Texture );
-DECL_PTR( Texture2D );
-DECL_PTR( Texture3D );
-DECL_PTR( TextureCube );
-DECL_PTR( Texture2DArray );
-
-DECL_PTR( Query );
-DECL_PTR( TimerQuery );
-DECL_PTR( OcclusionQuery );
-DECL_PTR( ConditionQuery );
-DECL_PTR( SOStatisticsQuery );
-
-DECL_PTR( RenderTarget );
-DECL_PTR( RenderWindow );
-DECL_PTR( RenderTexture );
-
-DECL_PTR( Image );
-DECL_PTR( Sampler );
-DECL_PTR( Viewport );
-DECL_PTR( InputLayout );
-DECL_PTR( CommandList );
 DECL_PTR( IRenderContext );
-DECL_PTR( UnorderedAccess );
 
+DECL_HANDLE( RHI_API, Uniform );
+DECL_HANDLE( RHI_API, VertexLayout );
 
-DECL_HANDLE( RHI_API, Resource );
+DECL_HANDLE( RHI_API, FrameBuffer );
+DECL_HANDLE( RHI_API, IndexBuffer );
+DECL_HANDLE( RHI_API, VertexBuffer );
+DECL_HANDLE( RHI_API, ComputeBuffer );
+DECL_HANDLE( RHI_API, IndirectBuffer );
+DECL_HANDLE( RHI_API, InstanceBuffer );
+DECL_HANDLE( RHI_API, DepthStencilBuffer );
+DECL_HANDLE( RHI_API, DynamicIndexBuffer );
+DECL_HANDLE( RHI_API, DynamicVertexBuffer );
+
+DECL_HANDLE( RHI_API, Shader );
+
+DECL_HANDLE( RHI_API, BlendState );
+DECL_HANDLE( RHI_API, RasterizerState );
+DECL_HANDLE( RHI_API, DepthStencilState );
+DECL_HANDLE( RHI_API, ComputePipelineState );
+DECL_HANDLE( RHI_API, GraphicsPipelineState );
+
+DECL_HANDLE( RHI_API, Texture );
+
+DECL_HANDLE( RHI_API, TimerQuery );
+DECL_HANDLE( RHI_API, OcclusionQuery );
+
 DECL_HANDLE( RHI_API, CommandList );
-DECL_HANDLE( RHI_API, PipelineState );
 
 
 enum class FillType
@@ -144,6 +115,17 @@ enum class AccessType
 };
 DECL_META_ENUM( RHI_API, AccessType );
 
+enum class BackbufferRatio
+{
+	EQUAL,     //!< Equal to backbuffer.
+	HALF,      //!< One half size of backbuffer.
+	QUARTER,   //!< One quarter size of backbuffer.
+	EIGHTH,    //!< One eighth size of backbuffer.
+	SIXTEENTH, //!< One sixteenth size of backbuffer.
+	DOUBLE,    //!< Double size of backbuffer.
+};
+DECL_META_ENUM( RHI_API, BackbufferRatio );
+
 enum class CompareType
 {
 	LESS,
@@ -159,24 +141,17 @@ DECL_META_ENUM( RHI_API, CompareType );
 
 enum class AttributeType
 {
-	POSITION,
-	NORMAL,
-	TANGENT,
-	BITANGENT,
-	COLOR0,
-	COLOR1,
-	COLOR2,
-	COLOR3,
-	INDICES,
-	WEIGHT,
-	TEXCOORD0,
-	TEXCOORD1,
-	TEXCOORD2,
-	TEXCOORD3,
-	TEXCOORD4,
-	TEXCOORD5,
-	TEXCOORD6,
-	TEXCOORD7,
+	INT8,
+	INT16,
+	INT32,
+	INT64,
+	UINT8,
+	UINT16,
+	UINT32,
+	UINT64,
+	FLOAT16,
+	FLOAT32,
+	FLOAT64,
 };
 DECL_META_ENUM( RHI_API, AttributeType );
 
@@ -205,57 +180,13 @@ DECL_META_ENUM( RHI_API, UniformType );
 
 enum class TextureType
 {
+	TEXTURE1D,
 	TEXTURE2D,
 	TEXTURE3D,
 	TEXTURECUBE,
+	TEXTURE2DARRAY,
 };
 DECL_META_ENUM( RHI_API, TextureType );
-
-enum class LayoutFormat
-{
-	POSITION,
-	NORMAL,
-	TANGENT,
-	BITANGENT,
-	COLOR0,
-	COLOR1,
-	COLOR2,
-	COLOR3,
-	INDICES,
-	WEIGHT,
-	TEXCOORD0,
-	TEXCOORD1,
-	TEXCOORD2,
-	TEXCOORD3,
-	TEXCOORD4,
-	TEXCOORD5,
-	TEXCOORD6,
-	TEXCOORD7,
-};
-DECL_META_ENUM( RHI_API, LayoutFormat );
-
-enum class LayoutElementType
-{
-	INT8,
-	INT16,
-	INT32,
-	INT64,
-	UINT8,
-	UINT16,
-	UINT32,
-	UINT64,
-	FLOAT16,
-	FLOAT32,
-	FLOAT64,
-	VEC2,
-	VEC3,
-	VEC4,
-	QUAT,
-	RECT,
-	MAT3,
-	MAT4,
-};
-DECL_META_ENUM( RHI_API, LayoutElementType );
 
 enum class TextureFormat
 {
@@ -363,29 +294,64 @@ DECL_META_ENUM( RHI_API, TextureFormat );
 
 enum class SamplerFilter
 {
-	POINT,
-	LINEAR,
-	ANISOTROPIC,
-	COMPARISON_POINT,
-	COMPARISON_LINEAR,
-	COMPARISON_ANISOTROPIC,
-	MINIMUM_POINT,
-	MINIMUM_LINEAR,
-	MINIMUM_ANISOTROPIC,
-	MAXIMUM_POINT,
-	MAXIMUM_LINEAR,
-	MAXIMUM_ANISOTROPIC,
-	NUM_FILTERS,
+	MIN_MAG_MIP_POINT = 0,
+	MIN_MAG_POINT_MIP_LINEAR = 0x1,
+	MIN_POINT_MAG_LINEAR_MIP_POINT = 0x4,
+	MIN_POINT_MAG_MIP_LINEAR = 0x5,
+	MIN_LINEAR_MAG_MIP_POINT = 0x10,
+	MIN_LINEAR_MAG_POINT_MIP_LINEAR = 0x11,
+	MIN_MAG_LINEAR_MIP_POINT = 0x14,
+	MIN_MAG_MIP_LINEAR = 0x15,
+	ANISOTROPIC = 0x55,
+	COMPARISON_MIN_MAG_MIP_POINT = 0x80,
+	COMPARISON_MIN_MAG_POINT_MIP_LINEAR = 0x81,
+	COMPARISON_MIN_POINT_MAG_LINEAR_MIP_POINT = 0x84,
+	COMPARISON_MIN_POINT_MAG_MIP_LINEAR = 0x85,
+	COMPARISON_MIN_LINEAR_MAG_MIP_POINT = 0x90,
+	COMPARISON_MIN_LINEAR_MAG_POINT_MIP_LINEAR = 0x91,
+	COMPARISON_MIN_MAG_LINEAR_MIP_POINT = 0x94,
+	COMPARISON_MIN_MAG_MIP_LINEAR = 0x95,
+	COMPARISON_ANISOTROPIC = 0xd5,
+	MINIMUM_MIN_MAG_MIP_POINT = 0x100,
+	MINIMUM_MIN_MAG_POINT_MIP_LINEAR = 0x101,
+	MINIMUM_MIN_POINT_MAG_LINEAR_MIP_POINT = 0x104,
+	MINIMUM_MIN_POINT_MAG_MIP_LINEAR = 0x105,
+	MINIMUM_MIN_LINEAR_MAG_MIP_POINT = 0x110,
+	MINIMUM_MIN_LINEAR_MAG_POINT_MIP_LINEAR = 0x111,
+	MINIMUM_MIN_MAG_LINEAR_MIP_POINT = 0x114,
+	MINIMUM_MIN_MAG_MIP_LINEAR = 0x115,
+	MINIMUM_ANISOTROPIC = 0x155,
+	MAXIMUM_MIN_MAG_MIP_POINT = 0x180,
+	MAXIMUM_MIN_MAG_POINT_MIP_LINEAR = 0x181,
+	MAXIMUM_MIN_POINT_MAG_LINEAR_MIP_POINT = 0x184,
+	MAXIMUM_MIN_POINT_MAG_MIP_LINEAR = 0x185,
+	MAXIMUM_MIN_LINEAR_MAG_MIP_POINT = 0x190,
+	MAXIMUM_MIN_LINEAR_MAG_POINT_MIP_LINEAR = 0x191,
+	MAXIMUM_MIN_MAG_LINEAR_MIP_POINT = 0x194,
+	MAXIMUM_MIN_MAG_MIP_LINEAR = 0x195,
+	MAXIMUM_ANISOTROPIC = 0x1d5
 };
 DECL_META_ENUM( RHI_API, SamplerFilter );
 
-enum class SamplerAddressType
+enum class SamplerAddress
 {
-	MIRROR,
-	CLAMP,
-	BORDER,
+	U_MIRROR	= 1 << 0,
+	U_CLAMP		= 1 << 1,
+	U_BORDER	= 1 << 2,
+	
+	V_MIRROR	= 1 << 3,
+	V_CLAMP		= 1 << 4,
+	V_BORDER	= 1 << 5,
+	
+	W_MIRROR	= 1 << 6,
+	W_CLAMP		= 1 << 7,
+	W_BORDER	= 1 << 8,
+	
+	UVW_MIRROR	= U_MIRROR | V_MIRROR | W_MIRROR,
+	UVW_CLAMP	= U_CLAMP | V_CLAMP | W_CLAMP,
+	UVW_BORDER	= U_BORDER | V_BORDER | W_BORDER,
 };
-DECL_META_ENUM( RHI_API, SamplerAddressType );
+DECL_META_ENUM( RHI_API, SamplerAddress );
 
 enum class BlendFactor
 {
@@ -428,65 +394,17 @@ enum class StencilOperation
 };
 DECL_META_ENUM( RHI_API, StencilOperation );
 
-
 enum class ClearType
 {
+	CLEAR_COLOR,
 	CLAER_DEPTH,
 	CLAER_STENCIL,
+	CLAER_COLOR_DEPTH,
+	CLAER_COLOR_STENCIL,
 	CLAER_DEPTH_STENCIL,
+	CLAER_COLOR_DEPTH_STENCIL,
 };
-
-enum class TileCopyType
-{
-	NONE,
-	NO_HAZARD,
-	LINEAR_TO_SWIZZLED,
-	SWIZZLED_TO_LINEAR,
-};
-
-enum class BarrierFlag
-{
-	NONE,
-	BEG_ONLY,
-	END_ONLY
-};
-
-enum class ResourceState
-{
-	COMMON = 0,
-	VERTEX_AND_CONSTANT_BUFFER = 0x1,
-	INDEX_BUFFER = 0x2,
-	RENDER_TARGET = 0x4,
-	UNORDERED_ACCESS = 0x8,
-	DEPTH_WRITE = 0x10,
-	DEPTH_READ = 0x20,
-	NON_PIXEL_SHADER_RESOURCE = 0x40,
-	PIXEL_SHADER_RESOURCE = 0x80,
-	STREAM_OUT = 0x100,
-	INDIRECT_ARGUMENT = 0x200,
-	COPY_DEST = 0x400,
-	COPY_SOURCE = 0x800,
-	RESOLVE_DEST = 0x1000,
-	RESOLVE_SOURCE = 0x2000,
-	RAYTRACING_ACCELERATION_STRUCTURE = 0x400000,
-	GENERIC_READ = ( ( ( ( ( 0x1 | 0x2 ) | 0x40 ) | 0x80 ) | 0x200 ) | 0x800 ),
-	PRESENT = 0,
-	PREDICATION = 0x200,
-	VIDEO_DECODE_READ = 0x10000,
-	VIDEO_DECODE_WRITE = 0x20000,
-	VIDEO_PROCESS_READ = 0x40000,
-	VIDEO_PROCESS_WRITE = 0x80000,
-	VIDEO_ENCODE_READ = 0x200000,
-	VIDEO_ENCODE_WRITE = 0x800000
-};
-
-enum class StripCutValue
-{
-	DISABLED ,
-	FFFF,
-	FFFFFFFF,
-};
-
+DECL_META_ENUM( RHI_API, ClearType );
 
 enum CommandListType
 {
@@ -497,6 +415,7 @@ enum CommandListType
 	VIDEO_DECODE,
 	VIDEO_PROCESS,
 };
+DECL_META_ENUM( RHI_API, CommandListType );
 
 END_XE_NAMESPACE
 

@@ -1,6 +1,10 @@
 #include "PluginService.h"
 
-#include <pugixml/pugixml.hpp>
+#include <rapidjson/rapidjson.h>
+#include <rapidjson/document.h>
+#include <rapidjson/writer.h>
+#include <rapidjson/istreamwrapper.h>
+#include <rapidjson/ostreamwrapper.h>
 
 USING_XE
 
@@ -118,19 +122,24 @@ XE::PluginDesc XE::PluginService::LoadPlugin( const String & name )
 
 	if( std::filesystem::is_directory( path ) )
 	{
-		auto plugin_path = path / "plugin.xml";
+		auto plugin_path = path / "plugin.json";
 
-		pugi::xml_document doc;
-		if( doc.load_file( plugin_path.string().c_str() ).status == pugi::status_ok )
+		std::ifstream ifs( path.string() );
+		if( ifs.is_open() )
 		{
-			auto plugin = doc.select_node( "Plugin" );
-
-			Desc.Name = plugin.node().select_node( "Name" ).node().value();
-			Desc.Description = plugin.node().select_node( "Description" ).node().value();
-			std::string lib_name = plugin.node().select_node( "Library" ).node().value();
-			lib_name += DLL_EXT_NAME;
-			Desc.Library = Library::Open( ( path / lib_name ).string() );
+			rapidjson::Document doc;
+			rapidjson::IStreamWrapper wrapper( ifs );
+			doc.ParseStream( wrapper );
+			if( !doc.HasParseError() )
+			{
+				Desc.Name = doc.FindMember( "Name" )->value.GetString();
+				Desc.Description = doc.FindMember( "Description" )->value.GetString(); 
+				std::string lib_name = doc.FindMember( "Library" )->value.GetString(); 
+				lib_name += DLL_EXT_NAME;
+				Desc.Library = Library::Open( ( path / lib_name ).string() );
+			}
 		}
+		ifs.close();
 	}
 
 	return Desc;

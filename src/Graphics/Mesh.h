@@ -42,9 +42,6 @@ public:
 	~Mesh() override;
 
 public:
-	const InputLayoutPtr & GetInputLayout() const;
-
-public:
 	XE::uint64 GetSubMeshCount() const;
 
 	const Array<SubMesh> & GetSubMeshs() const;
@@ -53,7 +50,6 @@ public:
 
 protected:
 	Array<SubMesh> _SubMesh;
-	InputLayoutPtr _InputLayout;
 };
 
 class GRAPHICS_API StaticMesh : public Mesh
@@ -65,14 +61,6 @@ public:
 
 	~StaticMesh() override;
 
-public:
-	const IndexBufferPtr & GetIndexBuffer() const;
-
-	const VertexBufferPtr & GetVertexBuffer() const;
-
-private:
-	IndexBufferPtr _IndexBuffer;
-	VertexBufferPtr _VertexBuffer;
 };
 
 class GRAPHICS_API DynamicMesh : public Mesh
@@ -84,14 +72,6 @@ public:
 
 	~DynamicMesh() override;
 
-public:
-	const DynamicIndexBufferPtr & GetDynamicIndexBuffer() const;
-
-	const DynamicVertexBufferPtr & GetDynamicVertexBuffer() const;
-
-private:
-	DynamicIndexBufferPtr _DynamicIndexBuffer;
-	DynamicVertexBufferPtr _DynamicVertexBuffer;
 };
 
 class GRAPHICS_API SkinnedMesh : public StaticMesh
