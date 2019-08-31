@@ -42,11 +42,15 @@ public:
 
 	virtual void Destroy( IndexBufferHandle handle ) = 0;
 
-	virtual VertexBufferHandle CreateVertexBuffer( XE::memory_view mem, const VertexLayout & decl ) = 0;
+	virtual VertexBufferHandle CreateVertexBuffer( XE::memory_view mem ) = 0;
 
 	virtual void SetDebugName( VertexBufferHandle handle, const String & name ) = 0;
 
 	virtual void Destroy( VertexBufferHandle handle ) = 0;
+
+	virtual VertexLayoutHandle CreateVertexLayoutHandle( const VertexLayout & layout ) = 0;
+
+	virtual void Destory( VertexLayoutHandle handle ) = 0;
 
 	virtual DynamicIndexBufferHandle CreateDynamicIndexBuffer( XE::memory_view mem ) = 0;
 
@@ -54,7 +58,7 @@ public:
 
 	virtual void Destroy( DynamicIndexBufferHandle handle ) = 0;
 
-	virtual DynamicVertexBufferHandle CreateDynamicVertexBuffer( XE::memory_view mem, const VertexLayout & decl ) = 0;
+	virtual DynamicVertexBufferHandle CreateDynamicVertexBuffer( XE::memory_view mem ) = 0;
 
 	virtual void Update( DynamicVertexBufferHandle handle, XE::uint32 startVertex, XE::memory_view mem ) = 0;
 
@@ -88,13 +92,26 @@ public:
 
 	virtual void Destroy( DepthStencilStateHandle handle ) = 0;
 
-	virtual GraphicsPipelineStateHandle CreatePipelineState( BlendStateHandle bhandle, RasterizerStateHandle rhandle, DepthStencilStateHandle dhandle, ShaderHandle vs, ShaderHandle ps, ShaderHandle hs, ShaderHandle gs, ShaderHandle ds ) = 0;
-
-	virtual void Destroy( GraphicsPipelineStateHandle handle ) = 0;
-
 	virtual ComputePipelineStateHandle CreatePipelineState( ShaderHandle cs ) = 0;
 
 	virtual void Destroy( ComputePipelineStateHandle handle ) = 0;
+
+	virtual GraphicsPipelineStateHandle CreatePipelineState(
+		BlendStateHandle bhandle,
+		RasterizerStateHandle rhandle,
+		DepthStencilStateHandle dhandle,
+		VertexLayoutHandle vhandle,
+		ShaderHandle vs,
+		ShaderHandle ps,
+		ShaderHandle hs,
+		ShaderHandle gs,
+		ShaderHandle ds,
+		TopologyType topology,
+		XE::uint32 sample_mask,
+		XE::uint32 sample_count,
+		XE::uint32 sample_quality ) = 0;
+
+	virtual void Destroy( GraphicsPipelineStateHandle handle ) = 0;
 
 	virtual bool IsTextureValid( XE::uint16 depth, bool cubeMap, XE::uint16 numLayers, TextureFormat format, XE::uint64 flags ) = 0;
 
