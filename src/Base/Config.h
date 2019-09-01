@@ -277,10 +277,10 @@
 #define ONE_KBYTE (ONE_BYTE * 1024)
 #define ONE_MBYTE (ONE_KBYTE * 1024)
 #define ONE_GBYTE (ONE_MBYTE * 1024)
-#define BYTE(COUNT) (COUNT)
-#define KBYTE(COUNT) (ONE_BYTE * (COUNT))
-#define MBYTE(COUNT) (ONE_KBYTE * (COUNT))
-#define GBYTE(COUNT) (ONE_MBYTE * (COUNT))
+#define BYTE(COUNT)  (ONE_BYTE * (COUNT))
+#define KBYTE(COUNT) (ONE_KBYTE * (COUNT))
+#define MBYTE(COUNT) (ONE_MBYTE * (COUNT))
+#define GBYTE(COUNT) (ONE_GBYTE * (COUNT))
 
 /////////////////////////////////////////////////////////////////////////////////////////
 
@@ -325,15 +325,16 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 /// VERSION
 
-#define MAJOR_VERSION 0
-#define MINOR_VERSION 0
-#define PATCH_VERSION 0
+#define XE_MAJOR_VERSION 0
+#define XE_MINOR_VERSION 0
+#define XE_PATCH_VERSION 0
 
-#define VERSION_INTEGER ( int( ( MAJOR_VERSION << 20 ) | ( MINOR_VERSION << 10 ) | ( PATCH_VERSION ) ) )
+#define VERSION_INTEGER ( unsigned int( ( XE_MAJOR_VERSION << 20 ) | ( XE_MINOR_VERSION << 10 ) | ( XE_PATCH_VERSION ) ) )
 
 #define _VERSION_TO_STRING_(x) #x
 #define _VERSION_TO_STRING(x) _VERSION_TO_STRING_(x)
-#define VERSION_STRING _VERSION_TO_STRING(MAJOR_VERSION)"."_VERSION_TO_STRING(MINOR_VERSION)"."_VERSION_TO_STRING(PATCH_VERSION) 
+
+#define XE_VERSION_STRING _VERSION_TO_STRING(XE_MAJOR_VERSION)"."_VERSION_TO_STRING(XE_MINOR_VERSION)"."_VERSION_TO_STRING(XE_PATCH_VERSION) 
 
 /////////////////////////////////////////////////////////////////////////////////////////
 

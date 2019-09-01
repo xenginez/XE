@@ -2,15 +2,6 @@
 
 #include <tbb/concurrent_priority_queue.h>
 
-#define TOOL_THREAD (5)
-#define THREAD_COUNT (std::thread::hardware_concurrency() + TOOL_THREAD)
-
-#define IO_INDEX 0
-#define GAME_INDEX 1
-#define RENDER_INDEX 2
-#define PHYSICS_INDEX 3
-#define NAVIGATION_INDEX 4
-
 USING_XE
 
 BEG_META( ThreadService )
@@ -18,6 +9,8 @@ END_META()
 
 struct XEPTask
 {
+	XE::uint32 ExecCount = 0;
+	std::promise<XE::uint32> Promise;
 	ThreadPriority Pri = XE::ThreadPriority::NORM;
 	IThreadService::TaskType Task = nullptr;
 };
@@ -70,7 +63,11 @@ struct XEPMainThread : public XEPThread
 		{
 			if( task.Task )
 			{
-				if( task.Task() )
+				bool ret = task.Task();
+
+				task.Promise.set_value( ++task.ExecCount );
+
+				if( ret )
 				{
 					PushTask( std::move( task ) );
 				}
@@ -80,7 +77,7 @@ struct XEPMainThread : public XEPThread
 
 	void PushTask( XEPTask && val ) override
 	{
-		_CurrentTasks == 0 ? _FrontTasks.push( val ) : _BackTasks.push( val );
+		_CurrentTasks == 0 ? _FrontTasks.push( std::move( val ) ) : _BackTasks.push( std::move( val ) );
 	}
 
 	XE::uint64 QueueSize() override
@@ -147,7 +144,11 @@ struct XEPSpecialThread : public XEPThread
 			{
 				if( task.Task )
 				{
-					if( task.Task() )
+					bool ret = task.Task();
+
+					task.Promise.set_value( ++task.ExecCount );
+
+					if( ret )
 					{
 						PushTask( std::move( task ) );
 					}
@@ -158,7 +159,7 @@ struct XEPSpecialThread : public XEPThread
 
 	virtual void PushTask( XEPTask && val ) override
 	{
-		_Tasks.push( val );
+		_Tasks.push( std::move( val ) );
 	}
 
 	virtual XE::uint64 QueueSize() override
@@ -231,7 +232,11 @@ struct XEPWorkThread : public XEPThread
 			{
 				if( task.Task )
 				{
-					if( task.Task() )
+					bool ret = task.Task();
+
+					task.Promise.set_value( ++task.ExecCount );
+
+					if( ret )
 					{
 						PushTask( std::move( task ) );
 					}
@@ -243,7 +248,7 @@ struct XEPWorkThread : public XEPThread
 
 	virtual void PushTask( XEPTask && val ) override
 	{
-		_Tasks.push( val );
+		_Tasks.push( std::move( val ) );
 	}
 
 	virtual XE::uint64 QueueSize() override
@@ -342,14 +347,17 @@ XE::ThreadType XE::ThreadService::GetCurrentThreadType() const
 	return XE::ThreadType::UNKNOWN;
 }
 
-bool XE::ThreadService::PostTask( TaskType task, ThreadType type, ThreadPriority pri /*= ThreadPriority::NORM*/ )
+std::future<XE::uint32> XE::ThreadService::PostTask( TaskType task, ThreadType type, ThreadPriority pri /*= ThreadPriority::NORM*/ )
 {
 	XEPTask tk;
+
 	tk.Pri = pri;
 	tk.Task = task;
+
+	std::future<XE::uint32> future = tk.Promise.get_future();
 
 	_p->_Threads[( XE::uint64 )type]->PushTask( std::move( tk ) );
 	_p->_Threads[( XE::uint64 )type]->Notify();
 
-	return true;
+	return std::move( future );
 }

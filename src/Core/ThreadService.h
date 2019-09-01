@@ -38,7 +38,7 @@ public:
 	ThreadType GetCurrentThreadType() const override;
 
 public:
-	bool PostTask( TaskType task, ThreadType type, ThreadPriority pri = ThreadPriority::NORM ) override;
+	std::future<XE::uint32> PostTask( TaskType task, ThreadType type, ThreadPriority pri = ThreadPriority::NORM ) override;
 
 private:
 	Private * _p;

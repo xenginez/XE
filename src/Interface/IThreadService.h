@@ -29,7 +29,7 @@ public:
 	virtual ThreadType GetCurrentThreadType() const = 0;
 
 public:
-	virtual bool PostTask( TaskType task, ThreadType type, ThreadPriority pri = ThreadPriority::NORM ) = 0;
+	virtual std::future<XE::uint32> PostTask( TaskType task, ThreadType type, ThreadPriority pri = ThreadPriority::NORM ) = 0;
 
 };
 
