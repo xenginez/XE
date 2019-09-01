@@ -18,9 +18,6 @@ class RHI_API IRenderContext : public XE::Object, public NonCopyable
 	OBJECT( IRenderContext, Object )
 
 public:
-	friend class CommandList;
-
-public:
 	IRenderContext();
 
 	virtual ~IRenderContext();

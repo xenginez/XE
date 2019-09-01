@@ -34,13 +34,13 @@ public:
 
 	void SetMesh( const MeshPtr & val );
 
-	MaterialPtr GetMaterial() const;
+	RenderMaterialPtr GetRenderMaterial() const;
 
-	void SetMaterial( const MaterialPtr & val );
+	void SetRenderMaterial( const RenderMaterialPtr & val );
 
 private:
 	MeshPtr _Mesh;
-	MaterialPtr _Material;
+	RenderMaterialPtr _Material;
 };
 
 END_XE_NAMESPACE

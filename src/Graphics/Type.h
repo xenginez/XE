@@ -19,13 +19,13 @@ class RenderQueue;
 DECL_PTR( Mesh );
 DECL_PTR( Light );
 DECL_PTR( Camera );
-DECL_PTR( Material );
 DECL_PTR( Renderer );
 DECL_PTR( Skeleton );
 DECL_PTR( Technique );
 DECL_PTR( RenderPass );
 DECL_PTR( Renderable );
 DECL_PTR( RenderQueue );
+DECL_PTR( RenderMaterial );
 
 
 enum class CameraType

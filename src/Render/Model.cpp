@@ -25,12 +25,12 @@ void XE::Model::SetMesh( const MeshPtr & val )
 	_Mesh = val;
 }
 
-XE::MaterialPtr XE::Model::GetMaterial() const
+XE::RenderMaterialPtr XE::Model::GetRenderMaterial() const
 {
 	return _Material;
 }
 
-void XE::Model::SetMaterial( const MaterialPtr & val )
+void XE::Model::SetRenderMaterial( const RenderMaterialPtr & val )
 {
 	_Material = val;
 }
