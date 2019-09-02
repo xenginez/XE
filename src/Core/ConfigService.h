@@ -11,9 +11,6 @@
 
 #include "Type.h"
 
-#include <rapidjson/rapidjson.h>
-#include <rapidjson/document.h>
-
 BEG_XE_NAMESPACE
 
 class CORE_API ConfigService : public IConfigService
@@ -41,9 +38,6 @@ protected:
 	String GetValue( const String& key ) const override;
 
 	void SetValue( const String& key, const String& val ) const override;
-
-private:
-	void Load( const rapidjson::Value::ConstMemberIterator & parent, const std::string & parent_name );
 
 private:
 	Private * _p;

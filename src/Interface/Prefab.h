@@ -9,21 +9,14 @@
 #ifndef __PREFAB_H__A6AEEDC5_FCE5_4139_8B44_6A57BEB2DD7F
 #define __PREFAB_H__A6AEEDC5_FCE5_4139_8B44_6A57BEB2DD7F
 
-#include "Type.h"
+#include "IAssetsService.h"
 
 BEG_XE_NAMESPACE
 
-class INTERFACE_API Prefab
+class INTERFACE_API Prefab : public std::enable_shared_from_this< Prefab >
 {
-	friend class IAssetsService;
-
-private:
-	Prefab( IAssetsServicePtr val, const String& link );
-
 public:
-	ObjectPtr GetClone() const;
-
-	ObjectCPtr GetReference() const;
+	Prefab( IAssetsServicePtr val, const String& link );
 
 public:
 	const String& GetLink() const;
@@ -31,14 +24,14 @@ public:
 	AssetStatus GetStatus() const;
 
 public:
-	template< typename T > std::shared_ptr<T> GetCloneT() const
+	template< typename T > std::shared_ptr<T> GetClone() const
 	{
-		return DP_CAST<T>( GetClone() );
+		return GetStatus() == AssetStatus::Ready ? Cloneable<T>::Clone( dynamic_cast< T * >( _Service->GetAsset( _Link ).get() ) ) : nullptr;
 	}
 
-	template< typename T > std::shared_ptr<const T> GetReferenceT() const
+	template< typename T > std::shared_ptr<const T> GetReference() const
 	{
-		return DP_CAST<const T>( GetReference() );
+		return DP_CAST<const T>( GetStatus() == AssetStatus::Ready ? _Service->GetAsset( _Link ) : nullptr );
 	}
 
 private:

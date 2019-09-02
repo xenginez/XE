@@ -1,5 +1,7 @@
 #include "ConfigService.h"
 
+#include <rapidjson/rapidjson.h>
+#include <rapidjson/document.h>
 #include <rapidjson/writer.h>
 #include <rapidjson/istreamwrapper.h>
 #include <rapidjson/ostreamwrapper.h>
@@ -37,11 +39,28 @@ void XE::ConfigService::Prepare()
 		doc.ParseStream( wrapper );
 		if( !doc.HasParseError() )
 		{
+			Stack<Pair<std::string, rapidjson::Value::ConstMemberIterator>> stack;
+
 			for( rapidjson::Value::ConstMemberIterator iter = doc.MemberBegin(); iter != doc.MemberEnd(); ++iter )
 			{
-				for( rapidjson::Value::ConstMemberIterator it = iter->value.MemberBegin(); it != iter->value.MemberEnd(); ++it )
+				stack.push( { iter->name.GetString(), iter } );
+			}
+
+			while( !stack.empty() )
+			{
+				Pair<std::string, rapidjson::Value::ConstMemberIterator> pair = stack.top();
+				stack.pop();
+
+				if( !pair.second->value.IsObject() )
 				{
-					Load( it, iter->name.GetString() );
+					_p->Values.insert( { pair.first, pair.second->value.GetString() } );
+				}
+				else
+				{
+					for( rapidjson::Value::ConstMemberIterator it = pair.second->value.MemberBegin(); it != pair.second->value.MemberEnd(); ++it )
+					{
+						stack.push( { pair.first + "." + it->name.GetString(), it } );
+					}
 				}
 			}
 		}
@@ -107,21 +126,4 @@ String XE::ConfigService::GetValue( const String &key ) const
 void XE::ConfigService::SetValue( const String &key, const String &val ) const
 {
 	_p->Values[key] = val;
-}
-
-void XE::ConfigService::Load( const rapidjson::Value::ConstMemberIterator & parent, const std::string & parent_name )
-{
-	std::string this_name = parent_name + "." + parent->name.GetString();
-
-	if( parent->value.IsObject() )
-	{
-		for( rapidjson::Value::ConstMemberIterator it = parent->value.MemberBegin(); it != parent->value.MemberEnd(); ++it )
-		{
-			Load( it, this_name );
-		}
-	}
-	else
-	{
-		_p->Values.insert( { this_name, parent->value.GetString() } );
-	}
 }

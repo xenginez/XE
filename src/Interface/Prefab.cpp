@@ -10,16 +10,6 @@ XE::Prefab::Prefab( IAssetsServicePtr val, const String& link )
 
 }
 
-XE::ObjectPtr XE::Prefab::GetClone() const
-{
-	return GetStatus() == AssetStatus::Ready ? _Service->GetAsset( _Link )->Clone() : nullptr;
-}
-
-XE::ObjectCPtr XE::Prefab::GetReference() const
-{
-	return GetStatus() == AssetStatus::Ready ? _Service->GetAsset( _Link ) : nullptr;
-}
-
 const XE::String& XE::Prefab::GetLink() const
 {
 	return _Link;

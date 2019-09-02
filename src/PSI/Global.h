@@ -11,11 +11,11 @@
 
 #include <Math/Math.h>
 
-#ifdef PHI_EXPORT
-#define PHI_API DLL_EXPORT
+#ifdef PSI_EXPORT
+#define PSI_API DLL_EXPORT
 #else
-#define PHI_API DLL_IMPORT
-#define LIB_NAME "PHI"
+#define PSI_API DLL_IMPORT
+#define LIB_NAME "PSI"
 #include <Base/AutoLink.h>
 #endif
 

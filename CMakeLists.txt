@@ -67,10 +67,10 @@ add_dependencies(Reflect	Base GC)
 add_dependencies(Utils		Base GC Reflect)
 add_dependencies(Math		Base GC Reflect Utils)
 add_dependencies(RHI		Base GC Reflect Utils Math)
-add_dependencies(PHI		Base GC Reflect Utils Math)
+add_dependencies(PSI		Base GC Reflect Utils Math)
 add_dependencies(Audio		Base GC Reflect Utils Math)
 add_dependencies(World		Base GC Reflect Utils Math)
-add_dependencies(Physics	Base GC Reflect Utils Math PHI)
+add_dependencies(Physics	Base GC Reflect Utils Math PSI)
 add_dependencies(AI			Base GC Reflect Utils Math RHI)
 add_dependencies(Graphics	Base GC Reflect Utils Math RHI)
 add_dependencies(Navigation Base GC Reflect Utils Math RHI)
@@ -102,7 +102,7 @@ target_link_libraries(Utils
 target_link_libraries(Math
 		Utils)
 		
-target_link_libraries(PHI
+target_link_libraries(PSI
 		Math)
 
 target_link_libraries(RHI
@@ -118,7 +118,7 @@ target_link_libraries(World
 		Math)
 
 target_link_libraries(Physics
-		PHI
+		PSI
 		)
 
 target_link_libraries(AI

@@ -13,6 +13,9 @@
 
 BEG_XE_NAMESPACE
 
+DECL_PTR( Event );
+DECL_PTR( Object );
+
 enum class Language
 {
 	ENGLISH,

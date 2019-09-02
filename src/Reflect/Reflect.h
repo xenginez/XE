@@ -29,7 +29,7 @@
 #include "CXXMetaProperty.hpp"
 #include "CXXMetaOperator.hpp"
 
-#include "Object.h"
+#include "ReflectObject.h"
 #include "Reflection.h"
 
 #define OVERLOAD(TYPE, FUNC) (TYPE)&FUNC

@@ -13,22 +13,6 @@
 
 BEG_XE_NAMESPACE
 
-class INTERFACE_API Event
-{
-	OBJECT( Event )
-
-public:
-	Event();
-
-	Event( XE::uint64 id, const Variant& parameter = Variant() );
-
-public:
-	bool accept;
-	XE::uint64 id;
-	Variant parameter;
-};
-DECL_META_CLASS( INTERFACE_API, Event );
-
 class INTERFACE_API IEventService : public IService
 {
 	OBJECT( IEventService, IService )

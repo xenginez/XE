@@ -15,11 +15,6 @@ XE::IService::~IService()
 
 }
 
-XE::ObjectPtr XE::IService::Clone() const
-{
-	return nullptr;
-}
-
 XE::IFrameworkPtr XE::IService::GetFramework() const
 {
 	return _Framework;

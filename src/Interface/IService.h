@@ -36,9 +36,6 @@ public:
 
 	virtual void Clearup() = 0;
 
-public:
-	ObjectPtr Clone() const override;
-
 private:
 	IFrameworkPtr _Framework;
 };

@@ -1,13 +1,13 @@
 /*!
- * \file   Object.h
+ * \file	ReflectObject.h
  *
- * \author ZhengYuanQing
- * \date   2019/01/23
- * \email  zhengyuanqing.95@gmail.com
+ * \author	ZhengYuanQing
+ * \date	2019/09/03
+ * \email	zhengyuanqing.95@gmail.com
  *
  */
-#ifndef __OBJECT_H__E9308405_DB33_49CC_953A_8011B015CAA9
-#define __OBJECT_H__E9308405_DB33_49CC_953A_8011B015CAA9
+#ifndef REFLECTOBJECT_H__080637A5_D1CD_4182_81E3_57D5D2025E0D
+#define REFLECTOBJECT_H__080637A5_D1CD_4182_81E3_57D5D2025E0D
 
 #include "Variant.h"
 #include "Archive.h"
@@ -16,7 +16,7 @@
 
 BEG_XE_NAMESPACE
 
-class REFLECT_API Object : public XE::GCObject
+class REFLECT_API ReflectObject : public XE::GCObject
 {
 	template< typename T > friend struct MetaDataCollector;
 
@@ -26,14 +26,14 @@ public:
 	virtual const IMetaClassPtr GetMetaClass() const;
 
 public:
-	Object();
+	ReflectObject();
 
-	virtual ~Object();
+	virtual ~ReflectObject();
 
 public:
-	Variant GetProperty( const String& name );
+	Variant GetProperty( const String & name );
 
-	void SetProperty( const String& name, const Variant& val );
+	void SetProperty( const String & name, const Variant & val );
 
 	template< typename ... _Args > Variant Invoke( const String & name, _Args && ...args )
 	{
@@ -46,18 +46,13 @@ public:
 	}
 
 public:
-	virtual ObjectPtr Clone() const;
+	virtual ReflectObjectPtr Clone() const;
 
 public:
-	virtual void Serialize( Archive &val );
+	virtual void Serialize( Archive & val );
 
-public:
-	const String & GetUUID() const;
-
-public:
-	String _UUID;
 };
 
 END_XE_NAMESPACE
 
-#endif // __OBJECT_H__E9308405_DB33_49CC_953A_8011B015CAA9
+#endif // REFLECTOBJECT_H__080637A5_D1CD_4182_81E3_57D5D2025E0D

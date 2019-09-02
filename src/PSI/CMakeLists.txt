@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
 
-add_definitions(-DPHI_EXPORT)
+add_definitions(-DPSI_EXPORT)
 
 FILE(GLOB SOURCE_FILES *.h *.hpp *.cpp *.inc)
-add_library(PHI ${SOURCE_FILES})
+add_library(PSI ${SOURCE_FILES})

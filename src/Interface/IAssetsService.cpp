@@ -17,7 +17,7 @@ XE::IAssetsService::~IAssetsService()
 
 }
 
-XE::Prefab XE::IAssetsService::CreatePrefab( const String &val )
+XE::PrefabPtr XE::IAssetsService::CreatePrefab( const String &val )
 {
-	return { XE_THIS(IAssetsService), val };
+	return XE::make_shared<Prefab>( XE_THIS( IAssetsService ), val );
 }

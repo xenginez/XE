@@ -13,9 +13,9 @@
 
 BEG_XE_NAMESPACE
 
-DECL_HANDLE( PHI_API, Body );
-DECL_HANDLE( PHI_API, Shape );
-DECL_HANDLE( PHI_API, Joint );
+DECL_HANDLE( PSI_API, Body );
+DECL_HANDLE( PSI_API, Shape );
+DECL_HANDLE( PSI_API, Constraint );
 
 enum class PhysicsContextType
 {
@@ -24,7 +24,7 @@ enum class PhysicsContextType
 	PHYSX,
 	BULLET,
 };
-DECL_META_ENUM( PHI_API, PhysicsContextType );
+DECL_META_ENUM( PSI_API, PhysicsContextType );
 
 END_XE_NAMESPACE
 

@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class PHI_API IPhysicsContext : public XE::Object, public NonCopyable
+class PSI_API IPhysicsContext : public XE::Object, public NonCopyable
 {
 	OBJECT( IPhysicsContext, Object )
 

@@ -192,13 +192,13 @@ private:
 };
 
 
-template< typename T > struct Serializable
+template< typename T > struct Cloneable
 {
 public:
-	template<typename U> struct HasMemberLoad
+	template<typename U> struct HasMemberClone
 	{
 	private:
-		template <typename Ty, void( Ty:: * )( Archive & ) = &Ty::Load>
+		template <typename Ty, std::shared_ptr<U>( Ty:: * )() = &Ty::Clone>
 		static constexpr auto check( Ty * ) { return true; };
 
 		static constexpr bool check( ... ) { return false; };
@@ -207,17 +207,36 @@ public:
 		static constexpr bool value = check( static_cast< U * >( nullptr ) );
 	};
 
-	template<typename U> struct HasMemberSave
+public:
+	static std::shared_ptr<T> Clone( T * val )
 	{
-		template <typename Ty, void( Ty:: * )( Archive & ) = &Ty::Save>
-		static constexpr bool check( Ty * ) { return true; };
+		if constexpr( HasMemberClone<T>::value )
+		{
+			return val->Clone( arc );
+		}
+		else
+		{
+			if( auto cls = ClassID<T>::Get( val ) )
+			{
+				auto ret = cls->ConstructPtr().Value< std::shared_ptr<U> >();
 
-		static constexpr bool check( ... ) { return false; };
+				cls->VisitProperty( [&]( IMetaPropertyPtr prop )
+											   {
+												   if( !( prop->GetFlag() & IMetaProperty::NoClone ) && !prop->IsStatic() )
+												   {
+													   prop->Set( ret, prop->Get( val ) );
+												   }
+											   } );
 
-	public:
-		static constexpr bool value = check( static_cast< U * >( nullptr ) );
-	};
+				return ret;
+			}
+		}
+	}
+};
 
+template< typename T > struct Serializable
+{
+public:
 	template< typename U > struct HasMemberSerialize
 	{
 	private:
