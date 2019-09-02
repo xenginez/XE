@@ -2,11 +2,11 @@
 
 USING_XE
 
-BEG_META( Joint )
-type->Property( "Name", &Joint::Name );
-type->Property( "Parent", &Joint::Parent );
-type->Property( "Children", &Joint::Children );
-type->Property( "Transform", &Joint::Transform );
+BEG_META( BoneJoint )
+type->Property( "Name", &BoneJoint::Name );
+type->Property( "Parent", &BoneJoint::Parent );
+type->Property( "Children", &BoneJoint::Children );
+type->Property( "Transform", &BoneJoint::Transform );
 END_META()
 
 
@@ -62,7 +62,7 @@ const XE::Array<XE::uint64> & XE::Skeleton::GetJointChildren( XE::uint64 val ) c
 	return _Joints[val].Children;
 }
 
-const XE::Array<XE::Joint> & XE::Skeleton::GetJoints() const
+const XE::Array<XE::BoneJoint> & XE::Skeleton::GetJoints() const
 {
 	return _Joints;
 }

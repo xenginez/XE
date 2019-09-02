@@ -15,6 +15,7 @@ BEG_XE_NAMESPACE
 
 DECL_HANDLE( PHI_API, Body );
 DECL_HANDLE( PHI_API, Shape );
+DECL_HANDLE( PHI_API, Joint );
 
 enum class PhysicsContextType
 {

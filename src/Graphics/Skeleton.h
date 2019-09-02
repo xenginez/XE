@@ -13,15 +13,17 @@
 
 BEG_XE_NAMESPACE
 
-class GRAPHICS_API Joint
+class GRAPHICS_API BoneJoint : public XE::Object
 {
+	OBJECT( BoneJoint, Object )
+
 public:
 	XE::String Name;
 	XE::uint64 Parent;
 	XE::Mat4 Transform;
 	XE::Array<XE::uint64> Children;
 };
-DECL_META_CLASS( GRAPHICS_API, Joint );
+DECL_META_CLASS( GRAPHICS_API, BoneJoint );
 
 class GRAPHICS_API Skeleton : public XE::Object
 {
@@ -49,13 +51,13 @@ public:
 	const XE::Array<XE::uint64> & GetJointChildren( XE::uint64 val ) const;
 
 public:
-	const XE::Array<XE::Joint> & GetJoints() const;
+	const XE::Array<XE::BoneJoint> & GetJoints() const;
 
 public:
 	void SetJointTransform( XE::uint64 val, const XE::Mat4 & mat );
 
 private:
-	XE::Array<XE::Joint> _Joints;
+	XE::Array<XE::BoneJoint> _Joints;
 };
 
 END_XE_NAMESPACE
