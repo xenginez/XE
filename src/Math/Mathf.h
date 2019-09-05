@@ -755,6 +755,37 @@ public:
 	static constexpr XE::real Infinity = std::numeric_limits<XE::real>::infinity();
 
 public:
+	static XE_INLINE XE::real MM2CM( XE::real mm )
+	{
+		return mm / 10.0f;
+	}
+
+	static XE_INLINE XE::real CM2M( XE::real cm )
+	{
+		return cm / 100.0f;
+	}
+
+	static XE_INLINE XE::real M2KM( XE::real m )
+	{
+		return m / 1000.0f;
+	}
+
+	static XE_INLINE XE::real KM2M( XE::real km )
+	{
+		return km * 1000.0f;
+	}
+
+	static XE_INLINE XE::real M2CM( XE::real m )
+	{
+		return m * 100.0f;
+	}
+
+	static XE_INLINE XE::real CM2MM( XE::real cm )
+	{
+		return cm * 10.0f;
+	}
+
+public:
 	static XE_INLINE XE::real Abs( XE::real r )
 	{
 		return std::abs( r );

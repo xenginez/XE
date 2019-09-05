@@ -27,6 +27,7 @@
 #include "Line.h"
 #include "Plane.h"
 #include "Sphere.h"
+#include "Capsule.h"
 #include "Frustum.h"
 
 #include "Color.h"
