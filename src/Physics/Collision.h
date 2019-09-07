@@ -13,12 +13,14 @@
 
 BEG_XE_NAMESPACE
 
-class PHYSICS_API Collision
+class PHYSICS_API Collision : public XE::Object
 {
+	OBJECT( Collision, Object )
+
 public:
 	Collision();
 
-	~Collision();
+	~Collision() override;
 };
 
 END_XE_NAMESPACE

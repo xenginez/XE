@@ -2,6 +2,9 @@
 
 USING_XE
 
+BEG_META( Collision )
+END_META()
+
 XE::Collision::Collision()
 {
 

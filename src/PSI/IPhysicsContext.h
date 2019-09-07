@@ -41,7 +41,7 @@ public:
 
 	virtual ShapeHandle CreateCapsuleShape( RigidBodyHandle rigidbody, const Capsule & capsule ) = 0;
 
-	virtual ShapeHandle CreateConvexMeshShape( RigidBodyHandle rigidbody, XE::basic_memory_view< Vec3 > vertex, real scale ) = 0;
+	virtual ShapeHandle CreateConvexMeshShape( RigidBodyHandle rigidbody, XE::basic_memory_view< Vec3 > vertex, XE::basic_memory_view< uint32 > index, real scale ) = 0;
 
 	virtual ShapeHandle CreateHeightFieldShape( RigidBodyHandle rigidbody, XE::basic_memory_view< real > height, real scale, uint32 row, uint32 col ) = 0;
 

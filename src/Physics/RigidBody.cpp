@@ -1,12 +1,15 @@
 #include "RigidBody.h"
 
+USING_XE
 
+BEG_META( RigidBody )
+END_META()
 
-RigidBody::RigidBody()
+XE::RigidBody::RigidBody()
 {
 }
 
-
-RigidBody::~RigidBody()
+XE::RigidBody::~RigidBody()
 {
+
 }

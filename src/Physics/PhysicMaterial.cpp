@@ -1,12 +1,15 @@
 #include "PhysicMaterial.h"
 
+USING_XE
 
+BEG_META( PhysicMaterial )
+END_META()
 
-PhysicMaterial::PhysicMaterial()
+XE::PhysicMaterial::PhysicMaterial()
 {
 }
 
-
-PhysicMaterial::~PhysicMaterial()
+XE::PhysicMaterial::~PhysicMaterial()
 {
+
 }

@@ -9,6 +9,11 @@
 #ifndef __PHYSICS_H__CAF753C8_9232_4313_B028_7EE340B723A0
 #define __PHYSICS_H__CAF753C8_9232_4313_B028_7EE340B723A0
 
-#include "Type.h"
+#include "Shape.h"
+#include "Joint.h"
+#include "Collision.h"
+#include "RigidBody.h"
+#include "Constraint.h"
+#include "PhysicMaterial.h"
 
 #endif // __PHYSICS_H__CAF753C8_9232_4313_B028_7EE340B723A0
