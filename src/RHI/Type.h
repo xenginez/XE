@@ -160,10 +160,6 @@ enum class RenderContextType
 	EMPTY,
 	METAL,
 	VULKAN,
-	OPENGL,
-	OPENGLES2,
-	OPENGLES3,
-	DIRECT3D11,
 	DIRECT3D12,
 };
 DECL_META_ENUM( RHI_API, RenderContextType );

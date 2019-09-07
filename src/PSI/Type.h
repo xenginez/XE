@@ -21,8 +21,8 @@ DECL_HANDLE( PSI_API, Constraint );
 
 enum class PhysicsContextType
 {
+	EMPTY,
 	BOX2D,
-	HAVOK,
 	PHYSX,
 	BULLET,
 };
