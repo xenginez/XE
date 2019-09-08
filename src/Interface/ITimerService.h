@@ -37,6 +37,14 @@ public:
 
 	virtual void SetTimeScale( XE::float32 val ) = 0;
 
+	virtual XE::float32 GetMinDeltaTime() const = 0;
+
+	virtual void SetMinDeltaTime( XE::float32 val ) = 0;
+
+	virtual XE::float32 GetMaxDeltaTime() const = 0;
+
+	virtual void SetMaxDeltaTime( XE::float32 val ) = 0;
+
 public:
 	virtual XE::float32 GetTime() const = 0;
 

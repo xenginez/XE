@@ -9,13 +9,13 @@
 #ifndef RIGIDBODY_H__F9398FC0_E3E7_4E55_99AF_8A689017D38B
 #define RIGIDBODY_H__F9398FC0_E3E7_4E55_99AF_8A689017D38B
 
-#include "Type.h"
+#include "PhysicsObject.h"
 
 BEG_XE_NAMESPACE
 
-class PHYSICS_API RigidBody : public XE::Object
+class PHYSICS_API RigidBody : public XE::PhysicsObject
 {
-	OBJECT( RigidBody, Object )
+	OBJECT( RigidBody, PhysicsObject )
 
 public:
 	RigidBody();

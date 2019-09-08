@@ -49,6 +49,14 @@ public:
 
 	void SetTimeScale( XE::float32 val ) override;
 
+	XE::float32 GetMinDeltaTime() const override;
+
+	void SetMinDeltaTime( XE::float32 val ) override;
+
+	XE::float32 GetMaxDeltaTime() const override;
+
+	void SetMaxDeltaTime( XE::float32 val ) override;
+
 public:
 	XE::float32 GetTime() const override;
 

@@ -51,7 +51,11 @@ public:
 
 	virtual void Destory( JointHandle handle ) = 0;
 
-	virtual RigidBodyHandle CreateRigidBody( RigidBodyType type, const String & name, const Mat4 & pose ) = 0;
+	virtual SoftBodyHandle CreateSoftBody( const String & name, const Mat4 & pose ) = 0;
+
+	virtual void Destory( SoftBodyHandle handle ) = 0;
+
+	virtual RigidBodyHandle CreateRigidBody( const String & name, const Mat4 & pose ) = 0;
 
 	virtual void Destory( RigidBodyHandle handle ) = 0;
 

@@ -9,13 +9,13 @@
 #ifndef SHAPE_H__888F3A03_457E_43C2_9762_4007ECABA020
 #define SHAPE_H__888F3A03_457E_43C2_9762_4007ECABA020
 
-#include "Type.h"
+#include "PhysicsObject.h"
 
 BEG_XE_NAMESPACE
 
-class PHYSICS_API Shape : public XE::Object
+class PHYSICS_API Shape : public XE::PhysicsObject
 {
-	OBJECT( Shape, Object )
+	OBJECT( Shape, PhysicsObject )
 
 public:
 	Shape();

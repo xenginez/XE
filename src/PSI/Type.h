@@ -13,8 +13,11 @@
 
 BEG_XE_NAMESPACE
 
+DECL_PTR( IPhysicsContext );
+
 DECL_HANDLE( PSI_API, Shape );
 DECL_HANDLE( PSI_API, Joint );
+DECL_HANDLE( PSI_API, SoftBody );
 DECL_HANDLE( PSI_API, RigidBody );
 DECL_HANDLE( PSI_API, Collection );
 DECL_HANDLE( PSI_API, Constraint );
@@ -27,15 +30,6 @@ enum class PhysicsContextType
 	BULLET,
 };
 DECL_META_ENUM( PSI_API, PhysicsContextType );
-
-enum class RigidBodyType
-{
-	CLOTH,
-	STATIC,
-	DYNAMIC,
-};
-DECL_META_ENUM( PSI_API, RigidBodyType );
-
 
 END_XE_NAMESPACE
 

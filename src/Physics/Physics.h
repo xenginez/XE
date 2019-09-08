@@ -11,9 +11,10 @@
 
 #include "Shape.h"
 #include "Joint.h"
-#include "Collision.h"
+#include "SoftBody.h"
 #include "RigidBody.h"
+#include "Collision.h"
 #include "Constraint.h"
-#include "PhysicMaterial.h"
+#include "PhysicsMaterial.h"
 
 #endif // __PHYSICS_H__CAF753C8_9232_4313_B028_7EE340B723A0

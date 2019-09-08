@@ -9,13 +9,13 @@
 #ifndef JOINT_H__E597880A_FE98_41A0_9AFB_C6EBEA13CCB1
 #define JOINT_H__E597880A_FE98_41A0_9AFB_C6EBEA13CCB1
 
-#include "Type.h"
+#include "PhysicsObject.h"
 
 BEG_XE_NAMESPACE
 
-class PHYSICS_API Joint : public XE::Object
+class PHYSICS_API Joint : public XE::PhysicsObject
 {
-	OBJECT( Joint, Object )
+	OBJECT( Joint, PhysicsObject )
 
 public:
 	Joint();
