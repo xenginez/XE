@@ -154,4 +154,177 @@ Language Platform::GetDefaultLanguage()
 	return Language::ENGLISH;
 }
 
+WindowHandle Platform::CreateWindow( const String & title, XE::uint32 x, XE::uint32 y, XE::uint32 w, XE::uint32 h )
+{
+	NSRect frame = NSMakeRect(x, y, w, h);
+	
+	NSWindow* window  = [[NSWindow alloc] initWithContentRect:frame
+													 styleMask:NSBorderlessWindowMask
+													   backing:NSBackingStoreBuffered
+														 defer:NO];
+	
+	[window setBackgroundColor:[NSColor blackColor]];
+	[window makeKeyAndOrderFront:nil];
+	
+	return reinterpret_cast<XE::uint64>(window);
+}
+
+bool Platform::DestroyWindow( WindowHandle handle )
+{
+	NSWindow * window = reinterpret_cast<NSWindow*>( handle.GetValue() );
+	
+	[window close];
+	
+	[window release];
+	
+	return true;
+}
+
+bool Platform::GrabWindow( WindowHandle handle )
+{
+	NSWindow * window = reinterpret_cast<NSWindow*>( handle.GetValue() );
+	
+	[window setLevel:NSNormalWindowLevel];
+	
+	[window makeKeyAndOrderFront:nil];
+	
+	return true;
+}
+
+bool Platform::ShowWindow( WindowHandle handle )
+{
+	NSWindow * window = reinterpret_cast<NSWindow*>( handle.GetValue() );
+	
+	[window makeKeyAndOrderFront:nil];
+	
+	return true;
+}
+
+bool Platform::HideWindow( WindowHandle handle )
+{
+	NSWindow * window = reinterpret_cast<NSWindow*>( handle.GetValue() );
+	
+	[window orderOut:nil];
+	
+	return true;
+}
+
+bool Platform::MinimizeWindow( WindowHandle handle )
+{
+	NSWindow * window = reinterpret_cast<NSWindow*>( handle.GetValue() );
+	
+	if(![window isMiniaturized])
+	{
+		[window miniaturize:nil];
+		
+		return true;
+	}
+	
+	return false;
+}
+
+bool Platform::MaximizeWindow( WindowHandle handle )
+{
+	NSWindow * window = reinterpret_cast<NSWindow*>( handle.GetValue() );
+	
+	if(![window isZoomed])
+	{
+		[window zoom:nil];
+		
+		return true;
+	}
+	
+	return false;
+}
+
+bool Platform::FullscreenWindow( WindowHandle handle )
+{
+	NSWindow * window = reinterpret_cast<NSWindow*>( handle.GetValue() );
+	
+	[window setStyleMask:NSWindowStyleMaskBorderless];
+	[window setFrame:[[window screen] frame] display:NO];
+	[window setLevel:NSMainMenuWindowLevel+1];
+	[window makeKeyAndOrderFront:nil];
+	
+	return true;
+}
+
+bool Platform::GetWindowFocus( WindowHandle handle )
+{
+	NSWindow * window = reinterpret_cast<NSWindow*>( handle.GetValue() );
+	
+	return [window isKeyWindow];
+}
+
+bool Platform::SetWindowTitle( WindowHandle handle, const String & title )
+{
+	NSWindow * window = reinterpret_cast<NSWindow*>( handle.GetValue() );
+	
+	NSString * s = [[[NSString alloc] initWithCString:title.ToCString()] autorelease];
+	
+	[window setTitle:s];
+	
+	return true;
+}
+
+bool Platform::SetWindowRect( WindowHandle handle, XE::uint32 x, XE::uint32 y, XE::uint32 w, XE::uint32 h, bool topmost )
+{
+	NSWindow * window = reinterpret_cast<NSWindow*>( handle.GetValue() );
+	
+	NSRect rect;
+	rect.origin.x = x;
+	rect.origin.y = y;
+	rect.size.width = w;
+	rect.size.height = h;
+	
+	[window setStyleMask:NSBorderlessWindowMask];
+	[window setFrame:[window frameRectForContentRect:rect] display:YES];
+	[window setLevel:NSNormalWindowLevel];
+	
+	return true;
+}
+
+bool Platform::ShowMouse()
+{
+	return true;
+}
+
+bool Platform::HideMouse()
+{
+	return true;
+}
+
+ProcessHandle Platform::CreateProcess( const std::filesystem::path & app, const std::string & cmd, bool inherit, XE::uint32 flag )
+{
+	NSTask *task;
+	task = [[NSTask alloc] init];
+	NSString * s = [[[NSString alloc] initWithCString:app.string().c_str()] autorelease];
+	[task setLaunchPath:s];
+	
+	NSArray *argHelp = [@[[NSString stringWithCString:cmd.c_str()]] autorelease];
+	[task setArguments:argHelp];
+	NSPipe *pipe;
+	pipe = [NSPipe pipe];
+	NSPipe * inputPipe = [NSPipe pipe];
+	[task setStandardOutput: pipe];
+	[task setStandardInput:inputPipe];
+	NSFileHandle *file;
+	file = [pipe fileHandleForReading];
+	NSFileHandle * InFile = [inputPipe fileHandleForWriting];
+	NSString * pDir = [NSString stringWithCString:std::filesystem::current_path().string().c_str()];
+	[task setCurrentDirectoryPath:pDir];
+	[task launch];
+	
+	return reinterpret_cast<XE::uint64>(task);
+}
+
+bool Platform::DestroyProcess( ProcessHandle handle, XE::uint32 code )
+{
+	NSTask *task = reinterpret_cast<NSTask*>(handle.GetValue());
+	
+	[task release];
+	
+	return true;
+}
+
 #endif

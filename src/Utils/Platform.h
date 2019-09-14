@@ -22,10 +22,6 @@ public:
 	static Language GetDefaultLanguage();
 
 public:
-	static bool RegisterWindowClass( std::function<bool( WindowHandle, XE::WindowEvent )> callback );
-
-	static void UnregisterWindowClass();
-
 	static WindowHandle CreateWindow( const String & title, XE::uint32 x, XE::uint32 y, XE::uint32 w, XE::uint32 h );
 
 	static bool DestroyWindow( WindowHandle handle );
