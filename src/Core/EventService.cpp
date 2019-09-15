@@ -87,6 +87,12 @@ void XE::EventService::Clearup()
 
 void XE::EventService::PostEvent( EventPtr val )
 {
+	if( val->recver )
+	{
+		val->recver->OnEvent( val );
+		return;
+	}
+
 	Private::ListenerMap::accessor accessor;
 	if ( _p->_Listeners.find( accessor, val->id ) )
 	{

@@ -38,21 +38,23 @@ public:
 	void Clearup() override;
 
 public:
-	PrefabPtr Load( const String& val ) override;
+	PrefabPtr Load( const String & val ) override;
 
-	PrefabPtr AsynLoad( const String& val ) override;
+	PrefabPtr AsynLoad( const String & val ) override;
 
-	void Unload( const String& val ) override;
+	void Unload( const String & val ) override;
 
 protected:
-	ObjectPtr GetAsset( const String& val ) const override;
+	ObjectPtr GetAsset( const String & val ) const override;
 
-	AssetStatus GetAssetStatus( const String& val ) const override;
+	AssetStatus GetAssetStatus( const String & val ) const override;
 
 private:
-	void LoadAsset( const String& val );
+	void LoadAsset( const String & val );
 
-	void UnloadAsset( const String& val );
+	void UnloadAsset( const String & val );
+
+	FArray<String> GetDependent( const String & val ) const;
 
 private:
 	Private * _p;

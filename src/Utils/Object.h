@@ -23,13 +23,13 @@ public:
 	~Object() override;
 
 public:
-	const String & GetUUID() const;
+	virtual void AssetLoad();
+
+	virtual void AssetUnload();
 
 public:
 	virtual void OnEvent( EventPtr & val );
 
-public:
-	String _UUID;
 };
 
 END_XE_NAMESPACE

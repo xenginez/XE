@@ -49,6 +49,11 @@ XE::AssetsService::~AssetsService()
 	delete _p;
 }
 
+void XE::AssetsService::Prepare()
+{
+
+}
+
 bool XE::AssetsService::Startup()
 {
 
@@ -169,24 +174,25 @@ XE::AssetStatus XE::AssetsService::GetAssetStatus( const String & val ) const
 void XE::AssetsService::LoadAsset( const String & val )
 {
 	{
-		auto it = _p->_Directorys.find( val );
-		if( it != _p->_Directorys.end() )
+		auto dependent = GetDependent( val );
+
+		for( auto const & it : dependent )
 		{
-			for( const auto & dep : it->second.Dependent )
-			{
-				LoadAsset( dep );
-			}
+			LoadAsset( it );
 		}
 	}
 
 	// TODO: Load Current Asset
+	ObjectPtr asset = nullptr;
+
+	asset->AssetLoad();
 
 	{
 		AssetMap::accessor it;
 		if( _p->_Assets.find( it, val ) )
 		{
 			std::get < 0 >( it->second ) = AssetStatus::Ready;
-			std::get < 1 >( it->second ) = nullptr;
+			std::get < 1 >( it->second ) = asset;
 			std::get < 2 >( it->second ) = GetFramework()->GetTimerService()->GetTime();
 		}
 	}
@@ -197,11 +203,15 @@ void XE::AssetsService::UnloadAsset( const String & val )
 	AssetMap::accessor it;
 	if( _p->_Assets.find( it, val ) )
 	{
+		std::get < 1 >( it->second )->AssetUnload();
+
 		_p->_Assets.erase( it );
 	}
 }
 
-void XE::AssetsService::Prepare()
+XE::FArray<XE::String> XE::AssetsService::GetDependent( const String & val ) const
 {
+	XE::FArray<XE::String> dependent;
 
+	return dependent;
 }
