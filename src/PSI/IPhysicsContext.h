@@ -210,8 +210,38 @@ public:
 	virtual void setAngularVelocity( SoftBodyHandle handle, const XE::Vec3 & velocity ) = 0;
 
 	virtual void setDampingCoefficient( SoftBodyHandle handle, XE::real damping ) = 0;
-
 	
+	virtual void addForce( const XE::Vec3 & force ) = 0;
+
+	virtual void addForce( const XE::Vec3 & force, XE::uint32 node ) = 0;
+
+	virtual void addAeroForceToNode( const XE::Vec3 & force, XE::uint32 node ) = 0;
+
+	virtual void addAeroForceToFace( const XE::Vec3 & force, XE::uint32 face ) = 0;
+
+	virtual void addVelocity( const XE::Vec3 & velocity ) = 0;
+
+	virtual void setVelocity( const XE::Vec3 & velocity ) = 0;
+
+	virtual void addVelocity( const XE::Vec3 & velocity, XE::uint32 node ) = 0;
+
+	virtual void setMass( XE::uint32 node, XE::real mass ) = 0;
+
+	virtual void setTotalMass( XE::real mass, bool fromfaces = false ) = 0;
+	
+	virtual void setTotalDensity( XE::real density ) = 0;
+
+	virtual void setVolumeMass( XE::real mass ) = 0;
+
+	virtual void setVolumeDensity( XE::real density ) = 0;
+
+	virtual void setRestLengthScale( XE::real restLength ) = 0;
+
+
+
+
+
+
 
 // 
 // 	// Scene
