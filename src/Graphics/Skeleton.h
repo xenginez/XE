@@ -38,26 +38,26 @@ public:
 	~Skeleton() override;
 
 public:
-	XE::uint64 GetJointCount() const;
+	XE::uint64 GetBoneJointCount() const;
 
-	XE::uint64 FindJointIndex( const XE::String & val ) const;
+	XE::uint64 FindBoneJointIndex( const XE::String & val ) const;
 
-	const XE::String & GetJointName( XE::uint64 val ) const;
+	const XE::String & GetBoneJointName( XE::uint64 val ) const;
 
-	XE::uint64 GetJointParent( XE::uint64 val ) const;
+	XE::uint64 GetBoneJointParent( XE::uint64 val ) const;
 
-	const XE::Mat4 & GetJointTransform( XE::uint64 val ) const;
+	const XE::Mat4 & GetBoneJointTransform( XE::uint64 val ) const;
 
-	const XE::Array<XE::uint64> & GetJointChildren( XE::uint64 val ) const;
-
-public:
-	const XE::Array<XE::BoneJoint> & GetJoints() const;
+	const XE::Array<XE::uint64> & GetBoneJointChildren( XE::uint64 val ) const;
 
 public:
-	void SetJointTransform( XE::uint64 val, const XE::Mat4 & mat );
+	const XE::Array<XE::BoneJoint> & GetBoneJoints() const;
+
+public:
+	void SetBoneJointTransform( XE::uint64 val, const XE::Mat4 & mat );
 
 private:
-	XE::Array<XE::BoneJoint> _Joints;
+	XE::Array<XE::BoneJoint> _BoneJoints;
 };
 
 END_XE_NAMESPACE

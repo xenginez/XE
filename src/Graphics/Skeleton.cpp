@@ -11,7 +11,7 @@ END_META()
 
 
 BEG_META( Skeleton )
-type->Property( "Joints", &Skeleton::_Joints );
+type->Property( "BoneJoints", &Skeleton::_BoneJoints );
 END_META()
 
 XE::Skeleton::Skeleton()
@@ -24,16 +24,16 @@ XE::Skeleton::~Skeleton()
 
 }
 
-XE::uint64 XE::Skeleton::GetJointCount() const
+XE::uint64 XE::Skeleton::GetBoneJointCount() const
 {
-	return _Joints.size();
+	return _BoneJoints.size();
 }
 
-XE::uint64 XE::Skeleton::FindJointIndex( const XE::String & val ) const
+XE::uint64 XE::Skeleton::FindBoneJointIndex( const XE::String & val ) const
 {
-	for( XE::uint64 i = 0; i < _Joints.size(); ++i )
+	for( XE::uint64 i = 0; i < _BoneJoints.size(); ++i )
 	{
-		if( _Joints[i].Name == val )
+		if( _BoneJoints[i].Name == val )
 		{
 			return i;
 		}
@@ -42,32 +42,32 @@ XE::uint64 XE::Skeleton::FindJointIndex( const XE::String & val ) const
 	return npos;
 }
 
-const XE::String & XE::Skeleton::GetJointName( XE::uint64 val ) const
+const XE::String & XE::Skeleton::GetBoneJointName( XE::uint64 val ) const
 {
-	return _Joints[val].Name;
+	return _BoneJoints[val].Name;
 }
 
-XE::uint64 XE::Skeleton::GetJointParent( XE::uint64 val ) const
+XE::uint64 XE::Skeleton::GetBoneJointParent( XE::uint64 val ) const
 {
-	return _Joints[val].Parent;
+	return _BoneJoints[val].Parent;
 }
 
-const XE::Mat4 & XE::Skeleton::GetJointTransform( XE::uint64 val ) const
+const XE::Mat4 & XE::Skeleton::GetBoneJointTransform( XE::uint64 val ) const
 {
-	return _Joints[val].Transform;
+	return _BoneJoints[val].Transform;
 }
 
-const XE::Array<XE::uint64> & XE::Skeleton::GetJointChildren( XE::uint64 val ) const
+const XE::Array<XE::uint64> & XE::Skeleton::GetBoneJointChildren( XE::uint64 val ) const
 {
-	return _Joints[val].Children;
+	return _BoneJoints[val].Children;
 }
 
-const XE::Array<XE::BoneJoint> & XE::Skeleton::GetJoints() const
+const XE::Array<XE::BoneJoint> & XE::Skeleton::GetBoneJoints() const
 {
-	return _Joints;
+	return _BoneJoints;
 }
 
-void XE::Skeleton::SetJointTransform( XE::uint64 val, const XE::Mat4 & mat )
+void XE::Skeleton::SetBoneJointTransform( XE::uint64 val, const XE::Mat4 & mat )
 {
-	_Joints[val].Transform = mat;
+	_BoneJoints[val].Transform = mat;
 }
