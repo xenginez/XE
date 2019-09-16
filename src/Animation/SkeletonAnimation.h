@@ -13,35 +13,11 @@
 
 BEG_XE_NAMESPACE
 
-class ANIMATION_API SkeletonAnimationItem
-{
-public:
-	SkeletonAnimationItem();
-
-	~SkeletonAnimationItem();
-
-public:
-	const XE::Vec3 & GetPosition() const;
-
-	void SetPosition( const XE::Vec3 & val );
-
-	const XE::Quat & GetRotation() const;
-
-	void SetRotation( const XE::Quat & val );
-
-	const XE::Vec3 & GetScale() const;
-
-	void SetScale( const XE::Vec3 & val );
-
-private:
-	XE::Vec3 _Position;
-	XE::Quat _Rotation;
-	XE::Vec3 _Scale;
-};
-DECL_META_CLASS( ANIMATION_API, SkeletonAnimationItem );
-
 class ANIMATION_API SkeletonAnimationKey
 {
+public:
+	friend class SkeletonAnimation;
+
 public:
 	SkeletonAnimationKey();
 
@@ -52,24 +28,52 @@ public:
 
 	void SetTime( XE::float32 val );
 
-	const Map< XE::uint32, SkeletonAnimationItem > & GetSkeletonItems() const;
+	const XE::Vec3 & GetPosition() const;
 
-	void SetSkeletonItems( const Map< XE::uint32, SkeletonAnimationItem > & val );
+	void SetPosition( const XE::Vec3 & val );
 
-public:
+	const XE::Quat & GetRotation() const;
+
+	void SetRotation( const XE::Quat & val );
+
+private:
 	XE::float32 _Time;
-	Map< XE::uint32, SkeletonAnimationItem > _Items;
+	XE::Vec3 _Position;
+	XE::Quat _Rotation;
 };
 DECL_META_CLASS( ANIMATION_API, SkeletonAnimationKey );
 
-class ANIMATION_API SkeletonAnimation : public XE::Object
+class ANIMATION_API SkeletonAnimationTrack
 {
-	OBJECT( SkeletonAnimation, Object )
+public:
+	friend class SkeletonAnimation;
 
+public:
+	SkeletonAnimationTrack();
+
+	~SkeletonAnimationTrack();
+
+public:
+	XE::float32 GetMaxTime() const;
+
+	void SetMaxTime( XE::float32 val );
+
+	const Array< SkeletonAnimationKey > & GetSkeletonAnimationKeys() const;
+
+	void SetSkeletonAnimationKeys( const Array< SkeletonAnimationKey > & val );
+
+public:
+	XE::float32 _MaxTime;
+	Array< SkeletonAnimationKey > _Keys;
+};
+DECL_META_CLASS( ANIMATION_API, SkeletonAnimationTrack );
+
+class ANIMATION_API SkeletonAnimation : public std::enable_shared_from_this< SkeletonAnimation >
+{
 public:
 	SkeletonAnimation();
 
-	~SkeletonAnimation() override;
+	~SkeletonAnimation();
 
 public:
 	XE::float32 GetMaxTime() const;
@@ -84,25 +88,17 @@ public:
 
 	void SetSkeleton( const XE::String & val );
 
-	const Array< SkeletonAnimationKey > & GetSkeletonKeys() const;
+	const Map< XE::uint32, SkeletonAnimationTrack > & GetSkeletonAnimationTracks() const;
 
-	void SetSkeletonKeys( const Array< SkeletonAnimationKey > & val );
-
-public:
-	bool CalcBoneJointPosition( XE::uint32 bone, XE::float32 time, XE::Vec3 & pos ) const;
-
-	bool CalcBoneJointRotation( XE::uint32 bone, XE::float32 time, XE::Quat & rot ) const;
-
-	bool CalcBoneJointScale( XE::uint32 bone, XE::float32 time, XE::Vec3 & scale ) const;
-
-	bool CalcBoneJointTransform( XE::uint32 bone, XE::float32 time, XE::Vec3 & pos, XE::Quat & rot, XE::Vec3 & scale ) const;
+	void SetSkeletonAnimationTracks( const Map< XE::uint32, SkeletonAnimationTrack > & val );
 
 private:
 	String _Name;
 	String _Skeleton;
 	XE::float32 _MaxTime;
-	Array< SkeletonAnimationKey > _Keys;
+	Map< XE::uint32, SkeletonAnimationTrack > _Tracks;
 };
+DECL_META_CLASS( ANIMATION_API, SkeletonAnimation );
 
 END_XE_NAMESPACE
 

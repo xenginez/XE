@@ -13,6 +13,12 @@
 
 BEG_XE_NAMESPACE
 
+DECL_PTR( Animator );
+DECL_PTR( AnimationState );
+DECL_PTR( SkeletonAnimation );
+DECL_PTR( AnimationTransition );
+DECL_PTR( AnimationController );
+
 END_XE_NAMESPACE
 
 #endif // __TYPE_H__E9FBF2A2_BC47_464B_AAAE_44C511E818E3

@@ -2,55 +2,10 @@
 
 USING_XE
 
-BEG_META( SkeletonAnimationItem )
-type->Property( "Position", &SkeletonAnimationItem::GetPosition, &SkeletonAnimationItem::SetPosition );
-type->Property( "Rotation", &SkeletonAnimationItem::GetRotation, &SkeletonAnimationItem::SetRotation );
-type->Property( "Scale", &SkeletonAnimationItem::GetScale, &SkeletonAnimationItem::SetScale );
-END_META()
-
-XE::SkeletonAnimationItem::SkeletonAnimationItem()
-{
-
-}
-
-XE::SkeletonAnimationItem::~SkeletonAnimationItem()
-{
-
-}
-
-const XE::Vec3 & XE::SkeletonAnimationItem::GetPosition() const
-{
-	return _Position;
-}
-
-void XE::SkeletonAnimationItem::SetPosition( const XE::Vec3 & val )
-{
-	_Position = val;
-}
-
-const XE::Quat & XE::SkeletonAnimationItem::GetRotation() const
-{
-	return _Rotation;
-}
-
-void XE::SkeletonAnimationItem::SetRotation( const XE::Quat & val )
-{
-	_Rotation = val;
-}
-
-const XE::Vec3 & XE::SkeletonAnimationItem::GetScale() const
-{
-	return _Scale;
-}
-
-void XE::SkeletonAnimationItem::SetScale( const XE::Vec3 & val )
-{
-	_Scale = val;
-}
-
 BEG_META( SkeletonAnimationKey )
 type->Property( "Time", &SkeletonAnimationKey::GetTime, &SkeletonAnimationKey::SetTime );
-type->Property( "Items", &SkeletonAnimationKey::GetSkeletonItems, &SkeletonAnimationKey::SetSkeletonItems );
+type->Property( "Position", &SkeletonAnimationKey::GetPosition, &SkeletonAnimationKey::SetPosition );
+type->Property( "Rotation", &SkeletonAnimationKey::GetRotation, &SkeletonAnimationKey::SetRotation );
 END_META()
 
 XE::SkeletonAnimationKey::SkeletonAnimationKey()
@@ -74,22 +29,67 @@ void XE::SkeletonAnimationKey::SetTime( XE::float32 val )
 	_Time = val;
 }
 
-const XE::Map< XE::uint32, SkeletonAnimationItem > & XE::SkeletonAnimationKey::GetSkeletonItems() const
+const XE::Vec3 & XE::SkeletonAnimationKey::GetPosition() const
 {
-	return _Items;
+	return _Position;
 }
 
-void XE::SkeletonAnimationKey::SetSkeletonItems( const XE::Map< XE::uint32, SkeletonAnimationItem > & val )
+void XE::SkeletonAnimationKey::SetPosition( const XE::Vec3 & val )
 {
-	_Items = val;
+	_Position = val;
 }
 
+const XE::Quat & XE::SkeletonAnimationKey::GetRotation() const
+{
+	return _Rotation;
+}
+
+void XE::SkeletonAnimationKey::SetRotation( const XE::Quat & val )
+{
+	_Rotation = val;
+}
+
+BEG_META( SkeletonAnimationTrack )
+type->Property( "MaxTime", &SkeletonAnimationTrack::GetMaxTime, &SkeletonAnimationTrack::SetMaxTime );
+type->Property( "SkeletonAnimationKeys", &SkeletonAnimationTrack::GetSkeletonAnimationKeys, &SkeletonAnimationTrack::SetSkeletonAnimationKeys );
+END_META()
+
+XE::SkeletonAnimationTrack::SkeletonAnimationTrack()
+	:_MaxTime( 0.0f )
+{
+
+}
+
+XE::SkeletonAnimationTrack::~SkeletonAnimationTrack()
+{
+
+}
+
+XE::float32 XE::SkeletonAnimationTrack::GetMaxTime() const
+{
+	return _MaxTime;
+}
+
+void XE::SkeletonAnimationTrack::SetMaxTime( XE::float32 val )
+{
+	_MaxTime = val;
+}
+
+const XE::Array< SkeletonAnimationKey > & XE::SkeletonAnimationTrack::GetSkeletonAnimationKeys() const
+{
+	return _Keys;
+}
+
+void XE::SkeletonAnimationTrack::SetSkeletonAnimationKeys( const XE::Array< SkeletonAnimationKey > & val )
+{
+	_Keys = val;
+}
 
 BEG_META( SkeletonAnimation )
-type->Property( "Name", &SkeletonAnimation::_Name );
-type->Property( "Skeleton", &SkeletonAnimation::_Skeleton );
-type->Property( "MaxTime", &SkeletonAnimation::_MaxTime );
-type->Property( "Keys", &SkeletonAnimation::_Keys );
+type->Property( "Name", &SkeletonAnimation::GetName, &SkeletonAnimation::SetName );
+type->Property( "MaxTime", &SkeletonAnimation::GetMaxTime, &SkeletonAnimation::SetMaxTime );
+type->Property( "Skeleton", &SkeletonAnimation::GetSkeleton, &SkeletonAnimation::SetSkeleton );
+type->Property( "SkeletonAnimationTracks", &SkeletonAnimation::GetSkeletonAnimationTracks, &SkeletonAnimation::SetSkeletonAnimationTracks );
 END_META()
 
 XE::SkeletonAnimation::SkeletonAnimation()
@@ -133,72 +133,52 @@ void XE::SkeletonAnimation::SetSkeleton( const XE::String & val )
 	_Skeleton = val;
 }
 
-const XE::Array< XE::SkeletonAnimationKey > & XE::SkeletonAnimation::GetSkeletonKeys() const
+const XE::Map< XE::uint32, XE::SkeletonAnimationTrack > & XE::SkeletonAnimation::GetSkeletonAnimationTracks() const
 {
-	return _Keys;
+	return _Tracks;
 }
 
-void XE::SkeletonAnimation::SetSkeletonKeys( const Array< SkeletonAnimationKey > & val )
+void XE::SkeletonAnimation::SetSkeletonAnimationTracks( const Map< XE::uint32, SkeletonAnimationTrack > & val )
 {
-	_Keys = val;
+	_Tracks = val;
 }
 
-bool XE::SkeletonAnimation::CalcBoneJointPosition( XE::uint32 bone, XE::float32 time, XE::Vec3 & pos ) const
+/*
+bool XE::SkeletonAnimation::CalcBoneJointTransform( XE::uint32 bone, XE::float32 time, XE::Mat4 & trans ) const
 {
-	XE::Quat rot;
-	XE::Vec3 scale;
-
-	return CalcBoneJointTransform( bone, time, pos, rot, scale );
-}
-
-bool XE::SkeletonAnimation::CalcBoneJointRotation( XE::uint32 bone, XE::float32 time, XE::Quat & rot ) const
-{
-	XE::Vec3 pos;
-	XE::Vec3 scale;
-
-	return CalcBoneJointTransform( bone, time, pos, rot, scale );
-}
-
-bool XE::SkeletonAnimation::CalcBoneJointScale( XE::uint32 bone, XE::float32 time, XE::Vec3 & scale ) const
-{
-	XE::Vec3 pos;
-	XE::Quat rot;
-
-	return CalcBoneJointTransform( bone, time, pos, rot, scale );
-}
-
-bool XE::SkeletonAnimation::CalcBoneJointTransform( XE::uint32 bone, XE::float32 time, XE::Vec3 & pos, XE::Quat & rot, XE::Vec3 & scale ) const
-{
-	for( auto it = _Keys.begin(); it != _Keys.end(); ++it )
+	auto tracks_iter = _Tracks.find( bone );
+	if( tracks_iter != _Tracks.end() )
 	{
-		if( it->GetTime() < time )
+		if( time < Mathf::Epsilon )
 		{
-			XE::Vec3 pos1, pos2;
-			XE::Quat rot1, rot2;
-			auto it1 = ( it - 1 )->GetSkeletonItems().find( bone );
-			auto it2 = it->GetSkeletonItems().find( bone );
+			mat = Mathf::TRS(
+				tracks_iter->second._Keys.front()._Position,
+				tracks_iter->second._Keys.front()._Rotation,
+				Vec3::One );
 
-			if( it1 != ( it - 1 )->GetSkeletonItems().end() )
+			return true;
+		}
+		else if( time <= tracks_iter->second._MaxTime )
+		{
+			auto key_iter = std::find_if( tracks_iter->second._Keys.begin(), tracks_iter->second._Keys.end(), [time]( const SkeletonAnimationKey & key )
+										  {
+											  return key._Time >= time;
+										  } );
+
+			if( key_iter != tracks_iter->second._Keys.end() )
 			{
-				pos1 = it1->second.GetPosition();
-				rot1 = it1->second.GetRotation();
+				XE::float32 t = ( time - ( key_iter - 1 )->_Time ) / ( key_iter->_Time - ( key_iter - 1 )->_Time );
 
-				if( it2 != it->GetSkeletonItems().end() )
-				{
-					pos2 = it2->second.GetPosition();
-					rot2 = it2->second.GetRotation();
+				mat = Mathf::TRS(
+					Mathf::Lerp( ( key_iter - 1 )->_Position, key_iter->_Position, t ),
+					Mathf::Slerp( ( key_iter - 1 )->_Rotation, key_iter->_Rotation, t ),
+					Vec3::One );
 
-					XE::float32 t = ( time - ( it - 1 )->GetTime() ) / ( it->GetTime() - ( it - 1 )->GetTime() );
-
-					auto mat = Mathf::TRS( Mathf::Lerp( pos1, pos2, t ), Mathf::Slerp( rot1, rot2, t ), XE::Vec3::One );
-
-					Mathf::TRS( mat, pos, rot, scale );
-
-					return true;
-				}
+				return true;
 			}
 		}
 	}
 
 	return false;
 }
+*/

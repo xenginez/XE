@@ -21,6 +21,48 @@ public:
 	Animator();
 
 	~Animator() override;
+
+public:
+	void Activate();
+
+	void Deactivate();
+
+public:
+	void Startup();
+
+	void Update( XE::float32 val );
+
+	void Clearup();
+
+public:
+	void Play();
+
+	void Stop();
+
+public:
+	bool IsEnable() const;
+
+	bool IsPlaying() const;
+
+public:
+	const XE::String & GetName() const;
+
+	void SetName( const XE::String & val );
+
+	AnimationControllerPtr GetAnimationController() const;
+
+	void SetAnimationController( const AnimationControllerPtr & val );
+
+protected:
+	bool _Enable;
+	bool _IsPlaying;
+	XE::String _Name;
+
+	XE::uint64 _CurState;
+	Array< AnimationStatePtr > _States;
+	Array< AnimationTransitionPtr > _Transitions;
+
+	AnimationControllerWPtr _Controller;
 };
 
 END_XE_NAMESPACE
