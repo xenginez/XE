@@ -801,12 +801,6 @@ enum class ThreadPriority
 };
 DECL_META_ENUM( INTERFACE_API, ThreadPriority );
 
-DECL_GROUP( INTERFACE_API, 0, Event );
-#define DECL_EVENT( NAME, DESC, PARAM ) DECL_ORDER( EventGroup, EVENT_##NAME, DESC, PARAM )
-
-DECL_GROUP( INTERFACE_API, 2, Message );
-#define DECL_MESSAGE( NAME, DESC, PARAM ) DECL_ORDER( MessageGroup, MESSAGE_##NAME, DESC, PARAM )
-
 END_XE_NAMESPACE
 
 #endif 

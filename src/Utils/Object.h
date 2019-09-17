@@ -28,7 +28,7 @@ public:
 	virtual void AssetUnload();
 
 public:
-	virtual void OnEvent( EventPtr & val );
+	virtual void OnMessage( MessagePtr & val );
 
 };
 

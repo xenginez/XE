@@ -6,6 +6,9 @@
 
 USING_XE
 
+IMPLEMENT_META( WindowHandle );
+IMPLEMENT_META( ProcessHandle );
+
 Language Platform::GetDefaultLanguage()
 {
 	NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];

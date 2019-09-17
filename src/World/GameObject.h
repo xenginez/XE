@@ -129,6 +129,9 @@ public:
 		return DP_CAST<T>( FindComponent( val ) );
 	}
 
+public:
+	void OnMessage( MessagePtr & val ) override;
+
 protected:
 	void Startup();
 

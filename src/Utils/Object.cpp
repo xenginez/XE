@@ -25,7 +25,7 @@ void XE::Object::AssetUnload()
 
 }
 
-void XE::Object::OnEvent( EventPtr & val )
+void XE::Object::OnMessage( MessagePtr & val )
 {
 
 }

@@ -6,6 +6,8 @@
 USING_XE
 
 IMPLEMENT_META( WindowHandle );
+IMPLEMENT_META( ProcessHandle );
+
 
 XE::Language XE::Platform::GetDefaultLanguage()
 {

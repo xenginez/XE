@@ -15,20 +15,16 @@ BEG_XE_NAMESPACE
 
 class UTILS_API Event
 {
-	OBJECT( Event )
-
 public:
 	Event();
 
-	Event( XE::uint64 id, ObjectPtr sender = nullptr, ObjectPtr recver = nullptr, const Variant & parameter = Variant() );
+	Event( XE::uint64 id, const Variant & parameter = Variant() );
 
 	Event( const Event & val );
 
 public:
 	bool accept;
 	XE::uint64 id;
-	ObjectPtr sender;
-	ObjectPtr recver;
 	Variant parameter;
 };
 DECL_META_CLASS( UTILS_API, Event );

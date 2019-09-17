@@ -314,3 +314,16 @@ void XE::GameObject::SetRelativeTransform( const Mat4 & val )
 {
 	_SceneComponent->SetRelativeTransform( val );
 }
+
+void XE::GameObject::OnMessage( MessagePtr & val )
+{
+	for( auto & comp : _Components )
+	{
+		comp->OnMessage( val );
+
+		if( val->accept )
+		{
+			break;
+		}
+	}
+}
