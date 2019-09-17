@@ -36,10 +36,15 @@ public:
 
 	void SetRotation( const XE::Quat & val );
 
+	const XE::Vec3 & GetScale() const;
+
+	void SetScale( const XE::Vec3 & val );
+
 private:
 	XE::float32 _Time;
 	XE::Vec3 _Position;
 	XE::Quat _Rotation;
+	XE::Vec3 _Scale;
 };
 DECL_META_CLASS( ANIMATION_API, SkeletonAnimationKey );
 
@@ -91,6 +96,9 @@ public:
 	const Map< XE::uint32, SkeletonAnimationTrack > & GetSkeletonAnimationTracks() const;
 
 	void SetSkeletonAnimationTracks( const Map< XE::uint32, SkeletonAnimationTrack > & val );
+
+public:
+	bool CalcBoneJointTransform( XE::uint32 bone, XE::float32 time, XE::Vec3 & position, XE::Quat & rotation, XE::Vec3 & scale ) const;
 
 private:
 	String _Name;

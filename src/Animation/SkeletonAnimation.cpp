@@ -6,6 +6,7 @@ BEG_META( SkeletonAnimationKey )
 type->Property( "Time", &SkeletonAnimationKey::GetTime, &SkeletonAnimationKey::SetTime );
 type->Property( "Position", &SkeletonAnimationKey::GetPosition, &SkeletonAnimationKey::SetPosition );
 type->Property( "Rotation", &SkeletonAnimationKey::GetRotation, &SkeletonAnimationKey::SetRotation );
+type->Property( "Scale", &SkeletonAnimationKey::GetScale, &SkeletonAnimationKey::SetScale );
 END_META()
 
 XE::SkeletonAnimationKey::SkeletonAnimationKey()
@@ -47,6 +48,16 @@ const XE::Quat & XE::SkeletonAnimationKey::GetRotation() const
 void XE::SkeletonAnimationKey::SetRotation( const XE::Quat & val )
 {
 	_Rotation = val;
+}
+
+const XE::Vec3 & SkeletonAnimationKey::GetScale() const
+{
+	return _Scale;
+}
+
+void SkeletonAnimationKey::SetScale( const XE::Vec3 & val )
+{
+	_Scale = val;
 }
 
 BEG_META( SkeletonAnimationTrack )
@@ -143,18 +154,16 @@ void XE::SkeletonAnimation::SetSkeletonAnimationTracks( const Map< XE::uint32, S
 	_Tracks = val;
 }
 
-/*
-bool XE::SkeletonAnimation::CalcBoneJointTransform( XE::uint32 bone, XE::float32 time, XE::Mat4 & trans ) const
+bool SkeletonAnimation::CalcBoneJointTransform( XE::uint32 bone, XE::float32 time, XE::Vec3 & position, XE::Quat & rotation, XE::Vec3 & scale ) const
 {
 	auto tracks_iter = _Tracks.find( bone );
 	if( tracks_iter != _Tracks.end() )
 	{
 		if( time < Mathf::Epsilon )
 		{
-			mat = Mathf::TRS(
-				tracks_iter->second._Keys.front()._Position,
-				tracks_iter->second._Keys.front()._Rotation,
-				Vec3::One );
+			position = tracks_iter->second._Keys.front()._Position;
+			rotation = tracks_iter->second._Keys.front()._Rotation;
+			scale = tracks_iter->second._Keys.front()._Scale;
 
 			return true;
 		}
@@ -169,10 +178,9 @@ bool XE::SkeletonAnimation::CalcBoneJointTransform( XE::uint32 bone, XE::float32
 			{
 				XE::float32 t = ( time - ( key_iter - 1 )->_Time ) / ( key_iter->_Time - ( key_iter - 1 )->_Time );
 
-				mat = Mathf::TRS(
-					Mathf::Lerp( ( key_iter - 1 )->_Position, key_iter->_Position, t ),
-					Mathf::Slerp( ( key_iter - 1 )->_Rotation, key_iter->_Rotation, t ),
-					Vec3::One );
+				position = Mathf::Lerp( ( key_iter - 1 )->_Position, key_iter->_Position, t );
+				rotation = Mathf::Slerp( ( key_iter - 1 )->_Rotation, key_iter->_Rotation, t );
+				scale = Mathf::Lerp( ( key_iter - 1 )->_Scale, key_iter->_Scale, t );
 
 				return true;
 			}
@@ -181,4 +189,3 @@ bool XE::SkeletonAnimation::CalcBoneJointTransform( XE::uint32 bone, XE::float32
 
 	return false;
 }
-*/
