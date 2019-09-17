@@ -16,8 +16,20 @@ BEG_XE_NAMESPACE
 DECL_PTR( Animator );
 DECL_PTR( AnimationState );
 DECL_PTR( SkeletonAnimation );
+DECL_PTR( AnimationCondition );
 DECL_PTR( AnimationTransition );
 DECL_PTR( AnimationController );
+
+enum class AnimationCompare
+{
+	EQUAL,
+	LESS,
+	GREA,
+	LEQUAL,
+	GEQUAL,
+	NOTEQUAL,
+};
+DECL_META_ENUM( ANIMATION_API, AnimationCompare );
 
 END_XE_NAMESPACE
 

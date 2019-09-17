@@ -37,23 +37,46 @@ void XE::Animator::Startup()
 		tran->SetAnimationController( GetAnimationController() );
 	}
 
-	_States[0]->Entry();
+	_States[EntryState]->Entry();
 }
 
 void XE::Animator::Update( XE::float32 val )
 {
-	_States[_CurState]->Update( val );
+	XE::uint32 next_state = npos;
 
-	const auto & trans = _States[_CurState]->GetTransitions();
-
-	for( auto i : trans )
+	const auto & anytrans = _States[AnyState]->GetTransitions();
+	for( auto i : anytrans )
 	{
 		if( _Transitions[i]->Condition() )
 		{
-			_States[_CurState]->Exit();
-			_CurState = _Transitions[i]->GetNextState();
-			_States[_CurState]->Entry();
+			next_state = _Transitions[i]->GetNextState();
+			break;
 		}
+	}
+
+	if( next_state == npos )
+	{
+		const auto & trans = _States[_CurState]->GetTransitions();
+		for( auto i : trans )
+		{
+			if( _Transitions[i]->Condition() )
+			{
+				next_state = _Transitions[i]->GetNextState();
+				break;
+			}
+		}
+	}
+
+	if( next_state != npos )
+	{
+		_States[_CurState]->Exit();
+		_CurState = next_state;
+		_States[_CurState]->Entry();
+	}
+
+	if( _CurState != EntryState && _CurState != AnyState )
+	{
+		_States[_CurState]->Update( val );
 	}
 }
 

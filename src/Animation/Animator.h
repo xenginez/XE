@@ -18,6 +18,11 @@ class ANIMATION_API Animator : public XE::Object
 	OBJECT( Animator, Object )
 
 public:
+	static constexpr XE::uint32 EntryState = 0;
+	static constexpr XE::uint32 AnyState = 1;
+	static constexpr XE::uint32 npos = XE::uint32( -1 );
+
+public:
 	Animator();
 
 	~Animator() override;

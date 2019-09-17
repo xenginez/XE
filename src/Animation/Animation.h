@@ -9,6 +9,11 @@
 #ifndef __ANIMATION_H__CA4547DD_2AA2_43B3_8F67_28549EF05AFC
 #define __ANIMATION_H__CA4547DD_2AA2_43B3_8F67_28549EF05AFC
 
+#include "Animator.h"
+#include "AnimationState.h"
 #include "SkeletonAnimation.h"
+#include "AnimationCondition.h"
+#include "AnimationTransition.h"
+#include "AnimationController.h"
 
 #endif // __ANIMATION_H__CA4547DD_2AA2_43B3_8F67_28549EF05AFC

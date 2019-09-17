@@ -23,7 +23,7 @@ public:
 	~AnimationTransition() override;
 
 public:
-	virtual bool Condition();
+	bool Condition();
 
 public:
 	XE::uint32 GetNextState() const;
@@ -34,9 +34,14 @@ public:
 
 	void SetAnimationController( const AnimationControllerPtr & val );
 
+	const Array<AnimationConditionPtr> & GetAnimationConditions() const;
+
+	void SetAnimationConditions( const Array<AnimationConditionPtr> & val );
+
 private:
 	XE::uint32 _State;
 	AnimationControllerWPtr _Controller;
+	Array<AnimationConditionPtr> _Conditions;
 };
 
 END_XE_NAMESPACE

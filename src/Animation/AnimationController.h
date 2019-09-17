@@ -63,6 +63,18 @@ public:
 
 	bool IsPlaying( const XE::String & val ) const;
 
+public:
+	XE::Variant GetParameter( const XE::String & val ) const;
+
+	void SetParameter( const XE::String & name, const XE::Variant & val );
+
+public:
+	template< typename T >
+	T GetParameterT( const XE::String & val ) const
+	{
+		return GetParameter( val ).Value<T>();
+	}
+
 private:
 	Array< AnimatorPtr > _Animators;
 	Map< XE::String, XE::Variant > _Parameters;

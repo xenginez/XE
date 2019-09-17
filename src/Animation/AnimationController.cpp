@@ -65,7 +65,7 @@ void XE::AnimationController::Deactivate( const XE::String & val )
 
 void XE::AnimationController::Startup()
 {
-	for( size_t i = 0; i < _Animators.size(); i++ )
+	for( XE::uint32 i = 0; i < _Animators.size(); i++ )
 	{
 		_AnimatorMaps[_Animators[i]->GetName()] = i;
 
@@ -168,4 +168,20 @@ bool XE::AnimationController::IsPlaying( const XE::String & val ) const
 	}
 
 	return false;
+}
+
+XE::Variant AnimationController::GetParameter( const XE::String & val ) const
+{
+	auto it = _Parameters.find( val );
+	if( it != _Parameters.end() )
+	{
+		return it->second;
+	}
+
+	return Variant();
+}
+
+void AnimationController::SetParameter( const XE::String & name, const XE::Variant & val )
+{
+	_Parameters[name] = val;
 }

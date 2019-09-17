@@ -47,6 +47,28 @@ private:
 	AnimationControllerWPtr _Controller;
 };
 
+class ANIMATION_API AnimationStateEntry : public AnimationState
+{
+	OBJECT( AnimationStateEntry, AnimationState )
+	
+public:
+	AnimationStateEntry();
+
+	~AnimationStateEntry() override;
+
+};
+
+class ANIMATION_API AnimationStateAny : public AnimationState
+{
+	OBJECT( AnimationStateAny, AnimationState )
+
+public:
+	AnimationStateAny();
+
+	~AnimationStateAny() override;
+
+};
+
 END_XE_NAMESPACE
 
 #endif // ANIMATIONSTATE_H__DE89A48E_E19F_4BE9_9D74_144BFB0D3029
