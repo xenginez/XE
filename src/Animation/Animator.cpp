@@ -44,6 +44,11 @@ void XE::Animator::Startup()
 
 void XE::Animator::Update( XE::float32 val )
 {
+	if( !_Enable )
+	{
+		return;
+	}
+
 	XE::uint32 next_state = npos;
 
 	const auto & anytrans = _States[AnyState]->GetTransitions();
