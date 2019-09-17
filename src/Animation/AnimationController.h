@@ -43,37 +43,27 @@ public:
 	void Clearup();
 
 public:
-	void Play();
+	bool GetParameterBool( const XE::String & val ) const;
 
-	void Play( XE::uint32 val );
+	XE::int32 GetParameterInt( const XE::String & val ) const;
 
-	void Play( const XE::String & val );
+	XE::float32 GetParameterFloat( const XE::String & val ) const;
 
-public:
-	void Stop();
-
-	void Stop( XE::uint32 val );
-
-	void Stop( const XE::String & val );
+	XE::String GetParameterString( const XE::String & val ) const;
 
 public:
-	bool IsPlaying() const;
+	void SetParameterBool( const XE::String & name, bool val );
 
-	bool IsPlaying( XE::uint32 val ) const;
+	void SetParameterInt( const XE::String & name, XE::int32 val );
 
-	bool IsPlaying( const XE::String & val ) const;
+	void SetParameterFloat( const XE::String & name, XE::float32 val );
 
-public:
+	void SetParameterString( const XE::String & name, XE::String val );
+
+private:
 	XE::Variant GetParameter( const XE::String & val ) const;
 
 	void SetParameter( const XE::String & name, const XE::Variant & val );
-
-public:
-	template< typename T >
-	T GetParameterT( const XE::String & val ) const
-	{
-		return GetParameter( val ).Value<T>();
-	}
 
 private:
 	Array< AnimatorPtr > _Animators;

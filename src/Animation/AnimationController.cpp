@@ -79,7 +79,7 @@ void XE::AnimationController::Update( XE::float32 val )
 {
 	for( auto & anim : _Animators )
 	{
-		if( anim->IsEnable() && anim->IsPlaying() )
+		if( anim->IsEnable() )
 		{
 			anim->Update( val );
 		}
@@ -97,79 +97,6 @@ void XE::AnimationController::Clearup()
 	_AnimatorMaps.clear();
 }
 
-void XE::AnimationController::Play()
-{
-	for( auto & anim : _Animators )
-	{
-		anim->Play();
-	}
-}
-
-void XE::AnimationController::Play( XE::uint32 val )
-{
-	_Animators[val]->Play();
-}
-
-void XE::AnimationController::Play( const XE::String & val )
-{
-	auto it = _AnimatorMaps.find( val );
-	if( it != _AnimatorMaps.end() )
-	{
-		_Animators[it->second]->Play();
-	}
-}
-
-void XE::AnimationController::Stop()
-{
-	for( auto & anim : _Animators )
-	{
-		anim->Stop();
-	}
-}
-
-void XE::AnimationController::Stop( XE::uint32 val )
-{
-	_Animators[val]->Stop();
-}
-
-void XE::AnimationController::Stop( const XE::String & val )
-{
-	auto it = _AnimatorMaps.find( val );
-	if( it != _AnimatorMaps.end() )
-	{
-		_Animators[it->second]->Stop();
-	}
-}
-
-bool XE::AnimationController::IsPlaying() const
-{
-	for( auto & anim : _Animators )
-	{
-		if( !anim->IsPlaying() )
-		{
-			return false;
-		}
-	}
-
-	return true;
-}
-
-bool XE::AnimationController::IsPlaying( XE::uint32 val ) const
-{
-	return _Animators[val]->IsPlaying();
-}
-
-bool XE::AnimationController::IsPlaying( const XE::String & val ) const
-{
-	auto it = _AnimatorMaps.find( val );
-	if( it != _AnimatorMaps.end() )
-	{
-		return _Animators[it->second]->IsPlaying();
-	}
-
-	return false;
-}
-
 XE::Variant AnimationController::GetParameter( const XE::String & val ) const
 {
 	auto it = _Parameters.find( val );
@@ -181,7 +108,47 @@ XE::Variant AnimationController::GetParameter( const XE::String & val ) const
 	return Variant();
 }
 
+bool AnimationController::GetParameterBool( const XE::String & val ) const
+{
+	return GetParameter( val ).Value<bool>();
+}
+
+XE::int32 AnimationController::GetParameterInt( const XE::String & val ) const
+{
+	return GetParameter( val ).Value<XE::int32>();
+}
+
+XE::float32 AnimationController::GetParameterFloat( const XE::String & val ) const
+{
+	return GetParameter( val ).Value<XE::float32>();
+}
+
+XE::String AnimationController::GetParameterString( const XE::String & val ) const
+{
+	return GetParameter( val ).Value<XE::String>();
+}
+
 void AnimationController::SetParameter( const XE::String & name, const XE::Variant & val )
 {
 	_Parameters[name] = val;
+}
+
+void AnimationController::SetParameterBool( const XE::String & name, bool val )
+{
+	SetParameter( name, val );
+}
+
+void AnimationController::SetParameterInt( const XE::String & name, XE::int32 val )
+{
+	SetParameter( name, val );
+}
+
+void AnimationController::SetParameterFloat( const XE::String & name, XE::float32 val )
+{
+	SetParameter( name, val );
+}
+
+void AnimationController::SetParameterString( const XE::String & name, XE::String val )
+{
+	SetParameter( name, val );
 }

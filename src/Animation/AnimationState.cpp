@@ -60,19 +60,6 @@ void XE::AnimationState::SetAnimationController( const XE::AnimationControllerPt
 	_Controller = val;
 }
 
-BEG_META( AnimationStateEntry )
-END_META()
-
-AnimationStateEntry::AnimationStateEntry()
-{
-
-}
-
-AnimationStateEntry::~AnimationStateEntry()
-{
-
-}
-
 BEG_META( AnimationStateAny )
 END_META()
 

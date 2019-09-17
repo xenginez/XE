@@ -18,8 +18,7 @@ class ANIMATION_API Animator : public XE::Object
 	OBJECT( Animator, Object )
 
 public:
-	static constexpr XE::uint32 EntryState = 0;
-	static constexpr XE::uint32 AnyState = 1;
+	static constexpr XE::uint32 AnyState = 0;
 	static constexpr XE::uint32 npos = XE::uint32( -1 );
 
 public:
@@ -60,10 +59,10 @@ public:
 
 protected:
 	bool _Enable;
-	bool _IsPlaying;
 	XE::String _Name;
 
 	XE::uint64 _CurState;
+	XE::uint64 _EntryState;
 	Array< AnimationStatePtr > _States;
 	Array< AnimationTransitionPtr > _Transitions;
 

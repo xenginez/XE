@@ -42,8 +42,6 @@ void XE::StateMachine::Update( XE::float32 dt )
 {
 	StatePtr s = _States[_Current.GetValue()];
 
-	s->Update( dt );
-
 	auto conds = s->GetConditions();
 	for ( auto c : conds )
 	{
@@ -60,6 +58,8 @@ void XE::StateMachine::Update( XE::float32 dt )
 			break;
 		}
 	}
+
+	s->Update( dt );
 }
 
 void XE::StateMachine::Clearup()

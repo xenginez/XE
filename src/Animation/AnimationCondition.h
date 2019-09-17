@@ -64,7 +64,7 @@ public:
 	bool Condition() const override;
 
 private:
-	XE::uint32 _DefValue;
+	XE::int32 _DefValue;
 	XE::String _KeyValue;
 	AnimationCompare _Compare;
 };

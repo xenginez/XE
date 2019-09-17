@@ -8,13 +8,13 @@ USING_XE
 BEG_META( Animator )
 type->Property( "Name", &Animator::_Name );
 type->Property( "Enable", &Animator::_Enable );
-type->Property( "IsPlaying", &Animator::_IsPlaying );
-type->Property( "States", &Animator::_States );
-type->Property( "Transitions", &Animator::_Transitions );
+type->Property( "States", &Animator::_States, IMetaProperty::NoDesign );
+type->Property( "EntryState", &Animator::_EntryState, IMetaProperty::NoDesign );
+type->Property( "Transitions", &Animator::_Transitions, IMetaProperty::NoDesign );
 END_META()
 
 XE::Animator::Animator()
-	:_Enable( true ), _IsPlaying( true ), _CurState( 0 )
+	:_Enable( true ), _CurState( 0 ), _EntryState( 0 )
 {
 
 }
@@ -26,6 +26,8 @@ XE::Animator::~Animator()
 
 void XE::Animator::Startup()
 {
+	_CurState = _EntryState;
+
 	for( auto & stat : _States )
 	{
 		stat->SetAnimationController( GetAnimationController() );
@@ -37,7 +39,7 @@ void XE::Animator::Startup()
 		tran->SetAnimationController( GetAnimationController() );
 	}
 
-	_States[EntryState]->Entry();
+	_States[_CurState]->Entry();
 }
 
 void XE::Animator::Update( XE::float32 val )
@@ -74,10 +76,7 @@ void XE::Animator::Update( XE::float32 val )
 		_States[_CurState]->Entry();
 	}
 
-	if( _CurState != EntryState && _CurState != AnyState )
-	{
-		_States[_CurState]->Update( val );
-	}
+	_States[_CurState]->Update( val );
 }
 
 void XE::Animator::Clearup()
@@ -94,32 +93,31 @@ void XE::Animator::Clearup()
 
 void XE::Animator::Activate()
 {
+	if ( !_Enable )
+	{
+		_CurState = _EntryState;
 
+		_States[_CurState]->Entry();
+
+		_Enable = true;
+	}
 }
 
 void XE::Animator::Deactivate()
 {
+	if( _Enable )
+	{
+		_States[_CurState]->Exit();
 
-}
+		_CurState = 0;
 
-void XE::Animator::Play()
-{
-	_IsPlaying = true;
-}
-
-void XE::Animator::Stop()
-{
-	_IsPlaying = false;
+		_Enable = false;
+	}
 }
 
 bool XE::Animator::IsEnable() const
 {
 	return _Enable;
-}
-
-bool XE::Animator::IsPlaying() const
-{
-	return _IsPlaying;
 }
 
 const XE::String & XE::Animator::GetName() const

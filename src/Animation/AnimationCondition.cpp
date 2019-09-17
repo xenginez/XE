@@ -45,7 +45,7 @@ AnimationConditionBool::~AnimationConditionBool()
 
 bool AnimationConditionBool::Condition() const
 {
-	return GetAnimationController()->GetParameterT< bool >( _KeyValue ) == _DefValue;
+	return GetAnimationController()->GetParameterBool( _KeyValue ) == _DefValue;
 }
 
 BEG_META( AnimationConditionInt )
@@ -70,17 +70,17 @@ bool AnimationConditionInt::Condition() const
 	switch( _Compare )
 	{
 	case XE::AnimationCompare::EQUAL:
-		return GetAnimationController()->GetParameterT<XE::uint32>( _KeyValue ) == _DefValue;
+		return GetAnimationController()->GetParameterInt( _KeyValue ) == _DefValue;
 	case XE::AnimationCompare::LESS:
-		return GetAnimationController()->GetParameterT<XE::uint32>( _KeyValue ) < _DefValue;
+		return GetAnimationController()->GetParameterInt( _KeyValue ) < _DefValue;
 	case XE::AnimationCompare::GREA:
-		return GetAnimationController()->GetParameterT<XE::uint32>( _KeyValue ) > _DefValue;
+		return GetAnimationController()->GetParameterInt( _KeyValue ) > _DefValue;
 	case XE::AnimationCompare::LEQUAL:
-		return GetAnimationController()->GetParameterT<XE::uint32>( _KeyValue ) <= _DefValue;
+		return GetAnimationController()->GetParameterInt( _KeyValue ) <= _DefValue;
 	case XE::AnimationCompare::GEQUAL:
-		return GetAnimationController()->GetParameterT<XE::uint32>( _KeyValue ) >= _DefValue;
+		return GetAnimationController()->GetParameterInt( _KeyValue ) >= _DefValue;
 	case XE::AnimationCompare::NOTEQUAL:
-		return GetAnimationController()->GetParameterT<XE::uint32>( _KeyValue ) != _DefValue;
+		return GetAnimationController()->GetParameterInt( _KeyValue ) != _DefValue;
 	}
 
 	return false;
@@ -108,17 +108,17 @@ bool AnimationConditionFloat::Condition() const
 	switch( _Compare )
 	{
 	case XE::AnimationCompare::EQUAL:
-		return GetAnimationController()->GetParameterT<XE::float32>( _KeyValue ) == _DefValue;
+		return GetAnimationController()->GetParameterFloat( _KeyValue ) == _DefValue;
 	case XE::AnimationCompare::LESS:
-		return GetAnimationController()->GetParameterT<XE::float32>( _KeyValue ) < _DefValue;
+		return GetAnimationController()->GetParameterFloat( _KeyValue ) < _DefValue;
 	case XE::AnimationCompare::GREA:
-		return GetAnimationController()->GetParameterT<XE::float32>( _KeyValue ) > _DefValue;
+		return GetAnimationController()->GetParameterFloat( _KeyValue ) > _DefValue;
 	case XE::AnimationCompare::LEQUAL:
-		return GetAnimationController()->GetParameterT<XE::float32>( _KeyValue ) <= _DefValue;
+		return GetAnimationController()->GetParameterFloat( _KeyValue ) <= _DefValue;
 	case XE::AnimationCompare::GEQUAL:
-		return GetAnimationController()->GetParameterT<XE::float32>( _KeyValue ) >= _DefValue;
+		return GetAnimationController()->GetParameterFloat( _KeyValue ) >= _DefValue;
 	case XE::AnimationCompare::NOTEQUAL:
-		return GetAnimationController()->GetParameterT<XE::float32>( _KeyValue ) != _DefValue;
+		return GetAnimationController()->GetParameterFloat( _KeyValue ) != _DefValue;
 	}
 
 	return false;
@@ -141,5 +141,5 @@ AnimationConditionString::~AnimationConditionString()
 
 bool AnimationConditionString::Condition() const
 {
-	return GetAnimationController()->GetParameterT<XE::String>( _KeyValue ) == _DefValue;
+	return GetAnimationController()->GetParameterString( _KeyValue ) == _DefValue;
 }
