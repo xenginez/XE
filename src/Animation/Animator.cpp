@@ -108,33 +108,30 @@ void XE::Animator::Clearup()
 	_CurState = 0;
 }
 
-void XE::Animator::Activate()
-{
-	if ( !_Enable )
-	{
-		_CurState = _EntryState;
-
-		_States[_CurState]->Entry();
-
-		_Enable = true;
-	}
-}
-
-void XE::Animator::Deactivate()
-{
-	if( _Enable )
-	{
-		_States[_CurState]->Exit();
-
-		_CurState = 0;
-
-		_Enable = false;
-	}
-}
-
-bool XE::Animator::IsEnable() const
+bool XE::Animator::GetEnable() const
 {
 	return _Enable;
+}
+
+void XE::Animator::SetEnable( bool val )
+{
+	if( _Enable != val )
+	{
+		_Enable = val;
+
+		if( _Enable )
+		{
+			_CurState = _EntryState;
+
+			_States[_CurState]->Entry();
+		}
+		else
+		{
+			_States[_CurState]->Exit();
+
+			_CurState = 0;
+		}
+	}
 }
 
 const XE::String & XE::Animator::GetName() const

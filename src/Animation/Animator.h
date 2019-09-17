@@ -27,11 +27,6 @@ public:
 	~Animator() override;
 
 public:
-	void Activate();
-
-	void Deactivate();
-
-public:
 	void Startup();
 
 	void Update( XE::float32 val );
@@ -43,12 +38,13 @@ public:
 
 	void Stop();
 
-public:
-	bool IsEnable() const;
-
 	bool IsPlaying() const;
 
 public:
+	bool GetEnable() const;
+
+	void SetEnable( bool val );
+
 	const XE::String & GetName() const;
 
 	void SetName( const XE::String & val );

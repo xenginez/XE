@@ -23,19 +23,6 @@ public:
 	~AnimationController() override;
 
 public:
-	void Activate();
-
-	void Activate( XE::uint32 val );
-
-	void Activate( const XE::String & val );
-
-	void Deactivate();
-
-	void Deactivate( XE::uint32 val );
-
-	void Deactivate( const XE::String & val );
-
-public:
 	void Startup();
 
 	void Update( XE::float32 val );
@@ -46,6 +33,19 @@ public:
 	XE::SkeletonPtr GetSkeleton() const;
 
 	void SetSkeleton( const XE::SkeletonPtr & val );
+
+public:
+	bool GetEnable();
+
+	bool GetEnable( XE::uint32 layer );
+
+	bool GetEnable( const XE::String & layer );
+
+	void SetEnable( bool val );
+
+	void SetEnable( XE::uint32 layer, bool val );
+
+	void SetEnable( const XE::String & layer, bool val );
 
 public:
 	bool GetParameterBool( const XE::String & val ) const;
@@ -71,6 +71,7 @@ private:
 	void SetParameter( const XE::String & name, const XE::Variant & val );
 
 private:
+	bool _Enable;
 	XE::SkeletonPtr _Skeleton;
 	Array< AnimatorPtr > _Animators;
 	Map< XE::String, XE::Variant > _Parameters;

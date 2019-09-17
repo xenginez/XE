@@ -98,7 +98,7 @@ public:
 	void SetSkeletonAnimationTracks( const Map< XE::uint32, SkeletonAnimationTrack > & val );
 
 public:
-	bool CalcBoneJointTransform( XE::uint32 bone, XE::float32 time, XE::Vec3 & position, XE::Quat & rotation, XE::Vec3 & scale ) const;
+	bool Sample( XE::uint32 bone, XE::float32 time, XE::Vec3 & position, XE::Quat & rotation, XE::Vec3 & scale ) const;
 
 private:
 	String _Name;

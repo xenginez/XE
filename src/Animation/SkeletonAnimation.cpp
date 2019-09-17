@@ -154,7 +154,7 @@ void XE::SkeletonAnimation::SetSkeletonAnimationTracks( const Map< XE::uint32, S
 	_Tracks = val;
 }
 
-bool SkeletonAnimation::CalcBoneJointTransform( XE::uint32 bone, XE::float32 time, XE::Vec3 & position, XE::Quat & rotation, XE::Vec3 & scale ) const
+bool SkeletonAnimation::Sample( XE::uint32 bone, XE::float32 time, XE::Vec3 & position, XE::Quat & rotation, XE::Vec3 & scale ) const
 {
 	auto tracks_iter = _Tracks.find( bone );
 	if( tracks_iter != _Tracks.end() )
