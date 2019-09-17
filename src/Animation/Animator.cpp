@@ -49,22 +49,12 @@ void XE::Animator::Update( XE::float32 val )
 		return;
 	}
 
-	XE::uint32 next_state = npos;
-
-	const auto & anytrans = _States[AnyState]->GetTransitions();
-	for( auto i : anytrans )
+	if( !_States[AnyState]->GetWaitOut() || !_States[AnyState]->GetPlaying() )
 	{
-		if( _Transitions[i]->Condition() )
-		{
-			next_state = _Transitions[i]->GetNextState();
-			break;
-		}
-	}
+		XE::uint32 next_state = npos;
 
-	if( next_state == npos )
-	{
-		const auto & trans = _States[_CurState]->GetTransitions();
-		for( auto i : trans )
+		const auto & anytrans = _States[AnyState]->GetTransitions();
+		for( auto i : anytrans )
 		{
 			if( _Transitions[i]->Condition() )
 			{
@@ -72,16 +62,38 @@ void XE::Animator::Update( XE::float32 val )
 				break;
 			}
 		}
+
+		if( next_state == npos )
+		{
+			const auto & trans = _States[_CurState]->GetTransitions();
+			for( auto i : trans )
+			{
+				if( _Transitions[i]->Condition() )
+				{
+					next_state = _Transitions[i]->GetNextState();
+					break;
+				}
+			}
+		}
+
+		if( next_state != npos )
+		{
+			_States[_CurState]->Exit();
+			_CurState = next_state;
+			_States[_CurState]->Entry();
+		}
 	}
 
-	if( next_state != npos )
+	if ( _States[AnyState]->GetPlaying() )
 	{
-		_States[_CurState]->Exit();
-		_CurState = next_state;
-		_States[_CurState]->Entry();
-	}
+		_States[_CurState]->Update( val );
 
-	_States[_CurState]->Update( val );
+		if( _States[AnyState]->GetLooped() && !_States[AnyState]->GetPlaying() )
+		{
+			_States[_CurState]->Exit();
+			_States[_CurState]->Entry();
+		}
+	}
 }
 
 void XE::Animator::Clearup()

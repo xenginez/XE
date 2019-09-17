@@ -43,6 +43,11 @@ public:
 	void Clearup();
 
 public:
+	XE::SkeletonPtr GetSkeleton() const;
+
+	void SetSkeleton( const XE::SkeletonPtr & val );
+
+public:
 	bool GetParameterBool( const XE::String & val ) const;
 
 	XE::int32 GetParameterInt( const XE::String & val ) const;
@@ -66,6 +71,7 @@ private:
 	void SetParameter( const XE::String & name, const XE::Variant & val );
 
 private:
+	XE::SkeletonPtr _Skeleton;
 	Array< AnimatorPtr > _Animators;
 	Map< XE::String, XE::Variant > _Parameters;
 	Map< XE::String, XE::uint32 > _AnimatorMaps;

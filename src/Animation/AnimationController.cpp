@@ -108,6 +108,16 @@ XE::Variant AnimationController::GetParameter( const XE::String & val ) const
 	return Variant();
 }
 
+XE::SkeletonPtr AnimationController::GetSkeleton() const
+{
+	return _Skeleton;
+}
+
+void AnimationController::SetSkeleton( const XE::SkeletonPtr & val )
+{
+	_Skeleton = val;
+}
+
 bool AnimationController::GetParameterBool( const XE::String & val ) const
 {
 	return GetParameter( val ).Value<bool>();

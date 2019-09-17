@@ -34,6 +34,19 @@ public:
 	virtual void Clearup();
 
 public:
+	bool GetLooped() const;
+
+	void SetLooped( bool val );
+
+	bool GetPlaying() const;
+
+	void SetPlaying( bool val );
+
+	bool GetWaitOut() const;
+
+	void SetWaitOut( bool val );
+
+public:
 	const Array<XE::uint32> & GetTransitions() const;
 
 	void SetTransitions( const Array<XE::uint32> & val );
@@ -43,6 +56,9 @@ public:
 	void SetAnimationController( const AnimationControllerPtr & val );
 
 private:
+	bool _Looped;
+	bool _Playing;
+	bool _WaitOut;
 	Array<XE::uint32> _Transitions;
 	AnimationControllerWPtr _Controller;
 };
@@ -55,7 +71,6 @@ public:
 	AnimationStateAny();
 
 	~AnimationStateAny() override;
-
 };
 
 END_XE_NAMESPACE
