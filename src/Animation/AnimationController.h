@@ -30,6 +30,10 @@ public:
 	void Clearup();
 
 public:
+	XE::ObjectPtr GetGameObject() const;
+
+	void SetGameObject( XE::ObjectPtr & val );
+
 	XE::SkeletonPtr GetSkeleton() const;
 
 	void SetSkeleton( const XE::SkeletonPtr & val );
@@ -72,6 +76,7 @@ private:
 
 private:
 	bool _Enable;
+	XE::ObjectPtr _GameObject;
 	XE::SkeletonPtr _Skeleton;
 	Array< AnimatorPtr > _Animators;
 	Map< XE::String, XE::Variant > _Parameters;

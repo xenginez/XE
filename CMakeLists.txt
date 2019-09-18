@@ -141,7 +141,9 @@ target_link_libraries(Render
 		Graphics)
 
 target_link_libraries(Animation
-		Graphics)
+		Graphics
+		
+		ik)
 
 target_link_libraries(GUI
 		Render)

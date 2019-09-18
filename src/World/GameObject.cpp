@@ -315,11 +315,11 @@ void XE::GameObject::SetRelativeTransform( const Mat4 & val )
 	_SceneComponent->SetRelativeTransform( val );
 }
 
-void XE::GameObject::OnMessage( MessagePtr & val )
+void XE::GameObject::ProcessEvent( EventPtr & val )
 {
 	for( auto & comp : _Components )
 	{
-		comp->OnMessage( val );
+		comp->ProcessEvent( val );
 
 		if( val->accept )
 		{

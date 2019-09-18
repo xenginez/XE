@@ -18,13 +18,15 @@ class UTILS_API Event
 public:
 	Event();
 
-	Event( XE::uint64 id, const Variant & parameter = Variant() );
+	Event( XE::uint64 id, ObjectPtr sender, ObjectPtr recver, const Variant & parameter = Variant() );
 
 	Event( const Event & val );
 
 public:
 	bool accept;
 	XE::uint64 id;
+	ObjectPtr sender;
+	ObjectPtr recver;
 	Variant parameter;
 };
 DECL_META_CLASS( UTILS_API, Event );

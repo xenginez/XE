@@ -28,8 +28,7 @@ public:
 	virtual void AssetUnload();
 
 public:
-	virtual void OnMessage( MessagePtr & val );
-
+	virtual void ProcessEvent( EventPtr & val );
 };
 
 END_XE_NAMESPACE

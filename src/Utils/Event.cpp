@@ -16,8 +16,8 @@ XE::Event::Event()
 
 }
 
-XE::Event::Event( XE::uint64 id, const Variant & parameter /*= Variant() */ )
-	: accept( false ), id( id ), parameter( parameter )
+Event::Event( XE::uint64 id, ObjectPtr sender, ObjectPtr recver, const Variant & parameter /*= Variant() */ )
+	: accept( false ), id( id ), sender( sender ), recver( recver ), parameter( parameter )
 	
 {
 
@@ -27,5 +27,7 @@ XE::Event::Event( const Event & val )
 {
 	accept = val.accept;
 	id = val.id;
+	sender = val.sender;
+	recver = val.recver;
 	parameter = val.parameter;
 }

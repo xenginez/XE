@@ -58,6 +58,16 @@ void XE::AnimationController::Clearup()
 	_AnimatorMaps.clear();
 }
 
+XE::ObjectPtr AnimationController::GetGameObject() const
+{
+	return _GameObject;
+}
+
+void AnimationController::SetGameObject( XE::ObjectPtr & val )
+{
+	_GameObject = val;
+}
+
 XE::SkeletonPtr AnimationController::GetSkeleton() const
 {
 	return _Skeleton;

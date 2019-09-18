@@ -226,19 +226,6 @@ XE::Array<XE::GameObjectPtr> XE::WorldObject::Intersects( const Frustum & val ) 
 	return std::move( static_objects );
 }
 
-void XE::WorldObject::OnMessage( MessagePtr & val )
-{
-	for( auto & obj : _AllGameObjects )
-	{
-		obj->OnMessage( val );
-
-		if( val->accept )
-		{
-			break;
-		}
-	}
-}
-
 void XE::WorldObject::Startup()
 {
 	FArray<GameObjectPtr> static_objs;

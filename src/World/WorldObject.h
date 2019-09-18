@@ -65,9 +65,6 @@ public:
 
 	Array<GameObjectPtr> Intersects( const Frustum & val ) const;
 
-public:
-	void OnMessage( MessagePtr & val ) override;
-
 protected:
 	void Startup();
 

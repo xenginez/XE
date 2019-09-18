@@ -34,6 +34,13 @@ public:
 	virtual void Clearup();
 
 public:
+	virtual void OnEntry();
+
+	virtual void OnUpdate( XE::float32 val );
+
+	virtual void OnExit();
+
+public:
 	bool GetLooped() const;
 
 	void SetLooped( bool val );
@@ -51,6 +58,11 @@ public:
 
 	void SetTransitions( const Array<XE::uint32> & val );
 
+	const Array<AnimationTriggerPtr> & GetTriggers() const;
+
+	void SetTriggers( const Array<AnimationTriggerPtr> & val );
+
+public:
 	AnimationControllerPtr GetAnimationController() const;
 
 	void SetAnimationController( const AnimationControllerPtr & val );
@@ -59,8 +71,11 @@ private:
 	bool _Looped;
 	bool _Playing;
 	bool _WaitOut;
+	XE::float32 _Time;
+	XE::float32 _MaxTime;
 	Array<XE::uint32> _Transitions;
 	AnimationControllerWPtr _Controller;
+	Array<AnimationTriggerPtr> _Triggers;
 };
 
 class ANIMATION_API AnimationStateAny : public AnimationState

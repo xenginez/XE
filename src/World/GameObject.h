@@ -130,7 +130,7 @@ public:
 	}
 
 public:
-	void OnMessage( MessagePtr & val ) override;
+	void ProcessEvent( EventPtr & val ) override;
 
 protected:
 	void Startup();

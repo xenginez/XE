@@ -15,10 +15,15 @@ BEG_XE_NAMESPACE
 
 DECL_PTR( Animator );
 DECL_PTR( AnimationState );
+DECL_PTR( AnimationTrigger );
 DECL_PTR( SkeletonAnimation );
+DECL_PTR( AnimationIKSolver );
 DECL_PTR( AnimationCondition );
+DECL_PTR( AnimationIKEffector );
 DECL_PTR( AnimationTransition );
 DECL_PTR( AnimationController );
+DECL_PTR( AnimationIKConstraint );
+
 
 enum class AnimationCompare
 {
