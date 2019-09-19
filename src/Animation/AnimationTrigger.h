@@ -28,15 +28,17 @@ public:
 public:
 	XE::float32 GetTime() const;
 
-	const XE::Variant & GetData() const;
+	XE::EventHandle GetEventHandle() const;
+
+	const XE::Variant & GetEventParameter() const;
 
 private:
 	bool _Sended;
 	XE::float32 _Time;
-	XE::Variant _Data;
-};
 
-DECL_EVENT( ANIMATION_TRIGGER, "sender: animation state, parameter: animation trigger", AnimationTrigger );
+	XE::EventHandle _Handle;
+	XE::Variant _Parameter;
+};
 
 END_XE_NAMESPACE
 

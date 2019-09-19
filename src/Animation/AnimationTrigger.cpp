@@ -4,7 +4,8 @@ USING_XE
 
 BEG_META( AnimationTrigger )
 type->Property( "Time", &AnimationTrigger::_Time );
-type->Property( "Data", &AnimationTrigger::_Data );
+type->Property( "EventHandle", &AnimationTrigger::_Handle );
+type->Property( "EventParameter", &AnimationTrigger::_Parameter );
 END_META()
 
 AnimationTrigger::AnimationTrigger()
@@ -23,7 +24,12 @@ XE::float32 AnimationTrigger::GetTime() const
 	return _Time;
 }
 
-const XE::Variant & AnimationTrigger::GetData() const
+XE::EventHandle AnimationTrigger::GetEventHandle() const
 {
-	return _Data;
+	return _Handle;
+}
+
+const XE::Variant & AnimationTrigger::GetEventParameter() const
+{
+	return _Parameter;
 }

@@ -33,9 +33,9 @@ public:
 	virtual void PostEvent( XE::uint64 frame, EventPtr val ) = 0;
 
 public:
-	virtual XE::uint64 RegisterListener( XE::uint64 event, ListenerType listener ) = 0;
+	virtual XE::uint64 RegisterListener( XE::EventHandle handle, ListenerType listener ) = 0;
 
-	virtual void UnregisterListener( XE::uint64 event, XE::uint64 index ) = 0;
+	virtual void UnregisterListener( XE::EventHandle handle, XE::uint64 index ) = 0;
 
 };
 

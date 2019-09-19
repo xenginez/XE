@@ -9,22 +9,26 @@
 #ifndef EVENT_H__297F9FF1_F984_41D3_8EFF_6E87D3E265B5
 #define EVENT_H__297F9FF1_F984_41D3_8EFF_6E87D3E265B5
 
-#include "Type.h"
+#include "Handle.hpp"
 
 BEG_XE_NAMESPACE
+
+class Event; using EventHandle = XE::Handle< XE::Event >; DECL_META_CLASS( UTILS_API, EventHandle );
 
 class UTILS_API Event
 {
 public:
 	Event();
 
-	Event( XE::uint64 id, ObjectPtr sender, ObjectPtr recver, const Variant & parameter = Variant() );
+	Event( EventHandle handle, ObjectPtr sender, ObjectPtr recver, const Variant & parameter = Variant() );
 
 	Event( const Event & val );
 
+	Event & operator=( const Event & val );
+
 public:
 	bool accept;
-	XE::uint64 id;
+	EventHandle handle;
 	ObjectPtr sender;
 	ObjectPtr recver;
 	Variant parameter;

@@ -48,7 +48,7 @@ template<> struct std::less<XEPFrameEvent>
 
 struct EventService::Private
 {
-	using ListenerMap = tbb::concurrent_hash_map<XE::uint64, tbb::concurrent_vector<IEventService::ListenerType>>;
+	using ListenerMap = tbb::concurrent_hash_map<XE::EventHandle, tbb::concurrent_vector<IEventService::ListenerType>>;
 
 	ListenerMap _Listeners;
 	tbb::concurrent_priority_queue<XEPTimeEvent> _TimeEvents;
@@ -64,6 +64,11 @@ XE::EventService::EventService()
 XE::EventService::~EventService()
 {
 	delete _p;
+}
+
+void XE::EventService::Prepare()
+{
+
 }
 
 bool XE::EventService::Startup()
@@ -88,8 +93,17 @@ void XE::EventService::Clearup()
 void XE::EventService::PostEvent( EventPtr val )
 {
 	Private::ListenerMap::accessor accessor;
-	if ( _p->_Listeners.find( accessor, val->id ) )
+	if ( _p->_Listeners.find( accessor, val->handle ) )
 	{
+		if( val->recver )
+		{
+			val->recver->ProcessEvent( val );
+			if( val->accept )
+			{
+				return;
+			}
+		}
+
 		for ( auto var : accessor->second )
 		{
 			if ( var )
@@ -135,17 +149,17 @@ void XE::EventService::PostEvent( XE::float32 dt, EventPtr val )
 	_p->_TimeEvents.push( std::move( evt ) );
 }
 
-XE::uint64 XE::EventService::RegisterListener( XE::uint64 event, ListenerType listener )
+XE::uint64 XE::EventService::RegisterListener( XE::EventHandle handle, ListenerType listener )
 {
 	Private::ListenerMap::accessor accessor;
 
-	if ( _p->_Listeners.find( accessor, event ) )
+	if ( _p->_Listeners.find( accessor, handle ) )
 	{
 		accessor->second.push_back( listener );
 		return accessor->second.size() - 1;
 	}
 
-	if ( _p->_Listeners.insert( accessor, event ) )
+	if ( _p->_Listeners.insert( accessor, handle ) )
 	{
 		accessor->second.push_back( nullptr );
 		accessor->second.push_back( listener );
@@ -155,11 +169,11 @@ XE::uint64 XE::EventService::RegisterListener( XE::uint64 event, ListenerType li
 	return 0;
 }
 
-void XE::EventService::UnregisterListener( XE::uint64 event, XE::uint64 index )
+void XE::EventService::UnregisterListener( XE::EventHandle handle, XE::uint64 index )
 {
 	Private::ListenerMap::accessor accessor;
 
-	if ( _p->_Listeners.find( accessor, event ) )
+	if ( _p->_Listeners.find( accessor, handle ) )
 	{
 		accessor->second[index] = nullptr;
 	}
@@ -201,9 +215,4 @@ void XE::EventService::ProcessFrameEvent()
 			break;
 		}
 	}
-}
-
-void XE::EventService::Prepare()
-{
-
 }

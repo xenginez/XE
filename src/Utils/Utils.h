@@ -31,18 +31,11 @@ public: \
 typedef XE::OrderGroup< INDEX > NAME##Group;
 
 #define DECL_ORDER(GROUP, NAME, DESC, PARAM) \
-DLL_VAR_WEAK extern const XE::uint64 NAME = XE::Order::RegisterOrder< GROUP >( #NAME, DESC, XE::MetaID< PARAM >::Get() )
+DLL_VAR_WEAK extern const XE::Handle<GROUP> NAME = XE::Order::RegisterOrder< GROUP##Group >( #NAME, DESC, XE::MetaID< PARAM >::Get() )
 
-BEG_XE_NAMESPACE
-template<> class UTILS_API XE::OrderGroup< 1 >
-{
-public:
-	static constexpr XE::uint64 group_value = 1;
-};
-typedef XE::OrderGroup< 1 > EventGroup;
-END_XE_NAMESPACE
+#define DECL_EVENT( NAME, DESC, PARAM ) DECL_ORDER(Event, NAME, DESC, PARAM )
 
-#define DECL_EVENT( NAME, DESC, PARAM ) DECL_ORDER( EventGroup, EVENT_##NAME, DESC, PARAM )
 
+DECL_GROUP( UTILS_API, 1, Event );
 
 #endif // __UTILS_H__8586A462_1BAB_4CB7_8176_591B37A1B021

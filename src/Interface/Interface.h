@@ -9,7 +9,6 @@
 #ifndef __INTERFACE_H__00216C60_5990_42A5_85EE_CB4CBE039CA5
 #define __INTERFACE_H__00216C60_5990_42A5_85EE_CB4CBE039CA5
 
-#include "Event.h"
 #include "Prefab.h"
 #include "IService.h"
 #include "IFramework.h"

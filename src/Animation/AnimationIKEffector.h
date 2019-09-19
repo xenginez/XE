@@ -21,6 +21,56 @@ public:
 	AnimationIKEffector();
 
 	~AnimationIKEffector();
+
+public:
+	IKEffectorHandle GetHandle() const;
+
+	void SetHandle( IKEffectorHandle val );
+
+public:
+	bool GetWeightNlerp() const;
+
+	void SetWeightNlerp( bool val );
+
+	bool GetInheritParentRotation() const;
+
+	void SetInheritParentRotation( bool val );
+
+	const XE::Vec3 & GetTargetPosition() const;
+
+	void SetTargetPosition( const XE::Vec3 & val );
+
+	const XE::Quat & GetTargetRotation() const;
+
+	void SetTargetRotation( const XE::Quat & val );
+
+	XE::uint32 GetChainLength() const;
+
+	void SetChainLength( XE::uint32 val );
+
+	XE::float32 GetWeight() const;
+
+	void SetWeight( XE::float32 val );
+
+	XE::float32 GetRotationWeight() const;
+
+	void SetRotationWeight( XE::float32 val );
+
+	XE::float32 GetRotationDecay() const;
+
+	void SetRotationDecay( XE::float32 val );
+
+private:
+	bool _WeightNlerp;
+	bool _InheritParentRotation;
+	XE::Vec3 _TargetPosition;
+	XE::Quat _TargetRotation;
+	XE::uint32 _ChainLength;
+	XE::float32 _Weight;
+	XE::float32 _RotationWeight;
+	XE::float32 _RotationDecay;
+
+	IKEffectorHandle _Handle;
 };
 
 END_XE_NAMESPACE

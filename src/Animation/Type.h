@@ -24,6 +24,9 @@ DECL_PTR( AnimationTransition );
 DECL_PTR( AnimationController );
 DECL_PTR( AnimationIKConstraint );
 
+DECL_HANDLE( ANIMATION_API, IKSolver );
+DECL_HANDLE( ANIMATION_API, IKEffector );
+DECL_HANDLE( ANIMATION_API, IKConstraint );
 
 enum class AnimationCompare
 {
@@ -35,6 +38,18 @@ enum class AnimationCompare
 	NOTEQUAL,
 };
 DECL_META_ENUM( ANIMATION_API, AnimationCompare );
+
+
+enum class IKAlgorithm
+{
+	ONE_BONE,
+	TWO_BONE,
+	FABRIK,
+	MSD,
+	JACOBIAN_INVERSE,
+	JACOBIAN_TRANSPOSE,
+};
+DECL_META_ENUM( ANIMATION_API, IKAlgorithm );
 
 END_XE_NAMESPACE
 

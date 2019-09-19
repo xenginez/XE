@@ -21,6 +21,31 @@ public:
 	AnimationIKConstraint();
 
 	~AnimationIKConstraint();
+
+public:
+	IKConstraintHandle GetHandle() const;
+
+	void SetHandle( IKConstraintHandle val );
+
+public:
+	XE::float32 GetStiffness() const;
+
+	void SetStiffness( XE::float32 val );
+
+	XE::float32 GetStretchiness() const;
+
+	void SetStretchiness( XE::float32 val );
+
+	const XE::Vec2 & GetLengthConstraints() const;
+
+	void SetLengthConstraints( const XE::Vec2 & val );
+
+private:
+	IKConstraintHandle _Handle;
+
+	XE::float32 _Stiffness;
+	XE::float32 _Stretchiness;
+	XE::Vec2 _LengthConstraints;
 };
 
 END_XE_NAMESPACE
