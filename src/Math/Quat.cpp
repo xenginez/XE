@@ -16,7 +16,7 @@ const Quat Quat::Identity = { 0, 0, 0, 1 };
 
 
 XE::Quat::Quat()
-	:x( 0 ), y( 0 ), z( 0 ), w( 0 )
+	:x( 0 ), y( 0 ), z( 0 ), w( 1 )
 {
 }
 

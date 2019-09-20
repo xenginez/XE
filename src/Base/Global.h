@@ -36,6 +36,8 @@
 #include <unordered_map>
 #include <condition_variable>
 
+#include <intrin.h>
+
 #if PLATFORM_OS & OS_MAC
 #include <boost/filesystem.hpp>
 namespace std{namespace filesystem = boost::filesystem;}

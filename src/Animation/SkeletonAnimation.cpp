@@ -144,37 +144,38 @@ void XE::SkeletonAnimation::SetSkeleton( const XE::String & val )
 	_Skeleton = val;
 }
 
-const XE::Map< XE::uint32, XE::SkeletonAnimationTrack > & XE::SkeletonAnimation::GetSkeletonAnimationTracks() const
+const XE::Array< XE::SkeletonAnimationTrack > & XE::SkeletonAnimation::GetSkeletonAnimationTracks() const
 {
 	return _Tracks;
 }
 
-void XE::SkeletonAnimation::SetSkeletonAnimationTracks( const Map< XE::uint32, SkeletonAnimationTrack > & val )
+void XE::SkeletonAnimation::SetSkeletonAnimationTracks( const XE::Array< SkeletonAnimationTrack > & val )
 {
 	_Tracks = val;
 }
 
 bool SkeletonAnimation::Sample( XE::uint32 bone, XE::float32 time, XE::Vec3 & position, XE::Quat & rotation, XE::Vec3 & scale ) const
 {
-	auto tracks_iter = _Tracks.find( bone );
-	if( tracks_iter != _Tracks.end() )
+	const auto & tracks_iter = _Tracks[bone];
+
+	if( tracks_iter._Keys.size() )
 	{
 		if( time < Mathf::Epsilon )
 		{
-			position = tracks_iter->second._Keys.front()._Position;
-			rotation = tracks_iter->second._Keys.front()._Rotation;
-			scale = tracks_iter->second._Keys.front()._Scale;
+			position = tracks_iter._Keys.front()._Position;
+			rotation = tracks_iter._Keys.front()._Rotation;
+			scale = tracks_iter._Keys.front()._Scale;
 
 			return true;
 		}
-		else if( time <= tracks_iter->second._MaxTime )
+		else if( time <= tracks_iter._MaxTime )
 		{
-			auto key_iter = std::find_if( tracks_iter->second._Keys.begin(), tracks_iter->second._Keys.end(), [time]( const SkeletonAnimationKey & key )
+			auto key_iter = std::find_if( tracks_iter._Keys.begin(), tracks_iter._Keys.end(), [time]( const SkeletonAnimationKey & key )
 										  {
 											  return key._Time >= time;
 										  } );
 
-			if( key_iter != tracks_iter->second._Keys.end() )
+			if( key_iter != tracks_iter._Keys.end() )
 			{
 				XE::float32 t = ( time - ( key_iter - 1 )->_Time ) / ( key_iter->_Time - ( key_iter - 1 )->_Time );
 

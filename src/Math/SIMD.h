@@ -13,12 +13,6 @@
 
 #ifdef SIMD_TYPE
 
-#if SIMD_TYPE == SIMD_SSE
-#include <xmmintrin.h>
-#elif SIMD_TYPE == SIMD_NEON
-#include <xmmintrin.h>
-#endif
-
 BEG_XE_NAMESPACE
 
 class MATH_API SIMD

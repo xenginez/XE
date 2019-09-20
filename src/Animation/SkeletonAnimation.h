@@ -93,9 +93,9 @@ public:
 
 	void SetSkeleton( const XE::String & val );
 
-	const Map< XE::uint32, SkeletonAnimationTrack > & GetSkeletonAnimationTracks() const;
+	const Array< SkeletonAnimationTrack > & GetSkeletonAnimationTracks() const;
 
-	void SetSkeletonAnimationTracks( const Map< XE::uint32, SkeletonAnimationTrack > & val );
+	void SetSkeletonAnimationTracks( const Array< SkeletonAnimationTrack > & val );
 
 public:
 	bool Sample( XE::uint32 bone, XE::float32 time, XE::Vec3 & position, XE::Quat & rotation, XE::Vec3 & scale ) const;
@@ -104,7 +104,7 @@ private:
 	String _Name;
 	String _Skeleton;
 	XE::float32 _MaxTime;
-	Map< XE::uint32, SkeletonAnimationTrack > _Tracks;
+	Array< SkeletonAnimationTrack > _Tracks;
 };
 DECL_META_CLASS( ANIMATION_API, SkeletonAnimation );
 
