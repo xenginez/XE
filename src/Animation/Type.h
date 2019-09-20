@@ -19,14 +19,10 @@ DECL_PTR( AnimationTrigger );
 DECL_PTR( SkeletonAnimation );
 DECL_PTR( AnimationIKSolver );
 DECL_PTR( AnimationCondition );
-DECL_PTR( AnimationIKEffector );
 DECL_PTR( AnimationTransition );
 DECL_PTR( AnimationController );
-DECL_PTR( AnimationIKConstraint );
 
-DECL_HANDLE( ANIMATION_API, IKSolver );
-DECL_HANDLE( ANIMATION_API, IKEffector );
-DECL_HANDLE( ANIMATION_API, IKConstraint );
+DECL_HANDLE( ANIMATION_API, AnimationIKSolver );
 
 enum class AnimationCompare
 {
@@ -45,9 +41,7 @@ enum class IKAlgorithm
 	ONE_BONE,
 	TWO_BONE,
 	FABRIK,
-	MSD,
-	JACOBIAN_INVERSE,
-	JACOBIAN_TRANSPOSE,
+	MSS,
 };
 DECL_META_ENUM( ANIMATION_API, IKAlgorithm );
 

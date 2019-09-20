@@ -13,6 +13,90 @@
 
 BEG_XE_NAMESPACE
 
+class ANIMATION_API AnimationIKEffector
+{
+public:
+	AnimationIKEffector();
+
+	~AnimationIKEffector();
+
+public:
+	bool GetWeightNlerp() const;
+
+	void SetWeightNlerp( bool val );
+
+	bool GetInheritParentRotation() const;
+
+	void SetInheritParentRotation( bool val );
+
+	const XE::Vec3 & GetTargetPosition() const;
+
+	void SetTargetPosition( const XE::Vec3 & val );
+
+	const XE::Quat & GetTargetRotation() const;
+
+	void SetTargetRotation( const XE::Quat & val );
+
+	XE::uint32 GetChainLength() const;
+
+	void SetChainLength( XE::uint32 val );
+
+	XE::float32 GetWeight() const;
+
+	void SetWeight( XE::float32 val );
+
+	XE::float32 GetRotationWeight() const;
+
+	void SetRotationWeight( XE::float32 val );
+
+	XE::float32 GetRotationDecay() const;
+
+	void SetRotationDecay( XE::float32 val );
+
+	XE::uint32 GetBoneJoint() const;
+
+	void SetBoneJoint( XE::uint32 val );
+
+private:
+	bool _WeightNlerp;
+	bool _InheritParentRotation;
+	XE::Vec3 _TargetPosition;
+	XE::Quat _TargetRotation;
+	XE::uint32 _ChainLength;
+	XE::float32 _Weight;
+	XE::float32 _RotationWeight;
+	XE::float32 _RotationDecay;
+	XE::uint32 _BoneJoint;
+};
+DECL_META_CLASS( ANIMATION_API, AnimationIKEffector );
+
+class ANIMATION_API AnimationIKConstraint
+{
+public:
+	AnimationIKConstraint();
+
+	~AnimationIKConstraint();
+
+public:
+	XE::float32 GetStiffness() const;
+
+	void SetStiffness( XE::float32 val );
+
+	XE::float32 GetStretchiness() const;
+
+	void SetStretchiness( XE::float32 val );
+
+	const XE::Vec2 & GetLengthConstraints() const;
+
+	void SetLengthConstraints( const XE::Vec2 & val );
+
+private:
+	XE::float32 _Stiffness;
+	XE::float32 _Stretchiness;
+	XE::Vec2 _LengthConstraints;
+};
+DECL_META_CLASS( ANIMATION_API, AnimationIKConstraint );
+
 class ANIMATION_API AnimationIKSolver : public XE::Object
 {
 	OBJECT( AnimationIKSolver, Object )
@@ -23,9 +107,16 @@ public:
 	~AnimationIKSolver();
 
 public:
-	IKSolverHandle GetHandle() const;
+	void Startup();
 
-	void SetHandle( IKSolverHandle val );
+	void Update( XE::float32 val );
+
+	void Clearup();
+
+public:
+	const SkeletonPtr & GetSkeleton() const;
+
+	void SetSkeletion( const SkeletonPtr & val );
 
 public:
 	IKAlgorithm GetAlgorithm() const;
@@ -60,46 +151,45 @@ public:
 
 	void SetAutoSolve( bool val );
 
-	XE::uint32 GetMaximumIterations() const;
-
-	void SetMaximumIterations( XE::uint32 val );
-
 	XE::float32 GetTolerance() const;
 
 	void SetTolerance( XE::float32 val );
 
-public:
-	void RebuildChainTrees();
+	XE::uint32 GetMaximumIterations() const;
 
-	void RecalculateSegmentLengths();
+	void SetMaximumIterations( XE::uint32 val );
 
-	void CalculateJointRotations();
+	const Array<AnimationIKEffector> & GetIKEffectors() const;
 
-public:
-	void Solve();
+	void SetIKRffectors( const Array<AnimationIKEffector> & val );
+
+	const Array<AnimationIKConstraint> & GetIKConstraints() const;
+
+	void SetIKConstraints( const Array<AnimationIKConstraint> & val );
 
 private:
-	IKSolverHandle _Handle;
+	AnimationIKSolverHandle _Handle;
 
-	Array<AnimationIKEffectorPtr> _EffectorList;
-	Array<AnimationIKConstraintPtr> _ConstraintList;
+	SkeletonPtr _Skeleton;
+
+	Array<AnimationIKEffector> _EffectorList;
+	Array<AnimationIKConstraint> _ConstraintList;
 
 	IKAlgorithm _Algorithm;
+	bool _Constraints;
+	bool _JointRotations;
+	bool _TargetRotations;
+	XE::float32 _Tolerance;
+	XE::uint32 _MaxIterations;
 
 	bool _SolverTreeValid;
 	bool _TreeNeedsRebuild;
 	bool _ChainTreesNeedUpdating;
 
 	bool _AutoSolve;
-	bool _Constraints;
-	bool _JointRotations;
 	bool _UseOriginalPose;
-	bool _TargetRotations;
 	bool _UpdateActivePose;
 	bool _UpdateOriginalPose;
-
-	XE::uint32 _MaxIterations;
-	XE::float32 _Tolerance;
 };
 
 END_XE_NAMESPACE

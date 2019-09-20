@@ -24,14 +24,14 @@ XE::Skeleton::~Skeleton()
 
 }
 
-XE::uint64 XE::Skeleton::GetBoneJointCount() const
+XE::uint32 XE::Skeleton::GetBoneJointCount() const
 {
-	return _BoneJoints.size();
+	return static_cast< XE::uint32 >( _BoneJoints.size() );
 }
 
-XE::uint64 XE::Skeleton::FindBoneJointIndex( const XE::String & val ) const
+XE::uint32 XE::Skeleton::FindBoneJointIndex( const XE::String & val ) const
 {
-	for( XE::uint64 i = 0; i < _BoneJoints.size(); ++i )
+	for( XE::uint32 i = 0; i < _BoneJoints.size(); ++i )
 	{
 		if( _BoneJoints[i].Name == val )
 		{
@@ -42,22 +42,22 @@ XE::uint64 XE::Skeleton::FindBoneJointIndex( const XE::String & val ) const
 	return npos;
 }
 
-const XE::String & XE::Skeleton::GetBoneJointName( XE::uint64 val ) const
+const XE::String & XE::Skeleton::GetBoneJointName( XE::uint32 val ) const
 {
 	return _BoneJoints[val].Name;
 }
 
-XE::uint64 XE::Skeleton::GetBoneJointParent( XE::uint64 val ) const
+XE::uint32 XE::Skeleton::GetBoneJointParent( XE::uint32 val ) const
 {
 	return _BoneJoints[val].Parent;
 }
 
-const XE::Mat4 & XE::Skeleton::GetBoneJointTransform( XE::uint64 val ) const
+const XE::Mat4 & XE::Skeleton::GetBoneJointTransform( XE::uint32 val ) const
 {
 	return _BoneJoints[val].Transform;
 }
 
-const XE::Array<XE::uint64> & XE::Skeleton::GetBoneJointChildren( XE::uint64 val ) const
+const XE::Array<XE::uint32> & XE::Skeleton::GetBoneJointChildren( XE::uint32 val ) const
 {
 	return _BoneJoints[val].Children;
 }
@@ -67,7 +67,7 @@ const XE::Array<XE::BoneJoint> & XE::Skeleton::GetBoneJoints() const
 	return _BoneJoints;
 }
 
-void XE::Skeleton::SetBoneJointTransform( XE::uint64 val, const XE::Mat4 & mat )
+void XE::Skeleton::SetBoneJointTransform( XE::uint32 val, const XE::Mat4 & mat )
 {
 	_BoneJoints[val].Transform = mat;
 }

@@ -15,9 +15,7 @@
 #include "AnimationIKSolver.h"
 #include "SkeletonAnimation.h"
 #include "AnimationCondition.h"
-#include "AnimationIKEffector.h"
 #include "AnimationTransition.h"
 #include "AnimationController.h"
-#include "AnimationIKConstraint.h"
 
 #endif // __ANIMATION_H__CA4547DD_2AA2_43B3_8F67_28549EF05AFC

@@ -19,7 +19,7 @@ class ANIMATION_API Animator : public XE::Object
 
 public:
 	static constexpr XE::uint32 AnyState = 0;
-	static constexpr XE::uint32 npos = XE::uint32( -1 );
+	static constexpr XE::uint32 npos = std::numeric_limits<XE::uint32>::max();
 
 public:
 	Animator();
@@ -57,8 +57,8 @@ protected:
 	bool _Enable;
 	XE::String _Name;
 
-	XE::uint64 _CurState;
-	XE::uint64 _EntryState;
+	XE::uint32 _CurState;
+	XE::uint32 _EntryState;
 	Array< AnimationStatePtr > _States;
 	Array< AnimationTransitionPtr > _Transitions;
 

@@ -19,9 +19,9 @@ class GRAPHICS_API BoneJoint : public XE::Object
 
 public:
 	XE::String Name;
-	XE::uint64 Parent;
+	XE::uint32 Parent;
 	XE::Mat4 Transform;
-	XE::Array<XE::uint64> Children;
+	XE::Array<XE::uint32> Children;
 };
 DECL_META_CLASS( GRAPHICS_API, BoneJoint );
 
@@ -30,7 +30,7 @@ class GRAPHICS_API Skeleton : public XE::Object
 	OBJECT( Skeleton, Object )
 
 public:
-	static constexpr XE::uint64 npos = std::numeric_limits<XE::uint64>::max();
+	static constexpr XE::uint32 npos = std::numeric_limits<XE::uint32>::max();
 
 public:
 	Skeleton();
@@ -38,23 +38,23 @@ public:
 	~Skeleton() override;
 
 public:
-	XE::uint64 GetBoneJointCount() const;
+	XE::uint32 GetBoneJointCount() const;
 
-	XE::uint64 FindBoneJointIndex( const XE::String & val ) const;
+	XE::uint32 FindBoneJointIndex( const XE::String & val ) const;
 
-	const XE::String & GetBoneJointName( XE::uint64 val ) const;
+	const XE::String & GetBoneJointName( XE::uint32 val ) const;
 
-	XE::uint64 GetBoneJointParent( XE::uint64 val ) const;
+	XE::uint32 GetBoneJointParent( XE::uint32 val ) const;
 
-	const XE::Mat4 & GetBoneJointTransform( XE::uint64 val ) const;
+	const XE::Mat4 & GetBoneJointTransform( XE::uint32 val ) const;
 
-	const XE::Array<XE::uint64> & GetBoneJointChildren( XE::uint64 val ) const;
+	const XE::Array<XE::uint32> & GetBoneJointChildren( XE::uint32 val ) const;
 
 public:
 	const XE::Array<XE::BoneJoint> & GetBoneJoints() const;
 
 public:
-	void SetBoneJointTransform( XE::uint64 val, const XE::Mat4 & mat );
+	void SetBoneJointTransform( XE::uint32 val, const XE::Mat4 & mat );
 
 private:
 	XE::Array<XE::BoneJoint> _BoneJoints;
