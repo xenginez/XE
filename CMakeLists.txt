@@ -82,6 +82,7 @@ if (XE_PLATFORM_PATH MATCHES "mac")
 	DetourTileCache
 	sqlite3
 	boost_filesystem
+	ik
 	)
 else()
 	target_link_libraries(XE 
