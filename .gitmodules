@@ -19,3 +19,6 @@
 [submodule "3rdparty/ik"]
 	path = 3rdparty/ik
 	url = https://github.com/TheComet/ik.git
+[submodule "3rdparty/bgfx.cmake"]
+	path = 3rdparty/bgfx.cmake
+	url = https://github.com/JoshuaBrookover/bgfx.cmake.git
