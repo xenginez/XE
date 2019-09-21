@@ -38,13 +38,13 @@
 
 #include <intrin.h>
 
+#include "Config.h"
+
 #if PLATFORM_OS & OS_MAC
 #include <boost/filesystem.hpp>
 namespace std{namespace filesystem = boost::filesystem;}
 #else
 #include <filesystem>	
 #endif
-
-#include "Config.h"
 
 #endif // __GLOBAL_H__397ADE88_7898_4FDF_B98E_B1C39DB69FEA
