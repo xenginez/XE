@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class UTILS_API BASE64
+class XE_API BASE64
 {
 public:
 	static std::string Encode( const XE::uint8 * src, XE::uint64 size );
@@ -28,7 +28,7 @@ private:
 	static const char _base64_encode_table[65];
 	static const char _base64_decode_table[256];
 };
-DECL_META_CLASS( UTILS_API, BASE64 );
+DECL_META_CLASS( XE_API, BASE64 );
 
 END_XE_NAMESPACE
 

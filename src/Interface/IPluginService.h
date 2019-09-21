@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class INTERFACE_API IPlugin
+class XE_API IPlugin
 {
 public:
 	IPlugin( IFrameworkPtr framework );
@@ -35,7 +35,7 @@ private:
 	IFrameworkPtr _Framework;
 };
 
-class INTERFACE_API IPluginService : public IService
+class XE_API IPluginService : public IService
 {
 	OBJECT( IPluginService, IService )
 

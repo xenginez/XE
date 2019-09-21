@@ -1,13 +1,13 @@
 /*!
- * \file   Animation.h
+ * \file	Animation.h
  *
- * \author ZhengYuanQing
- * \date   2019/1/10
- * \email  zhengyuanqing.95@gmail.com
+ * \author	ZhengYuanQing
+ * \date	2019/09/21
+ * \email	zhengyuanqing.95@gmail.com
  *
  */
-#ifndef __ANIMATION_H__CA4547DD_2AA2_43B3_8F67_28549EF05AFC
-#define __ANIMATION_H__CA4547DD_2AA2_43B3_8F67_28549EF05AFC
+#ifndef ANIMATION_H__2DF5C375_5088_41EB_8C3F_CEA376A63895
+#define ANIMATION_H__2DF5C375_5088_41EB_8C3F_CEA376A63895
 
 #include "Animator.h"
 #include "AnimationState.h"
@@ -18,4 +18,4 @@
 #include "AnimationTransition.h"
 #include "AnimationController.h"
 
-#endif // __ANIMATION_H__CA4547DD_2AA2_43B3_8F67_28549EF05AFC
+#endif // ANIMATION_H__2DF5C375_5088_41EB_8C3F_CEA376A63895

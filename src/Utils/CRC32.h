@@ -13,14 +13,14 @@
 
 BEG_XE_NAMESPACE
 
-class UTILS_API CRC32
+class XE_API CRC32
 {
 public:
 	static XE::uint32 GetCRC32( const XE::uint8 * src, XE::uint64 size );
 
 	static XE::uint32 GetCRC32( XE::uint32 salt, const XE::uint8 * src, XE::uint64 size );
 };
-DECL_META_CLASS( UTILS_API, CRC32 );
+DECL_META_CLASS( XE_API, CRC32 );
 
 END_XE_NAMESPACE
 

@@ -27,7 +27,7 @@ XE::IMetaInfoCPtr XE::MetaException::GetMetaInfo() const
 	return _Meta;
 }
 
-IMetaTypePtr REFLECT_API XE::GetReclectionType( const String& val )
+IMetaTypePtr XE_API XE::GetReclectionType( const String& val )
 {
 	if ( auto e = Reflection::FindEnum( val ) )
 	{

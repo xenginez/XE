@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class INTERFACE_API IThreadService : public IService
+class XE_API IThreadService : public IService
 {
 	OBJECT( IThreadService, IService )
 

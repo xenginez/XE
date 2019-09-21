@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class GRAPHICS_API Technique : public XE::Object
+class XE_API Technique : public XE::Object
 {
 	OBJECT( Technique, Object )
 

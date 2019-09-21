@@ -1,15 +1,15 @@
 /*!
- * \file   Audio.h
+ * \file	Audio.h
  *
- * \author ZhengYuanQing
- * \date   2019/1/10
- * \email  zhengyuanqing.95@gmail.com
+ * \author	ZhengYuanQing
+ * \date	2019/09/21
+ * \email	zhengyuanqing.95@gmail.com
  *
  */
-#ifndef __AUDIO_H__20560BDD_4C00_4C28_A938_9D8AE2B6FB3A
-#define __AUDIO_H__20560BDD_4C00_4C28_A938_9D8AE2B6FB3A
+#ifndef AUDIO_H__368E33C7_D961_484C_8228_99AF2D16D6FF
+#define AUDIO_H__368E33C7_D961_484C_8228_99AF2D16D6FF
 
 #include "AudioUtil.h"
 #include "AudioSound.h"
 
-#endif // __AUDIO_H__20560BDD_4C00_4C28_A938_9D8AE2B6FB3A
+#endif // AUDIO_H__368E33C7_D961_484C_8228_99AF2D16D6FF

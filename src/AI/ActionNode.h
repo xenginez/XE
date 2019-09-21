@@ -15,7 +15,7 @@ BEG_XE_NAMESPACE
 
 class ConditionNode;
 
-class AI_API ActionNode : public Node
+class XE_API ActionNode : public Node
 {
 	OBJECT( ActionNode, Node )
 

@@ -16,7 +16,7 @@ public:
 	Array < String > Dependent;
 };
 
-DECL_META_CLASS( CORE_API, XEPAsset );
+DECL_META_CLASS( XE_API, XEPAsset );
 
 BEG_META( XEPAsset )
 type->Property( "Name", &XEPAsset::Name );

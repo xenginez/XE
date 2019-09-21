@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class NAVIGATION_API NavMesh
+class XE_API NavMesh
 {
 public:
 	NavMesh();

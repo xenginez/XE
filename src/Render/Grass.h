@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class RENDER_API Grass
+class XE_API Grass
 {
 public:
 	Grass();

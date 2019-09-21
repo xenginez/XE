@@ -14,7 +14,7 @@
 
 BEG_XE_NAMESPACE
 
-class MATH_API Frustum
+class XE_API Frustum
 {
 public:
 	union
@@ -67,7 +67,7 @@ public:
 	std::pair<bool, XE::real> Intersect( const Ray& ray, bool discardInside = true ) const;
 
 };
-DECL_META_CLASS( MATH_API, Frustum );
+DECL_META_CLASS( XE_API, Frustum );
 
 END_XE_NAMESPACE
 

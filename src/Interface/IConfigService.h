@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class INTERFACE_API IConfigService : public IService
+class XE_API IConfigService : public IService
 {
 	OBJECT( IConfigService, IService )
 

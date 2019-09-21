@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class AUDIO_API AudioUtil
+class XE_API AudioUtil
 {
 public:
 	static void CheckError(const String& file, XE::uint64 line, const String& expr);

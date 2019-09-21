@@ -128,19 +128,19 @@ using FArray = std::vector<T, FrameAllocator<T>>;
 template< typename T >
 using FSet = std::set<T, std::less<T>, FrameAllocator<T>>;
 template< typename K, typename V >
-using FMap = std::map<K, V, std::less<K>, FrameAllocator<Pair<const K, V>>>;
+using FMap = std::map<K, V, std::less<K>, FrameAllocator<std::pair<const K, V>>>;
 template< typename T >
 using FMultiSet = std::multiset<T, std::less<T>, FrameAllocator<T>>;
 template< typename K, typename V >
-using FMultiMap = std::multimap<K, V, std::less<K>, FrameAllocator<Pair<const K, V>>>;
+using FMultiMap = std::multimap<K, V, std::less<K>, FrameAllocator<std::pair<const K, V>>>;
 template< typename T >
 using FUnorderedSet = std::unordered_set<T, std::hash<T>, std::equal_to<T>, FrameAllocator<T>>;
 template< typename K, typename V >
-using FUnorderedMap = std::unordered_map<K, V, std::hash<K>, std::equal_to<K>, FrameAllocator<Pair<const K, V>>>;
+using FUnorderedMap = std::unordered_map<K, V, std::hash<K>, std::equal_to<K>, FrameAllocator<std::pair<const K, V>>>;
 template< typename T >
 using FUnorderedMultiSet = std::unordered_multiset<T, std::hash<T>, std::equal_to<T>, FrameAllocator<T>>;
 template< typename K, typename V >
-using FUnorderedMultiMap = std::unordered_multimap<K, V, std::hash<K>, std::equal_to<K>, FrameAllocator<Pair<const K, V>>>;
+using FUnorderedMultiMap = std::unordered_multimap<K, V, std::hash<K>, std::equal_to<K>, FrameAllocator<std::pair<const K, V>>>;
 
 
 END_XE_NAMESPACE

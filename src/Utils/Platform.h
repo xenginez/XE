@@ -13,10 +13,10 @@
 
 BEG_XE_NAMESPACE
 
-class Window; using WindowHandle = XE::Handle< XE::Window >; DECL_META_CLASS( UTILS_API, WindowHandle );
-class Process; using ProcessHandle = XE::Handle< XE::Process >; DECL_META_CLASS( UTILS_API, ProcessHandle );
+class Window; using WindowHandle = XE::Handle< XE::Window >; DECL_META_CLASS( XE_API, WindowHandle );
+class Process; using ProcessHandle = XE::Handle< XE::Process >; DECL_META_CLASS( XE_API, ProcessHandle );
 
-class UTILS_API Platform
+class XE_API Platform
 {
 public:
 	static Language GetDefaultLanguage();

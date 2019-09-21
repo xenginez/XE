@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class UTILS_API LOD
+class XE_API LOD
 {
 public:
 	LOD();
@@ -45,7 +45,7 @@ public:
 private:
 	Array<Pair<XE::float32, XE::float32>> _Lods;
 };
-DECL_META_CLASS( UTILS_API, LOD );
+DECL_META_CLASS( XE_API, LOD );
 
 END_XE_NAMESPACE
 

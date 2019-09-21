@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class MATH_API Mat3
+class XE_API Mat3
 {
 public:
 	static const Mat3 Zero;
@@ -60,7 +60,7 @@ public:
 	}
 
 };
-DECL_META_CLASS( MATH_API, Mat3 );
+DECL_META_CLASS( XE_API, Mat3 );
 
 END_XE_NAMESPACE
 

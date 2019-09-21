@@ -22,7 +22,7 @@ DECL_PTR( AnimationCondition );
 DECL_PTR( AnimationTransition );
 DECL_PTR( AnimationController );
 
-DECL_HANDLE( ANIMATION_API, AnimationIKSolver );
+DECL_HANDLE( XE_API, AnimationIKSolver );
 
 enum class AnimationCompare
 {
@@ -33,7 +33,7 @@ enum class AnimationCompare
 	GEQUAL,
 	NOTEQUAL,
 };
-DECL_META_ENUM( ANIMATION_API, AnimationCompare );
+DECL_META_ENUM( XE_API, AnimationCompare );
 
 
 enum class IKAlgorithm
@@ -43,7 +43,7 @@ enum class IKAlgorithm
 	FABRIK,
 	MSS,
 };
-DECL_META_ENUM( ANIMATION_API, IKAlgorithm );
+DECL_META_ENUM( XE_API, IKAlgorithm );
 
 END_XE_NAMESPACE
 

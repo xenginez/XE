@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class AI_API BTCompositeNode : public Node
+class XE_API BTCompositeNode : public Node
 {
 	OBJECT( BTCompositeNode, Node )
 
@@ -35,7 +35,7 @@ private:
 	Array<Node *> _Nodes;
 };
 
-class AI_API BTSequenceNode : public BTCompositeNode
+class XE_API BTSequenceNode : public BTCompositeNode
 {
 	OBJECT( BTSequenceNode, BTCompositeNode )
 
@@ -53,7 +53,7 @@ private:
 	XE::uint64 _Current;
 };
 
-class AI_API BTSelectorNode : public BTCompositeNode
+class XE_API BTSelectorNode : public BTCompositeNode
 {
 	OBJECT( BTSelectorNode, BTCompositeNode )
 
@@ -71,7 +71,7 @@ private:
 	XE::uint64 _Current;
 };
 
-class AI_API BTParallelNode : public BTCompositeNode
+class XE_API BTParallelNode : public BTCompositeNode
 {
 	OBJECT( BTParallelNode, BTCompositeNode )
 

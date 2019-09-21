@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class ANIMATION_API SkeletonAnimationKey
+class XE_API SkeletonAnimationKey
 {
 public:
 	friend class SkeletonAnimation;
@@ -46,9 +46,9 @@ private:
 	XE::Quat _Rotation;
 	XE::Vec3 _Scale;
 };
-DECL_META_CLASS( ANIMATION_API, SkeletonAnimationKey );
+DECL_META_CLASS( XE_API, SkeletonAnimationKey );
 
-class ANIMATION_API SkeletonAnimationTrack
+class XE_API SkeletonAnimationTrack
 {
 public:
 	friend class SkeletonAnimation;
@@ -71,9 +71,9 @@ public:
 	XE::float32 _MaxTime;
 	Array< SkeletonAnimationKey > _Keys;
 };
-DECL_META_CLASS( ANIMATION_API, SkeletonAnimationTrack );
+DECL_META_CLASS( XE_API, SkeletonAnimationTrack );
 
-class ANIMATION_API SkeletonAnimation : public std::enable_shared_from_this< SkeletonAnimation >
+class XE_API SkeletonAnimation : public std::enable_shared_from_this< SkeletonAnimation >
 {
 public:
 	SkeletonAnimation();
@@ -106,7 +106,7 @@ private:
 	XE::float32 _MaxTime;
 	Array< SkeletonAnimationTrack > _Tracks;
 };
-DECL_META_CLASS( ANIMATION_API, SkeletonAnimation );
+DECL_META_CLASS( XE_API, SkeletonAnimation );
 
 END_XE_NAMESPACE
 

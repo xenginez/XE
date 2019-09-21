@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class AI_API Condition
+class XE_API Condition
 {
 	OBJECT( Condition )
 

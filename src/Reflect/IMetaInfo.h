@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class REFLECT_API IMetaInfo : public std::enable_shared_from_this< IMetaInfo >
+class XE_API IMetaInfo : public std::enable_shared_from_this< IMetaInfo >
 {
 public:
 	IMetaInfo( const String & Name, MetaType Type, IMetaInfoPtr Owner, const String & ModuleName = "XE" );

@@ -15,7 +15,7 @@
 
 BEG_XE_NAMESPACE
 
-class MATH_API SIMD
+class XE_API SIMD
 {
 public:
 #if SIMD_TYPE == SIMD_SSE

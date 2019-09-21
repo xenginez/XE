@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class PHYSICS_API Collision : public XE::PhysicsObject
+class XE_API Collision : public XE::PhysicsObject
 {
 	OBJECT( Collision, PhysicsObject )
 

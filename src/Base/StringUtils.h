@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class BASE_API StringUtils
+class XE_API StringUtils
 {
 public:
 	static std::string UTF16ToUTF8( const std::wstring & val );

@@ -15,7 +15,7 @@ BEG_XE_NAMESPACE
 
 template< XE::uint64 T > class OrderGroup;
 
-class UTILS_API Order : public Singleton< Order >
+class XE_API Order : public Singleton< Order >
 {
 	friend Singleton< Order >;
 

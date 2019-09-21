@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class RENDER_API Canvas
+class XE_API Canvas
 {
 public:
 	Canvas();

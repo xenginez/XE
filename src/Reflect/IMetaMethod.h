@@ -15,7 +15,7 @@
 
 BEG_XE_NAMESPACE
 
-class REFLECT_API IMetaMethod : public IMetaInfo
+class XE_API IMetaMethod : public IMetaInfo
 {
 public:
 	IMetaMethod( const String& Name, bool IsStatic, bool IsConst, IMetaInfoPtr Result, ParameterType&& Parameter, IMetaClassPtr Owner, const String & ModuleName = "XE" );

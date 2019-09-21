@@ -1,24 +1,25 @@
 /*!
- * \file   Utils.h
+ * \file	Utils.h
  *
- * \author ZhengYuanQing
- * \date   2019/1/10
- * \email  zhengyuanqing.95@gmail.com
+ * \author	ZhengYuanQing
+ * \date	2019/09/21
+ * \email	zhengyuanqing.95@gmail.com
  *
  */
-#ifndef __UTILS_H__8586A462_1BAB_4CB7_8176_591B37A1B021
-#define __UTILS_H__8586A462_1BAB_4CB7_8176_591B37A1B021
+#ifndef UTILS_H__836D437C_196C_4DE7_8062_D8A3F6CEC7D3
+#define UTILS_H__836D437C_196C_4DE7_8062_D8A3F6CEC7D3
 
 #include "LOD.h"
-#include "Order.h"
-#include "Layer.h"
 #include "CRC32.h"
 #include "Event.h"
+#include "Layer.h"
+#include "Order.h"
 #include "BASE64.h"
 #include "Object.h"
 #include "Library.h"
 #include "Platform.h"
 #include "Handle.hpp"
+
 
 #define DECL_HANDLE( _DLL_EXPORT, NAME ) class NAME; using NAME##Handle = XE::Handle< NAME >; DECL_META_CLASS( _DLL_EXPORT, NAME##Handle );
 
@@ -36,6 +37,6 @@ DLL_VAR_WEAK extern const XE::Handle<GROUP> NAME = XE::Order::RegisterOrder< GRO
 #define DECL_EVENT( NAME, DESC, PARAM ) DECL_ORDER(Event, NAME, DESC, PARAM )
 
 
-DECL_GROUP( UTILS_API, 1, Event );
+DECL_GROUP( XE_API, 1, Event );
 
-#endif // __UTILS_H__8586A462_1BAB_4CB7_8176_591B37A1B021
+#endif // UTILS_H__836D437C_196C_4DE7_8062_D8A3F6CEC7D3

@@ -1,29 +1,30 @@
 /*!
- * \file   AI.h
+ * \file	AI.h
  *
- * \author ZhengYuanQing
- * \date   2019/01/10
- * \email  zhengyuanqing.95@gmail.com
+ * \author	ZhengYuanQing
+ * \date	2019/09/21
+ * \email	zhengyuanqing.95@gmail.com
  *
  */
-#ifndef __AI_H__A8DD53F5_F4D7_4681_9A08_0F6320F7B225
-#define __AI_H__A8DD53F5_F4D7_4681_9A08_0F6320F7B225
-
-#include "BehaviorTree.h"
-#include "StateMachine.h"
+#ifndef AI_H__3309FBAA_94E1_4780_8910_E14CB055732E
+#define AI_H__3309FBAA_94E1_4780_8910_E14CB055732E
 
 #include "Node.h"
+#include "State.h"
 #include "SubNode.h"
+#include "SubState.h"
+#include "AIModule.h"
+#include "Condition.h"
+#include "BBKeyPtr.hpp"
+#include "BlackBoard.h"
 #include "ActionNode.h"
+#include "StateMachine.h"
+#include "BehaviorTree.h"
+#include "BTActionNode.h"
 #include "CompositeNode.h"
 #include "DecoratorNode.h"
+#include "BTCompositeNode.h"
+#include "BTConditionNode.h"
+#include "BTDecoratorNode.h"
 
-#include "State.h"
-#include "SubState.h"
-
-#include "Condition.h"
-
-#include "BlackBoard.h"
-#include "BBKeyPtr.hpp"
-
-#endif // __AI_H__A8DD53F5_F4D7_4681_9A08_0F6320F7B225
+#endif // AI_H__3309FBAA_94E1_4780_8910_E14CB055732E

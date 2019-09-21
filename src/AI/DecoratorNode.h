@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class AI_API DecoratorNode : public Node
+class XE_API DecoratorNode : public Node
 {
 	OBJECT( DecoratorNode, Node )
 
@@ -37,7 +37,7 @@ private:
 	Node * _Node;
 };
 
-class AI_API RepeatNode : public DecoratorNode
+class XE_API RepeatNode : public DecoratorNode
 {
 	OBJECT( RepeatNode, DecoratorNode )
 
@@ -56,7 +56,7 @@ private:
 	XE::int64 _Tally;
 };
 
-class AI_API SuccessNode : public DecoratorNode
+class XE_API SuccessNode : public DecoratorNode
 {
 	OBJECT( SuccessNode, DecoratorNode )
 
@@ -72,7 +72,7 @@ public:
 
 };
 
-class AI_API FailureNode : public DecoratorNode
+class XE_API FailureNode : public DecoratorNode
 {
 	OBJECT( FailureNode, DecoratorNode )
 
@@ -88,7 +88,7 @@ public:
 
 };
 
-class AI_API ReversedNode : public DecoratorNode
+class XE_API ReversedNode : public DecoratorNode
 {
 	OBJECT( ReversedNode, DecoratorNode )
 
@@ -104,7 +104,7 @@ public:
 
 };
 
-class AI_API DelayNode : public DecoratorNode
+class XE_API DelayNode : public DecoratorNode
 {
 	OBJECT( DelayNode, DecoratorNode )
 

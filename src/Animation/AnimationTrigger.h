@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class ANIMATION_API AnimationTrigger : public XE::Object
+class XE_API AnimationTrigger : public XE::Object
 {
 	OBJECT( AnimationTrigger, Object )
 

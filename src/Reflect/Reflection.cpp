@@ -93,15 +93,13 @@ XE::Reflection::~Reflection()
 
 void Reflection::Clear()
 {
-	_P();
-
-	if( _p )
+	if( Instance()->_p )
 	{
-		_p->Enums.clear();
-		_p->Methods.clear();
-		_p->Propertys.clear();
-		_p->Operators.clear();
-		_p->Classes.clear();
+		Instance()->_p->Enums.clear();
+		Instance()->_p->Methods.clear();
+		Instance()->_p->Propertys.clear();
+		Instance()->_p->Operators.clear();
+		Instance()->_p->Classes.clear();
 	}
 }
 

@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class CORE_API RenderService : public XE::IRenderService
+class XE_API RenderService : public XE::IRenderService
 {
 	OBJECT( RenderService, IRenderService )
 

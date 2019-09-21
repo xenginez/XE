@@ -15,12 +15,12 @@ BEG_XE_NAMESPACE
 
 DECL_PTR( IPhysicsContext );
 
-DECL_HANDLE( PSI_API, Shape );
-DECL_HANDLE( PSI_API, Joint );
-DECL_HANDLE( PSI_API, SoftBody );
-DECL_HANDLE( PSI_API, RigidBody );
-DECL_HANDLE( PSI_API, Collision );
-DECL_HANDLE( PSI_API, Constraint );
+DECL_HANDLE( XE_API, Shape );
+DECL_HANDLE( XE_API, Joint );
+DECL_HANDLE( XE_API, SoftBody );
+DECL_HANDLE( XE_API, RigidBody );
+DECL_HANDLE( XE_API, Collision );
+DECL_HANDLE( XE_API, Constraint );
 
 enum class PhysicsContextType
 {
@@ -29,7 +29,7 @@ enum class PhysicsContextType
 	PHYSX,
 	BULLET,
 };
-DECL_META_ENUM( PSI_API, PhysicsContextType );
+DECL_META_ENUM( XE_API, PhysicsContextType );
 
 struct HitResult
 {
@@ -39,21 +39,21 @@ struct HitResult
 	Array< CollisionHandle > Collisions;
 };
 
-struct PSI_API RayHitResult : public HitResult
+struct XE_API RayHitResult : public HitResult
 {
 	RayHitResult( const XE::Ray & ray );
 
 	XE::Ray Ray;
 };
 
-struct PSI_API BoxHitResult : public HitResult
+struct XE_API BoxHitResult : public HitResult
 {
 	BoxHitResult( const XE::AABB & box );
 
 	XE::AABB Box;
 };
 
-struct PSI_API PointHitResult : public HitResult
+struct XE_API PointHitResult : public HitResult
 {
 	PointHitResult( const XE::Vec3 & beg, const XE::Vec3 & end );
 
@@ -61,7 +61,7 @@ struct PSI_API PointHitResult : public HitResult
 	XE::Vec3 End;
 };
 
-struct PSI_API SphereHitResult : public HitResult
+struct XE_API SphereHitResult : public HitResult
 {
 	SphereHitResult( const XE::Sphere & sphere );
 

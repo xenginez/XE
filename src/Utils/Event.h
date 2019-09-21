@@ -13,9 +13,9 @@
 
 BEG_XE_NAMESPACE
 
-class Event; using EventHandle = XE::Handle< XE::Event >; DECL_META_CLASS( UTILS_API, EventHandle );
+class Event; using EventHandle = XE::Handle< XE::Event >; DECL_META_CLASS( XE_API, EventHandle );
 
-class UTILS_API Event
+class XE_API Event
 {
 public:
 	Event();
@@ -33,7 +33,7 @@ public:
 	ObjectPtr recver;
 	Variant parameter;
 };
-DECL_META_CLASS( UTILS_API, Event );
+DECL_META_CLASS( XE_API, Event );
 
 END_XE_NAMESPACE
 

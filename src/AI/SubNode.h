@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class AI_API SubNode : public XE::Node
+class XE_API SubNode : public XE::Node
 {
 	OBJECT( SubNode, Node )
 

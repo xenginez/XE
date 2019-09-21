@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class INTERFACE_API ITimerService : public IService
+class XE_API ITimerService : public IService
 {
 	OBJECT( ITimerService, IService )
 

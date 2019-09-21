@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class CORE_API AssetsService : public IAssetsService
+class XE_API AssetsService : public IAssetsService
 {
 	OBJECT( AssetsService, IAssetsService )
 

@@ -41,7 +41,7 @@ enum class SideType
 	POSITIVE,
 	NEGATIVE,
 };
-DECL_META_ENUM( MATH_API, SideType );
+DECL_META_ENUM( XE_API, SideType );
 
 enum class AxisType : XE::uint8
 {
@@ -53,7 +53,7 @@ enum class AxisType : XE::uint8
 	YZ = Y | Z,
 	XYZ = X | Y | Z,
 };
-DECL_META_ENUM( MATH_API, AxisType );
+DECL_META_ENUM( XE_API, AxisType );
 
 enum class RotationType
 {
@@ -64,7 +64,7 @@ enum class RotationType
 	ZXY,
 	ZYX
 };
-DECL_META_ENUM( MATH_API, RotationType );
+DECL_META_ENUM( XE_API, RotationType );
 
 template< typename _Ty > class MakeRect;
 template< typename _Ty > class MakeAABB;

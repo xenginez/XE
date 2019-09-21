@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class AI_API BTDecoratorNode : public Node
+class XE_API BTDecoratorNode : public Node
 {
 	OBJECT( BTDecoratorNode, Node )
 
@@ -37,7 +37,7 @@ private:
 	Node * _Node;
 };
 
-class AI_API BTRepeatNode : public BTDecoratorNode
+class XE_API BTRepeatNode : public BTDecoratorNode
 {
 	OBJECT( BTRepeatNode, BTDecoratorNode )
 
@@ -56,7 +56,7 @@ private:
 	XE::int64 _Tally;
 };
 
-class AI_API BTSuccessNode : public BTDecoratorNode
+class XE_API BTSuccessNode : public BTDecoratorNode
 {
 	OBJECT( BTSuccessNode, BTDecoratorNode )
 
@@ -72,7 +72,7 @@ public:
 
 };
 
-class AI_API BTFailureNode : public BTDecoratorNode
+class XE_API BTFailureNode : public BTDecoratorNode
 {
 	OBJECT( BTFailureNode, BTDecoratorNode )
 
@@ -88,7 +88,7 @@ public:
 
 };
 
-class AI_API BTReversedNode : public BTDecoratorNode
+class XE_API BTReversedNode : public BTDecoratorNode
 {
 	OBJECT( BTReversedNode, BTDecoratorNode )
 
@@ -104,7 +104,7 @@ public:
 
 };
 
-class AI_API BTDelayNode : public BTDecoratorNode
+class XE_API BTDelayNode : public BTDecoratorNode
 {
 	OBJECT( BTDelayNode, BTDecoratorNode )
 

@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class AI_API CompositeNode : public Node
+class XE_API CompositeNode : public Node
 {
 	OBJECT( CompositeNode, Node )
 
@@ -35,7 +35,7 @@ private:
 	Array<Node *> _Nodes;
 };
 
-class AI_API SequenceNode : public CompositeNode
+class XE_API SequenceNode : public CompositeNode
 {
 	OBJECT( SequenceNode, CompositeNode )
 
@@ -53,7 +53,7 @@ private:
 	XE::uint64 _Current;
 };
 
-class AI_API SelectorNode : public CompositeNode
+class XE_API SelectorNode : public CompositeNode
 {
 	OBJECT( SelectorNode, CompositeNode )
 
@@ -71,7 +71,7 @@ private:
 	XE::uint64 _Current;
 };
 
-class AI_API ParallelNode : public CompositeNode
+class XE_API ParallelNode : public CompositeNode
 {
 	OBJECT( ParallelNode, CompositeNode )
 

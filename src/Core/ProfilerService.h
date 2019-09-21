@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class CORE_API ProfilerService : public IProfilerService
+class XE_API ProfilerService : public IProfilerService
 {
 	OBJECT( ProfilerService, IProfilerService )
 

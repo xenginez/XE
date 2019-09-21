@@ -1,29 +1,28 @@
 /*!
- * \file   GUI.h
+ * \file	GUI.h
  *
- * \author ZhengYuanQing
- * \date   2019/1/10
- * \email  zhengyuanqing.95@gmail.com
+ * \author	ZhengYuanQing
+ * \date	2019/09/21
+ * \email	zhengyuanqing.95@gmail.com
  *
  */
-#ifndef __GUI_H__8F6E6AE4_B7C3_44D9_801D_DD506391EA8E
-#define __GUI_H__8F6E6AE4_B7C3_44D9_801D_DD506391EA8E
+#ifndef GUI_H__52DAE8D0_43A7_47DD_87CD_D6FCDBCB2AC2
+#define GUI_H__52DAE8D0_43A7_47DD_87CD_D6FCDBCB2AC2
 
-#include "Layout.h"
-#include "BoxLayout.h"
-#include "HBoxLayout.h"
-#include "VBoxLayout.h"
-#include "FromLayout.h"
-#include "GridLayout.h"
-
-#include "Widget.h"
 #include "Label.h"
+#include "Widget.h"
 #include "Button.h"
 #include "Slider.h"
+#include "Layout.h"
 #include "ComboBox.h"
+#include "BoxLayout.h"
 #include "TabWidget.h"
+#include "FromLayout.h"
+#include "GridLayout.h"
+#include "HBoxLayout.h"
 #include "ListWidget.h"
-#include "TableWidget.h"
+#include "VBoxLayout.h"
 #include "ScaleWidget.h"
+#include "TableWidget.h"
 
-#endif // __GUI_H__8F6E6AE4_B7C3_44D9_801D_DD506391EA8E
+#endif // GUI_H__52DAE8D0_43A7_47DD_87CD_D6FCDBCB2AC2

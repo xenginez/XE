@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class MATH_API float16
+class XE_API float16
 {
 public:
 	static const XE::float16 Nan;
@@ -87,7 +87,7 @@ public:
 	void FormFloat32( XE::float32 val );
 	
 };
-DECL_META_CLASS(MATH_API, float16);
+DECL_META_CLASS(XE_API, float16);
 
 END_XE_NAMESPACE
 

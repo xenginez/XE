@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class MATH_API Rect
+class XE_API Rect
 {
 public:
 	static const Rect Zero;
@@ -68,7 +68,7 @@ public:
 	void Transform( const Mat4& val );
 
 };
-DECL_META_CLASS( MATH_API, Rect );
+DECL_META_CLASS( XE_API, Rect );
 
 END_XE_NAMESPACE
 

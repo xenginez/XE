@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class MATH_API Vec4
+class XE_API Vec4
 {
 public:
 	static const Vec4 One;
@@ -50,7 +50,7 @@ public:
 		return d[val];
 	}
 };
-DECL_META_CLASS( MATH_API, Vec4 );
+DECL_META_CLASS( XE_API, Vec4 );
 
 END_XE_NAMESPACE
 

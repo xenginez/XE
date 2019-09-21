@@ -26,11 +26,11 @@ enum class GameObjectType
 	STATIC,
 	DYNAMIC,
 };
-DECL_META_ENUM( WORLD_API, GameObjectType );
+DECL_META_ENUM( XE_API, GameObjectType );
 
 
-DECL_HANDLE( WORLD_API, Component );
-DECL_HANDLE( WORLD_API, GameObject );
+DECL_HANDLE( XE_API, Component );
+DECL_HANDLE( XE_API, GameObject );
 
 
 END_XE_NAMESPACE

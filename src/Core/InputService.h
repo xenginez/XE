@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class CORE_API InputService : public IInputService
+class XE_API InputService : public IInputService
 {
 	OBJECT( InputService, IInputService )
 

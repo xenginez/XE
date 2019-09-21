@@ -4,6 +4,8 @@ project(XE)
 
 set(CMAKE_CXX_STANDARD 17)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /bigobj")
+ 
 if (CMAKE_SYSTEM_NAME MATCHES "Linux")
 	set(XE_PLATFORM_PATH linux)
 elseif (CMAKE_SYSTEM_NAME MATCHES "Windows")
@@ -30,11 +32,11 @@ option (USE_MATH "whether to use a high-precision float type" OFF)
 option (USE_SHARED_LIBS "whether to use a dynamic library" ON)
 
 
-if( USE_MATH)
+if(USE_MATH)
 	add_definitions(-DXE_DOUBLE)
 endif()
 
-if( USE_SHARED_LIBS)
+if(USE_SHARED_LIBS)
 	set(BUILD_SHARED_LIBS ON)
 else()
 	set(BUILD_SHARED_LIBS OFF)
@@ -60,111 +62,49 @@ link_directories(
 		${CMAKE_CURRENT_SOURCE_DIR}/depend/lib/${XE_PLATFORM_PATH}/${XE_CONFIG}
 )
 
-add_subdirectory(src)
 
-add_dependencies(GC			Base)
-add_dependencies(Reflect	Base GC)
-add_dependencies(Utils		Base GC Reflect)
-add_dependencies(Math		Base GC Reflect Utils)
-add_dependencies(RHI		Base GC Reflect Utils Math)
-add_dependencies(PSI		Base GC Reflect Utils Math)
-add_dependencies(Audio		Base GC Reflect Utils Math)
-add_dependencies(World		Base GC Reflect Utils Math)
-add_dependencies(Physics	Base GC Reflect Utils Math PSI)
-add_dependencies(AI			Base GC Reflect Utils Math RHI)
-add_dependencies(Graphics	Base GC Reflect Utils Math RHI)
-add_dependencies(Navigation Base GC Reflect Utils Math RHI)
-add_dependencies(Render		Base GC Reflect Utils Math RHI Graphics)
-add_dependencies(Animation	Base GC Reflect Utils Math RHI Graphics)
-add_dependencies(GUI		Base GC Reflect Utils Math RHI Graphics Render)
-add_dependencies(Interface	Base GC Reflect Utils Math RHI Audio World AI Physics Graphics Navigation Render GUI Animation)
-add_dependencies(Components	Base GC Reflect Utils Math RHI Audio World AI Physics Graphics Navigation Render GUI Animation Interface)
-add_dependencies(Core		Base GC Reflect Utils Math RHI Audio World AI Physics Graphics Navigation Render GUI Animation Interface Components)
-add_dependencies(XE			Base GC Reflect Utils Math RHI Audio World AI Physics Graphics Navigation Render GUI Animation Interface Components Core)
 
-target_link_libraries(Base
+add_definitions(-DXE_EXPORT)
 
-		tbb${XE_TBB_POSTFIX}
-		tbbmalloc${XE_TBB_POSTFIX}
-		tbbmalloc_proxy${XE_TBB_POSTFIX}
-		)
+FILE(GLOB_RECURSE XE_SRC_FILES src/*.h src/*.hpp src/*.cpp src/*.inc)
+add_library(XE ${XE_SRC_FILES})
 
-target_link_libraries(GC
-		Base)
+if (XE_PLATFORM_PATH MATCHES "mac")
+	target_link_libraries(XE 
+	tbb${XE_TBB_POSTFIX}
+	tbbmalloc${XE_TBB_POSTFIX}
+	tbbmalloc_proxy${XE_TBB_POSTFIX}
+	OpenAL32
+	DebugUtils
+	DetourCrowd
+	Recast
+	Detour
+	DetourTileCache
+	sqlite3
+	boost_filesystem
+	)
+else()
+	target_link_libraries(XE 
+	tbb${XE_TBB_POSTFIX}
+	tbbmalloc${XE_TBB_POSTFIX}
+	tbbmalloc_proxy${XE_TBB_POSTFIX}
+	OpenAL32
+	DebugUtils
+	DetourCrowd
+	Recast
+	Detour
+	DetourTileCache
+	sqlite3
+	ik
+	)
+endif ()
 
-target_link_libraries(Reflect
-		GC
-		)
 
-target_link_libraries(Utils
-		Reflect)
-
-target_link_libraries(Math
-		Utils)
-		
-target_link_libraries(PSI
-		Math)
-
-target_link_libraries(RHI
-		Math)
-
-target_link_libraries(Audio
-		Math
-
-		OpenAL32
-		)
-
-target_link_libraries(World
-		Math)
-
-target_link_libraries(Physics
-		PSI
-		)
-
-target_link_libraries(AI
-		RHI)
-
-target_link_libraries(Graphics
-		RHI)
-
-target_link_libraries(Navigation
-		RHI
-
-		DebugUtils
-		DetourCrowd
-		Recast
-		Detour
-		DetourTileCache
-		)
-
-target_link_libraries(Render
-		Graphics)
-
-target_link_libraries(Animation
-		Graphics
-		
-		ik)
-
-target_link_libraries(GUI
-		Render)
-
-target_link_libraries(Interface
-		 Audio
-		 World
-		 AI
-		 Physics
-		 Navigation
-		 GUI
-		 Animation)
-
-target_link_libraries(Components
-		Interface)
-
-target_link_libraries(Core
-		Components
-
-		sqlite3
-		)
-
-target_link_libraries(XE
-		Core)
+FILE(GLOB LIBRARY_FILES depend/bin/${XE_PLATFORM_PATH}/${XE_CONFIG}/*.*)
+foreach(LIBRARY_FILE ${LIBRARY_FILES})
+	message("${LIBRARY_FILE}")
+	add_custom_command(TARGET XE
+				POST_BUILD
+				COMMAND ${CMAKE_COMMAND} -E copy ${LIBRARY_FILE} "${CMAKE_SOURCE_DIR}/target/${XE_PLATFORM_PATH}/${XE_CONFIG}/bin"
+				)
+endforeach(LIBRARY_FILE)

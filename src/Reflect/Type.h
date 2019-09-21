@@ -37,7 +37,7 @@ enum class ArchiveType
 	SAVE,
 };
 
-class REFLECT_API MetaException : public RuntimeException
+class XE_API MetaException : public XE::RuntimeException
 {
 public:
 	MetaException( IMetaInfoCPtr Meta, const String& Msg );
@@ -84,7 +84,7 @@ private:
 template<class T> ActiveSingleton<T> & ActiveSingleton<T>::_Reference = ActiveSingleton<T>::Register();
 template< typename T > struct MetaDataCollector;
 
-IMetaTypePtr REFLECT_API GetReclectionType( const String& val );
+IMetaTypePtr XE_API GetReclectionType( const String& val );
 
 END_XE_NAMESPACE
 

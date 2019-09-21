@@ -13,10 +13,8 @@
 
 BEG_XE_NAMESPACE
 
-class RHI_API IRenderContext : public XE::Object, public NonCopyable
+class XE_API IRenderContext : public XE::NonCopyable
 {
-	OBJECT( IRenderContext, Object )
-
 public:
 	IRenderContext();
 

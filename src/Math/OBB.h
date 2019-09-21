@@ -14,7 +14,7 @@
 
 BEG_XE_NAMESPACE
 
-class MATH_API OBB
+class XE_API OBB
 {
 public:
 	Vec3 center;
@@ -51,7 +51,7 @@ public:
 	std::pair<bool, XE::real> Intersect( const Ray& ray, bool discardInside = true ) const;
 
 };
-DECL_META_CLASS( MATH_API, OBB );
+DECL_META_CLASS( XE_API, OBB );
 
 END_XE_NAMESPACE
 

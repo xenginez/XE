@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class AI_API BlackBoard
+class XE_API BlackBoard
 {
 	OBJECT( BlackBoard )
 

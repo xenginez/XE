@@ -1,36 +1,28 @@
 /*!
- * \file   Reflection.h
+ * \file	Reflect.h
  *
- * \author ZhengYuanQing
- * \date   2019/1/10
- * \email  zhengyuanqing.95@gmail.com
+ * \author	ZhengYuanQing
+ * \date	2019/09/21
+ * \email	zhengyuanqing.95@gmail.com
  *
  */
-#ifndef __REFLECT_H__AD29C6D5_3DAC_4765_B36D_27CC2DEE5AED
-#define __REFLECT_H__AD29C6D5_3DAC_4765_B36D_27CC2DEE5AED
-
-#include "Variant.h"
+#ifndef REFLECT_H__DB8AE6CB_8BEE_4A58_B0E8_02BA454A5BF3
+#define REFLECT_H__DB8AE6CB_8BEE_4A58_B0E8_02BA454A5BF3
 
 #include "MetaID.hpp"
-#include "InvokeStack.h"
-#include "ParameterType.hpp"
-
-#include "IMetaInfo.h"
-#include "IMetaType.h"
-#include "IMetaEnum.h"
-#include "IMetaClass.h"
-#include "IMetaMethod.h"
-#include "IMetaProperty.h"
-#include "IMetaOperator.h"
-
 #include "CXXMetaEnum.hpp"
 #include "CXXMetaClass.hpp"
 #include "CXXMetaMethod.hpp"
 #include "CXXMetaProperty.hpp"
 #include "CXXMetaOperator.hpp"
 
-#include "ReflectObject.h"
 #include "Reflection.h"
+#include "ReflectObject.h"
+
+#include "Variant.h"
+#include "InvokeStack.h"
+#include "ParameterType.hpp"
+
 
 #define OVERLOAD(TYPE, FUNC) (TYPE)&FUNC
 
@@ -113,4 +105,4 @@ public: \
 private:
 #define OBJECT(...)            MACRO_EXP_(MACRO_GLUE(OBJECT_,MACRO_ARGS_CONTER(__VA_ARGS__))(__VA_ARGS__))
 
-#endif // __REFLECT_H__AD29C6D5_3DAC_4765_B36D_27CC2DEE5AED
+#endif // REFLECT_H__DB8AE6CB_8BEE_4A58_B0E8_02BA454A5BF3

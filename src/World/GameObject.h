@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class WORLD_API GameObject : public XE::Object
+class XE_API GameObject : public XE::Object
 {
 	OBJECT( GameObject, Object )
 

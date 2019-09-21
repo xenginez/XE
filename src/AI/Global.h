@@ -9,14 +9,6 @@
 #ifndef __GLOBAL_H__B570A5F2_E5DF_4723_BB42_4616AC6080F8
 #define __GLOBAL_H__B570A5F2_E5DF_4723_BB42_4616AC6080F8
 
-#include <Math/Math.h>
-
-#ifdef AI_EXPORT
-#define AI_API DLL_EXPORT
-#else
-#define AI_API DLL_IMPORT
-#define LIB_NAME "AI"
-#include <Base/AutoLink.h>
-#endif
+#include "Math/Math.h"
 
 #endif // __GLOBAL_H__B570A5F2_E5DF_4723_BB42_4616AC6080F8

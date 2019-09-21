@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class UTILS_API Layer
+class XE_API Layer
 {
 public:
 	static constexpr XE::uint64 Default = 1;
@@ -60,7 +60,7 @@ public:
 public:
 	XE::uint64 Value;
 };
-DECL_META_CLASS( UTILS_API, Layer );
+DECL_META_CLASS( XE_API, Layer );
 
 END_XE_NAMESPACE
 

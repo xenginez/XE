@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class GUI_API Widget
+class XE_API Widget
 {
 public:
 	Widget();

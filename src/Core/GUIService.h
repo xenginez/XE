@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class CORE_API GUIService : public XE::IGUIService
+class XE_API GUIService : public XE::IGUIService
 {
 	OBJECT( GUIService, IGUIService )
 

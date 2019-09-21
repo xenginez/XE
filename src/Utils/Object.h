@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class UTILS_API Object : public XE::ReflectObject
+class XE_API Object : public XE::ReflectObject
 {
 	OBJECT( Object, ReflectObject )
 

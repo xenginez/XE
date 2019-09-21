@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class GC_API GCObject : public std::enable_shared_from_this< GCObject >
+class XE_API GCObject : public std::enable_shared_from_this< GCObject >
 {
 public:
 	GCObject() = default;

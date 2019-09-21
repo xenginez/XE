@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class MATH_API Plane
+class XE_API Plane
 {
 public:
 	Vec3 normal;
@@ -70,7 +70,7 @@ public:
 	std::pair<bool, XE::real> Intersect( const Ray& ray, bool discardInside = true ) const;
 
 };
-DECL_META_CLASS( MATH_API, Plane );
+DECL_META_CLASS( XE_API, Plane );
 
 END_XE_NAMESPACE
 

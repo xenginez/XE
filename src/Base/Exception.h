@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class BASE_API Exception
+class XE_API Exception
 {
 public:
 	Exception();
@@ -24,7 +24,7 @@ public:
 	virtual const char * What() const;
 };
 
-class BASE_API RuntimeException : public Exception
+class XE_API RuntimeException : public Exception
 {
 public:
 	RuntimeException();

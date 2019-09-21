@@ -204,7 +204,7 @@ public:
 };
 
 
-template<> struct REFLECT_API ClassID< void >
+template<> struct XE_API ClassID< void >
 {
 	static IMetaClassPtr Get( const void * val = nullptr )
 	{
@@ -212,7 +212,7 @@ template<> struct REFLECT_API ClassID< void >
 	}
 };
 
-template<> struct REFLECT_API ClassID< std::nullptr_t >
+template<> struct XE_API ClassID< std::nullptr_t >
 {
 	static IMetaClassPtr Get( const std::nullptr_t * val = nullptr )
 	{
@@ -221,7 +221,7 @@ template<> struct REFLECT_API ClassID< std::nullptr_t >
 	}
 };
 
-template<> struct REFLECT_API ClassID< bool >
+template<> struct XE_API ClassID< bool >
 {
 	static IMetaClassPtr Get( const bool * val = nullptr )
 	{
@@ -230,7 +230,7 @@ template<> struct REFLECT_API ClassID< bool >
 	}
 };
 
-template<> struct REFLECT_API ClassID< XE::int8 >
+template<> struct XE_API ClassID< XE::int8 >
 {
 	static IMetaClassPtr Get( const XE::int8 * val = nullptr )
 	{
@@ -239,7 +239,7 @@ template<> struct REFLECT_API ClassID< XE::int8 >
 	}
 };
 
-template<> struct REFLECT_API ClassID< XE::int16 >
+template<> struct XE_API ClassID< XE::int16 >
 {
 	static IMetaClassPtr Get( const XE::int16 * val = nullptr )
 	{
@@ -248,7 +248,7 @@ template<> struct REFLECT_API ClassID< XE::int16 >
 	}
 };
 
-template<> struct REFLECT_API ClassID< XE::int32 >
+template<> struct XE_API ClassID< XE::int32 >
 {
 	static IMetaClassPtr Get( const XE::int32 * val = nullptr )
 	{
@@ -257,7 +257,7 @@ template<> struct REFLECT_API ClassID< XE::int32 >
 	}
 };
 
-template<> struct REFLECT_API ClassID< long >
+template<> struct XE_API ClassID< long >
 {
 	static IMetaClassPtr Get( const long * val = nullptr )
 	{
@@ -265,7 +265,7 @@ template<> struct REFLECT_API ClassID< long >
 	}
 };
 
-template<> struct REFLECT_API ClassID< XE::int64 >
+template<> struct XE_API ClassID< XE::int64 >
 {
 	static IMetaClassPtr Get( const XE::int64 * val = nullptr )
 	{
@@ -274,7 +274,7 @@ template<> struct REFLECT_API ClassID< XE::int64 >
 	}
 };
 
-template<> struct REFLECT_API ClassID< XE::uint8 >
+template<> struct XE_API ClassID< XE::uint8 >
 {
 	static IMetaClassPtr Get( const XE::uint8 * val = nullptr )
 	{
@@ -283,7 +283,7 @@ template<> struct REFLECT_API ClassID< XE::uint8 >
 	}
 };
 
-template<> struct REFLECT_API ClassID< XE::uint16 >
+template<> struct XE_API ClassID< XE::uint16 >
 {
 	static IMetaClassPtr Get( const XE::uint16 * val = nullptr )
 	{
@@ -292,7 +292,7 @@ template<> struct REFLECT_API ClassID< XE::uint16 >
 	}
 };
 
-template<> struct REFLECT_API ClassID< XE::uint32 >
+template<> struct XE_API ClassID< XE::uint32 >
 {
 	static IMetaClassPtr Get( const XE::uint32 * val = nullptr )
 	{
@@ -301,7 +301,7 @@ template<> struct REFLECT_API ClassID< XE::uint32 >
 	}
 };
 
-template<> struct REFLECT_API ClassID< unsigned long >
+template<> struct XE_API ClassID< unsigned long >
 {
 	static IMetaClassPtr Get( const unsigned long * val = nullptr )
 	{
@@ -309,7 +309,7 @@ template<> struct REFLECT_API ClassID< unsigned long >
 	}
 };
 
-template<> struct REFLECT_API ClassID< XE::uint64 >
+template<> struct XE_API ClassID< XE::uint64 >
 {
 	static IMetaClassPtr Get( const XE::uint64 * val = nullptr )
 	{
@@ -318,7 +318,7 @@ template<> struct REFLECT_API ClassID< XE::uint64 >
 	}
 };
 
-template<> struct REFLECT_API ClassID< XE::float32 >
+template<> struct XE_API ClassID< XE::float32 >
 {
 	static IMetaClassPtr Get( const XE::float32 * val = nullptr )
 	{
@@ -327,7 +327,7 @@ template<> struct REFLECT_API ClassID< XE::float32 >
 	}
 };
 
-template<> struct REFLECT_API ClassID< XE::float64 >
+template<> struct XE_API ClassID< XE::float64 >
 {
 	static IMetaClassPtr Get( const XE::float64 * val = nullptr )
 	{
@@ -336,7 +336,7 @@ template<> struct REFLECT_API ClassID< XE::float64 >
 	}
 };
 
-template<> struct REFLECT_API ClassID< Variant >
+template<> struct XE_API ClassID< Variant >
 {
 	static IMetaClassPtr Get( const Variant * val = nullptr )
 	{
@@ -345,7 +345,7 @@ template<> struct REFLECT_API ClassID< Variant >
 	}
 };
 
-template<> struct REFLECT_API MetaID< Variant >
+template<> struct XE_API MetaID< Variant >
 {
 	static IMetaInfoPtr Get( const Variant * val = nullptr )
 	{
@@ -359,7 +359,7 @@ template<> struct REFLECT_API MetaID< Variant >
 };
 
 
-template<> struct REFLECT_API ClassID< String >
+template<> struct XE_API ClassID< String >
 {
 	static IMetaClassPtr Get( const String * val = nullptr )
 	{
@@ -368,7 +368,7 @@ template<> struct REFLECT_API ClassID< String >
 	}
 };
 
-template<> struct REFLECT_API ClassID< VariantList >
+template<> struct XE_API ClassID< VariantList >
 {
 	static IMetaClassPtr Get( const VariantList * val = nullptr )
 	{
@@ -377,7 +377,7 @@ template<> struct REFLECT_API ClassID< VariantList >
 	}
 };
 
-template<> struct REFLECT_API ClassID< VariantDeque >
+template<> struct XE_API ClassID< VariantDeque >
 {
 	static IMetaClassPtr Get( const VariantDeque * val = nullptr )
 	{
@@ -386,7 +386,7 @@ template<> struct REFLECT_API ClassID< VariantDeque >
 	}
 };
 
-template<> struct REFLECT_API ClassID< VariantStack >
+template<> struct XE_API ClassID< VariantStack >
 {
 	static IMetaClassPtr Get( const VariantStack * val = nullptr )
 	{
@@ -395,7 +395,7 @@ template<> struct REFLECT_API ClassID< VariantStack >
 	}
 };
 
-template<> struct REFLECT_API ClassID< VariantQueue >
+template<> struct XE_API ClassID< VariantQueue >
 {
 	static IMetaClassPtr Get( const VariantQueue * val = nullptr )
 	{
@@ -404,7 +404,7 @@ template<> struct REFLECT_API ClassID< VariantQueue >
 	}
 };
 
-template<> struct REFLECT_API ClassID< VariantArray >
+template<> struct XE_API ClassID< VariantArray >
 {
 	static IMetaClassPtr Get( const VariantArray * val = nullptr )
 	{
@@ -413,7 +413,7 @@ template<> struct REFLECT_API ClassID< VariantArray >
 	}
 };
 
-template<> struct REFLECT_API ClassID< VariantPair >
+template<> struct XE_API ClassID< VariantPair >
 {
 	static IMetaClassPtr Get( const VariantPair * val = nullptr )
 	{
@@ -422,7 +422,7 @@ template<> struct REFLECT_API ClassID< VariantPair >
 	}
 };
 
-template<> struct REFLECT_API ClassID< VariantSet >
+template<> struct XE_API ClassID< VariantSet >
 {
 	static IMetaClassPtr Get( const VariantSet * val = nullptr )
 	{
@@ -431,7 +431,7 @@ template<> struct REFLECT_API ClassID< VariantSet >
 	}
 };
 
-template<> struct REFLECT_API ClassID< VariantMap >
+template<> struct XE_API ClassID< VariantMap >
 {
 	static IMetaClassPtr Get( const VariantMap * val = nullptr )
 	{
@@ -440,7 +440,7 @@ template<> struct REFLECT_API ClassID< VariantMap >
 	}
 };
 
-template<> struct REFLECT_API ClassID< VariantMultiSet >
+template<> struct XE_API ClassID< VariantMultiSet >
 {
 	static IMetaClassPtr Get( const VariantMultiSet * val = nullptr )
 	{
@@ -449,7 +449,7 @@ template<> struct REFLECT_API ClassID< VariantMultiSet >
 	}
 };
 
-template<> struct REFLECT_API ClassID< VariantMultiMap >
+template<> struct XE_API ClassID< VariantMultiMap >
 {
 	static IMetaClassPtr Get( const VariantMultiMap * val = nullptr )
 	{

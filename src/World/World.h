@@ -1,13 +1,13 @@
 /*!
- * \file   World.h
+ * \file	World.h
  *
- * \author ZhengYuanQing
- * \date   2019/1/10
- * \email  zhengyuanqing.95@gmail.com
+ * \author	ZhengYuanQing
+ * \date	2019/09/21
+ * \email	zhengyuanqing.95@gmail.com
  *
  */
-#ifndef __WORLD_H__CED80CA4_A3DE_4235_884D_DB3BD71D3C81
-#define __WORLD_H__CED80CA4_A3DE_4235_884D_DB3BD71D3C81
+#ifndef WORLD_H__AACA50B2_ACAF_43D7_8A03_CA1BCB525CEC
+#define WORLD_H__AACA50B2_ACAF_43D7_8A03_CA1BCB525CEC
 
 #include "Component.h"
 #include "GameObject.h"
@@ -15,4 +15,4 @@
 #include "SceneComponent.h"
 #include "BehaviorComponent.h"
 
-#endif // __WORLD_H__CED80CA4_A3DE_4235_884D_DB3BD71D3C81
+#endif // WORLD_H__AACA50B2_ACAF_43D7_8A03_CA1BCB525CEC

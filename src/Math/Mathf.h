@@ -744,7 +744,7 @@ XE_INLINE bool operator !=(const XE::Mat4& left, const XE::Mat4& right)
 }
 
 
-class MATH_API Mathf
+class XE_API Mathf
 {
 public:
 	static constexpr XE::real Pi = ( XE::real )3.14159265358979323846;
@@ -2157,7 +2157,7 @@ public:
 	}
 
 };
-DECL_META_CLASS( MATH_API, Mathf );
+DECL_META_CLASS( XE_API, Mathf );
 
 END_XE_NAMESPACE
 

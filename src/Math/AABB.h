@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class MATH_API AABB
+class XE_API AABB
 {
 public:
 	Vec3 min;
@@ -94,7 +94,7 @@ public:
 	void TransformAffine( const Mat4& val );
 
 };
-DECL_META_CLASS( MATH_API, AABB );
+DECL_META_CLASS( XE_API, AABB );
 
 END_XE_NAMESPACE
 

@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class RENDER_API Particle
+class XE_API Particle
 {
 public:
 	Particle();

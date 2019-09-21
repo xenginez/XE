@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class ANIMATION_API AnimationController : public XE::Object
+class XE_API AnimationController : public XE::Object
 {
 	OBJECT( AnimationController, Object )
 

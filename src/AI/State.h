@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class AI_API State : public XE::Object
+class XE_API State : public XE::Object
 {
 	OBJECT( State, Object )
 

@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class AUDIO_API AudioSound : public XE::Object
+class XE_API AudioSound : public XE::Object
 {
 	OBJECT( AudioSound, Object )
 

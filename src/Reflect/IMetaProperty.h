@@ -16,7 +16,7 @@ BEG_XE_NAMESPACE
 
 class Archive;
 
-class REFLECT_API IMetaProperty : public IMetaInfo
+class XE_API IMetaProperty : public IMetaInfo
 {
 public:
 	static constexpr XE::uint8 Default = 0;

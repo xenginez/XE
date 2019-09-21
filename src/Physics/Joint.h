@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class PHYSICS_API Joint : public XE::PhysicsObject
+class XE_API Joint : public XE::PhysicsObject
 {
 	OBJECT( Joint, PhysicsObject )
 

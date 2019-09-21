@@ -18,7 +18,7 @@ template< typename T > struct VariantCast;
 
 
 
-class REFLECT_API Variant
+class XE_API Variant
 {
 public:
 	template< typename T > friend struct VariantCreate;
@@ -332,7 +332,7 @@ using VariantMultiMap = std::multimap<Variant, Variant, std::less<Variant>, Allo
 
 
 
-class REFLECT_API VariantException : public RuntimeException
+class XE_API VariantException : public RuntimeException
 {
 public:
 	VariantException( const Variant& val, const String& msg );

@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class MATH_API Capsule
+class XE_API Capsule
 {
 public:
 	XE::real radius;
@@ -52,7 +52,7 @@ public:
 	std::pair<bool, XE::real> Intersect( const Ray & ray, bool discardInside = true ) const;
 
 };
-DECL_META_CLASS( MATH_API, Capsule );
+DECL_META_CLASS( XE_API, Capsule );
 
 END_XE_NAMESPACE
 

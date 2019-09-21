@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class INTERFACE_API IService : public XE::Object
+class XE_API IService : public XE::Object
 {
 	OBJECT( IService, Object )
 

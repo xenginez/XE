@@ -17,7 +17,7 @@ BEG_XE_NAMESPACE
 
 class Archive;
 
-class REFLECT_API IMetaClass : public IMetaType
+class XE_API IMetaClass : public IMetaType
 {
 public:
 	IMetaClass( const String& Name, XE::uint64 Size, bool IsAbs, bool IsSin, IMetaClassPtr Super, IMetaInfoPtr Owner, const String & ModuleName = "XE" );

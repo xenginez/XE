@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class MATH_API Sphere
+class XE_API Sphere
 {
 public:
 	static const Sphere Zero;
@@ -62,7 +62,7 @@ public:
 public:
 	void Transform( const Mat4& val );
 };
-DECL_META_CLASS( MATH_API, Sphere );
+DECL_META_CLASS( XE_API, Sphere );
 
 END_XE_NAMESPACE
 

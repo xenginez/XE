@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class INTERFACE_API IGUIService : public IService
+class XE_API IGUIService : public IService
 {
 	OBJECT( IGUIService, IService )
 

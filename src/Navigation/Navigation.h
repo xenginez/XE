@@ -1,12 +1,19 @@
 /*!
- * \file   Navigation.h
+ * \file	Navigation.h
  *
- * \author ZhengYuanQing
- * \date   2019/03/29
- * \email  zhengyuanqing.95@gmail.com
+ * \author	ZhengYuanQing
+ * \date	2019/09/21
+ * \email	zhengyuanqing.95@gmail.com
  *
  */
-#ifndef __NAVIGATION_H__C43E62E2_1A36_455E_9B60_35CE5FB569D4
-#define __NAVIGATION_H__C43E62E2_1A36_455E_9B60_35CE5FB569D4
+#ifndef NAVIGATION_H__12F6327C_6D0E_4A71_95A3_0CE155F34759
+#define NAVIGATION_H__12F6327C_6D0E_4A71_95A3_0CE155F34759
 
-#endif // __NAVIGATION_H__C43E62E2_1A36_455E_9B60_35CE5FB569D4
+#include "NavMesh.h"
+#include "Obstacle.h"
+#include "Pathfinder.h"
+#include "ObstacleBox.h"
+#include "ObstacleSphere.h"
+#include "ObstacleCapsule.h"
+
+#endif // NAVIGATION_H__12F6327C_6D0E_4A71_95A3_0CE155F34759

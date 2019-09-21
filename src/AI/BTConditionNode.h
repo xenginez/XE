@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class AI_API BTConditionNode : public Node
+class XE_API BTConditionNode : public Node
 {
 	OBJECT( BTConditionNode, Node )
 

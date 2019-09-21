@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class GRAPHICS_API SortKey
+class XE_API SortKey
 {
 public:
 	union

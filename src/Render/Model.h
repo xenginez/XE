@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class RENDER_API Model : public Renderable
+class XE_API Model : public Renderable
 {
 	OBJECT( Model, Renderable )
 

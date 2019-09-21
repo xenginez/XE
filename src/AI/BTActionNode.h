@@ -15,7 +15,7 @@ BEG_XE_NAMESPACE
 
 class BTConditionNode;
 
-class AI_API BTActionNode : public Node
+class XE_API BTActionNode : public Node
 {
 	OBJECT( BTActionNode, Node )
 

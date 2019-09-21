@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class MATH_API Quat
+class XE_API Quat
 {
 public:
 	static const Quat Zero;
@@ -48,7 +48,7 @@ public:
 	}
 
 };
-DECL_META_CLASS( MATH_API, Quat );
+DECL_META_CLASS( XE_API, Quat );
 
 END_XE_NAMESPACE
 

@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class GRAPHICS_API Renderer : public std::enable_shared_from_this< Renderer >
+class XE_API Renderer : public std::enable_shared_from_this< Renderer >
 {
 	OBJECT( Renderer )
 	

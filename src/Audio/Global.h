@@ -9,14 +9,6 @@
 #ifndef __GLOBAL_H__0DFC6107_240B_453A_970F_16275816320F
 #define __GLOBAL_H__0DFC6107_240B_453A_970F_16275816320F
 
-#include <Math/Math.h>
-
-#ifdef AUDIO_EXPORT
-#define AUDIO_API DLL_EXPORT
-#else
-#define AUDIO_API DLL_IMPORT
-#define LIB_NAME "Audio"
-#include <Base/AutoLink.h>
-#endif
+#include "Math/Math.h"
 
 #endif // __GLOBAL_H__0DFC6107_240B_453A_970F_16275816320F

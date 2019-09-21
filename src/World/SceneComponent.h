@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class WORLD_API SceneComponent : public Component
+class XE_API SceneComponent : public Component
 {
 	OBJECT( SceneComponent, Component )
 

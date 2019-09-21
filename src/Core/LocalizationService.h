@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class CORE_API LocalizationService : public ILocalizationService
+class XE_API LocalizationService : public ILocalizationService
 {
 	OBJECT( LocalizationService, ILocalizationService )
 

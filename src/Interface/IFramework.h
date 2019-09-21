@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class INTERFACE_API IFramework : public XE::NonCopyable
+class XE_API IFramework : public XE::NonCopyable
 {
 	OBJECT( IFramework )
 

@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class RHI_API VertexLayout
+class XE_API VertexLayout
 {
 public:
 	struct Element

@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class BASE_API NonCopyable
+class XE_API NonCopyable
 {
 public:
 	NonCopyable() = default;

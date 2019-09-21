@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class AI_API BehaviorTree : public XE::AIModule
+class XE_API BehaviorTree : public XE::AIModule
 {
 	OBJECT( BehaviorTree, AIModule )
 
@@ -39,7 +39,7 @@ public:
 public:
 	NodeHandle _Root;
 	BlackBoardPtr _Blackboard;
-	std::vector< NodePtr > _Nodes;
+	Array< NodePtr > _Nodes;
 };
 
 END_XE_NAMESPACE

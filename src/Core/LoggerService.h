@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class CORE_API LoggerService : public ILoggerService
+class XE_API LoggerService : public ILoggerService
 {
 	OBJECT( LoggerService, ILoggerService )
 

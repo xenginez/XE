@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class GRAPHICS_API BoneJoint : public XE::Object
+class XE_API BoneJoint : public XE::Object
 {
 	OBJECT( BoneJoint, Object )
 
@@ -23,9 +23,9 @@ public:
 	XE::Mat4 Transform;
 	XE::Array<XE::uint32> Children;
 };
-DECL_META_CLASS( GRAPHICS_API, BoneJoint );
+DECL_META_CLASS( XE_API, BoneJoint );
 
-class GRAPHICS_API Skeleton : public XE::Object
+class XE_API Skeleton : public XE::Object
 {
 	OBJECT( Skeleton, Object )
 

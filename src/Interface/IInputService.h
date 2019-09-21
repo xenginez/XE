@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class INTERFACE_API IInputControl
+class XE_API IInputControl
 {
 	OBJECT( IInputControl )
 
@@ -39,7 +39,7 @@ public:
 };
 DECL_PTR( IInputControl );
 
-class INTERFACE_API IInputService : public IService
+class XE_API IInputService : public IService
 {
 	OBJECT( IInputService, IService )
 

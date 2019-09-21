@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class GRAPHICS_API DrawCall : public XE::NonCopyable
+class XE_API DrawCall : public XE::NonCopyable
 {
 public:
 	DrawCall();
@@ -25,7 +25,7 @@ public:
 
 };
 
-class GRAPHICS_API RenderDrawCall : public DrawCall
+class XE_API RenderDrawCall : public DrawCall
 {
 public:
 	RenderDrawCall();
@@ -37,7 +37,7 @@ public:
 
 };
 
-class GRAPHICS_API IndirectDrawcall : public DrawCall
+class XE_API IndirectDrawcall : public DrawCall
 {
 public:
 	IndirectDrawcall();
@@ -49,7 +49,7 @@ public:
 
 };
 
-class GRAPHICS_API InstanceDrawcall : public DrawCall
+class XE_API InstanceDrawcall : public DrawCall
 {
 public:
 	InstanceDrawcall();
@@ -61,7 +61,7 @@ public:
 
 };
 
-class GRAPHICS_API IndexInstanceDrawcall : public InstanceDrawcall
+class XE_API IndexInstanceDrawcall : public InstanceDrawcall
 {
 public:
 	IndexInstanceDrawcall();
@@ -76,7 +76,7 @@ public:
 	XE::uint64 EndIndex;
 };
 
-class GRAPHICS_API ComputeDrawCall : public DrawCall
+class XE_API ComputeDrawCall : public DrawCall
 {
 public:
 	ComputeDrawCall();

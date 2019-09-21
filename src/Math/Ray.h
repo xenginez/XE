@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class MATH_API Ray
+class XE_API Ray
 {
 public:
 	Vec3 origin;
@@ -57,7 +57,7 @@ public:
 	void TransformAffine( const Mat4& val );
 
 };
-DECL_META_CLASS( MATH_API, Ray );
+DECL_META_CLASS( XE_API, Ray );
 
 END_XE_NAMESPACE
 

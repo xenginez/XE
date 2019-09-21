@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class BASE_API String
+class XE_API String
 {
 public:
 	static const XE::uint64 npos = std::string::npos;
@@ -194,7 +194,7 @@ namespace std
 
 }
 
-struct BASE_API StringHashCompare
+struct XE_API StringHashCompare
 {
 	static XE::uint64 hash( const XE::String& a )
 	{
@@ -206,18 +206,18 @@ struct BASE_API StringHashCompare
 	}
 };
 
-BASE_API XE::String operator + ( bool  val1, const XE::String& val2 );
-BASE_API XE::String operator + ( XE::int8  val1, const XE::String& val2 );
-BASE_API XE::String operator + ( XE::int16  val1, const XE::String& val2 );
-BASE_API XE::String operator + ( XE::int32  val1, const XE::String& val2 );
-BASE_API XE::String operator + ( XE::int64  val1, const XE::String& val2 );
-BASE_API XE::String operator + ( XE::uint8  val1, const XE::String& val2 );
-BASE_API XE::String operator + ( XE::uint16 val1, const XE::String& val2 );
-BASE_API XE::String operator + ( XE::uint32 val1, const XE::String& val2 );
-BASE_API XE::String operator + ( XE::uint64 val1, const XE::String& val2 );
-BASE_API XE::String operator + ( XE::float32  val1, const XE::String& val2 );
-BASE_API XE::String operator + ( XE::float64 val1, const XE::String& val2 );
-BASE_API XE::String operator + ( const char * val1, const XE::String& val2 );
-BASE_API XE::String operator + ( const std::string& val1, const XE::String& val2 );
+XE_API XE::String operator + ( bool  val1, const XE::String& val2 );
+XE_API XE::String operator + ( XE::int8  val1, const XE::String& val2 );
+XE_API XE::String operator + ( XE::int16  val1, const XE::String& val2 );
+XE_API XE::String operator + ( XE::int32  val1, const XE::String& val2 );
+XE_API XE::String operator + ( XE::int64  val1, const XE::String& val2 );
+XE_API XE::String operator + ( XE::uint8  val1, const XE::String& val2 );
+XE_API XE::String operator + ( XE::uint16 val1, const XE::String& val2 );
+XE_API XE::String operator + ( XE::uint32 val1, const XE::String& val2 );
+XE_API XE::String operator + ( XE::uint64 val1, const XE::String& val2 );
+XE_API XE::String operator + ( XE::float32  val1, const XE::String& val2 );
+XE_API XE::String operator + ( XE::float64 val1, const XE::String& val2 );
+XE_API XE::String operator + ( const char * val1, const XE::String& val2 );
+XE_API XE::String operator + ( const std::string& val1, const XE::String& val2 );
 
 #endif // __STRING_H__56398C43_23FE_4F92_B5DF_985FB11D36BD

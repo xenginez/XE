@@ -9,14 +9,6 @@
 #ifndef __GLOBAL_H__F78664F6_0EEA_470D_912E_4609A870224B
 #define __GLOBAL_H__F78664F6_0EEA_470D_912E_4609A870224B
 
-#include <Math/Math.h>
-
-#ifdef RHI_EXPORT
-#define RHI_API DLL_EXPORT
-#else
-#define RHI_API DLL_IMPORT
-#define LIB_NAME "RHI"
-#include <Base/AutoLink.h>
-#endif
+#include "Math/Math.h"
 
 #endif //__GLOBAL_H__F78664F6_0EEA_470D_912E_4609A870224B

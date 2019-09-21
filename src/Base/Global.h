@@ -47,13 +47,4 @@ namespace std{namespace filesystem = boost::filesystem;}
 
 #include "Config.h"
 
-
-#ifdef BASE_EXPORT
-#define BASE_API DLL_EXPORT
-#else
-#define BASE_API DLL_IMPORT
-#define LIB_NAME "Base"
-#include <Base/AutoLink.h>
-#endif
-
 #endif // __GLOBAL_H__397ADE88_7898_4FDF_B98E_B1C39DB69FEA

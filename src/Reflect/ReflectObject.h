@@ -16,7 +16,7 @@
 
 BEG_XE_NAMESPACE
 
-class REFLECT_API ReflectObject : public XE::GCObject
+class XE_API ReflectObject : public XE::GCObject
 {
 	template< typename T > friend struct MetaDataCollector;
 

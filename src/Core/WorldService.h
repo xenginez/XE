@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class CORE_API WorldService : public XE::IWorldService
+class XE_API WorldService : public XE::IWorldService
 {
 	OBJECT( WorldService, IWorldService )
 

@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class AI_API SubState : public XE::State
+class XE_API SubState : public XE::State
 {
 	OBJECT( SubState, State )
 

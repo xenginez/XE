@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class INTERFACE_API IRenderService : public IService
+class XE_API IRenderService : public IService
 {
 	OBJECT( IRenderService, IService )
 

@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class RENDER_API Terrain
+class XE_API Terrain
 {
 public:
 	Terrain();

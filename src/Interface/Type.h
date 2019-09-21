@@ -730,7 +730,7 @@ enum class KeyCode
 	Joystick8Pov19,
 	KeyCodeNum,
 };
-DECL_META_ENUM( INTERFACE_API, KeyCode );
+DECL_META_ENUM( XE_API, KeyCode );
 
 enum class Operation
 {
@@ -741,7 +741,7 @@ enum class Operation
 	LESS_EQUAL,
 	GREATER_EQUAL,
 };
-DECL_META_ENUM( INTERFACE_API, Operation );
+DECL_META_ENUM( XE_API, Operation );
 
 enum class LoggerLevel
 {
@@ -770,7 +770,7 @@ enum class LoggerLevel
 	Level19,
 	Level20,
 };
-DECL_META_ENUM( INTERFACE_API, LoggerLevel );
+DECL_META_ENUM( XE_API, LoggerLevel );
 
 enum class AssetStatus
 {
@@ -778,7 +778,7 @@ enum class AssetStatus
 	Loading,
 	Ready,
 };
-DECL_META_ENUM( INTERFACE_API, AssetStatus );
+DECL_META_ENUM( XE_API, AssetStatus );
 
 enum class ThreadType
 {
@@ -791,7 +791,7 @@ enum class ThreadType
 	WORKS,
 	UNKNOWN,
 };
-DECL_META_ENUM( INTERFACE_API, ThreadType );
+DECL_META_ENUM( XE_API, ThreadType );
 
 enum class ThreadPriority
 {
@@ -799,7 +799,7 @@ enum class ThreadPriority
 	NORM = 1,
 	MIN = 2,
 };
-DECL_META_ENUM( INTERFACE_API, ThreadPriority );
+DECL_META_ENUM( XE_API, ThreadPriority );
 
 using WindowEventPair = Pair<WindowHandle, XE::WindowEvent>;
 
@@ -811,5 +811,18 @@ DECL_EVENT( MOUSE_DOWN, "mouse button down", XE::uint32 );
 DECL_EVENT( MOUSE_WHEEL, "mouse wheel", XE::uint32 );
 
 END_XE_NAMESPACE
+
+#define XE_LOG(LEVEL, FMT, ...) \
+XE::IFramework::GetCurrentFramework()->GetLoggerService()->Log( LEVEL, __FILE__, __LINE__, XE::StringUtils::Format(FMT, __VA_ARGS__) );
+
+#define REGISTER_PLUGIN( NAME ) \
+extern "C" XE::IPlugin * RegisterPlugin( XE::IFrameworkPtr framework ) \
+{ \
+	return new NAME( framework ); \
+} \
+extern "C" void UnregisterPlugin( XE::IPlugin * plugin ) \
+{ \
+	delete plugin; \
+}
 
 #endif 

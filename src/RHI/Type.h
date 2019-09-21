@@ -15,33 +15,33 @@ BEG_XE_NAMESPACE
 
 DECL_PTR( IRenderContext );
 
-DECL_HANDLE( RHI_API, Uniform );
-DECL_HANDLE( RHI_API, VertexLayout );
+DECL_HANDLE( XE_API, Uniform );
+DECL_HANDLE( XE_API, VertexLayout );
 
-DECL_HANDLE( RHI_API, FrameBuffer );
-DECL_HANDLE( RHI_API, IndexBuffer );
-DECL_HANDLE( RHI_API, VertexBuffer );
-DECL_HANDLE( RHI_API, ComputeBuffer );
-DECL_HANDLE( RHI_API, IndirectBuffer );
-DECL_HANDLE( RHI_API, InstanceBuffer );
-DECL_HANDLE( RHI_API, DepthStencilBuffer );
-DECL_HANDLE( RHI_API, DynamicIndexBuffer );
-DECL_HANDLE( RHI_API, DynamicVertexBuffer );
+DECL_HANDLE( XE_API, FrameBuffer );
+DECL_HANDLE( XE_API, IndexBuffer );
+DECL_HANDLE( XE_API, VertexBuffer );
+DECL_HANDLE( XE_API, ComputeBuffer );
+DECL_HANDLE( XE_API, IndirectBuffer );
+DECL_HANDLE( XE_API, InstanceBuffer );
+DECL_HANDLE( XE_API, DepthStencilBuffer );
+DECL_HANDLE( XE_API, DynamicIndexBuffer );
+DECL_HANDLE( XE_API, DynamicVertexBuffer );
 
-DECL_HANDLE( RHI_API, Shader );
+DECL_HANDLE( XE_API, Shader );
 
-DECL_HANDLE( RHI_API, BlendState );
-DECL_HANDLE( RHI_API, RasterizerState );
-DECL_HANDLE( RHI_API, DepthStencilState );
-DECL_HANDLE( RHI_API, ComputePipelineState );
-DECL_HANDLE( RHI_API, GraphicsPipelineState );
+DECL_HANDLE( XE_API, BlendState );
+DECL_HANDLE( XE_API, RasterizerState );
+DECL_HANDLE( XE_API, DepthStencilState );
+DECL_HANDLE( XE_API, ComputePipelineState );
+DECL_HANDLE( XE_API, GraphicsPipelineState );
 
-DECL_HANDLE( RHI_API, Texture );
+DECL_HANDLE( XE_API, Texture );
 
-DECL_HANDLE( RHI_API, TimerQuery );
-DECL_HANDLE( RHI_API, OcclusionQuery );
+DECL_HANDLE( XE_API, TimerQuery );
+DECL_HANDLE( XE_API, OcclusionQuery );
 
-DECL_HANDLE( RHI_API, CommandList );
+DECL_HANDLE( XE_API, CommandList );
 
 
 enum class FillType
@@ -49,7 +49,7 @@ enum class FillType
 	WIRTEFRAME,
 	SOLID,
 };
-DECL_META_ENUM( RHI_API, FillType );
+DECL_META_ENUM( XE_API, FillType );
 
 enum class CullType
 {
@@ -57,7 +57,7 @@ enum class CullType
 	FRONT,
 	BACK,
 };
-DECL_META_ENUM( RHI_API, CullType );
+DECL_META_ENUM( XE_API, CullType );
 
 enum class TopologyType
 {
@@ -104,7 +104,7 @@ enum class TopologyType
 	CONTROL_POINT_PATCHLIST_31,
 	CONTROL_POINT_PATCHLIST_32,
 };
-DECL_META_ENUM( RHI_API, TopologyType );
+DECL_META_ENUM( XE_API, TopologyType );
 
 enum class AccessType
 {
@@ -113,7 +113,7 @@ enum class AccessType
 	WIRTE,
 	READWIRTE,
 };
-DECL_META_ENUM( RHI_API, AccessType );
+DECL_META_ENUM( XE_API, AccessType );
 
 enum class BackbufferRatio
 {
@@ -124,7 +124,7 @@ enum class BackbufferRatio
 	SIXTEENTH, //!< One sixteenth size of backbuffer.
 	DOUBLE,    //!< Double size of backbuffer.
 };
-DECL_META_ENUM( RHI_API, BackbufferRatio );
+DECL_META_ENUM( XE_API, BackbufferRatio );
 
 enum class CompareType
 {
@@ -137,7 +137,7 @@ enum class CompareType
 	NEVER,
 	ALWAYS,
 };
-DECL_META_ENUM( RHI_API, CompareType );
+DECL_META_ENUM( XE_API, CompareType );
 
 enum class AttributeType
 {
@@ -153,7 +153,7 @@ enum class AttributeType
 	FLOAT32,
 	FLOAT64,
 };
-DECL_META_ENUM( RHI_API, AttributeType );
+DECL_META_ENUM( XE_API, AttributeType );
 
 enum class RenderContextType
 {
@@ -162,7 +162,7 @@ enum class RenderContextType
 	VULKAN,
 	DIRECT3D12,
 };
-DECL_META_ENUM( RHI_API, RenderContextType );
+DECL_META_ENUM( XE_API, RenderContextType );
 
 enum class UniformType
 {
@@ -172,7 +172,7 @@ enum class UniformType
 	SAMPLER,
 	TEXTURE,
 };
-DECL_META_ENUM( RHI_API, UniformType );
+DECL_META_ENUM( XE_API, UniformType );
 
 enum class TextureType
 {
@@ -182,7 +182,7 @@ enum class TextureType
 	TEXTURECUBE,
 	TEXTURE2DARRAY,
 };
-DECL_META_ENUM( RHI_API, TextureType );
+DECL_META_ENUM( XE_API, TextureType );
 
 enum class TextureFormat
 {
@@ -286,7 +286,7 @@ enum class TextureFormat
 	D32F,
 	D0S8,
 };
-DECL_META_ENUM( RHI_API, TextureFormat );
+DECL_META_ENUM( XE_API, TextureFormat );
 
 enum class SamplerFilter
 {
@@ -327,7 +327,7 @@ enum class SamplerFilter
 	MAXIMUM_MIN_MAG_MIP_LINEAR = 0x195,
 	MAXIMUM_ANISOTROPIC = 0x1d5
 };
-DECL_META_ENUM( RHI_API, SamplerFilter );
+DECL_META_ENUM( XE_API, SamplerFilter );
 
 enum class SamplerAddress
 {
@@ -347,7 +347,7 @@ enum class SamplerAddress
 	UVW_CLAMP	= U_CLAMP | V_CLAMP | W_CLAMP,
 	UVW_BORDER	= U_BORDER | V_BORDER | W_BORDER,
 };
-DECL_META_ENUM( RHI_API, SamplerAddress );
+DECL_META_ENUM( XE_API, SamplerAddress );
 
 enum class BlendFactor
 {
@@ -365,7 +365,7 @@ enum class BlendFactor
 	FACTOR,
 	INV_FACTOR,
 };
-DECL_META_ENUM( RHI_API, BlendFactor );
+DECL_META_ENUM( XE_API, BlendFactor );
 
 enum class BlendOperation
 {
@@ -375,7 +375,7 @@ enum class BlendOperation
 	MIN,
 	MAX,
 };
-DECL_META_ENUM( RHI_API, BlendOperation );
+DECL_META_ENUM( XE_API, BlendOperation );
 
 enum class StencilOperation
 {
@@ -388,7 +388,7 @@ enum class StencilOperation
 	DECRSAT,
 	INVERT,
 };
-DECL_META_ENUM( RHI_API, StencilOperation );
+DECL_META_ENUM( XE_API, StencilOperation );
 
 enum class ClearType
 {
@@ -400,7 +400,7 @@ enum class ClearType
 	CLAER_DEPTH_STENCIL,
 	CLAER_COLOR_DEPTH_STENCIL,
 };
-DECL_META_ENUM( RHI_API, ClearType );
+DECL_META_ENUM( XE_API, ClearType );
 
 enum CommandListType
 {
@@ -411,7 +411,7 @@ enum CommandListType
 	VIDEO_DECODE,
 	VIDEO_PROCESS,
 };
-DECL_META_ENUM( RHI_API, CommandListType );
+DECL_META_ENUM( XE_API, CommandListType );
 
 END_XE_NAMESPACE
 

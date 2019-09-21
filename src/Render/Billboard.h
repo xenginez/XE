@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class RENDER_API Billboard
+class XE_API Billboard
 {
 public:
 	Billboard();

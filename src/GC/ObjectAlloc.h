@@ -9,11 +9,11 @@
 #ifndef __OBJECTALLOC_H__25E6C688_5248_454F_8C87_E1A7A28B17B7
 #define __OBJECTALLOC_H__25E6C688_5248_454F_8C87_E1A7A28B17B7
 
-#include "Type.h"
+#include "Alloc.h"
 
 BEG_XE_NAMESPACE
 
-class GC_API ObjectAlloc : public XE::Singleton< ObjectAlloc >
+class XE_API ObjectAlloc : public XE::Singleton< ObjectAlloc >
 {
 private:
 	struct Private;

@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class CORE_API EventService : public IEventService
+class XE_API EventService : public IEventService
 {
 	OBJECT( EventService, IEventService )
 

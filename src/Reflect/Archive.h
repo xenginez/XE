@@ -18,7 +18,7 @@ BEG_XE_NAMESPACE
 class Archive;
 template< typename T > struct Serializable;
 
-class REFLECT_API Archive : public NonCopyable
+class XE_API Archive : public XE::NonCopyable
 {
 public:
 	template< typename T > struct NVP
@@ -123,7 +123,7 @@ protected:
 
 };
 
-class REFLECT_API JsonLoadArchive : public Archive
+class XE_API JsonLoadArchive : public Archive
 {
 	struct Private;
 
@@ -139,7 +139,7 @@ private:
 	Private * _p;
 };
 
-class REFLECT_API JsonSaveArchive : public Archive
+class XE_API JsonSaveArchive : public Archive
 {
 	struct Private;
 public:
@@ -157,7 +157,7 @@ private:
 	Private * _p;
 };
 
-class REFLECT_API BinaryLoadArchive : public Archive
+class XE_API BinaryLoadArchive : public Archive
 {
 	struct Private;
 
@@ -173,7 +173,7 @@ private:
 	Private * _p;
 };
 
-class REFLECT_API BinarySaveArchive : public Archive
+class XE_API BinarySaveArchive : public Archive
 {
 	struct Private;
 public:

@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class CORE_API TimerService : public ITimerService
+class XE_API TimerService : public ITimerService
 {
 	OBJECT( TimerService, ITimerService )
 

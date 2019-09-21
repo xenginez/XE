@@ -1,16 +1,13 @@
 /*!
- * \file   Math.h
+ * \file	Math.h
  *
- * \author ZhengYuanQing
- * \date   2019/1/10
- * \email  zhengyuanqing.95@gmail.com
+ * \author	ZhengYuanQing
+ * \date	2019/09/21
+ * \email	zhengyuanqing.95@gmail.com
  *
  */
-#ifndef __MATH_H__84AFAF0A_10EA_491F_8BD6_28A8543AE1CF
-#define __MATH_H__84AFAF0A_10EA_491F_8BD6_28A8543AE1CF
-
-#include "Mathf.h"
-
+#ifndef MATH_H__963A8EE2_1754_4068_86FE_C37D2405EB1D
+#define MATH_H__963A8EE2_1754_4068_86FE_C37D2405EB1D
 
 #include "Vec2.h"
 #include "Vec3.h"
@@ -31,8 +28,9 @@
 #include "Frustum.h"
 
 #include "Color.h"
-#include "float16.h"
+
+#include "Mathf.h"
 #include "QTree.hpp"
 #include "OCTree.hpp"
 
-#endif // __MATH_H__84AFAF0A_10EA_491F_8BD6_28A8543AE1CF
+#endif // MATH_H__963A8EE2_1754_4068_86FE_C37D2405EB1D

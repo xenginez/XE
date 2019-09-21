@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class INTERFACE_API Logger
+class XE_API Logger
 {
 public:
 	String File;
@@ -23,7 +23,7 @@ public:
 	std::chrono::system_clock::time_point Time;
 };
 
-class INTERFACE_API ILoggerService : public IService
+class XE_API ILoggerService : public IService
 {
 	OBJECT( ILoggerService, IService )
 

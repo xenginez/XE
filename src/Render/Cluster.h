@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class RENDER_API Cluster
+class XE_API Cluster
 {
 public:
 	Cluster();

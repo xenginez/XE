@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class GC_API Alloc : public XE::NonCopyable
+class XE_API Alloc : public XE::NonCopyable
 {
 public:
 	Alloc() = delete;

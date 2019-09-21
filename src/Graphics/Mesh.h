@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class GRAPHICS_API SubMesh : public XE::Object
+class XE_API SubMesh : public XE::Object
 {
 	OBJECT( SubMesh, Object )
 
@@ -32,7 +32,7 @@ private:
 	XE::uint32 _IndexCount;
 };
 
-class GRAPHICS_API Mesh : public XE::Object
+class XE_API Mesh : public XE::Object
 {
 	OBJECT( Mesh, Object )
 	
@@ -52,7 +52,7 @@ protected:
 	Array<SubMesh> _SubMesh;
 };
 
-class GRAPHICS_API StaticMesh : public Mesh
+class XE_API StaticMesh : public Mesh
 {
 	OBJECT( StaticMesh, Mesh )
 
@@ -63,7 +63,7 @@ public:
 
 };
 
-class GRAPHICS_API DynamicMesh : public Mesh
+class XE_API DynamicMesh : public Mesh
 {
 	OBJECT( DynamicMesh, Mesh )
 
@@ -74,7 +74,7 @@ public:
 
 };
 
-class GRAPHICS_API SkinnedMesh : public StaticMesh
+class XE_API SkinnedMesh : public StaticMesh
 {
 	OBJECT( SkinnedMesh, StaticMesh )
 

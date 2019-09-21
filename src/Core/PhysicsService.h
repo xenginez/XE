@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class CORE_API PhysicsService : public XE::IPhysicsService
+class XE_API PhysicsService : public XE::IPhysicsService
 {
 	OBJECT( PhysicsService, IPhysicsService )
 

@@ -16,7 +16,7 @@
 
 BEG_XE_NAMESPACE
 
-class REFLECT_API Reflection : public Singleton< Reflection >
+class XE_API Reflection : public XE::Singleton< Reflection >
 {
 public:
 	struct Private;

@@ -13,9 +13,9 @@
 
 BEG_XE_NAMESPACE
 
-class Library; using LibraryHandle = XE::Handle< XE::Library >; DECL_META_CLASS( UTILS_API, LibraryHandle );
+class Library; using LibraryHandle = XE::Handle< XE::Library >; DECL_META_CLASS( XE_API, LibraryHandle );
 
-class UTILS_API Library
+class XE_API Library
 {
 public:
 	static LibraryHandle Open( const String& name );

@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class CORE_API CoreFramework : public XE::IFramework
+class XE_API CoreFramework : public XE::IFramework
 {
 	OBJECT( CoreFramework, IFramework )
 

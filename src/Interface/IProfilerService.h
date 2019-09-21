@@ -14,7 +14,7 @@
 BEG_XE_NAMESPACE
 
 
-class INTERFACE_API ProfilerItem
+class XE_API ProfilerItem
 {
 public:
 	std::chrono::system_clock::time_point StartTime;
@@ -23,14 +23,14 @@ public:
 	String Text;
 };
 
-class INTERFACE_API ProfilerFrame : public std::enable_shared_from_this<ProfilerFrame>
+class XE_API ProfilerFrame : public std::enable_shared_from_this<ProfilerFrame>
 {
 public:
 	thread_id tid;
 	Array<ProfilerItem> Children;
 };
 
-class INTERFACE_API ProfilerTrack
+class XE_API ProfilerTrack
 {
 public:
 	ProfilerTrack( ProfilerItem * val );
@@ -43,7 +43,7 @@ private:
 
 
 
-class INTERFACE_API IProfilerService : public IService
+class XE_API IProfilerService : public IService
 {
 	OBJECT( IProfilerService, IService )
 		

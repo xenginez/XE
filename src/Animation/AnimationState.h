@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class ANIMATION_API AnimationState : public XE::Object
+class XE_API AnimationState : public XE::Object
 {
 	OBJECT( AnimationState, Object )
 
@@ -78,7 +78,7 @@ private:
 	Array<AnimationTriggerPtr> _Triggers;
 };
 
-class ANIMATION_API AnimationStateAny : public AnimationState
+class XE_API AnimationStateAny : public AnimationState
 {
 	OBJECT( AnimationStateAny, AnimationState )
 

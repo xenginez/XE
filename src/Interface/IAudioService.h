@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class INTERFACE_API IAudioService : public IService
+class XE_API IAudioService : public IService
 {
 	OBJECT( IAudioService, IService )
 

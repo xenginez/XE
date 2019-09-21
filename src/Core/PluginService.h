@@ -13,14 +13,14 @@
 
 BEG_XE_NAMESPACE
 
-struct CORE_API PluginDesc
+struct XE_API PluginDesc
 {
 	String Name;
 	String Description;
 	XE::LibraryHandle Library;
 };
 
-class CORE_API PluginService : public IPluginService
+class XE_API PluginService : public IPluginService
 {
 	OBJECT(PluginService, IPluginService)
 

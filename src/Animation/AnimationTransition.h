@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class ANIMATION_API AnimationTransition : public XE::Object
+class XE_API AnimationTransition : public XE::Object
 {
 	OBJECT( AnimationTransition, Object )
 

@@ -2,33 +2,26 @@
  * \file	GC.h
  *
  * \author	ZhengYuanQing
- * \date	2019/08/18
+ * \date	2019/09/21
  * \email	zhengyuanqing.95@gmail.com
  *
  */
-#ifndef GC_H__23E4C3C2_7560_44FC_949E_DACFAF9F36EC
-#define GC_H__23E4C3C2_7560_44FC_949E_DACFAF9F36EC
+#ifndef GC_H__FA923875_63B1_4537_BFB7_E063B491B0B7
+#define GC_H__FA923875_63B1_4537_BFB7_E063B491B0B7
 
-#include "Alloc.h"
-#include "FrameAlloc.h"
-#include "ObjectAlloc.h"
+#include "GCObject.h"
 #include "Allocator.hpp"
 #include "FrameAllocator.hpp"
 #include "ObjectAllocator.hpp"
 
-#include "GCObject.h"
-
 BEG_XE_NAMESPACE
-
 template< typename Ty, typename ... Types > std::shared_ptr<Ty> make_shared( Types && ...args )
 {
 	typename XE::AllocatorProxy<Ty>::allocator_type _alloc;
 
 	return std::allocate_shared<Ty>( _alloc, args... );
 }
-
 END_XE_NAMESPACE
-
 
 #define DECL_PTR( TYPE ) \
 class TYPE; \
@@ -58,4 +51,4 @@ public: \
 #define RP_CAST std::reinterpret_pointer_cast
 #define XE_THIS(TYPE) std::static_pointer_cast<TYPE>( shared_from_this() )
 
-#endif // GC_H__23E4C3C2_7560_44FC_949E_DACFAF9F36EC
+#endif // GC_H__FA923875_63B1_4537_BFB7_E063B491B0B7

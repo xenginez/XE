@@ -13,14 +13,12 @@
 
 BEG_XE_NAMESPACE
 
-class PSI_API IPhysicsContext : public XE::Object, public NonCopyable
+class XE_API IPhysicsContext : public NonCopyable
 {
-	OBJECT( IPhysicsContext, Object )
-
 public:
 	IPhysicsContext();
 
-	~IPhysicsContext() override;
+	virtual ~IPhysicsContext();
 
 public:
 	virtual void Startup() = 0;

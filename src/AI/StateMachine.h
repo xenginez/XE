@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class AI_API StateMachine :  public XE::AIModule
+class XE_API StateMachine :  public XE::AIModule
 {
 	OBJECT( StateMachine, AIModule )
 

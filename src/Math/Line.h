@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class MATH_API Line
+class XE_API Line
 {
 public:
 	union
@@ -69,7 +69,7 @@ public:
 	std::pair<bool, XE::real> Intersect( const Ray& ray, bool discardInside = true ) const;
 
 };
-DECL_META_CLASS( MATH_API, Line );
+DECL_META_CLASS( XE_API, Line );
 
 END_XE_NAMESPACE
 

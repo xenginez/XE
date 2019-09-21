@@ -1,31 +1,30 @@
 /*!
- * \file   Core.h
+ * \file	Core.h
  *
- * \author ZhengYuanQing
- * \date   2019/1/10
- * \email  zhengyuanqing.95@gmail.com
+ * \author	ZhengYuanQing
+ * \date	2019/09/21
+ * \email	zhengyuanqing.95@gmail.com
  *
  */
-#ifndef __CORE_H__B5566B20_D55A_4D6C_9158_9EE9949686F8
-#define __CORE_H__B5566B20_D55A_4D6C_9158_9EE9949686F8
-
-#include "CoreFramework.h"
+#ifndef CORE_H__89296107_DD2C_4CE3_A497_78460B7181B4
+#define CORE_H__89296107_DD2C_4CE3_A497_78460B7181B4
 
 #include "GUIService.h"
-#include "TimerService.h"
-#include "EventService.h"
-#include "AudioService.h"
 #include "InputService.h"
+#include "TimerService.h"
+#include "AudioService.h"
+#include "EventService.h"
 #include "WorldService.h"
-#include "LoggerService.h"
+#include "AssetsService.h"
 #include "ConfigService.h"
-#include "ThreadService.h"
+#include "CoreFramework.h"
+#include "LoggerService.h"
 #include "PluginService.h"
 #include "RenderService.h"
-#include "AssetsService.h"
+#include "ThreadService.h"
 #include "PhysicsService.h"
 #include "ProfilerService.h"
 #include "NavigationService.h"
 #include "LocalizationService.h"
 
-#endif // __CORE_H__B5566B20_D55A_4D6C_9158_9EE9949686F8
+#endif // CORE_H__89296107_DD2C_4CE3_A497_78460B7181B4

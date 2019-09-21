@@ -9,20 +9,11 @@
 #ifndef __GLOBAL_H__21F78FED_A550_4FF5_9C6A_18EF55BC2565
 #define __GLOBAL_H__21F78FED_A550_4FF5_9C6A_18EF55BC2565
 
-#include <Audio/Audio.h>
-#include <World/World.h>
-#include <AI/AI.h>
-#include <Physics/Physics.h>
-#include <Navigation/Navigation.h>
-#include <GUI/GUI.h>
-#include <Animation/Animation.h>
-
-#ifdef INTERFACE_EXPORT
-#define INTERFACE_API DLL_EXPORT
-#else
-#define INTERFACE_API DLL_IMPORT
-#define LIB_NAME "Interface"
-#include <Base/AutoLink.h>
-#endif
+#include "AI/AI.h"
+#include "World/World.h"
+#include "Audio/Audio.h"
+#include "Render/Render.h"
+#include "Physics/Physics.h"
+#include "Navigation/Navigation.h"
 
 #endif // __GLOBAL_H__21F78FED_A550_4FF5_9C6A_18EF55BC2565

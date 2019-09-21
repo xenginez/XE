@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class ANIMATION_API AnimationCondition : public XE::Object
+class XE_API AnimationCondition : public XE::Object
 {
 	OBJECT( AnimationCondition, Object )
 
@@ -34,7 +34,7 @@ private:
 	AnimationControllerWPtr _Controller;
 };
 
-class ANIMATION_API AnimationConditionBool : public AnimationCondition
+class XE_API AnimationConditionBool : public AnimationCondition
 {
 	OBJECT( AnimationConditionBool, AnimationCondition )
 
@@ -51,7 +51,7 @@ private:
 	XE::String _KeyValue;
 };
 
-class ANIMATION_API AnimationConditionInt : public AnimationCondition
+class XE_API AnimationConditionInt : public AnimationCondition
 {
 	OBJECT( AnimationConditionInt, AnimationCondition )
 
@@ -69,7 +69,7 @@ private:
 	AnimationCompare _Compare;
 };
 
-class ANIMATION_API AnimationConditionFloat : public AnimationCondition
+class XE_API AnimationConditionFloat : public AnimationCondition
 {
 	OBJECT( AnimationConditionFloat, AnimationCondition )
 
@@ -87,7 +87,7 @@ private:
 	AnimationCompare _Compare;
 };
 
-class ANIMATION_API AnimationConditionString : public AnimationCondition
+class XE_API AnimationConditionString : public AnimationCondition
 {
 	OBJECT( AnimationConditionString, AnimationCondition )
 

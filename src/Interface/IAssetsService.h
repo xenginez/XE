@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class INTERFACE_API IAssetsService : public IService
+class XE_API IAssetsService : public IService
 {
 	friend class Prefab;
 

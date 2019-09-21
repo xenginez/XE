@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class ANIMATION_API Animator : public XE::Object
+class XE_API Animator : public XE::Object
 {
 	OBJECT( Animator, Object )
 

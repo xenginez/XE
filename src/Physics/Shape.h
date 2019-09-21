@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class PHYSICS_API Shape : public XE::PhysicsObject
+class XE_API Shape : public XE::PhysicsObject
 {
 	OBJECT( Shape, PhysicsObject )
 

@@ -9,14 +9,6 @@
 #ifndef __GLOBAL_H__A39D40FD_1112_4C77_B112_E283BE8AFE97
 #define __GLOBAL_H__A39D40FD_1112_4C77_B112_E283BE8AFE97
 
-#include <RHI/RHI.h>
-
-#ifdef GRAPHICS_EXPORT
-#define GRAPHICS_API DLL_EXPORT
-#else
-#define GRAPHICS_API DLL_IMPORT
-#define LIB_NAME "Graphics"
-#include <Base/AutoLink.h>
-#endif
+#include "RHI/RHI.h"
 
 #endif // __GLOBAL_H__A39D40FD_1112_4C77_B112_E283BE8AFE97

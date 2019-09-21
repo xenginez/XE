@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class GRAPHICS_API Camera : public XE::Object
+class XE_API Camera : public XE::Object
 {
 	OBJECT( Camera, Object )
 

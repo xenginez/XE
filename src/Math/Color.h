@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class MATH_API Color
+class XE_API Color
 {
 public:
 	static const Color White;
@@ -93,9 +93,9 @@ public:
 public:
 	static Color Lerp( const Color& val1, const Color& val2, XE::uint8 val );
 };
-DECL_META_CLASS( MATH_API, Color );
+DECL_META_CLASS( XE_API, Color );
 
-class MATH_API FColor
+class XE_API FColor
 {
 public:
 	static const FColor White;
@@ -174,7 +174,7 @@ public:
 public:
 	static FColor Lerp( const FColor& val1, const FColor& val2, XE::float32 val );
 };
-DECL_META_CLASS( MATH_API, FColor );
+DECL_META_CLASS( XE_API, FColor );
 
 END_XE_NAMESPACE
 

@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class ANIMATION_API AnimationIKEffector
+class XE_API AnimationIKEffector
 {
 public:
 	AnimationIKEffector();
@@ -68,9 +68,9 @@ private:
 	XE::float32 _RotationDecay;
 	XE::uint32 _BoneJoint;
 };
-DECL_META_CLASS( ANIMATION_API, AnimationIKEffector );
+DECL_META_CLASS( XE_API, AnimationIKEffector );
 
-class ANIMATION_API AnimationIKConstraint
+class XE_API AnimationIKConstraint
 {
 public:
 	AnimationIKConstraint();
@@ -95,9 +95,9 @@ private:
 	XE::float32 _Stretchiness;
 	XE::Vec2 _LengthConstraints;
 };
-DECL_META_CLASS( ANIMATION_API, AnimationIKConstraint );
+DECL_META_CLASS( XE_API, AnimationIKConstraint );
 
-class ANIMATION_API AnimationIKSolver : public XE::Object
+class XE_API AnimationIKSolver : public XE::Object
 {
 	OBJECT( AnimationIKSolver, Object )
 

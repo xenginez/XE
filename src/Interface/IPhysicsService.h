@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class INTERFACE_API IPhysicsService : public IService
+class XE_API IPhysicsService : public IService
 {
 	OBJECT( IPhysicsService, IService )
 

@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class INTERFACE_API INavigationService : public IService
+class XE_API INavigationService : public IService
 {
 	OBJECT( INavigationService, IService )
 

@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class MATH_API Vec2
+class XE_API Vec2
 {
 public:
 	static const Vec2 One;
@@ -55,7 +55,7 @@ public:
 	}
 
 };
-DECL_META_CLASS( MATH_API, Vec2 );
+DECL_META_CLASS( XE_API, Vec2 );
 
 END_XE_NAMESPACE
 

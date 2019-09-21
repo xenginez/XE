@@ -62,7 +62,7 @@ enum class Language
 	HUNGARIAN,
 	UNKNOWN,
 };
-DECL_META_ENUM( UTILS_API, Language );
+DECL_META_ENUM( XE_API, Language );
 
 enum class WindowEvent
 {
@@ -115,7 +115,7 @@ enum class WindowEvent
 	POWERBROADCAST,				// this message is sent to the application to notify it about power management events;
 	DEVICECHANGE,				// send this message to the application or device driver when the hardware configuration of the device changes
 };
-DECL_META_ENUM( UTILS_API, WindowEvent );
+DECL_META_ENUM( XE_API, WindowEvent );
 
 END_XE_NAMESPACE
 

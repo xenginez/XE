@@ -38,7 +38,7 @@ public:
 public:
 	template<typename _Other> struct rebind
 	{
-		using other = typename AllocatorProxy<_Other>::template allocator_type;
+		using other = ObjectAllocator<_Other>;
 	};
 
 public:

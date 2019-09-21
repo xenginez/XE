@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class GRAPHICS_API RenderQueue : public std::enable_shared_from_this< RenderQueue > , public NonCopyable
+class XE_API RenderQueue : public std::enable_shared_from_this< RenderQueue > , public NonCopyable
 {
 public:
 	using DrawCallPair = Pair<SortKey, XE::uint64>;

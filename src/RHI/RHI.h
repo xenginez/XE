@@ -2,15 +2,14 @@
  * \file	RHI.h
  *
  * \author	ZhengYuanQing
- * \date	2019/09/03
+ * \date	2019/09/21
  * \email	zhengyuanqing.95@gmail.com
  *
  */
-#ifndef RHI_H__895E8917_DB29_483E_86B1_A9FDE8FAEE18
-#define RHI_H__895E8917_DB29_483E_86B1_A9FDE8FAEE18
+#ifndef RHI_H__D33EDCC6_C30D_40B8_B236_70B5FD46BF28
+#define RHI_H__D33EDCC6_C30D_40B8_B236_70B5FD46BF28
 
 #include "VertexLayout.h"
 #include "IRenderContext.h"
 
-#endif // RHI_H__895E8917_DB29_483E_86B1_A9FDE8FAEE18
-
+#endif // RHI_H__D33EDCC6_C30D_40B8_B236_70B5FD46BF28

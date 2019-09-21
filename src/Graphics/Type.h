@@ -33,7 +33,7 @@ enum class CameraType
 	PERSPECTIVE,
 	ORTHOGRAPHIC,
 };
-DECL_META_ENUM( GRAPHICS_API, CameraType );
+DECL_META_ENUM( XE_API, CameraType );
 
 enum RenderLayer
 {
@@ -43,7 +43,7 @@ enum RenderLayer
 	TRANSPARENT,
 	OVERLAY,
 };
-DECL_META_ENUM( GRAPHICS_API, RenderLayer );
+DECL_META_ENUM( XE_API, RenderLayer );
 
 enum class Humanoid
 {
@@ -69,7 +69,7 @@ enum class Humanoid
 	CALF_R,
 	FOOT_R,
 };
-DECL_META_ENUM( GRAPHICS_API, Humanoid );
+DECL_META_ENUM( XE_API, Humanoid );
 
 END_XE_NAMESPACE
 

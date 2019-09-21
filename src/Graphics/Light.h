@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class GRAPHICS_API Light : public XE::Object
+class XE_API Light : public XE::Object
 {
 	OBJECT( Light, Object )
 
@@ -24,7 +24,7 @@ public:
 
 };
 
-class GRAPHICS_API SpotLight : public Light
+class XE_API SpotLight : public Light
 {
 	OBJECT( SpotLight, Light )
 
@@ -34,7 +34,7 @@ public:
 	~SpotLight() override;
 };
 
-class GRAPHICS_API AreaLight : public Light
+class XE_API AreaLight : public Light
 {
 	OBJECT( AreaLight, Light )
 
@@ -45,7 +45,7 @@ public:
 
 };
 
-class GRAPHICS_API PointLight : public Light
+class XE_API PointLight : public Light
 {
 	OBJECT( PointLight, Light )
 
@@ -55,7 +55,7 @@ public:
 	~PointLight() override;
 };
 
-class GRAPHICS_API DirectionalLight : public Light
+class XE_API DirectionalLight : public Light
 {
 	OBJECT( DirectionalLight, Light )
 
