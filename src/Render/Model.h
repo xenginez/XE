@@ -23,11 +23,11 @@ public:
 	virtual ~Model();
 
 protected:
-	void OnStartup( IRenderContextPtr & context ) override;
+	void OnStartup() override;
 
-	void OnRender( IRenderContextPtr & context ) override;
+	void OnRender() override;
 
-	void OnClearup( IRenderContextPtr & context ) override;
+	void OnClearup() override;
 
 public:
 	MeshPtr GetMesh() const;

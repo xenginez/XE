@@ -23,9 +23,6 @@ public:
 	~IRenderService() override;
 
 public:
-	virtual IRenderContextPtr GetRenderContext() const = 0;
-
-public:
 	virtual void RegisterLight( const LightPtr & val ) = 0;
 
 	virtual void UnregisterLight( const LightPtr & val ) = 0;

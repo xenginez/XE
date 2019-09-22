@@ -13,9 +13,9 @@
 
 BEG_XE_NAMESPACE
 
-class XE_API Renderer : public std::enable_shared_from_this< Renderer >
+class XE_API Renderer : public XE::Object
 {
-	OBJECT( Renderer )
+	OBJECT( Renderer, Object )
 	
 public:
 	Renderer();
@@ -25,19 +25,16 @@ public:
 public:
 	void Startup();
 
-	void Render( IRenderContextPtr & context, CameraPtr & camera );
+	void Render();
 
 	void Clearup();
 
 protected:
 	virtual void OnStartup() = 0;
 
-	virtual void OnRender( IRenderContextPtr & context, CameraPtr & camera ) = 0;
+	virtual void OnRender() = 0;
 
 	virtual void OnClearup() = 0;
-
-private:
-	RenderQueuePtr _Queue;
 };
 
 END_XE_NAMESPACE

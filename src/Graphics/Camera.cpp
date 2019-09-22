@@ -8,7 +8,7 @@ BEG_META( Camera )
 END_META()
 
 XE::Camera::Camera()
-	:_Active( true ), _Type( CameraType::ORTHOGRAPHIC ), _FOV( 60.0f ), _Far( 1000.0f ), _Near( 0.1f ), _Depth( 0 ), _Aspect( 1.333f )
+	:_Active( true ), _FOV( 60.0f ), _Far( 1000.0f ), _Near( 0.1f ), _Depth( 0 ), _Aspect( 1.333f )
 {
 
 }
@@ -26,16 +26,6 @@ bool XE::Camera::GetActive() const
 void XE::Camera::SetActive( bool val )
 {
 	_Active = val;
-}
-
-XE::CameraType XE::Camera::GetType() const
-{
-	return _Type;
-}
-
-void XE::Camera::SetType( XE::CameraType val )
-{
-	_Type = val;
 }
 
 XE::float32 XE::Camera::GetFOV() const

@@ -29,11 +29,11 @@ public:
 	TechniquePtr GetTechnuque() const;
 
 public:
-	virtual void Startup( IRenderContextPtr & context ) = 0;
+	virtual void Startup() = 0;
 
-	virtual void Render( IRenderContextPtr & context ) = 0;
+	virtual void Render() = 0;
 
-	virtual void Clearup( IRenderContextPtr & context ) = 0;
+	virtual void Clearup() = 0;
 
 private:
 	TechniqueWPtr _Technique;

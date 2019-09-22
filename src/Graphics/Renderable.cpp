@@ -25,17 +25,17 @@ void XE::Renderable::SetTransform( const Mat4& val )
 	_Transform = val;
 }
 
-void XE::Renderable::Startup( IRenderContextPtr & context )
+void XE::Renderable::Startup()
 {
-	OnStartup( context );
+	OnStartup();
 }
 
-void XE::Renderable::Render( IRenderContextPtr & context )
+void XE::Renderable::Render()
 {
-	OnRender( context );
+	OnRender();
 }
 
-void XE::Renderable::Clearup( IRenderContextPtr & context )
+void XE::Renderable::Clearup()
 {
-	OnClearup( context );
+	OnClearup();
 }

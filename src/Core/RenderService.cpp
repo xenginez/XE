@@ -9,8 +9,6 @@ END_META()
 
 struct XE::RenderService::Private
 {
-	IRenderContextPtr _Context;
-
 	Array<LightPtr> _Lights;
 	Array<XE::CameraPtr> _Cameras;
 	Array<XE::RenderablePtr> _Renderables;
@@ -34,14 +32,6 @@ void XE::RenderService::Prepare()
 
 bool XE::RenderService::Startup()
 {
-	if( IMetaClassPtr cls = Reflection::FindClass( GetFramework()->GetConfigService()->GetString( "Render.RenderContext" ) ) )
-	{
-		if( _p->_Context = SP_CAST<IRenderContext>( cls->ConstructPtr().DetachPtr() ) )
-		{
-			_p->_Context->Startup();
-			return true;
-		}
-	}
 
 	return false;
 }
@@ -49,7 +39,6 @@ bool XE::RenderService::Startup()
 void XE::RenderService::Update()
 {
 
-	_p->_Context->Present();
 }
 
 void XE::RenderService::Clearup()
@@ -58,12 +47,6 @@ void XE::RenderService::Clearup()
 	_p->_Cameras.clear();
 	_p->_Renderables.clear();
 
-	_p->_Context->Clearup();
-}
-
-XE::IRenderContextPtr XE::RenderService::GetRenderContext() const
-{
-	return _p->_Context;
 }
 
 void XE::RenderService::RegisterLight( const LightPtr & val )

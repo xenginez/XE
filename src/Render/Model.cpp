@@ -35,17 +35,17 @@ void XE::Model::SetRenderMaterial( const RenderMaterialPtr & val )
 	_Material = val;
 }
 
-void XE::Model::OnStartup( IRenderContextPtr & context )
+void XE::Model::OnStartup()
 {
 
 }
 
-void XE::Model::OnRender( IRenderContextPtr & context )
+void XE::Model::OnRender()
 {
 
 }
 
-void XE::Model::OnClearup( IRenderContextPtr & context )
+void XE::Model::OnClearup()
 {
 
 }

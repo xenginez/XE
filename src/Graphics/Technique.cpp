@@ -17,33 +17,33 @@ XE::Technique::~Technique()
 
 }
 
-void XE::Technique::Startup( IRenderContextPtr & context )
+void XE::Technique::Startup()
 {
 	for( auto & pass : _Passes )
 	{
 		pass->_Technique = XE_THIS( Technique );
-		pass->Startup( context );
+		pass->Startup();
 	}
 
-	OnStartup( context );
+	OnStartup();
 }
 
-void XE::Technique::Render( IRenderContextPtr & context )
+void XE::Technique::Render()
 {
 	for( auto & pass : _Passes )
 	{
-		pass->Render( context );
+		pass->Render();
 	}
 
-	OnRender( context );
+	OnRender();
 }
 
-void XE::Technique::Clearup( IRenderContextPtr & context )
+void XE::Technique::Clearup()
 {
 	for( auto & pass : _Passes )
 	{
-		pass->Clearup( context );
+		pass->Clearup();
 	}
 
-	OnClearup( context );
+	OnClearup();
 }

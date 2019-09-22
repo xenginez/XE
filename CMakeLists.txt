@@ -69,34 +69,34 @@ add_definitions(-DXE_EXPORT)
 FILE(GLOB_RECURSE XE_SRC_FILES src/*.h src/*.hpp src/*.cpp src/*.inc)
 add_library(XE ${XE_SRC_FILES})
 
+target_link_libraries(XE 
+tbb${XE_TBB_POSTFIX}
+tbbmalloc${XE_TBB_POSTFIX}
+tbbmalloc_proxy${XE_TBB_POSTFIX}
+OpenAL32
+DebugUtils
+DetourCrowd
+Recast
+Detour
+DetourTileCache
+sqlite3
+ik
+ astc-codec
+ astc
+ bgfx
+ bimg
+ bx
+ edtaa3
+ etc1
+ etc2
+ iqa
+ nvtt
+ pvrtc
+ squish
+)
 if (XE_PLATFORM_PATH MATCHES "mac")
 	target_link_libraries(XE 
-	tbb${XE_TBB_POSTFIX}
-	tbbmalloc${XE_TBB_POSTFIX}
-	tbbmalloc_proxy${XE_TBB_POSTFIX}
-	OpenAL32
-	DebugUtils
-	DetourCrowd
-	Recast
-	Detour
-	DetourTileCache
-	sqlite3
 	boost_filesystem
-	ik
-	)
-else()
-	target_link_libraries(XE 
-	tbb${XE_TBB_POSTFIX}
-	tbbmalloc${XE_TBB_POSTFIX}
-	tbbmalloc_proxy${XE_TBB_POSTFIX}
-	OpenAL32
-	DebugUtils
-	DetourCrowd
-	Recast
-	Detour
-	DetourTileCache
-	sqlite3
-	ik
 	)
 endif ()
 

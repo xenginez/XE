@@ -27,10 +27,6 @@ public:
 
 	void SetActive( bool val );
 
-	XE::CameraType GetType() const;
-
-	void SetType( XE::CameraType val );
-
 	XE::float32 GetFOV() const;
 
 	void SetFOV( XE::float32 val );
@@ -69,7 +65,6 @@ public:
 
 private:
 	bool _Active;
-	CameraType _Type;
 	XE::float32 _FOV;
 	XE::float32 _Far;
 	XE::float32 _Near;

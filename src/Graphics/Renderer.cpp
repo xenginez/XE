@@ -1,7 +1,5 @@
 #include "Renderer.h"
 
-#include "RenderQueue.h"
-
 USING_XE
 
 BEG_META( Renderer )
@@ -19,25 +17,15 @@ XE::Renderer::~Renderer()
 
 void XE::Renderer::Startup()
 {
-	_Queue = XE::make_shared<RenderQueue>();
-
 	OnStartup();
 }
 
-void XE::Renderer::Render( IRenderContextPtr & context, CameraPtr & camera )
+void XE::Renderer::Render()
 {
-	OnRender( context, camera );
-
-	auto list = context->CreateCommandList( CommandListType::DIRECT );
-
-	// TODO: set commandlist viewport rendertarget ...
-
-	context->Destory( list );
+	OnRender();
 }
 
 void XE::Renderer::Clearup()
 {
 	OnClearup();
-
-	_Queue = nullptr;
 }
