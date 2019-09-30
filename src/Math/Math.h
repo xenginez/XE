@@ -28,6 +28,7 @@
 #include "Frustum.h"
 
 #include "Color.h"
+#include "float16.h"
 
 #include "Mathf.h"
 #include "QTree.hpp"

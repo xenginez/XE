@@ -17,6 +17,9 @@ class XE_API PhysicsService : public XE::IPhysicsService
 {
 	OBJECT( PhysicsService, IPhysicsService )
 
+private:
+	struct Private;
+
 public:
 	PhysicsService();
 
@@ -31,6 +34,8 @@ public:
 
 	void Clearup() override;
 
+private:
+	Private * _p;
 };
 
 END_XE_NAMESPACE

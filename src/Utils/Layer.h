@@ -16,7 +16,7 @@ BEG_XE_NAMESPACE
 class XE_API Layer
 {
 public:
-	static constexpr XE::uint64 Default = 1;
+	static constexpr XE::uint64 Default = std::numeric_limits<XE::uint64>::max();
 
 public:
 	Layer();
@@ -26,6 +26,9 @@ public:
 	Layer( const Layer& val );
 
 	~Layer();
+
+public:
+	operator XE::uint64() const;
 
 public:
 	Layer& operator=( XE::uint64 val );
@@ -58,7 +61,12 @@ public:
 	bool operator !=( const Layer& val ) const;
 
 public:
-	XE::uint64 Value;
+	XE::uint64 GetValue() const;
+
+	void SetValue( XE::uint64 val );
+
+private:
+	XE::uint64 _Value;
 };
 DECL_META_CLASS( XE_API, Layer );
 

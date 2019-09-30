@@ -2,7 +2,7 @@
  * \file	Gfx.h
  *
  * \author	ZhengYuanQing
- * \date	2019/09/21
+ * \date	2019/09/23
  * \email	zhengyuanqing.95@gmail.com
  *
  */
@@ -120,9 +120,12 @@ class XE_API Encoder
 {
 	friend class Gfx;
 
-public:
+private:
 	Encoder();
 
+	Encoder( void * encoder );
+
+public:
 	Encoder( Encoder && val );
 
 	Encoder & operator=( Encoder && val );
@@ -143,7 +146,7 @@ public:
 	void setStencil(
 		XE::uint32 _fstencil
 		, StencilFlags _bstencil = StencilFlags::NONE
-		//		, XE::uint32 _bstencil = BGFX_STENCIL_NONE
+
 	);
 
 	XE::uint16 setScissor(
@@ -157,14 +160,14 @@ public:
 
 	XE::uint32 setTransform(
 		XE::basic_memory_view<Mat4> _transform
-		// 		const void * _mtx
-		// 		, XE::uint16 _num = 1
+
+
 	);
 
 	XE::uint32 allocTransform(
 		XE::basic_memory_view<Mat4> _transform
-		// 		Transform * _transform
-		//		, XE::uint16 _num
+
+
 	);
 
 	void setTransform(
@@ -175,8 +178,8 @@ public:
 	void setUniform(
 		UniformHandle _handle
 		, XE::memory_view _value
-		// 		, const void * _value
-		// 		, XE::uint16 _num = 1
+
+
 	);
 
 	void setIndexBuffer( IndexBufferHandle _handle );
@@ -398,8 +401,8 @@ public:
 		, Attrib _attr
 		, const VertexLayout & _layout
 		, XE::memory_view _data
-// 		, void * _data
-// 		, XE::uint32 _index = 0
+
+
 	);
 
 	static void vertexUnpack(
@@ -407,53 +410,53 @@ public:
 		, Attrib _attr
 		, const VertexLayout & _layout
 		, XE::memory_view _data
-// 		, const void * _data
-// 		, XE::uint32 _index = 0
+
+
 	);
 
 	static void vertexConvert(
 		const VertexLayout & _destLayout
 		, XE::memory_view _destData
-//		, void * _destData
+
 		, const VertexLayout & _srcLayout
 		, XE::memory_view _srcData
-// 		, const void * _srcData
-// 		, XE::uint32 _num = 1
+
+
 	);
 
 	static XE::uint16 weldVertices(
 		XE::uint16 * _output
 		, const VertexLayout & _layout
 		, XE::memory_view _data
-// 		, const void * _data
-// 		, XE::uint16 _num
+
+
 		, float _epsilon = 0.001f
 	);
 
 	static XE::uint32 topologyConvert(
 		TopologyConvert _conversion
 		, XE::memory_view _dst
-// 		, void * _dst
-// 		, XE::uint32 _dstSize
+
+
 		, XE::memory_view _indices
-// 		, const void * _indices
-// 		, XE::uint32 _numIndices
+
+
 		, bool _index32
 	);
 
 	static void topologySortTriList(
 		TopologySort _sort
 		, XE::memory_view _dst
-// 		, void * _dst
-// 		, XE::uint32 _dstSize
+
+
 		, const XE::Vec3 & _dir
 		, const XE::Vec3 & _pos
 		, XE::memory_view _vertices
-// 		, const void * _vertices
-// 		, XE::uint32 _stride
+
+
 		, XE::memory_view _indices
-// 		, const void * _indices
-// 		, XE::uint32 _numIndices
+
+
 		, bool _index32
 	);
 
@@ -486,9 +489,9 @@ public:
 
 	static const XE::memory_view makeRef(
 		XE::memory_view _data
-// 		const void * _data
-// 		, XE::uint32 _size
-//		, ReleaseFn _releaseFn = NULL
+
+
+
 	);
 
 	static void setDebug( XE::uint32 _debug );
@@ -511,7 +514,7 @@ public:
 		, XE::uint16 _width
 		, XE::uint16 _height
 		, XE::memory_view _data
-//		, const void * _data
+
 		, XE::uint16 _pitch
 	);
 
@@ -674,7 +677,7 @@ public:
 		const XE::memory_view _mem
 		, TextureUsage _tflags
 		, SamlerFlags _sflags
-//		, XE::uint64 _flags = BGFX_TEXTURE_NONE | BGFX_SAMPLER_NONE
+
 		, XE::uint8 _skip = 0
 		, TextureInfo * _info = NULL
 	);
@@ -687,7 +690,7 @@ public:
 		, TextureFormat _format
 		, TextureUsage _tflags
 		, SamlerFlags _sflags
-//		, XE::uint64 _flags = BGFX_TEXTURE_NONE | BGFX_SAMPLER_NONE
+
 		, const XE::memory_view _mem = NULL
 	);
 
@@ -698,7 +701,7 @@ public:
 		, TextureFormat _format
 		, TextureUsage _tflags
 		, SamlerFlags _sflags
-//		, XE::uint64 _flags = BGFX_TEXTURE_NONE | BGFX_SAMPLER_NONE
+
 	);
 
 	static TextureHandle createTexture3D(
@@ -709,7 +712,7 @@ public:
 		, TextureFormat _format
 		, TextureUsage _tflags
 		, SamlerFlags _sflags
-//		, XE::uint64 _flags = BGFX_TEXTURE_NONE | BGFX_SAMPLER_NONE
+
 		, const XE::memory_view _mem = NULL
 	);
 
@@ -720,7 +723,7 @@ public:
 		, TextureFormat _format
 		, TextureUsage _tflags
 		, SamlerFlags _sflags
-//		, XE::uint64 _flags = BGFX_TEXTURE_NONE | BGFX_SAMPLER_NONE
+
 		, const XE::memory_view _mem = NULL
 	);
 
@@ -764,7 +767,7 @@ public:
 	static XE::uint32 readTexture(
 		TextureHandle _handle
 		, XE::memory_view _data
-		//		, void * _data
+
 		, XE::uint8 _mip = 0
 	);
 
@@ -781,15 +784,15 @@ public:
 		XE::uint16 _width
 		, XE::uint16 _height
 		, TextureFormat _format
-		, SamlerFlags _textureFlags = ( SamlerFlags )( ( XE::uint64 )SamlerFlags::U_CLAMP | ( XE::uint64 )SamlerFlags::V_CLAMP )
-//		, XE::uint64 _textureFlags = BGFX_SAMPLER_U_CLAMP | BGFX_SAMPLER_V_CLAMP
+		, SamlerFlags _textureFlags = (SamlerFlags )( ( XE::uint64 )SamlerFlags::U_CLAMP | ( XE::uint64 )SamlerFlags::V_CLAMP )
+
 	);
 
 	static FrameBufferHandle createFrameBuffer(
 		BackbufferRatio _ratio
 		, TextureFormat _format
 		, SamlerFlags _textureFlags = (SamlerFlags )( ( XE::uint64 )SamlerFlags::U_CLAMP | ( XE::uint64 )SamlerFlags::V_CLAMP )
-//		, XE::uint64 _textureFlags = BGFX_SAMPLER_U_CLAMP | BGFX_SAMPLER_V_CLAMP
+
 	);
 
 	static FrameBufferHandle createFrameBuffer(
@@ -895,7 +898,7 @@ public:
 	static void setViewClear(
 		ViewHandle _view
 		, ClearFlags _falgs
-//		, XE::uint16 _flags
+
 		, XE::uint32 _rgba = 0x000000ff
 		, float _depth = 1.0f
 		, XE::uint8 _stencil = 0
@@ -904,7 +907,7 @@ public:
 	static void setViewClear(
 		ViewHandle _view
 		, ClearFlags _falgs
-//		, XE::uint16 _flags
+
 		, float _depth
 		, XE::uint8 _stencil
 		, XE::uint8 _0 = UINT8_MAX
@@ -931,15 +934,15 @@ public:
 		ViewHandle _handle
 		, const Mat4 & _view
 		, const Mat4 & _proj
-// 		, const void * _view
-// 		, const void * _proj
+
+
 	);
 
 	static void setViewOrder(
 		ViewHandle _view
 		, XE::basic_memory_view<ViewHandle> _remap
-// 		, XE::uint16 _num = UINT16_MAX
-// 		, const ViewId * _remap = NULL
+
+
 	);
 
 	static void resetView( ViewHandle _view );
@@ -972,14 +975,14 @@ public:
 
 	static XE::uint32 setTransform(
 		XE::basic_memory_view<Mat4> _mtx
-// 		const void * _mtx
-// 		, XE::uint16 _num = 1
+
+
 	);
 
 	static XE::uint32 allocTransform(
 		XE::basic_memory_view<Mat4> _transform
-// 		Transform * _transform
-// 		, XE::uint16 _num
+
+
 	);
 
 	static void setTransform(
@@ -990,8 +993,8 @@ public:
 	static void setUniform(
 		UniformHandle _handle
 		, XE::memory_view _value
-// 		, const void * _value
-// 		, XE::uint16 _num = 1
+
+
 	);
 
 	static void setIndexBuffer( IndexBufferHandle _handle );
@@ -1209,4 +1212,4 @@ public:
 
 END_XE_NAMESPACE
 
-#endif // GFX_H__12636FE6_A92D_467B_909E_9892450A6029
+#endif 

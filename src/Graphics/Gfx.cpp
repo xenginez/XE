@@ -92,10 +92,16 @@ XE::Encoder::Encoder()
 
 }
 
+XE::Encoder::Encoder( void * encoder )
+	: _encoder( encoder )
+{
+
+}
+
 XE::Encoder::Encoder( Encoder && val )
 	: _encoder( val._encoder )
 {
-
+	val._encoder = nullptr;
 }
 
 XE::Encoder & XE::Encoder::operator=( Encoder && val )
@@ -105,226 +111,224 @@ XE::Encoder & XE::Encoder::operator=( Encoder && val )
 	return *this;
 }
 
-#define _p (( bgfx::Encoder * )( _encoder ))
-
 void XE::Encoder::setMarker( const XE::String & _marker )
 {
-	_p->setMarker( _marker.ToCString() );
+	( ( bgfx::Encoder * )( _encoder ) )->setMarker( _marker.ToCString() );
 }
 
 void XE::Encoder::setState( XE::uint64 _state, XE::uint32 _rgba /*= 0 */ )
 {
-	_p->setState( _state, _rgba );
+	( ( bgfx::Encoder * )( _encoder ) )->setState( _state, _rgba );
 }
 
 void XE::Encoder::setCondition( OcclusionQueryHandle _handle, bool _visible )
 {
-	_p->setCondition( HandleCast<bgfx::OcclusionQueryHandle>( _handle ), _visible );
+	( ( bgfx::Encoder * )( _encoder ) )->setCondition( HandleCast<bgfx::OcclusionQueryHandle>( _handle ), _visible );
 }
 
 void XE::Encoder::setStencil( XE::uint32 _fstencil, StencilFlags _bstencil /*= StencilFlags::NONE /* , XE::uint32 _bstencil = BGFX_STENCIL_NONE */ )
 {
-	_p->setStencil( _fstencil, ( XE::uint32 )_bstencil );
+	( ( bgfx::Encoder * )( _encoder ) )->setStencil( _fstencil, ( XE::uint32 )_bstencil );
 }
 
 XE::uint16 XE::Encoder::setScissor( XE::uint16 _x, XE::uint16 _y, XE::uint16 _width, XE::uint16 _height )
 {
-	return _p->setScissor( _x, _y, _width, _height );
+	return ( ( bgfx::Encoder * )( _encoder ) )->setScissor( _x, _y, _width, _height );
 }
 
 void XE::Encoder::setScissor( XE::uint16 _cache /*= UINT16_MAX */ )
 {
-	_p->setScissor( _cache );
+	( ( bgfx::Encoder * )( _encoder ) )->setScissor( _cache );
 }
 
 XE::uint32 XE::Encoder::setTransform( XE::basic_memory_view<Mat4> _transform /* const void * _mtx */ /* , XE::uint16 _num = 1 */ )
 {
-	return _p->setTransform( _transform.data(), _transform.size() );
+	return ( ( bgfx::Encoder * )( _encoder ) )->setTransform( _transform.data(), _transform.size() );
 }
 
 void XE::Encoder::setTransform( XE::uint32 _cache, XE::uint16 _num /*= 1 */ )
 {
-	_p->setTransform( _cache, _num );
+	( ( bgfx::Encoder * )( _encoder ) )->setTransform( _cache, _num );
 }
 
 XE::uint32 XE::Encoder::allocTransform( XE::basic_memory_view<Mat4> _transform /* Transform * _transform */ /* , XE::uint16 _num */ )
 {
-	return _p->allocTransform( ( bgfx::Transform * )_transform.data(), _transform.size() );
+	return ( ( bgfx::Encoder * )( _encoder ) )->allocTransform( ( bgfx::Transform * )_transform.data(), _transform.size() );
 }
 
 void XE::Encoder::setUniform( UniformHandle _handle, XE::memory_view _value /* , const void * _value */ /* , XE::uint16 _num = 1 */ )
 {
-	_p->setUniform( HandleCast<bgfx::UniformHandle>( _handle ), _value.data(), _value.size() );
+	( ( bgfx::Encoder * )( _encoder ) )->setUniform( HandleCast<bgfx::UniformHandle>( _handle ), _value.data(), _value.size() );
 }
 
 void XE::Encoder::setIndexBuffer( IndexBufferHandle _handle )
 {
-	_p->setIndexBuffer( HandleCast<bgfx::IndexBufferHandle>( _handle ) );
+	( ( bgfx::Encoder * )( _encoder ) )->setIndexBuffer( HandleCast<bgfx::IndexBufferHandle>( _handle ) );
 }
 
 void XE::Encoder::setIndexBuffer( IndexBufferHandle _handle, XE::uint32 _firstIndex, XE::uint32 _numIndices )
 {
-	_p->setIndexBuffer( HandleCast<bgfx::IndexBufferHandle>( _handle ), _firstIndex, _numIndices );
+	( ( bgfx::Encoder * )( _encoder ) )->setIndexBuffer( HandleCast<bgfx::IndexBufferHandle>( _handle ), _firstIndex, _numIndices );
 }
 
 void XE::Encoder::setIndexBuffer( DynamicIndexBufferHandle _handle )
 {
-	_p->setIndexBuffer( HandleCast<bgfx::DynamicIndexBufferHandle>( _handle ) );
+	( ( bgfx::Encoder * )( _encoder ) )->setIndexBuffer( HandleCast<bgfx::DynamicIndexBufferHandle>( _handle ) );
 }
 
 void XE::Encoder::setIndexBuffer( DynamicIndexBufferHandle _handle, XE::uint32 _firstIndex, XE::uint32 _numIndices )
 {
-	_p->setIndexBuffer( HandleCast<bgfx::DynamicIndexBufferHandle>( _handle ), _firstIndex, _numIndices );
+	( ( bgfx::Encoder * )( _encoder ) )->setIndexBuffer( HandleCast<bgfx::DynamicIndexBufferHandle>( _handle ), _firstIndex, _numIndices );
 }
 
 void XE::Encoder::setIndexBuffer( const TransientIndexBuffer * _tib )
 {
-	_p->setIndexBuffer( ( bgfx::TransientIndexBuffer * )_tib );
+	( ( bgfx::Encoder * )( _encoder ) )->setIndexBuffer( ( bgfx::TransientIndexBuffer * )_tib );
 }
 
 void XE::Encoder::setIndexBuffer( const TransientIndexBuffer * _tib, XE::uint32 _firstIndex, XE::uint32 _numIndices )
 {
-	_p->setIndexBuffer( ( bgfx::TransientIndexBuffer * )_tib, _firstIndex, _numIndices );
+	( ( bgfx::Encoder * )( _encoder ) )->setIndexBuffer( ( bgfx::TransientIndexBuffer * )_tib, _firstIndex, _numIndices );
 }
 
 void XE::Encoder::setVertexBuffer( XE::uint8 _stream, VertexBufferHandle _handle )
 {
-	_p->setVertexBuffer( _stream, HandleCast<bgfx::VertexBufferHandle>( _handle ) );
+	( ( bgfx::Encoder * )( _encoder ) )->setVertexBuffer( _stream, HandleCast<bgfx::VertexBufferHandle>( _handle ) );
 }
 
 void XE::Encoder::setVertexBuffer( uint8 _stream, VertexBufferHandle _handle, uint32 _startVertex, uint32 _numVertices, VertexLayoutHandle _layoutHandle /*= VertexLayoutHandle() */ )
 {
-	_p->setVertexBuffer( _stream, HandleCast<bgfx::VertexBufferHandle>( _handle ), _startVertex, _numVertices, HandleCast<bgfx::VertexLayoutHandle>( _layoutHandle ) );
+	( ( bgfx::Encoder * )( _encoder ) )->setVertexBuffer( _stream, HandleCast<bgfx::VertexBufferHandle>( _handle ), _startVertex, _numVertices, HandleCast<bgfx::VertexLayoutHandle>( _layoutHandle ) );
 }
 
 void XE::Encoder::setVertexBuffer( XE::uint8 _stream, DynamicVertexBufferHandle _handle )
 {
-	_p->setVertexBuffer( _stream, HandleCast<bgfx::DynamicVertexBufferHandle>( _handle ) );
+	( ( bgfx::Encoder * )( _encoder ) )->setVertexBuffer( _stream, HandleCast<bgfx::DynamicVertexBufferHandle>( _handle ) );
 }
 
 void XE::Encoder::setVertexBuffer( uint8 _stream, DynamicVertexBufferHandle _handle, uint32 _startVertex, uint32 _numVertices, VertexLayoutHandle _layoutHandle /*= VertexLayoutHandle() */ )
 {
-	_p->setVertexBuffer( _stream, HandleCast<bgfx::DynamicVertexBufferHandle>( _handle ), _startVertex, _numVertices, HandleCast<bgfx::VertexLayoutHandle>( _layoutHandle ) );
+	( ( bgfx::Encoder * )( _encoder ) )->setVertexBuffer( _stream, HandleCast<bgfx::DynamicVertexBufferHandle>( _handle ), _startVertex, _numVertices, HandleCast<bgfx::VertexLayoutHandle>( _layoutHandle ) );
 }
 
 void XE::Encoder::setVertexBuffer( XE::uint8 _stream, const TransientVertexBuffer * _tvb )
 {
-	_p->setVertexBuffer( _stream, ( const bgfx::TransientVertexBuffer * )_tvb );
+	( ( bgfx::Encoder * )( _encoder ) )->setVertexBuffer( _stream, ( const bgfx::TransientVertexBuffer * )_tvb );
 }
 
 void XE::Encoder::setVertexBuffer( uint8 _stream, const TransientVertexBuffer * _tvb, uint32 _startVertex, uint32 _numVertices, VertexLayoutHandle _layoutHandle /*= VertexLayoutHandle() */ )
 {
-	_p->setVertexBuffer( _stream, ( const bgfx::TransientVertexBuffer * )_tvb, _startVertex, _numVertices, HandleCast<bgfx::VertexLayoutHandle>( _layoutHandle ) );
+	( ( bgfx::Encoder * )( _encoder ) )->setVertexBuffer( _stream, ( const bgfx::TransientVertexBuffer * )_tvb, _startVertex, _numVertices, HandleCast<bgfx::VertexLayoutHandle>( _layoutHandle ) );
 }
 
 void XE::Encoder::setVertexCount( XE::uint32 _numVertices )
 {
-	_p->setVertexCount( _numVertices );
+	( ( bgfx::Encoder * )( _encoder ) )->setVertexCount( _numVertices );
 }
 
 void XE::Encoder::setInstanceDataBuffer( const InstanceDataBuffer * _idb )
 {
-	_p->setInstanceDataBuffer( ( const bgfx::InstanceDataBuffer * )_idb );
+	( ( bgfx::Encoder * )( _encoder ) )->setInstanceDataBuffer( ( const bgfx::InstanceDataBuffer * )_idb );
 }
 
 void XE::Encoder::setInstanceDataBuffer( const InstanceDataBuffer * _idb, XE::uint32 _start, XE::uint32 _num )
 {
-	_p->setInstanceDataBuffer( ( const bgfx::InstanceDataBuffer * )_idb, _start, _num );
+	( ( bgfx::Encoder * )( _encoder ) )->setInstanceDataBuffer( ( const bgfx::InstanceDataBuffer * )_idb, _start, _num );
 }
 
 void XE::Encoder::setInstanceDataBuffer( VertexBufferHandle _handle, XE::uint32 _start, XE::uint32 _num )
 {
-	_p->setInstanceDataBuffer( HandleCast<bgfx::VertexBufferHandle>( _handle ), _start, _num );
+	( ( bgfx::Encoder * )( _encoder ) )->setInstanceDataBuffer( HandleCast<bgfx::VertexBufferHandle>( _handle ), _start, _num );
 }
 
 void XE::Encoder::setInstanceDataBuffer( DynamicVertexBufferHandle _handle, XE::uint32 _start, XE::uint32 _num )
 {
-	_p->setInstanceDataBuffer( HandleCast<bgfx::DynamicVertexBufferHandle>( _handle ), _start, _num );
+	( ( bgfx::Encoder * )( _encoder ) )->setInstanceDataBuffer( HandleCast<bgfx::DynamicVertexBufferHandle>( _handle ), _start, _num );
 }
 
 void XE::Encoder::setInstanceCount( XE::uint32 _numInstances )
 {
-	_p->setInstanceCount( _numInstances );
+	( ( bgfx::Encoder * )( _encoder ) )->setInstanceCount( _numInstances );
 }
 
 void XE::Encoder::setTexture( XE::uint8 _stage, UniformHandle _sampler, TextureHandle _handle, XE::uint32 _flags /*= UINT32_MAX */ )
 {
-	_p->setTexture( _stage, HandleCast<bgfx::UniformHandle>( _sampler ), HandleCast<bgfx::TextureHandle>( _sampler ), _flags );
+	( ( bgfx::Encoder * )( _encoder ) )->setTexture( _stage, HandleCast<bgfx::UniformHandle>( _sampler ), HandleCast<bgfx::TextureHandle>( _sampler ), _flags );
 }
 
 void XE::Encoder::touch( ViewHandle _view )
 {
-	_p->touch( ( XE::uint16 )_view.GetValue() );
+	( ( bgfx::Encoder * )( _encoder ) )->touch( ( XE::uint16 )_view.GetValue() );
 }
 
 void XE::Encoder::submit( ViewHandle _view, ProgramHandle _program, XE::uint32 _depth /*= 0 */, bool _preserveState /*= false */ )
 {
-	_p->submit( ( XE::uint16 )_view.GetValue(), HandleCast<bgfx::ProgramHandle>( _program ), _depth, _preserveState );
+	( ( bgfx::Encoder * )( _encoder ) )->submit( ( XE::uint16 )_view.GetValue(), HandleCast<bgfx::ProgramHandle>( _program ), _depth, _preserveState );
 }
 
 void XE::Encoder::submit( ViewHandle _view, ProgramHandle _program, OcclusionQueryHandle _occlusionQuery, XE::uint32 _depth /*= 0 */, bool _preserveState /*= false */ )
 {
-	_p->submit( ( XE::uint16 )_view.GetValue(), HandleCast<bgfx::ProgramHandle>( _program ), HandleCast<bgfx::OcclusionQueryHandle>( _occlusionQuery ), _depth, _preserveState );
+	( ( bgfx::Encoder * )( _encoder ) )->submit( ( XE::uint16 )_view.GetValue(), HandleCast<bgfx::ProgramHandle>( _program ), HandleCast<bgfx::OcclusionQueryHandle>( _occlusionQuery ), _depth, _preserveState );
 }
 
 void XE::Encoder::submit( ViewHandle _view, ProgramHandle _program, IndirectBufferHandle _indirectHandle, XE::uint16 _start /*= 0 */, XE::uint16 _num /*= 1 */, XE::uint32 _depth /*= 0 */, bool _preserveState /*= false */ )
 {
-	_p->submit( ( XE::uint16 )_view.GetValue(), HandleCast<bgfx::ProgramHandle>( _program ), HandleCast<bgfx::IndirectBufferHandle>( _indirectHandle ), _start, _num, _depth, _preserveState );
+	( ( bgfx::Encoder * )( _encoder ) )->submit( ( XE::uint16 )_view.GetValue(), HandleCast<bgfx::ProgramHandle>( _program ), HandleCast<bgfx::IndirectBufferHandle>( _indirectHandle ), _start, _num, _depth, _preserveState );
 }
 
 void XE::Encoder::setBuffer( XE::uint8 _stage, IndexBufferHandle _handle, Access _access )
 {
-	_p->setBuffer( _stage, HandleCast<bgfx::IndexBufferHandle>( _handle ), ( bgfx::Access::Enum )_access );
+	( ( bgfx::Encoder * )( _encoder ) )->setBuffer( _stage, HandleCast<bgfx::IndexBufferHandle>( _handle ), ( bgfx::Access::Enum )_access );
 }
 
 void XE::Encoder::setBuffer( XE::uint8 _stage, VertexBufferHandle _handle, Access _access )
 {
-	_p->setBuffer( _stage, HandleCast<bgfx::VertexBufferHandle>( _handle ), ( bgfx::Access::Enum )_access );
+	( ( bgfx::Encoder * )( _encoder ) )->setBuffer( _stage, HandleCast<bgfx::VertexBufferHandle>( _handle ), ( bgfx::Access::Enum )_access );
 }
 
 void XE::Encoder::setBuffer( XE::uint8 _stage, DynamicIndexBufferHandle _handle, Access _access )
 {
-	_p->setBuffer( _stage, HandleCast<bgfx::DynamicIndexBufferHandle>( _handle ), ( bgfx::Access::Enum )_access );
+	( ( bgfx::Encoder * )( _encoder ) )->setBuffer( _stage, HandleCast<bgfx::DynamicIndexBufferHandle>( _handle ), ( bgfx::Access::Enum )_access );
 }
 
 void XE::Encoder::setBuffer( XE::uint8 _stage, DynamicVertexBufferHandle _handle, Access _access )
 {
-	_p->setBuffer( _stage, HandleCast<bgfx::DynamicVertexBufferHandle>( _handle ), ( bgfx::Access::Enum )_access );
+	( ( bgfx::Encoder * )( _encoder ) )->setBuffer( _stage, HandleCast<bgfx::DynamicVertexBufferHandle>( _handle ), ( bgfx::Access::Enum )_access );
 }
 
 void XE::Encoder::setBuffer( XE::uint8 _stage, IndirectBufferHandle _handle, Access _access )
 {
-	_p->setBuffer( _stage, HandleCast<bgfx::IndirectBufferHandle>( _handle ), ( bgfx::Access::Enum )_access );
+	( ( bgfx::Encoder * )( _encoder ) )->setBuffer( _stage, HandleCast<bgfx::IndirectBufferHandle>( _handle ), ( bgfx::Access::Enum )_access );
 }
 
 void XE::Encoder::setImage( XE::uint8 _stage, TextureHandle _handle, XE::uint8 _mip, Access _access, TextureFormat _format /*= TextureFormat::UNKNOWN */ )
 {
-	_p->setImage( _stage, HandleCast<bgfx::TextureHandle>( _handle ), _mip, ( bgfx::Access::Enum )_access, ( bgfx::TextureFormat::Enum )_format );
+	( ( bgfx::Encoder * )( _encoder ) )->setImage( _stage, HandleCast<bgfx::TextureHandle>( _handle ), _mip, ( bgfx::Access::Enum )_access, ( bgfx::TextureFormat::Enum )_format );
 }
 
 void XE::Encoder::dispatch( ViewHandle _view, ProgramHandle _handle, XE::uint32 _numX /*= 1 */, XE::uint32 _numY /*= 1 */, XE::uint32 _numZ /*= 1 */ )
 {
-	_p->dispatch( ( XE::uint16 )_view.GetValue(), HandleCast<bgfx::ProgramHandle>( _handle ), _numX, _numY, _numZ );
+	( ( bgfx::Encoder * )( _encoder ) )->dispatch( ( XE::uint16 )_view.GetValue(), HandleCast<bgfx::ProgramHandle>( _handle ), _numX, _numY, _numZ );
 }
 
 void XE::Encoder::dispatch( ViewHandle _view, ProgramHandle _handle, IndirectBufferHandle _indirectHandle, XE::uint16 _start /*= 0 */, XE::uint16 _num /*= 1 */ )
 {
-	_p->dispatch( ( XE::uint16 )_view.GetValue(), HandleCast<bgfx::ProgramHandle>( _handle ), HandleCast<bgfx::IndirectBufferHandle>( _indirectHandle ), _start, _num );
+	( ( bgfx::Encoder * )( _encoder ) )->dispatch( ( XE::uint16 )_view.GetValue(), HandleCast<bgfx::ProgramHandle>( _handle ), HandleCast<bgfx::IndirectBufferHandle>( _indirectHandle ), _start, _num );
 }
 
 void XE::Encoder::discard()
 {
-	_p->discard();
+	( ( bgfx::Encoder * )( _encoder ) )->discard();
 }
 
 void XE::Encoder::blit( ViewHandle _view, TextureHandle _dst, XE::uint16 _dstX, XE::uint16 _dstY, TextureHandle _src, XE::uint16 _srcX /*= 0 */, XE::uint16 _srcY /*= 0 */, XE::uint16 _width /*= UINT16_MAX */, XE::uint16 _height /*= UINT16_MAX */ )
 {
-	_p->blit( ( XE::uint16 )_view.GetValue(), HandleCast<bgfx::TextureHandle>( _dst ), _dstX, _dstY, HandleCast<bgfx::TextureHandle>( _src ), _srcX, _srcY, _width, _height );
+	( ( bgfx::Encoder * )( _encoder ) )->blit( ( XE::uint16 )_view.GetValue(), HandleCast<bgfx::TextureHandle>( _dst ), _dstX, _dstY, HandleCast<bgfx::TextureHandle>( _src ), _srcX, _srcY, _width, _height );
 }
 
 void XE::Encoder::blit( ViewHandle _view, TextureHandle _dst, XE::uint8 _dstMip, XE::uint16 _dstX, XE::uint16 _dstY, XE::uint16 _dstZ, TextureHandle _src, XE::uint8 _srcMip /*= 0 */, XE::uint16 _srcX /*= 0 */, XE::uint16 _srcY /*= 0 */, XE::uint16 _srcZ /*= 0 */, XE::uint16 _width /*= UINT16_MAX */, XE::uint16 _height /*= UINT16_MAX */, XE::uint16 _depth /*= UINT16_MAX */ )
 {
-	_p->blit( ( XE::uint16 )_view.GetValue(), HandleCast<bgfx::TextureHandle>( _dst ), _dstMip, _dstX, _dstY, _dstZ, HandleCast<bgfx::TextureHandle>( _src ), _srcMip, _srcX, _srcY, _srcZ, _width, _height, _depth );
+	( ( bgfx::Encoder * )( _encoder ) )->blit( ( XE::uint16 )_view.GetValue(), HandleCast<bgfx::TextureHandle>( _dst ), _dstMip, _dstX, _dstY, _dstZ, HandleCast<bgfx::TextureHandle>( _src ), _srcMip, _srcX, _srcY, _srcZ, _width, _height, _depth );
 }
 
 void XE::Gfx::vertexPack( const XE::Vec4 & _input, bool _inputNormalized, Attrib _attr, const VertexLayout & _layout, XE::memory_view _data /* , void * _data */ /* , XE::uint32 _index = 0 */ )
@@ -369,9 +373,7 @@ void XE::Gfx::reset( XE::uint32 _width, XE::uint32 _height, ResetFlags _flags /*
 
 XE::Encoder XE::Gfx::begin( bool _forThread /*= false */ )
 {
-	XE::Encoder encoder;
-	encoder._encoder = bgfx::begin( _forThread );
-	return encoder;
+	return bgfx::begin( _forThread );
 }
 
 void XE::Gfx::end( Encoder _encoder )

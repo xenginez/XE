@@ -9,13 +9,13 @@
 #ifndef CONSTRAINT_H__FA4E88B6_1066_4795_A0C7_05765643C0B4
 #define CONSTRAINT_H__FA4E88B6_1066_4795_A0C7_05765643C0B4
 
-#include "PhysicsObject.h"
+#include "Type.h"
 
 BEG_XE_NAMESPACE
 
-class XE_API Constraint : public XE::PhysicsObject
+class XE_API Constraint : public XE::Object
 {
-	OBJECT( Constraint, PhysicsObject )
+	OBJECT( Constraint, Object )
 
 public:
 	Constraint();
