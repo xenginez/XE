@@ -40,12 +40,3 @@
 /target
 /cmake-build-debug
 /CMakeSettings.json
-
-/module
-/module/.vs
-/module/out
-/module/.idea
-/module/build
-/module/target
-/module/cmake-build-debug
-/module/CMakeSettings.json

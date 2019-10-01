@@ -4,8 +4,10 @@ project(XE)
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /bigobj")
- 
+if (WIN32)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /bigobj")
+endif ()
+
 if (CMAKE_SYSTEM_NAME MATCHES "Linux")
 	set(XE_PLATFORM_PATH linux)
 elseif (CMAKE_SYSTEM_NAME MATCHES "Windows")
@@ -23,24 +25,24 @@ endif ()
 if (CMAKE_BUILD_TYPE MATCHES "Debug")
 	set(XE_CONFIG debug)
 	set(XE_TBB_POSTFIX _debug)
-else()
+else ()
 	set(XE_CONFIG release)
 	set(XE_TBB_POSTFIX)
-endif()
+endif ()
 
-option (USE_MATH "whether to use a high-precision float type" OFF)
-option (USE_SHARED_LIBS "whether to use a dynamic library" ON)
+option(USE_MATH "whether to use a high-precision float type" OFF)
+option(USE_SHARED_LIBS "whether to use a dynamic library" ON)
 
 
-if(USE_MATH)
+if (USE_MATH)
 	add_definitions(-DXE_DOUBLE)
-endif()
+endif ()
 
-if(USE_SHARED_LIBS)
+if (USE_SHARED_LIBS)
 	set(BUILD_SHARED_LIBS ON)
-else()
+else ()
 	set(BUILD_SHARED_LIBS OFF)
-endif()
+endif ()
 
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_CURRENT_SOURCE_DIR}/target/${XE_PLATFORM_PATH}/debug/bin)
@@ -64,58 +66,62 @@ link_directories(
 )
 
 
-
 add_definitions(-DXE_EXPORT)
 
 FILE(GLOB_RECURSE XE_SRC_FILES src/*.h src/*.hpp src/*.cpp src/*.inc)
 add_library(XE ${XE_SRC_FILES})
 
-target_link_libraries(XE 
-	tbb${XE_TBB_POSTFIX}
-	tbbmalloc${XE_TBB_POSTFIX}
-	tbbmalloc_proxy${XE_TBB_POSTFIX}
-	OpenAL32
-	DebugUtils
-	DetourCrowd
-	Recast
-	Detour
-	DetourTileCache
-	sqlite3
-	ik
-	astc-codec
-	astc
-	bgfx
-	bimg
-	bx
-	edtaa3
-	etc1
-	etc2
-	iqa
-	nvtt
-	pvrtc
-	squish
-	PhysX_64
-	PhysXCharacterKinematic_static_64
-	PhysXCommon_64
-	PhysXCooking_64
-	PhysXExtensions_static_64
-	PhysXFoundation_64
-	PhysXPvdSDK_static_64
-	PhysXTask_static_64
-	PhysXVehicle_static_64
-)
+set(LINK_LIBS
+		tbb${XE_TBB_POSTFIX}
+		tbbmalloc${XE_TBB_POSTFIX}
+		tbbmalloc_proxy${XE_TBB_POSTFIX}
+		OpenAL32
+		DebugUtils
+		DetourCrowd
+		Recast
+		Detour
+		DetourTileCache
+		sqlite3
+		ik
+		astc-codec
+		astc
+		bgfx
+		bimg
+		bx
+		edtaa3
+		etc1
+		etc2
+		iqa
+		nvtt
+		pvrtc
+		squish
+		PhysX_64
+		PhysXCharacterKinematic_static_64
+		PhysXCommon_64
+		PhysXCooking_64
+		PhysXExtensions_static_64
+		PhysXFoundation_64
+		PhysXPvdSDK_static_64
+		PhysXTask_static_64
+		PhysXVehicle_static_64
+		)
 if (XE_PLATFORM_PATH MATCHES "mac")
-target_link_libraries(XE 
-	boost_filesystem
-)
+	set(LINK_LIBS
+			${LINK_LIBS}
+			boost_filesystem
+			)
 endif ()
+
+target_link_libraries(XE
+		${LINK_LIBS}
+		)
 
 
 FILE(GLOB LIBRARY_FILES depend/bin/${XE_PLATFORM_PATH}/${XE_CONFIG}/*.*)
-foreach(LIBRARY_FILE ${LIBRARY_FILES})
+foreach (LIBRARY_FILE ${LIBRARY_FILES})
 	message("${LIBRARY_FILE}")
 	add_custom_command(TARGET XE
-				POST_BUILD
-				COMMAND ${CMAKE_COMMAND} -E copy ${LIBRARY_FILE} "${CMAKE_SOURCE_DIR}/target/${XE_PLATFORM_PATH}/${XE_CONFIG}/bin"
-				)
-endforeach(LIBRARY_FILE)
+			POST_BUILD
+			COMMAND ${CMAKE_COMMAND} -E copy ${LIBRARY_FILE} "${CMAKE_SOURCE_DIR}/target/${XE_PLATFORM_PATH}/${XE_CONFIG}/bin"
+			)
+endforeach (LIBRARY_FILE)
