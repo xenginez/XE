@@ -27,7 +27,7 @@
 template<> class _DLL_EXPORT XE::OrderGroup< INDEX > \
 { \
 public: \
-    static constexpr XE::uint64 group_value = INDEX; \
+    static constexpr XE::uint8 group_value = INDEX; \
 }; \
 typedef XE::OrderGroup< INDEX > NAME##Group;
 

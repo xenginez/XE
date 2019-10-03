@@ -30,21 +30,15 @@
 #include <sstream>
 #include <iostream>
 #include <exception>
+#include <filesystem>
 #include <functional>
 #include <type_traits>
 #include <unordered_set>
 #include <unordered_map>
 #include <condition_variable>
 
-#include <intrin.h>
+#include <xmmintrin.h>
 
 #include "Config.h"
-
-#if PLATFORM_OS & OS_MAC
-#include <boost/filesystem.hpp>
-namespace std{namespace filesystem = boost::filesystem;}
-#else
-#include <filesystem>	
-#endif
 
 #endif // __GLOBAL_H__397ADE88_7898_4FDF_B98E_B1C39DB69FEA

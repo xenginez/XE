@@ -1,6 +1,6 @@
 #include "RenderService.h"
 
-#include <tbb/parallel_for.h>
+#include <bgfx/bgfx.h>
 
 USING_XE
 
@@ -27,7 +27,20 @@ XE::RenderService::~RenderService()
 
 void XE::RenderService::Prepare()
 {
-
+	bgfx::Init _init;
+	
+	_init.type = bgfx::RendererType::Enum::Count;
+	_init.vendorId = BGFX_PCI_ID_NONE;
+	_init.deviceId = 0;
+	_init.debug = false;
+	_init.profile = false;
+	_init.platformData;
+	_init.resolution;
+	_init.limits;
+	_init.callback = nullptr;
+	_init.allocator = nullptr;
+	
+	bgfx::init( _init );
 }
 
 bool XE::RenderService::Startup()
@@ -47,6 +60,7 @@ void XE::RenderService::Clearup()
 	_p->_Cameras.clear();
 	_p->_Renderables.clear();
 
+	bgfx::shutdown();
 }
 
 void XE::RenderService::RegisterLight( const LightPtr & val )

@@ -95,15 +95,14 @@ set(LINK_LIBS
 		nvtt
 		pvrtc
 		squish
-		PhysX_64
+		PhysX_static_64
 		PhysXCharacterKinematic_static_64
-		PhysXCommon_64
-		PhysXCooking_64
+		PhysXCommon_static_64
+		PhysXCooking_static_64
 		PhysXExtensions_static_64
-		PhysXFoundation_64
+		PhysXFoundation_static_64
 		PhysXPvdSDK_static_64
-		PhysXTask_static_64
-		PhysXVehicle_static_64
+		PhysXVehicle_static_static_64
 		)
 if (XE_PLATFORM_PATH MATCHES "mac")
 	set(LINK_LIBS

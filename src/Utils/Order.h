@@ -23,7 +23,7 @@ private:
 	struct Private;
 
 public:
-	static const XE::uint64 Invalid = 0;
+	static const XE::uint64 Invalid = std::numeric_limits<XE::uint64>::max();
 
 private:
 	Order();
@@ -54,11 +54,11 @@ public:
 	static IMetaInfoPtr FindOrderPatameter( XE::uint64 id );
 
 private:
-	static XE::uint64 RegisterOrder_P( XE::uint64 group, const String& name, const String& desc, const IMetaInfoPtr & parameter );
+	static XE::uint64 RegisterOrder_P( XE::uint8 group, const String& name, const String& desc, const IMetaInfoPtr & parameter );
 
-	static XE::uint64 FindOrderID_P( XE::uint64 group, const String& name );
+	static XE::uint64 FindOrderID_P( XE::uint8 group, const String& name );
 
-	static void VisitOrder_P( XE::uint64 group, std::function< void( XE::uint64, String, String, const IMetaInfoPtr & ) > val );
+	static void VisitOrder_P( XE::uint8 group, std::function< void( XE::uint64, String, String, const IMetaInfoPtr & ) > val );
 
 private:
 	Private * _p;
