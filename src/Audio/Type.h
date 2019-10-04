@@ -17,6 +17,4 @@ DECL_PTR( AudioSound );
 
 END_XE_NAMESPACE
 
-#define AL_CHECK(EXPR) EXPR; AudioUtil::CheckError(__FILE__, __LINE__, #EXPR)
-
 #endif // __TYPE_H__EB1374C2_88D3_4E49_9C23_BF526801C55A

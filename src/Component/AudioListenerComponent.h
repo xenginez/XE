@@ -13,17 +13,14 @@
 
 BEG_XE_NAMESPACE
 
-class XE_API AudioListenerComponent : public SceneComponent
+class XE_API AudioListenerComponent : public XE::BehaviorComponent
 {
-	OBJECT( AudioListenerComponent, SceneComponent )
+	OBJECT( AudioListenerComponent, BehaviorComponent )
 
 public:
 	AudioListenerComponent();
 
 	~AudioListenerComponent();
-
-protected:
-	virtual void OnUpdate( XE::float32 dt ) override;
 
 };
 

@@ -25,9 +25,11 @@ endif ()
 if (CMAKE_BUILD_TYPE MATCHES "Debug")
 	set(XE_CONFIG debug)
 	set(XE_TBB_POSTFIX _debug)
+	set(XE_FMOD_POSTFIX L)
 else ()
 	set(XE_CONFIG release)
 	set(XE_TBB_POSTFIX)
+	set(XE_FMOD_POSTFIX)
 endif ()
 
 option(USE_MATH "whether to use a high-precision float type" OFF)
@@ -103,6 +105,8 @@ set(LINK_LIBS
 		PhysXFoundation_static_64
 		PhysXPvdSDK_static_64
 		PhysXVehicle_static_static_64
+		fmod${XE_FMOD_POSTFIX}
+		fmodstudio${XE_FMOD_POSTFIX}
 		)
 if (XE_PLATFORM_PATH MATCHES "mac")
 	set(LINK_LIBS

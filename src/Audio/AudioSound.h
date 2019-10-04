@@ -37,17 +37,6 @@ public:
 
 	const Array<XE::uint8>& GetBuffer() const;
 
-private:
-	XE::int32 GetFormat();
-
-private:
-	String _Name;
-	XE::float32 _Duration;
-	XE::uint32 _Channels;
-	XE::uint32 _SampleRate;
-	XE::uint8 _BytesPerSample;
-	Array<XE::uint8> _Buffer;
-	XE::uint32 _BuffHandle;
 };
 
 END_XE_NAMESPACE
