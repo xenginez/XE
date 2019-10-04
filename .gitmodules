@@ -1,6 +1,3 @@
-[submodule "3rdparty/openal-soft"]
-	path = 3rdparty/openal-soft
-	url = https://github.com/kcat/openal-soft.git
 [submodule "3rdparty/recastnavigation"]
 	path = 3rdparty/recastnavigation
 	url = https://github.com/recastnavigation/recastnavigation.git
