@@ -61,6 +61,20 @@ public:
 	bool operator !=( const Layer& val ) const;
 
 public:
+	Layer operator |( XE::uint64 val ) const;
+	
+	Layer operator &( XE::uint64 val ) const;
+	
+	Layer operator ^( XE::uint64 val ) const;
+	
+	Layer operator |( const Layer& val ) const;
+	
+	Layer operator &( const Layer& val ) const;
+	
+	Layer operator ^( const Layer& val ) const;
+
+
+public:
 	XE::uint64 GetValue() const;
 
 	void SetValue( XE::uint64 val );
@@ -80,6 +94,12 @@ bool operator &&( XE::uint64 val1, const XE::Layer& val2 );
 bool operator ==( XE::uint64 val1, const XE::Layer& val2 );
 
 bool operator !=( XE::uint64 val1, const XE::Layer& val2 );
+
+XE::Layer operator |( XE::uint64 val1, const XE::Layer& val2 );
+
+XE::Layer operator &( XE::uint64 val1, const XE::Layer& val2 );
+
+XE::Layer operator ^( XE::uint64 val1, const XE::Layer& val2 );
 
 
 #endif // __LAYER_H__9354CE9B_22E2_468A_94EB_2511A6F08E22

@@ -120,6 +120,36 @@ void XE::Layer::SetValue( XE::uint64 val )
 	_Value = val;
 }
 
+XE::Layer XE::Layer::operator |( XE::uint64 val ) const
+{
+	return _Value | val;
+}
+
+XE::Layer XE::Layer::operator &( XE::uint64 val ) const
+{
+	return _Value & val;
+}
+
+XE::Layer XE::Layer::operator ^( XE::uint64 val ) const
+{
+	return _Value ^ val;
+}
+
+XE::Layer XE::Layer::operator |( const Layer &val ) const
+{
+	return _Value | val._Value;
+}
+
+XE::Layer XE::Layer::operator &( const Layer &val ) const
+{
+	return _Value & val._Value;
+}
+
+XE::Layer XE::Layer::operator ^( const Layer &val ) const
+{
+	return _Value ^ val._Value;
+}
+
 bool operator ||( XE::uint64 val1, const XE::Layer& val2 )
 {
 	return val1 || val2.GetValue();
@@ -138,4 +168,19 @@ bool operator ==( XE::uint64 val1, const XE::Layer& val2 )
 bool operator !=( XE::uint64 val1, const XE::Layer& val2 )
 {
 	return val1 != val2.GetValue();
+}
+
+XE::Layer operator |( XE::uint64 val1, const XE::Layer &val2 )
+{
+	return val1 | val2.GetValue();
+}
+
+XE::Layer operator &( XE::uint64 val1, const XE::Layer &val2 )
+{
+	return val1 & val2.GetValue();
+}
+
+XE::Layer operator ^( XE::uint64 val1, const XE::Layer &val2 )
+{
+	return val1 ^ val2.GetValue();
 }
