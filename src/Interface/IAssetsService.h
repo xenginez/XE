@@ -32,7 +32,7 @@ public:
 	virtual void Unload( const String& val ) = 0;
 
 protected:
-	virtual ObjectPtr GetAsset( const String& val ) const = 0;
+	virtual ReflectObjectPtr GetAsset( const String& val ) const = 0;
 
 	virtual AssetStatus GetAssetStatus( const String& val ) const = 0;
 

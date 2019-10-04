@@ -16,6 +16,7 @@
 #include "Order.h"
 #include "BASE64.h"
 #include "Object.h"
+#include "Prefab.h"
 #include "Library.h"
 #include "Platform.h"
 #include "Handle.hpp"

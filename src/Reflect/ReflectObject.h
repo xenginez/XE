@@ -21,14 +21,14 @@ class XE_API ReflectObject : public XE::GCObject
 	template< typename T > friend struct MetaDataCollector;
 
 public:
-	static const IMetaClassPtr GetMetaClassStatic();
+	static const IMetaClassPtr & GetMetaClassStatic();
 
-	virtual const IMetaClassPtr GetMetaClass() const;
+	virtual const IMetaClassPtr & GetMetaClass() const;
 
 public:
 	ReflectObject();
 
-	virtual ~ReflectObject();
+	~ReflectObject() override;
 
 public:
 	Variant GetProperty( const String & name );
@@ -37,7 +37,7 @@ public:
 
 	template< typename ... _Args > Variant Invoke( const String & name, _Args && ...args )
 	{
-		InvokeStack params( this, args.. );
+		InvokeStack params( this, args... );
 
 		if( auto method = GetMetaClass()->FindMethod( name, MakeParameterType<_Args...>() ) )
 		{

@@ -45,7 +45,7 @@ public:
 	void Unload( const String & val ) override;
 
 protected:
-	ObjectPtr GetAsset( const String & val ) const override;
+	ReflectObjectPtr GetAsset( const String & val ) const override;
 
 	AssetStatus GetAssetStatus( const String & val ) const override;
 

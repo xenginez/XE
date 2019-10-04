@@ -1,6 +1,6 @@
 #include "IAssetsService.h"
 
-#include "Prefab.h"
+#include "Utils/Prefab.h"
 
 USING_XE
 

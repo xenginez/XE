@@ -49,7 +49,7 @@ struct XE::MetaDataCollector<CLASS>\
 #define DECL_META_ENUM(_DLL_EXPORT, ENUM) \
 template<> struct _DLL_EXPORT XE::EnumID<ENUM> \
 { \
-	static const IMetaEnumPtr Get( const ENUM * val = nullptr ) \
+	static const IMetaEnumPtr & Get( const ENUM * val = nullptr ) \
 	{ \
 		static auto p = std::make_shared< CXXMetaEnum<ENUM> >( #ENUM, nullptr ); \
 		return p; \
@@ -59,7 +59,7 @@ template<> struct _DLL_EXPORT XE::EnumID<ENUM> \
 #define DECL_META_CLASS_3(_DLL_EXPORT, _CLASS, _SUPER) \
 template<> struct _DLL_EXPORT XE::ClassID<_CLASS> \
 { \
-	static const IMetaClassPtr Get( const _CLASS * val = nullptr ) \
+	static const IMetaClassPtr & Get( const _CLASS * val = nullptr ) \
 	{ \
 		static auto p = std::make_shared< CXXMetaClass<_CLASS> >( #_CLASS, ClassID<_SUPER>::Get(), nullptr ); \
 		return p; \
@@ -68,7 +68,7 @@ template<> struct _DLL_EXPORT XE::ClassID<_CLASS> \
 #define DECL_META_CLASS_2(_DLL_EXPORT, _CLASS) \
 template<> struct _DLL_EXPORT XE::ClassID<_CLASS> \
 { \
-	static const IMetaClassPtr Get( const _CLASS * val = nullptr ) \
+	static const IMetaClassPtr & Get( const _CLASS * val = nullptr ) \
 	{ \
 		static auto p = std::make_shared< CXXMetaClass<_CLASS> >( #_CLASS, nullptr, nullptr ); \
 		return p; \
@@ -80,12 +80,12 @@ template<> struct _DLL_EXPORT XE::ClassID<_CLASS> \
 	template< typename T > friend struct XE::MetaDataCollector; \
 public: \
     typedef _SUPER Super; \
-	static const IMetaClassPtr GetMetaClassStatic() \
+	static const IMetaClassPtr & GetMetaClassStatic() \
 	{ \
 		static auto p = std::make_shared< CXXMetaClass<_CLASS> >( #_CLASS, ClassID<_SUPER>::Get(), nullptr ); \
 		return p; \
 	} \
-	virtual const IMetaClassPtr GetMetaClass() const \
+	virtual const IMetaClassPtr & GetMetaClass() const \
 	{ \
 		return GetMetaClassStatic(); \
 	} \
@@ -93,12 +93,12 @@ private:
 #define OBJECT_1(_CLASS) \
 	template< typename T > friend struct MetaDataCollector; \
 public: \
-	static const IMetaClassPtr GetMetaClassStatic() \
+	static const IMetaClassPtr & GetMetaClassStatic() \
 	{ \
 		static auto p = std::make_shared< CXXMetaClass<_CLASS> >( #_CLASS, nullptr, nullptr ); \
 		return p; \
 	} \
-	virtual const IMetaClassPtr GetMetaClass() const \
+	virtual const IMetaClassPtr & GetMetaClass() const \
 	{ \
 		return GetMetaClassStatic(); \
 	} \

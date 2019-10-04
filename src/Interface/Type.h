@@ -772,14 +772,6 @@ enum class LoggerLevel
 };
 DECL_META_ENUM( XE_API, LoggerLevel );
 
-enum class AssetStatus
-{
-	Undefined,
-	Loading,
-	Ready,
-};
-DECL_META_ENUM( XE_API, AssetStatus );
-
 enum class ThreadType
 {
 	IO,
@@ -809,6 +801,7 @@ DECL_EVENT( KEY_DOWN, "keyboard button down", XE::uint32 );
 DECL_EVENT( MOUSE_UP, "mouse button up", XE::uint32 );
 DECL_EVENT( MOUSE_DOWN, "mouse button down", XE::uint32 );
 DECL_EVENT( MOUSE_WHEEL, "mouse wheel", XE::uint32 );
+DECL_EVENT( MOUSE_MOVE, "mouse move", XE::Vec2 );
 
 END_XE_NAMESPACE
 

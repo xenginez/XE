@@ -17,6 +17,14 @@ DECL_PTR( Event );
 DECL_PTR( Object );
 DECL_PTR( Message );
 
+enum class AssetStatus
+{
+	Undefined,
+	Loading,
+	Ready,
+};
+DECL_META_ENUM( XE_API, AssetStatus );
+
 enum class Language
 {
 	ENGLISH,

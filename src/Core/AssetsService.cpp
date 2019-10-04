@@ -148,7 +148,7 @@ void XE::AssetsService::Unload( const String & val )
 	}
 }
 
-XE::ObjectPtr XE::AssetsService::GetAsset( const String & val ) const
+XE::ReflectObjectPtr XE::AssetsService::GetAsset( const String & val ) const
 {
 	AssetMap::accessor it;
 	if( _p->_Assets.find( it, val ) )
