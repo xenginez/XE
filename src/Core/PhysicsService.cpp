@@ -10,10 +10,8 @@ END_META()
 struct XE::PhysicsService::Private
 {
 	physx::PxScene * _Scene = nullptr;
-	physx::PxCooking * _Cooking = nullptr;
 	physx::PxPhysics * _Physicis = nullptr;
 	physx::PxFoundation * _Foundation = nullptr;
-	physx::PxCudaContextManager * _Manager = nullptr;
 };
 
 XE::PhysicsService::PhysicsService()
@@ -52,12 +50,6 @@ bool XE::PhysicsService::Startup()
 		XE_LOG( LoggerLevel::Error, "PxCreatePhysics failed!" );
 	}
 
-	_p->_Cooking = PxCreateCooking( PX_PHYSICS_VERSION, *_p->_Foundation, physx::PxCookingParams( scale ) );
-	if( !_p->_Cooking )
-	{
-		XE_LOG( LoggerLevel::Error, "PxCreateCooking failed!" );
-	}
-
 	if( !PxInitExtensions( *_p->_Physicis, nullptr ) )
 	{
 		XE_LOG( LoggerLevel::Error, "PxInitExtensions failed!" );
@@ -71,22 +63,6 @@ bool XE::PhysicsService::Startup()
 	}
 
 	desc.cpuDispatcher = CpuDispatcher;
-
-	if( GetFramework()->GetConfigService()->GetBool( "Physics.EnableCPU", false ) )
-	{
-		physx::PxCudaContextManagerDesc cudaContextManagerDesc;
-		_p->_Manager = PxCreateCudaContextManager( *_p->_Foundation, cudaContextManagerDesc, PxGetProfilerCallback() );
-		if( !_p->_Manager )
-		{
-			XE_LOG( LoggerLevel::Error, "PxCreateCudaContextManager failed!" );
-		}
-
-		desc.filterShader = physx::PxDefaultSimulationFilterShader;
-		desc.cudaContextManager = _p->_Manager;
-
-		desc.flags |= physx::PxSceneFlag::eENABLE_GPU_DYNAMICS;
-		desc.broadPhaseType = physx::PxBroadPhaseType::eGPU;
-	}
 
 	_p->_Scene = _p->_Physicis->createScene( desc );
 	if( !_p->_Scene )
@@ -108,14 +84,6 @@ void XE::PhysicsService::Clearup()
 	if( _p->_Scene )
 	{
 		_p->_Scene->release();
-	}
-	if( _p->_Manager )
-	{
-		_p->_Manager->release();
-	}
-	if( _p->_Cooking )
-	{
-		_p->_Cooking->release();
 	}
 	if( _p->_Physicis )
 	{

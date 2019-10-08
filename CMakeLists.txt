@@ -33,7 +33,6 @@ else ()
 endif ()
 
 option(USE_MATH "whether to use a high-precision float type" OFF)
-option(USE_SHARED_LIBS "whether to use a dynamic library" ON)
 
 
 if (USE_MATH)
@@ -73,7 +72,7 @@ add_definitions(-DXE_EXPORT)
 FILE(GLOB_RECURSE XE_SRC_FILES src/*.h src/*.hpp src/*.cpp src/*.inc)
 add_library(XE ${XE_SRC_FILES})
 
-set(LINK_LIBS
+target_link_libraries(XE
 		tbb${XE_TBB_POSTFIX}
 		tbbmalloc${XE_TBB_POSTFIX}
 		tbbmalloc_proxy${XE_TBB_POSTFIX}
@@ -107,16 +106,6 @@ set(LINK_LIBS
 		PhysXVehicle_static_64
 		fmod${XE_FMOD_POSTFIX}
 		fmodstudio${XE_FMOD_POSTFIX}
-		)
-if (XE_PLATFORM_PATH MATCHES "mac")
-	set(LINK_LIBS
-			${LINK_LIBS}
-			boost_filesystem
-			)
-endif ()
-
-target_link_libraries(XE
-		${LINK_LIBS}
 		)
 
 

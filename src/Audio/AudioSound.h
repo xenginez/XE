@@ -22,21 +22,6 @@ public:
 
 	~AudioSound();
 
-public:
-	const String& GetName() const;
-
-	XE::float32 GetDuration() const;
-
-	XE::uint32 GetChannels() const;
-
-	XE::uint32 GetSampleRate() const;
-
-	XE::uint8 GetBytesPerSample() const;
-
-	XE::uint32 GetBufferHandle() const;
-
-	const Array<XE::uint8>& GetBuffer() const;
-
 };
 
 END_XE_NAMESPACE
