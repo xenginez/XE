@@ -101,7 +101,7 @@ XE::uint64 XE::BlendFuncRT3( StateBlendFunc src, StateBlendFunc dst )
 
 XE::uint64 XE::BlendFuncRT1E( StateBlendFunc src, StateBlendFunc dst, StateBlendEquation equation )
 {
-	return BGFX_STATE_BLEND_FUNC_RT_3( ( XE::uint64 )src, ( XE::uint64 )dst, ( XE::uint64 )equation );
+	return BGFX_STATE_BLEND_FUNC_RT_1E( ( XE::uint64 )src, ( XE::uint64 )dst, ( XE::uint64 )equation );
 }
 
 XE::uint64 XE::BlendFuncRT2E( StateBlendFunc src, StateBlendFunc dst, StateBlendEquation equation )

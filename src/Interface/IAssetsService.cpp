@@ -1,7 +1,5 @@
 #include "IAssetsService.h"
 
-#include "Utils/Prefab.h"
-
 USING_XE
 
 BEG_META(IAssetsService)
@@ -19,5 +17,9 @@ XE::IAssetsService::~IAssetsService()
 
 XE::PrefabPtr XE::IAssetsService::CreatePrefab( const String &val )
 {
-	return XE::make_shared<Prefab>( XE_THIS( IAssetsService ), val );
+	auto prefab = XE::make_shared<Prefab>();
+
+	prefab->SetLink( val );
+
+	return prefab;
 }

@@ -27,13 +27,13 @@ XE::ReflectObject::~ReflectObject()
 {
 }
 
-const XE::IMetaClassPtr & XE::ReflectObject::GetMetaClassStatic()
+XE::IMetaClassPtr XE::ReflectObject::GetMetaClassStatic()
 {
 	static auto p = XE::make_shared< CXXMetaClass<ReflectObject> >( "Object", nullptr, nullptr );
 	return p;
 }
 
-const XE::IMetaClassPtr & XE::ReflectObject::GetMetaClass() const
+XE::IMetaClassPtr XE::ReflectObject::GetMetaClass() const
 {
 	return GetMetaClassStatic();
 }

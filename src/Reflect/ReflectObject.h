@@ -21,9 +21,9 @@ class XE_API ReflectObject : public XE::GCObject
 	template< typename T > friend struct MetaDataCollector;
 
 public:
-	static const IMetaClassPtr & GetMetaClassStatic();
+	static IMetaClassPtr GetMetaClassStatic();
 
-	virtual const IMetaClassPtr & GetMetaClass() const;
+	virtual IMetaClassPtr GetMetaClass() const;
 
 public:
 	ReflectObject();

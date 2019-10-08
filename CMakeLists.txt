@@ -104,7 +104,7 @@ set(LINK_LIBS
 		PhysXExtensions_static_64
 		PhysXFoundation_static_64
 		PhysXPvdSDK_static_64
-		PhysXVehicle_static_static_64
+		PhysXVehicle_static_64
 		fmod${XE_FMOD_POSTFIX}
 		fmodstudio${XE_FMOD_POSTFIX}
 		)
