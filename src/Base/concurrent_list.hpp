@@ -246,9 +246,14 @@ public:
 	{
 		_First = _construct( std::move( _Val ) );
 
-		_Last = _First.load()->Prev.load();
+		if( _First.load()->Prev == nullptr )
+		{
+			_Last = _First.load()->Prev.load();
+
+			_Last.load()->Next = nullptr;
+		}
+
 		_First.load()->Prev = nullptr;
-		_Last.load()->Next = nullptr;
 	}
 
 	concurrent_list( _Ty && _Val, const _Alloc & _Al )
@@ -257,9 +262,14 @@ public:
 	{
 		_First = _construct( std::move( _Val ) );
 
-		_Last = _First.load()->Prev;
+		if( _First.load()->Prev == nullptr )
+		{
+			_Last = _First.load()->Prev.load();
+
+			_Last.load()->Next = nullptr;
+		}
+
 		_First.load()->Prev = nullptr;
-		_Last.load()->Next = nullptr;
 	}
 
 public:
@@ -268,9 +278,14 @@ public:
 	{
 		_First = _construct_n( _Count );
 
-		_Last = _First.load()->Prev;
+		if( _First.load()->Prev == nullptr )
+		{
+			_Last = _First.load()->Prev.load();
+
+			_Last.load()->Next = nullptr;
+		}
+
 		_First.load()->Prev = nullptr;
-		_Last.load()->Next = nullptr;
 	}
 
 	concurrent_list( size_type _Count, const _Alloc & _Al )
@@ -278,9 +293,14 @@ public:
 	{
 		_First = _construct_n( _Count );
 
-		_Last = _First.load()->Prev;
+		if( _First.load()->Prev == nullptr )
+		{
+			_Last = _First.load()->Prev.load();
+
+			_Last.load()->Next = nullptr;
+		}
+
 		_First.load()->Prev = nullptr;
-		_Last.load()->Next = nullptr;
 	}
 
 public:
@@ -289,9 +309,14 @@ public:
 	{
 		_First = _construct_n( _Count, _Val );
 
-		_Last = _First.load()->Prev;
+		if( _First.load()->Prev == nullptr )
+		{
+			_Last = _First.load()->Prev.load();
+
+			_Last.load()->Next = nullptr;
+		}
+
 		_First.load()->Prev = nullptr;
-		_Last.load()->Next = nullptr;
 	}
 
 	concurrent_list( size_type _Count, const _Ty & _Val, const _Alloc & _Al )
@@ -299,9 +324,14 @@ public:
 	{
 		_First = _construct_n( _Count, _Val );
 
-		_Last = _First.load()->Prev;
+		if( _First.load()->Prev == nullptr )
+		{
+			_Last = _First.load()->Prev.load();
+
+			_Last.load()->Next = nullptr;
+		}
+
 		_First.load()->Prev = nullptr;
-		_Last.load()->Next = nullptr;
 	}
 
 public:
@@ -310,9 +340,14 @@ public:
 	{
 		_First = _construct_n( _Right.begin(), _Right.end() );
 
-		_Last = _First.load()->Prev.load();
+		if( _First.load()->Prev == nullptr )
+		{
+			_Last = _First.load()->Prev.load();
+
+			_Last.load()->Next = nullptr;
+		}
+
 		_First.load()->Prev = nullptr;
-		_Last.load()->Next = nullptr;
 	}
 
 	concurrent_list( const concurrent_list & _Right, const _Alloc & _Al )
@@ -320,9 +355,14 @@ public:
 	{
 		_First = _construct_n( _Right.begin(), _Right.end() );
 
-		_Last = _First.load()->Prev;
+		if( _First.load()->Prev == nullptr )
+		{
+			_Last = _First.load()->Prev.load();
+
+			_Last.load()->Next = nullptr;
+		}
+
 		_First.load()->Prev = nullptr;
-		_Last.load()->Next = nullptr;
 	}
 
 public:
