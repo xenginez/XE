@@ -143,5 +143,5 @@ endforeach (LIBRARY_FILE)
 
 project(Lancher)
 set(CMAKE_CXX_STANDARD 17)
-add_executable(Lancher src/Launcher/main.cpp)
+add_executable(Lancher src/Launcher/${XE_PLATFORM_PATH}/main.cpp)
 target_link_libraries(Lancher XE)

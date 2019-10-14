@@ -1,5 +1,7 @@
 #include "RenderService.h"
 
+#include <Graphics/Graphics.h>
+
 #include <bgfx/bgfx.h>
 
 USING_XE
@@ -9,9 +11,12 @@ END_META()
 
 struct XE::RenderService::Private
 {
+	SkyBoxPtr _Sky;
 	Array<LightPtr> _Lights;
 	Array<XE::CameraPtr> _Cameras;
 	Array<XE::RenderablePtr> _Renderables;
+	WindowHandle _WindowHandle;
+	FrameBufferHandle _FBHandle;
 };
 
 XE::RenderService::RenderService()
@@ -29,29 +34,45 @@ void XE::RenderService::Prepare()
 {
 	bgfx::Init _init;
 	
-	_init.type = bgfx::RendererType::Enum::Count;
+	_init.type = bgfx::RendererType::Enum::Direct3D11;
 	_init.vendorId = BGFX_PCI_ID_NONE;
-	_init.deviceId = 0;
-	_init.debug = false;
-	_init.profile = false;
-	_init.platformData;
-	_init.resolution;
-	_init.limits;
-	_init.callback = nullptr;
-	_init.allocator = nullptr;
+	_init.resolution.width = 1024;
+	_init.resolution.height = 768;
+	_init.resolution.reset = BGFX_RESET_VSYNC;
 	
 	bgfx::init( _init );
+
+	Gfx::setDebug( BGFX_DEBUG_NONE );
+
+	_p->_WindowHandle = Platform::CreateWindow( "XE", 0, 0, 1024, 768 );
+
+	_p->_FBHandle = Gfx::createFrameBuffer( _p->_WindowHandle, 1024, 768, TextureFormat::RGBA8, TextureFormat::D24S8 );
+
+	Gfx::setViewRect( 0, 0, 0, 1024, 768 );
+	Gfx::setViewFrameBuffer( 0, _p->_FBHandle );
+	Gfx::setViewClear( 0, ClearFlags::COLOR_DEPTH, 0x603060ff, 1.0f, 0 );
 }
 
 bool XE::RenderService::Startup()
 {
+	Gfx::touch( 0 );
 
 	return false;
 }
 
 void XE::RenderService::Update()
 {
+// 	Gfx::setViewRect( 0, 0, 0, 1024, 768 );
+// 	Gfx::setViewFrameBuffer( 0, _p->_FBHandle );
+// 	Gfx::setViewClear( 0, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x303030ff, 1.0f, 0 );
 
+
+	for( auto & renderable : _p->_Renderables )
+	{
+		renderable->Render();
+	}
+	
+	Gfx::frame();
 }
 
 void XE::RenderService::Clearup()
@@ -59,6 +80,10 @@ void XE::RenderService::Clearup()
 	_p->_Lights.clear();
 	_p->_Cameras.clear();
 	_p->_Renderables.clear();
+
+	Gfx::destroy( _p->_FBHandle );
+
+	Platform::DestroyWindow( _p->_WindowHandle );
 
 	bgfx::shutdown();
 }

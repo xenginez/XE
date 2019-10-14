@@ -723,7 +723,7 @@ XE::FrameBufferHandle XE::Gfx::createFrameBuffer( XE::uint8 _num, const Attachme
 
 XE::FrameBufferHandle XE::Gfx::createFrameBuffer( WindowHandle _nwh, XE::uint16 _width, XE::uint16 _height, TextureFormat _format /*= TextureFormat::UNKNOWN */, TextureFormat _depthFormat /*= TextureFormat::UNKNOWN */ )
 {
-	return bgfx::createFrameBuffer( (void * )_nwh.GetValue(), _width, _height, ( bgfx::TextureFormat::Enum )_format, ( bgfx::TextureFormat::Enum )_depthFormat ).idx;
+	return bgfx::createFrameBuffer( reinterpret_cast< void * >( _nwh.GetValue() ), _width, _height, ( bgfx::TextureFormat::Enum )_format, ( bgfx::TextureFormat::Enum )_depthFormat ).idx;
 }
 
 XE::TextureHandle XE::Gfx::getTexture( FrameBufferHandle _handle, XE::uint8 _attachment /*= 0 */ )

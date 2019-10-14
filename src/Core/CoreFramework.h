@@ -26,7 +26,7 @@ public:
 	~CoreFramework();
 
 public:
-	int Exec();
+	int Exec( std::function<void()> val = nullptr );
 
 public:
 	IGUIServicePtr GetGUIService() const override;

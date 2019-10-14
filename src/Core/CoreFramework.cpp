@@ -44,6 +44,8 @@ struct XE::CoreFramework::Private
 	IServicePtr _LocalizationService;
 
 	Array < IServicePtr > _Services;
+
+	std::function<void()> _SysEventLoop;
 };
 
 XE::CoreFramework::CoreFramework()
@@ -60,8 +62,10 @@ XE::CoreFramework::~CoreFramework()
 	ObjectAlloc::Clear();
 }
 
-int XE::CoreFramework::Exec()
+int XE::CoreFramework::Exec( std::function<void()> val )
 {
+	_p->_SysEventLoop = val;
+
 	Prepare();
 
 	Startup();
@@ -395,6 +399,11 @@ void XE::CoreFramework::Update()
 {
 	while( !_p->_Exit )
 	{
+		if( _p->_SysEventLoop )
+		{
+			_p->_SysEventLoop();
+		}
+
 		FrameAlloc::Reset();
 
 //		_p->_ConfigService->Update();

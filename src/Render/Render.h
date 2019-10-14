@@ -11,6 +11,7 @@
 
 #include "Grass.h"
 #include "Model.h"
+#include "SkyBox.h"
 #include "Canvas.h"
 #include "Cluster.h"
 #include "Terrain.h"
