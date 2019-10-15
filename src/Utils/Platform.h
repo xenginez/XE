@@ -44,6 +44,8 @@ public:
 
 	static bool SetWindowRect( WindowHandle handle, XE::uint32 x, XE::uint32 y, XE::uint32 w, XE::uint32 h, bool topmost );
 
+	static bool GetDesktopSize( XE::uint32 & w, XE::uint32 & h );
+
 public:
 	static bool ShowMouse();
 

@@ -32,6 +32,12 @@ else ()
 	set(XE_FMOD_POSTFIX)
 endif ()
 
+if(WIN32)
+	set(XE_PHYSX_POSTFIX _64)
+else()
+	set(XE_PHYSX_POSTFIX _static_64)
+endif()
+
 option(USE_MATH "whether to use a high-precision float type" OFF)
 
 
@@ -66,9 +72,6 @@ link_directories(
 		${CMAKE_CURRENT_SOURCE_DIR}/depend/lib/${XE_PLATFORM_PATH}/${XE_CONFIG}
 		${CMAKE_CURRENT_SOURCE_DIR}/target/${XE_PLATFORM_PATH}/${XE_CONFIG}/bin
 )
-
-
-#add_definitions(-DXE_EXPORT)
 
 FILE(GLOB_RECURSE XE_SRC_FILES
 
@@ -119,12 +122,12 @@ target_link_libraries(XE
 		nvtt
 		pvrtc
 		squish
-		PhysX_static_64
+		PhysX${XE_PHYSX_POSTFIX}
 		PhysXCharacterKinematic_static_64
-		PhysXCommon_static_64
-		PhysXCooking_static_64
+		PhysXCommon${XE_PHYSX_POSTFIX}
+		PhysXCooking${XE_PHYSX_POSTFIX}
 		PhysXExtensions_static_64
-		PhysXFoundation_static_64
+		PhysXFoundation${XE_PHYSX_POSTFIX}
 		PhysXPvdSDK_static_64
 		PhysXVehicle_static_64
 		fmod${XE_FMOD_POSTFIX}
