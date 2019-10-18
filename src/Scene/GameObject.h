@@ -17,7 +17,7 @@ class XE_API GameObject : public XE::Object
 {
 	OBJECT( GameObject, Object )
 
-	friend class WorldObject;
+	friend class World;
 
 public:
 	GameObject();
@@ -26,8 +26,6 @@ public:
 
 public:
 	const String& GetName() const;
-
-	WorldObjectPtr GetWorld() const;
 
 	GameObjectHandle GetHandle() const;
 
@@ -151,7 +149,6 @@ private:
 	bool _Enabled;
 	bool _Destroy;
 	GameObjectType _Type;
-	WorldObjectWPtr _World;
 	GameObjectHandle _Handle;
 	SceneComponentPtr _SceneComponent;
 	std::vector< ComponentPtr > _Components;

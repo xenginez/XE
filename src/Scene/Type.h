@@ -13,9 +13,9 @@
 
 BEG_XE_NAMESPACE
 
+DECL_PTR( World );
 DECL_PTR( Component );
 DECL_PTR( GameObject );
-DECL_PTR( WorldObject );
 DECL_PTR( SceneComponent );
 DECL_PTR( RenderComponent );
 DECL_PTR( BehaviorComponent );

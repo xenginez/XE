@@ -9,9 +9,9 @@
 #ifndef WORLD_H__AACA50B2_ACAF_43D7_8A03_CA1BCB525CEC
 #define WORLD_H__AACA50B2_ACAF_43D7_8A03_CA1BCB525CEC
 
+#include "World.h"
 #include "Component.h"
 #include "GameObject.h"
-#include "WorldObject.h"
 #include "SceneComponent.h"
 #include "BehaviorComponent.h"
 

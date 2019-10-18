@@ -1,37 +1,37 @@
-#include "WorldObject.h"
+#include "World.h"
 
 #include "GameObject.h"
 
 USING_XE
 
-XE::uint64 XE::WorldObject::_HandleTable = 0;
+XE::uint64 XE::World::_HandleTable = 0;
 
-BEG_META( WorldObject )
-type->Property( "Name", &WorldObject::_Name );
-type->Property( "GameObjects", &WorldObject::_AllGameObjects );
+BEG_META( World )
+type->Property( "Name", &World::_Name );
+type->Property( "GameObjects", &World::_AllGameObjects );
 END_META()
 
-XE::WorldObject::WorldObject()
+XE::World::World()
 {
 
 }
 
-XE::WorldObject::~WorldObject()
+XE::World::~World()
 {
 
 }
 
-const XE::String & XE::WorldObject::GetName() const
+const XE::String & XE::World::GetName() const
 {
 	return _Name;
 }
 
-void XE::WorldObject::SetName( const String & val )
+void XE::World::SetName( const String & val )
 {
 	_Name = val;
 }
 
-bool XE::WorldObject::AddGameObject( const GameObjectPtr & val )
+bool XE::World::AddGameObject( const GameObjectPtr & val )
 {
 	for( const auto & obj : _AllGameObjects )
 	{
@@ -42,7 +42,6 @@ bool XE::WorldObject::AddGameObject( const GameObjectPtr & val )
 	}
 
 	val->_Handle = _HandleTable++;
-	val->_World = XE_THIS( WorldObject );
 
 	val->Startup();
 
@@ -51,7 +50,7 @@ bool XE::WorldObject::AddGameObject( const GameObjectPtr & val )
 	return true;
 }
 
-XE::GameObjectPtr XE::WorldObject::FindGameObject( const String & val ) const
+XE::GameObjectPtr XE::World::FindGameObject( const String & val ) const
 {
 	for( const auto & obj : _AllGameObjects )
 	{
@@ -64,7 +63,7 @@ XE::GameObjectPtr XE::WorldObject::FindGameObject( const String & val ) const
 	return nullptr;
 }
 
-XE::GameObjectPtr XE::WorldObject::FindGameObject( GameObjectHandle val ) const
+XE::GameObjectPtr XE::World::FindGameObject( GameObjectHandle val ) const
 {
 	for( const auto & obj : _AllGameObjects )
 	{
@@ -77,12 +76,12 @@ XE::GameObjectPtr XE::WorldObject::FindGameObject( GameObjectHandle val ) const
 	return nullptr;
 }
 
-const XE::Array< GameObjectPtr > & XE::WorldObject::GetGameObjects() const
+const XE::Array< GameObjectPtr > & XE::World::GetGameObjects() const
 {
 	return _AllGameObjects;
 }
 
-XE::GameObjectPtr XE::WorldObject::Intersect( const Array<GameObjectPtr> exclude, const Ray & val ) const
+XE::GameObjectPtr XE::World::Intersect( const Array<GameObjectPtr> exclude, const Ray & val ) const
 {
 	if( GameObjectPtr obj = _StaticTree.Intersect( val, exclude ) )
 	{
@@ -95,7 +94,7 @@ XE::GameObjectPtr XE::WorldObject::Intersect( const Array<GameObjectPtr> exclude
 	return nullptr;
 }
 
-XE::GameObjectPtr XE::WorldObject::Intersect( const Array<GameObjectPtr> exclude, const AABB & val ) const
+XE::GameObjectPtr XE::World::Intersect( const Array<GameObjectPtr> exclude, const AABB & val ) const
 {
 	if( GameObjectPtr obj = _StaticTree.Intersect( val, exclude ) )
 	{
@@ -108,7 +107,7 @@ XE::GameObjectPtr XE::WorldObject::Intersect( const Array<GameObjectPtr> exclude
 	return nullptr;
 }
 
-XE::GameObjectPtr XE::WorldObject::Intersect( const Array<GameObjectPtr> exclude, const Line & val ) const
+XE::GameObjectPtr XE::World::Intersect( const Array<GameObjectPtr> exclude, const Line & val ) const
 {
 	if( GameObjectPtr obj = _StaticTree.Intersect( val, exclude ) )
 	{
@@ -121,7 +120,7 @@ XE::GameObjectPtr XE::WorldObject::Intersect( const Array<GameObjectPtr> exclude
 	return nullptr;
 }
 
-XE::GameObjectPtr XE::WorldObject::Intersect( const Array<GameObjectPtr> exclude, const Plane & val ) const
+XE::GameObjectPtr XE::World::Intersect( const Array<GameObjectPtr> exclude, const Plane & val ) const
 {
 	if( GameObjectPtr obj = _StaticTree.Intersect( val, exclude ) )
 	{
@@ -134,7 +133,7 @@ XE::GameObjectPtr XE::WorldObject::Intersect( const Array<GameObjectPtr> exclude
 	return nullptr;
 }
 
-XE::GameObjectPtr XE::WorldObject::Intersect( const Array<GameObjectPtr> exclude, const Sphere & val ) const
+XE::GameObjectPtr XE::World::Intersect( const Array<GameObjectPtr> exclude, const Sphere & val ) const
 {
 	if( GameObjectPtr obj = _StaticTree.Intersect( val, exclude ) )
 	{
@@ -147,7 +146,7 @@ XE::GameObjectPtr XE::WorldObject::Intersect( const Array<GameObjectPtr> exclude
 	return nullptr;
 }
 
-XE::GameObjectPtr XE::WorldObject::Intersect( const Array<GameObjectPtr> exclude, const Frustum & val ) const
+XE::GameObjectPtr XE::World::Intersect( const Array<GameObjectPtr> exclude, const Frustum & val ) const
 {
 	if( GameObjectPtr obj = _StaticTree.Intersect( val, exclude ) )
 	{
@@ -160,7 +159,7 @@ XE::GameObjectPtr XE::WorldObject::Intersect( const Array<GameObjectPtr> exclude
 	return nullptr;
 }
 
-XE::Array<XE::GameObjectPtr> XE::WorldObject::Intersects( const Ray & val ) const
+XE::Array<XE::GameObjectPtr> XE::World::Intersects( const Ray & val ) const
 {
 	XE::Array<XE::GameObjectPtr> static_objects = _StaticTree.Intersects( val );
 
@@ -171,7 +170,7 @@ XE::Array<XE::GameObjectPtr> XE::WorldObject::Intersects( const Ray & val ) cons
 	return std::move( static_objects );
 }
 
-XE::Array<XE::GameObjectPtr> XE::WorldObject::Intersects( const AABB & val ) const
+XE::Array<XE::GameObjectPtr> XE::World::Intersects( const AABB & val ) const
 {
 	XE::Array<XE::GameObjectPtr> static_objects = _StaticTree.Intersects( val );
 
@@ -182,7 +181,7 @@ XE::Array<XE::GameObjectPtr> XE::WorldObject::Intersects( const AABB & val ) con
 	return std::move( static_objects );
 }
 
-XE::Array<XE::GameObjectPtr> XE::WorldObject::Intersects( const Line & val ) const
+XE::Array<XE::GameObjectPtr> XE::World::Intersects( const Line & val ) const
 {
 	XE::Array<XE::GameObjectPtr> static_objects = _StaticTree.Intersects( val );
 
@@ -193,7 +192,7 @@ XE::Array<XE::GameObjectPtr> XE::WorldObject::Intersects( const Line & val ) con
 	return std::move( static_objects );
 }
 
-XE::Array<XE::GameObjectPtr> XE::WorldObject::Intersects( const Plane & val ) const
+XE::Array<XE::GameObjectPtr> XE::World::Intersects( const Plane & val ) const
 {
 	XE::Array<XE::GameObjectPtr> static_objects = _StaticTree.Intersects( val );
 
@@ -204,7 +203,7 @@ XE::Array<XE::GameObjectPtr> XE::WorldObject::Intersects( const Plane & val ) co
 	return std::move( static_objects );
 }
 
-XE::Array<XE::GameObjectPtr> XE::WorldObject::Intersects( const Sphere & val ) const
+XE::Array<XE::GameObjectPtr> XE::World::Intersects( const Sphere & val ) const
 {
 	XE::Array<XE::GameObjectPtr> static_objects = _StaticTree.Intersects( val );
 
@@ -215,7 +214,7 @@ XE::Array<XE::GameObjectPtr> XE::WorldObject::Intersects( const Sphere & val ) c
 	return std::move( static_objects );
 }
 
-XE::Array<XE::GameObjectPtr> XE::WorldObject::Intersects( const Frustum & val ) const
+XE::Array<XE::GameObjectPtr> XE::World::Intersects( const Frustum & val ) const
 {
 	XE::Array<XE::GameObjectPtr> static_objects = _StaticTree.Intersects( val );
 
@@ -226,14 +225,13 @@ XE::Array<XE::GameObjectPtr> XE::WorldObject::Intersects( const Frustum & val ) 
 	return std::move( static_objects );
 }
 
-void XE::WorldObject::Startup()
+void XE::World::Startup()
 {
 	FArray<GameObjectPtr> static_objs;
 	FArray<GameObjectPtr> dynmic_objs;
 
 	for( auto obj : _AllGameObjects )
 	{
-		obj->_World = XE_THIS( WorldObject );
 		obj->Startup();
 
 		if( obj->GetType() == GameObjectType::STATIC )
@@ -250,7 +248,7 @@ void XE::WorldObject::Startup()
 	_DynmicTree.Rebuild( dynmic_objs.begin(), dynmic_objs.end() );
 }
 
-void XE::WorldObject::Update( XE::float32 dt )
+void XE::World::Update( XE::float32 dt )
 {
 	FArray<GameObjectPtr> dynmic_objs;
 
@@ -280,7 +278,7 @@ void XE::WorldObject::Update( XE::float32 dt )
 	_DynmicTree.Rebuild( dynmic_objs.begin(), dynmic_objs.end() );
 }
 
-void XE::WorldObject::Clearup()
+void XE::World::Clearup()
 {
 	for( auto obj : _AllGameObjects )
 	{

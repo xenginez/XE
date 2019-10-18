@@ -83,7 +83,7 @@ FILE(GLOB_RECURSE XE_SRC_FILES
 	
 	src/AI/*.*
 	src/GUI/*.*
-	src/World/*.*
+	src/Scene/*.*
 	src/Audio/*.*
 	src/Render/*.*
 	src/Physics/*.*

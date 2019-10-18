@@ -1,43 +1,43 @@
 /*!
- * \file   WorldObject.h
+ * \file	World.h
  *
- * \author ZhengYuanQing
- * \date   2019/01/12
- * \email  zhengyuanqing.95@gmail.com
+ * \author	ZhengYuanQing
+ * \date	2019/10/18
+ * \email	zhengyuanqing.95@gmail.com
  *
  */
-#ifndef __WORLDOBJECT_H__F419FF88_F84C_4C18_AC3A_D1660070EABD
-#define __WORLDOBJECT_H__F419FF88_F84C_4C18_AC3A_D1660070EABD
+#ifndef WORLD_H__BEE693B5_480D_4746_BBDA_EEECB0455761
+#define WORLD_H__BEE693B5_480D_4746_BBDA_EEECB0455761
 
 #include "GameObject.h"
 
 BEG_XE_NAMESPACE
 
-class XE_API WorldObject : public XE::Object
+class XE_API World : public XE::Object
 {
-	OBJECT( WorldObject, Object )
+	OBJECT( World, Object )
 
 public:
 	friend class WorldService;
 
 public:
-	WorldObject();
+	World();
 
-	~WorldObject();
+	~World();
 
 public:
-	const String& GetName() const;
+	const String & GetName() const;
 
-	void SetName( const String& val );
+	void SetName( const String & val );
 
 public:
 	bool AddGameObject( const GameObjectPtr & val );
 
-	GameObjectPtr FindGameObject( const String& val ) const;
+	GameObjectPtr FindGameObject( const String & val ) const;
 
 	GameObjectPtr FindGameObject( GameObjectHandle val ) const;
 
-	const Array< GameObjectPtr >& GetGameObjects() const;
+	const Array< GameObjectPtr > & GetGameObjects() const;
 
 public:
 	GameObjectPtr Intersect( const Array<GameObjectPtr> exclude, const Ray & val ) const;
@@ -82,4 +82,4 @@ private:
 
 END_XE_NAMESPACE
 
-#endif // __WORLDOBJECT_H__F419FF88_F84C_4C18_AC3A_D1660070EABD
+#endif // WORLD_H__BEE693B5_480D_4746_BBDA_EEECB0455761

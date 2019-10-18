@@ -1,7 +1,5 @@
 #include "GameObject.h"
 
-#include "WorldObject.h"
-
 #include "Component.h"
 #include "SceneComponent.h"
 #include "BehaviorComponent.h"
@@ -44,11 +42,6 @@ const XE::AABB & XE::GameObject::GetBoundingBox() const
 XE::SceneComponentPtr XE::GameObject::GetSceneComponent() const
 {
 	return _SceneComponent;
-}
-
-XE::WorldObjectPtr XE::GameObject::GetWorld() const
-{
-	return _World.lock();
 }
 
 bool XE::GameObject::GetEnabled() const
