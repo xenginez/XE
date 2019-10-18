@@ -117,3 +117,28 @@ void XE::Camera::SetFrustum( const Frustum & val )
 {
 	_Frustum = val;
 }
+
+const XE::Rect & XE::Camera::GetViewport() const
+{
+	return _Viewport;
+}
+
+void XE::Camera::SetViewport( const Rect & val )
+{
+	_Viewport = val;
+}
+
+const RendererPtr & XE::Camera::GetRenderer() const
+{
+	return _Renderer;
+}
+
+const XE::ViewHandle & XE::Camera::GetViewHandle() const
+{
+	return _ViewHandle;
+}
+
+void XE::Camera::SetViewHandle( const ViewHandle & val )
+{
+	_ViewHandle = val;
+}

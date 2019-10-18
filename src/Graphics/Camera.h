@@ -63,6 +63,18 @@ public:
 
 	void SetFrustum( const Frustum & val );
 
+public:
+	const Rect & GetViewport() const;
+
+	void SetViewport( const Rect & val );
+
+	const ViewHandle & GetViewHandle() const;
+
+	void SetViewHandle( const ViewHandle & val );
+
+public:
+	const RendererPtr & GetRenderer() const;
+
 private:
 	bool _Active;
 	XE::float32 _FOV;
@@ -74,6 +86,11 @@ private:
 	Mat4 _ProjMatrix;
 	Mat4 _ViewMatrix;
 	Frustum _Frustum;
+
+private:
+	Rect _Viewport;
+	RendererPtr _Renderer;
+	ViewHandle _ViewHandle;
 };
 
 END_XE_NAMESPACE

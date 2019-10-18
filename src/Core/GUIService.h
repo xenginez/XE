@@ -17,6 +17,9 @@ class XE_API GUIService : public XE::IGUIService
 {
 	OBJECT( GUIService, IGUIService )
 
+private:
+	struct Private;
+
 public:
 	GUIService();
 
@@ -31,6 +34,8 @@ public:
 
 	void Clearup() override;
 
+private:
+	Private * _p;
 };
 
 END_XE_NAMESPACE

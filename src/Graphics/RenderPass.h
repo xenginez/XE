@@ -18,15 +18,9 @@ class XE_API RenderPass : public std::enable_shared_from_this< RenderPass >
 	OBJECT( RenderPass )
 
 public:
-	friend class Technique;
-
-public:
 	RenderPass();
 
 	virtual ~RenderPass();
-
-public:
-	TechniquePtr GetTechnuque() const;
 
 public:
 	virtual void Startup() = 0;
@@ -35,8 +29,6 @@ public:
 
 	virtual void Clearup() = 0;
 
-private:
-	TechniqueWPtr _Technique;
 };
 
 END_XE_NAMESPACE

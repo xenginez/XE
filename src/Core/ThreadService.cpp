@@ -307,8 +307,7 @@ bool XE::ThreadService::Startup()
 	_p->_Threads.resize( EnumID<ThreadType>::Get()->GetEnumCount() );
 
 	_p->_Threads[( XE::uint64 )ThreadType::IO] = new XEPSpecialThread();
-	_p->_Threads[( XE::uint64 )ThreadType::MAIN] = new XEPMainThread();
-	_p->_Threads[( XE::uint64 )ThreadType::GAME] = new XEPSpecialThread();
+	_p->_Threads[( XE::uint64 )ThreadType::GAME] = new XEPMainThread();
 	_p->_Threads[( XE::uint64 )ThreadType::RENDER] = new XEPSpecialThread();
 	_p->_Threads[( XE::uint64 )ThreadType::PHYSICS] = new XEPSpecialThread();
 	_p->_Threads[( XE::uint64 )ThreadType::NAVIGATION] = new XEPSpecialThread();
@@ -319,7 +318,7 @@ bool XE::ThreadService::Startup()
 
 void XE::ThreadService::Update()
 {
-	_p->_Threads[( XE::uint64 )ThreadType::MAIN]->Handler();
+	_p->_Threads[( XE::uint64 )ThreadType::GAME]->Handler();
 }
 
 void XE::ThreadService::Clearup()

@@ -17,9 +17,12 @@ public:
 	}
 
 	Page( Page && val )
-		:Size( val.Size ), Bit( val.Bit ), Beg( val.Beg ), End( val.End )
+		:Size( 0 ), Bit( nullptr ), Beg( nullptr ), End( nullptr )
 	{
-
+		std::swap( Size, val.Size );
+		std::swap( Bit, val.Bit );
+		std::swap( Beg, val.Beg );
+		std::swap( End, val.End );
 	}
 
 	Page( const Page & val )
@@ -45,7 +48,10 @@ public:
 
 	~Page()
 	{
-		Alloc::Deallocate( Bit );
+		if( Bit != nullptr )
+		{
+			Alloc::Deallocate( Bit );
+		}
 	}
 
 public:
@@ -145,9 +151,9 @@ class Block
 {
 public:
 	Block( XE::uint64 size )
-		:Size( size ), Pages( Page( size, KBYTE( 4 ) / size ) )
+		:Size( size )
 	{
-
+		Pages.emplace_back( std::move( Page( size, KBYTE( 4 ) / size ) ) );
 	}
 
 	Block( Block && val )
@@ -169,7 +175,7 @@ public:
 			}
 		}
 
-		return Pages.emplace_back( Page( Size, KBYTE( 4 ) / Size ) )->Allocate();
+		return Pages.emplace_back( std::move( Page( Size, KBYTE( 4 ) / Size ) ) ).Allocate();
 	}
 
 	void Deallocate( void * p )
@@ -200,7 +206,7 @@ public:
 
 private:
 	XE::uint64 Size;
-	XE::concurrent_list<Page, XE::Allocator<Page>> Pages;
+	std::list<Page, XE::Allocator<Page>> Pages;
 };
 
 struct XE::ObjectAlloc::Private

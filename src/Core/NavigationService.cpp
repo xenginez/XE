@@ -22,7 +22,7 @@ void XE::NavigationService::Prepare()
 
 bool XE::NavigationService::Startup()
 {
-	return false;
+	return true;
 }
 
 void XE::NavigationService::Update()

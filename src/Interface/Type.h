@@ -775,7 +775,6 @@ DECL_META_ENUM( XE_API, LoggerLevel );
 enum class ThreadType
 {
 	IO,
-	MAIN,
 	GAME,
 	RENDER,
 	PHYSICS,

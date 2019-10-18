@@ -17,6 +17,8 @@
 #include "NavigationService.h"
 #include "LocalizationService.h"
 
+#define STARTUP_SERVICE(SERVICE) if( !SERVICE->Startup() ) { XE_LOG( LoggerLevel::Error, "startup %1 error!", SERVICE->GetMetaClass()->GetFullName() ); _p->_Exit = true; return; }
+
 USING_XE
 
 BEG_META( CoreFramework )
@@ -228,6 +230,8 @@ XE::IServicePtr XE::CoreFramework::GetService( const IMetaClassPtr & val ) const
 
 bool XE::CoreFramework::RegisterService( const IMetaClassPtr & val )
 {
+	CHECK_THREAD( ThreadType::GAME );
+
 	if( GetService( val ) == nullptr )
 	{
 		if( auto p = val->ConstructPtr().DetachPtr() )
@@ -238,7 +242,11 @@ bool XE::CoreFramework::RegisterService( const IMetaClassPtr & val )
 
 			service->Prepare();
 
-			service->Startup();
+			if( !service->Startup() )
+			{
+				XE_LOG( LoggerLevel::Error, "startup %1 error!", service->GetMetaClass()->GetFullName() );
+				return false;
+			}
 
 			_p->_Services.push_back( service );
 
@@ -366,32 +374,25 @@ void XE::CoreFramework::Startup()
 {
 	_p->_Exit = false;
 
-	_p->_ConfigService->Startup();
-	_p->_LoggerService->Startup();
-	_p->_TimerService->Startup();
-	_p->_ThreadService->Startup();
-	_p->_EventService->Startup();
-	_p->_ProfilerService->Startup();
-	_p->_LocalizationService->Startup();
-	_p->_InputService->Startup();
-	_p->_AudioService->Startup();
-	_p->_AssetsService->Startup();
-	_p->_RenderService->Startup();
-	_p->_PhysicsService->Startup();
-	_p->_NavigationService->Startup();
-	_p->_GUIService->Startup();
-	_p->_WorldService->Startup();
+	STARTUP_SERVICE( _p->_ConfigService );
+	STARTUP_SERVICE( _p->_LoggerService );
+	STARTUP_SERVICE( _p->_TimerService );
+	STARTUP_SERVICE( _p->_ThreadService );
+	STARTUP_SERVICE( _p->_EventService );
+	STARTUP_SERVICE( _p->_ProfilerService );
+	STARTUP_SERVICE( _p->_LocalizationService );
+	STARTUP_SERVICE( _p->_InputService );
+	STARTUP_SERVICE( _p->_AudioService );
+	STARTUP_SERVICE( _p->_AssetsService );
+	STARTUP_SERVICE( _p->_RenderService );
+	STARTUP_SERVICE( _p->_PhysicsService );
+	STARTUP_SERVICE( _p->_NavigationService );
+	STARTUP_SERVICE( _p->_GUIService );
+	STARTUP_SERVICE( _p->_WorldService );
 
 	for( auto & service : _p->_Services )
 	{
-		if( !service->Startup() )
-		{
-			XE_LOG( LoggerLevel::Error, "startup %1 error!", service->GetMetaClass()->GetFullName() );
-
-			_p->_Exit = true;
-
-			return;
-		}
+		STARTUP_SERVICE( service );
 	}
 }
 

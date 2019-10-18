@@ -15,7 +15,6 @@
 #include "Camera.h"
 #include "Renderer.h"
 #include "Skeleton.h"
-#include "Technique.h"
 #include "Renderable.h"
 #include "RenderPass.h"
 #include "RenderWindow.h"

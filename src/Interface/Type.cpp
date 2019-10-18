@@ -736,7 +736,6 @@ END_META()
 
 BEG_META( ThreadType )
 type->Value( "IO", ThreadType::IO );
-type->Value( "MAIN", ThreadType::MAIN );
 type->Value( "GAME", ThreadType::GAME );
 type->Value( "RENDER", ThreadType::RENDER );
 type->Value( "PHYSICS", ThreadType::PHYSICS );

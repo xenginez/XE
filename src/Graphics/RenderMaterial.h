@@ -22,11 +22,6 @@ public:
 
 	~RenderMaterial() override;
 
-public:
-	const TechniquePtr & GetTechnique() const;
-
-private:
-	TechniquePtr _Technique;
 };
 
 END_XE_NAMESPACE

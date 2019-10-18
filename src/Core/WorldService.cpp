@@ -22,7 +22,7 @@ void XE::WorldService::Prepare()
 
 bool XE::WorldService::Startup()
 {
-	return false;
+	return true;
 }
 
 void XE::WorldService::Update()

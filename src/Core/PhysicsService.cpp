@@ -70,7 +70,7 @@ bool XE::PhysicsService::Startup()
 // 		XE_LOG( LoggerLevel::Error, "PxPhysics::createScene failed!" );
 // 	}
 
-	return false;
+	return true;
 }
 
 void XE::PhysicsService::Update()

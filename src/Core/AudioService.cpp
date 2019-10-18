@@ -17,7 +17,7 @@ XE::AudioService::~AudioService()
 
 bool XE::AudioService::Startup()
 {
-	return false;
+	return true;
 }
 
 void XE::AudioService::Update()

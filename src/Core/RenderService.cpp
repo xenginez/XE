@@ -1,7 +1,5 @@
 #include "RenderService.h"
 
-#include <Graphics/Graphics.h>
-
 #include <bgfx/bgfx.h>
 
 USING_XE
@@ -11,11 +9,9 @@ END_META()
 
 struct XE::RenderService::Private
 {
-	SkyBoxPtr _Sky;
 	Array<LightPtr> _Lights;
 	Array<XE::CameraPtr> _Cameras;
 	Array<XE::RenderablePtr> _Renderables;
-	RenderWindowPtr _MainWindow;
 };
 
 XE::RenderService::RenderService()
@@ -42,27 +38,20 @@ void XE::RenderService::Prepare()
 	bgfx::init( _init );
 
 	Gfx::setDebug( BGFX_DEBUG_NONE );
-
-	_p->_MainWindow = XE::make_shared<RenderWindow>();
-	_p->_MainWindow->Show();
-
-	Gfx::setViewRect( 0, 0, 0, 800, 600 );
-	Gfx::setViewFrameBuffer( 0, _p->_MainWindow->GetFrameBufferHandle() );
-	Gfx::setViewClear( 0, ClearFlags::COLOR_DEPTH, 0x603060ff, 1.0f, 0 );
 }
 
 bool XE::RenderService::Startup()
 {
 	Gfx::touch( 0 );
 
-	return false;
+	return true;
 }
 
 void XE::RenderService::Update()
 {
-	for( auto & renderable : _p->_Renderables )
+	for (auto & camera : _p->_Cameras)
 	{
-		renderable->Render();
+
 	}
 	
 	Gfx::frame();
@@ -73,8 +62,6 @@ void XE::RenderService::Clearup()
 	_p->_Lights.clear();
 	_p->_Cameras.clear();
 	_p->_Renderables.clear();
-
-	_p->_MainWindow->Close();
 
 	bgfx::shutdown();
 }

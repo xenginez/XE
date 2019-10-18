@@ -14,8 +14,3 @@ XE::RenderPass::~RenderPass()
 {
 
 }
-
-TechniquePtr XE::RenderPass::GetTechnuque() const
-{
-	return _Technique.lock();
-}
