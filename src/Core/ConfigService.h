@@ -26,7 +26,7 @@ public:
 	~ConfigService() override;
 
 public:
-	void Prepare()override;
+	void Prepare() override;
 
 	bool Startup() override;
 
@@ -35,9 +35,9 @@ public:
 	void Clearup() override;
 
 protected:
-	String GetValue( const String& key ) const override;
+	String GetValue( const String & key ) const override;
 
-	void SetValue( const String& key, const String& val ) const override;
+	void SetValue( const String & key, const String & val ) const override;
 
 private:
 	Private * _p;

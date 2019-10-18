@@ -19,62 +19,62 @@ class XE_API IConfigService : public IService
 
 public:
 	IConfigService();
-	
+
 	~IConfigService() override;
 
 public:
-	void SetBool( const String& key, bool val );
-	
-	bool GetBool( const String& key, bool def = false ) const;
+	void SetBool( const String & key, bool val );
 
-	void SetInt8( const String& key, XE::int8 val );
-	
-	XE::int8 GetInt8( const String& key, XE::int8 def = 0 ) const;
+	bool GetBool( const String & key, bool def = false ) const;
 
-	void SetInt16( const String& key, XE::int16 val );
-	
-	XE::int16 GetInt16( const String& key, XE::int16 def = 0 ) const;
+	void SetInt8( const String & key, XE::int8 val );
 
-	void SetInt32( const String& key, XE::int32 val );
-	
-	XE::int32 GetInt32( const String& key, XE::int32 def = 0 ) const;
+	XE::int8 GetInt8( const String & key, XE::int8 def = 0 ) const;
 
-	void SetInt64( const String& key, XE::int64 val );
-	
-	XE::int64 GetInt64( const String& key, XE::int64 def = 0 ) const;
+	void SetInt16( const String & key, XE::int16 val );
 
-	void  SetUInt8( const String& key, XE::uint8 val );
-	
-	XE::uint8  GetUInt8( const String& key, XE::uint8 def = 0 ) const;
+	XE::int16 GetInt16( const String & key, XE::int16 def = 0 ) const;
 
-	void SetUInt16( const String& key, XE::uint16 val );
-	
-	XE::uint16 GetUInt16( const String& key, XE::uint16 def = 0 ) const;
+	void SetInt32( const String & key, XE::int32 val );
 
-	void SetUInt32( const String& key, XE::uint32 val );
-	
-	XE::uint32 GetUInt32( const String& key, XE::uint32 def = 0 ) const;
+	XE::int32 GetInt32( const String & key, XE::int32 def = 0 ) const;
 
-	void SetUInt64( const String& key, XE::uint64 val );
-	
-	XE::uint64 GetUInt64( const String& key, XE::uint64 def = 0 ) const;
+	void SetInt64( const String & key, XE::int64 val );
 
-	void SetFloat32( const String& key, XE::float32 val );
-	
-	XE::float32 GetFloat32( const String& key, XE::float32 def = 0.0f ) const;
+	XE::int64 GetInt64( const String & key, XE::int64 def = 0 ) const;
 
-	void SetFloat64( const String& key, XE::float64 val );
-	
-	XE::float64 GetFloat64( const String& key, XE::float64 def = 0.0 ) const;
+	void  SetUInt8( const String & key, XE::uint8 val );
 
-	void SetString( const String& key, const String& val ) const;
-	
-	String GetString( const String& key, const String& def = "" ) const;
+	XE::uint8  GetUInt8( const String & key, XE::uint8 def = 0 ) const;
+
+	void SetUInt16( const String & key, XE::uint16 val );
+
+	XE::uint16 GetUInt16( const String & key, XE::uint16 def = 0 ) const;
+
+	void SetUInt32( const String & key, XE::uint32 val );
+
+	XE::uint32 GetUInt32( const String & key, XE::uint32 def = 0 ) const;
+
+	void SetUInt64( const String & key, XE::uint64 val );
+
+	XE::uint64 GetUInt64( const String & key, XE::uint64 def = 0 ) const;
+
+	void SetFloat32( const String & key, XE::float32 val );
+
+	XE::float32 GetFloat32( const String & key, XE::float32 def = 0.0f ) const;
+
+	void SetFloat64( const String & key, XE::float64 val );
+
+	XE::float64 GetFloat64( const String & key, XE::float64 def = 0.0 ) const;
+
+	void SetString( const String & key, const String & val ) const;
+
+	String GetString( const String & key, const String & def = "" ) const;
 
 protected:
-	virtual String GetValue( const String& key ) const = 0;
+	virtual String GetValue( const String & key ) const = 0;
 
-	virtual void SetValue( const String& key, const String& val ) const = 0;
+	virtual void SetValue( const String & key, const String & val ) const = 0;
 
 };
 
