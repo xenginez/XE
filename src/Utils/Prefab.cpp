@@ -34,12 +34,6 @@ XE::AssetStatus XE::Prefab::GetStatus() const
 	return IFramework::GetCurrentFramework()->GetAssetsService()->GetAssetStatus(_Link);
 }
 
-XE::ReflectObjectPtr Prefab::GetClone() const
-{
-	return GetStatus() == AssetStatus::Ready
-		   ? IFramework::GetCurrentFramework()->GetAssetsService()->GetAsset(_Link)->Clone() : nullptr;
-}
-
 XE::ReflectObjectPtr Prefab::GetReference() const
 {
 	return GetStatus() == AssetStatus::Ready ? IFramework::GetCurrentFramework()->GetAssetsService()->GetAsset(_Link)

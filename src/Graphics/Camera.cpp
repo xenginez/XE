@@ -128,11 +128,6 @@ void XE::Camera::SetViewport( const Rect & val )
 	_Viewport = val;
 }
 
-const RendererPtr & XE::Camera::GetRenderer() const
-{
-	return _Renderer;
-}
-
 const XE::ViewHandle & XE::Camera::GetViewHandle() const
 {
 	return _ViewHandle;

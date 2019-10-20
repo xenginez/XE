@@ -14,7 +14,6 @@
 BEG_XE_NAMESPACE
 
 DECL_PTR( Logger );
-DECL_PTR( Prefab );
 DECL_PTR( IService );
 DECL_PTR( IGUIService );
 DECL_PTR( ProfilerFrame );

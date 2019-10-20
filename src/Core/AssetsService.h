@@ -38,9 +38,9 @@ public:
 	void Clearup() override;
 
 public:
-	PrefabPtr Load( const String & val ) override;
+	Prefab Load( const String & val ) override;
 
-	PrefabPtr AsynLoad( const String & val ) override;
+	Prefab AsynLoad( const String & val ) override;
 
 	void Unload( const String & val ) override;
 

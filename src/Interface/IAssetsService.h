@@ -25,9 +25,9 @@ public:
 	~IAssetsService() override;
 
 public:
-	virtual PrefabPtr Load( const String& val ) = 0;
+	virtual Prefab Load( const String& val ) = 0;
 
-	virtual PrefabPtr AsynLoad( const String& val ) = 0;
+	virtual Prefab AsynLoad( const String& val ) = 0;
 
 	virtual void Unload( const String& val ) = 0;
 
@@ -37,7 +37,7 @@ protected:
 	virtual AssetStatus GetAssetStatus( const String& val ) const = 0;
 
 protected:
-	PrefabPtr CreatePrefab( const String& val );
+	Prefab CreatePrefab( const String& val );
 	
 };
 

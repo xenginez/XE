@@ -72,9 +72,6 @@ public:
 
 	void SetViewHandle( const ViewHandle & val );
 
-public:
-	const RendererPtr & GetRenderer() const;
-
 private:
 	bool _Active;
 	XE::float32 _FOV;
@@ -89,7 +86,6 @@ private:
 
 private:
 	Rect _Viewport;
-	RendererPtr _Renderer;
 	ViewHandle _ViewHandle;
 };
 

@@ -208,11 +208,36 @@ public:
 	};
 
 public:
-	static std::shared_ptr<T> Clone( T * val )
+	static T * Clone( T * val )
 	{
 		if constexpr( HasMemberClone<T>::value )
 		{
-			return val->Clone( arc );
+			return val->Clone();
+		}
+		else
+		{
+			if( auto cls = ClassID<T>::Get( val ) )
+			{
+				auto ret = cls->Construct().Value< U * >();
+
+				cls->VisitProperty( [&]( IMetaPropertyPtr prop )
+									{
+										if( !( prop->GetFlag() & IMetaProperty::NoClone ) && !prop->IsStatic() )
+										{
+											prop->Set( ret, prop->Get( val ) );
+										}
+									} );
+
+				return ret;
+			}
+		}
+	}
+
+	static std::shared_ptr<T> Clone( std::shared_ptr<T> val )
+	{
+		if constexpr( HasMemberClone<T>::value )
+		{
+			return val->Clone();
 		}
 		else
 		{
@@ -221,12 +246,12 @@ public:
 				auto ret = cls->ConstructPtr().Value< std::shared_ptr<U> >();
 
 				cls->VisitProperty( [&]( IMetaPropertyPtr prop )
-											   {
-												   if( !( prop->GetFlag() & IMetaProperty::NoClone ) && !prop->IsStatic() )
-												   {
-													   prop->Set( ret, prop->Get( val ) );
-												   }
-											   } );
+									{
+										if( !( prop->GetFlag() & IMetaProperty::NoClone ) && !prop->IsStatic() )
+										{
+											prop->Set( ret, prop->Get( val ) );
+										}
+									} );
 
 				return ret;
 			}

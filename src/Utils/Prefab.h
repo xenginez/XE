@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class XE_API Prefab : public std::enable_shared_from_this< Prefab >
+class XE_API Prefab
 {
 public:
 	Prefab();
@@ -28,30 +28,7 @@ public:
 public:
 	AssetStatus GetStatus() const;
 
-public:
-	template< typename T > std::shared_ptr<T> GetCloneT() const
-	{
-		if( auto clone = GetClone() )
-		{
-			return DP_CAST<T>( clone );
-		}
-		
-		return nullptr;
-	}
-
-	template< typename T > std::shared_ptr<const T> GetReferenceT() const
-	{
-		if(auto ref = GetReference())
-		{
-			return DP_CAST<const T>( ref );
-		}
-		
-		return nullptr;
-	}
-
-public:
-	ReflectObjectPtr GetClone() const;
-	
+protected:
 	ReflectObjectPtr GetReference() const;
 	
 private:
@@ -59,6 +36,78 @@ private:
 };
 DECL_META_CLASS( XE_API, Prefab );
 
+template< typename T > class PrefabPtr : public XE::Prefab
+{
+public:
+	PrefabPtr() = default;
+
+	~PrefabPtr() override = default;
+
+public:
+	PrefabPtr( const Prefab & val )
+	{
+		SetLink( val.GetLink() );
+	}
+
+	PrefabPtr & operator=( const Prefab & val )
+	{
+		if( GetLink() != val.GetLink() )
+		{
+			_Object = nullptr;
+			SetLink( val.GetLink() );
+		}
+
+		return *this;
+	}
+
+public:
+	std::shared_ptr<T> GetClone() const
+	{
+		if( _Object )
+		{
+			return XE::Cloneable<T>::Clone( _Object );
+		}
+
+		_Object = GetReference();
+
+		if( _Object )
+		{
+			return XE::Cloneable<T>::Clone( _Object );
+		}
+
+		return nullptr;
+	}
+
+	std::shared_ptr<const T> GetReference() const
+	{
+		if( _Object )
+		{
+			return _Object;
+		}
+
+		auto ref = Prefab::GetReference();
+
+		if( ref && ref->GetMetaClass()->CanConvert( XE::ClassID<T>::Get() ) )
+		{
+			_Object = DP_CAST<const T>( ref );
+		}
+
+		return _Object;
+	}
+
+private:
+	std::shared_ptr<const T> _Object;
+};
+
 END_XE_NAMESPACE
+
+
+template< typename T > struct XE::ClassID< XE::PrefabPtr<T> >
+{
+	static IMetaClassPtr Get( const PrefabPtr<T> * val = nullptr )
+	{
+		return ClassID<Prefab>::Get();
+	}
+};
 
 #endif // __PREFAB_H__A6AEEDC5_FCE5_4139_8B44_6A57BEB2DD7F

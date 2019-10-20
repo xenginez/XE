@@ -606,64 +606,64 @@ enum class ViewMode
 DECL_META_ENUM( XE_API, ViewMode );
 
 
-XE::uint64 StateDefault();
+static XE::uint64 StateDefault();
 
-XE::uint64 StateAlphaRef( XE::uint64 val );
+static XE::uint64 StateAlphaRef( XE::uint64 val );
 
-XE::uint64 StatePointSize( XE::uint64 val );
+static XE::uint64 StatePointSize( XE::uint64 val );
 
-XE::uint64 StateStencilFuncRef( XE::uint64 val );
+static XE::uint64 StateStencilFuncRef( XE::uint64 val );
 
-XE::uint64 StateStencilFuncRMask( XE::uint64 val );
+static XE::uint64 StateStencilFuncRMask( XE::uint64 val );
 
-XE::uint64 SamplerBorderColor( XE::uint64 val );
+static XE::uint64 SamplerBorderColor( XE::uint64 val );
 
-XE::uint64 BlendFunctionSeparate( StateBlendFunc srcRGB, StateBlendFunc dstRGB, StateBlendFunc srcA, StateBlendFunc dstA );
+static XE::uint64 BlendFunctionSeparate( StateBlendFunc srcRGB, StateBlendFunc dstRGB, StateBlendFunc srcA, StateBlendFunc dstA );
 
-XE::uint64 BlendEquationSeparate( StateBlendEquation rgb, StateBlendEquation a );
+static XE::uint64 BlendEquationSeparate( StateBlendEquation rgb, StateBlendEquation a );
 
-XE::uint64 BlendAdditive();
+static XE::uint64 BlendAdditive();
 
-XE::uint64 BlendAlpha();
+static XE::uint64 BlendAlpha();
 
-XE::uint64 BlendDarken();
+static XE::uint64 BlendDarken();
 
-XE::uint64 BlendLighten();
+static XE::uint64 BlendLighten();
 
-XE::uint64 BlendMultiply();
+static XE::uint64 BlendMultiply();
 
-XE::uint64 BlendNormal();
+static XE::uint64 BlendNormal();
 
-XE::uint64 BlendScreen();
+static XE::uint64 BlendScreen();
 
-XE::uint64 BlendLinearBurn();
+static XE::uint64 BlendLinearBurn();
 
-XE::uint64 BlendFuncRT1( StateBlendFunc src, StateBlendFunc dst );
+static XE::uint64 BlendFuncRT1( StateBlendFunc src, StateBlendFunc dst );
 
-XE::uint64 BlendFuncRT2( StateBlendFunc src, StateBlendFunc dst );
+static XE::uint64 BlendFuncRT2( StateBlendFunc src, StateBlendFunc dst );
 
-XE::uint64 BlendFuncRT3( StateBlendFunc src, StateBlendFunc dst );
+static XE::uint64 BlendFuncRT3( StateBlendFunc src, StateBlendFunc dst );
 
-XE::uint64 BlendFuncRT1E( StateBlendFunc src, StateBlendFunc dst, StateBlendEquation equation );
+static XE::uint64 BlendFuncRT1E( StateBlendFunc src, StateBlendFunc dst, StateBlendEquation equation );
 
-XE::uint64 BlendFuncRT2E( StateBlendFunc src, StateBlendFunc dst, StateBlendEquation equation );
+static XE::uint64 BlendFuncRT2E( StateBlendFunc src, StateBlendFunc dst, StateBlendEquation equation );
 
-XE::uint64 BlendFuncRT3E( StateBlendFunc src, StateBlendFunc dst, StateBlendEquation equation );
+static XE::uint64 BlendFuncRT3E( StateBlendFunc src, StateBlendFunc dst, StateBlendEquation equation );
 
 
 DECL_HANDLE( XE_API, View );
-DECL_HANDLE( XE_API, DynamicIndexBuffer );
-DECL_HANDLE( XE_API, DynamicVertexBuffer );
-DECL_HANDLE( XE_API, FrameBuffer );
-DECL_HANDLE( XE_API, IndexBuffer );
-DECL_HANDLE( XE_API, IndirectBuffer );
-DECL_HANDLE( XE_API, OcclusionQuery );
-DECL_HANDLE( XE_API, Program );
 DECL_HANDLE( XE_API, Shader );
 DECL_HANDLE( XE_API, Texture );
 DECL_HANDLE( XE_API, Uniform );
+DECL_HANDLE( XE_API, Program );
+DECL_HANDLE( XE_API, FrameBuffer );
+DECL_HANDLE( XE_API, IndexBuffer );
 DECL_HANDLE( XE_API, VertexBuffer );
 DECL_HANDLE( XE_API, VertexLayout );
+DECL_HANDLE( XE_API, IndirectBuffer );
+DECL_HANDLE( XE_API, OcclusionQuery );
+DECL_HANDLE( XE_API, DynamicIndexBuffer );
+DECL_HANDLE( XE_API, DynamicVertexBuffer );
 
 
 END_XE_NAMESPACE

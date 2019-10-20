@@ -15,11 +15,11 @@ XE::IAssetsService::~IAssetsService()
 
 }
 
-XE::PrefabPtr XE::IAssetsService::CreatePrefab( const String &val )
+XE::Prefab XE::IAssetsService::CreatePrefab( const String &val )
 {
-	auto prefab = XE::make_shared<Prefab>();
+	XE::Prefab prefab;
 
-	prefab->SetLink( val );
+	prefab.SetLink( val );
 
 	return prefab;
 }
