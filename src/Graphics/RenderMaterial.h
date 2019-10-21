@@ -23,82 +23,22 @@ public:
 	~RenderMaterial() override;
 
 public:
-	const String & GetName() const;
+	const XE::String & GetName() const;
 
-	void SetName( const String & val );
+	void SetName( const XE::String & val );
 
-	TextureHandle GetBaseColorTexture() const;
+	const RenderTechniquePtr & GetRenderTechnique() const;
 
-	void SetBaseColorTexture( TextureHandle val );
-
-	TextureHandle GetSpecularTexture() const;
-
-	void SetSpecularTexture( TextureHandle val );
-
-	TextureHandle GetEmissiveTexture() const;
-
-	void SetEmissiveTexture( TextureHandle val );
+	void SetRenderTechnique( const RenderTechniquePtr & val );
 
 public:
-	TextureHandle GetNormalMap() const;
+	void AssetLoad() override;
 
-	void SetNormalMap( TextureHandle val );
-
-	TextureHandle GetOcclusionMap() const;
-
-	void SetOcclusionMap( TextureHandle val );
-
-	TextureHandle GetLightMap() const;
-
-	void SetLightMap( TextureHandle val );
-
-	TextureHandle GetHeightMap() const;
-
-	void SetHeightMap( TextureHandle val );
-
-public:
-	XE::uint32 GetShadingModel() const;
-
-	void SetShadingModel( XE::uint32 val );
-
-	XE::uint32 GetAlphaMode() const;
-
-	void SetAlphaMode( XE::uint32 val );
-
-	XE::float32 GetAlphaThreshold() const;
-
-	void SetAlphaThreshold( XE::float32 val );
-
-	bool GetDoubleSided() const;
-
-	void SetDoubleSided( bool val );
-
-	const Vec4 & GetBaseColor() const;
-
-	void SetBaseColor( const Vec4 & val );
-
-	const Vec4 & GetSpecularParams() const;
-
-	void SetSpecularParams( const Vec4 & val );
-
-	const Vec3 & GetEmGetsiveColor() const;
-
-	void SetEmGetsiveColor( const Vec3 & val );
-
-	XE::float32 GetHeightScale() const;
-
-	void SetHeightScale( XE::float32 val );
-
-	XE::float32 GetHeightOffset() const;
-
-	void SetHeightOffset( XE::float32 val );
-
-	void SetIndexOfRefraction( XE::float32 val );
-
-	XE::float32 GetIndexOfRefraction() const;
+	void AssetUnload() override;
 
 private:
-
+	XE::String _Name;
+	RenderTechniquePtr _Technique;
 };
 
 END_XE_NAMESPACE
