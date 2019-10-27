@@ -9,7 +9,6 @@
 #include "LoggerService.h"
 #include "ConfigService.h"
 #include "ThreadService.h"
-#include "PluginService.h"
 #include "RenderService.h"
 #include "AssetsService.h"
 #include "PhysicsService.h"
@@ -37,7 +36,6 @@ struct XE::CoreFramework::Private
 	IServicePtr _ConfigService;
 	IServicePtr _LoggerService;
 	IServicePtr _ThreadService;
-	IServicePtr _PluginService;
 	IServicePtr _RenderService;
 	IServicePtr _AssetsService;
 	IServicePtr _PhysicsService;
@@ -109,11 +107,6 @@ XE::IWorldServicePtr XE::CoreFramework::GetWorldService() const
 	return SP_CAST < IWorldService >( _p->_WorldService );
 }
 
-XE::IPluginServicePtr XE::CoreFramework::GetPluginService() const
-{
-	return SP_CAST < IPluginService >( _p->_PluginService );
-}
-
 XE::IThreadServicePtr XE::CoreFramework::GetThreadService() const
 {
 	return SP_CAST < IThreadService >( _p->_ThreadService );
@@ -179,10 +172,6 @@ XE::IServicePtr XE::CoreFramework::GetService( const IMetaClassPtr & val ) const
 	else if( GetWorldService()->GetMetaClass()->CanConvert( val ) )
 	{
 		return GetWorldService();
-	}
-	else if( GetPluginService()->GetMetaClass()->CanConvert( val ) )
-	{
-		return GetPluginService();
 	}
 	else if( GetThreadService()->GetMetaClass()->CanConvert( val ) )
 	{
@@ -286,11 +275,6 @@ XE::Language XE::CoreFramework::GetSystemLanguage() const
 	return Platform::GetDefaultLanguage();
 }
 
-std::filesystem::path XE::CoreFramework::GetPluginPath() const
-{
-	return GetApplicationPath() / "plugin";
-}
-
 std::filesystem::path XE::CoreFramework::GetModulePath() const
 {
 	return GetApplicationPath() / "module";
@@ -322,7 +306,6 @@ void XE::CoreFramework::Prepare()
 	_p->_ConfigService = XE::make_shared < ConfigService >();
 	_p->_LoggerService = XE::make_shared < LoggerService >();
 	_p->_ThreadService = XE::make_shared < ThreadService >();
-	_p->_PluginService = XE::make_shared < PluginService >();
 	_p->_AssetsService = XE::make_shared < AssetsService >();
 	_p->_RenderService = XE::make_shared < RenderService >();
 	_p->_PhysicsService = XE::make_shared < PhysicsService >();

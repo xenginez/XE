@@ -19,7 +19,6 @@
 #include "ConfigService.h"
 #include "CoreFramework.h"
 #include "LoggerService.h"
-#include "PluginService.h"
 #include "RenderService.h"
 #include "ThreadService.h"
 #include "PhysicsService.h"

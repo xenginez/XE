@@ -803,17 +803,4 @@ DECL_EVENT( MOUSE_MOVE, "mouse move", XE::Vec2 );
 
 END_XE_NAMESPACE
 
-#define XE_LOG(LEVEL, FMT, ...) \
-XE::IFramework::GetCurrentFramework()->GetLoggerService()->Log( LEVEL, __FILE__, __LINE__, XE::StringUtils::Format(FMT, __VA_ARGS__) );
-
-#define REGISTER_PLUGIN( NAME ) \
-extern "C" XE::IPlugin * RegisterPlugin( XE::IFrameworkPtr framework ) \
-{ \
-	return new NAME( framework ); \
-} \
-extern "C" void UnregisterPlugin( XE::IPlugin * plugin ) \
-{ \
-	delete plugin; \
-}
-
 #endif 

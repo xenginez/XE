@@ -436,6 +436,15 @@ enum class AttribType : XE::uint16
 };
 DECL_META_ENUM( XE_API, AttribType );
 
+enum class TextureType
+{
+	TEXTURE,
+	TEXTURE2D,
+	TEXTURE3D,
+	TEXTURECUBE
+};
+DECL_META_ENUM( XE_API, TextureType );
+
 enum class TextureFormat
 {
 	BC1,

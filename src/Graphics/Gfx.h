@@ -44,7 +44,7 @@ public:
 	XE::uint16 numLayers;
 	XE::uint8 numMips;
 	XE::uint8 bitsPerPixel;
-	bool    cubeMap;
+	bool cubeMap;
 };
 
 class XE_API InstanceDataBuffer

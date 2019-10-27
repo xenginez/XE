@@ -17,7 +17,6 @@
 #include "IWorldService.h"
 #include "IEventService.h"
 #include "IInputService.h"
-#include "IPluginService.h"
 #include "IRenderService.h"
 #include "IThreadService.h"
 #include "IAssetsService.h"
@@ -27,6 +26,9 @@
 #include "IProfilerService.h"
 #include "INavigationService.h"
 #include "ILocalizationService.h"
+
+#define XE_LOG(LEVEL, FMT, ...) \
+XE::IFramework::GetCurrentFramework()->GetLoggerService()->Log( LEVEL, __FILE__, __LINE__, XE::StringUtils::Format(FMT, __VA_ARGS__) );
 
 #define CHECK_THREAD(THREAD_TYPE) \
 if( XE::IFramework::GetCurrentFramework()->GetThreadService()->GetCurrentThreadType() == XE::THREAD_TYPE ) { XE_LOG( XE::LoggerLevel::Error, "the current thread is not the " #THREAD_TYPE ) };

@@ -41,8 +41,6 @@ public:
 
 	IWorldServicePtr GetWorldService() const override;
 
-	IPluginServicePtr GetPluginService() const override;
-
 	IThreadServicePtr GetThreadService() const override;
 
 	IAssetsServicePtr GetAssetsService() const override;
@@ -72,8 +70,6 @@ public:
 
 	Language GetSystemLanguage() const override;
 	
-	std::filesystem::path GetPluginPath() const override;
-
 	std::filesystem::path GetModulePath() const override;
 
 	std::filesystem::path GetAssetsPath() const override;

@@ -44,8 +44,6 @@ public:
 
 	virtual IWorldServicePtr GetWorldService() const = 0;
 
-	virtual IPluginServicePtr GetPluginService() const = 0;
-
 	virtual IThreadServicePtr GetThreadService() const = 0;
 
 	virtual IAssetsServicePtr GetAssetsService() const = 0;
@@ -74,8 +72,6 @@ public:
 	virtual bool IsExit() const = 0;
 
 	virtual Language GetSystemLanguage() const = 0;
-
-	virtual std::filesystem::path GetPluginPath() const = 0;
 
 	virtual std::filesystem::path GetModulePath() const = 0;
 
