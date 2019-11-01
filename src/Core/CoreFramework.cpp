@@ -447,7 +447,7 @@ void XE::CoreFramework::Clearup()
 
 void XE::CoreFramework::LoadModules()
 {
-	auto modules = StringUtils::Split( GetConfigService()->GetString( "System.Modules" ), "," );
+	auto modules = StringUtils::Split( GetConfigService()->GetString( "System/Modules" ), "," );
 	for( auto module : modules )
 	{
 		auto path = GetModulePath() / module;

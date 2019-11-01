@@ -24,7 +24,7 @@ XE::LocalizationService::~LocalizationService()
 
 bool XE::LocalizationService::Startup()
 {
-	String LanguageName = GetFramework()->GetConfigService()->GetString( "System.Language" );
+	String LanguageName = GetFramework()->GetConfigService()->GetString( "System/Language" );
 
 	if ( LanguageName == "" )
 	{

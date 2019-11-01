@@ -59,7 +59,7 @@ void XE::ConfigService::Prepare()
 				{
 					for( rapidjson::Value::ConstMemberIterator it = pair.second->value.MemberBegin(); it != pair.second->value.MemberEnd(); ++it )
 					{
-						stack.push( { pair.first + "." + it->name.GetString(), it } );
+						stack.push( { pair.first + "/" + it->name.GetString(), it } );
 					}
 				}
 			}
@@ -116,7 +116,7 @@ void XE::ConfigService::Clearup()
 
 	for( const auto & it : _p->Values )
 	{
-		auto list = StringUtils::Split( it.first, "\\." );
+		auto list = StringUtils::Split( it.first, "/" );
 
 		auto json_it = doc.FindMember( list.front().c_str() );
 		if( json_it == doc.MemberEnd() )
