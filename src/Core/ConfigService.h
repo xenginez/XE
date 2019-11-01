@@ -37,7 +37,7 @@ public:
 protected:
 	String GetValue( const String & key ) const override;
 
-	void SetValue( const String & key, const String & val ) const override;
+	void SetValue( const String & key, const String & val ) override;
 
 private:
 	Private * _p;

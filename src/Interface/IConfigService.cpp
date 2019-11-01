@@ -154,7 +154,7 @@ String IConfigService::GetString( const String & key, const String & def ) const
 	return s == "" ? def : s;
 }
 
-void IConfigService::SetString( const String & key, const String & val ) const
+void IConfigService::SetString( const String & key, const String & val )
 {
 	SetValue( key, val );
 }

@@ -67,14 +67,14 @@ public:
 
 	XE::float64 GetFloat64( const String & key, XE::float64 def = 0.0 ) const;
 
-	void SetString( const String & key, const String & val ) const;
+	void SetString( const String & key, const String & val );
 
 	String GetString( const String & key, const String & def = "" ) const;
 
 protected:
 	virtual String GetValue( const String & key ) const = 0;
 
-	virtual void SetValue( const String & key, const String & val ) const = 0;
+	virtual void SetValue( const String & key, const String & val ) = 0;
 
 };
 

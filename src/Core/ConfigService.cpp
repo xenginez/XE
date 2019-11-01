@@ -159,7 +159,7 @@ String XE::ConfigService::GetValue( const String & key ) const
 	return "";
 }
 
-void XE::ConfigService::SetValue( const String & key, const String & val ) const
+void XE::ConfigService::SetValue( const String & key, const String & val )
 {
 	_p->Values[key] = val;
 }
