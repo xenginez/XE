@@ -52,10 +52,16 @@ else ()
 endif ()
 
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_CURRENT_SOURCE_DIR}/target/${XE_PLATFORM_PATH}/debug/bin)
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${CMAKE_CURRENT_SOURCE_DIR}/target/${XE_PLATFORM_PATH}/debug/bin)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_CURRENT_SOURCE_DIR}/target/${XE_PLATFORM_PATH}/release/bin)
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${CMAKE_CURRENT_SOURCE_DIR}/target/${XE_PLATFORM_PATH}/release/bin)
+if(NOT DEFINED ENV{XE_PATH})
+set( ENV{XE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/target/${XE_PLATFORM_PATH} )
+endif()
+message("XE_PATH: " $ENV{XE_PATH})
+
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG $ENV{XE_PATH}/debug/bin)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG $ENV{XE_PATH}/debug/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE $ENV{XE_PATH}/release/bin)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE $ENV{XE_PATH}/release/bin)
 
 include_directories(
 		${CMAKE_CURRENT_SOURCE_DIR}/src
@@ -63,88 +69,13 @@ include_directories(
 		${CMAKE_CURRENT_SOURCE_DIR}/depend/include/PhysX
 )
 
-if (XE_PLATFORM_PATH MATCHES "mac")
-	include_directories(/usr/local/include)
-endif ()
-
 link_directories(
 		${CMAKE_CURRENT_SOURCE_DIR}/depend/bin/${XE_PLATFORM_PATH}/${XE_CONFIG}
 		${CMAKE_CURRENT_SOURCE_DIR}/depend/lib/${XE_PLATFORM_PATH}/${XE_CONFIG}
-		${CMAKE_CURRENT_SOURCE_DIR}/target/${XE_PLATFORM_PATH}/${XE_CONFIG}/bin
+		$ENV{XE_PATH}/${XE_CONFIG}/bin
 )
 
-FILE(GLOB_RECURSE XE_SRC_FILES
 
-	src/Base/*.*
-	src/GC/*.*
-	src/Reflect/*.*
-	src/Utils/*.*
-	src/Math/*.*
-	
-	src/AI/*.*
-	src/GUI/*.*
-	src/Scene/*.*
-	src/Audio/*.*
-	src/Render/*.*
-	src/Physics/*.*
-	src/Graphics/*.*
-	src/Animation/*.*
-	src/Navigation/*.*
-	
-	src/Interface/*.*
-
-	src/Component/*.*
-	src/Core/*.*
-)
-add_library(XE ${XE_SRC_FILES})
-target_compile_definitions(XE PRIVATE -DXE_EXPORT)
-target_link_libraries(XE
-		tbb${XE_TBB_POSTFIX}
-		tbbmalloc${XE_TBB_POSTFIX}
-		tbbmalloc_proxy${XE_TBB_POSTFIX}
-		OpenAL32
-		DebugUtils
-		DetourCrowd
-		Recast
-		Detour
-		DetourTileCache
-		sqlite3
-		ik
-		astc-codec
-		astc
-		bgfx
-		bimg
-		bx
-		edtaa3
-		etc1
-		etc2
-		iqa
-		nvtt
-		pvrtc
-		squish
-		PhysX${XE_PHYSX_POSTFIX}
-		PhysXCharacterKinematic_static_64
-		PhysXCommon${XE_PHYSX_POSTFIX}
-		PhysXCooking${XE_PHYSX_POSTFIX}
-		PhysXExtensions_static_64
-		PhysXFoundation${XE_PHYSX_POSTFIX}
-		PhysXPvdSDK_static_64
-		PhysXVehicle_static_64
-		fmod${XE_FMOD_POSTFIX}
-		fmodstudio${XE_FMOD_POSTFIX}
-		)
-
-FILE(GLOB LIBRARY_FILES depend/bin/${XE_PLATFORM_PATH}/${XE_CONFIG}/*.*)
-foreach (LIBRARY_FILE ${LIBRARY_FILES})
-	message("${LIBRARY_FILE}")
-	add_custom_command(TARGET XE
-			POST_BUILD
-			COMMAND ${CMAKE_COMMAND} -E copy ${LIBRARY_FILE} "${CMAKE_SOURCE_DIR}/target/${XE_PLATFORM_PATH}/${XE_CONFIG}/bin"
-			)
-endforeach (LIBRARY_FILE)
-
-
-project(Launcher)
-set(CMAKE_CXX_STANDARD 17)
-add_executable(Launcher src/Launcher/${XE_PLATFORM_PATH}/main.cpp)
-target_link_libraries(Launcher XE)
+add_subdirectory(src)
+add_subdirectory(modules)
+add_subdirectory(launcher)
