@@ -8,6 +8,10 @@ if (WIN32)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /bigobj")
 endif ()
 
+if(NOT DEFINED ENV{XE_PATH})
+ message(FATAL_ERROR "environment variables are not set \'XE_PATH\'")
+endif()
+
 if (CMAKE_SYSTEM_NAME MATCHES "Linux")
 	set(XE_PLATFORM_PATH linux)
 elseif (CMAKE_SYSTEM_NAME MATCHES "Windows")
@@ -50,12 +54,6 @@ if (USE_SHARED_LIBS)
 else ()
 	set(BUILD_SHARED_LIBS OFF)
 endif ()
-
-
-if(NOT DEFINED ENV{XE_PATH})
-set( ENV{XE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/target/${XE_PLATFORM_PATH} )
-endif()
-message("XE_PATH: " $ENV{XE_PATH})
 
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG $ENV{XE_PATH}/debug/bin)

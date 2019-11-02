@@ -43,10 +43,40 @@ target_link_libraries(XE
 
 FILE(GLOB LIBRARY_FILES ../depend/bin/${XE_PLATFORM_PATH}/${XE_CONFIG}/*.*)
 foreach (LIBRARY_FILE ${LIBRARY_FILES})
-	message("${LIBRARY_FILE}")
 	add_custom_command(TARGET XE
 			POST_BUILD
 			COMMAND ${CMAKE_COMMAND} -E copy ${LIBRARY_FILE} "$ENV{XE_PATH}/${XE_CONFIG}/bin"
 			)
 endforeach (LIBRARY_FILE)
 
+
+set(INC_DIRS 
+AI
+Animation
+Audio
+Base
+Component
+Core
+GC
+Graphics
+GUI
+Interface
+Math
+mkdir.bat
+Navigation
+Physics
+Reflect
+Render
+Scene
+Utils)
+foreach(INC_DIR ${INC_DIRS})
+
+	FILE(GLOB INC_FILES ${INC_DIR}/*.h ${INC_DIR}/*.hpp ${INC_DIR}/*.inc)
+	foreach (INC_FILE ${INC_FILES})
+		add_custom_command(TARGET XE
+				POST_BUILD
+				COMMAND ${CMAKE_COMMAND} -E copy ${INC_FILE} "$ENV{XE_PATH}/include/${INC_DIR}"
+				)
+	endforeach (INC_FILE)
+
+endforeach (INC_DIR)
