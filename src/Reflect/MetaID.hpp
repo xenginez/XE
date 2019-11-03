@@ -34,6 +34,19 @@ template< typename T > struct ClassID
 	}
 };
 
+template< typename T > struct ClassID< std::shared_ptr< T > >
+{
+	static IMetaClassPtr Get( const std::shared_ptr< T > & val = nullptr )
+	{
+		if( val )
+		{
+			return val->GetMetaClass();
+		}
+
+		return T::GetMetaClassStatic();
+	}
+};
+
 template< typename T > struct MetaID
 {
 	static IMetaInfoPtr Get( const T * val = nullptr )
@@ -42,21 +55,14 @@ template< typename T > struct MetaID
 
 		return SP_CAST<IMetaInfo>( std::conditional_t< std::is_enum<raw_t>::value, EnumID<raw_t>, ClassID<raw_t>>::Get( val ) );
 	}
+};
 
-	static IMetaInfoPtr Get( const std::weak_ptr<T> * val )
+template< typename T > struct MetaID< std::shared_ptr< T > >
+{
+	static IMetaInfoPtr Get( const std::shared_ptr< T > & val = nullptr )
 	{
-		using raw_t = typename TypeTraits<T>::raw_t;
-
-		return SP_CAST<IMetaInfo>( std::conditional_t< std::is_enum<raw_t>::value, EnumID<raw_t>, ClassID<raw_t>>::Get( val->lock().get() ) );
+		return MetaID<T>::Get( val.get() );
 	}
-
-	static IMetaInfoPtr Get( const std::shared_ptr<T> * val )
-	{
-		using raw_t = typename TypeTraits<T>::raw_t;
-
-		return SP_CAST<IMetaInfo>( std::conditional_t< std::is_enum<raw_t>::value, EnumID<raw_t>, ClassID<raw_t>>::Get( val->get() ) );
-	}
-
 };
 
 template< typename T > struct TypeID
@@ -67,21 +73,14 @@ template< typename T > struct TypeID
 
 		return SP_CAST<IMetaType>( std::conditional_t< std::is_enum<raw_t>::value, EnumID<raw_t>, ClassID<raw_t>>::Get( val ) );
 	}
+};
 
-	static IMetaTypePtr Get( const std::weak_ptr<T> * val )
+template< typename T > struct TypeID< std::shared_ptr< T > >
+{
+	static IMetaTypePtr Get( const std::shared_ptr<T> & val = nullptr )
 	{
-		using raw_t = typename TypeTraits<T>::raw_t;
-
-		return SP_CAST<IMetaType>( std::conditional_t< std::is_enum<raw_t>::value, EnumID<raw_t>, ClassID<raw_t>>::Get( val->lock().get() ) );
+		return TypeID<T>::Get( val.get() );
 	}
-
-	static IMetaTypePtr Get( const std::shared_ptr<T> * val )
-	{
-		using raw_t = typename TypeTraits<T>::raw_t;
-
-		return SP_CAST<IMetaType>( std::conditional_t< std::is_enum<raw_t>::value, EnumID<raw_t>, ClassID<raw_t>>::Get( val->get() ) );
-	}
-
 };
 
 END_XE_NAMESPACE

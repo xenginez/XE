@@ -30,12 +30,10 @@ template<> class _DLL_EXPORT XE::OrderGroup< INDEX > \
 public: \
     static constexpr XE::uint8 group_value = INDEX; \
 }; \
-typedef XE::OrderGroup< INDEX > NAME##Group;
+namespace XE{ using NAME##Group = XE::OrderGroup< INDEX >; }
 
-#define DECL_ORDER(GROUP, NAME, DESC, PARAM) \
-DLL_VAR_WEAK extern const XE::Handle<GROUP> NAME = XE::Order::RegisterOrder< GROUP##Group >( #NAME, DESC, XE::MetaID< PARAM >::Get() )
-
-#define DECL_EVENT( NAME, DESC, PARAM ) DECL_ORDER(Event, NAME, DESC, PARAM )
+#define DECL_EVENT( NAME, DESC, PARAM ) \
+DLL_VAR_WEAK extern const XE::Handle<XE::Event> NAME = XE::Order::RegisterOrder< XE::EventGroup >( #NAME, DESC, XE::MetaID< PARAM >::Get() )
 
 
 DECL_GROUP( XE_API, 1, Event );
