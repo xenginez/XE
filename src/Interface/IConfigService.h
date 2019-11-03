@@ -23,6 +23,11 @@ public:
 	~IConfigService() override;
 
 public:
+	virtual void Save() = 0;
+
+	virtual void Reload() = 0;
+
+public:
 	void SetBool( const String & key, bool val );
 
 	bool GetBool( const String & key, bool def = false ) const;

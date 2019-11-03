@@ -29,43 +29,7 @@ XE::ConfigService::~ConfigService()
 
 void XE::ConfigService::Prepare()
 {
-	auto path = GetFramework()->GetUserDataPath() / "config.json";
-
-	std::ifstream ifs( path.string() );
-	if( ifs.is_open() )
-	{
-		rapidjson::Document doc;
-		rapidjson::IStreamWrapper wrapper( ifs );
-		doc.ParseStream( wrapper );
-		if( !doc.HasParseError() )
-		{
-			Stack<Pair<std::string, rapidjson::Value::ConstMemberIterator>> stack;
-
-			for( rapidjson::Value::ConstMemberIterator iter = doc.MemberBegin(); iter != doc.MemberEnd(); ++iter )
-			{
-				stack.push( { iter->name.GetString(), iter } );
-			}
-
-			while( !stack.empty() )
-			{
-				Pair<std::string, rapidjson::Value::ConstMemberIterator> pair = stack.top();
-				stack.pop();
-
-				if( !pair.second->value.IsObject() )
-				{
-					_p->Values.insert( { pair.first, pair.second->value.GetString() } );
-				}
-				else
-				{
-					for( rapidjson::Value::ConstMemberIterator it = pair.second->value.MemberBegin(); it != pair.second->value.MemberEnd(); ++it )
-					{
-						stack.push( { pair.first + "/" + it->name.GetString(), it } );
-					}
-				}
-			}
-		}
-	}
-	ifs.close();
+	Reload();
 }
 
 bool XE::ConfigService::Startup()
@@ -108,6 +72,13 @@ void nest_json( rapidjson::Value & parent, std::vector<std::string>::const_itera
 
 void XE::ConfigService::Clearup()
 {
+	Save();
+
+	_p->Values.clear();
+}
+
+void ConfigService::Save()
+{
 	auto path = GetFramework()->GetUserDataPath() / "config.json";
 
 	rapidjson::Document doc;
@@ -141,6 +112,49 @@ void XE::ConfigService::Clearup()
 	ofs.close();
 
 	_p->Values.clear();
+}
+
+void ConfigService::Reload()
+{
+	_p->Values.clear();
+
+	auto path = GetFramework()->GetUserDataPath() / "config.json";
+
+	std::ifstream ifs( path.string() );
+	if( ifs.is_open() )
+	{
+		rapidjson::Document doc;
+		rapidjson::IStreamWrapper wrapper( ifs );
+		doc.ParseStream( wrapper );
+		if( !doc.HasParseError() )
+		{
+			Stack<Pair<std::string, rapidjson::Value::ConstMemberIterator>> stack;
+
+			for( rapidjson::Value::ConstMemberIterator iter = doc.MemberBegin(); iter != doc.MemberEnd(); ++iter )
+			{
+				stack.push( { iter->name.GetString(), iter } );
+			}
+
+			while( !stack.empty() )
+			{
+				Pair<std::string, rapidjson::Value::ConstMemberIterator> pair = stack.top();
+				stack.pop();
+
+				if( !pair.second->value.IsObject() )
+				{
+					_p->Values.insert( { pair.first, pair.second->value.GetString() } );
+				}
+				else
+				{
+					for( rapidjson::Value::ConstMemberIterator it = pair.second->value.MemberBegin(); it != pair.second->value.MemberEnd(); ++it )
+					{
+						stack.push( { pair.first + "/" + it->name.GetString(), it } );
+					}
+				}
+			}
+		}
+	}
+	ifs.close();
 }
 
 String XE::ConfigService::GetValue( const String & key ) const

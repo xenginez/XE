@@ -34,6 +34,11 @@ public:
 
 	void Clearup() override;
 
+public:
+	void Save() override;
+
+	void Reload() override;
+
 protected:
 	String GetValue( const String & key ) const override;
 
