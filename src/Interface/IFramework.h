@@ -26,7 +26,7 @@ public:
 	static IFrameworkPtr GetCurrentFramework();
 
 public:
-	template< typename T > T GetService() const
+	template< typename T > T GetServiceT() const
 	{
 		return SP_CAST< typename T::element_type >( GetService( ClassID< typename T::element_type >::Get() ) );
 	}

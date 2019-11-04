@@ -78,17 +78,19 @@ public:
 
 	std::filesystem::path GetApplicationPath() const override;
 
-private:
-	void Prepare();
+protected:
+	virtual void Prepare();
 
-	void Startup();
+	virtual void Startup();
 
-	void Update();
+	virtual void Update();
 
-	void Clearup();
+	virtual void Clearup();
 
 protected:
 	virtual void LoadModules();
+
+	virtual void LoadServices();
 
 private:
 	Private * _p;
