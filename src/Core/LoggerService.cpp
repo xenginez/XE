@@ -2,6 +2,9 @@
 
 USING_XE
 
+BEG_META( LoggerService )
+END_META()
+
 struct XE::LoggerService::Private
 {
 	std::mutex _Lock;

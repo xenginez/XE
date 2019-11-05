@@ -8,17 +8,22 @@ USING_XE
 
 XE::LibraryHandle XE::Library::Open( const String & val )
 {
-	return reinterpret_cast< XE::uint64 >( ::LoadLibrary( val.ToCString() ) );
+	HMODULE module = ::LoadLibrary( val.ToCString() );
+	if( module == nullptr )
+	{
+		return LibraryHandle::Invalid;
+	}
+	return ( XE::uint64 )( module );
 }
 
 void * XE::Library::Symbol( XE::LibraryHandle handle, const String & name )
 {
-	return ::GetProcAddress( reinterpret_cast< HMODULE >( handle.GetValue() ), name.ToCString() );
+	return ::GetProcAddress( (HMODULE )( handle.GetValue() ), name.ToCString() );
 }
 
 bool XE::Library::Close( XE::LibraryHandle handle )
 {
-	return ::FreeLibrary( reinterpret_cast< HMODULE >( handle.GetValue() ) );
+	return ::FreeLibrary( (HMODULE )( handle.GetValue() ) );
 }
 #else
 
@@ -26,7 +31,12 @@ bool XE::Library::Close( XE::LibraryHandle handle )
 
 XE::LibraryHandle XE::Library::Open( const String & val )
 {
-	return reinterpret_cast< XE::uint64 >( ::dlopen( val.ToCString(), RTLD_NOW ) );
+	void * module = ::dlopen( val.ToCString(), RTLD_NOW );
+	if( module == nullptr )
+	{
+		return LibraryHandle::Invalid;
+	}
+	return reinterpret_cast< XE::uint64 >( module );
 }
 
 void * XE::Library::Symbol( XE::LibraryHandle handle, const String & name )

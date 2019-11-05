@@ -16,6 +16,11 @@
 #include "NavigationService.h"
 #include "LocalizationService.h"
 
+#include <rapidjson/rapidjson.h>
+#include <rapidjson/document.h>
+#include <rapidjson/istreamwrapper.h>
+
+
 USING_XE
 
 BEG_META( CoreFramework )
@@ -295,17 +300,27 @@ void XE::CoreFramework::LoadModules()
 
 void CoreFramework::LoadServices()
 {
-	RegisterService( XE::ClassID<ConfigService>::Get() );
-
-	auto services = StringUtils::Split( GetConfigService()->GetString( "System/Services" ), "," );
-	for( auto service : services )
+	auto path = GetUserDataPath() / "config.json";
+	std::ifstream ifs( path.string() );
+	if( ifs.is_open() )
 	{
-		if( auto meta = Reflection::FindClass( service ) )
+		rapidjson::Document doc;
+		rapidjson::IStreamWrapper wrapper( ifs );
+		doc.ParseStream( wrapper );
+		if( !doc.HasParseError() )
 		{
-			if( auto ser = meta->ConstructPtr().Value<IServicePtr>() )
+			auto services = StringUtils::Split( doc["System"]["Services"].GetString(), "," );
+			for( auto service : services )
 			{
-				_p->_Services.push_back( ser );
+				if( auto meta = Reflection::FindClass( service ) )
+				{
+					if( auto ser = meta->ConstructPtr().Value<IServicePtr>() )
+					{
+						_p->_Services.push_back( ser );
+					}
+				}
 			}
 		}
 	}
+	ifs.close();
 }
