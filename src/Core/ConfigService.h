@@ -40,7 +40,12 @@ public:
 	void Reload() override;
 
 protected:
-	String GetValue( const String & key ) const override;
+	void Save( const std::filesystem::path & path, const Map < String, String > & values ) const;
+
+	void Reload( const std::filesystem::path & path, Map < String, String > & values ) const;
+
+protected:
+	String GetValue( const String & key ) override;
 
 	void SetValue( const String & key, const String & val ) override;
 

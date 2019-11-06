@@ -536,6 +536,8 @@ enum class TextureFormat
 	D24F,
 	D32F,
 	D0S8,
+
+	DEFAULT,
 };
 DECL_META_ENUM( XE_API, TextureFormat );
 

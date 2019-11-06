@@ -338,7 +338,7 @@ public:
 		, TextureHandle _handle
 		, XE::uint8 _mip
 		, Access _access
-		, TextureFormat _format = TextureFormat::UNKNOWN
+		, TextureFormat _format = TextureFormat::DEFAULT
 	);
 
 	void dispatch(
@@ -469,7 +469,7 @@ public:
 		XE::uint32 _width
 		, XE::uint32 _height
 		, ResetFlags _flags = ResetFlags::NONE
-		, TextureFormat _format = TextureFormat::UNKNOWN
+		, TextureFormat _format = TextureFormat::DEFAULT
 	);
 
 	static Encoder begin( bool _forThread = false );
@@ -811,8 +811,8 @@ public:
 		WindowHandle _nwh
 		, XE::uint16 _width
 		, XE::uint16 _height
-		, TextureFormat _format = TextureFormat::UNKNOWN
-		, TextureFormat _depthFormat = TextureFormat::UNKNOWN
+		, TextureFormat _format = TextureFormat::DEFAULT
+		, TextureFormat _depthFormat = TextureFormat::DEFAULT
 	);
 
 	static void setName(
@@ -1153,7 +1153,7 @@ public:
 		, TextureHandle _handle
 		, XE::uint8 _mip
 		, Access _access
-		, TextureFormat _format = TextureFormat::UNKNOWN
+		, TextureFormat _format = TextureFormat::DEFAULT
 	);
 
 	static void dispatch(

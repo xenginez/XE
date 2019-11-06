@@ -81,11 +81,16 @@ void ConfigService::Save()
 {
 	auto path = GetFramework()->GetUserDataPath() / "config.json";
 
+	Save( path, _p->Values );
+}
+
+void ConfigService::Save( const std::filesystem::path & path, const Map < String, String > & values ) const
+{
 	rapidjson::Document doc;
 	auto & allocator = doc.GetAllocator();
 	doc.SetObject();
 
-	for( const auto & it : _p->Values )
+	for( const auto & it : values )
 	{
 		auto list = StringUtils::Split( it.first, "/" );
 
@@ -110,8 +115,6 @@ void ConfigService::Save()
 		doc.Accept( writer );
 	}
 	ofs.close();
-
-	_p->Values.clear();
 }
 
 void ConfigService::Reload()
@@ -120,6 +123,11 @@ void ConfigService::Reload()
 
 	auto path = GetFramework()->GetUserDataPath() / "config.json";
 
+	Reload( path, _p->Values );
+}
+
+void ConfigService::Reload( const std::filesystem::path & path, Map < String, String > & values ) const
+{
 	std::ifstream ifs( path.string() );
 	if( ifs.is_open() )
 	{
@@ -142,7 +150,7 @@ void ConfigService::Reload()
 
 				if( !pair.second->value.IsObject() )
 				{
-					_p->Values.insert( { pair.first, pair.second->value.GetString() } );
+					values.insert( { pair.first, pair.second->value.GetString() } );
 				}
 				else
 				{
@@ -157,7 +165,7 @@ void ConfigService::Reload()
 	ifs.close();
 }
 
-String XE::ConfigService::GetValue( const String & key ) const
+String XE::ConfigService::GetValue( const String & key )
 {
 	auto it = _p->Values.find( key );
 
