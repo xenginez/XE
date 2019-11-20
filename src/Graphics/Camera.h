@@ -23,10 +23,6 @@ public:
 	~Camera();
 
 public:
-	bool GetActive() const;
-
-	void SetActive( bool val );
-
 	XE::float32 GetFOV() const;
 
 	void SetFOV( XE::float32 val );
@@ -73,7 +69,6 @@ public:
 	void SetViewHandle( const ViewHandle & val );
 
 private:
-	bool _Active;
 	XE::float32 _FOV;
 	XE::float32 _Far;
 	XE::float32 _Near;

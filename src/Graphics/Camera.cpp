@@ -8,7 +8,7 @@ BEG_META( Camera )
 END_META()
 
 XE::Camera::Camera()
-	:_Active( true ), _FOV( 60.0f ), _Far( 1000.0f ), _Near( 0.1f ), _Depth( 0 ), _Aspect( 1.333f )
+	:_FOV( 60.0f ), _Far( 1000.0f ), _Near( 0.1f ), _Depth( 0 ), _Aspect( 1.333f )
 {
 
 }
@@ -16,16 +16,6 @@ XE::Camera::Camera()
 XE::Camera::~Camera()
 {
 
-}
-
-bool XE::Camera::GetActive() const
-{
-	return _Active;
-}
-
-void XE::Camera::SetActive( bool val )
-{
-	_Active = val;
 }
 
 XE::float32 XE::Camera::GetFOV() const
