@@ -9,7 +9,6 @@ type->Property( "Child", &DecoratorNode::_Child );
 END_META()
 
 XE::DecoratorNode::DecoratorNode()
-	:_Node( nullptr )
 {
 
 }
@@ -19,19 +18,22 @@ XE::DecoratorNode::~DecoratorNode()
 
 }
 
-XE::Node * XE::DecoratorNode::GetChildNode() const
+const XE::NodePtr & XE::DecoratorNode::GetChildNode() const
 {
-	return _Node;
+	return GetBehaviorTree()->GetNode( _Child );
+}
+
+void DecoratorNode::SetChildNode( const IMetaClassPtr & val )
+{
+	_Child = GetBehaviorTree()->AddNode( val );
 }
 
 void XE::DecoratorNode::OnStartup()
 {
 	Super::OnStartup();
 
-	if ( Node * node = GetBehaviorTree()->GetNode( _Child ) )
+	if ( auto node = GetChildNode() )
 	{
-		_Node = node;
-
 		node->Startup();
 
 		SetStatus( NodeStatus::Running );
@@ -46,9 +48,9 @@ void XE::DecoratorNode::OnUpdate( XE::float32 dt )
 {
 	Super::OnUpdate( dt );
 
-	if ( _Node && _Node->GetStatus() == NodeStatus::Running )
+	if ( GetChildNode()->GetStatus() == NodeStatus::Running )
 	{
-		_Node->Update( dt );
+		GetChildNode()->Update( dt );
 	}
 }
 
@@ -56,15 +58,10 @@ void XE::DecoratorNode::OnClearup()
 {
 	Super::OnClearup();
 
-	if ( _Node )
+	if( GetChildNode()->GetStatus() != NodeStatus::Finish )
 	{
-		if ( _Node->GetStatus() != NodeStatus::Finish )
-		{
-			_Node->Clearup();
-		}
+		GetChildNode()->Clearup();
 	}
-
-	_Node = nullptr;
 }
 
 BEG_META( RepeatNode )
@@ -93,7 +90,7 @@ void XE::RepeatNode::OnUpdate( XE::float32 dt )
 {
 	Super::OnUpdate( dt );
 
-	Node * node = GetChildNode();
+	auto node = GetChildNode();
 
 	if ( node->GetStatus() == NodeStatus::Failure || node->GetStatus() == NodeStatus::Success )
 	{

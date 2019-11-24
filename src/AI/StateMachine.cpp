@@ -26,12 +26,12 @@ void XE::StateMachine::Startup()
 
 	for (auto s : _States)
 	{
-		s->SetStateMachine( this );
+		s->SetStateMachine( XE_THIS( StateMachine ) );
 
 		auto conds = s->GetConditions();
 		for ( auto cond : conds )
 		{
-			cond.first->SetAIModule( this );
+			cond.first->SetAIModule( XE_THIS( AIModule ) );
 		}
 	}
 

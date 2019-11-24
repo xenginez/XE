@@ -23,7 +23,9 @@ public:
 	~DecoratorNode();
 
 public:
-	Node * GetChildNode() const;
+	const NodePtr & GetChildNode() const;
+
+	void SetChildNode( const IMetaClassPtr & val );
 
 public:
 	virtual void OnStartup() override;
@@ -34,7 +36,6 @@ public:
 
 private:
 	NodeHandle _Child;
-	Node * _Node;
 };
 
 class XE_API RepeatNode : public DecoratorNode

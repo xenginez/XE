@@ -30,11 +30,16 @@ public:
 	virtual void Clearup() override;
 
 public:
-	Node * GetRoot() const;
+	NodeHandle GetRoot() const;
 
-	BlackBoard * GetBlackBoard() const;
+	void SetRoot( NodeHandle val );
 
-	Node * GetNode( NodeHandle val ) const;
+	BlackBoardPtr GetBlackBoard() const;
+
+	const NodePtr & GetNode( NodeHandle val ) const;
+
+public:
+	NodeHandle AddNode( const IMetaClassPtr & val );
 
 public:
 	NodeHandle _Root;

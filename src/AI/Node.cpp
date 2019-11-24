@@ -1,7 +1,7 @@
 #include "Node.h"
 
-#include "BehaviorTree.h"
 #include "Condition.h"
+#include "BehaviorTree.h"
 
 USING_XE
 
@@ -26,17 +26,17 @@ XE::NodeHandle XE::Node::GetHandle() const
 	return _Handle;
 }
 
-XE::BlackBoard * XE::Node::GetBlackBoard() const
+void Node::SetHandle( XE::NodeHandle val )
 {
-	return _BehaviorTree->GetBlackBoard();
+	_Handle = val;
 }
 
-void XE::Node::SetBehaviorTree( BehaviorTree * val )
+void XE::Node::SetBehaviorTree( const BehaviorTreePtr & val )
 {
 	_BehaviorTree = val;
 }
 
-XE::BehaviorTree * XE::Node::GetBehaviorTree() const
+const XE::BehaviorTreePtr & XE::Node::GetBehaviorTree() const
 {
 	return _BehaviorTree;
 }

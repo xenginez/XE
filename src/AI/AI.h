@@ -20,11 +20,7 @@
 #include "ActionNode.h"
 #include "StateMachine.h"
 #include "BehaviorTree.h"
-#include "BTActionNode.h"
 #include "CompositeNode.h"
 #include "DecoratorNode.h"
-#include "BTCompositeNode.h"
-#include "BTConditionNode.h"
-#include "BTDecoratorNode.h"
 
 #endif // AI_H__3309FBAA_94E1_4780_8910_E14CB055732E

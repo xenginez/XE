@@ -26,12 +26,12 @@ public:
 	virtual bool Judgment() const;
 
 public:
-	AIModule * GetAIModule() const;
+	const AIModulePtr & GetAIModule() const;
 
-	void SetAIModule( AIModule * val );
+	void SetAIModule( const AIModulePtr & val );
 
 private:
-	AIModule * _AIModule;
+	AIModulePtr _AIModule;
 };
 
 END_XE_NAMESPACE

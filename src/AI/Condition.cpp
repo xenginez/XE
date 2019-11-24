@@ -21,12 +21,12 @@ bool XE::Condition::Judgment() const
 	return false;
 }
 
-XE::AIModule * XE::Condition::GetAIModule() const
+const XE::AIModulePtr & XE::Condition::GetAIModule() const
 {
 	return _AIModule;
 }
 
-void XE::Condition::SetAIModule( AIModule * val )
+void XE::Condition::SetAIModule( const AIModulePtr & val )
 {
 	_AIModule = val;
 }

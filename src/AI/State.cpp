@@ -26,12 +26,12 @@ const XE::Array< Pair<ConditionPtr, StateHandle> >& XE::State::GetConditions() c
 	return _Conditions;
 }
 
-XE::StateMachine * XE::State::GetStateMachine() const
+const XE::StateMachinePtr & XE::State::GetStateMachine() const
 {
 	return _StateMachine;
 }
 
-void XE::State::SetStateMachine( StateMachine * val )
+void XE::State::SetStateMachine( const XE::StateMachinePtr & val )
 {
 	_StateMachine = val;
 }

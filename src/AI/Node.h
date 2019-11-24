@@ -25,12 +25,11 @@ public:
 public:
 	NodeHandle GetHandle() const;
 
-	BlackBoard * GetBlackBoard() const;
+	void SetHandle( NodeHandle val );
 
-public:
-	BehaviorTree * GetBehaviorTree() const;
+	const BehaviorTreePtr & GetBehaviorTree() const;
 
-	void SetBehaviorTree( BehaviorTree * val );
+	void SetBehaviorTree( const BehaviorTreePtr & val );
 
 public:
 	NodeStatus GetStatus() const;
@@ -57,7 +56,7 @@ private:
 	ConditionPtr _PreCondition;
 	ConditionStatus _ConditionStatus;
 
-	BehaviorTree * _BehaviorTree;
+	BehaviorTreePtr _BehaviorTree;
 };
 
 END_XE_NAMESPACE

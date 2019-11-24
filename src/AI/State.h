@@ -28,9 +28,9 @@ public:
 	const Array< Pair<ConditionPtr, StateHandle> >& GetConditions() const;
 
 public:
-	StateMachine * GetStateMachine() const;
+	const StateMachinePtr & GetStateMachine() const;
 
-	void SetStateMachine( StateMachine * val );
+	void SetStateMachine( const StateMachinePtr & val );
 
 public:
 	void Startup();
@@ -48,7 +48,7 @@ protected:
 
 private:
 	StateHandle _Handle;
-	StateMachine * _StateMachine;
+	StateMachinePtr _StateMachine;
 	Array< Pair<ConditionPtr, StateHandle> > _Conditions;
 };
 

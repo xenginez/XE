@@ -18,27 +18,24 @@ XE::CompositeNode::~CompositeNode()
 
 }
 
-const XE::Array<Node *> XE::CompositeNode::GetChildren() const
+const XE::Array<NodeHandle> & XE::CompositeNode::GetChildren() const
 {
-	return _Nodes;
+	return _Children;
 }
 
 void XE::CompositeNode::OnStartup()
 {
 	Super::OnStartup();
 
-	for (auto h : _Children)
-	{
-		_Nodes.push_back( GetBehaviorTree()->GetNode( h ) );
-	}
-
 	SetStatus( NodeStatus::Running );
 }
 
 void XE::CompositeNode::OnClearup()
 {
-	for ( auto node : _Nodes )
+	for ( auto handle : _Children )
 	{
+		auto node = GetBehaviorTree()->GetNode( handle );
+
 		if ( node->GetStatus() != NodeStatus::Finish )
 		{
 			node->Clearup();
@@ -46,6 +43,11 @@ void XE::CompositeNode::OnClearup()
 	}
 
 	Super::OnClearup();
+}
+
+void CompositeNode::AddChild( const IMetaClassPtr & val )
+{
+	_Children.push_back( GetBehaviorTree()->AddNode( val ) );
 }
 
 BEG_META( SequenceNode )
@@ -75,7 +77,7 @@ void XE::SequenceNode::OnUpdate( XE::float32 dt )
 
 	auto children = GetChildren();
 
-	if ( Node * node = children[_Current] )
+	if( NodePtr node = GetBehaviorTree()->GetNode( GetChildren()[_Current] ) )
 	{
 		if ( node->GetStatus() == NodeStatus::None )
 		{
@@ -126,7 +128,7 @@ void XE::SelectorNode::OnUpdate( XE::float32 dt )
 
 	auto children = GetChildren();
 
-	if ( Node * node = children[_Current] )
+	if( NodePtr node = GetBehaviorTree()->GetNode( GetChildren()[_Current] ) )
 	{
 		if ( node->GetStatus() == NodeStatus::None )
 		{
@@ -178,8 +180,10 @@ void XE::ParallelNode::OnUpdate( XE::float32 dt )
 
 	bool IsFinish = true;
 
-	for ( auto node : children )
+	for ( auto handle : children )
 	{
+		NodePtr node = GetBehaviorTree()->GetNode( handle );
+
 		if ( node->GetStatus() == NodeStatus::None )
 		{
 			node->Startup();

@@ -23,7 +23,10 @@ public:
 	~CompositeNode();
 
 public:
-	const Array<Node *> GetChildren() const;
+	const Array<NodeHandle> & GetChildren() const;
+
+public:
+	void AddChild( const IMetaClassPtr & val );
 
 protected:
 	virtual void OnStartup() override;
@@ -32,7 +35,6 @@ protected:
 
 private:
 	Array<NodeHandle> _Children;
-	Array<Node *> _Nodes;
 };
 
 class XE_API SequenceNode : public CompositeNode

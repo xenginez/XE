@@ -1,8 +1,11 @@
 #include "BehaviorTree.h"
 
-#include "Node.h"
+#include "CompositeNode.h"
 
 USING_XE
+
+BEG_META( BehaviorTree )
+END_META()
 
 XE::BehaviorTree::BehaviorTree()
 {
@@ -16,9 +19,14 @@ XE::BehaviorTree::~BehaviorTree()
 
 void XE::BehaviorTree::Startup()
 {
+	if (_Nodes.empty())
+	{
+		AddNode( SequenceNode::GetMetaClassStatic() );
+	}
+
 	for ( auto node : _Nodes )
 	{
-		node->SetBehaviorTree( this );
+		node->SetBehaviorTree( XE_THIS( BehaviorTree ) );
 	}
 }
 
@@ -58,19 +66,42 @@ void XE::BehaviorTree::Clearup()
 	}
 }
 
-XE::Node * XE::BehaviorTree::GetRoot() const
+NodeHandle XE::BehaviorTree::GetRoot() const
 {
-	return _Nodes[_Root.GetValue()].get();
+	return _Root;
 }
 
-XE::BlackBoard * XE::BehaviorTree::GetBlackBoard() const
+void BehaviorTree::SetRoot( NodeHandle val )
 {
-	return _Blackboard.get();
+	_Root = val;
 }
 
-XE::Node * XE::BehaviorTree::GetNode( NodeHandle val ) const
+XE::BlackBoardPtr XE::BehaviorTree::GetBlackBoard() const
+{
+	return _Blackboard;
+}
+
+const XE::NodePtr & XE::BehaviorTree::GetNode( NodeHandle val ) const
 {
 	XE_ASSERT( val.GetValue() < _Nodes.size() );
 
-	return _Nodes[val.GetValue()].get();
+	return _Nodes[val.GetValue()];
+}
+
+NodeHandle BehaviorTree::AddNode( const IMetaClassPtr & val )
+{
+	if( val )
+	{
+		if( NodePtr node = val->ConstructPtr().Value<NodePtr>() )
+		{
+			node->SetHandle( _Nodes.size() );
+			node->SetBehaviorTree( XE_THIS( BehaviorTree ) );
+
+			_Nodes.push_back( node );
+
+			return node->GetHandle();
+		}
+	}
+
+	return NodeHandle::Invalid;
 }
