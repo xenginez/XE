@@ -29,6 +29,13 @@ public:
 
 	virtual void Clearup() = 0;
 
+public:
+	const XE::String & GetName() const;
+
+	void SetName( const XE::String & val );
+
+private:
+	XE::String _Name;
 };
 
 END_XE_NAMESPACE

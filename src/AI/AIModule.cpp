@@ -14,3 +14,13 @@ XE::AIModule::~AIModule()
 {
 
 }
+
+const XE::String & AIModule::GetName() const
+{
+	return _Name;
+}
+
+void AIModule::SetName( const XE::String & val )
+{
+	_Name = val;
+}
