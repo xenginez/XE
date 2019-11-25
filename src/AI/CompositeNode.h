@@ -26,7 +26,7 @@ public:
 	const Array<NodeHandle> & GetChildren() const;
 
 public:
-	void AddChild( const IMetaClassPtr & val );
+	NodeHandle AddChild( const IMetaClassPtr & val );
 
 protected:
 	virtual void OnStartup() override;

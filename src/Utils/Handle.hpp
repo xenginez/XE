@@ -43,11 +43,6 @@ public:
 		return _value != Invalid._value;
 	}
 
-	operator XE::uint64() const
-	{
-		return _value;
-	}
-
 	Handle& operator=( const Handle& val )
 	{
 		_value = val._value;

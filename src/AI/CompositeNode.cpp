@@ -45,9 +45,11 @@ void XE::CompositeNode::OnClearup()
 	Super::OnClearup();
 }
 
-void CompositeNode::AddChild( const IMetaClassPtr & val )
+XE::NodeHandle CompositeNode::AddChild( const IMetaClassPtr & val )
 {
-	_Children.push_back( GetBehaviorTree()->AddNode( val ) );
+	NodeHandle handle = GetBehaviorTree()->AddNode( val );
+	_Children.push_back( handle );
+	return handle;
 }
 
 BEG_META( SequenceNode )

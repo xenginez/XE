@@ -19,9 +19,9 @@ XE::BehaviorTree::~BehaviorTree()
 
 void XE::BehaviorTree::Startup()
 {
-	if (_Nodes.empty())
+	if( _Nodes.empty() )
 	{
-		AddNode( SequenceNode::GetMetaClassStatic() );
+		_Root = AddNode( SequenceNode::GetMetaClassStatic() );
 	}
 
 	for ( auto node : _Nodes )

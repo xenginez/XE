@@ -23,9 +23,9 @@ public:
 	~DecoratorNode();
 
 public:
-	const NodePtr & GetChildNode() const;
+	NodeHandle GetChild() const;
 
-	void SetChildNode( const IMetaClassPtr & val );
+	NodeHandle AddChild( const IMetaClassPtr & val );
 
 public:
 	virtual void OnStartup() override;

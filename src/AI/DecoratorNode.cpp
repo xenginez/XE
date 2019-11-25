@@ -18,21 +18,22 @@ XE::DecoratorNode::~DecoratorNode()
 
 }
 
-const XE::NodePtr & XE::DecoratorNode::GetChildNode() const
+XE::NodeHandle XE::DecoratorNode::GetChild() const
 {
-	return GetBehaviorTree()->GetNode( _Child );
+	return _Child;
 }
 
-void DecoratorNode::SetChildNode( const IMetaClassPtr & val )
+XE::NodeHandle DecoratorNode::AddChild( const IMetaClassPtr & val )
 {
 	_Child = GetBehaviorTree()->AddNode( val );
+	return _Child;
 }
 
 void XE::DecoratorNode::OnStartup()
 {
 	Super::OnStartup();
 
-	if ( auto node = GetChildNode() )
+	if( auto node = GetBehaviorTree()->GetNode( GetChild() ) )
 	{
 		node->Startup();
 
@@ -48,9 +49,9 @@ void XE::DecoratorNode::OnUpdate( XE::float32 dt )
 {
 	Super::OnUpdate( dt );
 
-	if ( GetChildNode()->GetStatus() == NodeStatus::Running )
+	if ( GetBehaviorTree()->GetNode( GetChild() )->GetStatus() == NodeStatus::Running )
 	{
-		GetChildNode()->Update( dt );
+		GetBehaviorTree()->GetNode( GetChild() )->Update( dt );
 	}
 }
 
@@ -58,9 +59,9 @@ void XE::DecoratorNode::OnClearup()
 {
 	Super::OnClearup();
 
-	if( GetChildNode()->GetStatus() != NodeStatus::Finish )
+	if( GetBehaviorTree()->GetNode( GetChild() )->GetStatus() != NodeStatus::Finish )
 	{
-		GetChildNode()->Clearup();
+		GetBehaviorTree()->GetNode( GetChild() )->Clearup();
 	}
 }
 
@@ -90,31 +91,33 @@ void XE::RepeatNode::OnUpdate( XE::float32 dt )
 {
 	Super::OnUpdate( dt );
 
-	auto node = GetChildNode();
-
-	if ( node->GetStatus() == NodeStatus::Failure || node->GetStatus() == NodeStatus::Success )
+	if( auto node = GetBehaviorTree()->GetNode( GetChild() ) )
 	{
-		node->Clearup();
-
-		if ( _Count == -1 )
+		if( node->GetStatus() == NodeStatus::Failure || node->GetStatus() == NodeStatus::Success )
 		{
-			node->SetStatus( NodeStatus::None );
-			node->Startup();
-		}
-		else
-		{
-			_Tally--;
+			node->Clearup();
 
-			if ( _Tally <= 0 )
-			{
-				SetStatus( NodeStatus::Success );
-			}
-			else
+			if( _Count == -1 )
 			{
 				node->SetStatus( NodeStatus::None );
 				node->Startup();
 			}
+			else
+			{
+				_Tally--;
+
+				if( _Tally <= 0 )
+				{
+					SetStatus( NodeStatus::Success );
+				}
+				else
+				{
+					node->SetStatus( NodeStatus::None );
+					node->Startup();
+				}
+			}
 		}
+
 	}
 }
 
@@ -135,7 +138,7 @@ void XE::SuccessNode::OnStartup()
 {
 	Super::OnStartup();
 
-	switch ( GetChildNode()->GetStatus() )
+	switch ( GetBehaviorTree()->GetNode( GetChild() )->GetStatus() )
 	{
 	case NodeStatus::Failure:
 	case NodeStatus::Success:
@@ -151,7 +154,7 @@ void XE::SuccessNode::OnUpdate( XE::float32 dt )
 {
 	Super::OnUpdate( dt );
 
-	switch ( GetChildNode()->GetStatus() )
+	switch ( GetBehaviorTree()->GetNode( GetChild() )->GetStatus() )
 	{
 	case NodeStatus::Failure:
 	case NodeStatus::Success:
@@ -179,7 +182,7 @@ void XE::FailureNode::OnStartup()
 {
 	Super::OnStartup();
 
-	switch ( GetChildNode()->GetStatus() )
+	switch ( GetBehaviorTree()->GetNode( GetChild() )->GetStatus() )
 	{
 	case NodeStatus::Failure:
 	case NodeStatus::Success:
@@ -194,7 +197,7 @@ void XE::FailureNode::OnUpdate( XE::float32 dt )
 {
 	Super::OnUpdate( dt );
 
-	switch ( GetChildNode()->GetStatus() )
+	switch ( GetBehaviorTree()->GetNode( GetChild() )->GetStatus() )
 	{
 	case NodeStatus::Failure:
 	case NodeStatus::Success:
@@ -222,7 +225,7 @@ void XE::ReversedNode::OnStartup()
 {
 	Super::OnStartup();
 
-	switch ( GetChildNode()->GetStatus() )
+	switch ( GetBehaviorTree()->GetNode( GetChild() )->GetStatus() )
 	{
 	case NodeStatus::Failure:
 		SetStatus( NodeStatus::Success );
@@ -239,7 +242,7 @@ void XE::ReversedNode::OnUpdate( XE::float32 dt )
 {
 	Super::OnUpdate( dt );
 
-	switch ( GetChildNode()->GetStatus() )
+	switch ( GetBehaviorTree()->GetNode( GetChild() )->GetStatus() )
 	{
 	case NodeStatus::Failure:
 		SetStatus( NodeStatus::Success );
@@ -280,13 +283,16 @@ void XE::DelayNode::OnUpdate( XE::float32 dt )
 {
 	Super::OnUpdate( dt );
 
-	if ( GetChildNode()->GetStatus() == NodeStatus::Failure || GetChildNode()->GetStatus() == NodeStatus::Success )
+	if (auto node = GetBehaviorTree()->GetNode( GetChild() ) )
 	{
-		_Dt -= dt;
-
-		if ( _Dt <= Mathf::Epsilon )
+		if( node->GetStatus() == NodeStatus::Failure || node->GetStatus() == NodeStatus::Success )
 		{
-			SetStatus( GetChildNode()->GetStatus() );
+			_Dt -= dt;
+
+			if( _Dt <= Mathf::Epsilon )
+			{
+				SetStatus( GetBehaviorTree()->GetNode( GetChild() )->GetStatus() );
+			}
 		}
 	}
 }
