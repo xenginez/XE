@@ -26,7 +26,17 @@ XE::NodeHandle XE::DecoratorNode::GetChild() const
 XE::NodeHandle DecoratorNode::AddChild( const IMetaClassPtr & val )
 {
 	_Child = GetBehaviorTree()->AddNode( val );
+	GetBehaviorTree()->GetNode( _Child )->SetParent( GetHandle() );
 	return _Child;
+}
+
+void DecoratorNode::RemoveChild()
+{
+	if( _Child != XE::NodeHandle::Invalid )
+	{
+		GetBehaviorTree()->RemoveNode( _Child );
+		_Child = XE::NodeHandle::Invalid;
+	}
 }
 
 void XE::DecoratorNode::OnStartup()

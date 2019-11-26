@@ -27,6 +27,10 @@ public:
 
 	void SetHandle( NodeHandle val );
 
+	NodeHandle GetParent() const;
+
+	void SetParent( NodeHandle val );
+
 	const BehaviorTreePtr & GetBehaviorTree() const;
 
 	void SetBehaviorTree( const BehaviorTreePtr & val );
@@ -52,6 +56,7 @@ protected:
 
 private:
 	NodeHandle _Handle;
+	NodeHandle _Parent;
 	NodeStatus _Status;
 	ConditionPtr _PreCondition;
 	ConditionStatus _ConditionStatus;

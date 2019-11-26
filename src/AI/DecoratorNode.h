@@ -27,6 +27,8 @@ public:
 
 	NodeHandle AddChild( const IMetaClassPtr & val );
 
+	void RemoveChild();
+
 public:
 	virtual void OnStartup() override;
 

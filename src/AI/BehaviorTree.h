@@ -41,6 +41,8 @@ public:
 public:
 	NodeHandle AddNode( const IMetaClassPtr & val );
 
+	void RemoveNode( XE::NodeHandle val );
+
 public:
 	NodeHandle _Root;
 	BlackBoardPtr _Blackboard;

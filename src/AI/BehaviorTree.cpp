@@ -105,3 +105,10 @@ NodeHandle BehaviorTree::AddNode( const IMetaClassPtr & val )
 
 	return NodeHandle::Invalid;
 }
+
+void BehaviorTree::RemoveNode( XE::NodeHandle val )
+{
+	XE_ASSERT( val.GetValue() < _Nodes.size() );
+
+	_Nodes[val.GetValue()] = nullptr;
+}

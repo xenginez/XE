@@ -31,6 +31,16 @@ void Node::SetHandle( XE::NodeHandle val )
 	_Handle = val;
 }
 
+NodeHandle Node::GetParent() const
+{
+	return _Parent;
+}
+
+void Node::SetParent( NodeHandle val )
+{
+	_Parent = val;
+}
+
 void XE::Node::SetBehaviorTree( const BehaviorTreePtr & val )
 {
 	_BehaviorTree = val;

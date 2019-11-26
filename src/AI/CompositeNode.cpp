@@ -48,8 +48,21 @@ void XE::CompositeNode::OnClearup()
 XE::NodeHandle CompositeNode::AddChild( const IMetaClassPtr & val )
 {
 	NodeHandle handle = GetBehaviorTree()->AddNode( val );
+	GetBehaviorTree()->GetNode( handle )->SetParent( GetHandle() );
 	_Children.push_back( handle );
 	return handle;
+}
+
+void CompositeNode::RemoveChild( NodeHandle val )
+{
+	auto it = std::find( _Children.begin(), _Children.end(), val );
+
+	if( it != _Children.end() )
+	{
+		_Children.erase( it );
+
+		GetBehaviorTree()->RemoveNode( val );
+	}
 }
 
 BEG_META( SequenceNode )
