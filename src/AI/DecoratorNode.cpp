@@ -75,6 +75,14 @@ void XE::DecoratorNode::OnClearup()
 	}
 }
 
+void DecoratorNode::OnRemove()
+{
+	if( _Child != NodeHandle::Invalid )
+	{
+		GetBehaviorTree()->RemoveNode( _Child );
+	}
+}
+
 BEG_META( RepeatNode )
 type->Property( "Count", &RepeatNode::_Count );
 END_META()

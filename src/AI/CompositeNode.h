@@ -31,9 +31,11 @@ public:
 	void RemoveChild( NodeHandle val );
 
 protected:
-	virtual void OnStartup() override;
+	void OnStartup() override;
 
-	virtual void OnClearup() override;
+	void OnClearup() override;
+
+	void OnRemove() override;
 
 private:
 	Array<NodeHandle> _Children;

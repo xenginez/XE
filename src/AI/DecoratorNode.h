@@ -30,11 +30,13 @@ public:
 	void RemoveChild();
 
 public:
-	virtual void OnStartup() override;
+	void OnStartup() override;
 
-	virtual void OnUpdate( XE::float32 dt ) override;
+	void OnUpdate( XE::float32 dt ) override;
 
-	virtual void OnClearup() override;
+	void OnClearup() override;
+
+	void OnRemove() override;
 
 private:
 	NodeHandle _Child;

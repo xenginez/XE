@@ -17,6 +17,9 @@ class XE_API Node : public XE::Object
 {
 	OBJECT( Node, Object )
 
+private:
+	friend class BehaviorTree;
+
 public:
 	Node();
 
@@ -53,6 +56,8 @@ protected:
 	virtual void OnUpdate( XE::float32 dt );
 				 
 	virtual void OnClearup();
+
+	virtual void OnRemove();
 
 private:
 	NodeHandle _Handle;

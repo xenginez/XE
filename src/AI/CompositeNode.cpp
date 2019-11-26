@@ -45,6 +45,17 @@ void XE::CompositeNode::OnClearup()
 	Super::OnClearup();
 }
 
+void XE::CompositeNode::OnRemove()
+{
+	for( const auto & child : _Children )
+	{
+		if( child != NodeHandle::Invalid )
+		{
+			GetBehaviorTree()->RemoveNode( child );
+		}
+	}
+}
+
 XE::NodeHandle CompositeNode::AddChild( const IMetaClassPtr & val )
 {
 	NodeHandle handle = GetBehaviorTree()->AddNode( val );

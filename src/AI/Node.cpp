@@ -110,3 +110,9 @@ void XE::Node::OnClearup()
 {
 	SetStatus( NodeStatus::Finish );
 }
+
+void Node::OnRemove()
+{
+
+}
+
