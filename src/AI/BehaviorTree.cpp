@@ -114,3 +114,16 @@ void BehaviorTree::RemoveNode( XE::NodeHandle val )
 
 	_Nodes[val.GetValue()] = nullptr;
 }
+
+void BehaviorTree::SwapNodeHandle( XE::NodeHandle node1, XE::NodeHandle node2 )
+{
+	_Nodes[node1.GetValue()]->SetHandle( node2 );
+	_Nodes[node2.GetValue()]->SetHandle( node1 );
+
+	auto node = _Nodes[node1.GetValue()];
+	_Nodes[node1.GetValue()] = _Nodes[node2.GetValue()];
+	_Nodes[node2.GetValue()] = node;
+
+	_Nodes[node1.GetValue()]->OnResetHandle();
+	_Nodes[node2.GetValue()]->OnResetHandle();
+}

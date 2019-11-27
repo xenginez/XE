@@ -76,6 +76,14 @@ void CompositeNode::RemoveChild( NodeHandle val )
 	}
 }
 
+void CompositeNode::OnResetHandle()
+{
+	for( const auto & handle : _Children )
+	{
+		GetBehaviorTree()->GetNode( handle )->SetParent( GetHandle() );
+	}
+}
+
 BEG_META( SequenceNode )
 END_META()
 

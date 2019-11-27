@@ -116,3 +116,8 @@ void Node::OnRemove()
 
 }
 
+void Node::OnResetHandle()
+{
+
+}
+

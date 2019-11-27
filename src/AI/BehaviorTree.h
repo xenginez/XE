@@ -43,6 +43,8 @@ public:
 
 	void RemoveNode( XE::NodeHandle val );
 
+	void SwapNodeHandle( XE::NodeHandle node1, XE::NodeHandle node2 );
+
 public:
 	NodeHandle _Root;
 	BlackBoardPtr _Blackboard;

@@ -59,6 +59,8 @@ protected:
 
 	virtual void OnRemove();
 
+	virtual void OnResetHandle();
+
 private:
 	NodeHandle _Handle;
 	NodeHandle _Parent;

@@ -83,6 +83,14 @@ void DecoratorNode::OnRemove()
 	}
 }
 
+void DecoratorNode::OnResetHandle()
+{
+	if( _Child != NodeHandle::Invalid )
+	{
+		GetBehaviorTree()->GetNode( _Child )->SetParent( GetHandle() );
+	}
+}
+
 BEG_META( RepeatNode )
 type->Property( "Count", &RepeatNode::_Count );
 END_META()

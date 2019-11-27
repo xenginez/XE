@@ -38,6 +38,8 @@ public:
 
 	void OnRemove() override;
 
+	void OnResetHandle() override;
+
 private:
 	NodeHandle _Child;
 };

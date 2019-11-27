@@ -37,6 +37,8 @@ protected:
 
 	void OnRemove() override;
 
+	void OnResetHandle() override;
+
 private:
 	Array<NodeHandle> _Children;
 };
