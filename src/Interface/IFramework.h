@@ -26,9 +26,9 @@ public:
 	static IFrameworkPtr GetCurrentFramework();
 
 public:
-	template< typename T > T GetServiceT() const
+	template< typename T > std::shared_ptr< T > GetServiceT() const
 	{
-		return SP_CAST< typename T::element_type >( GetService( ClassID< typename T::element_type >::Get() ) );
+		return SP_CAST< T >( GetService( ClassID< typename T >::Get() ) );
 	}
 
 public:

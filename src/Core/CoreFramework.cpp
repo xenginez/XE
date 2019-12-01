@@ -69,72 +69,72 @@ int XE::CoreFramework::Exec( std::function<void()> val )
 
 XE::IGUIServicePtr XE::CoreFramework::GetGUIService() const
 {
-	return GetServiceT<IGUIServicePtr>();
+	return GetServiceT<IGUIService>();
 }
 
 XE::ITimerServicePtr XE::CoreFramework::GetTimerService() const
 {
-	return GetServiceT<ITimerServicePtr>();
+	return GetServiceT<ITimerService>();
 }
 
 XE::IEventServicePtr XE::CoreFramework::GetEventService() const
 {
-	return GetServiceT<IEventServicePtr>();
+	return GetServiceT<IEventService>();
 }
 
 XE::IInputServicePtr XE::CoreFramework::GetInputService() const
 {
-	return GetServiceT<IInputServicePtr>();
+	return GetServiceT<IInputService>();
 }
 
 XE::IAudioServicePtr XE::CoreFramework::GetAudioService() const
 {
-	return GetServiceT<IAudioServicePtr>();
+	return GetServiceT<IAudioService>();
 }
 
 XE::IWorldServicePtr XE::CoreFramework::GetWorldService() const
 {
-	return GetServiceT<IWorldServicePtr>();
+	return GetServiceT<IWorldService>();
 }
 
 XE::IThreadServicePtr XE::CoreFramework::GetThreadService() const
 {
-	return GetServiceT<IThreadServicePtr>();
+	return GetServiceT<IThreadService>();
 }
 
 XE::IAssetsServicePtr XE::CoreFramework::GetAssetsService() const
 {
-	return GetServiceT<IAssetsServicePtr>();
+	return GetServiceT<IAssetsService>();
 }
 
 XE::IConfigServicePtr XE::CoreFramework::GetConfigService() const
 {
-	return GetServiceT<IConfigServicePtr>();
+	return GetServiceT<IConfigService>();
 }
 
 XE::ILoggerServicePtr XE::CoreFramework::GetLoggerService() const
 {
-	return GetServiceT<ILoggerServicePtr>();
+	return GetServiceT<ILoggerService>();
 }
 
 XE::IRenderServicePtr XE::CoreFramework::GetRenderService() const
 {
-	return GetServiceT<IRenderServicePtr>();
+	return GetServiceT<IRenderService>();
 }
 
 XE::IPhysicsServicePtr XE::CoreFramework::GetPhysicsService() const
 {
-	return GetServiceT<IPhysicsServicePtr>();
+	return GetServiceT<IPhysicsService>();
 }
 
 XE::IProfilerServicePtr XE::CoreFramework::GetProfilerService() const
 {
-	return GetServiceT<IProfilerServicePtr>();
+	return GetServiceT<IProfilerService>();
 }
 
 XE::ILocalizationServicePtr XE::CoreFramework::GetLocalizationService() const
 {
-	return GetServiceT<ILocalizationServicePtr>();
+	return GetServiceT<ILocalizationService>();
 }
 
 XE::IServicePtr XE::CoreFramework::GetService( const IMetaClassPtr & val ) const
