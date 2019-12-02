@@ -29,7 +29,7 @@ public:
 public:
 	template< typename T > struct Enum
 	{
-		static std::shared_ptr<CXXMetaEnum<T>> Get()
+		static XE::shared_ptr<CXXMetaEnum<T>> Get()
 		{
 			return SP_CAST<CXXMetaEnum<T>>( EnumID<T>::Get() );
 		}
@@ -37,7 +37,7 @@ public:
 
 	template< typename T > struct Class
 	{
-		static std::shared_ptr<CXXMetaClass<T>> Get()
+		static XE::shared_ptr<CXXMetaClass<T>> Get()
 		{
 			return SP_CAST<CXXMetaClass<T>>( ClassID<T>::Get() );
 		}
@@ -64,6 +64,8 @@ public:
 
 public:
 	static IMetaInfoPtr FindMeta( const String & FullName );
+
+	static IMetaTypePtr FindType( const String & FullName );
 
 	static IMetaEnumPtr FindEnum( const String& FullName );
 

@@ -31,7 +31,7 @@ public:
 	BBKeyPtr( const BBKeyPtr& val )
 		:_var( val._var )
 	{
-		if ( auto meta = _var->GetMeta() )
+		if ( auto meta = _var->GetType() )
 		{
 			if (meta->GetType() == MetaType::ENUM)
 			{
@@ -51,7 +51,7 @@ public:
 	template< typename Y > BBKeyPtr( const BBKeyPtr<Y>& val )
 		: _var( val._var )
 	{
-		if ( auto meta = _var->GetMeta() )
+		if ( auto meta = _var->GetType() )
 		{
 			if ( meta->GetType() == MetaType::ENUM )
 			{

@@ -32,7 +32,7 @@ public:
 	{
 	}
 
-	Handle( const Handle& val )
+	Handle( const Handle & val )
 		:_value( val._value )
 	{
 	}
@@ -43,7 +43,7 @@ public:
 		return _value != Invalid._value;
 	}
 
-	Handle& operator=( const Handle& val )
+	Handle & operator=( const Handle & val )
 	{
 		_value = val._value;
 		return *this;
@@ -81,32 +81,32 @@ public:
 	}
 
 public:
-	bool operator<( const Handle& val ) const
+	bool operator<( const Handle & val ) const
 	{
 		return _value < val._value;
 	}
 
-	bool operator>( const Handle& val ) const
+	bool operator>( const Handle & val ) const
 	{
 		return _value > val._value;
 	}
 
-	bool operator<=( const Handle& val ) const
+	bool operator<=( const Handle & val ) const
 	{
 		return _value <= val._value;
 	}
 
-	bool operator>=( const Handle& val ) const
+	bool operator>=( const Handle & val ) const
 	{
 		return _value >= val._value;
 	}
 
-	bool operator!=( const Handle& val ) const
+	bool operator!=( const Handle & val ) const
 	{
 		return _value != val._value;
 	}
 
-	bool operator==( const Handle& val ) const
+	bool operator==( const Handle & val ) const
 	{
 		return _value == val._value;
 	}
@@ -123,24 +123,23 @@ private:
 
 template< typename T > struct VariantCreate<Handle<T>>
 {
-	static void Create( Variant * var, const Handle<T>& val )
+	static void Create( Variant * var, const Handle<T> & val )
 	{
 		using type = typename TypeTraits<Handle<T>>::raw_t;
 
-		var->_Meta = MetaID<type>::Get();
+		var->_Type = TypeID<type>::Get();
 		var->_Data.u64 = val.GetValue();
+		var->_Flag = Variant::Flag::HANDLE;
 	}
 };
 
 template< typename T > struct VariantCast<Handle<T>>
 {
-	static Handle<T> * Cast( const Variant * val )
+	static Handle<T> Cast( const Variant * val )
 	{
-		using type = typename TypeTraits<Handle<T>>::raw_t;
-
-		if ( val->GetMeta() == MetaID< type >::Get() )
+		if( ( val->GetFlag() == Variant::Flag::HANDLE ) && val->GetType() == TypeID< Handle<T> >::Get() )
 		{
-			return (Handle<T>*)( &( val->_Data.u64 ) );
+			return val->_Data.u64;
 		}
 
 		throw VariantException( *val, "cast fail" );

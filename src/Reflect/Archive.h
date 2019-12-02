@@ -77,7 +77,7 @@ public:
 		return *this;
 	}
 
-	template< typename T > Archive & operator&( std::shared_ptr< T > & val )
+	template< typename T > Archive & operator&( XE::shared_ptr< T > & val )
 	{
 		NameValue nv;
 
@@ -198,7 +198,7 @@ public:
 	template<typename U> struct HasMemberClone
 	{
 	private:
-		template <typename Ty, std::shared_ptr<U>( Ty:: * )() = &Ty::Clone>
+		template <typename Ty, XE::shared_ptr<U>( Ty:: * )() = &Ty::Clone>
 		static constexpr auto check( Ty * ) { return true; };
 
 		static constexpr bool check( ... ) { return false; };
@@ -233,7 +233,7 @@ public:
 		}
 	}
 
-	static std::shared_ptr<T> Clone( std::shared_ptr<T> val )
+	static XE::shared_ptr<T> Clone( XE::shared_ptr<T> val )
 	{
 		if constexpr( HasMemberClone<T>::value )
 		{
@@ -243,7 +243,7 @@ public:
 		{
 			if( auto cls = ClassID<T>::Get( val ) )
 			{
-				auto ret = cls->ConstructPtr().Value< std::shared_ptr<U> >();
+				auto ret = cls->ConstructPtr().Value< XE::shared_ptr<U> >();
 
 				cls->VisitProperty( [&]( IMetaPropertyPtr prop )
 									{

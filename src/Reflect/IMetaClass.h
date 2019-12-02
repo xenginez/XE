@@ -54,7 +54,7 @@ public:
 public:
 	virtual Variant Construct( void * ptr = nullptr ) const = 0;
 
-	virtual Variant ConstructPtr( std::shared_ptr<void> ptr = nullptr ) const = 0;
+	virtual Variant ConstructPtr( XE::shared_ptr<void> ptr = nullptr ) const = 0;
 
 	virtual void Destruct( Variant & val ) const = 0;
 

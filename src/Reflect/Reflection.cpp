@@ -202,7 +202,37 @@ XE::IMetaInfoPtr XE::Reflection::FindMeta( const String & FullName )
 	{
 		return ret;
 	}
-	
+
+	if( auto ret = FindClass( FullName ) )
+	{
+		return ret;
+	}
+
+	if( auto ret = FindProperty( FullName ) )
+	{
+		return ret;
+	}
+
+	if( auto ret = FindOperator( FullName ) )
+	{
+		return ret;
+	}
+
+	if( auto ret = FindMethod( FullName ) )
+	{
+		return ret;
+	}
+
+	return nullptr;
+}
+
+XE::IMetaTypePtr XE::Reflection::FindType( const String & FullName )
+{
+	if( auto ret = FindEnum( FullName ) )
+	{
+		return ret;
+	}
+
 	if( auto ret = FindClass( FullName ) )
 	{
 		return ret;

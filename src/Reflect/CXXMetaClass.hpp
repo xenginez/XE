@@ -45,7 +45,7 @@ public:
 		}
 	}
 
-	virtual Variant ConstructPtr( std::shared_ptr<void> ptr ) const override
+	virtual Variant ConstructPtr( XE::shared_ptr<void> ptr ) const override
 	{
 		if constexpr ( !std::is_abstract_v<ClassType> )
 		{
@@ -187,7 +187,7 @@ public:
 		return nullptr;
 	}
 
-	virtual Variant ConstructPtr( std::shared_ptr<void> ptr ) const override
+	virtual Variant ConstructPtr( XE::shared_ptr<void> ptr ) const override
 	{
 		return nullptr;
 	}
@@ -351,7 +351,7 @@ template<> struct XE_API MetaID< Variant >
 	{
 		if ( val )
 		{
-			return val->GetMeta();
+			return val->GetType();
 		}
 
 		return ClassID<Variant>::Get();

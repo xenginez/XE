@@ -13,6 +13,7 @@
 
 BEG_XE_NAMESPACE
 
+class Variant;
 template< typename T > struct VariantCreate;
 template< typename T > struct VariantCast;
 
@@ -25,27 +26,31 @@ public:
 	template< typename T > friend struct VariantCast;
 
 public:
-	static constexpr XE::uint32 INVALID = 0;
-	static constexpr XE::uint32 FUNDAMENTAL = 1 << 1;
-	static constexpr XE::uint32 CONTAINER = 1 << 2;
-	static constexpr XE::uint32 POINTER = 1 << 3;
-	static constexpr XE::uint32 SHAREDPTR = 1 << 4;
-	static constexpr XE::uint32 PRIVATEPTR = 1 << 5;
+	enum class Flag : XE::uint32
+	{
+		INVALID			= 0,
+		NIL				= 1 << 0,
+		ENUM			= 1 << 1,
+		FUNDAMENTAL		= 1 << 2,
+		CONTAINER		= 1 << 3,
+		POINTER			= 1 << 4,
+		SHAREDPTR		= 1 << 5,
+		PRIVATEPTR		= 1 << 6,
+		HANDLE			= 1 << 7,
+	};
 
 public:
 	class PrivatePtr
 	{
 	public:
 		PrivatePtr() = default;
-		
+
 		virtual ~PrivatePtr() = default;
-		
+
 	public:
 		virtual void Lock() = 0;
 
 		virtual XE::uint64 Unlock() = 0;
-
-		virtual void * Copy() const = 0;
 
 		virtual void * Data() const = 0;
 
@@ -59,49 +64,37 @@ public:
 		using Type = typename TypeTraits<T>::raw_t;
 
 	public:
-		PrivatePtrTpl( const T &val )
+		PrivatePtrTpl( const T & val )
 			:_Data( new Type( val ) )
 		{
 
 		}
 
-		~PrivatePtrTpl()
+		~PrivatePtrTpl() override
 		{
-			if ( _Data )
+			if( _Data )
 			{
 				delete _Data;
 			}
 		}
 
 	public:
-		virtual void Lock() override
+		void Lock() override
 		{
 			_Count++;
 		}
 
-		virtual XE::uint64 Unlock() override
+		XE::uint64 Unlock() override
 		{
 			return --_Count;
 		}
 
-		virtual void * Copy() const override
-		{
-			if constexpr ( std::is_abstract_v<T> )
-			{
-				return nullptr;
-			}
-			else
-			{
-				return new Type( *_Data );
-			}
-		}
-
-		virtual void * Data() const override
+		void * Data() const override
 		{
 			return _Data;
 		}
 
-		virtual void * Detach() override
+		void * Detach() override
 		{
 			void * p = _Data;
 			_Data = nullptr;
@@ -131,7 +124,6 @@ public:
 		UnionData( XE::float64 d ) :d( d ) {}
 		UnionData( void * p ) :p( p ) {}
 		UnionData( PrivatePtr * pp ) :pp( pp ) {}
-		UnionData( std::shared_ptr<void> * sp ) :sp( sp ) {}
 
 		bool b;
 		XE::int8 i8;
@@ -146,7 +138,7 @@ public:
 		XE::float64 d;
 		void * p;
 		PrivatePtr * pp;
-		std::shared_ptr<void> * sp;
+		XE::shared_ptr<void> * sp;
 	};
 
 public:
@@ -182,9 +174,9 @@ public:
 	{
 		using type = typename TypeTraits<T>::raw_t;
 
-		if constexpr ( std::is_shared_ptr_v<T> )
+		if constexpr( std::is_shared_ptr_v<T> )
 		{
-			VariantCreate< std::shared_ptr< type > >::Create( this, val );
+			VariantCreate< XE::shared_ptr< type > >::Create( this, val );
 		}
 		else
 		{
@@ -198,9 +190,9 @@ public:
 	{
 		using type = typename TypeTraits<T>::raw_t;
 
-		if constexpr ( std::is_shared_ptr_v<T> )
+		if constexpr( std::is_shared_ptr_v<T> )
 		{
-			VariantCreate< std::shared_ptr< type > >::Create( this, val );
+			VariantCreate< XE::shared_ptr< type > >::Create( this, val );
 		}
 		else
 		{
@@ -214,44 +206,46 @@ public:
 	{
 		using type = typename TypeTraits<T>::raw_t;
 
-		_Meta = MetaID<type>::Get();
-		_Data.p = (void*)val;
-		_Flag = Variant::POINTER;
+		_Type = TypeID<type>::Get();
+		_Data.p = (void * )val;
+		_Flag = Variant::Flag::POINTER;
 	}
 
 	template< typename T > Variant( const T * val )
 	{
 		using type = typename TypeTraits<T>::raw_t;
 
-		_Meta = MetaID<type>::Get();
-		_Data.p = (void*)val;
-		_Flag = Variant::POINTER;
+		_Type = TypeID<type>::Get();
+		_Data.p = (void * )val;
+		_Flag = Variant::Flag::POINTER;
 	}
 
-	Variant( IMetaInfoPtr Meta, UnionData Data, XE::uint32 Flag );
+	Variant( IMetaTypePtr meta, UnionData data, XE::Variant::Flag flag );
 
-	Variant( IMetaInfoPtr Meta, std::shared_ptr<void> Data, XE::uint32 Flag );
+	Variant( IMetaTypePtr meta, XE::shared_ptr<void> data, XE::Variant::Flag flag );
 
 	~Variant();
 
 public:
-	Variant& operator=( const Variant & val );
+	Variant & operator=( const Variant & val );
 
 public:
-	bool operator <( const Variant& val ) const;
+	bool operator <( const Variant & val ) const;
 
-	bool operator >( const Variant& val ) const;
+	bool operator >( const Variant & val ) const;
 
-	bool operator <=( const Variant& val ) const;
+	bool operator <=( const Variant & val ) const;
 
-	bool operator >=( const Variant& val ) const;
+	bool operator >=( const Variant & val ) const;
 
-	bool operator ==( const Variant& val ) const;
+	bool operator ==( const Variant & val ) const;
 
-	bool operator !=( const Variant& val ) const;
+	bool operator !=( const Variant & val ) const;
 
 public:
 	bool IsNull() const;
+
+	bool IsEnum() const;
 
 	bool IsInvalid() const;
 
@@ -265,42 +259,51 @@ public:
 
 	bool IsFundamental() const;
 
-	bool IsCanConvert( IMetaInfoPtr val ) const;
+	bool IsCanConvert( IMetaTypePtr val ) const;
 
 public:
+	bool ToBool() const;
+
+	XE::int8 ToInt8() const;
+
+	XE::int16 ToInt16() const;
+
+	XE::int32 ToInt32() const;
+
+	XE::int64 ToInt64() const;
+
+	XE::uint8 ToUInt8() const;
+
+	XE::uint16 ToUInt16() const;
+
+	XE::int32 ToUInt32() const;
+
+	XE::uint64 ToUInt64() const;
+
+	XE::float32 ToFloat32() const;
+
+	XE::float64 ToFloat64() const;
+
 	void * ToPointer() const;
 
 public:
-	XE::uint32 GetFlag() const;
+	Flag GetFlag() const;
 
 	UnionData GetData() const;
 
-	IMetaInfoPtr GetMeta() const;
+	IMetaTypePtr GetType() const;
 
 public:
 	void Reset();
 
 	void * Detach();
 
-	std::shared_ptr<void> DetachPtr();
+	XE::shared_ptr<void> DetachPtr();
 
 public:
 	template< typename T > T Value() const
 	{
-		using type = typename TypeTraits<T>::raw_t;
-
-		if constexpr ( std::is_shared_ptr_v<T> )
-		{
-			return *( VariantCast< std::shared_ptr< type > >::Cast( this ) );
-		}
-		else if constexpr( std::is_pointer_v<T> )
-		{
-			return VariantCast< type >::Cast( this );
-		}
-		else
-		{
-			return *( VariantCast< type >::Cast( this ) );
-		}
+		return VariantCast<T>::Cast( this );
 	}
 
 private:
@@ -309,38 +312,38 @@ private:
 	void Unlock();
 
 private:
-	static std::shared_ptr<void> * RegisterSharedPtr( const std::shared_ptr<void>& p );
+	static XE::shared_ptr<void> * RegisterSharedPtr( const XE::shared_ptr<void> & p );
 
 private:
+	Flag _Flag;
 	UnionData _Data;
-	XE::uint32 _Flag;
-	IMetaInfoPtr _Meta;
+	IMetaTypePtr _Type;
 };
 
 
 
-using VariantList = std::list<Variant, Allocator<Variant>>;
-using VariantDeque = std::deque<Variant, Allocator<Variant>>;
-using VariantStack = std::stack<Variant, Deque<Variant>>;
-using VariantQueue = std::queue<Variant, Deque<Variant>>;
-using VariantArray = std::vector<Variant, Allocator<Variant>>;
-using VariantPair = std::pair<Variant, Variant>;
-using VariantSet = std::set<Variant, std::less<Variant>, Allocator<Variant>>;
-using VariantMap = std::map<Variant, Variant, std::less<Variant>, Allocator<Pair<const Variant, Variant>>>;
-using VariantMultiSet = std::multiset<Variant, std::less<Variant>, Allocator<Variant>>;
-using VariantMultiMap = std::multimap<Variant, Variant, std::less<Variant>, Allocator<Pair<const Variant, Variant>>>;
+using VariantList =  XE::List<Variant>;
+using VariantDeque = XE::Deque<Variant>;
+using VariantStack = XE::Stack<Variant>;
+using VariantQueue = XE::Queue<Variant>;
+using VariantArray = XE::Array<Variant>;
+using VariantPair = XE::Pair<Variant, Variant>;
+using VariantSet =  XE::Set<Variant>;
+using VariantMap =  XE::Map<Variant, Variant>;
+using VariantMultiSet = XE::MultiSet<Variant>;
+using VariantMultiMap = XE::MultiMap<Variant, Variant>;
 
 
 
 class XE_API VariantException : public RuntimeException
 {
 public:
-	VariantException( const Variant& val, const String& msg );
+	VariantException( const Variant & val, const String & msg );
 
 	~VariantException();
 
 public:
-	virtual char const* What() const;
+	virtual char const * What() const;
 
 public:
 	Variant GetVariant() const;
@@ -354,76 +357,147 @@ private:
 
 template< typename T > struct VariantCreate
 {
-	static void Create( Variant * var, const T& val )
+	static void Create( Variant * var, const T & val )
 	{
 		using type = typename TypeTraits<T>::raw_t;
 
-		var->_Meta = MetaID<type>::Get();
-		var->_Data.pp = new Variant::PrivatePtrTpl<type>( val );
-		var->_Flag = Variant::PRIVATEPTR;
+		var->_Type = TypeID<type>::Get();
+
+		if constexpr( std::is_enum_v<type> )
+		{
+			var->_Data.i64 = ( XE::int64 )val;
+			var->_Flag = Variant::Flag::ENUM;
+		}
+		else
+		{
+			var->_Data.pp = new Variant::PrivatePtrTpl<type>( val );
+			var->_Flag = Variant::Flag::PRIVATEPTR;
+		}
 	}
 };
 
 template<> struct VariantCreate<Variant>
 {
-	static void Create( Variant * var, const Variant& val )
+	static void Create( Variant * var, const Variant & val )
 	{
-		var->_Meta = val._Meta;
+		var->_Type = val._Type;
 		var->_Data = val._Data;
 		var->_Flag = val._Flag;
 	}
 };
 
-template< typename T > struct VariantCreate<std::weak_ptr<T>>
+template< typename T > struct VariantCreate<XE::shared_ptr<T>>
 {
-	static void Create( Variant * var, const std::weak_ptr<T>& val )
+	static void Create( Variant * var, const XE::shared_ptr<T> & val )
 	{
 		using type = typename TypeTraits<T>::raw_t;
 
-		var->_Meta = MetaID<type>::Get();
-		var->_Data.sp = Variant::RegisterSharedPtr( val.lock() );
-		var->_Flag = Variant::SHAREDPTR;
-	}
-};
-
-template< typename T > struct VariantCreate<std::shared_ptr<T>>
-{
-	static void Create( Variant * var, const std::shared_ptr<T>& val )
-	{
-		using type = typename TypeTraits<T>::raw_t;
-
-		var->_Meta = MetaID<type>::Get();
+		var->_Type = TypeID<type>::Get();
 		var->_Data.sp = Variant::RegisterSharedPtr( val );
-		var->_Flag = Variant::SHAREDPTR;
+		var->_Flag = Variant::Flag::SHAREDPTR;
 	}
 };
-
 
 
 template< typename T > struct VariantCast
 {
-	static T * Cast( const Variant * val )
+	static T Cast( const Variant * val )
 	{
-		using type = typename TypeTraits<T>::raw_t;
-
-		if( val->IsCanConvert( MetaID< type >::Get() ) )
+		if constexpr( std::is_enum_v<T> )
 		{
-			return ( T * )val->ToPointer();
+			if( val->GetFlag() == XE::Variant::Flag::ENUM && TypeID<T>::Get() == val->GetType() )
+			{
+				return (T )( val->_Data.i64 );
+			}
+		}
+
+		return VariantCast< T & >::Cast( val );
+	}
+};
+
+template< typename T > struct VariantCast<T &>
+{
+	static T & Cast( const Variant * val )
+	{
+		if( !val->IsFundamental() )
+		{
+			return *( VariantCast< T * >::Cast( val ) );
 		}
 
 		throw VariantException( *val, "cast fail" );
 	}
 };
 
-template< typename T > struct VariantCast<std::shared_ptr<T>>
+template< typename T > struct VariantCast<const T &>
 {
-	static std::shared_ptr<T> * Cast( const Variant * val )
+	static const T & Cast( const Variant * val )
+	{
+		return VariantCast< T & >::Cast( val );
+	}
+};
+
+template< typename T > struct VariantCast<T *>
+{
+	static T * Cast( const Variant * val )
 	{
 		using type = typename TypeTraits<T>::raw_t;
 
-		if( val->IsSharedPtr() && val->IsCanConvert( MetaID< type >::Get() ) )
+		if( ( val->IsPointer() || val->IsSharedPtr() || val->IsPrivatePtr() ) && val->IsCanConvert( TypeID< type >::Get() ) )
 		{
-			return (std::shared_ptr<T> *)( val->_Data.sp );
+			return (T * )val->ToPointer();
+		}
+
+		throw VariantException( *val, "cast fail" );
+	}
+};
+
+template< typename T > struct VariantCast<const T *>
+{
+	static const T * Cast( const Variant * val )
+	{
+		return VariantCast< T * >::Cast( val );
+	}
+};
+
+template< typename T > struct VariantCast<XE::shared_ptr<T>>
+{
+	static XE::shared_ptr<T> Cast( const Variant * val )
+	{
+		using type = typename TypeTraits<T>::raw_t;
+
+		if( val->IsSharedPtr() && val->IsCanConvert( TypeID< type >::Get() ) )
+		{
+			return SP_CAST<T>( *( val->_Data.sp ) );
+		}
+
+		throw VariantException( *val, "cast fail" );
+	}
+};
+
+template< typename T > struct VariantCast<XE::shared_ptr<T> &>
+{
+	static XE::shared_ptr<T> & Cast( const Variant * val )
+	{
+		using type = typename TypeTraits<T>::raw_t;
+
+		if( val->IsSharedPtr() && val->IsCanConvert( TypeID< type >::Get() ) )
+		{
+			return *( ( XE::shared_ptr<T> * )( val->_Data.sp ) );
+		}
+
+		throw VariantException( *val, "cast fail" );
+	}
+};
+
+template< typename T > struct VariantCast<const XE::shared_ptr<T> &>
+{
+	static const XE::shared_ptr<T> & Cast( const Variant * val )
+	{
+		using type = typename TypeTraits<T>::raw_t;
+
+		if( val->IsSharedPtr() && val->IsCanConvert( TypeID< type >::Get() ) )
+		{
+			return *( ( XE::shared_ptr<T> * )( val->_Data.sp ) );
 		}
 
 		throw VariantException( *val, "cast fail" );
@@ -432,9 +506,113 @@ template< typename T > struct VariantCast<std::shared_ptr<T>>
 
 template<> struct VariantCast<Variant>
 {
-	static Variant * Cast( const Variant * val )
+	static Variant Cast( const Variant * val )
 	{
-		return const_cast<Variant*>( val );
+		return *val;
+	}
+};
+
+template<> struct VariantCast<Variant &>
+{
+	static Variant & Cast( const Variant * val )
+	{
+		return *( const_cast< Variant * >( val ) );
+	}
+};
+
+template<> struct VariantCast<const Variant &>
+{
+	static const Variant & Cast( const Variant * val )
+	{
+		return *( const_cast< Variant * >( val ) );
+	}
+};
+
+template<> struct VariantCast<bool>
+{
+	static bool Cast( const Variant * val )
+	{
+		return val->ToBool();
+	}
+};
+
+template<> struct VariantCast<XE::int8>
+{
+	static XE::int8 Cast( const Variant * val )
+	{
+		return val->ToInt8();
+	}
+};
+
+template<> struct VariantCast<XE::int16>
+{
+	static XE::int16 Cast( const Variant * val )
+	{
+		return val->ToInt16();
+	}
+};
+
+template<> struct VariantCast<XE::int32>
+{
+	static XE::int32 Cast( const Variant * val )
+	{
+		return val->ToInt32();
+	}
+};
+
+template<> struct VariantCast<XE::int64>
+{
+	static XE::int64 Cast( const Variant * val )
+	{
+		return val->ToInt64();
+	}
+};
+
+template<> struct VariantCast<XE::uint8>
+{
+	static XE::uint8 Cast( const Variant * val )
+	{
+		return val->ToUInt8();
+	}
+};
+
+template<> struct VariantCast<XE::uint16>
+{
+	static XE::uint16 Cast( const Variant * val )
+	{
+		return val->ToUInt16();
+	}
+};
+
+template<> struct VariantCast<XE::uint32>
+{
+	static XE::uint32 Cast( const Variant * val )
+	{
+		return val->ToUInt32();
+	}
+};
+
+template<> struct VariantCast<XE::uint64>
+{
+	static XE::uint64 Cast( const Variant * val )
+	{
+		return val->ToUInt64();
+	}
+};
+
+template<> struct VariantCast<XE::float32>
+{
+	static XE::float32 Cast( const Variant * val )
+	{
+		return val->ToFloat32();
+	}
+};
+
+template<> struct VariantCast<XE::float64>
+{
+	static XE::float64 Cast( const Variant * val )
+	{
+		return val->ToFloat64();
 	}
 };
 

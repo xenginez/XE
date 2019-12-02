@@ -15,7 +15,13 @@
 #include "ObjectAllocator.hpp"
 
 BEG_XE_NAMESPACE
-template< typename Ty, typename ... Types > std::shared_ptr<Ty> make_shared( Types && ...args )
+
+template< typename T >
+using weak_ptr = std::weak_ptr<T>;
+template< typename T >
+using shared_ptr = std::shared_ptr<T>;
+
+template< typename Ty, typename ... Types > XE::shared_ptr<Ty> make_shared( Types && ...args )
 {
 	typename XE::AllocatorProxy<Ty>::allocator_type _alloc;
 
@@ -25,10 +31,9 @@ END_XE_NAMESPACE
 
 #define DECL_PTR( TYPE ) \
 class TYPE; \
-typedef std::shared_ptr< TYPE > TYPE##Ptr; \
-typedef std::shared_ptr< const TYPE > TYPE##CPtr; \
-typedef std::weak_ptr< TYPE > TYPE##WPtr; \
-typedef std::unique_ptr< TYPE > TYPE##UPtr; \
+typedef XE::weak_ptr< TYPE > TYPE##WPtr; \
+typedef XE::shared_ptr< TYPE > TYPE##Ptr; \
+typedef XE::shared_ptr< const TYPE > TYPE##CPtr; \
 typedef TYPE * TYPE##RPtr
 
 #define DECL_ALLOCATOR_POLL( TYPE ) \

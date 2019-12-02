@@ -33,8 +33,8 @@ void XE::JsonLoadArchive::Serialize( NameValue & val )
 {
 	std::string name = val.Name == "" ? "item" : val.Name;
 
-	rapidjson::Value &node = _p->Values.top()->FindMember( name.c_str() )->value;
-	IMetaInfoPtr type = Reflection::FindMeta( node.FindMember( "type" )->value.GetString() );
+	rapidjson::Value & node = _p->Values.top()->FindMember( name.c_str() )->value;
+	auto type = Reflection::FindType( node.FindMember( "type" )->value.GetString() );
 	XE::uint32 flag = node.FindMember( "flag" )->value.GetUint();
 
 	if( type->GetType() == MetaType::ENUM )
@@ -46,7 +46,7 @@ void XE::JsonLoadArchive::Serialize( NameValue & val )
 	}
 	else if( auto cls = SP_CAST<IMetaClass>( type ) )
 	{
-		if( flag == Variant::FUNDAMENTAL )
+		if( flag == ( XE::uint32 )Variant::Flag::FUNDAMENTAL )
 		{
 			if( type == MetaID<std::nullptr_t>::Get() )
 			{
@@ -97,7 +97,7 @@ void XE::JsonLoadArchive::Serialize( NameValue & val )
 				val.Value = node.FindMember( "value" )->value.GetDouble();
 			}
 		}
-		else if( flag == Variant::CONTAINER )
+		else if( flag == ( XE::uint32 )Variant::Flag::CONTAINER )
 		{
 			VariantArray arr;
 
@@ -118,13 +118,13 @@ void XE::JsonLoadArchive::Serialize( NameValue & val )
 		{
 			if( val.Value.IsNull() )
 			{
-				if( flag == Variant::POINTER )
+				if( flag == ( XE::uint32 )Variant::Flag::POINTER )
 				{
-					val.Value = Variant( type, cls->Construct().Detach(), flag );
+					val.Value = Variant( type, cls->Construct().Detach(), ( XE::Variant::Flag )flag );
 				}
-				else if( flag == Variant::SHAREDPTR )
+				else if( flag == ( XE::uint32 )Variant::Flag::SHAREDPTR )
 				{
-					val.Value = Variant( type, cls->ConstructPtr().DetachPtr(), flag );
+					val.Value = Variant( type, cls->ConstructPtr().DetachPtr(), ( XE::Variant::Flag )flag );
 				}
 
 				_p->Values.push( &node );
@@ -165,8 +165,8 @@ void XE::JsonSaveArchive::Serialize( NameValue & val )
 
 	rapidjson::Value & value = _p->Values.top()->AddMember( rapidjson::StringRef( name.c_str() ), rapidjson::Value( rapidjson::kObjectType ), _p->Doc.GetAllocator() );
 
-	IMetaInfoPtr type = val.Value.GetMeta();
-	XE::uint32 flag = val.Value.GetFlag();
+	auto type = val.Value.GetType();
+	XE::uint32 flag = ( XE::uint32 )val.Value.GetFlag();
 
 	rapidjson::Value v_type( rapidjson::kStringType );
 	v_type.SetString( type->GetFullName().ToCString(), _p->Doc.GetAllocator() );
@@ -186,7 +186,7 @@ void XE::JsonSaveArchive::Serialize( NameValue & val )
 	}
 	else if( auto cls = SP_CAST<IMetaClass>( type ) )
 	{
-		if( flag == Variant::FUNDAMENTAL )
+		if( flag == ( XE::uint32 )Variant::Flag::FUNDAMENTAL )
 		{
 			if( type == MetaID<std::nullptr_t>::Get() )
 			{
@@ -261,7 +261,7 @@ void XE::JsonSaveArchive::Serialize( NameValue & val )
 				value.AddMember( rapidjson::StringRef( "value" ), v, _p->Doc.GetAllocator() );
 			}
 		}
-		else if( flag == Variant::CONTAINER )
+		else if( flag == ( XE::uint32 )Variant::Flag::CONTAINER )
 		{
 			VariantArray arr = val.Value.Value<VariantArray>();
 
@@ -311,7 +311,7 @@ void XE::BinaryLoadArchive::Serialize( NameValue & val )
 	std::string type_name;
 	_p->Stream >> type_name;
 
-	IMetaInfoPtr type = Reflection::FindMeta( type_name );
+	auto type = Reflection::FindType( type_name );
 	XE::uint32 flag;
 	_p->Stream >> flag;
 
@@ -321,12 +321,12 @@ void XE::BinaryLoadArchive::Serialize( NameValue & val )
 		{
 			XE::int64 v = 0;
 			_p->Stream >> v;
-			val.Value = Variant( type, { v }, flag );
+			val.Value = Variant( type, { v }, ( XE::Variant::Flag )flag );
 		}
 	}
 	else if( auto cls = SP_CAST<IMetaClass>( type ) )
 	{
-		if( flag == Variant::FUNDAMENTAL )
+		if( flag == ( XE::uint32 )Variant::Flag::FUNDAMENTAL )
 		{
 			if( type == MetaID<std::nullptr_t>::Get() )
 			{
@@ -378,7 +378,7 @@ void XE::BinaryLoadArchive::Serialize( NameValue & val )
 				XE::float64 v = 0; _p->Stream >> v; val.Value = v;
 			}
 		}
-		else if( flag == Variant::CONTAINER )
+		else if( flag == ( XE::uint32 )Variant::Flag::CONTAINER )
 		{
 			VariantArray arr;
 
@@ -424,8 +424,8 @@ void XE::BinarySaveArchive::Save( std::ostream & val ) const
 
 void XE::BinarySaveArchive::Serialize( NameValue & val )
 {
-	IMetaInfoPtr type = val.Value.GetMeta();
-	XE::uint32 flag = val.Value.GetFlag();
+	auto type = val.Value.GetType();
+	XE::uint32 flag = ( XE::uint32 )val.Value.GetFlag();
 
 	_p->Stream << type->GetFullName().ToStdString() << flag;
 
@@ -438,11 +438,11 @@ void XE::BinarySaveArchive::Serialize( NameValue & val )
 	}
 	else if( auto cls = SP_CAST<IMetaClass>( type ) )
 	{
-		if( flag == Variant::FUNDAMENTAL )
+		if( flag == ( XE::uint32 )Variant::Flag::FUNDAMENTAL )
 		{
 			if( type == MetaID<std::nullptr_t>::Get() )
 			{
-				
+
 			}
 			else if( type == MetaID<bool>::Get() )
 			{
@@ -489,7 +489,7 @@ void XE::BinarySaveArchive::Serialize( NameValue & val )
 				_p->Stream << val.Value.Value<XE::float64>();
 			}
 		}
-		else if( flag == Variant::CONTAINER )
+		else if( flag == ( XE::uint32 )Variant::Flag::CONTAINER )
 		{
 			VariantArray arr = val.Value.Value<VariantArray>();
 

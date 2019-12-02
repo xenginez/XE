@@ -34,9 +34,9 @@ template< typename T > struct ClassID
 	}
 };
 
-template< typename T > struct ClassID< std::shared_ptr< T > >
+template< typename T > struct ClassID< XE::shared_ptr< T > >
 {
-	static IMetaClassPtr Get( const std::shared_ptr< T > & val = nullptr )
+	static IMetaClassPtr Get( const XE::shared_ptr< T > & val = nullptr )
 	{
 		if( val )
 		{
@@ -57,9 +57,9 @@ template< typename T > struct MetaID
 	}
 };
 
-template< typename T > struct MetaID< std::shared_ptr< T > >
+template< typename T > struct MetaID< XE::shared_ptr< T > >
 {
-	static IMetaInfoPtr Get( const std::shared_ptr< T > & val = nullptr )
+	static IMetaInfoPtr Get( const XE::shared_ptr< T > & val = nullptr )
 	{
 		return MetaID<T>::Get( val.get() );
 	}
@@ -75,9 +75,9 @@ template< typename T > struct TypeID
 	}
 };
 
-template< typename T > struct TypeID< std::shared_ptr< T > >
+template< typename T > struct TypeID< XE::shared_ptr< T > >
 {
-	static IMetaTypePtr Get( const std::shared_ptr<T> & val = nullptr )
+	static IMetaTypePtr Get( const XE::shared_ptr<T> & val = nullptr )
 	{
 		return TypeID<T>::Get( val.get() );
 	}

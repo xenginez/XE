@@ -61,7 +61,7 @@ public:
 	}
 
 public:
-	std::shared_ptr<T> GetClone() const
+	XE::shared_ptr<T> GetClone() const
 	{
 		if( _Object )
 		{
@@ -78,7 +78,7 @@ public:
 		return nullptr;
 	}
 
-	std::shared_ptr<const T> GetReference() const
+	XE::shared_ptr<const T> GetReference() const
 	{
 		if( _Object )
 		{
@@ -96,7 +96,7 @@ public:
 	}
 
 private:
-	std::shared_ptr<const T> _Object;
+	XE::shared_ptr<const T> _Object;
 };
 
 END_XE_NAMESPACE

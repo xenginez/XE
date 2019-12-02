@@ -9,11 +9,11 @@
 #ifndef __PARAMETERTYPE_HPP__DD6460A4_04AB_4F79_8A04_4C4CF356BDC4
 #define __PARAMETERTYPE_HPP__DD6460A4_04AB_4F79_8A04_4C4CF356BDC4
 
-#include "IMetaInfo.h"
+#include "IMetaType.h"
 
 BEG_XE_NAMESPACE
 
-using ParameterType = Array< IMetaInfoPtr >;
+using ParameterType = Array< IMetaTypePtr >;
 
 template< typename ... Types > struct TypeList;
 
@@ -21,7 +21,7 @@ template< typename T, typename ... Types > struct TypeList<T, Types...>
 {
 	static void Make( ParameterType * args )
 	{
-		args->push_back( MetaID<typename TypeTraits<T>::raw_t>::Get() );
+		args->push_back( TypeID<typename TypeTraits<T>::raw_t>::Get() );
 
 		TypeList<Types...>::Make( args );
 	}
@@ -31,7 +31,7 @@ template< typename T > struct TypeList<T>
 {
 	static void Make( ParameterType * args )
 	{
-		args->push_back( MetaID<typename TypeTraits<T>::raw_t>::Get() );
+		args->push_back( TypeID<typename TypeTraits<T>::raw_t>::Get() );
 	}
 };
 

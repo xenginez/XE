@@ -29,7 +29,8 @@ XE::Variant XE::XSMetaClass::Construct( void * ptr ) const
 		GetSuper()->Construct( p );
 	}
 
-	return Variant( CP_CAST<IMetaInfo>( shared_from_this() ), Variant::UnionData( p ), Variant::POINTER );
+	auto This = shared_from_this();
+	return Variant( IMetaTypePtr( This, (IMetaType * )( This.get() ) ), Variant::UnionData( p ), Variant::Flag::POINTER );
 }
 
 XE::Variant XE::XSMetaClass::ConstructPtr( std::shared_ptr<void> ptr ) const
@@ -48,7 +49,8 @@ XE::Variant XE::XSMetaClass::ConstructPtr( std::shared_ptr<void> ptr ) const
 		GetSuper()->ConstructPtr( p );
 	}
 
-	return Variant( CP_CAST<IMetaInfo>( shared_from_this() ), std::shared_ptr<void>( p ), Variant::SHAREDPTR );
+	auto This = shared_from_this();
+	return Variant( IMetaTypePtr( This, (IMetaType * )( This.get() ) ), std::shared_ptr<void>( p ), Variant::Flag::SHAREDPTR );
 }
 
 void XE::XSMetaClass::Destruct( Variant & val ) const
