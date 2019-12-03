@@ -56,7 +56,7 @@ struct XE::Reflection::Private
 };
 
 XE::Reflection::Reflection()
-	:_p(new Private)
+	:_p( new Private )
 {
 	_p->Classes.insert( std::make_pair( "void", nullptr ) );
 
@@ -105,7 +105,7 @@ void Reflection::Clear()
 
 void XE::Reflection::RegisterMetaInfo( IMetaInfoPtr val )
 {
-	switch ( val->GetType() )
+	switch( val->GetType() )
 	{
 	case MetaType::ENUM:
 		Instance()->_p->Enums.insert( std::make_pair( val->GetFullName(), SP_CAST<IMetaEnum>( val ) ) );
@@ -120,22 +120,22 @@ void XE::Reflection::RegisterMetaInfo( IMetaInfoPtr val )
 		Instance()->_p->Operators.insert( std::make_pair( val->GetFullName(), SP_CAST<IMetaOperator>( val ) ) );
 		break;
 	case MetaType::CLASS:
-		if ( IMetaClassPtr cls = SP_CAST<IMetaClass>( val ) )
+		if( IMetaClassPtr cls = SP_CAST<IMetaClass>( val ) )
 		{
 			Instance()->_p->Classes.insert( std::make_pair( val->GetFullName(), cls ) );
 
-			cls->VisitMethod( [] ( IMetaMethodPtr method )
-			{
-				Instance()->_p->Methods.insert( std::make_pair( method->GetFullName(), method ) );
-			} );
-			cls->VisitProperty( [] ( IMetaPropertyPtr prop )
-			{
-				Instance()->_p->Propertys.insert( std::make_pair( prop->GetFullName(), prop ) );
-			} );
-			cls->VisitOperator( [] ( IMetaOperatorPtr oper )
-			{
-				Instance()->_p->Operators.insert( std::make_pair( oper->GetFullName(), oper ) );
-			} );
+			cls->VisitMethod( []( IMetaMethodPtr method )
+							  {
+								  Instance()->_p->Methods.insert( std::make_pair( method->GetFullName(), method ) );
+							  } );
+			cls->VisitProperty( []( IMetaPropertyPtr prop )
+								{
+									Instance()->_p->Propertys.insert( std::make_pair( prop->GetFullName(), prop ) );
+								} );
+			cls->VisitOperator( []( IMetaOperatorPtr oper )
+								{
+									Instance()->_p->Operators.insert( std::make_pair( oper->GetFullName(), oper ) );
+								} );
 		}
 		break;
 	default:
@@ -145,20 +145,48 @@ void XE::Reflection::RegisterMetaInfo( IMetaInfoPtr val )
 
 void XE::Reflection::VisitMeta( std::function<void( IMetaInfoPtr )> val )
 {
+	VisitEnum( [&]( IMetaEnumPtr var )
+			   {
+				   val( var );
+			   } );
+
+	VisitClass( [&]( IMetaClassPtr var )
+				{
+					val( var );
+				} );
+
+	VisitMethod( [&]( IMetaMethodPtr var )
+				 {
+					 val( var );
+				 } );
+
+	VisitProperty( [&]( IMetaPropertyPtr var )
+				   {
+					   val( var );
+				   } );
+
+	VisitOperator( [&]( IMetaOperatorPtr var )
+				   {
+					   val( var );
+				   } );
+}
+
+void XE::Reflection::VisitType( std::function<void( IMetaTypePtr )> val )
+{
 	VisitEnum( [&]( IMetaEnumPtr enm )
-	{
-		val( enm );
-	} );
+			   {
+				   val( enm );
+			   } );
 
 	VisitClass( [&]( IMetaClassPtr cls )
-	{
-		val( cls );
-	} );
+				{
+					val( cls );
+				} );
 }
 
 void XE::Reflection::VisitEnum( std::function<void( IMetaEnumPtr )> val )
 {
-	for ( auto var : Instance()->_p->Enums )
+	for( auto var : Instance()->_p->Enums )
 	{
 		val( var.second );
 	}
@@ -166,7 +194,7 @@ void XE::Reflection::VisitEnum( std::function<void( IMetaEnumPtr )> val )
 
 void XE::Reflection::VisitClass( std::function<void( IMetaClassPtr )> val )
 {
-	for ( auto var : Instance()->_p->Classes )
+	for( auto var : Instance()->_p->Classes )
 	{
 		val( var.second );
 	}
@@ -174,7 +202,7 @@ void XE::Reflection::VisitClass( std::function<void( IMetaClassPtr )> val )
 
 void XE::Reflection::VisitMethod( std::function<void( IMetaMethodPtr )> val )
 {
-	for ( auto var : Instance()->_p->Methods )
+	for( auto var : Instance()->_p->Methods )
 	{
 		val( var.second );
 	}
@@ -182,7 +210,7 @@ void XE::Reflection::VisitMethod( std::function<void( IMetaMethodPtr )> val )
 
 void XE::Reflection::VisitProperty( std::function<void( IMetaPropertyPtr )> val )
 {
-	for ( auto var : Instance()->_p->Propertys )
+	for( auto var : Instance()->_p->Propertys )
 	{
 		val( var.second );
 	}
@@ -190,7 +218,7 @@ void XE::Reflection::VisitProperty( std::function<void( IMetaPropertyPtr )> val 
 
 void XE::Reflection::VisitOperator( std::function<void( IMetaOperatorPtr )> val )
 {
-	for ( auto var : Instance()->_p->Operators )
+	for( auto var : Instance()->_p->Operators )
 	{
 		val( var.second );
 	}
@@ -241,11 +269,11 @@ XE::IMetaTypePtr XE::Reflection::FindType( const String & FullName )
 	return nullptr;
 }
 
-XE::IMetaEnumPtr XE::Reflection::FindEnum( const String& FullName )
+XE::IMetaEnumPtr XE::Reflection::FindEnum( const String & FullName )
 {
 	auto it = Instance()->_p->Enums.find( FullName );
 
-	if (it != Instance()->_p->Enums.end())
+	if( it != Instance()->_p->Enums.end() )
 	{
 		return it->second;
 	}
@@ -253,11 +281,11 @@ XE::IMetaEnumPtr XE::Reflection::FindEnum( const String& FullName )
 	return nullptr;
 }
 
-XE::IMetaClassPtr XE::Reflection::FindClass( const String& FullName )
+XE::IMetaClassPtr XE::Reflection::FindClass( const String & FullName )
 {
 	auto it = Instance()->_p->Classes.find( FullName );
 
-	if ( it != Instance()->_p->Classes.end() )
+	if( it != Instance()->_p->Classes.end() )
 	{
 		return it->second;
 	}
@@ -265,11 +293,11 @@ XE::IMetaClassPtr XE::Reflection::FindClass( const String& FullName )
 	return nullptr;
 }
 
-XE::IMetaPropertyPtr XE::Reflection::FindProperty( const String& FullName )
+XE::IMetaPropertyPtr XE::Reflection::FindProperty( const String & FullName )
 {
 	auto it = Instance()->_p->Propertys.find( FullName );
 
-	if ( it != Instance()->_p->Propertys.end() )
+	if( it != Instance()->_p->Propertys.end() )
 	{
 		return it->second;
 	}
@@ -277,13 +305,13 @@ XE::IMetaPropertyPtr XE::Reflection::FindProperty( const String& FullName )
 	return nullptr;
 }
 
-XE::IMetaOperatorPtr XE::Reflection::FindOperator( const String& FullName, const IMetaInfoPtr& Type /*= nullptr */ )
+XE::IMetaOperatorPtr XE::Reflection::FindOperator( const String & FullName, const IMetaInfoPtr & Type /*= nullptr */ )
 {
 	auto range = Instance()->_p->Operators.equal_range( FullName );
 
-	for (; range.first != range.second; ++range.first)
+	for( ; range.first != range.second; ++range.first )
 	{
-		if (range.first->second->GetParameter() == Type)
+		if( range.first->second->GetParameter() == Type )
 		{
 			return range.first->second;
 		}
@@ -292,14 +320,14 @@ XE::IMetaOperatorPtr XE::Reflection::FindOperator( const String& FullName, const
 	return nullptr;
 }
 
-XE::IMetaMethodPtr XE::Reflection::FindMethod( const String& FullName, const ParameterType& Types /*= MakeParameterType() */ )
+XE::IMetaMethodPtr XE::Reflection::FindMethod( const String & FullName, const ParameterType & Types /*= MakeParameterType() */ )
 {
 	auto range = Instance()->_p->Methods.equal_range( FullName );
 
-	for ( ; range.first != range.second; ++range.first )
+	for( ; range.first != range.second; ++range.first )
 	{
 		ParameterType itTypes = range.first->second->GetParameter();
-		if ( itTypes.size() == Types.size() && std::equal( itTypes.begin(), itTypes.end(), Types.begin(), Types.end() ) )
+		if( itTypes.size() == Types.size() && std::equal( itTypes.begin(), itTypes.end(), Types.begin(), Types.end() ) )
 		{
 			return range.first->second;
 		}

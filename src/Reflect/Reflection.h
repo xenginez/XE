@@ -52,6 +52,8 @@ public:
 public:
 	static void VisitMeta( std::function<void( IMetaInfoPtr )> val );
 
+	static void VisitType( std::function<void( IMetaTypePtr )> val );
+
 	static void VisitEnum( std::function<void( IMetaEnumPtr )> val );
 
 	static void VisitClass( std::function<void( IMetaClassPtr )> val );
