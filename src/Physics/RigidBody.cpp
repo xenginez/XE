@@ -1,5 +1,8 @@
 #include "RigidBody.h"
 
+#include "Shape.h"
+#include "Constraint.h"
+
 #include <physx/PxPhysicsAPI.h>
 
 USING_XE

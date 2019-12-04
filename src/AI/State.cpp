@@ -1,5 +1,7 @@
 #include "State.h"
 
+#include "Condition.h"
+
 USING_XE
 
 BEG_META( State )

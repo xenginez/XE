@@ -13,14 +13,14 @@
 
 BEG_XE_NAMESPACE
 
-class XE_API Condition
+class XE_API Condition : public XE::Object
 {
-	OBJECT( Condition )
+	OBJECT( Condition, Object )
 
 public:
 	Condition();
 
-	~Condition();
+	~Condition() override;
 
 public:
 	virtual bool Judgment() const;

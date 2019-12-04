@@ -28,15 +28,15 @@ public:
 public:
 	enum class Flag : XE::uint32
 	{
-		INVALID			= 0,
-		NIL				= 1 << 0,
-		ENUM			= 1 << 1,
-		FUNDAMENTAL		= 1 << 2,
-		CONTAINER		= 1 << 3,
-		POINTER			= 1 << 4,
-		SHAREDPTR		= 1 << 5,
-		PRIVATEPTR		= 1 << 6,
-		HANDLE			= 1 << 7,
+		INVALID = 0,
+		NIL = 1 << 0,
+		ENUM = 1 << 1,
+		FUNDAMENTAL = 1 << 2,
+		CONTAINER = 1 << 3,
+		POINTER = 1 << 4,
+		SHAREDPTR = 1 << 5,
+		PRIVATEPTR = 1 << 6,
+		HANDLE = 1 << 7,
 	};
 
 public:
@@ -123,7 +123,6 @@ public:
 		UnionData( XE::float32  f ) :f( f ) {}
 		UnionData( XE::float64 d ) :d( d ) {}
 		UnionData( void * p ) :p( p ) {}
-		UnionData( PrivatePtr * pp ) :pp( pp ) {}
 
 		bool b;
 		XE::int8 i8;
@@ -398,6 +397,184 @@ template< typename T > struct VariantCreate<XE::shared_ptr<T>>
 	}
 };
 
+template< typename ... Args > struct VariantCreate< std::list< Args... > >
+{
+	static void Create( Variant * var, const std::list< Args... > & val )
+	{
+		VariantList list;
+
+		for( const auto & it : val )
+		{
+			list.push_back( it );
+		}
+
+		var->_Type = TypeID<VariantList>::Get();
+		var->_Data = new Variant::PrivatePtrTpl<VariantList>( list );
+		var->_Flag = Variant::Flag::CONTAINER;
+	}
+};
+
+template< typename ... Args > struct VariantCreate< std::deque< Args... > >
+{
+	static void Create( Variant * var, const std::deque< Args... > & val )
+	{
+		VariantDeque deque;
+
+		for( const auto & it : val )
+		{
+			deque.push_back( it );
+		}
+
+		var->_Type = TypeID<VariantDeque>::Get();
+		var->_Data = new Variant::PrivatePtrTpl<VariantDeque>( deque );
+		var->_Flag = Variant::Flag::CONTAINER;
+	}
+};
+
+template< typename ... Args > struct VariantCreate< std::stack< Args... > >
+{
+	static void Create( Variant * var, const std::stack< Args... > & val )
+	{
+		VariantStack stack;
+
+		for( const auto & it : val )
+		{
+			stack.push( it );
+		}
+
+		var->_Type = TypeID<VariantStack>::Get();
+		var->_Data = new Variant::PrivatePtrTpl<VariantStack>( stack );
+		var->_Flag = Variant::Flag::CONTAINER;
+	}
+};
+
+template< typename ... Args > struct VariantCreate< std::queue< Args... > >
+{
+	static void Create( Variant * var, const std::queue< Args... > & val )
+	{
+		VariantQueue queue;
+
+		for( const auto & it : val )
+		{
+			queue.push( it );
+		}
+
+		var->_Type = TypeID<VariantQueue>::Get();
+		var->_Data = new Variant::PrivatePtrTpl<VariantQueue>( queue );
+		var->_Flag = Variant::Flag::CONTAINER;
+	}
+};
+
+template< typename ... Args > struct VariantCreate< std::vector< Args... > >
+{
+	static void Create( Variant * var, const std::vector< Args... > & val )
+	{
+		VariantArray array;
+
+		for( const auto & it : val )
+		{
+			array.push_back( it );
+		}
+
+		var->_Type = TypeID<VariantArray>::Get();
+		var->_Data = new Variant::PrivatePtrTpl<VariantArray>( array );
+		var->_Flag = Variant::Flag::CONTAINER;
+	}
+};
+
+template< typename ... Args > struct VariantCreate< std::pair< Args... > >
+{
+	static void Create( Variant * var, const std::pair< Args... > & val )
+	{
+		VariantPair pair;
+
+		pair.first = val.first;
+		pair.second = val.second;
+
+		var->_Type = TypeID<VariantPair>::Get();
+		var->_Data = new Variant::PrivatePtrTpl<VariantPair>( pair );
+		var->_Flag = Variant::Flag::CONTAINER;
+	}
+};
+
+template< typename ... Args > struct VariantCreate< std::set< Args... > >
+{
+	static void Create( Variant * var, const std::set< Args... > & val )
+	{
+		VariantSet set;
+
+		for( const auto & it : val )
+		{
+			set.insert( it );
+		}
+
+		var->_Type = TypeID<VariantSet>::Get();
+		var->_Data = new Variant::PrivatePtrTpl<VariantSet>( set );
+		var->_Flag = Variant::Flag::CONTAINER;
+	}
+};
+
+template< typename ... Args > struct VariantCreate< std::map< Args... > >
+{
+	static void Create( Variant * var, const std::map< Args... > & val )
+	{
+		VariantMap map;
+
+		for( const auto & it : val )
+		{
+			VariantPair pair;
+
+			pair.first = it.first;
+			pair.second = it.second;
+
+			map.insert( pair );
+		}
+
+		var->_Type = TypeID<VariantMap>::Get();
+		var->_Data = new Variant::PrivatePtrTpl<VariantMap>( map );
+		var->_Flag = Variant::Flag::CONTAINER;
+	}
+};
+
+template< typename ... Args > struct VariantCreate< std::multiset< Args... > >
+{
+	static void Create( Variant * var, const std::multiset< Args... > & val )
+	{
+		VariantMultiSet multiset;
+
+		for( const auto & it : val )
+		{
+			multiset.insert( it );
+		}
+
+		var->_Type = TypeID<VariantMultiSet>::Get();
+		var->_Data = new Variant::PrivatePtrTpl<VariantMultiSet>( multiset );
+		var->_Flag = Variant::Flag::CONTAINER;
+	}
+};
+
+template< typename ... Args > struct VariantCreate< std::multimap< Args... > >
+{
+	static void Create( Variant * var, const std::multimap< Args... > & val )
+	{
+		VariantMultiMap multimap;
+
+		for( const auto & it : val )
+		{
+			VariantPair pair;
+
+			pair.first = it.first;
+			pair.second = it.second;
+
+			multimap.insert( pair );
+		}
+
+		var->_Type = TypeID<VariantMultiMap>::Get();
+		var->_Data = new Variant::PrivatePtrTpl<VariantMultiMap>( multimap );
+		var->_Flag = Variant::Flag::CONTAINER;
+	}
+};
+
 
 template< typename T > struct VariantCast
 {
@@ -613,6 +790,184 @@ template<> struct VariantCast<XE::float64>
 	static XE::float64 Cast( const Variant * val )
 	{
 		return val->ToFloat64();
+	}
+};
+
+template< typename T, typename ... Args > struct VariantCast< std::list< T, Args... > >
+{
+	static std::list< Args... > Cast( const Variant * val )
+	{
+		std::list< T, Args... > list;
+
+		const VariantList & v_list = val->Value< const VariantList & >();
+
+		for( const auto & it : v_list )
+		{
+			list.push_back( it.Value< T >() );
+		}
+
+		return list;
+	}
+};
+
+template< typename T, typename ... Args > struct VariantCast< std::deque< T, Args... > >
+{
+	static std::deque< Args... > Cast( const Variant * val )
+	{
+		std::deque< T, Args... > deque;
+
+		const VariantDeque & v_deque = val->Value< const VariantDeque & >();
+
+		for( const auto & it : v_deque )
+		{
+			deque.push_back( it.Value< T >() );
+		}
+
+		return deque;
+	}
+};
+
+template< typename T, typename ... Args > struct VariantCast< std::stack< T, Args... > >
+{
+	static std::stack< Args... > Cast( const Variant * val )
+	{
+		std::stack< T, Args... > stack;
+
+		const VariantStack & v_stack = val->Value< const VariantStack & >();
+
+		for( const auto & it : v_stack )
+		{
+			stack.push( it.Value< T >() );
+		}
+
+		return stack;
+	}
+};
+
+template< typename T, typename ... Args > struct VariantCast< std::queue< T, Args... > >
+{
+	static std::queue< Args... > Cast( const Variant * val )
+	{
+		std::queue< T, Args... > queue;
+
+		const VariantQueue & v_queue = val->Value< const VariantQueue & >();
+
+		for( const auto & it : v_queue )
+		{
+			queue.push( it.Value< T >() );
+		}
+
+		return queue;
+	}
+};
+
+template< typename T, typename ... Args > struct VariantCast< std::vector< T, Args... > >
+{
+	static std::vector< T, Args... > Cast( const Variant * val )
+	{
+		std::vector< T, Args... > array;
+
+		const VariantArray & v_array = val->Value< const VariantArray & >();
+
+		for( const auto & it : v_array )
+		{
+			array.push_back( it.Value< T >() );
+		}
+
+		return array;
+	}
+};
+
+template< typename K, typename V > struct VariantCast< std::pair< K, V > >
+{
+	static std::pair< K, V > Cast( const Variant * val )
+	{
+		std::pair< K, V > pair;
+
+		const VariantPair & v_pair = val->Value< const VariantPair & >();
+
+		pair.first = v_pair.first.Value< K >();
+		pair.second = v_pair.second.Value< V >();
+
+		return pair;
+	}
+};
+
+template< typename T, typename ... Args > struct VariantCast< std::set< T, Args... > >
+{
+	static std::set< Args... > Cast( const Variant * val )
+	{
+		std::set< T, Args... > set;
+
+		const VariantSet & v_set = val->Value< const VariantSet & >();
+
+		for( const auto & it : v_set )
+		{
+			set.insert( it.Value< T >() );
+		}
+
+		return set;
+	}
+};
+
+template< typename K, typename V, typename ... Args > struct VariantCast< std::map< K, V, Args... > >
+{
+	static std::map< K, V, Args... > Cast( const Variant * val )
+	{
+		std::map< K, V, Args... > map;
+
+		const VariantMap & v_map = val->Value< const VariantMap & >();
+
+		for( const auto & it : v_map )
+		{
+			std::pair<K, V> pair;
+
+			pair.first = it.first.Value< K >();
+			pair.second = it.second.Value< V >();
+
+			map.insert( pair );
+		}
+
+		return map;
+	}
+};
+
+template< typename T, typename ... Args > struct VariantCast< std::multiset< T, Args... > >
+{
+	static std::multiset< Args... > Cast( const Variant * val )
+	{
+		std::multiset< T, Args... > multiset;
+
+		const VariantMultiSet & v_multiset = val->Value< const VariantMultiSet & >();
+
+		for( const auto & it : v_multiset )
+		{
+			multiset.insert( it.Value< T >() );
+		}
+
+		return multiset;
+	}
+};
+
+template< typename K, typename V, typename ... Args > struct VariantCast< std::multimap< K, V, Args... > >
+{
+	static std::multimap< K, V, Args... > Cast( const Variant * val )
+	{
+		std::multimap< K, V, Args... > multimap;
+
+		const VariantMultiMap & v_multimap = val->Value< const VariantMultiMap & >();
+
+		for( const auto & it : v_multimap )
+		{
+			std::pair<K, V> pair;
+
+			pair.first = it.first.Value< K >();
+			pair.second = it.second.Value< V >();
+
+			multimap.insert( pair );
+		}
+
+		return multimap;
 	}
 };
 

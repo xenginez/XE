@@ -273,7 +273,7 @@ bool XE::Variant::IsSharedPtr() const
 
 bool XE::Variant::IsPrivatePtr() const
 {
-	return ( _Flag == Flag::PRIVATEPTR );
+	return ( _Flag == Flag::PRIVATEPTR || _Flag == Flag::CONTAINER );
 }
 
 bool XE::Variant::IsFundamental() const
