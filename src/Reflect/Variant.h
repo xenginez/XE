@@ -285,6 +285,8 @@ public:
 
 	void * ToPointer() const;
 
+	XE::Array<XE::Variant> ToArray() const;
+
 public:
 	Flag GetFlag() const;
 
@@ -793,9 +795,17 @@ template<> struct VariantCast<XE::float64>
 	}
 };
 
+template<> struct VariantCast<XE::VariantArray>
+{
+	static XE::VariantArray Cast( const Variant * val )
+	{
+		return val->ToArray();
+	}
+};
+
 template< typename T, typename ... Args > struct VariantCast< std::list< T, Args... > >
 {
-	static std::list< Args... > Cast( const Variant * val )
+	static std::list< T, Args... > Cast( const Variant * val )
 	{
 		std::list< T, Args... > list;
 
@@ -812,7 +822,7 @@ template< typename T, typename ... Args > struct VariantCast< std::list< T, Args
 
 template< typename T, typename ... Args > struct VariantCast< std::deque< T, Args... > >
 {
-	static std::deque< Args... > Cast( const Variant * val )
+	static std::deque< T, Args... > Cast( const Variant * val )
 	{
 		std::deque< T, Args... > deque;
 
@@ -829,15 +839,15 @@ template< typename T, typename ... Args > struct VariantCast< std::deque< T, Arg
 
 template< typename T, typename ... Args > struct VariantCast< std::stack< T, Args... > >
 {
-	static std::stack< Args... > Cast( const Variant * val )
+	static std::stack< T, Args... > Cast( const Variant * val )
 	{
 		std::stack< T, Args... > stack;
 
-		const VariantStack & v_stack = val->Value< const VariantStack & >();
-
-		for( const auto & it : v_stack )
+		VariantStack v_stack = val->Value< VariantStack >();
+		for( ; !v_stack.empty(); )
 		{
-			stack.push( it.Value< T >() );
+			stack.push( v_stack.top().Value< T >() );
+			v_stack.pop();
 		}
 
 		return stack;
@@ -846,15 +856,16 @@ template< typename T, typename ... Args > struct VariantCast< std::stack< T, Arg
 
 template< typename T, typename ... Args > struct VariantCast< std::queue< T, Args... > >
 {
-	static std::queue< Args... > Cast( const Variant * val )
+	static std::queue< T, Args... > Cast( const Variant * val )
 	{
 		std::queue< T, Args... > queue;
 
-		const VariantQueue & v_queue = val->Value< const VariantQueue & >();
+		VariantQueue v_queue = val->Value< VariantQueue >();
 
-		for( const auto & it : v_queue )
+		for( ;!v_queue.empty(); )
 		{
-			queue.push( it.Value< T >() );
+			queue.push( v_queue.front().Value< T >() );
+			v_queue.pop();
 		}
 
 		return queue;
@@ -895,7 +906,7 @@ template< typename K, typename V > struct VariantCast< std::pair< K, V > >
 
 template< typename T, typename ... Args > struct VariantCast< std::set< T, Args... > >
 {
-	static std::set< Args... > Cast( const Variant * val )
+	static std::set< T, Args... > Cast( const Variant * val )
 	{
 		std::set< T, Args... > set;
 
@@ -934,7 +945,7 @@ template< typename K, typename V, typename ... Args > struct VariantCast< std::m
 
 template< typename T, typename ... Args > struct VariantCast< std::multiset< T, Args... > >
 {
-	static std::multiset< Args... > Cast( const Variant * val )
+	static std::multiset< T, Args... > Cast( const Variant * val )
 	{
 		std::multiset< T, Args... > multiset;
 

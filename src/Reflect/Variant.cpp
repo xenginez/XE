@@ -964,6 +964,106 @@ void * XE::Variant::ToPointer() const
 	return nullptr;
 }
 
+XE::Array<XE::Variant> Variant::ToArray() const
+{
+	XE::VariantArray ret;
+
+	if( _Type == TypeID<VariantList>::Get() )
+	{
+		VariantList list = Value< VariantList >();
+
+		for( const auto & it : list )
+		{
+			ret.push_back( it );
+		}
+	}
+	else if( _Type == TypeID<VariantDeque>::Get() )
+	{
+		VariantDeque deque = Value< VariantDeque >();
+
+		for( const auto & it : deque )
+		{
+			ret.push_back( it );
+		}
+	}
+	else if( _Type == TypeID<VariantStack>::Get() )
+	{
+		VariantStack stack = Value< VariantStack >();
+
+		for( ; !stack.empty(); )
+		{
+			ret.push_back( stack.top() );
+			stack.pop();
+		}
+	}
+	else if( _Type == TypeID<VariantQueue>::Get() )
+	{
+		VariantQueue queue = Value< VariantQueue >();
+
+		for( ; !queue.empty(); )
+		{
+			ret.push_back( queue.front() );
+			queue.pop();
+		}
+	}
+	else if( _Type == TypeID<VariantArray>::Get() )
+	{
+		ret = Value< VariantArray >();
+	}
+	else if( _Type == TypeID<VariantSet>::Get() )
+	{
+		VariantSet set = Value< VariantSet >();
+
+		for( const auto & it : set )
+		{
+			ret.push_back( it );
+		}
+	}
+	else if( _Type == TypeID<VariantMap>::Get() )
+	{
+		VariantMap map = Value< VariantMap >();
+
+		for( const auto & it : map )
+		{
+			VariantPair pair;
+
+			pair.first = it.first;
+			pair.second = it.second;
+
+			ret.push_back( pair );
+		}
+	}
+	else if( _Type == TypeID<VariantMultiSet>::Get() )
+	{
+		VariantMultiSet multiset = Value< VariantMultiSet >();
+
+		for( const auto & it : multiset )
+		{
+			ret.push_back( it );
+		}
+	}
+	else if( _Type == TypeID<VariantMultiMap>::Get() )
+	{
+		VariantMultiMap multimap = Value< VariantMultiMap >();
+
+		for( const auto & it : multimap )
+		{
+			VariantPair pair;
+
+			pair.first = it.first;
+			pair.second = it.second;
+
+			ret.push_back( pair );
+		}
+	}
+	else
+	{
+		throw XE::VariantException( *this, "cast fail !" );
+	}
+
+	return ret;
+}
+
 XE::Variant::Flag XE::Variant::GetFlag() const
 {
 	return _Flag;
