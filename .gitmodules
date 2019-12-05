@@ -22,3 +22,6 @@
 [submodule "3rdparty/PhysX"]
 	path = 3rdparty/PhysX
 	url = https://github.com/NVIDIAGameWorks/PhysX.git
+[submodule "3rdparty/imgui"]
+	path = 3rdparty/imgui
+	url = https://github.com/ocornut/imgui.git
