@@ -1,5 +1,7 @@
 #include "GUIService.h"
 
+#include <imgui/imgui.h>
+
 USING_XE
 
 BEG_META( GUIService )

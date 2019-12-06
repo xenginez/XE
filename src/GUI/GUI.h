@@ -17,7 +17,6 @@
 #include "ComboBox.h"
 #include "BoxLayout.h"
 #include "TabWidget.h"
-#include "FromLayout.h"
 #include "GridLayout.h"
 #include "HBoxLayout.h"
 #include "ListWidget.h"

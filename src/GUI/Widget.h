@@ -13,12 +13,52 @@
 
 BEG_XE_NAMESPACE
 
-class XE_API Widget
+class XE_API Widget : public XE::Object
 {
+	OBJECT( Widget, Object )
+
 public:
 	Widget();
 
-	~Widget();
+	~Widget() override;
+
+public:
+	bool GetEnable() const;
+
+	void SetEnable( bool val );
+
+	const XE::String & GetName() const;
+
+	void SetName( const XE::String & val );
+
+	const WidgetPtr & GetParent() const;
+
+	void SetParent( const WidgetPtr & val );
+
+	const XE::Vec2 & GetMinimumSize() const;
+
+	void SetMinimunSize( const XE::Vec2 & val );
+
+	const XE::Vec2 & GetMaximumSize() const;
+
+	void SetMaximunSize( const XE::Vec2 & val );
+
+	const XE::Rect & GetBoundingRect() const;
+
+	void SetBoundingRect( const XE::Rect & val );
+
+public:
+	virtual void Update();
+
+	virtual void Render();
+
+private:
+	bool _Enable;
+	XE::String _Name;
+	WidgetPtr _Parent;
+	XE::Vec2 _MinSize;
+	XE::Vec2 _MaxSize;
+	XE::Rect _BoundingRect;
 };
 
 END_XE_NAMESPACE
