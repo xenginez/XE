@@ -11,7 +11,7 @@
 
 #include "IMetaOperator.h"
 
-#include "MetaID.hpp"
+#include "TypeID.hpp"
 
 BEG_XE_NAMESPACE
 
@@ -24,7 +24,7 @@ public:
 
 public:
 	CXXMetaOperator( const String& Name, OperatorType Oper, IMetaClassPtr Owner )
-		:IMetaOperator( Name, MetaID<typename TypeTraits<ResultType>::raw_t>::Get(), nullptr, Owner ), _Oper( Oper )
+		:IMetaOperator( Name, TypeID<typename TypeTraits<ResultType>::raw_t>::Get(), nullptr, Owner ), _Oper( Oper )
 	{
 	}
 
@@ -45,7 +45,7 @@ public:
 
 public:
 	CXXMetaOperator( const String& Name, OperatorType Oper, IMetaClassPtr Owner )
-		:IMetaOperator( Name, MetaID<typename TypeTraits<ResultType>::raw_t>::Get(), MetaID<typename TypeTraits<RightType>::raw_t>::Get(), Owner ), _Oper( Oper )
+		:IMetaOperator( Name, TypeID<typename TypeTraits<ResultType>::raw_t>::Get(), TypeID<typename TypeTraits<RightType>::raw_t>::Get(), Owner ), _Oper( Oper )
 	{
 	}
 
@@ -66,7 +66,7 @@ public:
 
 public:
 	CXXMetaOperator( const String& Name, OperatorType Oper, IMetaClassPtr Owner )
-		:IMetaOperator( Name, MetaID<typename TypeTraits<ResultType>::raw_t>::Get(), nullptr, Owner ), _Oper( Oper )
+		:IMetaOperator( Name, TypeID<typename TypeTraits<ResultType>::raw_t>::Get(), nullptr, Owner ), _Oper( Oper )
 	{
 	}
 
@@ -87,7 +87,7 @@ public:
 
 public:
 	CXXMetaOperator( const String& Name, OperatorType Oper, IMetaClassPtr Owner )
-		:IMetaOperator( Name, MetaID<typename TypeTraits<ResultType>::raw_t>::Get(), nullptr, Owner ), _Oper( Oper )
+		:IMetaOperator( Name, TypeID<typename TypeTraits<ResultType>::raw_t>::Get(), nullptr, Owner ), _Oper( Oper )
 	{
 	}
 
@@ -108,7 +108,7 @@ public:
 
 public:
 	CXXMetaOperator( const String& Name, OperatorType Oper, IMetaClassPtr Owner )
-		:IMetaOperator( Name, MetaID<typename TypeTraits<ResultType>::raw_t>::Get(), MetaID<typename TypeTraits<RightType>::raw_t>::Get(), Owner ), _Oper( Oper )
+		:IMetaOperator( Name, TypeID<typename TypeTraits<ResultType>::raw_t>::Get(), TypeID<typename TypeTraits<RightType>::raw_t>::Get(), Owner ), _Oper( Oper )
 	{
 	}
 
@@ -129,7 +129,7 @@ public:
 
 public:
 	CXXMetaOperator( const String& Name, OperatorType Oper, IMetaClassPtr Owner )
-		:IMetaOperator( Name, MetaID<typename TypeTraits<ResultType>::raw_t>::Get(), MetaID<typename TypeTraits<RightType>::raw_t>::Get(), Owner ), _Oper( Oper )
+		:IMetaOperator( Name, TypeID<typename TypeTraits<ResultType>::raw_t>::Get(), TypeID<typename TypeTraits<RightType>::raw_t>::Get(), Owner ), _Oper( Oper )
 	{
 	}
 

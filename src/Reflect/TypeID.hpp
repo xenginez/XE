@@ -1,13 +1,13 @@
 /*!
- * \file   MetaID.hpp
+ * \file	TypeID.hpp
  *
- * \author ZhengYuanQing
- * \date   2019/1/10
- * \email  zhengyuanqing.95@gmail.com
+ * \author	ZhengYuanQing
+ * \date	2019/12/06
+ * \email	zhengyuanqing.95@gmail.com
  *
  */
-#ifndef __METAID_HPP__4D612830_3D3B_42A0_9441_7CECA63594CB
-#define __METAID_HPP__4D612830_3D3B_42A0_9441_7CECA63594CB
+#ifndef TYPEID_HPP__1C7147FB_7591_47E2_B804_CD182F01438A
+#define TYPEID_HPP__1C7147FB_7591_47E2_B804_CD182F01438A
 
 #include "Type.h"
 
@@ -25,7 +25,7 @@ template< typename T > struct ClassID
 {
 	static IMetaClassPtr Get( const T * val = nullptr )
 	{
-		if (val)
+		if( val )
 		{
 			return val->GetMetaClass();
 		}
@@ -44,24 +44,6 @@ template< typename T > struct ClassID< XE::shared_ptr< T > >
 		}
 
 		return T::GetMetaClassStatic();
-	}
-};
-
-template< typename T > struct MetaID
-{
-	static IMetaInfoPtr Get( const T * val = nullptr )
-	{
-		using raw_t = typename TypeTraits<T>::raw_t;
-
-		return SP_CAST<IMetaInfo>( std::conditional_t< std::is_enum<raw_t>::value, EnumID<raw_t>, ClassID<raw_t>>::Get( val ) );
-	}
-};
-
-template< typename T > struct MetaID< XE::shared_ptr< T > >
-{
-	static IMetaInfoPtr Get( const XE::shared_ptr< T > & val = nullptr )
-	{
-		return MetaID<T>::Get( val.get() );
 	}
 };
 
@@ -85,4 +67,4 @@ template< typename T > struct TypeID< XE::shared_ptr< T > >
 
 END_XE_NAMESPACE
 
-#endif // __METAID_HPP__4D612830_3D3B_42A0_9441_7CECA63594CB
+#endif // TYPEID_HPP__1C7147FB_7591_47E2_B804_CD182F01438A

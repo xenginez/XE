@@ -48,51 +48,51 @@ void XE::JsonLoadArchive::Serialize( NameValue & val )
 	{
 		if( flag == ( XE::uint32 )Variant::Flag::FUNDAMENTAL )
 		{
-			if( type == MetaID<std::nullptr_t>::Get() )
+			if( type == TypeID<std::nullptr_t>::Get() )
 			{
 				val.Value = nullptr;
 			}
-			else if( type == MetaID<bool>::Get() )
+			else if( type == TypeID<bool>::Get() )
 			{
 				val.Value = ( std::string( node.FindMember( "value" )->value.GetString() ) == "true" );
 			}
-			else if( type == MetaID<XE::int8>::Get() )
+			else if( type == TypeID<XE::int8>::Get() )
 			{
 				val.Value = ( XE::int8 )node.FindMember( "value" )->value.GetInt();
 			}
-			else if( type == MetaID<XE::int16>::Get() )
+			else if( type == TypeID<XE::int16>::Get() )
 			{
 				val.Value = ( XE::int16 )node.FindMember( "value" )->value.GetInt();
 			}
-			else if( type == MetaID<XE::int32>::Get() )
+			else if( type == TypeID<XE::int32>::Get() )
 			{
 				val.Value = node.FindMember( "value" )->value.GetInt();
 			}
-			else if( type == MetaID<XE::int64>::Get() )
+			else if( type == TypeID<XE::int64>::Get() )
 			{
 				val.Value = node.FindMember( "value" )->value.GetInt64();
 			}
-			else if( type == MetaID<XE::uint8>::Get() )
+			else if( type == TypeID<XE::uint8>::Get() )
 			{
 				val.Value = ( XE::uint8 )node.FindMember( "value" )->value.GetUint();
 			}
-			else if( type == MetaID<XE::uint16>::Get() )
+			else if( type == TypeID<XE::uint16>::Get() )
 			{
 				val.Value = ( XE::uint16 )node.FindMember( "value" )->value.GetUint();
 			}
-			else if( type == MetaID<XE::uint32>::Get() )
+			else if( type == TypeID<XE::uint32>::Get() )
 			{
 				val.Value = node.FindMember( "value" )->value.GetUint();
 			}
-			else if( type == MetaID<XE::uint64>::Get() )
+			else if( type == TypeID<XE::uint64>::Get() )
 			{
 				val.Value = node.FindMember( "value" )->value.GetUint64();
 			}
-			else if( type == MetaID<XE::float32>::Get() )
+			else if( type == TypeID<XE::float32>::Get() )
 			{
 				val.Value = node.FindMember( "value" )->value.GetFloat();
 			}
-			else if( type == MetaID<XE::float32>::Get() )
+			else if( type == TypeID<XE::float32>::Get() )
 			{
 				val.Value = node.FindMember( "value" )->value.GetDouble();
 			}
@@ -188,73 +188,73 @@ void XE::JsonSaveArchive::Serialize( NameValue & val )
 	{
 		if( flag == ( XE::uint32 )Variant::Flag::FUNDAMENTAL )
 		{
-			if( type == MetaID<std::nullptr_t>::Get() )
+			if( type == TypeID<std::nullptr_t>::Get() )
 			{
 				rapidjson::Value v( rapidjson::kStringType );
 				v.SetString( "null", _p->Doc.GetAllocator() );
 				value.AddMember( rapidjson::StringRef( "value" ), v, _p->Doc.GetAllocator() );
 			}
-			else if( type == MetaID<bool>::Get() )
+			else if( type == TypeID<bool>::Get() )
 			{
 				rapidjson::Value v( rapidjson::kStringType );
 				v.SetString( val.Value.Value<bool>() ? "true" : "false", _p->Doc.GetAllocator() );
 				value.AddMember( rapidjson::StringRef( "value" ), v, _p->Doc.GetAllocator() );
 			}
-			else if( type == MetaID<XE::int8>::Get() )
+			else if( type == TypeID<XE::int8>::Get() )
 			{
 				rapidjson::Value v( rapidjson::kNumberType );
 				v.SetInt( val.Value.Value<XE::int8>() );
 				value.AddMember( rapidjson::StringRef( "value" ), v, _p->Doc.GetAllocator() );
 			}
-			else if( type == MetaID<XE::int16>::Get() )
+			else if( type == TypeID<XE::int16>::Get() )
 			{
 				rapidjson::Value v( rapidjson::kNumberType );
 				v.SetInt( val.Value.Value<XE::int16>() );
 				value.AddMember( rapidjson::StringRef( "value" ), v, _p->Doc.GetAllocator() );
 			}
-			else if( type == MetaID<XE::int32>::Get() )
+			else if( type == TypeID<XE::int32>::Get() )
 			{
 				rapidjson::Value v( rapidjson::kNumberType );
 				v.SetInt( val.Value.Value<XE::int32>() );
 				value.AddMember( rapidjson::StringRef( "value" ), v, _p->Doc.GetAllocator() );
 			}
-			else if( type == MetaID<XE::int64>::Get() )
+			else if( type == TypeID<XE::int64>::Get() )
 			{
 				rapidjson::Value v( rapidjson::kNumberType );
 				v.SetInt64( val.Value.Value<XE::int64>() );
 				value.AddMember( rapidjson::StringRef( "value" ), v, _p->Doc.GetAllocator() );
 			}
-			else if( type == MetaID<XE::uint8>::Get() )
+			else if( type == TypeID<XE::uint8>::Get() )
 			{
 				rapidjson::Value v( rapidjson::kNumberType );
 				v.SetUint( val.Value.Value<XE::uint8>() );
 				value.AddMember( rapidjson::StringRef( "value" ), v, _p->Doc.GetAllocator() );
 			}
-			else if( type == MetaID<XE::uint16>::Get() )
+			else if( type == TypeID<XE::uint16>::Get() )
 			{
 				rapidjson::Value v( rapidjson::kNumberType );
 				v.SetUint( val.Value.Value<XE::uint16>() );
 				value.AddMember( rapidjson::StringRef( "value" ), v, _p->Doc.GetAllocator() );
 			}
-			else if( type == MetaID<XE::uint32>::Get() )
+			else if( type == TypeID<XE::uint32>::Get() )
 			{
 				rapidjson::Value v( rapidjson::kNumberType );
 				v.SetUint( val.Value.Value<XE::uint32>() );
 				value.AddMember( rapidjson::StringRef( "value" ), v, _p->Doc.GetAllocator() );
 			}
-			else if( type == MetaID<XE::uint64>::Get() )
+			else if( type == TypeID<XE::uint64>::Get() )
 			{
 				rapidjson::Value v( rapidjson::kNumberType );
 				v.SetUint64( val.Value.Value<XE::uint64>() );
 				value.AddMember( rapidjson::StringRef( "value" ), v, _p->Doc.GetAllocator() );
 			}
-			else if( type == MetaID<XE::float32>::Get() )
+			else if( type == TypeID<XE::float32>::Get() )
 			{
 				rapidjson::Value v( rapidjson::kNumberType );
 				v.SetFloat( val.Value.Value<XE::float32>() );
 				value.AddMember( rapidjson::StringRef( "value" ), v, _p->Doc.GetAllocator() );
 			}
-			else if( type == MetaID<XE::float32>::Get() )
+			else if( type == TypeID<XE::float32>::Get() )
 			{
 				rapidjson::Value v( rapidjson::kNumberType );
 				v.SetDouble( val.Value.Value<XE::float64>() );
@@ -328,52 +328,52 @@ void XE::BinaryLoadArchive::Serialize( NameValue & val )
 	{
 		if( flag == ( XE::uint32 )Variant::Flag::FUNDAMENTAL )
 		{
-			if( type == MetaID<std::nullptr_t>::Get() )
+			if( type == TypeID<std::nullptr_t>::Get() )
 			{
 				val.Value = nullptr;
 			}
-			else if( type == MetaID<bool>::Get() )
+			else if( type == TypeID<bool>::Get() )
 			{
 				bool v = false;
 				_p->Stream >> v; val.Value = v;
 			}
-			else if( type == MetaID<XE::int8>::Get() )
+			else if( type == TypeID<XE::int8>::Get() )
 			{
 				XE::uint8 v = 0; _p->Stream >> v; val.Value = ( XE::int8 )( v );
 			}
-			else if( type == MetaID<XE::int16>::Get() )
+			else if( type == TypeID<XE::int16>::Get() )
 			{
 				XE::int16 v = 0; _p->Stream >> v; val.Value = v;
 			}
-			else if( type == MetaID<XE::int32>::Get() )
+			else if( type == TypeID<XE::int32>::Get() )
 			{
 				XE::int32 v = 0; _p->Stream >> v; val.Value = v;
 			}
-			else if( type == MetaID<XE::int64>::Get() )
+			else if( type == TypeID<XE::int64>::Get() )
 			{
 				XE::int64 v = 0; _p->Stream >> v; val.Value = v;
 			}
-			else if( type == MetaID<XE::uint8>::Get() )
+			else if( type == TypeID<XE::uint8>::Get() )
 			{
 				XE::uint8 v = 0; _p->Stream >> v; val.Value = v;
 			}
-			else if( type == MetaID<XE::uint16>::Get() )
+			else if( type == TypeID<XE::uint16>::Get() )
 			{
 				XE::uint16 v = 0; _p->Stream >> v; val.Value = v;
 			}
-			else if( type == MetaID<XE::uint32>::Get() )
+			else if( type == TypeID<XE::uint32>::Get() )
 			{
 				XE::uint32 v = 0; _p->Stream >> v; val.Value = v;
 			}
-			else if( type == MetaID<XE::uint64>::Get() )
+			else if( type == TypeID<XE::uint64>::Get() )
 			{
 				XE::uint64 v = 0; _p->Stream >> v; val.Value = v;
 			}
-			else if( type == MetaID<XE::float32>::Get() )
+			else if( type == TypeID<XE::float32>::Get() )
 			{
 				XE::float32 v = 0; _p->Stream >> v; val.Value = v;
 			}
-			else if( type == MetaID<XE::float32>::Get() )
+			else if( type == TypeID<XE::float32>::Get() )
 			{
 				XE::float64 v = 0; _p->Stream >> v; val.Value = v;
 			}
@@ -440,51 +440,51 @@ void XE::BinarySaveArchive::Serialize( NameValue & val )
 	{
 		if( flag == ( XE::uint32 )Variant::Flag::FUNDAMENTAL )
 		{
-			if( type == MetaID<std::nullptr_t>::Get() )
+			if( type == TypeID<std::nullptr_t>::Get() )
 			{
 
 			}
-			else if( type == MetaID<bool>::Get() )
+			else if( type == TypeID<bool>::Get() )
 			{
 				_p->Stream << val.Value.Value<bool>();
 			}
-			else if( type == MetaID<XE::int8>::Get() )
+			else if( type == TypeID<XE::int8>::Get() )
 			{
 				_p->Stream << val.Value.Value<XE::int8>();
 			}
-			else if( type == MetaID<XE::int16>::Get() )
+			else if( type == TypeID<XE::int16>::Get() )
 			{
 				_p->Stream << val.Value.Value<XE::int16>();
 			}
-			else if( type == MetaID<XE::int32>::Get() )
+			else if( type == TypeID<XE::int32>::Get() )
 			{
 				_p->Stream << val.Value.Value<XE::int32>();
 			}
-			else if( type == MetaID<XE::int64>::Get() )
+			else if( type == TypeID<XE::int64>::Get() )
 			{
 				_p->Stream << val.Value.Value<XE::int64>();
 			}
-			else if( type == MetaID<XE::uint8>::Get() )
+			else if( type == TypeID<XE::uint8>::Get() )
 			{
 				_p->Stream << val.Value.Value<XE::uint8>();
 			}
-			else if( type == MetaID<XE::uint16>::Get() )
+			else if( type == TypeID<XE::uint16>::Get() )
 			{
 				_p->Stream << val.Value.Value<XE::uint16>();
 			}
-			else if( type == MetaID<XE::uint32>::Get() )
+			else if( type == TypeID<XE::uint32>::Get() )
 			{
 				_p->Stream << val.Value.Value<XE::uint32>();
 			}
-			else if( type == MetaID<XE::uint64>::Get() )
+			else if( type == TypeID<XE::uint64>::Get() )
 			{
 				_p->Stream << val.Value.Value<XE::uint64>();
 			}
-			else if( type == MetaID<XE::float32>::Get() )
+			else if( type == TypeID<XE::float32>::Get() )
 			{
 				_p->Stream << val.Value.Value<XE::float32>();
 			}
-			else if( type == MetaID<XE::float32>::Get() )
+			else if( type == TypeID<XE::float32>::Get() )
 			{
 				_p->Stream << val.Value.Value<XE::float64>();
 			}

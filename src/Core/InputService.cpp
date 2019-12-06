@@ -218,67 +218,67 @@ void XE::InputService::Prepare()
 bool XE::InputService::CallEQUAL( const Variant& a, const Variant& b ) const
 {
 	return( 
-		( a.GetType() == MetaID<bool>::Get() && a.Value<bool>() == b.Value<bool>() ) ||
-		( a.GetType() == MetaID<XE::int32>::Get() && a.Value<XE::int32>() == b.Value<XE::int32>() ) ||
-		( a.GetType() == MetaID<XE::int64>::Get() && a.Value<XE::int64>() == b.Value<XE::int64>() ) ||
-		( a.GetType() == MetaID<XE::uint32>::Get() && a.Value<XE::uint32>() == b.Value<XE::uint32>() ) ||
-		( a.GetType() == MetaID<XE::uint64>::Get() && a.Value<XE::uint64>() == b.Value<XE::uint64>() ) ||
-		( a.GetType() == MetaID<XE::float32>::Get() && a.Value<XE::float32>() == b.Value<XE::float32>() ) ||
-		( a.GetType() == MetaID<XE::float64>::Get() && a.Value<XE::float64>() == b.Value<XE::float64>() ) );
+		( a.GetType() == TypeID<bool>::Get() && a.Value<bool>() == b.Value<bool>() ) ||
+		( a.GetType() == TypeID<XE::int32>::Get() && a.Value<XE::int32>() == b.Value<XE::int32>() ) ||
+		( a.GetType() == TypeID<XE::int64>::Get() && a.Value<XE::int64>() == b.Value<XE::int64>() ) ||
+		( a.GetType() == TypeID<XE::uint32>::Get() && a.Value<XE::uint32>() == b.Value<XE::uint32>() ) ||
+		( a.GetType() == TypeID<XE::uint64>::Get() && a.Value<XE::uint64>() == b.Value<XE::uint64>() ) ||
+		( a.GetType() == TypeID<XE::float32>::Get() && a.Value<XE::float32>() == b.Value<XE::float32>() ) ||
+		( a.GetType() == TypeID<XE::float64>::Get() && a.Value<XE::float64>() == b.Value<XE::float64>() ) );
 }
 
 bool XE::InputService::CallNOT_EQUAL( const Variant& a, const Variant& b ) const
 {
 	return(
-		( a.GetType() == MetaID<bool>::Get() && a.Value<bool>() != b.Value<bool>() ) ||
-		( a.GetType() == MetaID<XE::int32>::Get() && a.Value<XE::int32>() != b.Value<XE::int32>() ) ||
-		( a.GetType() == MetaID<XE::int64>::Get() && a.Value<XE::int64>() != b.Value<XE::int64>() ) ||
-		( a.GetType() == MetaID<XE::uint32>::Get() && a.Value<XE::uint32>() != b.Value<XE::uint32>() ) ||
-		( a.GetType() == MetaID<XE::uint64>::Get() && a.Value<XE::uint64>() != b.Value<XE::uint64>() ) ||
-		( a.GetType() == MetaID<XE::float32>::Get() && a.Value<XE::float32>() != b.Value<XE::float32>() ) ||
-		( a.GetType() == MetaID<XE::float64>::Get() && a.Value<XE::float64>() != b.Value<XE::float64>() ) );
+		( a.GetType() == TypeID<bool>::Get() && a.Value<bool>() != b.Value<bool>() ) ||
+		( a.GetType() == TypeID<XE::int32>::Get() && a.Value<XE::int32>() != b.Value<XE::int32>() ) ||
+		( a.GetType() == TypeID<XE::int64>::Get() && a.Value<XE::int64>() != b.Value<XE::int64>() ) ||
+		( a.GetType() == TypeID<XE::uint32>::Get() && a.Value<XE::uint32>() != b.Value<XE::uint32>() ) ||
+		( a.GetType() == TypeID<XE::uint64>::Get() && a.Value<XE::uint64>() != b.Value<XE::uint64>() ) ||
+		( a.GetType() == TypeID<XE::float32>::Get() && a.Value<XE::float32>() != b.Value<XE::float32>() ) ||
+		( a.GetType() == TypeID<XE::float64>::Get() && a.Value<XE::float64>() != b.Value<XE::float64>() ) );
 }
 
 bool XE::InputService::CallLESS( const Variant& a, const Variant& b ) const
 {
 	return(
-		( a.GetType() == MetaID<XE::int32>::Get() && a.Value<XE::int32>() < b.Value<XE::int32>() ) ||
-		( a.GetType() == MetaID<XE::int64>::Get() && a.Value<XE::int64>() < b.Value<XE::int64>() ) ||
-		( a.GetType() == MetaID<XE::uint32>::Get() && a.Value<XE::uint32>() < b.Value<XE::uint32>() ) ||
-		( a.GetType() == MetaID<XE::uint64>::Get() && a.Value<XE::uint64>() < b.Value<XE::uint64>() ) ||
-		( a.GetType() == MetaID<XE::float32>::Get() && a.Value<XE::float32>() < b.Value<XE::float32>() ) ||
-		( a.GetType() == MetaID<XE::float64>::Get() && a.Value<XE::float64>() < b.Value<XE::float64>() ) );
+		( a.GetType() == TypeID<XE::int32>::Get() && a.Value<XE::int32>() < b.Value<XE::int32>() ) ||
+		( a.GetType() == TypeID<XE::int64>::Get() && a.Value<XE::int64>() < b.Value<XE::int64>() ) ||
+		( a.GetType() == TypeID<XE::uint32>::Get() && a.Value<XE::uint32>() < b.Value<XE::uint32>() ) ||
+		( a.GetType() == TypeID<XE::uint64>::Get() && a.Value<XE::uint64>() < b.Value<XE::uint64>() ) ||
+		( a.GetType() == TypeID<XE::float32>::Get() && a.Value<XE::float32>() < b.Value<XE::float32>() ) ||
+		( a.GetType() == TypeID<XE::float64>::Get() && a.Value<XE::float64>() < b.Value<XE::float64>() ) );
 }
 
 bool XE::InputService::CallGREATER( const Variant& a, const Variant& b ) const
 {
 	return(
-		( a.GetType() == MetaID<XE::int32>::Get() && a.Value<XE::int32>() > b.Value<XE::int32>() ) ||
-		( a.GetType() == MetaID<XE::int64>::Get() && a.Value<XE::int64>() > b.Value<XE::int64>() ) ||
-		( a.GetType() == MetaID<XE::uint32>::Get() && a.Value<XE::uint32>() > b.Value<XE::uint32>() ) ||
-		( a.GetType() == MetaID<XE::uint64>::Get() && a.Value<XE::uint64>() > b.Value<XE::uint64>() ) ||
-		( a.GetType() == MetaID<XE::float32>::Get() && a.Value<XE::float32>() > b.Value<XE::float32>() ) ||
-		( a.GetType() == MetaID<XE::float64>::Get() && a.Value<XE::float64>() > b.Value<XE::float64>() ) );
+		( a.GetType() == TypeID<XE::int32>::Get() && a.Value<XE::int32>() > b.Value<XE::int32>() ) ||
+		( a.GetType() == TypeID<XE::int64>::Get() && a.Value<XE::int64>() > b.Value<XE::int64>() ) ||
+		( a.GetType() == TypeID<XE::uint32>::Get() && a.Value<XE::uint32>() > b.Value<XE::uint32>() ) ||
+		( a.GetType() == TypeID<XE::uint64>::Get() && a.Value<XE::uint64>() > b.Value<XE::uint64>() ) ||
+		( a.GetType() == TypeID<XE::float32>::Get() && a.Value<XE::float32>() > b.Value<XE::float32>() ) ||
+		( a.GetType() == TypeID<XE::float64>::Get() && a.Value<XE::float64>() > b.Value<XE::float64>() ) );
 }
 
 bool XE::InputService::CallLESS_EQUAL( const Variant& a, const Variant& b ) const
 {
 	return(
-		( a.GetType() == MetaID<XE::int32>::Get() && a.Value<XE::int32>() <= b.Value<XE::int32>() ) ||
-		( a.GetType() == MetaID<XE::int64>::Get() && a.Value<XE::int64>() <= b.Value<XE::int64>() ) ||
-		( a.GetType() == MetaID<XE::uint32>::Get() && a.Value<XE::uint32>() <= b.Value<XE::uint32>() ) ||
-		( a.GetType() == MetaID<XE::uint64>::Get() && a.Value<XE::uint64>() <= b.Value<XE::uint64>() ) ||
-		( a.GetType() == MetaID<XE::float32>::Get() && a.Value<XE::float32>() <= b.Value<XE::float32>() ) ||
-		( a.GetType() == MetaID<XE::float64>::Get() && a.Value<XE::float64>() <= b.Value<XE::float64>() ) );
+		( a.GetType() == TypeID<XE::int32>::Get() && a.Value<XE::int32>() <= b.Value<XE::int32>() ) ||
+		( a.GetType() == TypeID<XE::int64>::Get() && a.Value<XE::int64>() <= b.Value<XE::int64>() ) ||
+		( a.GetType() == TypeID<XE::uint32>::Get() && a.Value<XE::uint32>() <= b.Value<XE::uint32>() ) ||
+		( a.GetType() == TypeID<XE::uint64>::Get() && a.Value<XE::uint64>() <= b.Value<XE::uint64>() ) ||
+		( a.GetType() == TypeID<XE::float32>::Get() && a.Value<XE::float32>() <= b.Value<XE::float32>() ) ||
+		( a.GetType() == TypeID<XE::float64>::Get() && a.Value<XE::float64>() <= b.Value<XE::float64>() ) );
 }
 
 bool XE::InputService::CallGREATER_EQUAL( const Variant& a, const Variant& b ) const
 {
 	return(
-		( a.GetType() == MetaID<XE::int32>::Get() && a.Value<XE::int32>() >= b.Value<XE::int32>() ) ||
-		( a.GetType() == MetaID<XE::int64>::Get() && a.Value<XE::int64>() >= b.Value<XE::int64>() ) ||
-		( a.GetType() == MetaID<XE::uint32>::Get() && a.Value<XE::uint32>() >= b.Value<XE::uint32>() ) ||
-		( a.GetType() == MetaID<XE::uint64>::Get() && a.Value<XE::uint64>() >= b.Value<XE::uint64>() ) ||
-		( a.GetType() == MetaID<XE::float32>::Get() && a.Value<XE::float32>() >= b.Value<XE::float32>() ) ||
-		( a.GetType() == MetaID<XE::float64>::Get() && a.Value<XE::float64>() >= b.Value<XE::float64>() ) );
+		( a.GetType() == TypeID<XE::int32>::Get() && a.Value<XE::int32>() >= b.Value<XE::int32>() ) ||
+		( a.GetType() == TypeID<XE::int64>::Get() && a.Value<XE::int64>() >= b.Value<XE::int64>() ) ||
+		( a.GetType() == TypeID<XE::uint32>::Get() && a.Value<XE::uint32>() >= b.Value<XE::uint32>() ) ||
+		( a.GetType() == TypeID<XE::uint64>::Get() && a.Value<XE::uint64>() >= b.Value<XE::uint64>() ) ||
+		( a.GetType() == TypeID<XE::float32>::Get() && a.Value<XE::float32>() >= b.Value<XE::float32>() ) ||
+		( a.GetType() == TypeID<XE::float64>::Get() && a.Value<XE::float64>() >= b.Value<XE::float64>() ) );
 }

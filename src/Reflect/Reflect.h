@@ -9,7 +9,7 @@
 #ifndef REFLECT_H__DB8AE6CB_8BEE_4A58_B0E8_02BA454A5BF3
 #define REFLECT_H__DB8AE6CB_8BEE_4A58_B0E8_02BA454A5BF3
 
-#include "MetaID.hpp"
+#include "TypeID.hpp"
 #include "CXXMetaEnum.hpp"
 #include "CXXMetaClass.hpp"
 #include "CXXMetaMethod.hpp"

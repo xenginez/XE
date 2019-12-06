@@ -11,7 +11,7 @@
 
 #include "IMetaMethod.h"
 
-#include "MetaID.hpp"
+#include "TypeID.hpp"
 
 BEG_XE_NAMESPACE
 
@@ -46,7 +46,7 @@ public:
 
 public:
 	CXXMetaMethod( const String& Name, MethodType Callback, IMetaClassPtr Owner )
-		:IMetaMethod( Name, true, false, MetaID<typename TypeTraits< ResultType >::raw_t>::Get(), MakeParameterType<ParameterType...>(), Owner ), _Callback( Callback )
+		:IMetaMethod( Name, true, false, TypeID<typename TypeTraits< ResultType >::raw_t>::Get(), MakeParameterType<ParameterType...>(), Owner ), _Callback( Callback )
 	{
 	}
 
@@ -111,7 +111,7 @@ public:
 
 public:
 	CXXMetaMethod( const String& Name, MethodType Callback, IMetaClassPtr Owner )
-		:IMetaMethod( Name, false, false, MetaID<typename TypeTraits< ResultType >::raw_t>::Get(), MakeParameterType<ParameterType...>(), Owner ), _Callback( Callback )
+		:IMetaMethod( Name, false, false, TypeID<typename TypeTraits< ResultType >::raw_t>::Get(), MakeParameterType<ParameterType...>(), Owner ), _Callback( Callback )
 	{
 	}
 
@@ -132,7 +132,7 @@ public:
 
 public:
 	CXXMetaMethod( const String& Name, MethodType Callback, IMetaClassPtr Owner )
-		:IMetaMethod( Name, false, true, MetaID<typename TypeTraits< ResultType >::raw_t>::Get(), MakeParameterType<ParameterType...>(), Owner ), _Callback( Callback )
+		:IMetaMethod( Name, false, true, TypeID<typename TypeTraits< ResultType >::raw_t>::Get(), MakeParameterType<ParameterType...>(), Owner ), _Callback( Callback )
 	{
 	}
 

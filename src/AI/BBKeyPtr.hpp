@@ -35,11 +35,11 @@ public:
 		{
 			if (meta->GetType() == MetaType::ENUM)
 			{
-				XE_ASSERT( meta == MetaID<T>::Get() );
+				XE_ASSERT( meta == TypeID<T>::Get() );
 			}
 			else if ( auto cls = SP_CAST<IMetaClass>( meta ) )
 			{
-				XE_ASSERT( cls->CanConvert( DP_CAST<IMetaClass>( MetaID<T>::Get() ) ) );
+				XE_ASSERT( cls->CanConvert( DP_CAST<IMetaClass>( TypeID<T>::Get() ) ) );
 			}
 		}
 		else
@@ -55,11 +55,11 @@ public:
 		{
 			if ( meta->GetType() == MetaType::ENUM )
 			{
-				XE_ASSERT( meta == MetaID<T>::Get() );
+				XE_ASSERT( meta == TypeID<T>::Get() );
 			}
 			else if ( auto cls = SP_CAST<IMetaClass>( meta ) )
 			{
-				XE_ASSERT( cls->CanConvert( DP_CAST<IMetaClass>( MetaID<T>::Get() ) ) );
+				XE_ASSERT( cls->CanConvert( DP_CAST<IMetaClass>( TypeID<T>::Get() ) ) );
 			}
 		}
 		else

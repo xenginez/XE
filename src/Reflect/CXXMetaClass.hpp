@@ -343,7 +343,7 @@ template<> struct XE_API ClassID< XE::float64 >
 {
 	static IMetaClassPtr Get( const XE::float64 * val = nullptr )
 	{
-		static auto meta = XE::make_shared< CXXMetaFundamental<XE::uint64> >( "float64" );
+		static auto meta = XE::make_shared< CXXMetaFundamental<XE::float64> >( "float64" );
 		return meta;
 	}
 };
@@ -357,11 +357,11 @@ template<> struct XE_API ClassID< Variant >
 	}
 };
 
-template<> struct XE_API MetaID< Variant >
+template<> struct XE_API TypeID< Variant >
 {
-	static IMetaInfoPtr Get( const Variant * val = nullptr )
+	static IMetaTypePtr Get( const Variant * val = nullptr )
 	{
-		if( val && !val->IsInvalid() )
+		if( val != nullptr && val->IsInvalid() == false )
 		{
 			return val->GetType();
 		}

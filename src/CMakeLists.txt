@@ -9,7 +9,6 @@ target_link_libraries(XE
 		tbb${XE_TBB_POSTFIX}
 		tbbmalloc${XE_TBB_POSTFIX}
 		tbbmalloc_proxy${XE_TBB_POSTFIX}
-		OpenAL32
 		DebugUtils
 		DetourCrowd
 		Recast

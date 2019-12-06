@@ -9,7 +9,7 @@
 #ifndef __VARIANT_H__87E44F7B_D250_41E0_AEEE_7D7ECB2AAF35
 #define __VARIANT_H__87E44F7B_D250_41E0_AEEE_7D7ECB2AAF35
 
-#include "MetaID.hpp"
+#include "TypeID.hpp"
 
 BEG_XE_NAMESPACE
 
@@ -333,7 +333,6 @@ using VariantSet =  XE::Set<Variant>;
 using VariantMap =  XE::Map<Variant, Variant>;
 using VariantMultiSet = XE::MultiSet<Variant>;
 using VariantMultiMap = XE::MultiMap<Variant, Variant>;
-
 
 
 class XE_API VariantException : public RuntimeException

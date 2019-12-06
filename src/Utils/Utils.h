@@ -33,7 +33,7 @@ public: \
 namespace XE{ using NAME##Group = XE::OrderGroup< INDEX >; }
 
 #define DECL_EVENT( NAME, DESC, PARAM ) \
-DLL_VAR_WEAK extern const XE::Handle<XE::Event> NAME = XE::Order::RegisterOrder< XE::EventGroup >( #NAME, DESC, XE::MetaID< PARAM >::Get() )
+DLL_VAR_WEAK extern const XE::Handle<XE::Event> NAME = XE::Order::RegisterOrder< XE::EventGroup >( #NAME, DESC, XE::TypeID< PARAM >::Get() )
 
 
 DECL_GROUP( XE_API, 1, Event );
