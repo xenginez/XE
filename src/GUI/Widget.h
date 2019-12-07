@@ -43,14 +43,18 @@ public:
 
 	void SetMaximunSize( const XE::Vec2 & val );
 
-	const XE::Rect & GetBoundingRect() const;
-
-	void SetBoundingRect( const XE::Rect & val );
-
 public:
 	virtual void Update();
 
 	virtual void Render();
+
+public:
+	virtual XE::Vec2 SizeHint() const;
+
+public:
+	const XE::Rect & GetGeometry() const;
+
+	virtual void SetGeometry( const XE::Rect & val );
 
 private:
 	bool _Enable;
@@ -58,7 +62,7 @@ private:
 	WidgetPtr _Parent;
 	XE::Vec2 _MinSize;
 	XE::Vec2 _MaxSize;
-	XE::Rect _BoundingRect;
+	XE::Rect _Geometry;
 };
 
 END_XE_NAMESPACE

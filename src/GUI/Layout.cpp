@@ -66,7 +66,7 @@ void Layout::SetWidgetSpacing( XE::real val )
 
 XE::Rect Layout::GetContentsRect() const
 {
-	const Rect & rect = GetBoundingRect();
+	const Rect & rect = GetGeometry();
 
 	return Rect( rect.x + _LeftMargin, rect.y + _TopMargin, rect.width - _RightMargin, rect.height - _BottomMargin );
 }

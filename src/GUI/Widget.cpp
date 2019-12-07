@@ -66,14 +66,14 @@ void Widget::SetMaximunSize( const XE::Vec2 & val )
 	_MaxSize = val;
 }
 
-const XE::Rect & Widget::GetBoundingRect() const
+const XE::Rect & Widget::GetGeometry() const
 {
-	return _BoundingRect;
+	return _Geometry;
 }
 
-void Widget::SetBoundingRect( const XE::Rect & val )
+void Widget::SetGeometry( const XE::Rect & val )
 {
-	_BoundingRect = val;
+	_Geometry = val;
 }
 
 void Widget::Update()
@@ -84,4 +84,9 @@ void Widget::Update()
 void Widget::Render()
 {
 
+}
+
+XE::Vec2 Widget::SizeHint() const
+{
+	return _MinSize;
 }
