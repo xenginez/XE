@@ -20,7 +20,7 @@
 #include "Library.h"
 #include "Platform.h"
 #include "Handle.hpp"
-#include "SignalSlot.hpp"
+#include "Sigslot.hpp"
 
 
 #define DECL_HANDLE( _DLL_EXPORT, NAME ) class NAME; using NAME##Handle = XE::Handle< NAME >; DECL_META_CLASS( _DLL_EXPORT, NAME##Handle );
