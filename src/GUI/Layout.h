@@ -43,28 +43,36 @@ public:
 
 	void SetWidgetSpacing( XE::real val );
 
+	SizeConstraint GetSizeConstraint() const;
+
+	void SetSizeConstraint( SizeConstraint val );
+
+public:
+	XE::uint8 GetStretch( XE::uint64 val ) const;
+
+	void SetStretch( XE::uint64 index, XE::uint8 val );
+
 public:
 	XE::Rect GetContentsRect() const;
 
 public:
-	XE::uint64 Count() const;
+	XE::uint64 ChildCount() const;
 
-	void AddWidget( const WidgetPtr & val );
+	void AddChild( WidgetHandle val );
 
-	void RemoveWidget( const WidgetPtr & val );
+	void RemoveChild( WidgetHandle val );
 
-	const XE::Array<WidgetPtr> & GetWidgets() const;
+	WidgetPtr GetChild( XE::uint64 val ) const;
 
-	const WidgetPtr & GetWidget( XE::uint64 val ) const;
+	WidgetHandle GetChildHandle( XE::uint64 val ) const;
 
 public:
-	void Update() override;
+	WidgetPtr GetWidget( WidgetHandle val ) const;
 
+public:
 	void Render() override;
 
 protected:
-	virtual void OnUpdate();
-
 	virtual void OnRender();
 
 private:
@@ -73,7 +81,8 @@ private:
 	XE::real _BottomMargin;
 	XE::real _RightMargin;
 	XE::real _WidgetSpacing;
-	XE::Array<WidgetPtr> _Widgets;
+	SizeConstraint _SizeConstraint;
+	XE::Array< XE::Pair< WidgetHandle, XE::uint8> > _Children;
 };
 
 END_XE_NAMESPACE

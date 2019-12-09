@@ -51,7 +51,7 @@ template<> struct _DLL_EXPORT XE::EnumID<ENUM> \
 { \
 	static IMetaEnumPtr Get( const ENUM * val = nullptr ) \
 	{ \
-		static auto p = std::make_shared< CXXMetaEnum<ENUM> >( #ENUM, nullptr ); \
+		static auto p = XE::MakeShared< CXXMetaEnum<ENUM> >( #ENUM, nullptr ); \
 		return p; \
 	} \
 }
@@ -61,7 +61,7 @@ template<> struct _DLL_EXPORT XE::ClassID<_CLASS> \
 { \
 	static IMetaClassPtr Get( const _CLASS * val = nullptr ) \
 	{ \
-		static auto p = std::make_shared< CXXMetaClass<_CLASS> >( #_CLASS, ClassID<_SUPER>::Get(), nullptr ); \
+		static auto p = XE::MakeShared< CXXMetaClass<_CLASS> >( #_CLASS, ClassID<_SUPER>::Get(), nullptr ); \
 		return p; \
 	} \
 }
@@ -70,7 +70,7 @@ template<> struct _DLL_EXPORT XE::ClassID<_CLASS> \
 { \
 	static IMetaClassPtr Get( const _CLASS * val = nullptr ) \
 	{ \
-		static auto p = std::make_shared< CXXMetaClass<_CLASS> >( #_CLASS, nullptr, nullptr ); \
+		static auto p = XE::MakeShared< CXXMetaClass<_CLASS> >( #_CLASS, nullptr, nullptr ); \
 		return p; \
 	} \
 }
@@ -82,7 +82,7 @@ public: \
     typedef _SUPER Super; \
 	static IMetaClassPtr GetMetaClassStatic() \
 	{ \
-		static auto p = std::make_shared< CXXMetaClass<_CLASS> >( #_CLASS, ClassID<_SUPER>::Get(), nullptr ); \
+		static auto p = XE::MakeShared< CXXMetaClass<_CLASS> >( #_CLASS, ClassID<_SUPER>::Get(), nullptr ); \
 		return p; \
 	} \
 	virtual IMetaClassPtr GetMetaClass() const \
@@ -95,7 +95,7 @@ private:
 public: \
 	static IMetaClassPtr GetMetaClassStatic() \
 	{ \
-		static auto p = std::make_shared< CXXMetaClass<_CLASS> >( #_CLASS, nullptr, nullptr ); \
+		static auto p = XE::MakeShared< CXXMetaClass<_CLASS> >( #_CLASS, nullptr, nullptr ); \
 		return p; \
 	} \
 	virtual IMetaClassPtr GetMetaClass() const \

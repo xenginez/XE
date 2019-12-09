@@ -45,7 +45,7 @@ public:
 		}
 	}
 
-	virtual Variant ConstructPtr( XE::shared_ptr<void> ptr ) const override
+	virtual Variant ConstructPtr( XE::SharedPtr<void> ptr ) const override
 	{
 		if constexpr ( !std::is_abstract_v<ClassType> )
 		{
@@ -56,7 +56,7 @@ public:
 				return SP_CAST<ClassType>( ptr );
 			}
 
-			return XE::make_shared<ClassType>();
+			return XE::MakeShared<ClassType>();
 		}
 		else
 		{
@@ -77,97 +77,97 @@ public:
 public:
 	template< typename Result, typename ... Types > void Method( const String& Name, Result( *Callback )( Types... ) )
 	{
-		auto method = XE::make_shared< CXXMetaMethod< Result( *)( Types... )> >( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ) );
+		auto method = XE::MakeShared< CXXMetaMethod< Result( *)( Types... )> >( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ) );
 		_RegisterMethod( method );
 	}
 
 	template< typename Result, typename ... Types > void Method( const String& Name, Result( ClassType::*Callback )( Types... ) )
 	{
-		auto method = XE::make_shared< CXXMetaMethod<Result( ClassType::* )( Types... )> >( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ) );
+		auto method = XE::MakeShared< CXXMetaMethod<Result( ClassType::* )( Types... )> >( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ) );
 		_RegisterMethod( method );
 	}
 
 	template< typename Result, typename ... Types > void Method( const String& Name, Result( ClassType::*Callback )( Types... ) const )
 	{
-		auto method = XE::make_shared< CXXMetaMethod<Result( ClassType::* )( Types... ) const> >( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ) );
+		auto method = XE::MakeShared< CXXMetaMethod<Result( ClassType::* )( Types... ) const> >( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ) );
 		_RegisterMethod( method );
 	}
 
 	template< typename Value > void Property( const String& Name, Value * Prop, XE::uint8 Flag = IMetaProperty::Default )
 	{
-		auto prop = XE::make_shared<CXXMetaProperty<Value>>( Name, Prop, Flag, SP_CAST<IMetaClass>( shared_from_this() ) );
+		auto prop = XE::MakeShared<CXXMetaProperty<Value>>( Name, Prop, Flag, SP_CAST<IMetaClass>( shared_from_this() ) );
 		_RegisterProperty( prop );
 	}
 
 	template< typename Value > void Property( const String& Name, Value( ClassType::*Prop ), XE::uint8 Flag = IMetaProperty::Default )
 	{
-		auto prop = XE::make_shared<CXXMetaProperty<Value( ClassType::* )>>( Name, Prop, Flag, SP_CAST<IMetaClass>( shared_from_this() ) );
+		auto prop = XE::MakeShared<CXXMetaProperty<Value( ClassType::* )>>( Name, Prop, Flag, SP_CAST<IMetaClass>( shared_from_this() ) );
 		_RegisterProperty( prop );
 	}
 
 	template< typename GetType, typename SetType > void Property( const String& Name, GetType( *Get )( ), void( *Set )( SetType ), XE::uint8 Flag = IMetaProperty::Default )
 	{
-		auto prop = XE::make_shared<CXXMetaProperty<GetType( *)( ), void( *)( SetType )>>( Name, Get, Set, Flag, SP_CAST<IMetaClass>( shared_from_this() ) );
+		auto prop = XE::MakeShared<CXXMetaProperty<GetType( *)( ), void( *)( SetType )>>( Name, Get, Set, Flag, SP_CAST<IMetaClass>( shared_from_this() ) );
 		_RegisterProperty( prop );
 	}
 
 	template< typename GetType, typename SetType > void Property( const String& Name, GetType( ClassType::*Get )( ), void( ClassType::*Set )( SetType ), XE::uint8 Flag = IMetaProperty::Default )
 	{
-		auto prop = XE::make_shared<CXXMetaProperty<GetType( ClassType::* )( ), void( ClassType::* )( SetType )>>( Name, Get, Set, Flag, SP_CAST<IMetaClass>( shared_from_this() ) );
+		auto prop = XE::MakeShared<CXXMetaProperty<GetType( ClassType::* )( ), void( ClassType::* )( SetType )>>( Name, Get, Set, Flag, SP_CAST<IMetaClass>( shared_from_this() ) );
 		_RegisterProperty( prop );
 	}
 
 	template< typename GetType, typename SetType > void Property( const String& Name, GetType( ClassType::*Get )( ) const, void( ClassType::*Set )( SetType ), XE::uint8 Flag = IMetaProperty::Default )
 	{
-		auto prop = XE::make_shared<CXXMetaProperty<GetType( ClassType::* )( ) const, void( ClassType::* )( SetType )>>( Name, Get, Set, Flag, SP_CAST<IMetaClass>( shared_from_this() ) );
+		auto prop = XE::MakeShared<CXXMetaProperty<GetType( ClassType::* )( ) const, void( ClassType::* )( SetType )>>( Name, Get, Set, Flag, SP_CAST<IMetaClass>( shared_from_this() ) );
 		_RegisterProperty( prop );
 	}
 
 	template< typename Result > void Operator( const String& Name, Result( ClassType::*Callback )( ) )
 	{
-		auto oper = XE::make_shared<CXXMetaOperator<Result( ClassType::* )( )>>( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ) );
+		auto oper = XE::MakeShared<CXXMetaOperator<Result( ClassType::* )( )>>( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ) );
 		_RegisterOperator( oper );
 	}
 
 	template< typename Result > void Operator( const String& Name, Result( ClassType::*Callback )( ) const )
 	{
-		auto oper = XE::make_shared<CXXMetaOperator<Result( ClassType::* )( ) const>>( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ) );
+		auto oper = XE::MakeShared<CXXMetaOperator<Result( ClassType::* )( ) const>>( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ) );
 		_RegisterOperator( oper );
 	}
 
 	template< typename Result, typename Right > void Operator( const String& Name, Result( ClassType::*Callback )( Right ) )
 	{
-		auto oper = XE::make_shared<CXXMetaOperator<Result( ClassType::* )( Right )>>( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ) );
+		auto oper = XE::MakeShared<CXXMetaOperator<Result( ClassType::* )( Right )>>( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ) );
 		_RegisterOperator( oper );
 	}
 
 	template< typename Result, typename Right > void Operator( const String& Name, Result( ClassType::*Callback )( Right ) const )
 	{
-		auto oper = XE::make_shared<CXXMetaOperator<Result( ClassType::* )( Right ) const>>( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ) );
+		auto oper = XE::MakeShared<CXXMetaOperator<Result( ClassType::* )( Right ) const>>( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ) );
 		_RegisterOperator( oper );
 	}
 
 	template< typename Result > void Operator( const String& Name, Result( *Callback )( ClassType * ) )
 	{
-		auto oper = XE::make_shared<CXXMetaOperator<Result( *)( ClassType * )>>( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ) );
+		auto oper = XE::MakeShared<CXXMetaOperator<Result( *)( ClassType * )>>( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ) );
 		_RegisterOperator( oper );
 	}
 
 	template< typename Result > void Operator( const String& Name, Result( *Callback )( ClassType & ) )
 	{
-		auto oper = XE::make_shared<CXXMetaOperator<Result( *)( ClassType & )>>( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ) );
+		auto oper = XE::MakeShared<CXXMetaOperator<Result( *)( ClassType & )>>( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ) );
 		_RegisterOperator( oper );
 	}
 
 	template< typename Result, typename Right > void Operator( const String& Name, Result( *Callback )( ClassType *, Right ) )
 	{
-		auto oper = XE::make_shared<CXXMetaOperator<Result( *)( ClassType *, Right )>>( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ) );
+		auto oper = XE::MakeShared<CXXMetaOperator<Result( *)( ClassType *, Right )>>( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ) );
 		_RegisterOperator( oper );
 	}
 
 	template< typename Result, typename Right > void Operator( const String& Name, Result( *Callback )( ClassType &, Right ) )
 	{
-		auto oper = XE::make_shared<CXXMetaOperator<Result( *)( ClassType &, Right )>>( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ) );
+		auto oper = XE::MakeShared<CXXMetaOperator<Result( *)( ClassType &, Right )>>( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ) );
 		_RegisterOperator( oper );
 	}
 
@@ -192,7 +192,7 @@ public:
 		return (ClassType )0;
 	}
 
-	virtual Variant ConstructPtr( XE::shared_ptr<void> ptr ) const override
+	virtual Variant ConstructPtr( XE::SharedPtr<void> ptr ) const override
 	{
 		if( ptr != nullptr )
 		{
@@ -201,7 +201,7 @@ public:
 			return SP_CAST<ClassType>( ptr );
 		}
 
-		return XE::make_shared<ClassType>( (ClassType )0 );
+		return XE::MakeShared<ClassType>( (ClassType )0 );
 	}
 
 	virtual void Destruct( Variant & val ) const override
@@ -228,7 +228,7 @@ template<> struct XE_API ClassID< std::nullptr_t >
 {
 	static IMetaClassPtr Get( const std::nullptr_t * val = nullptr )
 	{
-		static auto meta = XE::make_shared< CXXMetaFundamental<std::nullptr_t> >( "null" );
+		static auto meta = XE::MakeShared< CXXMetaFundamental<std::nullptr_t> >( "null" );
 		return meta;
 	}
 };
@@ -237,7 +237,7 @@ template<> struct XE_API ClassID< bool >
 {
 	static IMetaClassPtr Get( const bool * val = nullptr )
 	{
-		static auto meta = XE::make_shared< CXXMetaFundamental<bool> >( "bool" );
+		static auto meta = XE::MakeShared< CXXMetaFundamental<bool> >( "bool" );
 		return meta;
 	}
 };
@@ -246,7 +246,7 @@ template<> struct XE_API ClassID< XE::int8 >
 {
 	static IMetaClassPtr Get( const XE::int8 * val = nullptr )
 	{
-		static auto meta = XE::make_shared< CXXMetaFundamental<XE::int8> >( "int8" );
+		static auto meta = XE::MakeShared< CXXMetaFundamental<XE::int8> >( "int8" );
 		return meta;
 	}
 };
@@ -255,7 +255,7 @@ template<> struct XE_API ClassID< XE::int16 >
 {
 	static IMetaClassPtr Get( const XE::int16 * val = nullptr )
 	{
-		static auto meta = XE::make_shared< CXXMetaFundamental<XE::int16> >( "int16" );
+		static auto meta = XE::MakeShared< CXXMetaFundamental<XE::int16> >( "int16" );
 		return meta;
 	}
 };
@@ -264,7 +264,7 @@ template<> struct XE_API ClassID< XE::int32 >
 {
 	static IMetaClassPtr Get( const XE::int32 * val = nullptr )
 	{
-		static auto meta = XE::make_shared< CXXMetaFundamental<XE::int32> >( "int32" );
+		static auto meta = XE::MakeShared< CXXMetaFundamental<XE::int32> >( "int32" );
 		return meta;
 	}
 };
@@ -281,7 +281,7 @@ template<> struct XE_API ClassID< XE::int64 >
 {
 	static IMetaClassPtr Get( const XE::int64 * val = nullptr )
 	{
-		static auto meta = XE::make_shared< CXXMetaFundamental<XE::int64> >( "int64" );
+		static auto meta = XE::MakeShared< CXXMetaFundamental<XE::int64> >( "int64" );
 		return meta;
 	}
 };
@@ -290,7 +290,7 @@ template<> struct XE_API ClassID< XE::uint8 >
 {
 	static IMetaClassPtr Get( const XE::uint8 * val = nullptr )
 	{
-		static auto meta = XE::make_shared< CXXMetaFundamental<XE::uint8> >( "uint8" );
+		static auto meta = XE::MakeShared< CXXMetaFundamental<XE::uint8> >( "uint8" );
 		return meta;
 	}
 };
@@ -299,7 +299,7 @@ template<> struct XE_API ClassID< XE::uint16 >
 {
 	static IMetaClassPtr Get( const XE::uint16 * val = nullptr )
 	{
-		static auto meta = XE::make_shared< CXXMetaFundamental<XE::uint16> >( "uint16" );
+		static auto meta = XE::MakeShared< CXXMetaFundamental<XE::uint16> >( "uint16" );
 		return meta;
 	}
 };
@@ -308,7 +308,7 @@ template<> struct XE_API ClassID< XE::uint32 >
 {
 	static IMetaClassPtr Get( const XE::uint32 * val = nullptr )
 	{
-		static auto meta = XE::make_shared< CXXMetaFundamental<XE::uint32> >( "uint32" );
+		static auto meta = XE::MakeShared< CXXMetaFundamental<XE::uint32> >( "uint32" );
 		return meta;
 	}
 };
@@ -325,7 +325,7 @@ template<> struct XE_API ClassID< XE::uint64 >
 {
 	static IMetaClassPtr Get( const XE::uint64 * val = nullptr )
 	{
-		static auto meta = XE::make_shared< CXXMetaFundamental<XE::uint64> >( "uint64" );
+		static auto meta = XE::MakeShared< CXXMetaFundamental<XE::uint64> >( "uint64" );
 		return meta;
 	}
 };
@@ -334,7 +334,7 @@ template<> struct XE_API ClassID< XE::float32 >
 {
 	static IMetaClassPtr Get( const XE::float32 * val = nullptr )
 	{
-		static auto meta = XE::make_shared< CXXMetaFundamental<XE::float32> >( "float32" );
+		static auto meta = XE::MakeShared< CXXMetaFundamental<XE::float32> >( "float32" );
 		return meta;
 	}
 };
@@ -343,7 +343,7 @@ template<> struct XE_API ClassID< XE::float64 >
 {
 	static IMetaClassPtr Get( const XE::float64 * val = nullptr )
 	{
-		static auto meta = XE::make_shared< CXXMetaFundamental<XE::float64> >( "float64" );
+		static auto meta = XE::MakeShared< CXXMetaFundamental<XE::float64> >( "float64" );
 		return meta;
 	}
 };
@@ -352,7 +352,7 @@ template<> struct XE_API ClassID< Variant >
 {
 	static IMetaClassPtr Get( const Variant * val = nullptr )
 	{
-		static auto meta = XE::make_shared< CXXMetaClass<Variant> >( "Variant", nullptr, nullptr );
+		static auto meta = XE::MakeShared< CXXMetaClass<Variant> >( "Variant", nullptr, nullptr );
 		return meta;
 	}
 };
@@ -375,7 +375,7 @@ template<> struct XE_API ClassID< String >
 {
 	static IMetaClassPtr Get( const String * val = nullptr )
 	{
-		static auto meta = XE::make_shared< CXXMetaClass<String> >( "String", nullptr, nullptr );
+		static auto meta = XE::MakeShared< CXXMetaClass<String> >( "String", nullptr, nullptr );
 		return meta;
 	}
 };
@@ -384,7 +384,7 @@ template<> struct XE_API ClassID< VariantList >
 {
 	static IMetaClassPtr Get( const VariantList * val = nullptr )
 	{
-		static auto meta = XE::make_shared< CXXMetaClass<VariantList> >( "List", nullptr, nullptr );
+		static auto meta = XE::MakeShared< CXXMetaClass<VariantList> >( "List", nullptr, nullptr );
 		return meta;
 	}
 };
@@ -393,7 +393,7 @@ template<> struct XE_API ClassID< VariantDeque >
 {
 	static IMetaClassPtr Get( const VariantDeque * val = nullptr )
 	{
-		static auto meta = XE::make_shared< CXXMetaClass<VariantDeque> >( "Deque", nullptr, nullptr );
+		static auto meta = XE::MakeShared< CXXMetaClass<VariantDeque> >( "Deque", nullptr, nullptr );
 		return meta;
 	}
 };
@@ -402,7 +402,7 @@ template<> struct XE_API ClassID< VariantStack >
 {
 	static IMetaClassPtr Get( const VariantStack * val = nullptr )
 	{
-		static auto meta = XE::make_shared< CXXMetaClass<VariantStack> >( "Stack", nullptr, nullptr );
+		static auto meta = XE::MakeShared< CXXMetaClass<VariantStack> >( "Stack", nullptr, nullptr );
 		return meta;
 	}
 };
@@ -411,7 +411,7 @@ template<> struct XE_API ClassID< VariantQueue >
 {
 	static IMetaClassPtr Get( const VariantQueue * val = nullptr )
 	{
-		static auto meta = XE::make_shared< CXXMetaClass<VariantQueue> >( "Queue", nullptr, nullptr );
+		static auto meta = XE::MakeShared< CXXMetaClass<VariantQueue> >( "Queue", nullptr, nullptr );
 		return meta;
 	}
 };
@@ -420,7 +420,7 @@ template<> struct XE_API ClassID< VariantArray >
 {
 	static IMetaClassPtr Get( const VariantArray * val = nullptr )
 	{
-		static auto meta = XE::make_shared< CXXMetaClass<VariantArray> >( "Array", nullptr, nullptr );
+		static auto meta = XE::MakeShared< CXXMetaClass<VariantArray> >( "Array", nullptr, nullptr );
 		return meta;
 	}
 };
@@ -429,7 +429,7 @@ template<> struct XE_API ClassID< VariantPair >
 {
 	static IMetaClassPtr Get( const VariantPair * val = nullptr )
 	{
-		static auto meta = XE::make_shared< CXXMetaClass<VariantPair> >( "Pair", nullptr, nullptr );
+		static auto meta = XE::MakeShared< CXXMetaClass<VariantPair> >( "Pair", nullptr, nullptr );
 		return meta;
 	}
 };
@@ -438,7 +438,7 @@ template<> struct XE_API ClassID< VariantSet >
 {
 	static IMetaClassPtr Get( const VariantSet * val = nullptr )
 	{
-		static auto meta = XE::make_shared< CXXMetaClass<VariantSet> >( "Set", nullptr, nullptr );
+		static auto meta = XE::MakeShared< CXXMetaClass<VariantSet> >( "Set", nullptr, nullptr );
 		return meta;
 	}
 };
@@ -447,7 +447,7 @@ template<> struct XE_API ClassID< VariantMap >
 {
 	static IMetaClassPtr Get( const VariantMap * val = nullptr )
 	{
-		static auto meta = XE::make_shared< CXXMetaClass<VariantMap> >( "Map", nullptr, nullptr );
+		static auto meta = XE::MakeShared< CXXMetaClass<VariantMap> >( "Map", nullptr, nullptr );
 		return meta;
 	}
 };
@@ -456,7 +456,7 @@ template<> struct XE_API ClassID< VariantMultiSet >
 {
 	static IMetaClassPtr Get( const VariantMultiSet * val = nullptr )
 	{
-		static auto meta = XE::make_shared< CXXMetaClass<VariantMultiSet> >( "MultiSet", nullptr, nullptr );
+		static auto meta = XE::MakeShared< CXXMetaClass<VariantMultiSet> >( "MultiSet", nullptr, nullptr );
 		return meta;
 	}
 };
@@ -465,7 +465,7 @@ template<> struct XE_API ClassID< VariantMultiMap >
 {
 	static IMetaClassPtr Get( const VariantMultiMap * val = nullptr )
 	{
-		static auto meta = XE::make_shared< CXXMetaClass<VariantMultiMap> >( "MultiMap", nullptr, nullptr );
+		static auto meta = XE::MakeShared< CXXMetaClass<VariantMultiMap> >( "MultiMap", nullptr, nullptr );
 		return meta;
 	}
 };

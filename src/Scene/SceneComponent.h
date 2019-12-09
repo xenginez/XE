@@ -32,12 +32,12 @@ public:
 	void AttachToParent( SceneComponentPtr val );
 
 public:
-	template< typename T > XE::shared_ptr<T> GetRootT()
+	template< typename T > XE::SharedPtr<T> GetRootT()
 	{
 		return DP_CAST<T>( GetRoot() );
 	}
 
-	template< typename T > XE::shared_ptr<T> GetParentT()
+	template< typename T > XE::SharedPtr<T> GetParentT()
 	{
 		return DP_CAST<T>( GetParent() );
 	}
@@ -56,32 +56,32 @@ public:
 	SceneComponentPtr FindChildFromTree( ComponentHandle val ) const;
 
 public:
-	template< typename T > XE::shared_ptr<T> FindChildT() const
+	template< typename T > XE::SharedPtr<T> FindChildT() const
 	{
 		return SP_CAST<T>( FindChild( ClassID<T>::Get() ) );
 	}
 
-	template< typename T > XE::shared_ptr<T> FindChildT( const String& val ) const
+	template< typename T > XE::SharedPtr<T> FindChildT( const String& val ) const
 	{
 		return DP_CAST<T>( FindChild( val ) );
 	}
 
-	template< typename T > XE::shared_ptr<T> FindChildT( ComponentHandle val ) const
+	template< typename T > XE::SharedPtr<T> FindChildT( ComponentHandle val ) const
 	{
 		return DP_CAST<T>( FindChild( val ) );
 	}
 
-	template< typename T > XE::shared_ptr<T> FindChildFromTreeT() const
+	template< typename T > XE::SharedPtr<T> FindChildFromTreeT() const
 	{
 		return SP_CAST<T>( FindChildFromTree( ClassID<T>::Get() ) );
 	}
 
-	template< typename T > XE::shared_ptr<T> FindChildFromTreeT( const String& val ) const
+	template< typename T > XE::SharedPtr<T> FindChildFromTreeT( const String& val ) const
 	{
 		return DP_CAST<T>( FindChildFromTree( val ) );
 	}
 
-	template< typename T > XE::shared_ptr<T> FindChildFromTreeT( ComponentHandle val ) const
+	template< typename T > XE::SharedPtr<T> FindChildFromTreeT( ComponentHandle val ) const
 	{
 		return DP_CAST<T>( FindChildFromTree( val ) );
 	}

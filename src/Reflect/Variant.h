@@ -137,7 +137,7 @@ public:
 		XE::float64 d;
 		void * p;
 		PrivatePtr * pp;
-		XE::shared_ptr<void> * sp;
+		XE::SharedPtr<void> * sp;
 	};
 
 public:
@@ -175,7 +175,7 @@ public:
 
 		if constexpr( std::is_shared_ptr_v<T> )
 		{
-			VariantCreate< XE::shared_ptr< type > >::Create( this, val );
+			VariantCreate< XE::SharedPtr< type > >::Create( this, val );
 		}
 		else
 		{
@@ -191,7 +191,7 @@ public:
 
 		if constexpr( std::is_shared_ptr_v<T> )
 		{
-			VariantCreate< XE::shared_ptr< type > >::Create( this, val );
+			VariantCreate< XE::SharedPtr< type > >::Create( this, val );
 		}
 		else
 		{
@@ -221,7 +221,7 @@ public:
 
 	Variant( IMetaTypePtr meta, UnionData data, XE::Variant::Flag flag );
 
-	Variant( IMetaTypePtr meta, XE::shared_ptr<void> data, XE::Variant::Flag flag );
+	Variant( IMetaTypePtr meta, XE::SharedPtr<void> data, XE::Variant::Flag flag );
 
 	~Variant();
 
@@ -299,7 +299,7 @@ public:
 
 	void * Detach();
 
-	XE::shared_ptr<void> DetachPtr();
+	XE::SharedPtr<void> DetachPtr();
 
 public:
 	template< typename T > T Value() const
@@ -313,7 +313,7 @@ private:
 	void Unlock();
 
 private:
-	static XE::shared_ptr<void> * RegisterSharedPtr( const XE::shared_ptr<void> & p );
+	static XE::SharedPtr<void> * RegisterSharedPtr( const XE::SharedPtr<void> & p );
 
 private:
 	Flag _Flag;
@@ -386,9 +386,9 @@ template<> struct VariantCreate<Variant>
 	}
 };
 
-template< typename T > struct VariantCreate<XE::shared_ptr<T>>
+template< typename T > struct VariantCreate<XE::SharedPtr<T>>
 {
-	static void Create( Variant * var, const XE::shared_ptr<T> & val )
+	static void Create( Variant * var, const XE::SharedPtr<T> & val )
 	{
 		using type = typename TypeTraits<T>::raw_t;
 
@@ -637,9 +637,9 @@ template< typename T > struct VariantCast<const T *>
 	}
 };
 
-template< typename T > struct VariantCast<XE::shared_ptr<T>>
+template< typename T > struct VariantCast<XE::SharedPtr<T>>
 {
-	static XE::shared_ptr<T> Cast( const Variant * val )
+	static XE::SharedPtr<T> Cast( const Variant * val )
 	{
 		using type = typename TypeTraits<T>::raw_t;
 
@@ -652,30 +652,30 @@ template< typename T > struct VariantCast<XE::shared_ptr<T>>
 	}
 };
 
-template< typename T > struct VariantCast<XE::shared_ptr<T> &>
+template< typename T > struct VariantCast<XE::SharedPtr<T> &>
 {
-	static XE::shared_ptr<T> & Cast( const Variant * val )
+	static XE::SharedPtr<T> & Cast( const Variant * val )
 	{
 		using type = typename TypeTraits<T>::raw_t;
 
 		if( val->IsSharedPtr() && val->IsCanConvert( TypeID< type >::Get() ) )
 		{
-			return *( ( XE::shared_ptr<T> * )( val->_Data.sp ) );
+			return *( ( XE::SharedPtr<T> * )( val->_Data.sp ) );
 		}
 
 		throw VariantException( *val, "cast fail" );
 	}
 };
 
-template< typename T > struct VariantCast<const XE::shared_ptr<T> &>
+template< typename T > struct VariantCast<const XE::SharedPtr<T> &>
 {
-	static const XE::shared_ptr<T> & Cast( const Variant * val )
+	static const XE::SharedPtr<T> & Cast( const Variant * val )
 	{
 		using type = typename TypeTraits<T>::raw_t;
 
 		if( val->IsSharedPtr() && val->IsCanConvert( TypeID< type >::Get() ) )
 		{
-			return *( ( XE::shared_ptr<T> * )( val->_Data.sp ) );
+			return *( ( XE::SharedPtr<T> * )( val->_Data.sp ) );
 		}
 
 		throw VariantException( *val, "cast fail" );

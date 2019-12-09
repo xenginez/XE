@@ -10,7 +10,7 @@ public:
 	struct Data
 	{
 		std::atomic_size_t Count;
-		XE::shared_ptr<void> Ptr;
+		XE::SharedPtr<void> Ptr;
 	};
 
 public:
@@ -20,7 +20,7 @@ public:
 	}
 
 public:
-	XE::shared_ptr<void> * Register( XE::shared_ptr<void> val )
+	XE::SharedPtr<void> * Register( XE::SharedPtr<void> val )
 	{
 		std::lock_guard<std::mutex> lock( Instance()->_Lock );
 
@@ -32,7 +32,7 @@ public:
 		return &( d.Ptr );
 	}
 
-	void Lock( XE::shared_ptr<void> * val )
+	void Lock( XE::SharedPtr<void> * val )
 	{
 		std::lock_guard<std::mutex> lock( Instance()->_Lock );
 
@@ -43,7 +43,7 @@ public:
 		}
 	}
 
-	void Unlock( XE::shared_ptr<void> * val )
+	void Unlock( XE::SharedPtr<void> * val )
 	{
 		std::lock_guard<std::mutex> lock( Instance()->_Lock );
 
@@ -155,7 +155,7 @@ XE::Variant::Variant( IMetaTypePtr meta, UnionData data, XE::Variant::Flag flag 
 	Lock();
 }
 
-Variant::Variant( IMetaTypePtr meta, XE::shared_ptr<void> data, XE::Variant::Flag flag )
+Variant::Variant( IMetaTypePtr meta, XE::SharedPtr<void> data, XE::Variant::Flag flag )
 	: _Type( meta ), _Flag( flag )
 {
 	_Data.sp = RegisterSharedPtr( *_Data.sp );
@@ -1115,11 +1115,11 @@ void * XE::Variant::Detach()
 	return p;
 }
 
-XE::shared_ptr<void> XE::Variant::DetachPtr()
+XE::SharedPtr<void> XE::Variant::DetachPtr()
 {
 	if( _Flag == Flag::SHAREDPTR )
 	{
-		XE::shared_ptr<void> p = *_Data.sp;
+		XE::SharedPtr<void> p = *_Data.sp;
 
 		Reset();
 
@@ -1129,7 +1129,7 @@ XE::shared_ptr<void> XE::Variant::DetachPtr()
 	throw VariantException( *this, "detach fail, is not shared pointer !" );
 }
 
-XE::shared_ptr<void> * XE::Variant::RegisterSharedPtr( const XE::shared_ptr<void> & p )
+XE::SharedPtr<void> * XE::Variant::RegisterSharedPtr( const XE::SharedPtr<void> & p )
 {
 	return VariantSharedPool::Instance()->Register( p );
 }

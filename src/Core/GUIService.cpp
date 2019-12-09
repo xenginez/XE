@@ -25,7 +25,7 @@ XE::GUIService::~GUIService()
 
 void XE::GUIService::Prepare()
 {
-	_p->_MainWindow = XE::make_shared<RenderWindow>();
+	_p->_MainWindow = XE::MakeShared<RenderWindow>();
 
 
 	if( GetFramework()->GetConfigService()->GetBool( "GUI/Window/Fullscreen", false ) )

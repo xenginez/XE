@@ -87,6 +87,11 @@ public:
 	using CallbackType = std::function<void( Args... )>;
 
 public:
+	Slot()
+	{
+
+	}
+
 	Slot( const CallbackType & val )
 		:_Callback( val )
 	{
@@ -105,6 +110,20 @@ public:
 	void operator()( Args && ...args ) const
 	{
 		_Callback( args... );
+	}
+
+	Slot & operator = ( const Slot & val )
+	{
+		_Callback = val._Callback;
+
+		return *this;
+	}
+
+	Slot & operator = ( const CallbackType & val )
+	{
+		_Callback = val;
+
+		return *this;
 	}
 
 public:

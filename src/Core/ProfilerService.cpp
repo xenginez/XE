@@ -55,7 +55,7 @@ void XE::ProfilerService::BeginFrame()
 
 	XE_ASSERT( it == _p->Frames.end() );
 
-	ProfilerFramePtr frame = make_shared<ProfilerFrame>();
+	ProfilerFramePtr frame = MakeShared<ProfilerFrame>();
 	
 	frame->tid = id;
 

@@ -15,6 +15,61 @@ BEG_XE_NAMESPACE
 
 DECL_PTR( Widget );
 DECL_PTR( Layout );
+DECL_PTR( UserInterface );
+
+
+enum class Alignment
+{
+	LEFT = 1 << 0,
+	RIGHT = 1 << 1,
+	TOP = 1 << 2,
+	BOTTOM = 1 << 3,
+	HCENTER = 1 << 4,
+	VCENTER = 1 << 5,
+	CENTER = HCENTER | VCENTER,
+	LEFT_TOP = LEFT | TOP,
+	RIGHT_TOP = RIGHT | TOP,
+	LEFT_CENTER = LEFT | HCENTER,
+	RIGHT_CENTER = RIGHT | HCENTER,
+	LEFT_BOTTOM = LEFT | BOTTOM,
+	RIGHT_BOTTOM = RIGHT | BOTTOM,
+	TOP_CENTER = TOP | VCENTER,
+	BOTTOM_CENTER = BOTTOM | VCENTER,
+};
+DECL_META_ENUM( XE_API, Alignment );
+
+enum class Orientation
+{
+	VERTICAL = 1 << 0,
+	HORIZONTAL = 1 << 1,
+	OMNIDIRECTIONAL = VERTICAL | HORIZONTAL,
+};
+DECL_META_ENUM( XE_API, Orientation );
+
+enum class SizePolicy
+{
+	IGNORED,
+	FIXED,
+	MINIMUM,
+	MAXIMUM,
+	PREFERRED,
+	EXPANDING,
+	MINIMUMEXPANDING,
+};
+DECL_META_ENUM( XE_API, SizePolicy );
+
+enum class SizeConstraint
+{
+	NO_CONSTRAINT,
+	FIXED_SIZE,
+	MINIMUM_SIZE,
+	MAXIMUM_SIZE,
+	MIN_AND_MAX_SIZE,
+};
+DECL_META_ENUM( XE_API, SizeConstraint );
+
+
+DECL_HANDLE( XE_API, Widget );
 
 END_XE_NAMESPACE
 

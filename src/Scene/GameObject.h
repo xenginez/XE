@@ -107,22 +107,22 @@ public:
 	const std::vector< ComponentPtr >& GetAllComponents() const;
 
 public:
-	template< typename T > XE::shared_ptr<T> AddComponentT()
+	template< typename T > XE::SharedPtr<T> AddComponentT()
 	{
 		return SP_CAST<T>( AddComponent( ClassID<T>::Get() ) );
 	}
 
-	template< typename T > XE::shared_ptr<T> FindComponentT() const
+	template< typename T > XE::SharedPtr<T> FindComponentT() const
 	{
 		return SP_CAST<T>( FindComponent( ClassID<T>::Get() ) );
 	}
 
-	template< typename T > XE::shared_ptr<T> FindComponentT( const String& val ) const
+	template< typename T > XE::SharedPtr<T> FindComponentT( const String& val ) const
 	{
 		return DP_CAST<T>( FindComponent( val ) );
 	}
 
-	template< typename T > XE::shared_ptr<T> FindComponentT( ComponentHandle val ) const
+	template< typename T > XE::SharedPtr<T> FindComponentT( ComponentHandle val ) const
 	{
 		return DP_CAST<T>( FindComponent( val ) );
 	}

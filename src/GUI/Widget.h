@@ -31,9 +31,30 @@ public:
 
 	void SetName( const XE::String & val );
 
-	const WidgetPtr & GetParent() const;
+	WidgetHandle GetHandle() const;
 
-	void SetParent( const WidgetPtr & val );
+	void SetHandle( WidgetHandle val );
+
+	WidgetHandle GetParentHandle() const;
+
+	void SetParentHandle( WidgetHandle val );
+
+	const UserInterfacePtr & GetUserInterface() const;
+
+	void SetUserInterface( const UserInterfacePtr & val );
+
+public:
+	XE::Vec2 GetSize() const;
+
+	void SetSize( const XE::Vec2 & val );
+
+	XE::Vec2 GetPosition() const;
+
+	void SetPosition( const XE::Vec2 & val );
+
+	const XE::Rect & GetGeometry() const;
+
+	void SetGeometry( const XE::Rect & val );
 
 	const XE::Vec2 & GetMinimumSize() const;
 
@@ -44,25 +65,26 @@ public:
 	void SetMaximunSize( const XE::Vec2 & val );
 
 public:
-	virtual void Update();
-
 	virtual void Render();
+
+public:
+	virtual void OnRemove();
 
 public:
 	virtual XE::Vec2 SizeHint() const;
 
 public:
-	const XE::Rect & GetGeometry() const;
-
-	virtual void SetGeometry( const XE::Rect & val );
+	XE::Signal<const XE::Rect&> GeometryChanged;
 
 private:
 	bool _Enable;
 	XE::String _Name;
-	WidgetPtr _Parent;
+	WidgetHandle _Handle;
+	WidgetHandle _ParentHandle;
 	XE::Vec2 _MinSize;
 	XE::Vec2 _MaxSize;
 	XE::Rect _Geometry;
+	UserInterfacePtr _UI;
 };
 
 END_XE_NAMESPACE

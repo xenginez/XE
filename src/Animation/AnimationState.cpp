@@ -53,7 +53,7 @@ void XE::AnimationState::Update( XE::float32 val )
 		{
 			if( !trigger->_Sended && _Time >= trigger->_Time )
 			{
-				EventPtr event = XE::make_shared<Event>( trigger->GetEventHandle(), XE_THIS( AnimationState ), nullptr, trigger->GetEventParameter() );
+				EventPtr event = XE::MakeShared<Event>( trigger->GetEventHandle(), XE_THIS( AnimationState ), nullptr, trigger->GetEventParameter() );
 
 				GetAnimationController()->GetGameObject()->ProcessEvent( event );
 

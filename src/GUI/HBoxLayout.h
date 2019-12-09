@@ -22,10 +22,13 @@ public:
 
 	~HBoxLayout() override;
 
-public:
-	void OnUpdate() override;
+private:
+	void OnGeometryChanged( const XE::Rect & val );
+
+private:
+	XE::Slot<const XE::Rect &> _OnGeometryChanged;
 };
 
-
+END_XE_NAMESPACE
 
 #endif // HBOXLAYOUT_H__25901A54_98A9_4E2F_AB3D_47AC86ECDFA1

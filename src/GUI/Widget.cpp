@@ -36,14 +36,62 @@ void Widget::SetName( const XE::String & val )
 	_Name = val;
 }
 
-const WidgetPtr & Widget::GetParent() const
+WidgetHandle Widget::GetHandle() const
 {
-	return _Parent;
+	return _Handle;
 }
 
-void Widget::SetParent( const WidgetPtr & val )
+void Widget::SetHandle( WidgetHandle val )
 {
-	_Parent = val;
+	_Handle = val;
+}
+
+WidgetHandle Widget::GetParentHandle() const
+{
+	return _ParentHandle;
+}
+
+void Widget::SetParentHandle( WidgetHandle val )
+{
+	_ParentHandle = val;
+}
+
+const UserInterfacePtr & Widget::GetUserInterface() const
+{
+	return _UI;
+}
+
+void Widget::SetUserInterface( const UserInterfacePtr & val )
+{
+	_UI = val;
+}
+
+XE::Vec2 Widget::GetSize() const
+{
+	return { _Geometry.width, _Geometry.height };
+}
+
+void Widget::SetSize( const XE::Vec2 & val )
+{
+	auto rect = _Geometry;
+	rect.width = val.x;
+	rect.height = val.y;
+
+	SetGeometry( rect );
+}
+
+XE::Vec2 Widget::GetPosition() const
+{
+	return { _Geometry.x, _Geometry.y };
+}
+
+void Widget::SetPosition( const XE::Vec2 & val )
+{
+	auto rect = _Geometry;
+	rect.x = val.x;
+	rect.y = val.y;
+
+	SetGeometry( rect );
 }
 
 const XE::Vec2 & Widget::GetMinimumSize() const
@@ -74,14 +122,16 @@ const XE::Rect & Widget::GetGeometry() const
 void Widget::SetGeometry( const XE::Rect & val )
 {
 	_Geometry = val;
+
+	GeometryChanged( val );
 }
 
-void Widget::Update()
+void Widget::Render()
 {
 
 }
 
-void Widget::Render()
+void Widget::OnRemove()
 {
 
 }

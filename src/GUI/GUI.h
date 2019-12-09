@@ -17,11 +17,13 @@
 #include "ComboBox.h"
 #include "BoxLayout.h"
 #include "TabWidget.h"
+#include "SpacerItem.h"
 #include "GridLayout.h"
 #include "HBoxLayout.h"
 #include "ListWidget.h"
 #include "VBoxLayout.h"
 #include "ScaleWidget.h"
 #include "TableWidget.h"
+#include "UserInterface.h"
 
 #endif // GUI_H__52DAE8D0_43A7_47DD_87CD_D6FCDBCB2AC2

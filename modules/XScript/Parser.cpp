@@ -21,7 +21,7 @@ Parser::~Parser()
 
 ModuleNodePtr Parser::ParseModule()
 {
-	ModuleNodePtr p = XE::make_shared< ModuleNode >();
+	ModuleNodePtr p = XE::MakeShared< ModuleNode >();
 
 	p->Name = _Path.stem().string();
 
@@ -57,7 +57,7 @@ UsingNodePtr Parser::ParseUsing()
 {
 	Ignore( TokenType::USING );
 
-	auto p = XE::make_shared< UsingNode >();
+	auto p = XE::MakeShared< UsingNode >();
 
 	p->Name = Check( TokenType::IDENTIFIER ).Value;
 
@@ -68,7 +68,7 @@ ImportNodePtr Parser::ParseImport()
 {
 	Ignore( TokenType::IMPORT );
 
-	auto p = XE::make_shared< ImportNode >();
+	auto p = XE::MakeShared< ImportNode >();
 
 	p->Name = Check( TokenType::STRING_CONST ).Value;
 
@@ -79,7 +79,7 @@ EnumNodePtr Parser::ParseEnum()
 {
 	Ignore( TokenType::ENUM );
 
-	EnumNodePtr p = XE::make_shared<EnumNode>();
+	EnumNodePtr p = XE::MakeShared<EnumNode>();
 
 	p->Name = Check( TokenType::IDENTIFIER ).Value;
 
@@ -104,7 +104,7 @@ ClassNodePtr Parser::ParseClass()
 {
 	Ignore( TokenType::CLASS );
 
-	ClassNodePtr p = XE::make_shared<ClassNode>();
+	ClassNodePtr p = XE::MakeShared<ClassNode>();
 
 	p->Name = Check( TokenType::IDENTIFIER ).Value;
 
@@ -172,7 +172,7 @@ MethodNodePtr Parser::ParseMethod()
 {
 	Ignore( TokenType::FUNCTION );
 
-	auto p = XE::make_shared<MethodNode>();
+	auto p = XE::MakeShared<MethodNode>();
 
 	p->Name = Check( TokenType::IDENTIFIER ).Value;
 
@@ -199,7 +199,7 @@ OperatorNodePtr Parser::ParseOperator()
 {
 	Ignore( TokenType::OPERATOR );
 
-	auto p = XE::make_shared<OperatorNode>();
+	auto p = XE::MakeShared<OperatorNode>();
 
 	if( Look( TokenType::MUL ) || Look( TokenType::DIV ) || Look( TokenType::MOD ) ||
 		Look( TokenType::ADD ) || Look( TokenType::SUB ) || Look( TokenType::L_SHFIT ) ||
@@ -243,7 +243,7 @@ PropertyNodePtr Parser::ParseProperty()
 {
 	Ignore( TokenType::VARIABLE );
 
-	auto p = XE::make_shared<PropertyNode>();
+	auto p = XE::MakeShared<PropertyNode>();
 
 	if( Look( TokenType::LBRACKET ) )
 	{
@@ -331,7 +331,7 @@ BlockNodePtr Parser::ParseBlock()
 {
 	Ignore( TokenType::LBRACE );
 
-	auto p = XE::make_shared<BlockNode>();
+	auto p = XE::MakeShared<BlockNode>();
 
 	while( !Look( TokenType::RBRACE ) )
 	{
@@ -354,7 +354,7 @@ IfNodePtr Parser::ParseIf()
 {
 	Ignore( TokenType::IF );
 
-	auto p = XE::make_shared<IfNode>();
+	auto p = XE::MakeShared<IfNode>();
 
 	p->Expr = ParseExprRelation();
 
@@ -372,7 +372,7 @@ ForNodePtr Parser::ParseFor()
 {
 	Ignore( TokenType::FOR );
 
-	auto p = XE::make_shared<ForNode>();
+	auto p = XE::MakeShared<ForNode>();
 
 	Ignore( TokenType::LPAREN );
 	
@@ -391,7 +391,7 @@ WhileNodePtr Parser::ParseWhile()
 {
 	Ignore( TokenType::WHILE );
 
-	auto p = XE::make_shared<WhileNode>();
+	auto p = XE::MakeShared<WhileNode>();
 
 	p->Expr = ParseExpression();
 
@@ -404,7 +404,7 @@ SwitchNodePtr Parser::ParseSwitch()
 {
 	Ignore( TokenType::SWITCH );
 
-	auto p = XE::make_shared<SwitchNode>();
+	auto p = XE::MakeShared<SwitchNode>();
 
 	p->Expr = ParseExpression();
 
@@ -432,7 +432,7 @@ CaseNodePtr Parser::ParseCase()
 {
 	Ignore( TokenType::CASE );
 
-	auto p = XE::make_shared<CaseNode>();
+	auto p = XE::MakeShared<CaseNode>();
 
 	p->Expr = ParseExpression();
 
@@ -445,7 +445,7 @@ DefaultNodePtr Parser::ParseDefault()
 {
 	Ignore( TokenType::DEFAULT );
 
-	auto p = XE::make_shared<DefaultNode>();
+	auto p = XE::MakeShared<DefaultNode>();
 
 	p->Block = ParseBlock();
 
@@ -456,21 +456,21 @@ BreakNodePtr Parser::ParseBreak()
 {
 	Ignore( TokenType::BREAK );
 
-	return XE::make_shared<BreakNode>();
+	return XE::MakeShared<BreakNode>();
 }
 
 ContinueNodePtr Parser::ParseContinue()
 {
 	Ignore( TokenType::CONTINUE );
 
-	return XE::make_shared<ContinueNode>();
+	return XE::MakeShared<ContinueNode>();
 }
 
 ReturnNodePtr Parser::ParseReturn()
 {
 	Ignore( TokenType::RETURN );
 
-	auto p = XE::make_shared<ReturnNode>();
+	auto p = XE::MakeShared<ReturnNode>();
 
 	p->Expr = ParseExpression();
 
@@ -495,7 +495,7 @@ ExpressionNodePtr Parser::ParseExpression()
 	case TokenType::L_SHFIT_ASSIGN:
 	case TokenType::R_SHFIT_ASSIGN:
 	{
-		auto p = XE::make_shared<ExprBinaryNode>();
+		auto p = XE::MakeShared<ExprBinaryNode>();
 
 		p->Type = ExprBinaryNode::TokenTypeToBinaryType( _Lex.LookToken().Type );
 		_Lex.NextToken();
@@ -524,7 +524,7 @@ ExpressionNodePtr Parser::ParseExprRelation()
 		_Lex.LookToken().Type == TokenType::LESS_EQUAL
 		)
 	{
-		auto p = XE::make_shared<ExprBinaryNode>();
+		auto p = XE::MakeShared<ExprBinaryNode>();
 
 		p->Type = ExprBinaryNode::TokenTypeToBinaryType( _Lex.LookToken().Type );
 		_Lex.NextToken();
@@ -547,7 +547,7 @@ ExpressionNodePtr Parser::ParseExprShiftition()
 		_Lex.LookToken().Type == TokenType::R_SHFIT
 		)
 	{
-		auto p = XE::make_shared<ExprBinaryNode>();
+		auto p = XE::MakeShared<ExprBinaryNode>();
 
 		p->Type = ExprBinaryNode::TokenTypeToBinaryType( _Lex.LookToken().Type );
 		_Lex.NextToken();
@@ -570,7 +570,7 @@ ExpressionNodePtr Parser::ParseExprAddition()
 		_Lex.LookToken().Type == TokenType::SUB
 		)
 	{
-		auto p = XE::make_shared<ExprBinaryNode>();
+		auto p = XE::MakeShared<ExprBinaryNode>();
 
 		p->Type = ExprBinaryNode::TokenTypeToBinaryType( _Lex.LookToken().Type );
 		_Lex.NextToken();
@@ -594,7 +594,7 @@ ExpressionNodePtr Parser::ParseExprMultiplication()
 		_Lex.LookToken().Type == TokenType::MOD
 		)
 	{
-		auto p = XE::make_shared<ExprBinaryNode>();
+		auto p = XE::MakeShared<ExprBinaryNode>();
 
 		p->Type = ExprBinaryNode::TokenTypeToBinaryType( _Lex.LookToken().Type );
 		_Lex.NextToken();
@@ -623,7 +623,7 @@ ExpressionNodePtr Parser::ParseExprUnary2()
 		_Lex.LookToken().Type == TokenType::SUBSUB
 		)
 	{
-		auto p = XE::make_shared<ExprUnaryNode>();
+		auto p = XE::MakeShared<ExprUnaryNode>();
 
 		p->Type = ExprUnaryNode::TokenTypeToUnaryType( _Lex.LookToken().Type );
 		_Lex.NextToken();
@@ -642,7 +642,7 @@ ExpressionNodePtr Parser::ParseExprUnary1()
 
 	if( _Lex.LookToken().Type == TokenType::LPAREN  )
 	{
-		auto p = XE::make_shared<ExprCallbackNode>();
+		auto p = XE::MakeShared<ExprCallbackNode>();
 
 		p->Variable = node;
 
@@ -652,7 +652,7 @@ ExpressionNodePtr Parser::ParseExprUnary1()
 	}
 	else if( _Lex.LookToken().Type == TokenType::LBRACKET )
 	{
-		auto p = XE::make_shared<ExprIndexNode>();
+		auto p = XE::MakeShared<ExprIndexNode>();
 
 		p->Variable = node;
 
@@ -662,7 +662,7 @@ ExpressionNodePtr Parser::ParseExprUnary1()
 	}
 	else if( _Lex.LookToken().Type == TokenType::DOT )
 	{
-		auto p = XE::make_shared<ExprVisitNode>();
+		auto p = XE::MakeShared<ExprVisitNode>();
 
 		p->Variable = node;
 
@@ -695,7 +695,7 @@ ExpressionNodePtr Parser::ParseExprFactor()
 	}
 	case TokenType::IDENTIFIER:
 	{
-		auto p = XE::make_shared<ExprVariableNode>();
+		auto p = XE::MakeShared<ExprVariableNode>();
 
 		p->Name = Check( TokenType::IDENTIFIER ).Value;
 
@@ -704,38 +704,38 @@ ExpressionNodePtr Parser::ParseExprFactor()
 	case TokenType::NIL:
 	{
 		_Lex.NextToken();
-		auto p = XE::make_shared<NilNode>();
+		auto p = XE::MakeShared<NilNode>();
 		return p;
 	}
 	case TokenType::TRUE:
 	{
 		_Lex.NextToken();
-		auto p = XE::make_shared<BoolNode>();
+		auto p = XE::MakeShared<BoolNode>();
 		p->Data = true;
 		return p;
 	}
 	case TokenType::FALSE:
 	{
 		_Lex.NextToken();
-		auto p = XE::make_shared<BoolNode>();
+		auto p = XE::MakeShared<BoolNode>();
 		p->Data = false;
 		return p;
 	}
 	case TokenType::INT_CONST:
 	{
-		auto p = XE::make_shared<IntNode>();
+		auto p = XE::MakeShared<IntNode>();
 		p->Data = std::stoi( Check( TokenType::INT_CONST ).Value );
 		return p;
 	}
 	case TokenType::FLOAT_CONST:
 	{
-		auto p = XE::make_shared<FloatNode>();
+		auto p = XE::MakeShared<FloatNode>();
 		p->Data = std::stof( Check( TokenType::FLOAT_CONST ).Value );
 		return p;
 	}
 	case TokenType::STRING_CONST:
 	{
-		auto p = XE::make_shared<StringNode>();
+		auto p = XE::MakeShared<StringNode>();
 		p->Data = Check( TokenType::STRING_CONST ).Value;
 		return p;
 	}
@@ -748,7 +748,7 @@ ExprArgumentNodePtr Parser::ParseArgument()
 {
 	Ignore( TokenType::LPAREN );
 
-	auto p = XE::make_shared<ExprArgumentNode>();
+	auto p = XE::MakeShared<ExprArgumentNode>();
 
 	while( !Look(TokenType::RPAREN) )
 	{
@@ -763,7 +763,7 @@ ExprVariableNodePtr Parser::ParseExprVariable()
 {
 	Ignore( TokenType::VARIABLE );
 
-	auto p = XE::make_shared< ExprVariableNode>();
+	auto p = XE::MakeShared< ExprVariableNode>();
 
 	p->Name = Check( TokenType::IDENTIFIER ).Value;
 
@@ -774,7 +774,7 @@ ExprCloseureNodePtr Parser::ParseExprCloseure()
 {
 	Ignore( TokenType::FUNCTION );
 
-	auto p = XE::make_shared<ExprCloseureNode>();
+	auto p = XE::MakeShared<ExprCloseureNode>();
 
 	static XE::uint64 index = 0;
 

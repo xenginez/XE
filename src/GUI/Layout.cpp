@@ -1,12 +1,14 @@
 #include "Layout.h"
 
+#include "UserInterface.h"
+
 USING_XE
 
 BEG_META( Layout )
 END_META()
 
 Layout::Layout()
-	:_TopMargin( 0 ), _LeftMargin( 0 ), _BottomMargin( 0 ), _RightMargin( 0 ), _WidgetSpacing( 0 )
+	:_TopMargin( 0 ), _LeftMargin( 0 ), _BottomMargin( 0 ), _RightMargin( 0 ), _WidgetSpacing( 0 ), _SizeConstraint( SizeConstraint::MINIMUM_SIZE )
 {
 }
 
@@ -64,6 +66,26 @@ void Layout::SetWidgetSpacing( XE::real val )
 	_WidgetSpacing = val;
 }
 
+SizeConstraint Layout::GetSizeConstraint() const
+{
+	return _SizeConstraint;
+}
+
+void Layout::SetSizeConstraint( SizeConstraint val )
+{
+	_SizeConstraint = val;
+}
+
+XE::uint8 Layout::GetStretch( XE::uint64 val ) const
+{
+	return _Children.at( val ).second;
+}
+
+void Layout::SetStretch( XE::uint64 index, XE::uint8 val )
+{
+	_Children.at( index ).second = val;
+}
+
 XE::Rect Layout::GetContentsRect() const
 {
 	const Rect & rect = GetGeometry();
@@ -71,66 +93,56 @@ XE::Rect Layout::GetContentsRect() const
 	return Rect( rect.x + _LeftMargin, rect.y + _TopMargin, rect.width - _RightMargin, rect.height - _BottomMargin );
 }
 
-XE::uint64 Layout::Count() const
+XE::uint64 Layout::ChildCount() const
 {
-	return _Widgets.size();
+	return _Children.size();
 }
 
-void Layout::AddWidget( const WidgetPtr & val )
+void Layout::AddChild( WidgetHandle val )
 {
-	val->SetParent( XE_THIS( Widget ) );
+	GetWidget( val )->SetParentHandle( GetHandle() );
 
-	_Widgets.push_back( val );
+	_Children.push_back( { val, 0 } );
 }
 
-void Layout::RemoveWidget( const WidgetPtr & val )
+void Layout::RemoveChild( WidgetHandle val )
 {
-	for( auto it = _Widgets.begin(); it != _Widgets.end(); ++it )
+	for( auto it = _Children.begin(); it != _Children.end(); ++it )
 	{
-		if( *it == val )
+		if( it->first == val )
 		{
-			( *it )->SetParent( nullptr );
+			GetWidget( it->first )->SetParentHandle( WidgetHandle::Invalid );
 
-			_Widgets.erase( it );
+			_Children.erase( it );
 
 			break;
 		}
 	}
 }
 
-const XE::Array<WidgetPtr> & Layout::GetWidgets() const
+WidgetPtr Layout::GetChild( XE::uint64 val ) const
 {
-	return _Widgets;
+	return GetWidget( GetChildHandle( val ) );
 }
 
-const WidgetPtr & Layout::GetWidget( XE::uint64 val ) const
+WidgetHandle Layout::GetChildHandle( XE::uint64 val ) const
 {
-	return _Widgets.at( val );
+	return _Children.at( val ).first;
 }
 
-void Layout::Update()
+WidgetPtr Layout::GetWidget( WidgetHandle val ) const
 {
-	OnUpdate();
-
-	for( auto & widget : _Widgets )
-	{
-		widget->Update();
-	}
+	return GetUserInterface()->GetWidget( val );
 }
 
 void Layout::Render()
 {
 	OnRender();
 
-	for( auto & widget : _Widgets )
+	for( auto & pair : _Children )
 	{
-		widget->Render();
+		GetWidget( pair.first )->Render();
 	}
-}
-
-void Layout::OnUpdate()
-{
-
 }
 
 void Layout::OnRender()
