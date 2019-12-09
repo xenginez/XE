@@ -15,8 +15,6 @@ BEG_XE_NAMESPACE
 
 class XE_API IAssetsService : public IService
 {
-	friend class Prefab;
-
 	OBJECT( IAssetsService, IService )
 
 public:
@@ -25,20 +23,17 @@ public:
 	~IAssetsService() override;
 
 public:
-	virtual Prefab Load( const String& val ) = 0;
+	virtual ObjectPtr Load( const String& val ) = 0;
 
-	virtual Prefab AsynLoad( const String& val ) = 0;
+	virtual void AsynLoad( const String& val ) = 0;
 
 	virtual void Unload( const String& val ) = 0;
 
 protected:
-	virtual ReflectObjectPtr GetAsset( const String& val ) const = 0;
+	virtual ObjectPtr GetAsset( const String& val ) const = 0;
 
 	virtual AssetStatus GetAssetStatus( const String& val ) const = 0;
 
-protected:
-	Prefab CreatePrefab( const String& val );
-	
 };
 
 END_XE_NAMESPACE

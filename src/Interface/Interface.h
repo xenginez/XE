@@ -9,6 +9,7 @@
 #ifndef INTERFACE_H__F027F37D_259E_4565_8851_20A77361A913
 #define INTERFACE_H__F027F37D_259E_4565_8851_20A77361A913
 
+#include "Asset.hpp"
 #include "IService.h"
 #include "IFramework.h"
 #include "IGUIService.h"
@@ -26,6 +27,7 @@
 #include "IProfilerService.h"
 #include "INavigationService.h"
 #include "ILocalizationService.h"
+
 
 #define XE_LOG(LEVEL, FMT, ...) \
 XE::IFramework::GetCurrentFramework()->GetLoggerService()->Log( LEVEL, __FILE__, __LINE__, XE::StringUtils::Format(FMT, __VA_ARGS__) );

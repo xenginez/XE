@@ -14,12 +14,3 @@ XE::IAssetsService::~IAssetsService()
 {
 
 }
-
-XE::Prefab XE::IAssetsService::CreatePrefab( const String &val )
-{
-	XE::Prefab prefab;
-
-	prefab.SetLink( val );
-
-	return prefab;
-}

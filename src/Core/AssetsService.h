@@ -21,7 +21,7 @@ private:
 	struct Private;
 
 public:
-	static constexpr XE::float32 AssetCacheTime = 60.0f; // 1 minutes
+	static constexpr XE::float32 AssetCacheTime = 120.0f; // 2 minutes
 
 public:
 	AssetsService();
@@ -38,14 +38,14 @@ public:
 	void Clearup() override;
 
 public:
-	Prefab Load( const String & val ) override;
+	ObjectPtr Load( const String & val ) override;
 
-	Prefab AsynLoad( const String & val ) override;
+	void AsynLoad( const String & val ) override;
 
 	void Unload( const String & val ) override;
 
 protected:
-	ReflectObjectPtr GetAsset( const String & val ) const override;
+	ObjectPtr GetAsset( const String & val ) const override;
 
 	AssetStatus GetAssetStatus( const String & val ) const override;
 
