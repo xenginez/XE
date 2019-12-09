@@ -7,35 +7,14 @@ USING_XE
 BEG_META( AssetsService )
 END_META()
 
-class XEPAsset
-{
-public:
-	String Name;
-	XE::uint64 Beg;
-	XE::uint64 End;
-	Array < String > Dependent;
-};
-
-DECL_META_CLASS( XE_API, XEPAsset );
-
-BEG_META( XEPAsset )
-type->Property( "Name", &XEPAsset::Name );
-type->Property( "Beg", &XEPAsset::Beg );
-type->Property( "End", &XEPAsset::End );
-type->Property( "Dependent", &XEPAsset::Dependent );
-END_META()
-
-
 using AssetTuple = std::tuple < AssetStatus, ObjectPtr, XE::float32 >;
 using AssetMap = tbb::concurrent_hash_map < String, AssetTuple, StringHashCompare >;
-using DirectoryMap = Map < String, XEPAsset >;
 
 struct AssetsService::Private
 {
 	XE::float32 _Timer = 0;
 	AssetMap _Assets;
 	Deque < String > _Erase;
-	DirectoryMap _Directorys;
 };
 
 
@@ -103,7 +82,6 @@ void XE::AssetsService::Clearup()
 {
 	_p->_Erase.clear();
 	_p->_Assets.clear();
-	_p->_Directorys.clear();
 }
 
 XE::ObjectPtr XE::AssetsService::Load( const String & val )
