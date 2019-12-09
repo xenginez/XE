@@ -161,16 +161,6 @@ XE::AssetStatus XE::AssetsService::GetAssetStatus( const String & val ) const
 
 void XE::AssetsService::LoadAsset( const String & val )
 {
-	{
-		auto dependent = GetDependent( val );
-
-		for( auto const & it : dependent )
-		{
-			LoadAsset( it );
-		}
-	}
-
-	// TODO: Load Current Asset
 	ObjectPtr asset = nullptr;
 
 	asset->AssetLoad();
@@ -195,11 +185,4 @@ void XE::AssetsService::UnloadAsset( const String & val )
 
 		_p->_Assets.erase( it );
 	}
-}
-
-XE::FArray<XE::String> XE::AssetsService::GetDependent( const String & val ) const
-{
-	XE::FArray<XE::String> dependent;
-
-	return dependent;
 }

@@ -54,8 +54,6 @@ private:
 
 	void UnloadAsset( const String & val );
 
-	FArray<String> GetDependent( const String & val ) const;
-
 private:
 	Private * _p;
 };
