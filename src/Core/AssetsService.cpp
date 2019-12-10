@@ -16,6 +16,7 @@ struct AssetsService::Private
 	XE::float32 _Timer = 0;
 	AssetMap _Assets;
 	Deque < String > _Erase;
+	sqlite3 * _DBMD5;
 	XE::Array< sqlite3 * > _DBs;
 	XE::UnorderedMap<XE::String, XE::uint32> _MD5s;
 };
@@ -34,7 +35,42 @@ XE::AssetsService::~AssetsService()
 
 void XE::AssetsService::Prepare()
 {
+	auto path = GetFramework()->GetAssetsPath() / "md5.db";
+	if( sqlite3_open_v2( path.string().c_str(), &_p->_DBMD5, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE | SQLITE_OPEN_NOMUTEX | SQLITE_OPEN_SHAREDCACHE, NULL ) == SQLITE_OK )
+	{
+		sqlite3_stmt * stmt = NULL;
+		if( sqlite3_prepare_v2( _p->_DBMD5, "SELECT md5, index from md5", -1, &stmt, NULL ) == SQLITE_OK )
+		{
+			while( sqlite3_step( stmt ) == SQLITE_ROW )
+			{
+				const char * md5 = ( const char * )sqlite3_column_text( stmt, 0 );
+				int index = sqlite3_column_int( stmt, 1 );
 
+				_p->_MD5s.insert( { md5, index } );
+			}
+		}
+	}
+
+	for( int i = 0; ; ++i )
+	{
+		auto path = GetFramework()->GetAssetsPath() / ( XE::StringUtils::Format( "asset_%1.db", i ) );
+		if( std::filesystem::exists( path ) )
+		{
+			sqlite3 * db;
+			if( sqlite3_open_v2( path.string().c_str(), &db, SQLITE_OPEN_READONLY | SQLITE_OPEN_CREATE | SQLITE_OPEN_NOMUTEX | SQLITE_OPEN_SHAREDCACHE, NULL ) == SQLITE_OK )
+			{
+				_p->_DBs.push_back( db );
+			}
+			else
+			{
+				break;
+			}
+		}
+		else
+		{
+			break;
+		}
+	}
 }
 
 bool XE::AssetsService::Startup()
@@ -83,6 +119,18 @@ void XE::AssetsService::Update()
 
 void XE::AssetsService::Clearup()
 {
+	if( _p->_DBMD5 != nullptr )
+	{
+		sqlite3_close_v2( _p->_DBMD5 );
+		_p->_DBMD5 = nullptr;
+	}
+
+	for( auto db : _p->_DBs )
+	{
+		sqlite3_close_v2( db );
+	}
+	_p->_DBs.clear();
+	_p->_MD5s.clear();
 	_p->_Erase.clear();
 	_p->_Assets.clear();
 }
