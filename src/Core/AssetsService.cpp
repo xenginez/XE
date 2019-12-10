@@ -1,5 +1,6 @@
 #include "AssetsService.h"
 
+#include <sqlite3/sqlite3.h>
 #include <tbb/concurrent_hash_map.h>
 
 USING_XE
@@ -15,6 +16,8 @@ struct AssetsService::Private
 	XE::float32 _Timer = 0;
 	AssetMap _Assets;
 	Deque < String > _Erase;
+	XE::Array< sqlite3 * > _DBs;
+	XE::UnorderedMap<XE::String, XE::uint32> _MD5s;
 };
 
 
@@ -90,7 +93,7 @@ XE::ObjectPtr XE::AssetsService::Load( const String & val )
 
 	if( obj == nullptr )
 	{
-		_p->_Assets.insert( std::make_pair( val, std::make_tuple( AssetStatus::Loading, nullptr, GetFramework()->GetTimerService()->GetTime() ) ) );
+		_p->_Assets.insert( std::make_pair( PathToMD5( val ), std::make_tuple( AssetStatus::Loading, nullptr, GetFramework()->GetTimerService()->GetTime() ) ) );
 		LoadAsset( val );
 	}
 
@@ -106,7 +109,7 @@ void XE::AssetsService::AsynLoad( const String & val )
 		if( GetFramework()->GetThreadService()->GetCurrentThreadType() == ThreadType::IO )
 		{
 			LoadAsset( val );
-			_p->_Assets.insert( std::make_pair( val, std::make_tuple( AssetStatus::Ready, nullptr, GetFramework()->GetTimerService()->GetTime() ) ) );
+			_p->_Assets.insert( std::make_pair( PathToMD5( val ), std::make_tuple( AssetStatus::Ready, nullptr, GetFramework()->GetTimerService()->GetTime() ) ) );
 		}
 		else
 		{
@@ -139,7 +142,7 @@ void XE::AssetsService::Unload( const String & val )
 XE::ObjectPtr XE::AssetsService::GetAsset( const String & val ) const
 {
 	AssetMap::accessor it;
-	if( _p->_Assets.find( it, val ) )
+	if( _p->_Assets.find( it, PathToMD5( val ) ) )
 	{
 		std::get < 2 >( it->second ) = GetFramework()->GetTimerService()->GetTime();
 		return std::get < 1 >( it->second );
@@ -151,7 +154,7 @@ XE::ObjectPtr XE::AssetsService::GetAsset( const String & val ) const
 XE::AssetStatus XE::AssetsService::GetAssetStatus( const String & val ) const
 {
 	AssetMap::accessor it;
-	if( _p->_Assets.find( it, val ) )
+	if( _p->_Assets.find( it, PathToMD5( val ) ) )
 	{
 		return std::get < 0 >( it->second );
 	}
@@ -161,13 +164,15 @@ XE::AssetStatus XE::AssetsService::GetAssetStatus( const String & val ) const
 
 void XE::AssetsService::LoadAsset( const String & val )
 {
-	ObjectPtr asset = nullptr;
+	auto md5 = PathToMD5( val );
+
+	ObjectPtr asset = ArchiveObject( md5 );
 
 	asset->AssetLoad();
 
 	{
 		AssetMap::accessor it;
-		if( _p->_Assets.find( it, val ) )
+		if( _p->_Assets.find( it, md5 ) )
 		{
 			std::get < 0 >( it->second ) = AssetStatus::Ready;
 			std::get < 1 >( it->second ) = asset;
@@ -179,10 +184,66 @@ void XE::AssetsService::LoadAsset( const String & val )
 void XE::AssetsService::UnloadAsset( const String & val )
 {
 	AssetMap::accessor it;
-	if( _p->_Assets.find( it, val ) )
+	if( _p->_Assets.find( it, PathToMD5( val ) ) )
 	{
 		std::get < 1 >( it->second )->AssetUnload();
 
 		_p->_Assets.erase( it );
 	}
+}
+
+XE::String AssetsService::PathToMD5( const XE::String & val ) const
+{
+	std::regex regex( "^([a-fA-F0-9]{32})$" );
+	
+	if( std::regex_match( val.ToCString(), regex ) )
+	{
+		return val;
+	}
+
+	auto list = XE::StringUtils::Split( val.ToStdString(), ":" );
+	if( list.size() == 2 )
+	{
+		auto str = XE::StringUtils::Format( "SELECT md5 FROM index WHERE path=%1;", list[1] );
+		sqlite3_stmt * stmt = NULL;
+		if( sqlite3_prepare_v2( _p->_DBs[std::stoi( list[0] )], str.c_str(), -1, &stmt, NULL ) == SQLITE_OK )
+		{
+			if( sqlite3_step( stmt ) == SQLITE_ROW )
+			{
+				return (const char * )sqlite3_column_text( stmt, 0 );
+			}
+		}
+	}
+
+	return "";
+}
+
+ObjectPtr AssetsService::ArchiveObject( const XE::String & val ) const
+{
+	auto str = XE::StringUtils::Format( "SELECT data, size FROM data WHERE md5=%1;", val.ToStdString() );
+	sqlite3_stmt * stmt = NULL;
+
+	auto it = _p->_MD5s.find( val );
+	if( it != _p->_MD5s.end() )
+	{
+		if( sqlite3_prepare_v2( _p->_DBs[it->second], str.c_str(), -1, &stmt, NULL ) == SQLITE_OK )
+		{
+			if( sqlite3_step( stmt ) == SQLITE_ROW )
+			{
+				const std::byte * data = ( const std::byte * )sqlite3_column_blob( stmt, 0 );
+				int size = sqlite3_column_int( stmt, 1 );
+
+				XE::memory_view view( data, size );
+				XE::BinaryLoadArchive archive( view );
+
+				Variant ret;
+				archive & ret;
+
+				return ret.Value<ObjectPtr>();
+			}
+		}
+
+	}
+
+	return nullptr;
 }

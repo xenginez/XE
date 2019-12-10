@@ -44,10 +44,15 @@ public:
 
 	void Unload( const String & val ) override;
 
-protected:
+public:
 	ObjectPtr GetAsset( const String & val ) const override;
 
 	AssetStatus GetAssetStatus( const String & val ) const override;
+
+protected:
+	XE::String PathToMD5( const XE::String & val ) const;
+
+	virtual ObjectPtr ArchiveObject( const XE::String & val ) const;
 
 private:
 	void LoadAsset( const String & val );

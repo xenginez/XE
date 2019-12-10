@@ -29,7 +29,7 @@ public:
 
 	virtual void Unload( const String& val ) = 0;
 
-protected:
+public:
 	virtual ObjectPtr GetAsset( const String& val ) const = 0;
 
 	virtual AssetStatus GetAssetStatus( const String& val ) const = 0;
