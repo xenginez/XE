@@ -118,6 +118,72 @@ public:
 		return *this;
 	}
 
+public:
+	template< typename T > Archive & operator&( const T & val )
+	{
+		NameValue nv;
+
+		if constexpr( std::is_enum_v<T> )
+		{
+			nv.Value = val;
+			Serialize( nv );
+		}
+		else
+		{
+			nv.Value = &val;
+			Serialize( nv );
+		}
+
+		return *this;
+	}
+
+	template< typename T > Archive & operator&( const T *& val )
+	{
+		NameValue nv;
+
+		nv.Value = val;
+
+		Serialize( nv );
+
+		return *this;
+	}
+
+	template< typename T > Archive & operator&( const XE::SharedPtr< T > & val )
+	{
+		NameValue nv;
+
+		nv.Value = val;
+
+		Serialize( nv );
+
+		return *this;
+	}
+
+	template< typename T > Archive & operator&( const NVP< T > & val )
+	{
+		NameValue nv;
+
+		nv.Name = val.Name;
+
+		if constexpr( std::is_pointer_v<T> )
+		{
+			nv.Value = val.Value;
+			Serialize( nv );
+		}
+		else if constexpr( std::is_shared_ptr_v<T> )
+		{
+			nv.Value = val.Value;
+			Serialize( nv );
+		}
+		else
+		{
+			nv.Value = &val.Value;
+			Serialize( nv );
+		}
+
+		return *this;
+	}
+
 protected:
 	virtual void Serialize( NameValue & val ) = 0;
 
