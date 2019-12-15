@@ -48,6 +48,8 @@ void XE::AssetsService::Prepare()
 
 				_p->_MD5s.insert( { md5, index } );
 			}
+
+			sqlite3_finalize( stmt );
 		}
 	}
 
@@ -260,6 +262,8 @@ XE::String AssetsService::PathToMD5( const XE::String & val ) const
 			{
 				return (const char * )sqlite3_column_text( stmt, 0 );
 			}
+
+			sqlite3_finalize( stmt );
 		}
 	}
 
@@ -289,6 +293,8 @@ ObjectPtr AssetsService::ArchiveObject( const XE::String & val ) const
 
 				return ret.Value<ObjectPtr>();
 			}
+
+			sqlite3_finalize( stmt );
 		}
 
 	}
