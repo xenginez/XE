@@ -216,7 +216,7 @@ void XE::AssetsService::LoadAsset( const String & val )
 {
 	auto md5 = PathToMD5( val );
 
-	ObjectPtr asset = ArchiveObject( md5 );
+	ObjectPtr asset = DeserializeObject( md5 );
 
 	asset->AssetLoad();
 
@@ -270,7 +270,7 @@ XE::String AssetsService::PathToMD5( const XE::String & val ) const
 	return "";
 }
 
-ObjectPtr AssetsService::ArchiveObject( const XE::String & val ) const
+ObjectPtr AssetsService::DeserializeObject( const XE::String & val ) const
 {
 	auto str = XE::StringUtils::Format( "SELECT data, size FROM data WHERE md5=%1;", val.ToStdString() );
 	sqlite3_stmt * stmt = NULL;
@@ -288,10 +288,11 @@ ObjectPtr AssetsService::ArchiveObject( const XE::String & val ) const
 				XE::memory_view view( data, size );
 				XE::BinaryLoadArchive archive( view );
 
-				Variant ret;
+				ObjectPtr ret;
+
 				archive & ret;
 
-				return ret.Value<ObjectPtr>();
+				return ret;
 			}
 
 			sqlite3_finalize( stmt );

@@ -52,7 +52,7 @@ public:
 protected:
 	XE::String PathToMD5( const XE::String & val ) const;
 
-	virtual ObjectPtr ArchiveObject( const XE::String & val ) const;
+	virtual ObjectPtr DeserializeObject( const XE::String & val ) const;
 
 private:
 	void LoadAsset( const String & val );

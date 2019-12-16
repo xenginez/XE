@@ -16,8 +16,9 @@ BEG_XE_NAMESPACE
 DECL_PTR( Mesh );
 DECL_PTR( Light );
 DECL_PTR( Camera );
-DECL_PTR( Renderer );
+DECL_PTR( Texture );
 DECL_PTR( Skeleton );
+DECL_PTR( Renderer );
 DECL_PTR( RenderPass );
 DECL_PTR( Renderable );
 DECL_PTR( RenderWindow );

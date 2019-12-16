@@ -9,6 +9,6 @@
 #ifndef __GLOBAL_H__91B28655_EE77_448D_8860_4F53F448E689
 #define __GLOBAL_H__91B28655_EE77_448D_8860_4F53F448E689
 
-#include "Interface/Interface.h"
+#include "Component/Component.h"
 
 #endif // __GLOBAL_H__91B28655_EE77_448D_8860_4F53F448E689
