@@ -639,30 +639,30 @@ void XE::Gfx::calcTextureSize( TextureInfo & _info, XE::uint16 _width, XE::uint1
 	bgfx::calcTextureSize( ( bgfx::TextureInfo & )_info, _width, _height, _depth, _cubeMap, _hasMips, _numLayers, ( bgfx::TextureFormat::Enum )_format );
 }
 
-XE::TextureHandle XE::Gfx::createTexture( const XE::memory_view _mem, TextureUsage _tflags, SamlerFlags _sflags /* , XE::uint64 _flags = BGFX_TEXTURE_NONE | BGFX_SAMPLER_NONE */, XE::uint8 _skip /*= 0 */, TextureInfo * _info /*= NULL */ )
+XE::TextureHandle XE::Gfx::createTexture( const XE::memory_view _mem, TextureUsage _tflags, SampleFlags _sflags /* , XE::uint64 _flags = BGFX_TEXTURE_NONE | BGFX_SAMPLER_NONE */, XE::uint8 _skip /*= 0 */, TextureInfo * _info /*= NULL */ )
 {
 	bgfx::Memory mem = { ( XE::uint8 * )_mem.data(), ( XE::uint32 )_mem.size() };
 	return bgfx::createTexture( &mem, ( XE::uint64 )_tflags | ( XE::uint64 )_sflags, _skip, ( bgfx::TextureInfo * ) _info ).idx;
 }
 
-XE::TextureHandle XE::Gfx::createTexture2D( XE::uint16 _width, XE::uint16 _height, bool _hasMips, XE::uint16 _numLayers, TextureFormat _format, TextureUsage _tflags, SamlerFlags _sflags /* , XE::uint64 _flags = BGFX_TEXTURE_NONE | BGFX_SAMPLER_NONE */, const XE::memory_view _mem /*= NULL */ )
+XE::TextureHandle XE::Gfx::createTexture2D( XE::uint16 _width, XE::uint16 _height, bool _hasMips, XE::uint16 _numLayers, TextureFormat _format, TextureUsage _tflags, SampleFlags _sflags /* , XE::uint64 _flags = BGFX_TEXTURE_NONE | BGFX_SAMPLER_NONE */, const XE::memory_view _mem /*= NULL */ )
 {
 	bgfx::Memory mem = { ( XE::uint8 * )_mem.data(), ( XE::uint32 )_mem.size() };
 	return bgfx::createTexture2D( _width, _height, _hasMips, _numLayers, ( bgfx::TextureFormat::Enum )_format, ( XE::uint64 )_tflags | ( XE::uint64 )_sflags, &mem ).idx;
 }
 
-XE::TextureHandle XE::Gfx::createTexture2D( BackbufferRatio _ratio, bool _hasMips, XE::uint16 _numLayers, TextureFormat _format, TextureUsage _tflags, SamlerFlags _sflags /* , XE::uint64 _flags = BGFX_TEXTURE_NONE | BGFX_SAMPLER_NONE */ )
+XE::TextureHandle XE::Gfx::createTexture2D( BackbufferRatio _ratio, bool _hasMips, XE::uint16 _numLayers, TextureFormat _format, TextureUsage _tflags, SampleFlags _sflags /* , XE::uint64 _flags = BGFX_TEXTURE_NONE | BGFX_SAMPLER_NONE */ )
 {
 	return bgfx::createTexture2D( ( bgfx::BackbufferRatio::Enum )_ratio, _hasMips, _numLayers, ( bgfx::TextureFormat::Enum )_format, ( XE::uint64 )_tflags | ( XE::uint64 )_sflags ).idx;
 }
 
-XE::TextureHandle XE::Gfx::createTexture3D( XE::uint16 _width, XE::uint16 _height, XE::uint16 _depth, bool _hasMips, TextureFormat _format, TextureUsage _tflags, SamlerFlags _sflags /* , XE::uint64 _flags = BGFX_TEXTURE_NONE | BGFX_SAMPLER_NONE */, const XE::memory_view _mem /*= NULL */ )
+XE::TextureHandle XE::Gfx::createTexture3D( XE::uint16 _width, XE::uint16 _height, XE::uint16 _depth, bool _hasMips, TextureFormat _format, TextureUsage _tflags, SampleFlags _sflags /* , XE::uint64 _flags = BGFX_TEXTURE_NONE | BGFX_SAMPLER_NONE */, const XE::memory_view _mem /*= NULL */ )
 {
 	bgfx::Memory mem = { ( XE::uint8 * )_mem.data(), ( XE::uint32 )_mem.size() };
 	return bgfx::createTexture3D( _width, _height, _depth, _hasMips, ( bgfx::TextureFormat::Enum )_format, ( XE::uint64 )_tflags | ( XE::uint64 )_sflags, &mem ).idx;
 }
 
-XE::TextureHandle XE::Gfx::createTextureCube( XE::uint16 _size, bool _hasMips, XE::uint16 _numLayers, TextureFormat _format, TextureUsage _tflags, SamlerFlags _sflags /* , XE::uint64 _flags = BGFX_TEXTURE_NONE | BGFX_SAMPLER_NONE */, const XE::memory_view _mem /*= NULL */ )
+XE::TextureHandle XE::Gfx::createTextureCube( XE::uint16 _size, bool _hasMips, XE::uint16 _numLayers, TextureFormat _format, TextureUsage _tflags, SampleFlags _sflags /* , XE::uint64 _flags = BGFX_TEXTURE_NONE | BGFX_SAMPLER_NONE */, const XE::memory_view _mem /*= NULL */ )
 {
 	bgfx::Memory mem = { ( XE::uint8 * )_mem.data(), ( XE::uint32 )_mem.size() };
 	return bgfx::createTextureCube( _size, _hasMips, _numLayers, ( bgfx::TextureFormat::Enum )_format, ( XE::uint64 )_tflags | ( XE::uint64 )_sflags, &mem ).idx;
@@ -696,12 +696,12 @@ void * XE::Gfx::getDirectAccessPtr( TextureHandle _handle )
 	return bgfx::getDirectAccessPtr( HandleCast<bgfx::TextureHandle>( _handle ) );
 }
 
-XE::FrameBufferHandle XE::Gfx::createFrameBuffer( XE::uint16 _width, XE::uint16 _height, TextureFormat _format, SamlerFlags _textureFlags /*= ( SamlerFlags )( SamlerFlags::U_CLAMP | SamlerFlags::V_CLAMP ) /* , XE::uint64 _textureFlags = BGFX_SAMPLER_U_CLAMP | BGFX_SAMPLER_V_CLAMP */ )
+XE::FrameBufferHandle XE::Gfx::createFrameBuffer( XE::uint16 _width, XE::uint16 _height, TextureFormat _format, SampleFlags _textureFlags /*= ( SamlerFlags )( SamlerFlags::U_CLAMP | SamlerFlags::V_CLAMP ) /* , XE::uint64 _textureFlags = BGFX_SAMPLER_U_CLAMP | BGFX_SAMPLER_V_CLAMP */ )
 {
 	return bgfx::createFrameBuffer( _width, _height, ( bgfx::TextureFormat::Enum )_format, ( XE::uint64 )_textureFlags ).idx;
 }
 
-XE::FrameBufferHandle XE::Gfx::createFrameBuffer( BackbufferRatio _ratio, TextureFormat _format, SamlerFlags _textureFlags /*= (SamlerFlags )( SamlerFlags::U_CLAMP | SamlerFlags::V_CLAMP ) /* , XE::uint64 _textureFlags = BGFX_SAMPLER_U_CLAMP | BGFX_SAMPLER_V_CLAMP */ )
+XE::FrameBufferHandle XE::Gfx::createFrameBuffer( BackbufferRatio _ratio, TextureFormat _format, SampleFlags _textureFlags /*= (SamlerFlags )( SamlerFlags::U_CLAMP | SamlerFlags::V_CLAMP ) /* , XE::uint64 _textureFlags = BGFX_SAMPLER_U_CLAMP | BGFX_SAMPLER_V_CLAMP */ )
 {
 	return bgfx::createFrameBuffer( ( bgfx::BackbufferRatio::Enum )_ratio, ( bgfx::TextureFormat::Enum )_format, ( XE::uint64 )_textureFlags ).idx;
 }

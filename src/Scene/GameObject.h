@@ -172,7 +172,7 @@ public:
 		auto center = box.GetCenter();
 		auto size = box.GetSize();
 
-		return Rect( center.x, center.z, size.x, size.z );
+		return Rect( center.x, center.y, size.x, size.y );
 	}
 };
 

@@ -156,18 +156,14 @@ public:
 		, XE::uint16 _height
 	);
 
-	void setScissor( XE::uint16 _cache = UINT16_MAX );
+	void setScissor( XE::uint16 _cache = std::numeric_limits<XE::uint16>::max() );
 
 	XE::uint32 setTransform(
-		XE::basic_memory_view<Mat4> _transform
-
-
+		XE::basic_memory_view<XE::Mat4> _transform
 	);
 
 	XE::uint32 allocTransform(
-		XE::basic_memory_view<Mat4> _transform
-
-
+		XE::basic_memory_view<XE::Mat4> _transform
 	);
 
 	void setTransform(
@@ -273,7 +269,7 @@ public:
 		XE::uint8 _stage
 		, UniformHandle _sampler
 		, TextureHandle _handle
-		, XE::uint32 _flags = UINT32_MAX
+		, XE::uint32 _flags = std::numeric_limits<XE::uint32>::max()
 	);
 
 	void touch( ViewHandle _view );
@@ -338,7 +334,7 @@ public:
 		, TextureHandle _handle
 		, XE::uint8 _mip
 		, Access _access
-		, TextureFormat _format = TextureFormat::DEFAULT
+		, TextureFormat _format = TextureFormat::RGBA8
 	);
 
 	void dispatch(
@@ -367,8 +363,8 @@ public:
 		, TextureHandle _src
 		, XE::uint16 _srcX = 0
 		, XE::uint16 _srcY = 0
-		, XE::uint16 _width = UINT16_MAX
-		, XE::uint16 _height = UINT16_MAX
+		, XE::uint16 _width = std::numeric_limits<XE::uint16>::max()
+		, XE::uint16 _height = std::numeric_limits<XE::uint16>::max()
 	);
 
 	void blit(
@@ -383,9 +379,9 @@ public:
 		, XE::uint16 _srcX = 0
 		, XE::uint16 _srcY = 0
 		, XE::uint16 _srcZ = 0
-		, XE::uint16 _width = UINT16_MAX
-		, XE::uint16 _height = UINT16_MAX
-		, XE::uint16 _depth = UINT16_MAX
+		, XE::uint16 _width = std::numeric_limits<XE::uint16>::max()
+		, XE::uint16 _height = std::numeric_limits<XE::uint16>::max()
+		, XE::uint16 _depth = std::numeric_limits<XE::uint16>::max()
 	);
 
 private:
@@ -462,14 +458,14 @@ public:
 
 	static XE::uint8 getSupportedRenderers(
 		XE::uint8 _max = 0
-		, RendererType * _enum = NULL
+		, RendererType * _enum = nullptr
 	);
 
 	static void reset(
 		XE::uint32 _width
 		, XE::uint32 _height
 		, ResetFlags _flags = ResetFlags::NONE
-		, TextureFormat _format = TextureFormat::DEFAULT
+		, TextureFormat _format = TextureFormat::RGBA8
 	);
 
 	static Encoder begin( bool _forThread = false );
@@ -630,7 +626,7 @@ public:
 
 	static XE::uint16 getShaderUniforms(
 		ShaderHandle _handle
-		, UniformHandle * _uniforms = NULL
+		, UniformHandle * _uniforms = nullptr
 		, XE::uint16 _max = 0
 	);
 
@@ -676,10 +672,10 @@ public:
 	static TextureHandle createTexture(
 		const XE::memory_view _mem
 		, TextureUsage _tflags
-		, SamlerFlags _sflags
+		, SampleFlags _sflags
 
 		, XE::uint8 _skip = 0
-		, TextureInfo * _info = NULL
+		, TextureInfo * _info = nullptr
 	);
 
 	static TextureHandle createTexture2D(
@@ -689,9 +685,9 @@ public:
 		, XE::uint16 _numLayers
 		, TextureFormat _format
 		, TextureUsage _tflags
-		, SamlerFlags _sflags
+		, SampleFlags _sflags
 
-		, const XE::memory_view _mem = NULL
+		, const XE::memory_view _mem = nullptr
 	);
 
 	static TextureHandle createTexture2D(
@@ -700,7 +696,7 @@ public:
 		, XE::uint16 _numLayers
 		, TextureFormat _format
 		, TextureUsage _tflags
-		, SamlerFlags _sflags
+		, SampleFlags _sflags
 
 	);
 
@@ -711,9 +707,8 @@ public:
 		, bool _hasMips
 		, TextureFormat _format
 		, TextureUsage _tflags
-		, SamlerFlags _sflags
-
-		, const XE::memory_view _mem = NULL
+		, SampleFlags _sflags
+		, const XE::memory_view _mem = nullptr
 	);
 
 	static TextureHandle createTextureCube(
@@ -722,9 +717,8 @@ public:
 		, XE::uint16 _numLayers
 		, TextureFormat _format
 		, TextureUsage _tflags
-		, SamlerFlags _sflags
-
-		, const XE::memory_view _mem = NULL
+		, SampleFlags _sflags
+		, const XE::memory_view _mem = nullptr
 	);
 
 	static void updateTexture2D(
@@ -736,7 +730,7 @@ public:
 		, XE::uint16 _width
 		, XE::uint16 _height
 		, const XE::memory_view _mem
-		, XE::uint16 _pitch = UINT16_MAX
+		, XE::uint16 _pitch = std::numeric_limits<XE::uint16>::max()
 	);
 
 	static void updateTexture3D(
@@ -761,7 +755,7 @@ public:
 		, XE::uint16 _width
 		, XE::uint16 _height
 		, const XE::memory_view _mem
-		, XE::uint16 _pitch = UINT16_MAX
+		, XE::uint16 _pitch = std::numeric_limits<XE::uint16>::max()
 	);
 
 	static XE::uint32 readTexture(
@@ -784,15 +778,13 @@ public:
 		XE::uint16 _width
 		, XE::uint16 _height
 		, TextureFormat _format
-		, SamlerFlags _textureFlags = (SamlerFlags )( ( XE::uint64 )SamlerFlags::U_CLAMP | ( XE::uint64 )SamlerFlags::V_CLAMP )
-
+		, SampleFlags _textureFlags = SampleFlags::UV_CLAMP
 	);
 
 	static FrameBufferHandle createFrameBuffer(
 		BackbufferRatio _ratio
 		, TextureFormat _format
-		, SamlerFlags _textureFlags = (SamlerFlags )( ( XE::uint64 )SamlerFlags::U_CLAMP | ( XE::uint64 )SamlerFlags::V_CLAMP )
-
+		, SampleFlags _textureFlags = SampleFlags::UV_CLAMP
 	);
 
 	static FrameBufferHandle createFrameBuffer(
@@ -811,8 +803,8 @@ public:
 		WindowHandle _nwh
 		, XE::uint16 _width
 		, XE::uint16 _height
-		, TextureFormat _format = TextureFormat::DEFAULT
-		, TextureFormat _depthFormat = TextureFormat::DEFAULT
+		, TextureFormat _format = TextureFormat::RGBA8
+		, TextureFormat _depthFormat = TextureFormat::D24S8
 	);
 
 	static void setName(
@@ -910,14 +902,14 @@ public:
 
 		, float _depth
 		, XE::uint8 _stencil
-		, XE::uint8 _0 = UINT8_MAX
-		, XE::uint8 _1 = UINT8_MAX
-		, XE::uint8 _2 = UINT8_MAX
-		, XE::uint8 _3 = UINT8_MAX
-		, XE::uint8 _4 = UINT8_MAX
-		, XE::uint8 _5 = UINT8_MAX
-		, XE::uint8 _6 = UINT8_MAX
-		, XE::uint8 _7 = UINT8_MAX
+		, XE::uint8 _0 = std::numeric_limits<XE::uint8>::max()
+		, XE::uint8 _1 = std::numeric_limits<XE::uint8>::max()
+		, XE::uint8 _2 = std::numeric_limits<XE::uint8>::max()
+		, XE::uint8 _3 = std::numeric_limits<XE::uint8>::max()
+		, XE::uint8 _4 = std::numeric_limits<XE::uint8>::max()
+		, XE::uint8 _5 = std::numeric_limits<XE::uint8>::max()
+		, XE::uint8 _6 = std::numeric_limits<XE::uint8>::max()
+		, XE::uint8 _7 = std::numeric_limits<XE::uint8>::max()
 	);
 
 	static void setViewMode(
@@ -932,16 +924,13 @@ public:
 
 	static void setViewTransform(
 		ViewHandle _handle
-		, const Mat4 & _view
-		, const Mat4 & _proj
-
-
+		, const XE::Mat4 & _view
+		, const XE::Mat4 & _proj
 	);
 
 	static void setViewOrder(
 		ViewHandle _view
 		, XE::basic_memory_view<ViewHandle> _remap
-
 
 	);
 
@@ -971,18 +960,14 @@ public:
 		, XE::uint16 _height
 	);
 
-	static void setScissor( XE::uint16 _cache = UINT16_MAX );
+	static void setScissor( XE::uint16 _cache = std::numeric_limits<XE::uint16>::max() );
 
 	static XE::uint32 setTransform(
-		XE::basic_memory_view<Mat4> _mtx
-
-
+		XE::basic_memory_view<XE::Mat4> _mtx
 	);
 
 	static XE::uint32 allocTransform(
-		XE::basic_memory_view<Mat4> _transform
-
-
+		XE::basic_memory_view<XE::Mat4> _transform
 	);
 
 	static void setTransform(
@@ -993,8 +978,6 @@ public:
 	static void setUniform(
 		UniformHandle _handle
 		, XE::memory_view _value
-
-
 	);
 
 	static void setIndexBuffer( IndexBufferHandle _handle );
@@ -1088,7 +1071,7 @@ public:
 		XE::uint8 _stage
 		, UniformHandle _sampler
 		, TextureHandle _handle
-		, XE::uint32 _flags = UINT32_MAX
+		, XE::uint32 _flags = std::numeric_limits<XE::uint32>::max()
 	);
 
 	static void touch( ViewHandle _view );
@@ -1153,7 +1136,7 @@ public:
 		, TextureHandle _handle
 		, XE::uint8 _mip
 		, Access _access
-		, TextureFormat _format = TextureFormat::DEFAULT
+		, TextureFormat _format = TextureFormat::RGBA8
 	);
 
 	static void dispatch(
@@ -1182,8 +1165,8 @@ public:
 		, TextureHandle _src
 		, XE::uint16 _srcX = 0
 		, XE::uint16 _srcY = 0
-		, XE::uint16 _width = UINT16_MAX
-		, XE::uint16 _height = UINT16_MAX
+		, XE::uint16 _width = std::numeric_limits<XE::uint16>::max()
+		, XE::uint16 _height = std::numeric_limits<XE::uint16>::max()
 	);
 
 	static void blit(
@@ -1198,9 +1181,9 @@ public:
 		, XE::uint16 _srcX = 0
 		, XE::uint16 _srcY = 0
 		, XE::uint16 _srcZ = 0
-		, XE::uint16 _width = UINT16_MAX
-		, XE::uint16 _height = UINT16_MAX
-		, XE::uint16 _depth = UINT16_MAX
+		, XE::uint16 _width = std::numeric_limits<XE::uint16>::max()
+		, XE::uint16 _height = std::numeric_limits<XE::uint16>::max()
+		, XE::uint16 _depth = std::numeric_limits<XE::uint16>::max()
 	);
 
 	static void requestScreenShot(

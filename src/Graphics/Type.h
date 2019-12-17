@@ -242,7 +242,7 @@ enum class RenderTargetMSAA : XE::uint64
 };
 DECL_META_ENUM( XE_API, RenderTargetMSAA );
 
-enum class SamlerFlags : XE::uint64
+enum class SampleFlags : XE::uint64
 {
 	U_MIRROR = 0x00000001,
 	U_CLAMP = 0x00000002,
@@ -258,7 +258,10 @@ enum class SamlerFlags : XE::uint64
 	MAG_POINT = 0x00000100,
 	MAG_ANISOTROPIC = 0x00000200,
 	MIP_POINT = 0x00000400,
-	POINT = MIN_POINT | MAG_POINT | MIP_POINT,
+	POINTS = MIN_POINT | MAG_POINT | MIP_POINT,
+	UV_MIRROR = U_MIRROR | V_MIRROR,
+	UV_CLAMP = U_CLAMP | V_CLAMP,
+	UV_BORDER = U_BORDER | V_BORDER,
 	UVW_MIRROR = U_MIRROR | V_MIRROR | W_MIRROR,
 	UVW_CLAMP = U_CLAMP | V_CLAMP | W_CLAMP,
 	UVW_BORDER = U_BORDER | V_BORDER | W_BORDER,
@@ -271,7 +274,7 @@ enum class SamlerFlags : XE::uint64
 	NEVER = 0x00070000,
 	ALWAYS = 0x00080000,
 };
-DECL_META_ENUM( XE_API, SamlerFlags );
+DECL_META_ENUM( XE_API, SampleFlags );
 
 enum class ResetFlags : XE::uint64
 {
