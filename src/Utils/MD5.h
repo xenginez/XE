@@ -26,9 +26,17 @@ public:
 	MD5 & operator =( XE::memory_view val );
 
 public:
+	bool operator ==( const MD5 & val ) const;
+
+	bool operator !=( const MD5 & val ) const;
+
+public:
 	std::string To16String() const;
 
 	std::string To32String() const;
+
+public:
+	static MD5 From32String( const std::string & val );
 
 private:
 	void Hash( XE::memory_view val );
@@ -46,6 +54,43 @@ namespace std
 	{
 		return _Val.To32String();
 	}
+
+	template<> struct equal_to<XE::MD5>
+	{
+		typedef XE::MD5 first_argument_type;
+		typedef XE::MD5 second_argument_type;
+		typedef bool result_type;
+
+		bool operator()( const XE::MD5 & _Left, const XE::MD5 & _Right ) const
+		{
+			return ( _Left == _Right );
+		}
+	};
+
+	template<> struct hash<XE::MD5>
+	{
+		typedef XE::MD5 argument_type;
+		typedef XE::uint64 result_type;
+
+		XE::uint64 operator()( const XE::MD5 & _Keyval ) const noexcept
+		{
+			return std::hash<std::string>()( _Keyval.To32String() );
+		}
+	};
+
 }
+
+struct MD5HashCompare
+{
+	static XE::uint64 hash( const XE::MD5 & a )
+	{
+		return std::hash<XE::MD5>()( a );
+	}
+	static bool equal( const XE::MD5 & a, const XE::MD5 & b )
+	{
+		return std::equal_to<XE::MD5>()( a, b );
+	}
+};
+
 
 #endif // MD5_H__EF0EE087_0F95_41D9_956F_532BA1F954FA

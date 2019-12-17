@@ -50,14 +50,14 @@ public:
 	AssetStatus GetAssetStatus( const String & val ) const override;
 
 protected:
-	XE::String PathToMD5( const XE::String & val ) const;
+	XE::MD5 PathToMD5( const XE::String & val ) const;
 
-	virtual ObjectPtr DeserializeObject( const XE::String & val ) const;
+	virtual ObjectPtr DeserializeObject( const XE::MD5 & val ) const;
 
 private:
-	void LoadAsset( const String & val );
+	void LoadAsset( const XE::MD5 & val );
 
-	void UnloadAsset( const String & val );
+	void UnloadAsset( const XE::MD5 & val );
 
 private:
 	Private * _p;

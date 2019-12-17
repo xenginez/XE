@@ -194,15 +194,15 @@ namespace std
 
 }
 
-struct XE_API StringHashCompare
+struct StringHashCompare
 {
 	static XE::uint64 hash( const XE::String& a )
 	{
-		return std::hash<std::string>()( a.ToStdString() );
+		return std::hash<XE::String>()( a );
 	}
 	static bool equal( const XE::String& a, const XE::String& b )
 	{
-		return a == b;
+		return std::equal_to<XE::String>()( a, b );
 	}
 };
 

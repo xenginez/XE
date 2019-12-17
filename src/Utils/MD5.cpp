@@ -202,6 +202,16 @@ MD5::MD5( XE::memory_view val )
 	Hash( val );
 }
 
+bool MD5::operator==( const MD5 & val ) const
+{
+	return std::strcmp( _Hash, val._Hash ) == 0;
+}
+
+bool MD5::operator!=( const MD5 & val ) const
+{
+	return std::strcmp( _Hash, val._Hash ) != 0;
+}
+
 std::string MD5::To16String() const
 {
 	return std::string( _Hash + 8, _Hash + 26 );
@@ -210,6 +220,15 @@ std::string MD5::To16String() const
 std::string MD5::To32String() const
 {
 	return _Hash;
+}
+
+MD5 MD5::From32String( const std::string & val )
+{
+	MD5 md5;
+
+	std::memcpy( md5._Hash, val.c_str(), 33 );
+
+	return md5;
 }
 
 void MD5::Hash( XE::memory_view val )
