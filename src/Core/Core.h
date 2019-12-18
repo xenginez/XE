@@ -9,6 +9,7 @@
 #ifndef CORE_H__89296107_DD2C_4CE3_A497_78460B7181B4
 #define CORE_H__89296107_DD2C_4CE3_A497_78460B7181B4
 
+#include "Events.h"
 #include "GUIService.h"
 #include "InputService.h"
 #include "TimerService.h"

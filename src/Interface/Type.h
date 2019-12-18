@@ -793,14 +793,6 @@ DECL_META_ENUM( XE_API, ThreadPriority );
 
 using WindowEventPair = Pair<WindowHandle, XE::WindowEvent>;
 
-DECL_EVENT( WINDOW, "window events", WindowEventPair );
-DECL_EVENT( KEY_UP, "keyboard button up", XE::uint32 );
-DECL_EVENT( KEY_DOWN, "keyboard button down", XE::uint32 );
-DECL_EVENT( MOUSE_UP, "mouse button up", XE::uint32 );
-DECL_EVENT( MOUSE_DOWN, "mouse button down", XE::uint32 );
-DECL_EVENT( MOUSE_WHEEL, "mouse wheel", XE::uint32 );
-DECL_EVENT( MOUSE_MOVE, "mouse move", XE::Vec2 );
-
 END_XE_NAMESPACE
 
 #endif 

@@ -42,7 +42,7 @@ private:
 	void Hash( XE::memory_view val );
 
 private:
-	char _Hash[33];
+	char _Hash[32];
 };
 DECL_META_CLASS( XE_API, MD5 );
 
