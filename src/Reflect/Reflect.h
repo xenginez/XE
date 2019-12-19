@@ -56,6 +56,16 @@ template<> struct _DLL_EXPORT XE::EnumID<ENUM> \
 	} \
 }
 
+#define DECL_META_ENUM_P(ENUM) \
+template<> struct XE::EnumID<ENUM> \
+{ \
+	static IMetaEnumPtr Get( const ENUM * val = nullptr ) \
+	{ \
+		static auto p = XE::MakeShared< CXXMetaEnum<ENUM> >( #ENUM, nullptr ); \
+		return p; \
+	} \
+}
+
 #define DECL_META_CLASS_3(_DLL_EXPORT, _CLASS, _SUPER) \
 template<> struct _DLL_EXPORT XE::ClassID<_CLASS> \
 { \
@@ -75,6 +85,26 @@ template<> struct _DLL_EXPORT XE::ClassID<_CLASS> \
 	} \
 }
 #define DECL_META_CLASS(...)            MACRO_EXP_(MACRO_GLUE(DECL_META_CLASS_,MACRO_ARGS_CONTER(__VA_ARGS__))(__VA_ARGS__))
+
+#define DECL_META_CLASS_P_2(_CLASS, _SUPER) \
+template<> struct XE::ClassID<_CLASS> \
+{ \
+	static IMetaClassPtr Get( const _CLASS * val = nullptr ) \
+	{ \
+		static auto p = XE::MakeShared< CXXMetaClass<_CLASS> >( #_CLASS, ClassID<_SUPER>::Get(), nullptr ); \
+		return p; \
+	} \
+}
+#define DECL_META_CLASS_P_1(_CLASS) \
+template<> struct XE::ClassID<_CLASS> \
+{ \
+	static IMetaClassPtr Get( const _CLASS * val = nullptr ) \
+	{ \
+		static auto p = XE::MakeShared< CXXMetaClass<_CLASS> >( #_CLASS, nullptr, nullptr ); \
+		return p; \
+	} \
+}
+#define DECL_META_CLASS_P(...)            MACRO_EXP_(MACRO_GLUE(DECL_META_CLASS_P_,MACRO_ARGS_CONTER(__VA_ARGS__))(__VA_ARGS__))
 
 #define OBJECT_2(_CLASS, _SUPER) \
 	template< typename T > friend struct XE::MetaDataCollector; \
