@@ -78,5 +78,6 @@ foreach(INC_DIR ${INC_DIRS})
 				COMMAND ${CMAKE_COMMAND} -E copy ${INC_FILE} "$ENV{XE_PATH}/include/${INC_DIR}"
 				)
 	endforeach (INC_FILE)
+	message("copy include " ${INC_DIR})
 
 endforeach (INC_DIR)
