@@ -144,6 +144,7 @@ struct XE::JsonSaveArchive::Private
 XE::JsonSaveArchive::JsonSaveArchive()
 	:_p( new Private )
 {
+	_p->Doc.SetObject();
 	_p->Values.push( &_p->Doc );
 }
 

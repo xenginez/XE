@@ -31,10 +31,6 @@ public:
 
 	void SetFormat( XE::TextureFormat val );
 
-	XE::uint32 GetStorageSize() const;
-
-	void SetStorageSize( XE::uint32 val );
-
 	XE::uint16 GetWidth() const;
 
 	void SetWidth( XE::uint16 val );
@@ -55,13 +51,9 @@ public:
 
 	void SetNumMips( XE::uint8 val );
 
-	XE::uint8 GetBitsPerPixel() const;
+	const Array<XE::uint8> & GetData() const;
 
-	void SetBitsPerPixel( XE::uint8 val );
-
-	bool GetCubeMap() const;
-
-	void SetCubeMap( bool val );
+	void SetData( const Array<XE::uint8> & val );
 
 public:
 	TextureHandle GetHandle();
@@ -74,14 +66,11 @@ public:
 private:
 	TextureType _Type;
 	TextureFormat _Format;
-	XE::uint32 _StorageSize;
 	XE::uint16 _Width;
 	XE::uint16 _Height;
 	XE::uint16 _Depth;
 	XE::uint16 _NumLayers;
 	XE::uint8 _NumMips;
-	XE::uint8 _BitsPerPixel;
-	bool _CubeMap;
 	TextureHandle _Handle;
 	Array<XE::uint8> _Data;
 };

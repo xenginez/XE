@@ -8,6 +8,7 @@ BEG_META( Texture )
 END_META()
 
 XE::Texture::Texture()
+	:_Type( XE::TextureType::TEXTURE2D ), _Format( XE::TextureFormat::RGBA8 ), _Width( 0 ), _Height( 0 ), _Depth( 0 ), _NumLayers( 0 ), _NumMips( 0 )
 {
 
 }
@@ -35,16 +36,6 @@ XE::TextureFormat XE::Texture::GetFormat() const
 void XE::Texture::SetFormat( XE::TextureFormat val )
 {
 	_Format = val;
-}
-
-XE::uint32 XE::Texture::GetStorageSize() const
-{
-	return _StorageSize;
-}
-
-void XE::Texture::SetStorageSize( XE::uint32 val )
-{
-	_StorageSize = val;
 }
 
 XE::uint16 XE::Texture::GetWidth() const
@@ -97,24 +88,14 @@ void XE::Texture::SetNumMips( XE::uint8 val )
 	_NumMips = val;
 }
 
-XE::uint8 XE::Texture::GetBitsPerPixel() const
+const Array<XE::uint8> & Texture::GetData() const
 {
-	return _BitsPerPixel;
+	return _Data;
 }
 
-void XE::Texture::SetBitsPerPixel( XE::uint8 val )
+void Texture::SetData( const Array<XE::uint8> & val )
 {
-	_BitsPerPixel = val;
-}
-
-bool XE::Texture::GetCubeMap() const
-{
-	return _CubeMap;
-}
-
-void XE::Texture::SetCubeMap( bool val )
-{
-	_CubeMap = val;
+	_Data = val;
 }
 
 XE::TextureHandle XE::Texture::GetHandle()
@@ -126,9 +107,6 @@ void XE::Texture::AssetLoad()
 {
 	switch( _Type )
 	{
-	case XE::TextureType::TEXTURE:
-		//Gfx::createTexture();
-		break;
 	case XE::TextureType::TEXTURE2D:
 		//Gfx::createTexture2D();
 		break;
@@ -136,6 +114,9 @@ void XE::Texture::AssetLoad()
 		//Gfx::createTexture3D();
 		break;
 	case XE::TextureType::TEXTURECUBE:
+		//Gfx::createTextureCube();
+		break;
+	case XE::TextureType::TEXTUREARRAY:
 		//Gfx::createTextureCube();
 		break;
 	default:
