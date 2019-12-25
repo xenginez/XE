@@ -181,7 +181,7 @@ void XE::JsonSaveArchive::Serialize( NameValue & val )
 		if( auto enm = SP_CAST<IMetaEnum>( type ) )
 		{
 			rapidjson::Value v( rapidjson::kStringType );
-			v.SetString( enm->FindName( val.Value.Value<XE::int64>() ).ToCString(), _p->Doc.GetAllocator() );
+			v.SetString( enm->FindName( val.Value ).ToCString(), _p->Doc.GetAllocator() );
 			value.AddMember( rapidjson::StringRef( "value" ), v, _p->Doc.GetAllocator() );
 		}
 	}

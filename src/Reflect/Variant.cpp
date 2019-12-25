@@ -143,12 +143,6 @@ XE::Variant::Variant( XE::float64 val )
 
 }
 
-XE::Variant::Variant( const Variant & val )
-	: _Type( val._Type ), _Data( val._Data ), _Flag( val._Flag )
-{
-	Lock();
-}
-
 XE::Variant::Variant( IMetaTypePtr meta, UnionData data, XE::Variant::Flag flag )
 	: _Data( data ), _Type( meta ), _Flag( flag )
 {
@@ -898,7 +892,7 @@ void * XE::Variant::ToPointer() const
 		return nullptr;
 	}
 
-	if( _Flag == Flag::PRIVATEPTR )
+	if( _Flag == Flag::PRIVATEPTR || _Flag == Flag::CONTAINER )
 	{
 		return _Data.pp->Data();
 	}
@@ -1008,7 +1002,7 @@ XE::Array<XE::Variant> Variant::ToArray() const
 	}
 	else if( _Type == TypeID<VariantArray>::Get() )
 	{
-		ret = Value< VariantArray >();
+		ret = *( (VariantArray * )ToPointer() );
 	}
 	else if( _Type == TypeID<VariantSet>::Get() )
 	{

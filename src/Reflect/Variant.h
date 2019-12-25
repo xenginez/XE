@@ -167,56 +167,53 @@ public:
 
 	Variant( XE::float64 val );
 
-	Variant( const Variant & val );
-
-	template< typename T > Variant( T & val )
-	{
-		using type = typename TypeTraits<T>::raw_t;
-
-		if constexpr( std::is_shared_ptr_v<T> )
-		{
-			VariantCreate< XE::SharedPtr< type > >::Create( this, val );
-		}
-		else
-		{
-			VariantCreate<type>::Create( this, val );
-		}
-
-		Lock();
-	}
-
-	template< typename T > Variant( const T & val )
-	{
-		using type = typename TypeTraits<T>::raw_t;
-
-		if constexpr( std::is_shared_ptr_v<T> )
-		{
-			VariantCreate< XE::SharedPtr< type > >::Create( this, val );
-		}
-		else
-		{
-			VariantCreate<type>::Create( this, val );
-		}
-
-		Lock();
-	}
-
 	template< typename T > Variant( T * val )
 	{
 		using type = typename TypeTraits<T>::raw_t;
 
-		_Type = TypeID<type>::Get();
-		_Data.p = (void * )val;
-		_Flag = Variant::Flag::POINTER;
+		if constexpr( std::is_same_v<type, Variant> )
+		{
+			_Data = val->_Data;
+			_Flag = val->_Flag;
+			_Type = val->_Type;
+
+			Lock();
+		}
+		else
+		{
+			_Type = TypeID<type>::Get( val );
+			_Data.p = (void * )val;
+			_Flag = Variant::Flag::POINTER;
+		}
 	}
 
 	template< typename T > Variant( const T * val )
 	{
 		using type = typename TypeTraits<T>::raw_t;
 
-		_Type = TypeID<type>::Get();
-		_Data.p = (void * )val;
-		_Flag = Variant::Flag::POINTER;
+		if constexpr( std::is_same_v<type, Variant> )
+		{
+			_Data = val->_Data;
+			_Flag = val->_Flag;
+			_Type = val->_Type;
+
+			Lock();
+		}
+		else
+		{
+			_Type = TypeID<type>::Get( val );
+			_Data.p = (void * )val;
+			_Flag = Variant::Flag::POINTER;
+		}
+	}
+
+	template< typename T > Variant( const T & val )
+	{
+		using type = typename TypeTraits<T>::raw_t;
+
+		VariantCreate<T>::Create( this, val );
+
+		Lock();
 	}
 
 	Variant( IMetaTypePtr meta, UnionData data, XE::Variant::Flag flag );
@@ -359,18 +356,22 @@ template< typename T > struct VariantCreate
 {
 	static void Create( Variant * var, const T & val )
 	{
-		using type = typename TypeTraits<T>::raw_t;
-
-		var->_Type = TypeID<type>::Get();
-
-		if constexpr( std::is_enum_v<type> )
+		if constexpr( std::is_enum_v<T> )
 		{
+			var->_Type = TypeID<T>::Get();
 			var->_Data.i64 = ( XE::int64 )val;
 			var->_Flag = Variant::Flag::ENUM;
 		}
+		else if constexpr( std::is_shared_ptr_v<T> )
+		{
+			var->_Type = TypeID<T>::Get( &val );
+			var->_Data.sp = Variant::RegisterSharedPtr( val );
+			var->_Flag = Variant::Flag::SHAREDPTR;
+		}
 		else
 		{
-			var->_Data.pp = new Variant::PrivatePtrTpl<type>( val );
+			var->_Type = TypeID<T>::Get( &val );
+			var->_Data.pp = new Variant::PrivatePtrTpl<T>( val );
 			var->_Flag = Variant::Flag::PRIVATEPTR;
 		}
 	}
@@ -386,17 +387,17 @@ template<> struct VariantCreate<Variant>
 	}
 };
 
-template< typename T > struct VariantCreate<XE::SharedPtr<T>>
-{
-	static void Create( Variant * var, const XE::SharedPtr<T> & val )
-	{
-		using type = typename TypeTraits<T>::raw_t;
-
-		var->_Type = TypeID<type>::Get();
-		var->_Data.sp = Variant::RegisterSharedPtr( val );
-		var->_Flag = Variant::Flag::SHAREDPTR;
-	}
-};
+// template< typename T > struct VariantCreate<XE::SharedPtr<T>>
+// {
+// 	static void Create( Variant * var, const XE::SharedPtr<T> & val )
+// 	{
+// 		using type = typename TypeTraits<T>::raw_t;
+// 
+// 		var->_Type = TypeID<type>::Get( val.get() );
+// 		var->_Data.sp = Variant::RegisterSharedPtr( val );
+// 		var->_Flag = Variant::Flag::SHAREDPTR;
+// 	}
+// };
 
 template< typename ... Args > struct VariantCreate< std::list< Args... > >
 {

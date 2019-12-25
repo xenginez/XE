@@ -59,10 +59,16 @@ template< typename T > struct TypeID
 
 template< typename T > struct TypeID< XE::SharedPtr< T > >
 {
-	static IMetaTypePtr Get( const XE::SharedPtr<T> & val = nullptr )
+	static IMetaTypePtr Get( const XE::SharedPtr<T> * val = nullptr )
 	{
-		return TypeID<T>::Get( val.get() );
+		if( val != nullptr )
+		{
+			return TypeID<T>::Get( val->get() );
+		}
+
+		return TypeID<T>::Get();
 	}
+
 };
 
 END_XE_NAMESPACE

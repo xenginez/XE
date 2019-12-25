@@ -5,6 +5,14 @@
 USING_XE
 
 BEG_META( Texture )
+type->Property( "Type", &Texture::_Type );
+type->Property( "Format", &Texture::_Format );
+type->Property( "Width", &Texture::_Width );
+type->Property( "Height", &Texture::_Height );
+type->Property( "Depth", &Texture::_Depth );
+type->Property( "NumLayers", &Texture::_NumLayers);
+type->Property( "NumMips", &Texture::_NumMips );
+type->Property( "Data", &Texture::_Data, IMetaProperty::NoDesign );
 END_META()
 
 XE::Texture::Texture()
