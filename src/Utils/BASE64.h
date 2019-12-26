@@ -16,17 +16,28 @@ BEG_XE_NAMESPACE
 class XE_API BASE64
 {
 public:
-	static std::string Encode( const XE::uint8 * src, XE::uint64 size );
+	static bool Encode( const std::string & in, std::string * out );
 
-	static XE::uint64 Encode( const XE::uint8 * src, XE::uint64 size, XE::uint8 * out );
+	static bool Encode( const char * input, size_t input_length, std::string * out );
 
-	static XE::uint64 Decode( const std::string& str, XE::uint8 * out );
+	static bool Encode( const char * input, size_t input_length, char * out, size_t out_length );
 
-	static XE::uint64 Decode( const XE::uint8* src, XE::uint64 size, XE::uint8 * out );
+	static bool Decode( const std::string & in, std::string * out );
 
-private:
-	static const char _base64_encode_table[65];
-	static const char _base64_decode_table[256];
+	static bool Decode( const std::string & in, char * out, size_t out_length );
+
+	static bool Decode( const char * input, size_t input_length, char * out, size_t out_length );
+
+	static int DecodedLength( const std::string & in );
+
+	static int DecodedLength( const char * in, size_t in_length );
+
+	static int EncodedLength( size_t length );
+
+	static int EncodedLength( const std::string & in );
+
+	static void StripPadding( std::string * in );
+
 };
 DECL_META_CLASS( XE_API, BASE64 );
 

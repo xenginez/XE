@@ -124,6 +124,12 @@ void XE::JsonLoadArchive::Serialize( NameValue & val )
 				arr[i] = v;
 			}
 			_p->Values.pop();
+
+			val.Value = arr;
+		}
+		else if( type == TypeID<String>::Get() )
+		{
+			val.Value = std::string( node.FindMember( "@value" )->value.GetString() );
 		}
 		else
 		{
@@ -137,11 +143,11 @@ void XE::JsonLoadArchive::Serialize( NameValue & val )
 				{
 					val.Value = Variant( type, cls->ConstructPtr().DetachPtr(), ( XE::Variant::Flag )flag );
 				}
-
-				_p->Values.push( &node );
-				cls->Serialize( this, val.Value );
-				_p->Values.pop();
 			}
+
+			_p->Values.push( &node );
+			cls->Serialize( this, val.Value );
+			_p->Values.pop();
 		}
 	}
 }

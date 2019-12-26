@@ -99,21 +99,20 @@ public:
 	{
 		if( arc.GetType() == ArchiveType::LOAD )
 		{
-			XE::uint64 size;
 			std::string str;
-			arc & Archive::NVP( "size", size );
+
 			arc & Archive::NVP( "data", str );
 
-			val->resize( size );
+			val->resize( BASE64::DecodedLength( str ) );
 
-			BASE64::Decode( str, ( XE::uint8 * )val->data() );
+			BASE64::Decode( str, (char * )val->data(), val->size() );
 		}
 		else
 		{
-			XE::uint64 size = val->size();
-			std::string str = BASE64::Encode( ( XE::uint8 * )val->data(), val->size() );
+			std::string str;
 
-			arc & Archive::NVP( "size", size );
+			BASE64::Encode( (const char * )val->data(), val->size(), &str );
+
 			arc & Archive::NVP( "data", str );
 		}
 	}

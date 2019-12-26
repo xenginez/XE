@@ -5,206 +5,403 @@ USING_XE
 BEG_META( BASE64 )
 END_META()
 
-const char BASE64::_base64_encode_table[65] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+const char _base64_encode_table[65] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
-const char BASE64::_base64_decode_table[256] =
+
+void a3_to_a4( unsigned char * a4, unsigned char * a3 )
 {
-	-2, -2, -2, -2, -2, -2, -2, -2, -2, -1, -1, -2, -2, -1, -2, -2,
-	-2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2,
-	-1, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, 62, -2, -2, -2, 63,
-	52, 53, 54, 55, 56, 57, 58, 59, 60, 61, -2, -2, -2, -2, -2, -2,
-	-2,  0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14,
-	15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -2, -2, -2, -2, -2,
-	-2, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
-	41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -2, -2, -2, -2, -2,
-	-2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2,
-	-2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2,
-	-2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2,
-	-2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2,
-	-2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2,
-	-2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2,
-	-2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2,
-	-2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2,
-};
-
-std::string BASE64::Encode( const XE::uint8 * src, XE::uint64 size )
-{
-	std::string ret;
-
-	while ( size > 2 )
-	{
-		ret += _base64_encode_table[src[0] >> 2];
-		ret += _base64_encode_table[( ( src[0] & 0x03 ) << 4 ) + ( src[1] >> 4 )];
-		ret += _base64_encode_table[( ( src[1] & 0x0f ) << 2 ) + ( src[2] >> 6 )];
-		ret += _base64_encode_table[src[2] & 0x3f];
-
-		src += 3;
-		size -= 3;
-	}
-
-	if ( size > 0 )
-	{
-		ret+= _base64_encode_table[src[0] >> 2];
-		if ( size % 3 == 1 )
-		{
-			ret += _base64_encode_table[( src[0] & 0x03 ) << 4];
-			ret += "==";
-		}
-		else if ( size % 3 == 2 )
-		{
-			ret += _base64_encode_table[( ( src[0] & 0x03 ) << 4 ) + ( src[1] >> 4 )];
-			ret += _base64_encode_table[( src[1] & 0x0f ) << 2];
-			ret += '=';
-		}
-	}
-
-	return ret;
+	a4[0] = ( a3[0] & 0xfc ) >> 2;
+	a4[1] = ( ( a3[0] & 0x03 ) << 4 ) + ( ( a3[1] & 0xf0 ) >> 4 );
+	a4[2] = ( ( a3[1] & 0x0f ) << 2 ) + ( ( a3[2] & 0xc0 ) >> 6 );
+	a4[3] = ( a3[2] & 0x3f );
 }
 
-XE::uint64 XE::BASE64::Encode( const XE::uint8 * src, XE::uint64 size, XE::uint8 * out )
+void a4_to_a3( unsigned char * a3, unsigned char * a4 )
 {
-	XE::uint64 ret = 0;
-
-	while ( size > 2 )
-	{
-		out[ret++] = _base64_encode_table[src[0] >> 2];
-		out[ret++] = _base64_encode_table[( ( src[0] & 0x03 ) << 4 ) + ( src[1] >> 4 )];
-		out[ret++] = _base64_encode_table[( ( src[1] & 0x0f ) << 2 ) + ( src[2] >> 6 )];
-		out[ret++] = _base64_encode_table[src[2] & 0x3f];
-
-		src += 3;
-		size -= 3;
-	}
-
-	if ( size > 0 )
-	{
-		out[ret++] = _base64_encode_table[src[0] >> 2];
-		if ( size % 3 == 1 )
-		{
-			out[ret++] = _base64_encode_table[( src[0] & 0x03 ) << 4];
-			out[ret++] = '=';
-			out[ret++] = '=';
-		}
-		else if ( size % 3 == 2 )
-		{
-			out[ret++] = _base64_encode_table[( ( src[0] & 0x03 ) << 4 ) + ( src[1] >> 4 )];
-			out[ret++] = _base64_encode_table[( src[1] & 0x0f ) << 2];
-			out[ret++] = '=';
-		}
-	}
-
-	return ret;
+	a3[0] = ( a4[0] << 2 ) + ( ( a4[1] & 0x30 ) >> 4 );
+	a3[1] = ( ( a4[1] & 0xf ) << 4 ) + ( ( a4[2] & 0x3c ) >> 2 );
+	a3[2] = ( ( a4[2] & 0x3 ) << 6 ) + a4[3];
 }
 
-XE::uint64 BASE64::Decode( const std::string& str, XE::uint8 * out )
+unsigned char b64_lookup( unsigned char c )
 {
-	XE::uint64 size = str.size();
-	const XE::uint8 * src = (const XE::uint8 *)str.c_str();
+	if( c >= 'A' && c <= 'Z' ) return c - 'A';
+	if( c >= 'a' && c <= 'z' ) return c - 71;
+	if( c >= '0' && c <= '9' ) return c + 4;
+	if( c == '+' ) return 62;
+	if( c == '/' ) return 63;
+	return 255;
+}
 
-	XE::int32 bin = 0, i = 0, pos = 0;
+bool BASE64::Encode( const std::string & in, std::string * out )
+{
+	int i = 0, j = 0;
+	size_t enc_len = 0;
+	unsigned char a3[3];
+	unsigned char a4[4];
 
-	XE::uint64 ret = 0;
+	out->resize( EncodedLength( in ) );
 
-	XE::int32 * buf = (int *)out;
-	char ch;
+	int input_len = in.size();
+	std::string::const_iterator input = in.begin();
 
-	while ( ( ch = *src++ ) != '\0' && size-- > 0 )
+	while( input_len-- )
 	{
-		if ( ch == '=' )
+		a3[i++] = *( input++ );
+		if( i == 3 )
 		{
-			if ( *src != '=' && ( i % 4 ) == 1 )
+			a3_to_a4( a4, a3 );
+
+			for( i = 0; i < 4; i++ )
 			{
-				return 0;
+				( *out )[enc_len++] = _base64_encode_table[a4[i]];
 			}
 
-			continue;
+			i = 0;
 		}
-
-		ch = _base64_decode_table[ch];
-
-		if ( ch < 0 )
-		{
-			continue;
-		}
-
-		switch ( i % 4 )
-		{
-		case 0:
-			bin = ch << 2;
-			break;
-		case 1:
-			bin |= ch >> 4;
-			buf[ret] = bin; ret += 4;
-			bin = ( ch & 0x0f ) << 4;
-			break;
-		case 2:
-			bin |= ch >> 2;
-			buf[ret] = bin; ret += 4;
-			bin = ( ch & 0x03 ) << 6;
-			break;
-		case 3:
-			bin |= ch;
-			buf[ret] = bin; ret += 4;
-			break;
-		}
-
-		i++;
 	}
 
-	return ret;
+	if( i )
+	{
+		for( j = i; j < 3; j++ )
+		{
+			a3[j] = '\0';
+		}
+
+		a3_to_a4( a4, a3 );
+
+		for( j = 0; j < i + 1; j++ )
+		{
+			( *out )[enc_len++] = _base64_encode_table[a4[j]];
+		}
+
+		while( ( i++ < 3 ) )
+		{
+			( *out )[enc_len++] = '=';
+		}
+	}
+
+	return ( enc_len == out->size() );
 }
 
-XE::uint64 XE::BASE64::Decode( const XE::uint8* src, XE::uint64 size, XE::uint8 * out )
+bool BASE64::Encode( const char * input, size_t input_length, std::string * out )
 {
-	XE::int32 bin = 0, i = 0, pos = 0;
+	int i = 0, j = 0;
+	size_t enc_len = 0;
+	unsigned char a3[3];
+	unsigned char a4[4];
 
-	XE::uint64 ret = 0;
+	out->resize( EncodedLength( input_length ) );
 
-	XE::int32 * buf = (int *)out;
-	char ch;
+	int input_len = input_length;
 
-	while ( ( ch = *src++ ) != '\0' && size-- > 0 )
+	while( input_len-- )
 	{
-		if ( ch == '=' )
+		a3[i++] = *( input++ );
+		if( i == 3 )
 		{
-			if ( *src != '=' && ( i % 4 ) == 1 )
+			a3_to_a4( a4, a3 );
+
+			for( i = 0; i < 4; i++ )
 			{
-				return 0;
+				( *out )[enc_len++] = _base64_encode_table[a4[i]];
 			}
 
-			continue;
+			i = 0;
 		}
-
-		ch = _base64_decode_table[ch];
-
-		if ( ch < 0 )
-		{
-			continue;
-		}
-
-		switch ( i % 4 )
-		{
-		case 0:
-			bin = ch << 2;
-			break;
-		case 1:
-			bin |= ch >> 4;
-			buf[ret] = bin; ret += 4;
-			bin = ( ch & 0x0f ) << 4;
-			break;
-		case 2:
-			bin |= ch >> 2;
-			buf[ret] = bin; ret += 4;
-			bin = ( ch & 0x03 ) << 6;
-			break;
-		case 3:
-			bin |= ch;
-			buf[ret] = bin; ret += 4;
-			break;
-		}
-
-		i++;
 	}
 
-	return ret;
+	if( i )
+	{
+		for( j = i; j < 3; j++ )
+		{
+			a3[j] = '\0';
+		}
+
+		a3_to_a4( a4, a3 );
+
+		for( j = 0; j < i + 1; j++ )
+		{
+			( *out )[enc_len++] = _base64_encode_table[a4[j]];
+		}
+
+		while( ( i++ < 3 ) )
+		{
+			( *out )[enc_len++] = '=';
+		}
+	}
+
+	return ( enc_len == out->size() );
+}
+
+bool BASE64::Encode( const char * input, size_t input_length, char * out, size_t out_length )
+{
+	int i = 0, j = 0;
+	char * out_begin = out;
+	unsigned char a3[3];
+	unsigned char a4[4];
+
+	size_t encoded_length = EncodedLength( input_length );
+
+	if( out_length < encoded_length ) return false;
+
+	while( input_length-- )
+	{
+		a3[i++] = *input++;
+		if( i == 3 )
+		{
+			a3_to_a4( a4, a3 );
+
+			for( i = 0; i < 4; i++ )
+			{
+				*out++ = _base64_encode_table[a4[i]];
+			}
+
+			i = 0;
+		}
+	}
+
+	if( i )
+	{
+		for( j = i; j < 3; j++ )
+		{
+			a3[j] = '\0';
+		}
+
+		a3_to_a4( a4, a3 );
+
+		for( j = 0; j < i + 1; j++ )
+		{
+			*out++ = _base64_encode_table[a4[j]];
+		}
+
+		while( ( i++ < 3 ) )
+		{
+			*out++ = '=';
+		}
+	}
+
+	return ( out == ( out_begin + encoded_length ) );
+}
+
+bool BASE64::Decode( const std::string & in, std::string * out )
+{
+	int i = 0, j = 0;
+	size_t dec_len = 0;
+	unsigned char a3[3];
+	unsigned char a4[4];
+
+	int input_len = in.size();
+	std::string::const_iterator input = in.begin();
+
+	out->resize( DecodedLength( in ) );
+
+	while( input_len-- )
+	{
+		if( *input == '=' )
+		{
+			break;
+		}
+
+		a4[i++] = *( input++ );
+		if( i == 4 )
+		{
+			for( i = 0; i < 4; i++ )
+			{
+				a4[i] = b64_lookup( a4[i] );
+			}
+
+			a4_to_a3( a3, a4 );
+
+			for( i = 0; i < 3; i++ )
+			{
+				( *out )[dec_len++] = a3[i];
+			}
+
+			i = 0;
+		}
+	}
+
+	if( i )
+	{
+		for( j = i; j < 4; j++ )
+		{
+			a4[j] = '\0';
+		}
+
+		for( j = 0; j < 4; j++ )
+		{
+			a4[j] = b64_lookup( a4[j] );
+		}
+
+		a4_to_a3( a3, a4 );
+
+		for( j = 0; j < i - 1; j++ )
+		{
+			( *out )[dec_len++] = a3[j];
+		}
+	}
+
+	return ( dec_len == out->size() );
+}
+
+bool BASE64::Decode( const std::string & in, char * out, size_t out_length )
+{
+	int i = 0, j = 0;
+	char * out_begin = out;
+	unsigned char a3[3];
+	unsigned char a4[4];
+
+	const char * input = in.data();
+	size_t input_length = in.size();
+
+	size_t decoded_length = DecodedLength( in );
+
+	if( out_length < decoded_length ) return false;
+
+	while( input_length-- )
+	{
+		if( *input == '=' )
+		{
+			break;
+		}
+
+		a4[i++] = *( input++ );
+		if( i == 4 )
+		{
+			for( i = 0; i < 4; i++ )
+			{
+				a4[i] = b64_lookup( a4[i] );
+			}
+
+			a4_to_a3( a3, a4 );
+
+			for( i = 0; i < 3; i++ )
+			{
+				*out++ = a3[i];
+			}
+
+			i = 0;
+		}
+	}
+
+	if( i )
+	{
+		for( j = i; j < 4; j++ )
+		{
+			a4[j] = '\0';
+		}
+
+		for( j = 0; j < 4; j++ )
+		{
+			a4[j] = b64_lookup( a4[j] );
+		}
+
+		a4_to_a3( a3, a4 );
+
+		for( j = 0; j < i - 1; j++ )
+		{
+			*out++ = a3[j];
+		}
+	}
+
+	return ( out == ( out_begin + decoded_length ) );
+}
+
+bool BASE64::Decode( const char * input, size_t input_length, char * out, size_t out_length )
+{
+	int i = 0, j = 0;
+	char * out_begin = out;
+	unsigned char a3[3];
+	unsigned char a4[4];
+
+	size_t decoded_length = DecodedLength( input, input_length );
+
+	if( out_length < decoded_length ) return false;
+
+	while( input_length-- )
+	{
+		if( *input == '=' )
+		{
+			break;
+		}
+
+		a4[i++] = *( input++ );
+		if( i == 4 )
+		{
+			for( i = 0; i < 4; i++ )
+			{
+				a4[i] = b64_lookup( a4[i] );
+			}
+
+			a4_to_a3( a3, a4 );
+
+			for( i = 0; i < 3; i++ )
+			{
+				*out++ = a3[i];
+			}
+
+			i = 0;
+		}
+	}
+
+	if( i )
+	{
+		for( j = i; j < 4; j++ )
+		{
+			a4[j] = '\0';
+		}
+
+		for( j = 0; j < 4; j++ )
+		{
+			a4[j] = b64_lookup( a4[j] );
+		}
+
+		a4_to_a3( a3, a4 );
+
+		for( j = 0; j < i - 1; j++ )
+		{
+			*out++ = a3[j];
+		}
+	}
+
+	return ( out == ( out_begin + decoded_length ) );
+}
+
+int BASE64::DecodedLength( const char * in, size_t in_length )
+{
+	int numEq = 0;
+
+	const char * in_end = in + in_length;
+	while( *--in_end == '=' ) ++numEq;
+
+	return ( ( 6 * in_length ) / 8 ) - numEq;
+}
+
+int BASE64::DecodedLength( const std::string & in )
+{
+	int numEq = 0;
+	int n = in.size();
+
+	for( std::string::const_reverse_iterator it = in.rbegin(); *it == '='; ++it )
+	{
+		++numEq;
+	}
+
+	return ( ( 6 * n ) / 8 ) - numEq;
+}
+
+int BASE64::EncodedLength( size_t length )
+{
+	return ( length + 2 - ( ( length + 2 ) % 3 ) ) / 3 * 4;
+}
+
+int BASE64::EncodedLength( const std::string & in )
+{
+	return EncodedLength( in.length() );
+}
+
+void BASE64::StripPadding( std::string * in )
+{
+	while( !in->empty() && *( in->rbegin() ) == '=' ) in->resize( in->size() - 1 );
 }

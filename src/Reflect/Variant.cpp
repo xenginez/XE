@@ -22,6 +22,11 @@ public:
 public:
 	XE::SharedPtr<void> * Register( XE::SharedPtr<void> val )
 	{
+		if( val.get() == nullptr )
+		{
+			return nullptr;
+		}
+
 		std::lock_guard<std::mutex> lock( Instance()->_Lock );
 
 		Data & d = _Ptr[val.get()];
@@ -34,6 +39,11 @@ public:
 
 	void Lock( XE::SharedPtr<void> * val )
 	{
+		if( val == nullptr )
+		{
+			return;
+		}
+
 		std::lock_guard<std::mutex> lock( Instance()->_Lock );
 
 		auto it = _Ptr.find( val->get() );
@@ -45,6 +55,11 @@ public:
 
 	void Unlock( XE::SharedPtr<void> * val )
 	{
+		if( val == nullptr )
+		{
+			return;
+		}
+
 		std::lock_guard<std::mutex> lock( Instance()->_Lock );
 
 		auto it = _Ptr.find( val->get() );
@@ -159,7 +174,7 @@ XE::Variant::Variant( IMetaTypePtr meta, UnionData data, XE::Variant::Flag flag 
 Variant::Variant( IMetaTypePtr meta, XE::SharedPtr<void> data, XE::Variant::Flag flag )
 	: _Type( meta ), _Flag( flag )
 {
-	_Data.sp = RegisterSharedPtr( *_Data.sp );
+	_Data.sp = RegisterSharedPtr( data );
 
 	Lock();
 }
@@ -244,7 +259,7 @@ bool XE::Variant::operator!=( const Variant & val ) const
 
 bool XE::Variant::IsNull() const
 {
-	return _Flag == Flag::NIL;
+	return ( _Flag == Flag::NIL || _Flag == Flag::POINTER || _Flag == Flag::SHAREDPTR || _Flag == Flag::PRIVATEPTR ) && _Data.p == nullptr;
 }
 
 bool XE::Variant::IsEnum() const
