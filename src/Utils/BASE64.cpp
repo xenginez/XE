@@ -96,7 +96,7 @@ XE::uint64 XE::BASE64::Encode( const XE::uint8 * src, XE::uint64 size, XE::uint8
 	return ret;
 }
 
-XE::uint64 BASE64::Decode( const std::string& str, char * out )
+XE::uint64 BASE64::Decode( const std::string& str, XE::uint8 * out )
 {
 	XE::uint64 size = str.size();
 	const XE::uint8 * src = (const XE::uint8 *)str.c_str();
@@ -154,7 +154,7 @@ XE::uint64 BASE64::Decode( const std::string& str, char * out )
 	return ret;
 }
 
-XE::uint64 XE::BASE64::Decode( const XE::uint8* src, XE::uint64 size, char * out )
+XE::uint64 XE::BASE64::Decode( const XE::uint8* src, XE::uint64 size, XE::uint8 * out )
 {
 	XE::int32 bin = 0, i = 0, pos = 0;
 

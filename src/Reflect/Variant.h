@@ -167,6 +167,8 @@ public:
 
 	Variant( XE::float64 val );
 
+	Variant( const char * val );
+
 	template< typename T > Variant( T * val )
 	{
 		using type = typename TypeTraits<T>::raw_t;
@@ -387,17 +389,13 @@ template<> struct VariantCreate<Variant>
 	}
 };
 
-// template< typename T > struct VariantCreate<XE::SharedPtr<T>>
-// {
-// 	static void Create( Variant * var, const XE::SharedPtr<T> & val )
-// 	{
-// 		using type = typename TypeTraits<T>::raw_t;
-// 
-// 		var->_Type = TypeID<type>::Get( val.get() );
-// 		var->_Data.sp = Variant::RegisterSharedPtr( val );
-// 		var->_Flag = Variant::Flag::SHAREDPTR;
-// 	}
-// };
+template< typename ... Args > struct VariantCreate< std::basic_string<Args...> >
+{
+	static void Create( Variant * var, const std::basic_string<Args...> & val )
+	{
+		VariantCreate<XE::String>::Create( var, val );
+	}
+};
 
 template< typename ... Args > struct VariantCreate< std::list< Args... > >
 {
@@ -800,6 +798,22 @@ template<> struct VariantCast<XE::VariantArray>
 	static XE::VariantArray Cast( const Variant * val )
 	{
 		return val->ToArray();
+	}
+};
+
+template< typename ... Args > struct VariantCast< std::basic_string<Args...> >
+{
+	static std::basic_string<Args...> Cast( const Variant * val )
+	{
+		return VariantCast<XE::String &>::Cast( val ).ToStdString();
+	}
+};
+
+template< typename ... Args > struct VariantCast<const std::basic_string<Args...> &>
+{
+	static const std::basic_string<Args...> & Cast( const Variant * val )
+	{
+		return VariantCast<const XE::String &>::Cast( val ).ToStdString();
 	}
 };
 

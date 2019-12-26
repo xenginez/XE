@@ -96,12 +96,12 @@ void XE::Texture::SetNumMips( XE::uint8 val )
 	_NumMips = val;
 }
 
-const Array<XE::uint8> & Texture::GetData() const
+const Buffer & Texture::GetData() const
 {
 	return _Data;
 }
 
-void Texture::SetData( const Array<XE::uint8> & val )
+void Texture::SetData( const Buffer & val )
 {
 	_Data = val;
 }

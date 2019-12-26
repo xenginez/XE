@@ -51,9 +51,9 @@ public:
 
 	void SetNumMips( XE::uint8 val );
 
-	const Array<XE::uint8> & GetData() const;
+	const Buffer & GetData() const;
 
-	void SetData( const Array<XE::uint8> & val );
+	void SetData( const Buffer & val );
 
 public:
 	TextureHandle GetHandle();
@@ -72,7 +72,7 @@ private:
 	XE::uint16 _NumLayers;
 	XE::uint8 _NumMips;
 	TextureHandle _Handle;
-	Array<XE::uint8> _Data;
+	Buffer _Data;
 };
 
 END_XE_NAMESPACE

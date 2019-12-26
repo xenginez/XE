@@ -143,6 +143,13 @@ XE::Variant::Variant( XE::float64 val )
 
 }
 
+XE::Variant::Variant( const char * val )
+{
+	VariantCreate<XE::String>::Create( this, val );
+
+	Lock();
+}
+
 XE::Variant::Variant( IMetaTypePtr meta, UnionData data, XE::Variant::Flag flag )
 	: _Data( data ), _Type( meta ), _Flag( flag )
 {

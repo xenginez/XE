@@ -20,9 +20,9 @@ public:
 
 	static XE::uint64 Encode( const XE::uint8 * src, XE::uint64 size, XE::uint8 * out );
 
-	static XE::uint64 Decode( const std::string& str, char * out );
+	static XE::uint64 Decode( const std::string& str, XE::uint8 * out );
 
-	static XE::uint64 Decode( const XE::uint8* src, XE::uint64 size, char * out );
+	static XE::uint64 Decode( const XE::uint8* src, XE::uint64 size, XE::uint8 * out );
 
 private:
 	static const char _base64_encode_table[65];

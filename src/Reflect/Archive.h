@@ -39,7 +39,7 @@ protected:
 	};
 
 protected:
-	Archive() = default;
+	Archive( ArchiveType val );
 
 	virtual ~Archive() = default;
 
@@ -177,16 +177,22 @@ public:
 		}
 		else
 		{
-			nv.Value = &val.Value;
+			nv.Value = val.Value;
 			Serialize( nv );
+			val.Value = nv.Value.Value<T>();
 		}
 
 		return *this;
 	}
 
+public:
+	ArchiveType GetType() const;
+
 protected:
 	virtual void Serialize( NameValue & val ) = 0;
 
+private:
+	ArchiveType _Type;
 };
 
 class XE_API JsonLoadArchive : public Archive
@@ -356,7 +362,7 @@ public:
 										if( !prop->IsConst() && !prop->IsStatic() )
 										{
 											Variant v = prop->Get( val );
-											arc & v;
+											arc & Archive::NVP( prop->GetName(), v );
 											prop->Set( val, v );
 										}
 									} );

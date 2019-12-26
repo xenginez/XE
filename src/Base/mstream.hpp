@@ -51,8 +51,8 @@ private:
 public:
 	constexpr reference operator*() const noexcept
 	{
-		XE_ASSERT( _Mydata && "cannot dereference value-initialized basic_memory_view<XE::uint8> iterator" );
-		XE_ASSERT( _Myoff < _Mysize && "cannot dereference end basic_memory_view<XE::uint8> iterator" );
+		XE_ASSERT( _Mydata && "cannot dereference value-initialized basic_memory_view<std::byte> iterator" );
+		XE_ASSERT( _Myoff < _Mysize && "cannot dereference end basic_memory_view<std::byte> iterator" );
 	#ifdef XE_DEBUG
 		return _Mydata[_Myoff];
 	#else
@@ -62,8 +62,8 @@ public:
 
 	constexpr pointer operator->() const noexcept
 	{
-		XE_ASSERT( _Mydata && "cannot dereference value-initialized basic_memory_view<XE::uint8> iterator" );
-		XE_ASSERT( _Myoff < _Mysize && "cannot dereference end basic_memory_view<XE::uint8> iterator" );
+		XE_ASSERT( _Mydata && "cannot dereference value-initialized basic_memory_view<std::byte> iterator" );
+		XE_ASSERT( _Myoff < _Mysize && "cannot dereference end basic_memory_view<std::byte> iterator" );
 	#ifdef XE_DEBUG
 		return _Mydata + _Myoff;
 	#else 
@@ -73,8 +73,8 @@ public:
 
 	constexpr _Memory_view_iterator & operator++() noexcept
 	{
-		XE_ASSERT( _Mydata && "cannot increment value-initialized basic_memory_view<XE::uint8> iterator" );
-		XE_ASSERT( _Myoff < _Mysize && "cannot increment basic_memory_view<XE::uint8> iterator past end" );
+		XE_ASSERT( _Mydata && "cannot increment value-initialized basic_memory_view<std::byte> iterator" );
+		XE_ASSERT( _Myoff < _Mysize && "cannot increment basic_memory_view<std::byte> iterator past end" );
 	#ifdef XE_DEBUG
 		++_Myoff;
 	#else 
@@ -92,8 +92,8 @@ public:
 
 	constexpr _Memory_view_iterator & operator--() noexcept
 	{
-		XE_ASSERT( _Mydata && "cannot decrement value-initialized basic_memory_view<XE::uint8> iterator" );
-		XE_ASSERT( _Myoff != 0 && "cannot decrement basic_memory_view<XE::uint8> iterator before begin" );
+		XE_ASSERT( _Mydata && "cannot decrement value-initialized basic_memory_view<std::byte> iterator" );
+		XE_ASSERT( _Myoff != 0 && "cannot decrement basic_memory_view<std::byte> iterator before begin" );
 	#ifdef XE_DEBUG
 		--_Myoff;
 	#else 
@@ -134,18 +134,18 @@ public:
 	#ifdef XE_DEBUG
 		if( _Off != 0 )
 		{
-			XE_ASSERT( _Mydata && "cannot seek value-initialized basic_memory_view<XE::uint8> iterator" );
+			XE_ASSERT( _Mydata && "cannot seek value-initialized basic_memory_view<std::byte> iterator" );
 		}
 
 		if( _Off > 0 )
 		{
-			XE_ASSERT( _Myoff >= static_cast< size_t >( _Off ) && "cannot seek basic_memory_view<XE::uint8> iterator before begin" );
+			XE_ASSERT( _Myoff >= static_cast< size_t >( _Off ) && "cannot seek basic_memory_view<std::byte> iterator before begin" );
 		}
 
 		if( _Off < 0 )
 		{
 		#pragma warning(suppress : 4146)
-			XE_ASSERT( _Mysize - _Myoff >= -static_cast< size_t >( _Off ) && "cannot seek basic_memory_view<XE::uint8> iterator after end" );
+			XE_ASSERT( _Mysize - _Myoff >= -static_cast< size_t >( _Off ) && "cannot seek basic_memory_view<std::byte> iterator after end" );
 		}
 
 		_Myoff -= _Off;
@@ -167,7 +167,7 @@ public:
 	constexpr difference_type operator-( const _Memory_view_iterator & _Right ) const
 		noexcept
 	{
-		XE_ASSERT( _Mydata == _Right._Mydata && _Mysize == _Right._Mysize && "cannot subtract incompatible basic_memory_view<XE::uint8> iterators" );
+		XE_ASSERT( _Mydata == _Right._Mydata && _Mysize == _Right._Mysize && "cannot subtract incompatible basic_memory_view<std::byte> iterators" );
 	#ifdef XE_DEBUG
 		return static_cast< difference_type >( _Myoff - _Right._Myoff );
 	#else 
@@ -183,7 +183,7 @@ public:
 	constexpr bool operator==( const _Memory_view_iterator & _Right ) const
 		noexcept
 	{
-		XE_ASSERT( _Mydata == _Right._Mydata && _Mysize == _Right._Mysize && "cannot compare incompatible basic_memory_view<XE::uint8> iterators for equality" );
+		XE_ASSERT( _Mydata == _Right._Mydata && _Mysize == _Right._Mysize && "cannot compare incompatible basic_memory_view<std::byte> iterators for equality" );
 	#ifdef XE_DEBUG
 		return _Myoff == _Right._Myoff;
 	#else 
@@ -199,7 +199,7 @@ public:
 
 	constexpr bool operator<( const _Memory_view_iterator & _Right ) const noexcept
 	{
-		XE_ASSERT( _Mydata == _Right._Mydata && _Mysize == _Right._Mysize && "cannot compare incompatible basic_memory_view<XE::uint8> iterators" );
+		XE_ASSERT( _Mydata == _Right._Mydata && _Mysize == _Right._Mysize && "cannot compare incompatible basic_memory_view<std::byte> iterators" );
 	#ifdef XE_DEBUG
 		return _Myoff < _Right._Myoff;
 	#else 
@@ -229,18 +229,18 @@ private:
 	#ifdef XE_DEBUG
 		if( _Off != 0 )
 		{
-			XE_ASSERT( _Mydata && "cannot seek value-initialized basic_memory_view<XE::uint8> iterator" );
+			XE_ASSERT( _Mydata && "cannot seek value-initialized basic_memory_view<std::byte> iterator" );
 		}
 
 		if( _Off < 0 )
 		{
 		#pragma warning(suppress : 4146)
-			XE_ASSERT( _Myoff >= -static_cast< size_t >( _Off ) && "cannot seek basic_memory_view<XE::uint8> iterator before begin" );
+			XE_ASSERT( _Myoff >= -static_cast< size_t >( _Off ) && "cannot seek basic_memory_view<std::byte> iterator before begin" );
 		}
 
 		if( _Off > 0 )
 		{
-			XE_ASSERT( _Mysize - _Myoff >= static_cast< size_t >( _Off ) && "cannot seek basic_memory_view<XE::uint8> iterator after end" );
+			XE_ASSERT( _Mysize - _Myoff >= static_cast< size_t >( _Off ) && "cannot seek basic_memory_view<std::byte> iterator after end" );
 		}
 	#else 
 		(void )_Off;
@@ -375,7 +375,7 @@ public:
 public:
 	constexpr const_reference operator[]( const size_type _Off ) const noexcept
 	{
-		XE_ASSERT( _Off < _Mysize && "basic_memory_view<XE::uint8> subscript out of range" );
+		XE_ASSERT( _Off < _Mysize && "basic_memory_view<std::byte> subscript out of range" );
 
 		return _Mydata[_Off];
 	}
@@ -388,14 +388,14 @@ public:
 
 	constexpr const_reference front() const noexcept
 	{
-		XE_ASSERT( _Mysize != 0 && "cannot call front on empty basic_memory_view<XE::uint8>" );
+		XE_ASSERT( _Mysize != 0 && "cannot call front on empty basic_memory_view<std::byte>" );
 
 		return _Mydata[0];
 	}
 
 	constexpr const_reference back() const noexcept
 	{
-		XE_ASSERT( _Mysize != 0 && "cannot call back on empty basic_memory_view<XE::uint8>" );
+		XE_ASSERT( _Mysize != 0 && "cannot call back on empty basic_memory_view<std::byte>" );
 
 		return _Mydata[_Mysize - 1];
 	}
@@ -463,7 +463,7 @@ private:
 
 	static void _Xran()
 	{
-		XE_ASSERT( false && "invalid basic_memory_view<XE::uint8> position" );
+		XE_ASSERT( false && "invalid basic_memory_view<std::byte> position" );
 	}
 
 	const_pointer _Mydata;
