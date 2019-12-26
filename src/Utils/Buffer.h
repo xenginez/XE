@@ -64,6 +64,29 @@ public:
 public:
 	~Buffer();
 
+public:
+	void push_back( std::byte val );
+
+	void push_back( XE::int8 val );
+
+	void push_back( XE::int16 val );
+
+	void push_back( XE::int32 val );
+
+	void push_back( XE::int64 val );
+
+	void push_back( XE::uint8 val );
+
+	void push_back( XE::uint16 val );
+
+	void push_back( XE::uint32 val );
+
+	void push_back( XE::uint64 val );
+
+	void push_back( XE::float32 val );
+
+	void push_back( XE::float64 val );
+
 };
 DECL_META_CLASS( XE_API, Buffer );
 
