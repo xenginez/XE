@@ -43,17 +43,17 @@ public:
 
 	void SetAspect( XE::float32 val );
 
-	const Mat4 & GetTransform() const;
+	const XE::Mat4 & GetTransform() const;
 
-	void SetTransform( const Mat4 & val );
+	void SetTransform( const XE::Mat4 & val );
 
-	const Mat4 & GetProjMatrix() const;
+	const XE::Mat4 & GetProjMatrix() const;
 
-	void SetProjMatrix( const Mat4 & val );
+	void SetProjMatrix( const XE::Mat4 & val );
 
-	const Mat4 & GetViewMatrix() const;
+	const XE::Mat4 & GetViewMatrix() const;
 
-	void SetViewMatrix( const Mat4 & val );
+	void SetViewMatrix( const XE::Mat4 & val );
 
 	const Frustum & GetFrustum() const;
 
@@ -74,14 +74,12 @@ private:
 	XE::float32 _Near;
 	XE::float32 _Depth;
 	XE::float32 _Aspect;
-	Mat4 _Transform;
-	Mat4 _ProjMatrix;
-	Mat4 _ViewMatrix;
-	Frustum _Frustum;
-
-private:
-	Rect _Viewport;
-	ViewHandle _ViewHandle;
+	XE::Mat4 _Transform;
+	XE::Mat4 _ProjMatrix;
+	XE::Mat4 _ViewMatrix;
+	XE::Frustum _Frustum;
+	XE::Rect _Viewport;
+	XE::ViewHandle _ViewHandle;
 };
 
 END_XE_NAMESPACE

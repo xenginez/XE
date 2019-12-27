@@ -13,25 +13,6 @@
 
 BEG_XE_NAMESPACE
 
-class XE_API SubMesh : public XE::Object
-{
-	OBJECT( SubMesh, Object )
-
-public:
-	SubMesh();
-
-	~SubMesh() override;
-
-public:
-	XE::uint32 GetIndexStart() const;
-
-	XE::uint32 GetIndexCount() const;
-
-private:
-	XE::uint32 _IndexStart;
-	XE::uint32 _IndexCount;
-};
-
 class XE_API Mesh : public XE::Object
 {
 	OBJECT( Mesh, Object )
@@ -42,52 +23,37 @@ public:
 	~Mesh() override;
 
 public:
-	XE::uint64 GetSubMeshCount() const;
+	const XE::Array<XE::Vec2> & GetUV1() const;
 
-	const Array<SubMesh> & GetSubMeshs() const;
+	void SetUV1( const XE::Array<XE::Vec2> & val );
 
-	const SubMesh & GetSubMesh( XE::uint64 val ) const;
+	const XE::Array<XE::Vec2> & GetUV2() const;
 
-protected:
-	Array<SubMesh> _SubMesh;
-};
+	void SetUV2( const XE::Array<XE::Vec2> & val );
 
-class XE_API StaticMesh : public Mesh
-{
-	OBJECT( StaticMesh, Mesh )
+	const XE::Array<XE::Vec3> & GetNormals() const;
 
-public:
-	StaticMesh();
+	void SetNormals( const XE::Array<XE::Vec3> & val );
 
-	~StaticMesh() override;
+	const XE::Array<XE::Vec3> & GetTangents() const;
 
-};
+	void SetTangents( const XE::Array<XE::Vec3> & val );
 
-class XE_API DynamicMesh : public Mesh
-{
-	OBJECT( DynamicMesh, Mesh )
+	const XE::Array<XE::Vec3> & GetVertices() const;
 
-public:
-	DynamicMesh();
+	void SetVertices( const XE::Array<XE::Vec3> & val );
 
-	~DynamicMesh() override;
+	const XE::Array<XE::uint32> & GetTriangles() const;
 
-};
-
-class XE_API SkinnedMesh : public StaticMesh
-{
-	OBJECT( SkinnedMesh, StaticMesh )
-
-public:
-	SkinnedMesh();
-
-	~SkinnedMesh() override;
-
-public:
-	const SkeletonPtr & GetSkeleton() const;
+	void SetTriangles( const XE::Array<XE::uint32> & val );
 
 private:
-	SkeletonPtr _Skeleton;
+	XE::Array<XE::Vec2> _UV1;
+	XE::Array<XE::Vec2> _UV2;
+	XE::Array<XE::Vec3> _Normals;
+	XE::Array<XE::Vec3> _Tangents;
+	XE::Array<XE::Vec3> _Vertices;
+	XE::Array<XE::uint32> _Triangles;
 };
 
 END_XE_NAMESPACE

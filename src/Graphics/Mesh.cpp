@@ -2,30 +2,13 @@
 
 USING_XE
 
-BEG_META( SubMesh )
-END_META()
-
-SubMesh::SubMesh()
-{
-
-}
-
-SubMesh::~SubMesh()
-{
-
-}
-
-XE::uint32 XE::SubMesh::GetIndexStart() const
-{
-	return _IndexStart;
-}
-
-XE::uint32 XE::SubMesh::GetIndexCount() const
-{
-	return _IndexCount;
-}
-
-BEG_META(Mesh)
+BEG_META( Mesh )
+type->Property( "UV1", &Mesh::_UV1, XE::IMetaProperty::NoDesign );
+type->Property( "UV2", &Mesh::_UV2, XE::IMetaProperty::NoDesign );
+type->Property( "Normals", &Mesh::_Normals, XE::IMetaProperty::NoDesign );
+type->Property( "Tangents", &Mesh::_Tangents, XE::IMetaProperty::NoDesign );
+type->Property( "Vertices", &Mesh::_Vertices, XE::IMetaProperty::NoDesign );
+type->Property( "Triangles", &Mesh::_Triangles, XE::IMetaProperty::NoDesign );
 END_META()
 
 XE::Mesh::Mesh()
@@ -38,61 +21,62 @@ XE::Mesh::~Mesh()
 
 }
 
-XE::uint64 XE::Mesh::GetSubMeshCount() const
+const XE::Array<XE::Vec2> & Mesh::GetUV1() const
 {
-	return _SubMesh.size();
+	return _UV1;
 }
 
-const Array<SubMesh> & XE::Mesh::GetSubMeshs() const
+void Mesh::SetUV1( const XE::Array<XE::Vec2> & val )
 {
-	return _SubMesh;
+	_UV1 = val;
 }
 
-const XE::SubMesh & XE::Mesh::GetSubMesh( XE::uint64 val ) const
+const XE::Array<XE::Vec2> & Mesh::GetUV2() const
 {
-	return _SubMesh[val];
+	return _UV2;
 }
 
-BEG_META( StaticMesh )
-END_META()
-
-XE::StaticMesh::StaticMesh()
+void Mesh::SetUV2( const XE::Array<XE::Vec2> & val )
 {
-
+	_UV2 = val;
 }
 
-XE::StaticMesh::~StaticMesh()
+const XE::Array<XE::Vec3> & Mesh::GetNormals() const
 {
-
+	return _Normals;
 }
 
-BEG_META( DynamicMesh )
-END_META()
-
-XE::DynamicMesh::DynamicMesh()
+void Mesh::SetNormals( const XE::Array<XE::Vec3> & val )
 {
-
+	_Normals = val;
 }
 
-XE::DynamicMesh::~DynamicMesh()
+const XE::Array<XE::Vec3> & Mesh::GetTangents() const
 {
-
+	return _Tangents;
 }
 
-BEG_META( SkinnedMesh )
-END_META()
-
-XE::SkinnedMesh::SkinnedMesh()
+void Mesh::SetTangents( const XE::Array<XE::Vec3> & val )
 {
-
+	_Tangents = val;
 }
 
-XE::SkinnedMesh::~SkinnedMesh()
+const XE::Array<XE::Vec3> & Mesh::GetVertices() const
 {
-
+	return _Vertices;
 }
 
-const XE::SkeletonPtr & XE::SkinnedMesh::GetSkeleton() const
+void Mesh::SetVertices( const XE::Array<XE::Vec3> & val )
 {
-	return _Skeleton;
+	_Vertices = val;
+}
+
+const XE::Array<XE::uint32> & Mesh::GetTriangles() const
+{
+	return _Triangles;
+}
+
+void Mesh::SetTriangles( const XE::Array<XE::uint32> & val )
+{
+	_Triangles = val;
 }

@@ -73,7 +73,7 @@ const XE::Mat4 & XE::Camera::GetTransform() const
 	return _Transform;
 }
 
-void XE::Camera::SetTransform( const Mat4 & val )
+void XE::Camera::SetTransform( const XE::Mat4 & val )
 {
 	_Transform = val;
 }
@@ -83,7 +83,7 @@ const XE::Mat4 & XE::Camera::GetProjMatrix() const
 	return _ProjMatrix;
 }
 
-void XE::Camera::SetProjMatrix( const Mat4 & val )
+void XE::Camera::SetProjMatrix( const XE::Mat4 & val )
 {
 	_ProjMatrix = val;
 }
@@ -93,7 +93,7 @@ const XE::Mat4 & XE::Camera::GetViewMatrix() const
 	return _ViewMatrix;
 }
 
-void XE::Camera::SetViewMatrix( const Mat4 & val )
+void XE::Camera::SetViewMatrix( const XE::Mat4 & val )
 {
 	_ViewMatrix = val;
 }
@@ -103,7 +103,7 @@ const XE::Frustum & XE::Camera::GetFrustum() const
 	return _Frustum;
 }
 
-void XE::Camera::SetFrustum( const Frustum & val )
+void XE::Camera::SetFrustum( const XE::Frustum & val )
 {
 	_Frustum = val;
 }
@@ -113,7 +113,7 @@ const XE::Rect & XE::Camera::GetViewport() const
 	return _Viewport;
 }
 
-void XE::Camera::SetViewport( const Rect & val )
+void XE::Camera::SetViewport( const XE::Rect & val )
 {
 	_Viewport = val;
 }
@@ -123,7 +123,7 @@ const XE::ViewHandle & XE::Camera::GetViewHandle() const
 	return _ViewHandle;
 }
 
-void XE::Camera::SetViewHandle( const ViewHandle & val )
+void XE::Camera::SetViewHandle( const XE::ViewHandle & val )
 {
 	_ViewHandle = val;
 }
