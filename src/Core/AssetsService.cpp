@@ -174,17 +174,21 @@ XE::AssetStatus XE::AssetsService::GetAssetStatus( const String & val ) const
 
 void XE::AssetsService::LoadAsset( const XE::MD5 & val )
 {
-	ObjectPtr asset = DeserializeObject( val );
-
-	asset->AssetLoad();
-
+	auto var = DeserializeObject( val );
+	if( !var.IsNull() )
 	{
-		AssetMap::accessor it;
-		if( _p->_Assets.find( it, val ) )
+		ObjectPtr asset = var.Value<ObjectPtr>();
+
+		asset->AssetLoad();
+
 		{
-			std::get < 0 >( it->second ) = AssetStatus::Ready;
-			std::get < 1 >( it->second ) = asset;
-			std::get < 2 >( it->second ) = GetFramework()->GetTimerService()->GetTime();
+			AssetMap::accessor it;
+			if( _p->_Assets.find( it, val ) )
+			{
+				std::get < 0 >( it->second ) = AssetStatus::Ready;
+				std::get < 1 >( it->second ) = asset;
+				std::get < 2 >( it->second ) = GetFramework()->GetTimerService()->GetTime();
+			}
 		}
 	}
 }
@@ -211,7 +215,7 @@ XE::MD5 AssetsService::PathToMD5( const XE::String & val ) const
 	}
 	else
 	{
-		auto str = XE::StringUtils::Format( "SELECT md5 FROM index WHERE path='%1';", val );
+		auto str = XE::StringUtils::Format( "SELECT md5 FROM paths WHERE path='%1';", val );
 		sqlite3_stmt * stmt = NULL;
 		if( sqlite3_prepare_v2( _p->_DB, str.c_str(), -1, &stmt, NULL ) == SQLITE_OK )
 		{
@@ -229,8 +233,10 @@ XE::MD5 AssetsService::PathToMD5( const XE::String & val ) const
 	return md5;
 }
 
-ObjectPtr AssetsService::DeserializeObject( const XE::MD5 & val ) const
+XE::Variant AssetsService::DeserializeObject( const XE::MD5 & val ) const
 {
+	ObjectPtr ret;
+
 	auto str = XE::StringUtils::Format( "SELECT data, size FROM data WHERE md5='%1';", val.To32String() );
 	sqlite3_stmt * stmt = NULL;
 
@@ -244,15 +250,11 @@ ObjectPtr AssetsService::DeserializeObject( const XE::MD5 & val ) const
 			XE::memory_view view( data, size );
 			XE::BinaryLoadArchive archive( view );
 
-			ObjectPtr ret;
-
 			archive & ret;
-
-			return ret;
 		}
 
 		sqlite3_finalize( stmt );
 	}
 
-	return nullptr;
+	return ret;
 }

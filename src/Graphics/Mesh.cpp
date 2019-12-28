@@ -1,5 +1,7 @@
 #include "Mesh.h"
 
+#include "Skeleton.h"
+
 USING_XE
 
 BEG_META( Mesh )
@@ -9,6 +11,7 @@ type->Property( "Normals", &Mesh::_Normals, XE::IMetaProperty::NoDesign );
 type->Property( "Tangents", &Mesh::_Tangents, XE::IMetaProperty::NoDesign );
 type->Property( "Vertices", &Mesh::_Vertices, XE::IMetaProperty::NoDesign );
 type->Property( "Triangles", &Mesh::_Triangles, XE::IMetaProperty::NoDesign );
+type->Property( "Skeleton", &Mesh::_Skeleton, XE::IMetaProperty::NoDesign );
 END_META()
 
 XE::Mesh::Mesh()
@@ -19,6 +22,16 @@ XE::Mesh::Mesh()
 XE::Mesh::~Mesh()
 {
 
+}
+
+const XE::SkeletonPtr & Mesh::GetSkeleton() const
+{
+	return _Skeleton;
+}
+
+void Mesh::SetSkeleton( const XE::SkeletonPtr & val )
+{
+	_Skeleton = val;
 }
 
 const XE::Array<XE::Vec2> & Mesh::GetUV1() const

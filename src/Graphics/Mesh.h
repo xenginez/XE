@@ -23,6 +23,10 @@ public:
 	~Mesh() override;
 
 public:
+	const XE::SkeletonPtr & GetSkeleton() const;
+
+	void SetSkeleton( const XE::SkeletonPtr & val );
+
 	const XE::Array<XE::Vec2> & GetUV1() const;
 
 	void SetUV1( const XE::Array<XE::Vec2> & val );
@@ -48,6 +52,7 @@ public:
 	void SetTriangles( const XE::Array<XE::uint32> & val );
 
 private:
+	XE::SkeletonPtr _Skeleton;
 	XE::Array<XE::Vec2> _UV1;
 	XE::Array<XE::Vec2> _UV2;
 	XE::Array<XE::Vec3> _Normals;
