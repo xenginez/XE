@@ -67,6 +67,11 @@ const XE::Array<XE::BoneJoint> & XE::Skeleton::GetBoneJoints() const
 	return _BoneJoints;
 }
 
+void XE::Skeleton::SetBoneJoints( const XE::Array<XE::BoneJoint> & val )
+{
+	_BoneJoints = val;
+}
+
 void XE::Skeleton::SetBoneJointTransform( XE::uint32 val, const XE::Mat4 & mat )
 {
 	_BoneJoints[val].Transform = mat;

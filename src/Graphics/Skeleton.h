@@ -53,6 +53,8 @@ public:
 public:
 	const XE::Array<XE::BoneJoint> & GetBoneJoints() const;
 
+	void SetBoneJoints( const XE::Array<XE::BoneJoint> & val );
+
 public:
 	void SetBoneJointTransform( XE::uint32 val, const XE::Mat4 & mat );
 

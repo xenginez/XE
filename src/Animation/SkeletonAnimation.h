@@ -73,12 +73,14 @@ public:
 };
 DECL_META_CLASS( XE_API, SkeletonAnimationTrack );
 
-class XE_API SkeletonAnimation : public std::enable_shared_from_this< SkeletonAnimation >
+class XE_API SkeletonAnimation : public XE::Object
 {
+	OBJECT( SkeletonAnimation, Object )
+
 public:
 	SkeletonAnimation();
 
-	~SkeletonAnimation();
+	~SkeletonAnimation() override;
 
 public:
 	XE::float32 GetMaxTime() const;
@@ -106,7 +108,6 @@ private:
 	XE::float32 _MaxTime;
 	Array< SkeletonAnimationTrack > _Tracks;
 };
-DECL_META_CLASS( XE_API, SkeletonAnimation );
 
 END_XE_NAMESPACE
 
