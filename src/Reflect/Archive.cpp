@@ -137,11 +137,11 @@ void XE::JsonLoadArchive::Serialize( NameValue & val )
 			{
 				if( flag == ( XE::uint32 )Variant::Flag::POINTER )
 				{
-					val.Value = Variant( type, cls->Construct().Detach(), ( XE::Variant::Flag )flag );
+					val.Value = cls->Construct();
 				}
 				else if( flag == ( XE::uint32 )Variant::Flag::SHAREDPTR )
 				{
-					val.Value = Variant( type, cls->ConstructPtr().DetachPtr(), ( XE::Variant::Flag )flag );
+					val.Value = cls->ConstructPtr();
 				}
 			}
 

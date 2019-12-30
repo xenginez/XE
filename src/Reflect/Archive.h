@@ -85,7 +85,7 @@ public:
 
 		Serialize( nv );
 
-		val = SP_CAST<T>( nv.Value.DetachPtr() );
+		val = nv.Value.Value< XE::SharedPtr<T> >();
 
 		return *this;
 	}
@@ -96,22 +96,11 @@ public:
 
 		nv.Name = val.Name;
 
-		if constexpr( std::is_pointer_v<T> )
+		nv.Value = val.Value;
+		Serialize( nv );
+
+		if( !std::is_pointer_v<T> && !std::is_shared_ptr_v<T> )
 		{
-			nv.Value = val.Value;
-			Serialize( nv );
-			val.Value = static_cast< T * >( nv.Value.Detach() );
-		}
-		else if constexpr( std::is_shared_ptr_v<T> )
-		{
-			nv.Value = val.Value;
-			Serialize( nv );
-			val.Value = SP_CAST< typename T::element_type >( nv.Value.DetachPtr() );
-		}
-		else
-		{
-			nv.Value = &val.Value;
-			Serialize( nv );
 			val.Value = nv.Value.Value<T &>();
 		}
 
@@ -165,21 +154,12 @@ public:
 
 		nv.Name = val.Name;
 
-		if constexpr( std::is_pointer_v<T> )
+		nv.Value = val.Value;
+		Serialize( nv );
+
+		if( !std::is_pointer_v<T> && !std::is_shared_ptr_v<T> )
 		{
-			nv.Value = val.Value;
-			Serialize( nv );
-		}
-		else if constexpr( std::is_shared_ptr_v<T> )
-		{
-			nv.Value = val.Value;
-			Serialize( nv );
-		}
-		else
-		{
-			nv.Value = val.Value;
-			Serialize( nv );
-			val.Value = nv.Value.Value<T>();
+			val.Value = nv.Value.Value<T &>();
 		}
 
 		return *this;

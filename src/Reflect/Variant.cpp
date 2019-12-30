@@ -1131,20 +1131,6 @@ void * XE::Variant::Detach()
 	return p;
 }
 
-XE::SharedPtr<void> XE::Variant::DetachPtr()
-{
-	if( _Flag == Flag::SHAREDPTR )
-	{
-		XE::SharedPtr<void> p = *_Data.sp;
-
-		Reset();
-
-		return p;
-	}
-
-	throw VariantException( *this, "detach fail, is not shared pointer !" );
-}
-
 XE::SharedPtr<void> * XE::Variant::RegisterSharedPtr( const XE::SharedPtr<void> & p )
 {
 	return VariantSharedPool::Instance()->Register( p );

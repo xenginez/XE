@@ -154,10 +154,8 @@ bool XE::CoreFramework::RegisterService( const IMetaClassPtr & val )
 {
 	if( GetService( val ) == nullptr )
 	{
-		if( auto p = val->ConstructPtr().DetachPtr() )
+		if( IServicePtr service = val->ConstructPtr().Value< IServicePtr >() )
 		{
-			IServicePtr service = SP_CAST < IService >( p );
-
 			service->SetFramework( this );
 
 			service->Prepare();

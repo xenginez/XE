@@ -298,8 +298,6 @@ public:
 
 	void * Detach();
 
-	XE::SharedPtr<void> DetachPtr();
-
 public:
 	template< typename T > T Value() const
 	{

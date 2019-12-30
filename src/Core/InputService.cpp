@@ -60,16 +60,13 @@ bool XE::InputService::Startup()
 		{
 			if( !derived->IsAbstract() )
 			{
-				if( auto p = derived->ConstructPtr().DetachPtr() )
+				if( IInputControlPtr c = derived->ConstructPtr().Value< IInputControlPtr >() )
 				{
-					if( IInputControlPtr c = SP_CAST<IInputControl>( p ) )
-					{
-						c->_InputService = XE_THIS( InputService );
+					c->_InputService = XE_THIS( InputService );
 
-						c->Startup();
+					c->Startup();
 
-						_p->_Controls.push_back( c );
-					}
+					_p->_Controls.push_back( c );
 				}
 			}
 		} );
