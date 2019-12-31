@@ -11,6 +11,28 @@
 
 #include "Global.h"
 
+BEG_XE_NAMESPACE
+
+using int8 = char;
+using int16 = short;
+using int32 = int;
+using int64 = long long;
+using uint8 = unsigned char;
+using uint16 = unsigned short;
+using uint32 = unsigned int;
+using uint64 = unsigned long long;
+using float32 = float;
+using float64 = double;
+#ifndef XE_DOUBLE
+using real = float32;
+#else
+using real = float64;
+#endif
+using thread_id = std::thread::id;
+
+END_XE_NAMESPACE
+
+
 namespace std
 {
 	template<class _Ty> struct remove_pointer< weak_ptr<_Ty> >
@@ -103,9 +125,125 @@ namespace std
 		return oss.str();
 	}
 
-	namespace chrono
+
+	inline bool from_string( const std::string & _Str, bool & _Val )
 	{
-		inline system_clock::time_point from_string( const std::string & _Val )
+		if( _Str == "true" || _Str == "false" )
+		{
+			_Val = _Str == "true";
+			return true;
+		}
+
+		return false;
+	}
+
+	inline bool from_string( const std::string & _Str, XE::int8 & _Val )
+	{
+		size_t size = 0;
+		
+		_Val = std::stol( _Str, &size );
+
+		return size > 0;
+	}
+
+	inline bool from_string( const std::string & _Str, XE::int16 & _Val )
+	{
+		size_t size = 0;
+
+		_Val = std::stol( _Str, &size );
+
+		return size > 0;
+	}
+
+	inline bool from_string( const std::string & _Str, XE::int32 & _Val )
+	{
+		size_t size = 0;
+
+		_Val = std::stol( _Str, &size );
+
+		return size > 0;
+	}
+
+	inline bool from_string( const std::string & _Str, XE::int64 & _Val )
+	{
+		size_t size = 0;
+
+		_Val = std::stol( _Str, &size );
+
+		return size > 0;
+	}
+
+	inline bool from_string( const std::string & _Str, XE::uint8 & _Val )
+	{
+		size_t size = 0;
+
+		_Val = std::stoul( _Str, &size );
+
+		return size > 0;
+	}
+
+	inline bool from_string( const std::string & _Str, XE::uint16 & _Val )
+	{
+		size_t size = 0;
+
+		_Val = std::stoul( _Str, &size );
+
+		return size > 0;
+	}
+
+	inline bool from_string( const std::string & _Str, XE::uint32 & _Val )
+	{
+		size_t size = 0;
+
+		_Val = std::stoul( _Str, &size );
+
+		return size > 0;
+	}
+
+	inline bool from_string( const std::string & _Str, XE::uint64 & _Val )
+	{
+		size_t size = 0;
+
+		_Val = std::stoul( _Str, &size );
+
+		return size > 0;
+	}
+
+	inline bool from_string( const std::string & _Str, XE::float32 & _Val )
+	{
+		size_t size = 0;
+
+		_Val = std::stof( _Str, &size );
+
+		return size > 0;
+	}
+
+	inline bool from_string( const std::string & _Str, XE::float64 & _Val )
+	{
+		size_t size = 0;
+
+		_Val = std::stod( _Str, &size );
+
+		return size > 0;
+	}
+
+	inline bool from_string( const std::string & _Str, std::string & _Val )
+	{
+		_Val = _Str;
+
+		return true;
+	}
+
+	inline bool from_string( const std::string & _Str, std::filesystem::path & _Val )
+	{
+		_Val = std::filesystem::path( _Str );
+
+		return true;
+	}
+
+	inline bool from_string( const std::string & _Str, std::chrono::system_clock::time_point & _Val )
+	{
+		if( _Str.size() == 18 )
 		{
 			std::tm tm;
 
@@ -113,12 +251,12 @@ namespace std
 			tm.tm_yday = 0;
 			tm.tm_isdst = 0;
 
-			tm.tm_year = std::stoi( _Val.substr( 0, 4 ) ) - 1900;
-			tm.tm_mon = std::stoi( _Val.substr( 5, 2 ) ) - 1;
-			tm.tm_mday = std::stoi( _Val.substr( 8, 2 ) );
-			tm.tm_hour = std::stoi( _Val.substr( 11, 2 ) );
-			tm.tm_min = std::stoi( _Val.substr( 14, 2 ) );
-			tm.tm_sec = std::stoi( _Val.substr( 17, 2 ) );
+			tm.tm_year = std::stoi( _Str.substr( 0, 4 ) ) - 1900;
+			tm.tm_mon = std::stoi( _Str.substr( 5, 2 ) ) - 1;
+			tm.tm_mday = std::stoi( _Str.substr( 8, 2 ) );
+			tm.tm_hour = std::stoi( _Str.substr( 11, 2 ) );
+			tm.tm_min = std::stoi( _Str.substr( 14, 2 ) );
+			tm.tm_sec = std::stoi( _Str.substr( 17, 2 ) );
 
 		#if PLATFORM_OS & OS_WINDOWS
 			const std::time_t t = _mkgmtime( &tm );
@@ -126,30 +264,16 @@ namespace std
 			const std::time_t t = timegm( &tm );
 		#endif
 
-			return system_clock::from_time_t( t );
+			_Val = std::chrono::system_clock::from_time_t( t );
+
+			return true;
 		}
-	};
+
+		return false;
+	}
 };
 
 BEG_XE_NAMESPACE
-
-using int8 = char;
-using int16 = short;
-using int32 = int;
-using int64 = long long;
-using uint8 = unsigned char;
-using uint16 = unsigned short;
-using uint32 = unsigned int;
-using uint64 = unsigned long long;
-using float32 = float;
-using float64 = double;
-#ifndef XE_DOUBLE
-using real = float32;
-#else
-using real = float64;
-#endif
-using thread_id = std::thread::id;
-
 
 template< typename T > struct TypeTraits
 {

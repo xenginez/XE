@@ -48,44 +48,14 @@ public:
 	{
 		NameValue nv;
 
-		if constexpr( std::is_enum_v<T> )
+		nv.Value = val;
+
+		Serialize( nv );
+
+		if( GetType() == ArchiveType::LOAD )
 		{
-			nv.Value = val;
-			Serialize( nv );
 			val = nv.Value.Value<T>();
 		}
-		else
-		{
-			nv.Value = &val;
-			Serialize( nv );
-			val = nv.Value.Value<T &>();
-		}
-
-		return *this;
-	}
-
-	template< typename T > Archive & operator&( T *& val )
-	{
-		NameValue nv;
-
-		nv.Value = val;
-
-		Serialize( nv );
-
-		val = static_cast< T * >( nv.Value.Detach() );
-
-		return *this;
-	}
-
-	template< typename T > Archive & operator&( XE::SharedPtr< T > & val )
-	{
-		NameValue nv;
-
-		nv.Value = val;
-
-		Serialize( nv );
-
-		val = nv.Value.Value< XE::SharedPtr<T> >();
 
 		return *this;
 	}
@@ -97,11 +67,12 @@ public:
 		nv.Name = val.Name;
 
 		nv.Value = val.Value;
+
 		Serialize( nv );
 
-		if( !std::is_pointer_v<T> && !std::is_shared_ptr_v<T> )
+		if( GetType() == ArchiveType::LOAD )
 		{
-			val.Value = nv.Value.Value<T &>();
+			val.Value = nv.Value.Value<T>();
 		}
 
 		return *this;
@@ -109,35 +80,6 @@ public:
 
 public:
 	template< typename T > Archive & operator&( const T & val )
-	{
-		NameValue nv;
-
-		if constexpr( std::is_enum_v<T> )
-		{
-			nv.Value = val;
-			Serialize( nv );
-		}
-		else
-		{
-			nv.Value = &val;
-			Serialize( nv );
-		}
-
-		return *this;
-	}
-
-	template< typename T > Archive & operator&( const T *& val )
-	{
-		NameValue nv;
-
-		nv.Value = val;
-
-		Serialize( nv );
-
-		return *this;
-	}
-
-	template< typename T > Archive & operator&( const XE::SharedPtr< T > & val )
 	{
 		NameValue nv;
 
@@ -155,12 +97,8 @@ public:
 		nv.Name = val.Name;
 
 		nv.Value = val.Value;
-		Serialize( nv );
 
-		if( !std::is_pointer_v<T> && !std::is_shared_ptr_v<T> )
-		{
-			val.Value = nv.Value.Value<T &>();
-		}
+		Serialize( nv );
 
 		return *this;
 	}
@@ -339,11 +277,16 @@ public:
 			{
 				cls->VisitProperty( [&]( IMetaPropertyPtr prop )
 									{
-										if( !prop->IsConst() && !prop->IsStatic() )
+										if( !prop->IsConst() && !prop->IsStatic() && !( prop->GetFlag() & IMetaProperty::NoSerialize ) )
 										{
 											Variant v = prop->Get( val );
+
 											arc & Archive::NVP( prop->GetName(), v );
-											prop->Set( val, v );
+
+											if( arc.GetType() == ArchiveType::LOAD )
+											{
+												prop->Set( val, v );
+											}
 										}
 									} );
 			}
