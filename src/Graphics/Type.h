@@ -19,11 +19,10 @@ DECL_PTR( Camera );
 DECL_PTR( Texture );
 DECL_PTR( Skeleton );
 DECL_PTR( Renderer );
-DECL_PTR( RenderPass );
 DECL_PTR( Renderable );
+DECL_PTR( RenderShader );
 DECL_PTR( RenderWindow );
 DECL_PTR( RenderMaterial );
-DECL_PTR( RenderTechnique );
 
 enum class StateWrite : XE::uint64
 {

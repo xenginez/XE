@@ -87,6 +87,9 @@ public:
 
 	void push_back( XE::float64 val );
 
+public:
+	XE::memory_view GetView() const;
+
 };
 DECL_META_CLASS( XE_API, Buffer );
 

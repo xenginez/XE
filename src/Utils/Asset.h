@@ -9,10 +9,18 @@
 #ifndef ASSET_HPP__96069A9E_65B1_4690_98CC_D3AE42C61B61
 #define ASSET_HPP__96069A9E_65B1_4690_98CC_D3AE42C61B61
 
-#include "IFramework.h"
-#include "IAssetsService.h"
+#include "Type.h"
 
 BEG_XE_NAMESPACE
+
+class XE_API AssetLoad
+{
+public:
+	static XE::ObjectPtr Load( const XE::String & val );
+
+	static void AsynLoad( const XE::String & val );
+
+};
 
 template< typename T > class Asset
 {
@@ -47,7 +55,12 @@ public:
 public:
 	Asset & operator=( const Asset & val )
 	{
-		_Path = val->_Path;
+		if( _Path != val._Path )
+		{
+			_Path = val._Path;
+
+			_Obj = nullptr;
+		}
 
 		return *this;
 	}
@@ -82,10 +95,12 @@ public:
 
 		if( _Path != "" )
 		{
-			return false;
+			AssetLoad::AsynLoad( _Path );
+
+			return AssetLoad::Load( _Path ) != nullptr;
 		}
 
-		return XE::IFramework::GetCurrentFramework()->GetServiceT<XE::IAssetsService>()->GetAssetStatus( _Path ) == AssetStatus::Ready;
+		return false;
 	}
 
 public:
@@ -93,7 +108,7 @@ public:
 	{
 		if( _Obj == nullptr && _Path != "" )
 		{
-			_Obj = DP_CAST<T>( XE::IFramework::GetCurrentFramework()->GetServiceT<XE::IAssetsService>()->GetAsset( _Path ) );
+			_Obj = AssetLoad::Load( _Path )
 		}
 
 		return _Obj.get();
@@ -103,29 +118,13 @@ public:
 	{
 		if( _Obj == nullptr && _Path != "" )
 		{
-			return DP_CAST<T>( XE::IFramework::GetCurrentFramework()->GetServiceT<XE::IAssetsService>()->GetAsset( _Path ) ).get();
+			return AssetLoad::Load( _Path ).get();
 		}
 
-		return _Obj.get();
+		return nullptr;
 	}
 
 public:
-	void Load()
-	{
-		if( _Path != "" )
-		{
-			_Obj = XE::IFramework::GetCurrentFramework()->GetServiceT<XE::IAssetsService>()->Load( _Path );
-		}
-	}
-
-	void AsynLoad()
-	{
-		if( _Path != "" )
-		{
-			XE::IFramework::GetCurrentFramework()->GetServiceT<XE::IAssetsService>()->AsynLoad( _Path );
-		}
-	}
-
 	const XE::String & GetPath() const
 	{
 		return _Path;
@@ -230,6 +229,20 @@ template<> struct XE_API VariantCast< const Asset< Object > & >
 	static const Asset< Object > & Cast( const Variant * val )
 	{
 		return *( VariantCast< const Asset< Object > * >::Cast( val ) );
+	}
+};
+
+
+template< typename T > struct Serializable< Asset< T > >
+{
+public:
+	static void Serialize( Archive & arc, Asset< T > * val )
+	{
+		auto path = val->GetPath();
+
+		arc & path;
+
+		( *val ) = path;
 	}
 };
 

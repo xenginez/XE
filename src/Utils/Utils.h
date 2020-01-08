@@ -13,6 +13,7 @@
 #include "MD5.h"
 #include "CRC32.h"
 #include "Event.h"
+#include "Asset.h"
 #include "Layer.h"
 #include "Order.h"
 #include "BASE64.h"

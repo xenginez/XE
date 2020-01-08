@@ -22,23 +22,6 @@ public:
 
 	~RenderMaterial() override;
 
-public:
-	const XE::String & GetName() const;
-
-	void SetName( const XE::String & val );
-
-	const RenderTechniquePtr & GetRenderTechnique() const;
-
-	void SetRenderTechnique( const RenderTechniquePtr & val );
-
-public:
-	void AssetLoad() override;
-
-	void AssetUnload() override;
-
-private:
-	XE::String _Name;
-	RenderTechniquePtr _Technique;
 };
 
 END_XE_NAMESPACE

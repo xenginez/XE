@@ -9,7 +9,6 @@
 #ifndef INTERFACE_H__F027F37D_259E_4565_8851_20A77361A913
 #define INTERFACE_H__F027F37D_259E_4565_8851_20A77361A913
 
-#include "Asset.hpp"
 #include "IService.h"
 #include "IFramework.h"
 #include "IGUIService.h"

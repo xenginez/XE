@@ -244,3 +244,8 @@ void Buffer::push_back( XE::float64 val )
 	XE::Array<std::byte>::push_back( un.x7 );
 	XE::Array<std::byte>::push_back( un.x8 );
 }
+
+XE::memory_view Buffer::GetView() const
+{
+	return XE::memory_view( this->data(), this->size() );
+}
