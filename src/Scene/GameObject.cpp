@@ -24,11 +24,6 @@ XE::GameObject::~GameObject()
 
 }
 
-const XE::String& XE::GameObject::GetName() const
-{
-	return _Name;
-}
-
 XE::GameObjectHandle XE::GameObject::GetHandle() const
 {
 	return _Handle;
@@ -37,11 +32,6 @@ XE::GameObjectHandle XE::GameObject::GetHandle() const
 const XE::AABB & XE::GameObject::GetBoundingBox() const
 {
 	return _SceneComponent->GetBoundingBox();
-}
-
-XE::SceneComponentPtr XE::GameObject::GetSceneComponent() const
-{
-	return _SceneComponent;
 }
 
 bool XE::GameObject::GetEnabled() const
@@ -72,6 +62,16 @@ XE::GameObjectType XE::GameObject::GetType() const
 void XE::GameObject::SetType( GameObjectType val )
 {
 	_Type = val;
+}
+
+const XE::String & XE::GameObject::GetName() const
+{
+	return _Name;
+}
+
+void XE::GameObject::SetName( const XE::String & val )
+{
+	_Name = val;
 }
 
 XE::ComponentPtr XE::GameObject::AddComponent( IMetaClassPtr val )
@@ -120,9 +120,48 @@ XE::ComponentPtr XE::GameObject::FindComponent( ComponentHandle val ) const
 	return _Components[val.GetValue()];
 }
 
-const std::vector< ComponentPtr >& XE::GameObject::GetAllComponents() const
+const XE::Array< ComponentPtr >& XE::GameObject::GetComponents() const
 {
 	return _Components;
+}
+
+XE::SceneComponentPtr XE::GameObject::GetRootSceneComponent() const
+{
+	return _SceneComponent;
+}
+
+XE::Array<SceneComponentPtr> GameObject::GetSceneComponets() const
+{
+	XE::Array<SceneComponentPtr> ret;
+
+	if( GetRootSceneComponent() )
+	{
+		ret.push_back( GetRootSceneComponent() );
+
+		for( XE::uint64 i = 0;; )
+		{
+			auto children = ret[i]->GetChildren();
+
+			ret.insert( ret.end(), children.begin(), children.end() );
+		}
+	}
+
+	return ret;
+}
+
+XE::Array<BehaviorComponentPtr> GameObject::GetBehaviorComponents() const
+{
+	XE::Array<BehaviorComponentPtr> ret;
+
+	for( const auto & comp : _Components )
+	{
+		if( auto beh_comp = DP_CAST<BehaviorComponent>( comp ) )
+		{
+			ret.push_back( beh_comp );
+		}
+	}
+
+	return ret;
 }
 
 void XE::GameObject::Startup()

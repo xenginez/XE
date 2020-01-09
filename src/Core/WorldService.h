@@ -17,6 +17,9 @@ class XE_API WorldService : public XE::IWorldService
 {
 	OBJECT( WorldService, IWorldService )
 
+private:
+	struct Private;
+
 public:
 	WorldService();
 
@@ -31,6 +34,16 @@ public:
 
 	void Clearup() override;
 
+public:
+	void LoadWorld( const XE::String & val ) override;
+
+	XE::String GetWorldName() const override;
+
+protected:
+	XE::WorldPtr GetCurrentWorld() const override;
+
+private:
+	Private * _p;
 };
 
 END_XE_NAMESPACE

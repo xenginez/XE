@@ -25,8 +25,6 @@ public:
 	~GameObject();
 
 public:
-	const String& GetName() const;
-
 	GameObjectHandle GetHandle() const;
 
 public:
@@ -80,8 +78,6 @@ public:
 
 	void SetRelativeTransform( const Mat4 & val );
 
-	SceneComponentPtr GetSceneComponent() const;
-
 public:
 	bool GetEnabled() const;
 
@@ -95,6 +91,10 @@ public:
 
 	void SetType( GameObjectType val );
 
+	const String & GetName() const;
+
+	void SetName( const String & val );
+
 public:
 	ComponentPtr AddComponent( IMetaClassPtr val );
 
@@ -104,7 +104,14 @@ public:
 
 	ComponentPtr FindComponent( ComponentHandle val ) const;
 
-	const std::vector< ComponentPtr >& GetAllComponents() const;
+	const XE::Array< ComponentPtr >& GetComponents() const;
+
+public:
+	SceneComponentPtr GetRootSceneComponent() const;
+
+	XE::Array<SceneComponentPtr> GetSceneComponets() const;
+
+	XE::Array<BehaviorComponentPtr> GetBehaviorComponents() const;
 
 public:
 	template< typename T > XE::SharedPtr<T> AddComponentT()
@@ -151,7 +158,7 @@ private:
 	GameObjectType _Type;
 	GameObjectHandle _Handle;
 	SceneComponentPtr _SceneComponent;
-	std::vector< ComponentPtr > _Components;
+	XE::Array< ComponentPtr > _Components;
 };
 
 template<> class MakeAABB< GameObjectPtr >

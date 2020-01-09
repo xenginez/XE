@@ -18,12 +18,9 @@ class XE_API World : public XE::Object
 	OBJECT( World, Object )
 
 public:
-	friend class WorldService;
-
-public:
 	World();
 
-	~World();
+	~World() override;
 
 public:
 	const String & GetName() const;
@@ -65,7 +62,7 @@ public:
 
 	Array<GameObjectPtr> Intersects( const Frustum & val ) const;
 
-protected:
+public:
 	void Startup();
 
 	void Update( XE::float32 dt );

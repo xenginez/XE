@@ -227,8 +227,8 @@ XE::Array<XE::GameObjectPtr> XE::World::Intersects( const Frustum & val ) const
 
 void XE::World::Startup()
 {
-	FArray<GameObjectPtr> static_objs;
-	FArray<GameObjectPtr> dynmic_objs;
+	Array<GameObjectPtr> static_objs;
+	Array<GameObjectPtr> dynmic_objs;
 
 	for( auto obj : _AllGameObjects )
 	{
@@ -250,13 +250,13 @@ void XE::World::Startup()
 
 void XE::World::Update( XE::float32 dt )
 {
-	FArray<GameObjectPtr> dynmic_objs;
+	Array<GameObjectPtr> dynmic_objs;
 
 	for( XE::uint64 i = 0; i < _AllGameObjects.size(); ++i )
 	{
 		if( _AllGameObjects[i] )
 		{
-			if( _AllGameObjects[i]->GetDestroy() != false )
+			if( _AllGameObjects[i]->GetDestroy() == false )
 			{
 				if( _AllGameObjects[i]->GetEnabled() )
 				{
