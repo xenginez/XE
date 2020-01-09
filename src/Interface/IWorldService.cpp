@@ -20,6 +20,11 @@ bool IWorldService::AddGameObject( const GameObjectPtr & val )
 	return GetCurrentWorld()->AddGameObject( val );
 }
 
+bool IWorldService::RemoveGameObject( const GameObjectPtr & val )
+{
+	return GetCurrentWorld()->RemoveGameObject( val );
+}
+
 GameObjectPtr IWorldService::FindGameObject( const String & val ) const
 {
 	return GetCurrentWorld()->FindGameObject( val );

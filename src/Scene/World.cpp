@@ -33,12 +33,11 @@ void XE::World::SetName( const String & val )
 
 bool XE::World::AddGameObject( const GameObjectPtr & val )
 {
-	for( const auto & obj : _AllGameObjects )
+	auto it = std::find( _AllGameObjects.begin(), _AllGameObjects.end(), val );
+
+	if( it != _AllGameObjects.end() )
 	{
-		if( obj == val )
-		{
-			return false;
-		}
+		return false;
 	}
 
 	val->_Handle = _HandleTable++;
@@ -48,6 +47,22 @@ bool XE::World::AddGameObject( const GameObjectPtr & val )
 	_AllGameObjects.push_back( val );
 
 	return true;
+}
+
+bool World::RemoveGameObject( const GameObjectPtr & val )
+{
+	auto it = std::find( _AllGameObjects.begin(), _AllGameObjects.end(), val );
+
+	if( it != _AllGameObjects.end() )
+	{
+		_AllGameObjects.erase( it );
+
+		val->Clearup();
+
+		return true;
+	}
+
+	return false;
 }
 
 XE::GameObjectPtr XE::World::FindGameObject( const String & val ) const

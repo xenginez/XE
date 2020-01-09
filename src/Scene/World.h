@@ -30,6 +30,8 @@ public:
 public:
 	bool AddGameObject( const GameObjectPtr & val );
 
+	bool RemoveGameObject( const GameObjectPtr & val );
+
 	GameObjectPtr FindGameObject( const String & val ) const;
 
 	GameObjectPtr FindGameObject( GameObjectHandle val ) const;
