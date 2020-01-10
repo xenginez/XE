@@ -18,6 +18,9 @@ class XE_API SceneComponent : public Component
 	OBJECT( SceneComponent, Component )
 
 public:
+	friend class GameObject;
+
+public:
 	SceneComponent();
 
 	~SceneComponent();

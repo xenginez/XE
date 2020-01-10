@@ -21,11 +21,6 @@ XE::Component::~Component()
 
 }
 
-const XE::String& XE::Component::GetName() const
-{
-	return _Name;
-}
-
 XE::ComponentHandle XE::Component::GetHandle() const
 {
 	return _Handle;
@@ -64,6 +59,16 @@ bool XE::Component::GetDestroy() const
 void XE::Component::SetDestroy( bool val )
 {
 	_Destroy = val;
+}
+
+const XE::String & XE::Component::GetName() const
+{
+	return _Name;
+}
+
+void XE::Component::SetName( const XE::String & val )
+{
+	_Name = val;
 }
 
 void XE::Component::Startup()

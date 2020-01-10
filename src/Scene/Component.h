@@ -25,8 +25,6 @@ public:
 	virtual ~Component();
 
 public:
-	const String& GetName() const;
-
 	ComponentHandle GetHandle() const;
 
 	GameObjectPtr GetGameObject() const;
@@ -43,6 +41,10 @@ public:
 	bool GetDestroy() const;
 
 	void SetDestroy( bool val );
+
+	const String & GetName() const;
+
+	void SetName( const String & val );
 
 protected:
 	virtual void Startup();

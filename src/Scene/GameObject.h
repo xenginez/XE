@@ -106,6 +106,8 @@ public:
 
 	const XE::Array< ComponentPtr >& GetComponents() const;
 
+	bool RemoveComponet( const ComponentPtr & val );
+
 public:
 	SceneComponentPtr GetRootSceneComponent() const;
 
@@ -144,12 +146,8 @@ protected:
 
 	void Clearup();
 
-protected:
-	virtual void OnStartup();
-
-	virtual void OnUpdate( XE::float32 dt );
-
-	virtual void OnClearup();
+private:
+	void RemoveSceneComponent( const XE::SceneComponentPtr & val );
 
 private:
 	String _Name;
@@ -157,8 +155,9 @@ private:
 	bool _Destroy;
 	GameObjectType _Type;
 	GameObjectHandle _Handle;
-	SceneComponentPtr _SceneComponent;
 	XE::Array< ComponentPtr > _Components;
+	SceneComponentPtr _RootSceneComponent;
+	XE::Array< BehaviorComponentPtr > _BehaviorComponents;
 };
 
 template<> class MakeAABB< GameObjectPtr >

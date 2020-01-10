@@ -16,7 +16,9 @@ END_META()
 XE::GameObject::GameObject()
 	:_Enabled( true ), _Destroy( false ), _Type( GameObjectType::STATIC )
 {
-
+	_RootSceneComponent = XE::MakeShared<XE::SceneComponent>();
+	_RootSceneComponent->SetName( "Root" );
+	_Components.push_back( _RootSceneComponent );
 }
 
 XE::GameObject::~GameObject()
@@ -31,7 +33,7 @@ XE::GameObjectHandle XE::GameObject::GetHandle() const
 
 const XE::AABB & XE::GameObject::GetBoundingBox() const
 {
-	return _SceneComponent->GetBoundingBox();
+	return _RootSceneComponent->GetBoundingBox();
 }
 
 bool XE::GameObject::GetEnabled() const
@@ -82,7 +84,13 @@ XE::ComponentPtr XE::GameObject::AddComponent( IMetaClassPtr val )
 		comp->_GameObject = XE_THIS( GameObject );
 		comp->_Handle = _Components.size();
 		_Components.push_back( comp );
+
 		comp->Startup();
+
+		if( auto beh = DP_CAST<XE::BehaviorComponent>( comp ) )
+		{
+			_BehaviorComponents.push_back( beh );
+		}
 	}
 	return comp;
 }
@@ -125,9 +133,22 @@ const XE::Array< ComponentPtr >& XE::GameObject::GetComponents() const
 	return _Components;
 }
 
+bool GameObject::RemoveComponet( const ComponentPtr & val )
+{
+	auto it = std::find( _Components.begin(), _Components.end(), val );
+	if( it != _Components.end() )
+	{
+		val->SetDestroy( true );
+
+		return true;
+	}
+
+	return false;
+}
+
 XE::SceneComponentPtr XE::GameObject::GetRootSceneComponent() const
 {
-	return _SceneComponent;
+	return _RootSceneComponent;
 }
 
 XE::Array<SceneComponentPtr> GameObject::GetSceneComponets() const
@@ -151,200 +172,117 @@ XE::Array<SceneComponentPtr> GameObject::GetSceneComponets() const
 
 XE::Array<BehaviorComponentPtr> GameObject::GetBehaviorComponents() const
 {
-	XE::Array<BehaviorComponentPtr> ret;
-
-	for( const auto & comp : _Components )
-	{
-		if( auto beh_comp = DP_CAST<BehaviorComponent>( comp ) )
-		{
-			ret.push_back( beh_comp );
-		}
-	}
-
-	return ret;
-}
-
-void XE::GameObject::Startup()
-{
-	_SceneComponent = FindComponentT<SceneComponent>();
-
-	OnStartup();
-
-	for ( auto it : _Components )
-	{
-		it->_GameObject = XE_THIS( GameObject );
-
-		it->Startup();
-	}
-}
-
-void XE::GameObject::Update( XE::float32 dt )
-{
-	if ( _Enabled == false )
-	{
-		return;
-	}
-
-	OnUpdate( dt );
-
-	for ( XE::uint64 i = 0; i < _Components.size(); i++ )
-	{
-		if ( _Components[i] )
-		{
-			if ( _Components[i]->GetDestroy() == false )
-			{
-				if ( _Components[i]->GetUpdate() )
-				{
-					_Components[i]->Update( dt );
-				}
-			}
-			else
-			{
-				_Components[i]->Clearup();
-				_Components[i] = nullptr;
-			}
-		}
-	}
-}
-
-void XE::GameObject::Clearup()
-{
-	_SceneComponent = nullptr;
-
-	for ( auto it : _Components )
-	{
-		if ( it )
-		{
-			it->Clearup();
-		}
-	}
-
-	OnClearup();
-}
-
-void XE::GameObject::OnStartup()
-{
-
-}
-
-void XE::GameObject::OnUpdate( XE::float32 dt )
-{
-
-}
-
-void XE::GameObject::OnClearup()
-{
-
+	return _BehaviorComponents;
 }
 
 XE::Vec3 XE::GameObject::GetWorldUp()
 {
-	return _SceneComponent->GetWorldUp();
+	return _RootSceneComponent->GetWorldUp();
 }
 
 XE::Vec3 XE::GameObject::GetWorldRight()
 {
-	return _SceneComponent->GetWorldRight();
+	return _RootSceneComponent->GetWorldRight();
 }
 
 XE::Vec3 XE::GameObject::GetWorldForward()
 {
-	return _SceneComponent->GetWorldForward();
+	return _RootSceneComponent->GetWorldForward();
 }
 
 XE::Vec3 XE::GameObject::GetRelativeUp() const
 {
-	return _SceneComponent->GetRelativeUp();
+	return _RootSceneComponent->GetRelativeUp();
 }
 
 XE::Vec3 XE::GameObject::GetRelativeRight() const
 {
-	return _SceneComponent->GetRelativeRight();
+	return _RootSceneComponent->GetRelativeRight();
 }
 
 XE::Vec3 XE::GameObject::GetRelativeForward() const
 {
-	return _SceneComponent->GetRelativeForward();
+	return _RootSceneComponent->GetRelativeForward();
 }
 
 const XE::Vec3 & XE::GameObject::GetWorldScale()
 {
-	return _SceneComponent->GetWorldScale();
+	return _RootSceneComponent->GetWorldScale();
 }
 
 void XE::GameObject::SetWorldScale( const Vec3 & val )
 {
-	_SceneComponent->SetWorldScale( val );
+	_RootSceneComponent->SetWorldScale( val );
 }
 
 const XE::Vec3 & XE::GameObject::GetWorldPosition()
 {
-	return _SceneComponent->GetWorldPosition();
+	return _RootSceneComponent->GetWorldPosition();
 }
 
 void XE::GameObject::SetWorldPosition( const Vec3 & val )
 {
-	_SceneComponent->SetWorldPosition( val );
+	_RootSceneComponent->SetWorldPosition( val );
 }
 
 const XE::Quat & XE::GameObject::GetWorldRotation()
 {
-	return _SceneComponent->GetWorldRotation();
+	return _RootSceneComponent->GetWorldRotation();
 }
 
 void XE::GameObject::SetWorldRotation( const Quat & val )
 {
-	_SceneComponent->SetWorldRotation( val );
+	_RootSceneComponent->SetWorldRotation( val );
 }
 
 const XE::Vec3 & XE::GameObject::GetRelativeScale() const
 {
-	return _SceneComponent->GetRelativeScale();
+	return _RootSceneComponent->GetRelativeScale();
 }
 
 void XE::GameObject::SetRelativeScale( const Vec3 & val )
 {
-	_SceneComponent->SetRelativeScale( val );
+	_RootSceneComponent->SetRelativeScale( val );
 }
 
 const XE::Vec3 & XE::GameObject::GetRelativePosition() const
 {
-	return _SceneComponent->GetRelativePosition();
+	return _RootSceneComponent->GetRelativePosition();
 }
 
 void XE::GameObject::SetRelativePosition( const Vec3 & val )
 {
-	_SceneComponent->SetRelativePosition( val );
+	_RootSceneComponent->SetRelativePosition( val );
 }
 
 const XE::Quat & XE::GameObject::GetRelativeRotation() const
 {
-	return _SceneComponent->GetRelativeRotation();
+	return _RootSceneComponent->GetRelativeRotation();
 }
 
 void XE::GameObject::SetRelativeRotation( const Quat & val )
 {
-	_SceneComponent->SetRelativeRotation( val );
+	_RootSceneComponent->SetRelativeRotation( val );
 }
 
 const Mat4 & XE::GameObject::GetWorldTransform() const
 {
-	return _SceneComponent->GetWorldTransform();
+	return _RootSceneComponent->GetWorldTransform();
 }
 
 void XE::GameObject::SetWorldTransform( const Mat4 & val )
 {
-	_SceneComponent->SetWorldTransform( val );
+	_RootSceneComponent->SetWorldTransform( val );
 }
 
 const Mat4 & XE::GameObject::GetRelativeTransform() const
 {
-	return _SceneComponent->GetRelativeTransform();
+	return _RootSceneComponent->GetRelativeTransform();
 }
 
 void XE::GameObject::SetRelativeTransform( const Mat4 & val )
 {
-	_SceneComponent->SetRelativeTransform( val );
+	_RootSceneComponent->SetRelativeTransform( val );
 }
 
 void XE::GameObject::ProcessEvent( EventPtr & val )
@@ -358,4 +296,92 @@ void XE::GameObject::ProcessEvent( EventPtr & val )
 			break;
 		}
 	}
+}
+
+void XE::GameObject::Startup()
+{
+	_RootSceneComponent = SP_CAST<XE::SceneComponent>( _Components[0] );
+
+	for( auto it : _Components )
+	{
+		it->_GameObject = XE_THIS( GameObject );
+
+		it->Startup();
+	}
+}
+
+void XE::GameObject::Update( XE::float32 dt )
+{
+	for( XE::uint64 i = 0; i < _Components.size(); i++ )
+	{
+		if( _Components[i] )
+		{
+			if( _Components[i]->GetDestroy() == true )
+			{
+				if( auto beh = DP_CAST<XE::BehaviorComponent>( _Components[i] ) )
+				{
+					_BehaviorComponents.erase( std::find( _BehaviorComponents.begin(), _BehaviorComponents.end(), beh ) );
+
+					_Components[i]->Clearup();
+
+					_Components[i] = nullptr;
+				}
+				else if( auto scene = DP_CAST<XE::SceneComponent>( _Components[i] ) )
+				{
+					RemoveSceneComponent( scene );
+
+					scene->Clearup();
+				}
+			}
+		}
+	}
+
+	if( _Enabled == false )
+	{
+		return;
+	}
+
+	_RootSceneComponent->Update( dt );
+
+	for( XE::uint64 i = 0; i < _BehaviorComponents.size(); i++ )
+	{
+		if( _BehaviorComponents[i] )
+		{
+			if( _BehaviorComponents[i]->GetUpdate() )
+			{
+				_BehaviorComponents[i]->Update( dt );
+			}
+		}
+	}
+}
+
+void XE::GameObject::Clearup()
+{
+	_RootSceneComponent->Clearup();
+
+	_RootSceneComponent = nullptr;
+
+	for( auto it : _BehaviorComponents )
+	{
+		if( it )
+		{
+			it->Clearup();
+		}
+	}
+
+	_BehaviorComponents.clear();
+
+	_Components.clear();
+}
+
+void GameObject::RemoveSceneComponent( const XE::SceneComponentPtr & val )
+{
+	const auto & children = val->GetChildren();
+
+	for( const auto & child : children )
+	{
+		RemoveSceneComponent( child );
+	}
+
+	_Components[val->GetHandle().GetValue()] = nullptr;
 }
