@@ -117,13 +117,3 @@ void XE::Camera::SetViewport( const XE::Rect & val )
 {
 	_Viewport = val;
 }
-
-const XE::ViewHandle & XE::Camera::GetViewHandle() const
-{
-	return _ViewHandle;
-}
-
-void XE::Camera::SetViewHandle( const XE::ViewHandle & val )
-{
-	_ViewHandle = val;
-}

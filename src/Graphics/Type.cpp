@@ -1,9 +1,7 @@
 #include "Type.h"
 
-#include <bgfx/defines.h>
-
 USING_XE
-
+/*
 BEG_META( StateWrite )
 type->Value( "R", StateWrite::R );
 type->Value( "G", StateWrite::G );
@@ -635,3 +633,4 @@ XE::uint64 XE::BlendFuncRT3E( StateBlendFunc src, StateBlendFunc dst, StateBlend
 {
 	return BGFX_STATE_BLEND_FUNC_RT_3E( ( XE::uint64 )src, ( XE::uint64 )dst, ( XE::uint64 )equation );
 }
+*/

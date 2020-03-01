@@ -23,7 +23,7 @@ public:
 
 public:
 	Handle()
-		:_value( Invalid._value )
+		:_value( std::numeric_limits<XE::uint64>::max() )
 	{
 	}
 
@@ -40,7 +40,7 @@ public:
 public:
 	operator bool() const
 	{
-		return _value != Invalid._value;
+		return _value != std::numeric_limits<XE::uint64>::max();
 	}
 
 	Handle & operator=( const Handle & val )

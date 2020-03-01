@@ -67,12 +67,6 @@ void XE::RenderWindow::Fullscreen()
 
 void XE::RenderWindow::Close()
 {
-	if( _FrameBufferHandle )
-	{
-		Gfx::destroy( _FrameBufferHandle );
-		_FrameBufferHandle = FrameBufferHandle::Invalid;
-	}
-
 	if( _WindowHandle )
 	{
 		Platform::DestroyWindow( _WindowHandle );
@@ -179,17 +173,11 @@ void XE::RenderWindow::SetWindowHandle( XE::WindowHandle val )
 	Show();
 }
 
-XE::FrameBufferHandle XE::RenderWindow::GetFrameBufferHandle() const
-{
-	return _FrameBufferHandle;
-}
-
 void XE::RenderWindow::UpdateWindow()
 {
 	if( !_WindowHandle )
 	{
 		_WindowHandle = Platform::CreateWindow( _Title, _Position.x, _Position.y, _Size.x, _Size.y );
-		_FrameBufferHandle = Gfx::createFrameBuffer( _WindowHandle, _Size.x, _Size.y, TextureFormat::RGBA8, TextureFormat::D24S8 );
 	}
 
 	if( !_Show )

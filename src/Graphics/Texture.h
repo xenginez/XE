@@ -23,14 +23,6 @@ public:
 	~Texture() override;
 
 public:
-	XE::TextureType GetType() const;
-
-	void SetType( XE::TextureType val );
-
-	XE::TextureFormat GetFormat() const;
-
-	void SetFormat( XE::TextureFormat val );
-
 	XE::uint16 GetWidth() const;
 
 	void SetWidth( XE::uint16 val );
@@ -56,22 +48,16 @@ public:
 	void SetData( const Buffer & val );
 
 public:
-	TextureHandle GetHandle();
-
-public:
 	void AssetLoad() override;
 
 	void AssetUnload() override;
 
 private:
-	TextureType _Type;
-	TextureFormat _Format;
 	XE::uint16 _Width;
 	XE::uint16 _Height;
 	XE::uint16 _Depth;
 	XE::uint16 _NumLayers;
 	XE::uint8 _NumMips;
-	TextureHandle _Handle;
 	Buffer _Data;
 };
 

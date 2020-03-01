@@ -64,10 +64,6 @@ public:
 
 	void SetViewport( const Rect & val );
 
-	const ViewHandle & GetViewHandle() const;
-
-	void SetViewHandle( const ViewHandle & val );
-
 private:
 	XE::float32 _FOV;
 	XE::float32 _Far;
@@ -79,7 +75,6 @@ private:
 	XE::Mat4 _ViewMatrix;
 	XE::Frustum _Frustum;
 	XE::Rect _Viewport;
-	XE::ViewHandle _ViewHandle;
 };
 
 END_XE_NAMESPACE

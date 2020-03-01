@@ -48,9 +48,9 @@ void XE::GUIService::Prepare()
 
 	XE::uint16 r_width = GetFramework()->GetConfigService()->GetUInt16( "Render/Resolution/Width", 1024 );
 	XE::uint16 r_height = GetFramework()->GetConfigService()->GetUInt16( "Render/Resolution/Height", 768 );
-	Gfx::setViewFrameBuffer( 0, _p->_MainWindow->GetFrameBufferHandle() );
-	Gfx::setViewRect( 0, 0, 0, r_width, r_height );
-	Gfx::setViewClear( 0, ClearFlags::COLOR_DEPTH, 0x603060ff, 1.0f, 0 );
+// 	Gfx::setViewFrameBuffer( 0, _p->_MainWindow->GetFrameBufferHandle() );
+// 	Gfx::setViewRect( 0, 0, 0, r_width, r_height );
+// 	Gfx::setViewClear( 0, ClearFlags::COLOR_DEPTH, 0x603060ff, 1.0f, 0 );
 }
 
 bool XE::GUIService::Startup()

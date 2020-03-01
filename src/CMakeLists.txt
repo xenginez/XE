@@ -18,9 +18,6 @@ target_link_libraries(XE
 		ik
 		astc-codec
 		astc
-		bgfx
-		bimg
-		bx
 		edtaa3
 		etc1
 		etc2

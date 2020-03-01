@@ -1,7 +1,5 @@
 #include "RenderService.h"
 
-#include <bgfx/bgfx.h>
-
 USING_XE
 
 BEG_META( RenderService )
@@ -27,22 +25,22 @@ XE::RenderService::~RenderService()
 
 void XE::RenderService::Prepare()
 {
-	bgfx::Init _init;
-	
-	_init.type = bgfx::RendererType::Enum::Direct3D11;
-	_init.vendorId = BGFX_PCI_ID_NONE;
-	_init.resolution.width = 800;
-	_init.resolution.height = 600;
-	_init.resolution.reset = BGFX_RESET_VSYNC;
-	
-	bgfx::init( _init );
-
-	Gfx::setDebug( BGFX_DEBUG_NONE );
+// 	bgfx::Init _init;
+// 	
+// 	_init.type = bgfx::RendererType::Enum::Direct3D11;
+// 	_init.vendorId = BGFX_PCI_ID_NONE;
+// 	_init.resolution.width = 800;
+// 	_init.resolution.height = 600;
+// 	_init.resolution.reset = BGFX_RESET_VSYNC;
+// 	
+// 	bgfx::init( _init );
+// 
+// 	Gfx::setDebug( BGFX_DEBUG_NONE );
 }
 
 bool XE::RenderService::Startup()
 {
-	Gfx::touch( 0 );
+//	Gfx::touch( 0 );
 
 	return true;
 }
@@ -54,7 +52,7 @@ void XE::RenderService::Update()
 
 	}
 	
-	Gfx::frame();
+//	Gfx::frame();
 }
 
 void XE::RenderService::Clearup()
@@ -63,7 +61,7 @@ void XE::RenderService::Clearup()
 	_p->_Cameras.clear();
 	_p->_Renderables.clear();
 
-	bgfx::shutdown();
+//	bgfx::shutdown();
 }
 
 void XE::RenderService::RegisterLight( const LightPtr & val )

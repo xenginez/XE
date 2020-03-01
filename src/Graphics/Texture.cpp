@@ -5,8 +5,6 @@
 USING_XE
 
 BEG_META( Texture )
-type->Property( "Type", &Texture::_Type );
-type->Property( "Format", &Texture::_Format );
 type->Property( "Width", &Texture::_Width );
 type->Property( "Height", &Texture::_Height );
 type->Property( "Depth", &Texture::_Depth );
@@ -16,7 +14,7 @@ type->Property( "Data", &Texture::_Data, IMetaProperty::NoDesign );
 END_META()
 
 XE::Texture::Texture()
-	:_Type( XE::TextureType::TEXTURE2D ), _Format( XE::TextureFormat::RGBA8 ), _Width( 0 ), _Height( 0 ), _Depth( 0 ), _NumLayers( 0 ), _NumMips( 0 )
+	:_Width( 0 ), _Height( 0 ), _Depth( 0 ), _NumLayers( 0 ), _NumMips( 0 )
 {
 
 }
@@ -24,26 +22,6 @@ XE::Texture::Texture()
 XE::Texture::~Texture()
 {
 
-}
-
-XE::TextureType XE::Texture::GetType() const
-{
-	return _Type;
-}
-
-void XE::Texture::SetType( XE::TextureType val )
-{
-	_Type = val;
-}
-
-XE::TextureFormat XE::Texture::GetFormat() const
-{
-	return _Format;
-}
-
-void XE::Texture::SetFormat( XE::TextureFormat val )
-{
-	_Format = val;
 }
 
 XE::uint16 XE::Texture::GetWidth() const
@@ -106,36 +84,12 @@ void Texture::SetData( const Buffer & val )
 	_Data = val;
 }
 
-XE::TextureHandle XE::Texture::GetHandle()
-{
-	return _Handle;
-}
-
 void XE::Texture::AssetLoad()
 {
-	switch( _Type )
-	{
-	case XE::TextureType::TEXTURE2D:
-		//Gfx::createTexture2D();
-		break;
-	case XE::TextureType::TEXTURE3D:
-		//Gfx::createTexture3D();
-		break;
-	case XE::TextureType::TEXTURECUBE:
-		//Gfx::createTextureCube();
-		break;
-	case XE::TextureType::TEXTUREARRAY:
-		//Gfx::createTextureCube();
-		break;
-	default:
-		break;
-	}
+
 }
 
 void XE::Texture::AssetUnload()
 {
-	if( _Handle )
-	{
-		Gfx::destroy( _Handle );
-	}
+
 }

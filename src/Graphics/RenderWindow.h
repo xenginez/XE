@@ -71,9 +71,6 @@ public:
 
 	void SetWindowHandle( XE::WindowHandle val );
 
-public:
-	XE::FrameBufferHandle GetFrameBufferHandle() const;
-
 private:
 	void UpdateWindow();
 
@@ -90,7 +87,6 @@ private:
 	bool _Dirty;
 
 	WindowHandle _WindowHandle;
-	FrameBufferHandle _FrameBufferHandle;
 };
 
 END_XE_NAMESPACE
