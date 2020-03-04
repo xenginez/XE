@@ -16,3 +16,6 @@
 [submodule "3rdparty/tbb"]
 	path = 3rdparty/tbb
 	url = https://github.com/wjakob/tbb.git
+[submodule "3rdparty/PhysX"]
+	path = 3rdparty/PhysX
+	url = https://github.com/NVIDIAGameWorks/PhysX.git
