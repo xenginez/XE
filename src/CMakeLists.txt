@@ -42,7 +42,7 @@ FILE(GLOB LIBRARY_FILES ../depend/bin/${XE_PLATFORM_PATH}/${XE_CONFIG}/*.*)
 foreach (LIBRARY_FILE ${LIBRARY_FILES})
 	add_custom_command(TARGET XE
 			POST_BUILD
-			COMMAND ${CMAKE_COMMAND} -E copy ${LIBRARY_FILE} "$ENV{XE_PATH}/${XE_CONFIG}/bin"
+			COMMAND ${CMAKE_COMMAND} -E copy ${LIBRARY_FILE} "${CMAKE_CURRENT_SOURCE_DIR}/target/${XE_CONFIG}/bin"
 			)
 endforeach (LIBRARY_FILE)
 
@@ -72,7 +72,7 @@ foreach(INC_DIR ${INC_DIRS})
 	foreach (INC_FILE ${INC_FILES})
 		add_custom_command(TARGET XE
 				POST_BUILD
-				COMMAND ${CMAKE_COMMAND} -E copy ${INC_FILE} "$ENV{XE_PATH}/include/${INC_DIR}"
+				COMMAND ${CMAKE_COMMAND} -E copy ${INC_FILE} "${CMAKE_CURRENT_SOURCE_DIR}/target/include/${INC_DIR}"
 				)
 	endforeach (INC_FILE)
 	message("copy include " ${INC_DIR})
