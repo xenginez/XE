@@ -16,6 +16,3 @@
 [submodule "3rdparty/tbb"]
 	path = 3rdparty/tbb
 	url = https://github.com/wjakob/tbb.git
-[submodule "3rdparty/PhysX-3.4-CMake"]
-	path = 3rdparty/PhysX-3.4-CMake
-	url = https://github.com/diharaw/PhysX-3.4-CMake.git
