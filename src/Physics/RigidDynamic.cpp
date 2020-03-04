@@ -1,7 +1,5 @@
 #include "RigidDynamic.h"
 
-#include <physx/PxPhysicsAPI.h>
-
 USING_XE
 
 BEG_META( RigidDynamic )

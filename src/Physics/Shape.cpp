@@ -2,8 +2,6 @@
 
 #include "PhysicsMaterial.h"
 
-#include <physx/PxPhysicsAPI.h>
-
 USING_XE
 
 BEG_META( Shape )
