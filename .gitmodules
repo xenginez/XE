@@ -3,7 +3,10 @@
 	url = https://github.com/recastnavigation/recastnavigation.git
 [submodule "3rdparty/tbb"]
 	path = 3rdparty/tbb
-	url = https://github.com/intel/tbb.git
+	url = https://github.com/wjakob/tbb.git
+# [submodule "3rdparty/tbb"]
+# path = 3rdparty/tbb
+# url = https://github.com/intel/tbb.git
 [submodule "3rdparty/rapidjson"]
 	path = 3rdparty/rapidjson
 	url = https://github.com/Tencent/rapidjson.git
@@ -16,12 +19,12 @@
 [submodule "3rdparty/ik"]
 	path = 3rdparty/ik
 	url = https://github.com/TheComet/ik.git
-[submodule "3rdparty/bgfx.cmake"]
-	path = 3rdparty/bgfx.cmake
-	url = https://github.com/JoshuaBrookover/bgfx.cmake.git
 [submodule "3rdparty/PhysX"]
 	path = 3rdparty/PhysX
-	url = https://github.com/NVIDIAGameWorks/PhysX.git
+	url = https://github.com/diharaw/PhysX-3.4-CMake.git	
+# [submodule "3rdparty/PhysX"]
+# 	path = 3rdparty/PhysX
+# 	url = https://github.com/NVIDIAGameWorks/PhysX.git
 [submodule "3rdparty/imgui"]
 	path = 3rdparty/imgui
 	url = https://github.com/ocornut/imgui.git
