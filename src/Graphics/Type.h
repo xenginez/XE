@@ -32,23 +32,23 @@ DECL_HANDLE( XE_API, Pass );
 DECL_HANDLE( XE_API, Context );
 
 /* default clear values */
-#ifndef SG_DEFAULT_CLEAR_RED
-#define SG_DEFAULT_CLEAR_RED (0.5f)
+#ifndef DEFAULT_CLEAR_RED
+#define DEFAULT_CLEAR_RED (0.5f)
 #endif
-#ifndef SG_DEFAULT_CLEAR_GREEN
-#define SG_DEFAULT_CLEAR_GREEN (0.5f)
+#ifndef DEFAULT_CLEAR_GREEN
+#define DEFAULT_CLEAR_GREEN (0.5f)
 #endif
-#ifndef SG_DEFAULT_CLEAR_BLUE
-#define SG_DEFAULT_CLEAR_BLUE (0.5f)
+#ifndef DEFAULT_CLEAR_BLUE
+#define DEFAULT_CLEAR_BLUE (0.5f)
 #endif
-#ifndef SG_DEFAULT_CLEAR_ALPHA
-#define SG_DEFAULT_CLEAR_ALPHA (1.0f)
+#ifndef DEFAULT_CLEAR_ALPHA
+#define DEFAULT_CLEAR_ALPHA (1.0f)
 #endif
-#ifndef SG_DEFAULT_CLEAR_DEPTH
-#define SG_DEFAULT_CLEAR_DEPTH (1.0f)
+#ifndef DEFAULT_CLEAR_DEPTH
+#define DEFAULT_CLEAR_DEPTH (1.0f)
 #endif
-#ifndef SG_DEFAULT_CLEAR_STENCIL
-#define SG_DEFAULT_CLEAR_STENCIL (0)
+#ifndef DEFAULT_CLEAR_STENCIL
+#define DEFAULT_CLEAR_STENCIL (0)
 #endif
 
 /*
@@ -59,40 +59,40 @@ DECL_HANDLE( XE_API, Context );
 */
 enum
 {
-	SG_INVALID_SLOT_INDEX = 0,
-	SG_NUM_SHADER_STAGES = 2,
-	SG_NUM_INFLIGHT_FRAMES = 2,
-	SG_MAX_COLOR_ATTACHMENTS = 4,
-	SG_MAX_SHADERSTAGE_BUFFERS = 8,
-	SG_MAX_SHADERSTAGE_IMAGES = 12,
-	SG_MAX_SHADERSTAGE_UBS = 4,
-	SG_MAX_UB_MEMBERS = 16,
-	SG_MAX_VERTEX_ATTRIBUTES = 16,      /* NOTE: actual max vertex attrs can be less on GLES2, see Limits! */
-	SG_MAX_MIPMAPS = 16,
-	SG_MAX_TEXTUREARRAY_LAYERS = 128
+	INVALID_SLOT_INDEX = 0,
+	NUM_SHADER_STAGES = 2,
+	NUM_INFLIGHT_FRAMES = 2,
+	MAX_COLOR_ATTACHMENTS = 4,
+	MAX_SHADERSTAGE_BUFFERS = 8,
+	MAX_SHADERSTAGE_IMAGES = 12,
+	MAX_SHADERSTAGE_UBS = 4,
+	MAX_UB_MEMBERS = 16,
+	MAX_VERTEX_ATTRIBUTES = 16,      /* NOTE: actual max vertex attrs can be less on GLES2, see Limits! */
+	MAX_MIPMAPS = 16,
+	MAX_TEXTUREARRAY_LAYERS = 128
 };
 
 /*
 	Backend
 
-	The active 3D-API backend, use the function sg_query_backend()
+	The active 3D-API backend, use the function query_backend()
 	to get the currently active backend.
 
 	For returned value corresponds with the compile-time define to select
 	a backend, with the only exception of SOKOL_GLES3: this may
-	return SG_BACKEND_GLES2 if the backend has to fallback to GLES2 mode
+	return BACKEND_GLES2 if the backend has to fallback to GLES2 mode
 	because GLES3 isn't supported.
 */
 enum Backend
 {
-	SG_BACKEND_GLCORE33,
-	SG_BACKEND_GLES2,
-	SG_BACKEND_GLES3,
-	SG_BACKEND_D3D11,
-	SG_BACKEND_METAL_IOS,
-	SG_BACKEND_METAL_MACOS,
-	SG_BACKEND_METAL_SIMULATOR,
-	SG_BACKEND_DUMMY,
+	BACKEND_GLCORE33,
+	BACKEND_GLES2,
+	BACKEND_GLES3,
+	BACKEND_D3D11,
+	BACKEND_METAL_IOS,
+	BACKEND_METAL_MACOS,
+	BACKEND_METAL_SIMULATOR,
+	BACKEND_DUMMY,
 };
 
 /*
@@ -100,7 +100,7 @@ enum Backend
 
 	sokol_gfx.h basically uses the same pixel formats as WebGPU, since these
 	are supported on most newer GPUs. GLES2 and WebGL has a much smaller
-	subset of available pixel formats. Call sg_query_pixelformat() to check
+	subset of available pixel formats. Call query_pixelformat() to check
 	at runtime if a pixel format supports the desired features.
 
 	A pixelformat name consist of three parts:
@@ -114,7 +114,7 @@ enum Backend
 			- signed integer (SI postfix)
 			- float (F postfix)
 
-	Not all pixel formats can be used for everything, call sg_query_pixelformat()
+	Not all pixel formats can be used for everything, call query_pixelformat()
 	to inspect the capabilities of a given pixelformat. The function returns
 	an PixelformatInfo struct with the following bool members:
 
@@ -130,15 +130,15 @@ enum Backend
 		- depth:  the pixelformat can be used for depth-stencil attachments
 
 	When targeting GLES2/WebGL, the only safe formats to use
-	as texture are SG_PIXELFORMAT_R8 and SG_PIXELFORMAT_RGBA8. For rendering
-	in GLES2/WebGL, only SG_PIXELFORMAT_RGBA8 is safe. All other formats
-	must be checked via sg_query_pixelformats().
+	as texture are PIXELFORMAT_R8 and PIXELFORMAT_RGBA8. For rendering
+	in GLES2/WebGL, only PIXELFORMAT_RGBA8 is safe. All other formats
+	must be checked via query_pixelformats().
 
-	The default pixel format for texture images is SG_PIXELFORMAT_RGBA8.
+	The default pixel format for texture images is PIXELFORMAT_RGBA8.
 
 	The default pixel format for render target images is platform-dependent:
-		- for Metal and D3D11 it is SG_PIXELFORMAT_BGRA8
-		- for GL backends it is SG_PIXELFORMAT_RGBA8
+		- for Metal and D3D11 it is PIXELFORMAT_BGRA8
+		- for GL backends it is PIXELFORMAT_RGBA8
 
 	This is mainly because of the default framebuffer which is setup outside
 	of sokol_gfx.h. On some backends, using BGRA for the default frame buffer
@@ -147,83 +147,83 @@ enum Backend
 */
 enum PixelFormat
 {
-	_SG_PIXELFORMAT_DEFAULT,    /* value 0 reserved for default-init */
-	SG_PIXELFORMAT_NONE,
+	_PIXELFORMAT_DEFAULT,    /* value 0 reserved for default-init */
+	PIXELFORMAT_NONE,
 
-	SG_PIXELFORMAT_R8,
-	SG_PIXELFORMAT_R8SN,
-	SG_PIXELFORMAT_R8UI,
-	SG_PIXELFORMAT_R8SI,
+	PIXELFORMAT_R8,
+	PIXELFORMAT_R8SN,
+	PIXELFORMAT_R8UI,
+	PIXELFORMAT_R8SI,
 
-	SG_PIXELFORMAT_R16,
-	SG_PIXELFORMAT_R16SN,
-	SG_PIXELFORMAT_R16UI,
-	SG_PIXELFORMAT_R16SI,
-	SG_PIXELFORMAT_R16F,
-	SG_PIXELFORMAT_RG8,
-	SG_PIXELFORMAT_RG8SN,
-	SG_PIXELFORMAT_RG8UI,
-	SG_PIXELFORMAT_RG8SI,
+	PIXELFORMAT_R16,
+	PIXELFORMAT_R16SN,
+	PIXELFORMAT_R16UI,
+	PIXELFORMAT_R16SI,
+	PIXELFORMAT_R16F,
+	PIXELFORMAT_RG8,
+	PIXELFORMAT_RG8SN,
+	PIXELFORMAT_RG8UI,
+	PIXELFORMAT_RG8SI,
 
-	SG_PIXELFORMAT_R32UI,
-	SG_PIXELFORMAT_R32SI,
-	SG_PIXELFORMAT_R32F,
-	SG_PIXELFORMAT_RG16,
-	SG_PIXELFORMAT_RG16SN,
-	SG_PIXELFORMAT_RG16UI,
-	SG_PIXELFORMAT_RG16SI,
-	SG_PIXELFORMAT_RG16F,
-	SG_PIXELFORMAT_RGBA8,
-	SG_PIXELFORMAT_RGBA8SN,
-	SG_PIXELFORMAT_RGBA8UI,
-	SG_PIXELFORMAT_RGBA8SI,
-	SG_PIXELFORMAT_BGRA8,
-	SG_PIXELFORMAT_RGB10A2,
-	SG_PIXELFORMAT_RG11B10F,
+	PIXELFORMAT_R32UI,
+	PIXELFORMAT_R32SI,
+	PIXELFORMAT_R32F,
+	PIXELFORMAT_RG16,
+	PIXELFORMAT_RG16SN,
+	PIXELFORMAT_RG16UI,
+	PIXELFORMAT_RG16SI,
+	PIXELFORMAT_RG16F,
+	PIXELFORMAT_RGBA8,
+	PIXELFORMAT_RGBA8SN,
+	PIXELFORMAT_RGBA8UI,
+	PIXELFORMAT_RGBA8SI,
+	PIXELFORMAT_BGRA8,
+	PIXELFORMAT_RGB10A2,
+	PIXELFORMAT_RG11B10F,
 
-	SG_PIXELFORMAT_RG32UI,
-	SG_PIXELFORMAT_RG32SI,
-	SG_PIXELFORMAT_RG32F,
-	SG_PIXELFORMAT_RGBA16,
-	SG_PIXELFORMAT_RGBA16SN,
-	SG_PIXELFORMAT_RGBA16UI,
-	SG_PIXELFORMAT_RGBA16SI,
-	SG_PIXELFORMAT_RGBA16F,
+	PIXELFORMAT_RG32UI,
+	PIXELFORMAT_RG32SI,
+	PIXELFORMAT_RG32F,
+	PIXELFORMAT_RGBA16,
+	PIXELFORMAT_RGBA16SN,
+	PIXELFORMAT_RGBA16UI,
+	PIXELFORMAT_RGBA16SI,
+	PIXELFORMAT_RGBA16F,
 
-	SG_PIXELFORMAT_RGBA32UI,
-	SG_PIXELFORMAT_RGBA32SI,
-	SG_PIXELFORMAT_RGBA32F,
+	PIXELFORMAT_RGBA32UI,
+	PIXELFORMAT_RGBA32SI,
+	PIXELFORMAT_RGBA32F,
 
-	SG_PIXELFORMAT_DEPTH,
-	SG_PIXELFORMAT_DEPTH_STENCIL,
+	PIXELFORMAT_DEPTH,
+	PIXELFORMAT_DEPTH_STENCIL,
 
-	SG_PIXELFORMAT_BC1_RGBA,
-	SG_PIXELFORMAT_BC2_RGBA,
-	SG_PIXELFORMAT_BC3_RGBA,
-	SG_PIXELFORMAT_BC4_R,
-	SG_PIXELFORMAT_BC4_RSN,
-	SG_PIXELFORMAT_BC5_RG,
-	SG_PIXELFORMAT_BC5_RGSN,
-	SG_PIXELFORMAT_BC6H_RGBF,
-	SG_PIXELFORMAT_BC6H_RGBUF,
-	SG_PIXELFORMAT_BC7_RGBA,
-	SG_PIXELFORMAT_PVRTC_RGB_2BPP,
-	SG_PIXELFORMAT_PVRTC_RGB_4BPP,
-	SG_PIXELFORMAT_PVRTC_RGBA_2BPP,
-	SG_PIXELFORMAT_PVRTC_RGBA_4BPP,
-	SG_PIXELFORMAT_ETC2_RGB8,
-	SG_PIXELFORMAT_ETC2_RGB8A1,
-	SG_PIXELFORMAT_ETC2_RGBA8,
-	SG_PIXELFORMAT_ETC2_RG11,
-	SG_PIXELFORMAT_ETC2_RG11SN,
+	PIXELFORMAT_BC1_RGBA,
+	PIXELFORMAT_BC2_RGBA,
+	PIXELFORMAT_BC3_RGBA,
+	PIXELFORMAT_BC4_R,
+	PIXELFORMAT_BC4_RSN,
+	PIXELFORMAT_BC5_RG,
+	PIXELFORMAT_BC5_RGSN,
+	PIXELFORMAT_BC6H_RGBF,
+	PIXELFORMAT_BC6H_RGBUF,
+	PIXELFORMAT_BC7_RGBA,
+	PIXELFORMAT_PVRTC_RGB_2BPP,
+	PIXELFORMAT_PVRTC_RGB_4BPP,
+	PIXELFORMAT_PVRTC_RGBA_2BPP,
+	PIXELFORMAT_PVRTC_RGBA_4BPP,
+	PIXELFORMAT_ETC2_RGB8,
+	PIXELFORMAT_ETC2_RGB8A1,
+	PIXELFORMAT_ETC2_RGBA8,
+	PIXELFORMAT_ETC2_RG11,
+	PIXELFORMAT_ETC2_RG11SN,
 
-	_SG_PIXELFORMAT_NUM,
-	_SG_PIXELFORMAT_FORCE_U32 = 0x7FFFFFFF
+	_PIXELFORMAT_NUM,
+	_PIXELFORMAT_FORCE_U32 = 0x7FFFFFFF
 };
 
 /*
 	Runtime information about a pixel format, returned
-	by sg_query_pixelformat().
+	by query_pixelformat().
 */
 struct PixelformatInfo
 {
@@ -237,7 +237,7 @@ struct PixelformatInfo
 
 /*
 	Runtime information about available optional features,
-	returned by sg_query_features()
+	returned by query_features()
 */
 struct Features
 {
@@ -245,22 +245,22 @@ struct Features
 	bool origin_top_left;           /* framebuffer and texture origin is in top left corner */
 	bool multiple_render_targets;   /* offscreen render passes can have multiple render targets attached */
 	bool msaa_render_targets;       /* offscreen render passes support MSAA antialiasing */
-	bool imagetype_3d;              /* creation of SG_IMAGETYPE_3D images is supported */
-	bool imagetype_array;           /* creation of SG_IMAGETYPE_ARRAY images is supported */
+	bool imagetype_3d;              /* creation of IMAGETYPE_3D images is supported */
+	bool imagetype_array;           /* creation of IMAGETYPE_ARRAY images is supported */
 	bool image_clamp_to_border;     /* border color and clamp-to-border UV-wrap mode is supported */
 };
 
 /*
-	Runtime information about resource limits, returned by sg_query_limit()
+	Runtime information about resource limits, returned by query_limit()
 */
 struct Limits
 {
-	uint32_t max_image_size_2d;         /* max width/height of SG_IMAGETYPE_2D images */
-	uint32_t max_image_size_cube;       /* max width/height of SG_IMAGETYPE_CUBE images */
-	uint32_t max_image_size_3d;         /* max width/height/depth of SG_IMAGETYPE_3D images */
-	uint32_t max_image_size_array;      /* max width/height pf SG_IMAGETYPE_ARRAY images */
-	uint32_t max_image_array_layers;    /* max number of layers in SG_IMAGETYPE_ARRAY images */
-	uint32_t max_vertex_attrs;          /* <= SG_MAX_VERTEX_ATTRIBUTES (only on some GLES2 impls) */
+	uint32_t max_image_size_2d;         /* max width/height of IMAGETYPE_2D images */
+	uint32_t max_image_size_cube;       /* max width/height of IMAGETYPE_CUBE images */
+	uint32_t max_image_size_3d;         /* max width/height/depth of IMAGETYPE_3D images */
+	uint32_t max_image_size_array;      /* max width/height pf IMAGETYPE_ARRAY images */
+	uint32_t max_image_array_layers;    /* max number of layers in IMAGETYPE_ARRAY images */
+	uint32_t max_vertex_attrs;          /* <= MAX_VERTEX_ATTRIBUTES (only on some GLES2 impls) */
 };
 
 /*
@@ -278,17 +278,17 @@ struct Limits
 	in the VALID state is attempted to be used for rendering, rendering
 	operations will silently be dropped.
 
-	The special INVALID state is returned in sg_query_xxx_state() if no
+	The special INVALID state is returned in query_xxx_state() if no
 	resource object exists for the provided resource id.
 */
 enum ResourceState
 {
-	SG_RESOURCESTATE_INITIAL,
-	SG_RESOURCESTATE_ALLOC,
-	SG_RESOURCESTATE_VALID,
-	SG_RESOURCESTATE_FAILED,
-	SG_RESOURCESTATE_INVALID,
-	_SG_RESOURCESTATE_FORCE_U32 = 0x7FFFFFFF
+	RESOURCESTATE_INITIAL,
+	RESOURCESTATE_ALLOC,
+	RESOURCESTATE_VALID,
+	RESOURCESTATE_FAILED,
+	RESOURCESTATE_INVALID,
+	_RESOURCESTATE_FORCE_U32 = 0x7FFFFFFF
 };
 
 /*
@@ -299,38 +299,38 @@ enum ResourceState
 	and ImageDesc.usage members when creating buffers
 	and images:
 
-	SG_USAGE_IMMUTABLE:     the resource will never be updated with
+	USAGE_IMMUTABLE:     the resource will never be updated with
 							new data, instead the content of the
 							resource must be provided on creation
-	SG_USAGE_DYNAMIC:       the resource will be updated infrequently
+	USAGE_DYNAMIC:       the resource will be updated infrequently
 							with new data (this could range from "once
 							after creation", to "quite often but not
 							every frame")
-	SG_USAGE_STREAM:        the resource will be updated each frame
+	USAGE_STREAM:        the resource will be updated each frame
 							with new content
 
 	The rendering backends use this hint to prevent that the
 	CPU needs to wait for the GPU when attempting to update
 	a resource that might be currently accessed by the GPU.
 
-	Resource content is updated with the function sg_update_buffer() for
-	buffer objects, and sg_update_image() for image objects. Only
+	Resource content is updated with the function update_buffer() for
+	buffer objects, and update_image() for image objects. Only
 	one update is allowed per frame and resource object. The
 	application must update all data required for rendering (this
 	means that the update data can be smaller than the resource size,
 	if only a part of the overall resource size is used for rendering,
 	you only need to make sure that the data that *is* used is valid).
 
-	The default usage is SG_USAGE_IMMUTABLE.
+	The default usage is USAGE_IMMUTABLE.
 */
 enum Usage
 {
-	_SG_USAGE_DEFAULT,      /* value 0 reserved for default-init */
-	SG_USAGE_IMMUTABLE,
-	SG_USAGE_DYNAMIC,
-	SG_USAGE_STREAM,
-	_SG_USAGE_NUM,
-	_SG_USAGE_FORCE_U32 = 0x7FFFFFFF
+	_USAGE_DEFAULT,      /* value 0 reserved for default-init */
+	USAGE_IMMUTABLE,
+	USAGE_DYNAMIC,
+	USAGE_STREAM,
+	_USAGE_NUM,
+	_USAGE_FORCE_U32 = 0x7FFFFFFF
 };
 
 /*
@@ -339,15 +339,15 @@ enum Usage
 	This indicates whether a buffer contains vertex- or index-data,
 	used in the BufferDesc.type member when creating a buffer.
 
-	The default value is SG_BUFFERTYPE_VERTEXBUFFER.
+	The default value is BUFFERTYPE_VERTEXBUFFER.
 */
 enum BufferType
 {
-	_SG_BUFFERTYPE_DEFAULT,         /* value 0 reserved for default-init */
-	SG_BUFFERTYPE_VERTEXBUFFER,
-	SG_BUFFERTYPE_INDEXBUFFER,
-	_SG_BUFFERTYPE_NUM,
-	_SG_BUFFERTYPE_FORCE_U32 = 0x7FFFFFFF
+	_BUFFERTYPE_DEFAULT,         /* value 0 reserved for default-init */
+	BUFFERTYPE_VERTEXBUFFER,
+	BUFFERTYPE_INDEXBUFFER,
+	_BUFFERTYPE_NUM,
+	_BUFFERTYPE_FORCE_U32 = 0x7FFFFFFF
 };
 
 /*
@@ -358,16 +358,16 @@ enum BufferType
 	This is used in the PipelineDesc.index_type member when creating a
 	pipeline object.
 
-	The default index type is SG_INDEXTYPE_NONE.
+	The default index type is INDEXTYPE_NONE.
 */
 enum IndexType
 {
-	_SG_INDEXTYPE_DEFAULT,   /* value 0 reserved for default-init */
-	SG_INDEXTYPE_NONE,
-	SG_INDEXTYPE_UINT16,
-	SG_INDEXTYPE_UINT32,
-	_SG_INDEXTYPE_NUM,
-	_SG_INDEXTYPE_FORCE_U32 = 0x7FFFFFFF
+	_INDEXTYPE_DEFAULT,   /* value 0 reserved for default-init */
+	INDEXTYPE_NONE,
+	INDEXTYPE_UINT16,
+	INDEXTYPE_UINT32,
+	_INDEXTYPE_NUM,
+	_INDEXTYPE_FORCE_U32 = 0x7FFFFFFF
 };
 
 /*
@@ -375,21 +375,21 @@ enum IndexType
 
 	Indicates the basic type of an image object (2D-texture, cubemap,
 	3D-texture or 2D-array-texture). 3D- and array-textures are not supported
-	on the GLES2/WebGL backend (use sg_query_features().imagetype_3d and
-	sg_query_features().imagetype_array to check for support). The image type
+	on the GLES2/WebGL backend (use query_features().imagetype_3d and
+	query_features().imagetype_array to check for support). The image type
 	is used in the ImageDesc.type member when creating an image.
 
-	The default image type when creating an image is SG_IMAGETYPE_2D.
+	The default image type when creating an image is IMAGETYPE_2D.
 */
 enum ImageType
 {
-	_SG_IMAGETYPE_DEFAULT,  /* value 0 reserved for default-init */
-	SG_IMAGETYPE_2D,
-	SG_IMAGETYPE_CUBE,
-	SG_IMAGETYPE_3D,
-	SG_IMAGETYPE_ARRAY,
-	_SG_IMAGETYPE_NUM,
-	_SG_IMAGETYPE_FORCE_U32 = 0x7FFFFFFF
+	_IMAGETYPE_DEFAULT,  /* value 0 reserved for default-init */
+	IMAGETYPE_2D,
+	IMAGETYPE_CUBE,
+	IMAGETYPE_3D,
+	IMAGETYPE_ARRAY,
+	_IMAGETYPE_NUM,
+	_IMAGETYPE_FORCE_U32 = 0x7FFFFFFF
 };
 
 /*
@@ -400,14 +400,14 @@ enum ImageType
 */
 enum CubeFace
 {
-	SG_CUBEFACE_POS_X,
-	SG_CUBEFACE_NEG_X,
-	SG_CUBEFACE_POS_Y,
-	SG_CUBEFACE_NEG_Y,
-	SG_CUBEFACE_POS_Z,
-	SG_CUBEFACE_NEG_Z,
-	SG_CUBEFACE_NUM,
-	_SG_CUBEFACE_FORCE_U32 = 0x7FFFFFFF
+	CUBEFACE_POS_X,
+	CUBEFACE_NEG_X,
+	CUBEFACE_POS_Y,
+	CUBEFACE_NEG_Y,
+	CUBEFACE_POS_Z,
+	CUBEFACE_NEG_Z,
+	CUBEFACE_NUM,
+	_CUBEFACE_FORCE_U32 = 0x7FFFFFFF
 };
 
 /*
@@ -417,15 +417,15 @@ enum CubeFace
 	Each shader stage consists of:
 
 	- one slot for a shader function (provided as source- or byte-code)
-	- SG_MAX_SHADERSTAGE_UBS slots for uniform blocks
-	- SG_MAX_SHADERSTAGE_IMAGES slots for images used as textures by
+	- MAX_SHADERSTAGE_UBS slots for uniform blocks
+	- MAX_SHADERSTAGE_IMAGES slots for images used as textures by
 	  the shader function
 */
 enum ShaderStage
 {
-	SG_SHADERSTAGE_VS,
-	SG_SHADERSTAGE_FS,
-	_SG_SHADERSTAGE_FORCE_U32 = 0x7FFFFFFF
+	SHADERSTAGE_VS,
+	SHADERSTAGE_FS,
+	_SHADERSTAGE_FORCE_U32 = 0x7FFFFFFF
 };
 
 /*
@@ -435,18 +435,18 @@ enum ShaderStage
 	APIs. This is used in the PipelineDesc.primitive_type member when
 	creating a pipeline object.
 
-	The default primitive type is SG_PRIMITIVETYPE_TRIANGLES.
+	The default primitive type is PRIMITIVETYPE_TRIANGLES.
 */
 enum PrimitiveType
 {
-	_SG_PRIMITIVETYPE_DEFAULT,  /* value 0 reserved for default-init */
-	SG_PRIMITIVETYPE_POINTS,
-	SG_PRIMITIVETYPE_LINES,
-	SG_PRIMITIVETYPE_LINE_STRIP,
-	SG_PRIMITIVETYPE_TRIANGLES,
-	SG_PRIMITIVETYPE_TRIANGLE_STRIP,
-	_SG_PRIMITIVETYPE_NUM,
-	_SG_PRIMITIVETYPE_FORCE_U32 = 0x7FFFFFFF
+	_PRIMITIVETYPE_DEFAULT,  /* value 0 reserved for default-init */
+	PRIMITIVETYPE_POINTS,
+	PRIMITIVETYPE_LINES,
+	PRIMITIVETYPE_LINE_STRIP,
+	PRIMITIVETYPE_TRIANGLES,
+	PRIMITIVETYPE_TRIANGLE_STRIP,
+	_PRIMITIVETYPE_NUM,
+	_PRIMITIVETYPE_FORCE_U32 = 0x7FFFFFFF
 };
 
 /*
@@ -456,19 +456,19 @@ enum PrimitiveType
 	used in the ImageDesc.min_filter and ImageDesc.mag_filter
 	members when creating an image object.
 
-	The default filter mode is SG_FILTER_NEAREST.
+	The default filter mode is FILTER_NEAREST.
 */
 enum Filter
 {
-	_SG_FILTER_DEFAULT, /* value 0 reserved for default-init */
-	SG_FILTER_NEAREST,
-	SG_FILTER_LINEAR,
-	SG_FILTER_NEAREST_MIPMAP_NEAREST,
-	SG_FILTER_NEAREST_MIPMAP_LINEAR,
-	SG_FILTER_LINEAR_MIPMAP_NEAREST,
-	SG_FILTER_LINEAR_MIPMAP_LINEAR,
-	_SG_FILTER_NUM,
-	_SG_FILTER_FORCE_U32 = 0x7FFFFFFF
+	_FILTER_DEFAULT, /* value 0 reserved for default-init */
+	FILTER_NEAREST,
+	FILTER_LINEAR,
+	FILTER_NEAREST_MIPMAP_NEAREST,
+	FILTER_NEAREST_MIPMAP_LINEAR,
+	FILTER_LINEAR_MIPMAP_NEAREST,
+	FILTER_LINEAR_MIPMAP_LINEAR,
+	_FILTER_NUM,
+	_FILTER_FORCE_U32 = 0x7FFFFFFF
 };
 
 /*
@@ -478,15 +478,15 @@ enum Filter
 	image. This is used in the ImageDesc.wrap_u, .wrap_v
 	and .wrap_w members when creating an image.
 
-	The default wrap mode is SG_WRAP_REPEAT.
+	The default wrap mode is WRAP_REPEAT.
 
-	NOTE: SG_WRAP_CLAMP_TO_BORDER is not supported on all backends
-	and platforms. To check for support, call sg_query_features()
+	NOTE: WRAP_CLAMP_TO_BORDER is not supported on all backends
+	and platforms. To check for support, call query_features()
 	and check the "clamp_to_border" boolean in the returned
 	Features struct.
 
-	Platforms which don't support SG_WRAP_CLAMP_TO_BORDER will silently fall back
-	to SG_WRAP_CLAMP_TO_EDGE without a validation error.
+	Platforms which don't support WRAP_CLAMP_TO_BORDER will silently fall back
+	to WRAP_CLAMP_TO_EDGE without a validation error.
 
 	Platforms which support clamp-to-border are:
 
@@ -501,31 +501,31 @@ enum Filter
 */
 enum Wrap
 {
-	_SG_WRAP_DEFAULT,   /* value 0 reserved for default-init */
-	SG_WRAP_REPEAT,
-	SG_WRAP_CLAMP_TO_EDGE,
-	SG_WRAP_CLAMP_TO_BORDER,
-	SG_WRAP_MIRRORED_REPEAT,
-	_SG_WRAP_NUM,
-	_SG_WRAP_FORCE_U32 = 0x7FFFFFFF
+	_WRAP_DEFAULT,   /* value 0 reserved for default-init */
+	WRAP_REPEAT,
+	WRAP_CLAMP_TO_EDGE,
+	WRAP_CLAMP_TO_BORDER,
+	WRAP_MIRRORED_REPEAT,
+	_WRAP_NUM,
+	_WRAP_FORCE_U32 = 0x7FFFFFFF
 };
 
 /*
 	BorderColor
 
 	The border color to use when sampling a texture, and the UV wrap
-	mode is SG_WRAP_CLAMP_TO_BORDER.
+	mode is WRAP_CLAMP_TO_BORDER.
 
-	The default border color is SG_BORDERCOLOR_OPAQUE_BLACK
+	The default border color is BORDERCOLOR_OPAQUE_BLACK
 */
 enum BorderColor
 {
-	_SG_BORDERCOLOR_DEFAULT,    /* value 0 reserved for default-init */
-	SG_BORDERCOLOR_TRANSPARENT_BLACK,
-	SG_BORDERCOLOR_OPAQUE_BLACK,
-	SG_BORDERCOLOR_OPAQUE_WHITE,
-	_SG_BORDERCOLOR_NUM,
-	_SG_BORDERCOLOR_FORCE_U32 = 0x7FFFFFFF
+	_BORDERCOLOR_DEFAULT,    /* value 0 reserved for default-init */
+	BORDERCOLOR_TRANSPARENT_BLACK,
+	BORDERCOLOR_OPAQUE_BLACK,
+	BORDERCOLOR_OPAQUE_WHITE,
+	_BORDERCOLOR_NUM,
+	_BORDERCOLOR_FORCE_U32 = 0x7FFFFFFF
 };
 
 /*
@@ -536,24 +536,24 @@ enum BorderColor
 */
 enum VertexFormat
 {
-	SG_VERTEXFORMAT_INVALID,
-	SG_VERTEXFORMAT_FLOAT,
-	SG_VERTEXFORMAT_FLOAT2,
-	SG_VERTEXFORMAT_FLOAT3,
-	SG_VERTEXFORMAT_FLOAT4,
-	SG_VERTEXFORMAT_BYTE4,
-	SG_VERTEXFORMAT_BYTE4N,
-	SG_VERTEXFORMAT_UBYTE4,
-	SG_VERTEXFORMAT_UBYTE4N,
-	SG_VERTEXFORMAT_SHORT2,
-	SG_VERTEXFORMAT_SHORT2N,
-	SG_VERTEXFORMAT_USHORT2N,
-	SG_VERTEXFORMAT_SHORT4,
-	SG_VERTEXFORMAT_SHORT4N,
-	SG_VERTEXFORMAT_USHORT4N,
-	SG_VERTEXFORMAT_UINT10_N2,
-	_SG_VERTEXFORMAT_NUM,
-	_SG_VERTEXFORMAT_FORCE_U32 = 0x7FFFFFFF
+	VERTEXFORMAT_INVALID,
+	VERTEXFORMAT_FLOAT,
+	VERTEXFORMAT_FLOAT2,
+	VERTEXFORMAT_FLOAT3,
+	VERTEXFORMAT_FLOAT4,
+	VERTEXFORMAT_BYTE4,
+	VERTEXFORMAT_BYTE4N,
+	VERTEXFORMAT_UBYTE4,
+	VERTEXFORMAT_UBYTE4N,
+	VERTEXFORMAT_SHORT2,
+	VERTEXFORMAT_SHORT2N,
+	VERTEXFORMAT_USHORT2N,
+	VERTEXFORMAT_SHORT4,
+	VERTEXFORMAT_SHORT4N,
+	VERTEXFORMAT_USHORT4N,
+	VERTEXFORMAT_UINT10_N2,
+	_VERTEXFORMAT_NUM,
+	_VERTEXFORMAT_FORCE_U32 = 0x7FFFFFFF
 };
 
 /*
@@ -561,7 +561,7 @@ enum VertexFormat
 
 	Defines whether the input pointer of a vertex input stream is advanced
 	'per vertex' or 'per instance'. The default step-func is
-	SG_VERTEXSTEP_PER_VERTEX. SG_VERTEXSTEP_PER_INSTANCE is used with
+	VERTEXSTEP_PER_VERTEX. VERTEXSTEP_PER_INSTANCE is used with
 	instanced-rendering.
 
 	The vertex-step is part of the vertex-layout definition
@@ -569,11 +569,11 @@ enum VertexFormat
 */
 enum VertexStep
 {
-	_SG_VERTEXSTEP_DEFAULT,     /* value 0 reserved for default-init */
-	SG_VERTEXSTEP_PER_VERTEX,
-	SG_VERTEXSTEP_PER_INSTANCE,
-	_SG_VERTEXSTEP_NUM,
-	_SG_VERTEXSTEP_FORCE_U32 = 0x7FFFFFFF
+	_VERTEXSTEP_DEFAULT,     /* value 0 reserved for default-init */
+	VERTEXSTEP_PER_VERTEX,
+	VERTEXSTEP_PER_INSTANCE,
+	_VERTEXSTEP_NUM,
+	_VERTEXSTEP_FORCE_U32 = 0x7FFFFFFF
 };
 
 /*
@@ -585,14 +585,14 @@ enum VertexStep
 */
 enum UniformType
 {
-	SG_UNIFORMTYPE_INVALID,
-	SG_UNIFORMTYPE_FLOAT,
-	SG_UNIFORMTYPE_FLOAT2,
-	SG_UNIFORMTYPE_FLOAT3,
-	SG_UNIFORMTYPE_FLOAT4,
-	SG_UNIFORMTYPE_MAT4,
-	_SG_UNIFORMTYPE_NUM,
-	_SG_UNIFORMTYPE_FORCE_U32 = 0x7FFFFFFF
+	UNIFORMTYPE_INVALID,
+	UNIFORMTYPE_FLOAT,
+	UNIFORMTYPE_FLOAT2,
+	UNIFORMTYPE_FLOAT3,
+	UNIFORMTYPE_FLOAT4,
+	UNIFORMTYPE_MAT4,
+	_UNIFORMTYPE_NUM,
+	_UNIFORMTYPE_FORCE_U32 = 0x7FFFFFFF
 };
 
 /*
@@ -602,16 +602,16 @@ enum UniformType
 	PipelineDesc.rasterizer.cull_mode member when creating a
 	pipeline object.
 
-	The default cull mode is SG_CULLMODE_NONE
+	The default cull mode is CULLMODE_NONE
 */
 enum CullMode
 {
-	_SG_CULLMODE_DEFAULT,   /* value 0 reserved for default-init */
-	SG_CULLMODE_NONE,
-	SG_CULLMODE_FRONT,
-	SG_CULLMODE_BACK,
-	_SG_CULLMODE_NUM,
-	_SG_CULLMODE_FORCE_U32 = 0x7FFFFFFF
+	_CULLMODE_DEFAULT,   /* value 0 reserved for default-init */
+	CULLMODE_NONE,
+	CULLMODE_FRONT,
+	CULLMODE_BACK,
+	_CULLMODE_NUM,
+	_CULLMODE_FORCE_U32 = 0x7FFFFFFF
 };
 
 /*
@@ -621,15 +621,15 @@ enum CullMode
 	is used in the member PipelineDesc.rasterizer.face_winding
 	when creating a pipeline object.
 
-	The default winding is SG_FACEWINDING_CW (clockwise)
+	The default winding is FACEWINDING_CW (clockwise)
 */
 enum FaceWinding
 {
-	_SG_FACEWINDING_DEFAULT,    /* value 0 reserved for default-init */
-	SG_FACEWINDING_CCW,
-	SG_FACEWINDING_CW,
-	_SG_FACEWINDING_NUM,
-	_SG_FACEWINDING_FORCE_U32 = 0x7FFFFFFF
+	_FACEWINDING_DEFAULT,    /* value 0 reserved for default-init */
+	FACEWINDING_CCW,
+	FACEWINDING_CW,
+	_FACEWINDING_NUM,
+	_FACEWINDING_FORCE_U32 = 0x7FFFFFFF
 };
 
 /*
@@ -645,21 +645,21 @@ enum FaceWinding
 			.stencil_back.compare_func
 
 	The default compare func for depth- and stencil-tests is
-	SG_COMPAREFUNC_ALWAYS.
+	COMPAREFUNC_ALWAYS.
 */
 enum CompareFunc
 {
-	_SG_COMPAREFUNC_DEFAULT,    /* value 0 reserved for default-init */
-	SG_COMPAREFUNC_NEVER,
-	SG_COMPAREFUNC_LESS,
-	SG_COMPAREFUNC_EQUAL,
-	SG_COMPAREFUNC_LESS_EQUAL,
-	SG_COMPAREFUNC_GREATER,
-	SG_COMPAREFUNC_NOT_EQUAL,
-	SG_COMPAREFUNC_GREATER_EQUAL,
-	SG_COMPAREFUNC_ALWAYS,
-	_SG_COMPAREFUNC_NUM,
-	_SG_COMPAREFUNC_FORCE_U32 = 0x7FFFFFFF
+	_COMPAREFUNC_DEFAULT,    /* value 0 reserved for default-init */
+	COMPAREFUNC_NEVER,
+	COMPAREFUNC_LESS,
+	COMPAREFUNC_EQUAL,
+	COMPAREFUNC_LESS_EQUAL,
+	COMPAREFUNC_GREATER,
+	COMPAREFUNC_NOT_EQUAL,
+	COMPAREFUNC_GREATER_EQUAL,
+	COMPAREFUNC_ALWAYS,
+	_COMPAREFUNC_NUM,
+	_COMPAREFUNC_FORCE_U32 = 0x7FFFFFFF
 };
 
 /*
@@ -680,21 +680,21 @@ enum CompareFunc
 				.depth_fail_op
 				.pass_op
 
-	The default value is SG_STENCILOP_KEEP.
+	The default value is STENCILOP_KEEP.
 */
 enum StencilOp
 {
-	_SG_STENCILOP_DEFAULT,      /* value 0 reserved for default-init */
-	SG_STENCILOP_KEEP,
-	SG_STENCILOP_ZERO,
-	SG_STENCILOP_REPLACE,
-	SG_STENCILOP_INCR_CLAMP,
-	SG_STENCILOP_DECR_CLAMP,
-	SG_STENCILOP_INVERT,
-	SG_STENCILOP_INCR_WRAP,
-	SG_STENCILOP_DECR_WRAP,
-	_SG_STENCILOP_NUM,
-	_SG_STENCILOP_FORCE_U32 = 0x7FFFFFFF
+	_STENCILOP_DEFAULT,      /* value 0 reserved for default-init */
+	STENCILOP_KEEP,
+	STENCILOP_ZERO,
+	STENCILOP_REPLACE,
+	STENCILOP_INCR_CLAMP,
+	STENCILOP_DECR_CLAMP,
+	STENCILOP_INVERT,
+	STENCILOP_INCR_WRAP,
+	STENCILOP_DECR_WRAP,
+	_STENCILOP_NUM,
+	_STENCILOP_FORCE_U32 = 0x7FFFFFFF
 };
 
 /*
@@ -710,29 +710,29 @@ enum StencilOp
 			.src_factor_alpha
 			.dst_factor_alpha
 
-	The default value is SG_BLENDFACTOR_ONE for source
-	factors, and SG_BLENDFACTOR_ZERO for destination factors.
+	The default value is BLENDFACTOR_ONE for source
+	factors, and BLENDFACTOR_ZERO for destination factors.
 */
 enum BlendFactor
 {
-	_SG_BLENDFACTOR_DEFAULT,    /* value 0 reserved for default-init */
-	SG_BLENDFACTOR_ZERO,
-	SG_BLENDFACTOR_ONE,
-	SG_BLENDFACTOR_SRC_COLOR,
-	SG_BLENDFACTOR_ONE_MINUS_SRC_COLOR,
-	SG_BLENDFACTOR_SRC_ALPHA,
-	SG_BLENDFACTOR_ONE_MINUS_SRC_ALPHA,
-	SG_BLENDFACTOR_DST_COLOR,
-	SG_BLENDFACTOR_ONE_MINUS_DST_COLOR,
-	SG_BLENDFACTOR_DST_ALPHA,
-	SG_BLENDFACTOR_ONE_MINUS_DST_ALPHA,
-	SG_BLENDFACTOR_SRC_ALPHA_SATURATED,
-	SG_BLENDFACTOR_BLEND_COLOR,
-	SG_BLENDFACTOR_ONE_MINUS_BLEND_COLOR,
-	SG_BLENDFACTOR_BLEND_ALPHA,
-	SG_BLENDFACTOR_ONE_MINUS_BLEND_ALPHA,
-	_SG_BLENDFACTOR_NUM,
-	_SG_BLENDFACTOR_FORCE_U32 = 0x7FFFFFFF
+	_BLENDFACTOR_DEFAULT,    /* value 0 reserved for default-init */
+	BLENDFACTOR_ZERO,
+	BLENDFACTOR_ONE,
+	BLENDFACTOR_SRC_COLOR,
+	BLENDFACTOR_ONE_MINUS_SRC_COLOR,
+	BLENDFACTOR_SRC_ALPHA,
+	BLENDFACTOR_ONE_MINUS_SRC_ALPHA,
+	BLENDFACTOR_DST_COLOR,
+	BLENDFACTOR_ONE_MINUS_DST_COLOR,
+	BLENDFACTOR_DST_ALPHA,
+	BLENDFACTOR_ONE_MINUS_DST_ALPHA,
+	BLENDFACTOR_SRC_ALPHA_SATURATED,
+	BLENDFACTOR_BLEND_COLOR,
+	BLENDFACTOR_ONE_MINUS_BLEND_COLOR,
+	BLENDFACTOR_BLEND_ALPHA,
+	BLENDFACTOR_ONE_MINUS_BLEND_ALPHA,
+	_BLENDFACTOR_NUM,
+	_BLENDFACTOR_FORCE_U32 = 0x7FFFFFFF
 };
 
 /*
@@ -747,16 +747,16 @@ enum BlendFactor
 			.op_rgb
 			.op_alpha
 
-	The default value is SG_BLENDOP_ADD.
+	The default value is BLENDOP_ADD.
 */
 enum BlendOp
 {
-	_SG_BLENDOP_DEFAULT,    /* value 0 reserved for default-init */
-	SG_BLENDOP_ADD,
-	SG_BLENDOP_SUBTRACT,
-	SG_BLENDOP_REVERSE_SUBTRACT,
-	_SG_BLENDOP_NUM,
-	_SG_BLENDOP_FORCE_U32 = 0x7FFFFFFF
+	_BLENDOP_DEFAULT,    /* value 0 reserved for default-init */
+	BLENDOP_ADD,
+	BLENDOP_SUBTRACT,
+	BLENDOP_REVERSE_SUBTRACT,
+	_BLENDOP_NUM,
+	_BLENDOP_FORCE_U32 = 0x7FFFFFFF
 };
 
 /*
@@ -766,23 +766,23 @@ enum BlendOp
 	framebuffer. This is used in the members
 	PipelineDesc.blend.color_write_mask when creating a pipeline object.
 
-	The default colormask is SG_COLORMASK_RGBA (write all colors channels)
+	The default colormask is COLORMASK_RGBA (write all colors channels)
 
 	NOTE: since the color mask value 0 is reserved for the default value
-	(SG_COLORMASK_RGBA), use SG_COLORMASK_NONE if all color channels
+	(COLORMASK_RGBA), use COLORMASK_NONE if all color channels
 	should be disabled.
 */
 enum ColorMask
 {
-	_SG_COLORMASK_DEFAULT = 0,      /* value 0 reserved for default-init */
-	SG_COLORMASK_NONE = ( 0x10 ),     /* special value for 'all channels disabled */
-	SG_COLORMASK_R = ( 1 << 0 ),
-	SG_COLORMASK_G = ( 1 << 1 ),
-	SG_COLORMASK_B = ( 1 << 2 ),
-	SG_COLORMASK_A = ( 1 << 3 ),
-	SG_COLORMASK_RGB = 0x7,
-	SG_COLORMASK_RGBA = 0xF,
-	_SG_COLORMASK_FORCE_U32 = 0x7FFFFFFF
+	_COLORMASK_DEFAULT = 0,      /* value 0 reserved for default-init */
+	COLORMASK_NONE = ( 0x10 ),     /* special value for 'all channels disabled */
+	COLORMASK_R = ( 1 << 0 ),
+	COLORMASK_G = ( 1 << 1 ),
+	COLORMASK_B = ( 1 << 2 ),
+	COLORMASK_A = ( 1 << 3 ),
+	COLORMASK_RGB = 0x7,
+	COLORMASK_RGBA = 0xF,
+	_COLORMASK_FORCE_U32 = 0x7FFFFFFF
 };
 
 /*
@@ -790,47 +790,47 @@ enum ColorMask
 
 	Defines what action should be performed at the start of a render pass:
 
-	SG_ACTION_CLEAR:    clear the render target image
-	SG_ACTION_LOAD:     load the previous content of the render target image
-	SG_ACTION_DONTCARE: leave the render target image content undefined
+	ACTION_CLEAR:    clear the render target image
+	ACTION_LOAD:     load the previous content of the render target image
+	ACTION_DONTCARE: leave the render target image content undefined
 
 	This is used in the PassAction structure.
 
-	The default action for all pass attachments is SG_ACTION_CLEAR, with the
+	The default action for all pass attachments is ACTION_CLEAR, with the
 	clear color rgba = {0.5f, 0.5f, 0.5f, 1.0f], depth=1.0 and stencil=0.
 
 	If you want to override the default behaviour, it is important to not
 	only set the clear color, but the 'action' field as well (as long as this
-	is in its _SG_ACTION_DEFAULT, the value fields will be ignored).
+	is in its _ACTION_DEFAULT, the value fields will be ignored).
 */
 enum Action
 {
-	_SG_ACTION_DEFAULT,
-	SG_ACTION_CLEAR,
-	SG_ACTION_LOAD,
-	SG_ACTION_DONTCARE,
-	_SG_ACTION_NUM,
-	_SG_ACTION_FORCE_U32 = 0x7FFFFFFF
+	_ACTION_DEFAULT,
+	ACTION_CLEAR,
+	ACTION_LOAD,
+	ACTION_DONTCARE,
+	_ACTION_NUM,
+	_ACTION_FORCE_U32 = 0x7FFFFFFF
 };
 
 /*
 	PassAction
 
 	The PassAction struct defines the actions to be performed
-	at the start of a rendering pass in the functions sg_begin_pass()
-	and sg_begin_default_pass().
+	at the start of a rendering pass in the functions begin_pass()
+	and begin_default_pass().
 
 	A separate action and clear values can be defined for each
 	color attachment, and for the depth-stencil attachment.
 
 	The default clear values are defined by the macros:
 
-	- SG_DEFAULT_CLEAR_RED:     0.5f
-	- SG_DEFAULT_CLEAR_GREEN:   0.5f
-	- SG_DEFAULT_CLEAR_BLUE:    0.5f
-	- SG_DEFAULT_CLEAR_ALPHA:   1.0f
-	- SG_DEFAULT_CLEAR_DEPTH:   1.0f
-	- SG_DEFAULT_CLEAR_STENCIL: 0
+	- DEFAULT_CLEAR_RED:     0.5f
+	- DEFAULT_CLEAR_GREEN:   0.5f
+	- DEFAULT_CLEAR_BLUE:    0.5f
+	- DEFAULT_CLEAR_ALPHA:   1.0f
+	- DEFAULT_CLEAR_DEPTH:   1.0f
+	- DEFAULT_CLEAR_STENCIL: 0
 */
 struct ColorAttachmentAction
 {
@@ -853,7 +853,7 @@ struct StencilAttachmentAction
 struct PassAction
 {
 	uint32_t _start_canary;
-	ColorAttachmentAction colors[SG_MAX_COLOR_ATTACHMENTS];
+	ColorAttachmentAction colors[MAX_COLOR_ATTACHMENTS];
 	DepthAttachmentAction depth;
 	StencilAttachmentAction stencil;
 	uint32_t _end_canary;
@@ -864,7 +864,7 @@ struct PassAction
 
 	The Bindings structure defines the resource binding slots
 	of the sokol_gfx render pipeline, used as argument to the
-	sg_apply_bindings() function.
+	apply_bindings() function.
 
 	A resource binding struct contains:
 
@@ -876,8 +876,8 @@ struct PassAction
 	- 0..N fragment shader stage images
 
 	The max number of vertex buffer and shader stage images
-	are defined by the SG_MAX_SHADERSTAGE_BUFFERS and
-	SG_MAX_SHADERSTAGE_IMAGES configuration constants.
+	are defined by the MAX_SHADERSTAGE_BUFFERS and
+	MAX_SHADERSTAGE_IMAGES configuration constants.
 
 	The optional buffer offsets can be used to put different unrelated
 	chunks of vertex- and/or index-data into the same buffer objects.
@@ -885,12 +885,12 @@ struct PassAction
 struct Bindings
 {
 	uint32_t _start_canary;
-	BufferHandle vertex_buffers[SG_MAX_SHADERSTAGE_BUFFERS];
-	int vertex_buffer_offsets[SG_MAX_SHADERSTAGE_BUFFERS];
+	BufferHandle vertex_buffers[MAX_SHADERSTAGE_BUFFERS];
+	int vertex_buffer_offsets[MAX_SHADERSTAGE_BUFFERS];
 	BufferHandle index_buffer;
 	int index_buffer_offset;
-	ImageHandle vs_images[SG_MAX_SHADERSTAGE_IMAGES];
-	ImageHandle fs_images[SG_MAX_SHADERSTAGE_IMAGES];
+	ImageHandle vs_images[MAX_SHADERSTAGE_IMAGES];
+	ImageHandle fs_images[MAX_SHADERSTAGE_IMAGES];
 	uint32_t _end_canary;
 };
 
@@ -898,41 +898,41 @@ struct Bindings
 	BufferDesc
 
 	Creation parameters for BufferHandle objects, used in the
-	sg_make_buffer() call.
+	make_buffer() call.
 
 	The default configuration is:
 
 	.size:      0       (this *must* be set to a valid size in bytes)
-	.type:      SG_BUFFERTYPE_VERTEXBUFFER
-	.usage:     SG_USAGE_IMMUTABLE
+	.type:      BUFFERTYPE_VERTEXBUFFER
+	.usage:     USAGE_IMMUTABLE
 	.content    0
 	.label      0       (optional string label for trace hooks)
 
 	The label will be ignored by sokol_gfx.h, it is only useful
-	when hooking into sg_make_buffer() or sg_init_buffer() via
-	the sg_install_trace_hooks() function.
+	when hooking into make_buffer() or init_buffer() via
+	the install_trace_hooks() function.
 
 	ADVANCED TOPIC: Injecting native 3D-API buffers:
 
 	The following struct members allow to inject your own GL, Metal
 	or D3D11 buffers into sokol_gfx:
 
-	.gl_buffers[SG_NUM_INFLIGHT_FRAMES]
-	.mtl_buffers[SG_NUM_INFLIGHT_FRAMES]
+	.gl_buffers[NUM_INFLIGHT_FRAMES]
+	.mtl_buffers[NUM_INFLIGHT_FRAMES]
 	.d3d11_buffer
 
 	You must still provide all other members except the .content member, and
 	these must match the creation parameters of the native buffers you
-	provide. For SG_USAGE_IMMUTABLE, only provide a single native 3D-API
-	buffer, otherwise you need to provide SG_NUM_INFLIGHT_FRAMES buffers
+	provide. For USAGE_IMMUTABLE, only provide a single native 3D-API
+	buffer, otherwise you need to provide NUM_INFLIGHT_FRAMES buffers
 	(only for GL and Metal, not D3D11). Providing multiple buffers for GL and
 	Metal is necessary because sokol_gfx will rotate through them when
-	calling sg_update_buffer() to prevent lock-stalls.
+	calling update_buffer() to prevent lock-stalls.
 
 	Note that it is expected that immutable injected buffer have already been
 	initialized with content, and the .content member must be 0!
 
-	Also you need to call sg_reset_state_cache() after calling native 3D-API
+	Also you need to call reset_state_cache() after calling native 3D-API
 	functions, and before calling any sokol_gfx function.
 */
 struct BufferDesc
@@ -946,9 +946,9 @@ struct BufferDesc
 	union
 	{
 		/* GL specific */
-		uint32_t gl_buffers[SG_NUM_INFLIGHT_FRAMES];
+		uint32_t gl_buffers[NUM_INFLIGHT_FRAMES];
 		/* Metal specific */
-		const void * mtl_buffers[SG_NUM_INFLIGHT_FRAMES];
+		const void * mtl_buffers[NUM_INFLIGHT_FRAMES];
 		/* D3D11 specific */
 		const void * d3d11_buffer;
 		/* Everything specific */
@@ -985,45 +985,45 @@ struct SubimageContent
 */
 struct ImageContent
 {
-	SubimageContent subimage[SG_CUBEFACE_NUM][SG_MAX_MIPMAPS];
+	SubimageContent subimage[CUBEFACE_NUM][MAX_MIPMAPS];
 };
 
 /*
 	ImageDesc
 
 	Creation parameters for ImageHandle objects, used in the
-	sg_make_image() call.
+	make_image() call.
 
 	The default configuration is:
 
-	.type:              SG_IMAGETYPE_2D
+	.type:              IMAGETYPE_2D
 	.render_target:     false
 	.width              0 (must be set to >0)
 	.height             0 (must be set to >0)
 	.depth/.layers:     1
 	.num_mipmaps:       1
-	.usage:             SG_USAGE_IMMUTABLE
-	.pixel_format:      SG_PIXELFORMAT_RGBA8 for textures, backend-dependent
+	.usage:             USAGE_IMMUTABLE
+	.pixel_format:      PIXELFORMAT_RGBA8 for textures, backend-dependent
 						for render targets (RGBA8 or BGRA8)
 	.sample_count:      1 (only used in render_targets)
-	.min_filter:        SG_FILTER_NEAREST
-	.mag_filter:        SG_FILTER_NEAREST
-	.wrap_u:            SG_WRAP_REPEAT
-	.wrap_v:            SG_WRAP_REPEAT
-	.wrap_w:            SG_WRAP_REPEAT (only SG_IMAGETYPE_3D)
-	.border_color       SG_BORDERCOLOR_OPAQUE_BLACK
+	.min_filter:        FILTER_NEAREST
+	.mag_filter:        FILTER_NEAREST
+	.wrap_u:            WRAP_REPEAT
+	.wrap_v:            WRAP_REPEAT
+	.wrap_w:            WRAP_REPEAT (only IMAGETYPE_3D)
+	.border_color       BORDERCOLOR_OPAQUE_BLACK
 	.max_anisotropy     1 (must be 1..16)
 	.min_lod            0.0f
 	.max_lod            FLT_MAX
 	.content            an ImageContent struct to define the initial content
 	.label              0       (optional string label for trace hooks)
 
-	SG_IMAGETYPE_ARRAY and SG_IMAGETYPE_3D are not supported on
-	WebGL/GLES2, use sg_query_features().imagetype_array and
-	sg_query_features().imagetype_3d at runtime to check
+	IMAGETYPE_ARRAY and IMAGETYPE_3D are not supported on
+	WebGL/GLES2, use query_features().imagetype_array and
+	query_features().imagetype_3d at runtime to check
 	if array- and 3D-textures are supported.
 
-	Images with usage SG_USAGE_IMMUTABLE must be fully initialized by
+	Images with usage USAGE_IMMUTABLE must be fully initialized by
 	providing a valid .content member which points to
 	initialization data.
 
@@ -1032,8 +1032,8 @@ struct ImageContent
 	The following struct members allow to inject your own GL, Metal
 	or D3D11 textures into sokol_gfx:
 
-	.gl_textures[SG_NUM_INFLIGHT_FRAMES]
-	.mtl_textures[SG_NUM_INFLIGHT_FRAMES]
+	.gl_textures[NUM_INFLIGHT_FRAMES]
+	.mtl_textures[NUM_INFLIGHT_FRAMES]
 	.d3d11_texture
 
 	The same rules apply as for injecting native buffers
@@ -1069,9 +1069,9 @@ struct ImageDesc
 	union
 	{
 		/* GL specific */
-		uint32_t gl_textures[SG_NUM_INFLIGHT_FRAMES];
+		uint32_t gl_textures[NUM_INFLIGHT_FRAMES];
 		/* Metal specific */
-		const void * mtl_textures[SG_NUM_INFLIGHT_FRAMES];
+		const void * mtl_textures[NUM_INFLIGHT_FRAMES];
 		/* D3D11 specific */
 		const void * d3d11_texture;
 		/* Everything specific */
@@ -1084,7 +1084,7 @@ struct ImageDesc
 	ShaderDesc
 
 	The structure ShaderDesc defines all creation parameters
-	for shader programs, used as input to the sg_make_shader() function:
+	for shader programs, used as input to the make_shader() function:
 
 	- reflection information for vertex attributes (vertex shader inputs):
 		- vertex attribute name (required for GLES2, optional for GLES3 and GL)
@@ -1096,10 +1096,10 @@ struct ImageDesc
 			- the size of the uniform block in bytes
 			- reflection info for each uniform block member (only required for GL backends):
 				- member name
-				- member type (SG_UNIFORMTYPE_xxx)
+				- member type (UNIFORMTYPE_xxx)
 				- if the member is an array, the number of array items
 		- reflection info for the texture images used by the shader stage:
-			- the image type (SG_IMAGETYPE_xxx)
+			- the image type (IMAGETYPE_xxx)
 			- the name of the texture sampler (required for GLES2, optional everywhere else)
 
 	For all GL backends, shader source-code must be provided. For D3D11 and Metal,
@@ -1125,7 +1125,7 @@ struct ShaderUniformDesc
 struct ShaderUniformBlockDesc
 {
 	int size;
-	ShaderUniformDesc uniforms[SG_MAX_UB_MEMBERS];
+	ShaderUniformDesc uniforms[MAX_UB_MEMBERS];
 };
 
 struct ShaderImageDesc
@@ -1140,14 +1140,14 @@ struct ShaderStageDesc
 	const uint8_t * byte_code;
 	int byte_code_size;
 	XE::String entry;
-	ShaderUniformBlockDesc uniform_blocks[SG_MAX_SHADERSTAGE_UBS];
-	ShaderImageDesc images[SG_MAX_SHADERSTAGE_IMAGES];
+	ShaderUniformBlockDesc uniform_blocks[MAX_SHADERSTAGE_UBS];
+	ShaderImageDesc images[MAX_SHADERSTAGE_IMAGES];
 };
 
 struct ShaderDesc
 {
 	uint32_t _start_canary;
-	ShaderAttrDesc attrs[SG_MAX_VERTEX_ATTRIBUTES];
+	ShaderAttrDesc attrs[MAX_VERTEX_ATTRIBUTES];
 	ShaderStageDesc vs;
 	ShaderStageDesc fs;
 	XE::String label;
@@ -1159,7 +1159,7 @@ struct ShaderDesc
 
 	The PipelineDesc struct defines all creation parameters
 	for an PipelineHandle object, used as argument to the
-	sg_make_pipeline() function:
+	make_pipeline() function:
 
 	- the vertex layout for all input vertex buffers
 	- a shader object
@@ -1181,22 +1181,22 @@ struct ShaderDesc
 	.layout:
 		.buffers[]:         vertex buffer layouts
 			.stride:        0 (if no stride is given it will be computed)
-			.step_func      SG_VERTEXSTEP_PER_VERTEX
+			.step_func      VERTEXSTEP_PER_VERTEX
 			.step_rate      1
 		.attrs[]:           vertex attribute declarations
 			.buffer_index   0 the vertex buffer bind slot
 			.offset         0 (offsets can be omitted if the vertex layout has no gaps)
-			.format         SG_VERTEXFORMAT_INVALID (must be initialized!)
+			.format         VERTEXFORMAT_INVALID (must be initialized!)
 	.shader:            0 (must be intilized with a valid ShaderHandle id!)
-	.primitive_type:    SG_PRIMITIVETYPE_TRIANGLES
-	.index_type:        SG_INDEXTYPE_NONE
+	.primitive_type:    PRIMITIVETYPE_TRIANGLES
+	.index_type:        INDEXTYPE_NONE
 	.depth_stencil:
 		.stencil_front, .stencil_back:
-			.fail_op:               SG_STENCILOP_KEEP
-			.depth_fail_op:         SG_STENCILOP_KEEP
-			.pass_op:               SG_STENCILOP_KEEP
-			.compare_func           SG_COMPAREFUNC_ALWAYS
-		.depth_compare_func:    SG_COMPAREFUNC_ALWAYS
+			.fail_op:               STENCILOP_KEEP
+			.depth_fail_op:         STENCILOP_KEEP
+			.pass_op:               STENCILOP_KEEP
+			.compare_func           COMPAREFUNC_ALWAYS
+		.depth_compare_func:    COMPAREFUNC_ALWAYS
 		.depth_write_enabled:   false
 		.stencil_enabled:       false
 		.stencil_read_mask:     0
@@ -1204,21 +1204,21 @@ struct ShaderDesc
 		.stencil_ref:           0
 	.blend:
 		.enabled:               false
-		.src_factor_rgb:        SG_BLENDFACTOR_ONE
-		.dst_factor_rgb:        SG_BLENDFACTOR_ZERO
-		.op_rgb:                SG_BLENDOP_ADD
-		.src_factor_alpha:      SG_BLENDFACTOR_ONE
-		.dst_factor_alpha:      SG_BLENDFACTOR_ZERO
-		.op_alpha:              SG_BLENDOP_ADD
-		.color_write_mask:      SG_COLORMASK_RGBA
+		.src_factor_rgb:        BLENDFACTOR_ONE
+		.dst_factor_rgb:        BLENDFACTOR_ZERO
+		.op_rgb:                BLENDOP_ADD
+		.src_factor_alpha:      BLENDFACTOR_ONE
+		.dst_factor_alpha:      BLENDFACTOR_ZERO
+		.op_alpha:              BLENDOP_ADD
+		.color_write_mask:      COLORMASK_RGBA
 		.color_attachment_count 1
-		.color_format           SG_PIXELFORMAT_RGBA8
-		.depth_format           SG_PIXELFORMAT_DEPTHSTENCIL
+		.color_format           PIXELFORMAT_RGBA8
+		.depth_format           PIXELFORMAT_DEPTHSTENCIL
 		.blend_color:           { 0.0f, 0.0f, 0.0f, 0.0f }
 	.rasterizer:
 		.alpha_to_coverage_enabled:     false
-		.cull_mode:                     SG_CULLMODE_NONE
-		.face_winding:                  SG_FACEWINDING_CW
+		.cull_mode:                     CULLMODE_NONE
+		.face_winding:                  FACEWINDING_CW
 		.sample_count:                  1
 		.depth_bias:                    0.0f
 		.depth_bias_slope_scale:        0.0f
@@ -1241,8 +1241,8 @@ struct VertexAttrDesc
 
 struct LayoutDesc
 {
-	BufferLayoutDesc buffers[SG_MAX_SHADERSTAGE_BUFFERS];
-	VertexAttrDesc attrs[SG_MAX_VERTEX_ATTRIBUTES];
+	BufferLayoutDesc buffers[MAX_SHADERSTAGE_BUFFERS];
+	VertexAttrDesc attrs[MAX_VERTEX_ATTRIBUTES];
 };
 
 struct StencilState
@@ -1310,7 +1310,7 @@ struct PipelineDesc
 	PassDesc
 
 	Creation parameters for an PassHandle object, used as argument
-	to the sg_make_pass() function.
+	to the make_pass() function.
 
 	A pass object contains 1..4 color-attachments and none, or one,
 	depth-stencil-attachment. Each attachment consists of
@@ -1343,7 +1343,7 @@ struct AttachmentDesc
 struct PassDesc
 {
 	uint32_t _start_canary;
-	AttachmentDesc color_attachments[SG_MAX_COLOR_ATTACHMENTS];
+	AttachmentDesc color_attachments[MAX_COLOR_ATTACHMENTS];
 	AttachmentDesc depth_stencil_attachment;
 	XE::String label;
 	uint32_t _end_canary;
@@ -1364,11 +1364,11 @@ struct PassDesc
 
 	The *_info structs are used as the return values of the following functions:
 
-	sg_query_buffer_info()
-	sg_query_image_info()
-	sg_query_shader_info()
-	sg_query_pipeline_info()
-	sg_query_pass_info()
+	query_buffer_info()
+	query_image_info()
+	query_shader_info()
+	query_pipeline_info()
+	query_pass_info()
 */
 struct SlotInfo
 {
@@ -1380,10 +1380,10 @@ struct SlotInfo
 struct BufferInfo
 {
 	SlotInfo slot;              /* resource pool slot info */
-	uint32_t update_frame_index;    /* frame index of last sg_update_buffer() */
-	uint32_t append_frame_index;    /* frame index of last sg_append_buffer() */
-	int append_pos;                 /* current position in buffer for sg_append_buffer() */
-	bool append_overflow;           /* is buffer in overflow state (due to sg_append_buffer) */
+	uint32_t update_frame_index;    /* frame index of last update_buffer() */
+	uint32_t append_frame_index;    /* frame index of last append_buffer() */
+	int append_pos;                 /* current position in buffer for append_buffer() */
+	bool append_overflow;           /* is buffer in overflow state (due to append_buffer) */
 	int num_slots;                  /* number of renaming-slots for dynamically updated buffers */
 	int active_slot;                /* currently active write-slot for dynamically updated buffers */
 };
@@ -1391,7 +1391,7 @@ struct BufferInfo
 struct ImageInfo
 {
 	SlotInfo slot;              /* resource pool slot info */
-	uint32_t upd_frame_index;       /* frame index of last sg_update_image() */
+	uint32_t upd_frame_index;       /* frame index of last update_image() */
 	int num_slots;                  /* number of renaming-slots for dynamically updated images */
 	int active_slot;                /* currently active write-slot for dynamically updated images */
 };
@@ -1415,7 +1415,7 @@ struct PassInfo
 	GfxDesc
 
 	The GfxDesc struct contains configuration values for sokol_gfx,
-	it is used as parameter to the sg_setup() call.
+	it is used as parameter to the setup() call.
 
 	The default configuration is:
 
@@ -1445,11 +1445,11 @@ struct PassInfo
 	.mtl_renderpass_descriptor_cb
 		a C callback function to obtain the MTLRenderPassDescriptor for the
 		current frame when rendering to the default framebuffer, will be called
-		in sg_begin_default_pass()
+		in begin_default_pass()
 	.mtl_drawable_cb
 		a C callback function to obtain a MTLDrawable for the current
 		frame when rendering to the default framebuffer, will be called in
-		sg_end_pass() of the default pass
+		end_pass() of the default pass
 	.mtl_global_uniform_buffer_size
 		the size of the global uniform buffer in bytes, this must be big
 		enough to hold all uniform block updates for a single frame,
@@ -1462,18 +1462,18 @@ struct PassInfo
 	D3D11 specific:
 	.d3d11_device
 		a pointer to the ID3D11Device object, this must have been created
-		before sg_setup() is called
+		before setup() is called
 	.d3d11_device_context
 		a pointer to the ID3D11DeviceContext object
 	.d3d11_render_target_view_cb
 		a C callback function to obtain a pointer to the current
 		ID3D11RenderTargetView object of the default framebuffer,
-		this function will be called in sg_begin_pass() when rendering
+		this function will be called in begin_pass() when rendering
 		to the default framebuffer
 	.d3d11_depth_stencil_view_cb
 		a C callback function to obtain a pointer to the current
 		ID3D11DepthStencilView object of the default framebuffer,
-		this function will be called in sg_begin_pass() when rendering
+		this function will be called in begin_pass() when rendering
 		to the default framebuffer
 */
 struct GfxDesc
