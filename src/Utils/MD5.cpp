@@ -213,7 +213,8 @@ MD5::MD5( XE::memory_view val )
 
 MD5::MD5( const std::string & val )
 {
-	XE::memory_view view( ( const std::byte * )val.data(), val.size() );
+	XE::memory_view view( val.data(), val.size() );
+
 	Hash( view );
 }
 
@@ -235,10 +236,31 @@ MD5 & MD5::operator=( XE::memory_view val )
 
 MD5 & MD5::operator=( const std::string & val )
 {
-	XE::memory_view view( ( const std::byte * )val.data(), val.size() );
+	XE::memory_view view( val.data(), val.size() );
+
 	Hash( view );
 
 	return *this;
+}
+
+bool XE::MD5::operator<( const MD5 & val ) const
+{
+	return To16String() < val.To16String();
+}
+
+bool XE::MD5::operator<=( const MD5 & val ) const
+{
+	return To16String() <= val.To16String();
+}
+
+bool XE::MD5::operator>( const MD5 & val ) const
+{
+	return To16String() > val.To16String();
+}
+
+bool XE::MD5::operator>=( const MD5 & val ) const
+{
+	return To16String() >= val.To16String();
 }
 
 bool MD5::operator==( const MD5 & val ) const

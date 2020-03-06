@@ -32,6 +32,14 @@ public:
 	MD5 & operator =( const std::string & val );
 
 public:
+	bool operator <( const MD5 & val ) const;
+
+	bool operator <=( const MD5 & val ) const;
+
+	bool operator >( const MD5 & val ) const;
+
+	bool operator >=( const MD5 & val ) const;
+
 	bool operator ==( const MD5 & val ) const;
 
 	bool operator !=( const MD5 & val ) const;

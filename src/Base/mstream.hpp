@@ -13,13 +13,15 @@
 
 BEG_XE_NAMESPACE
 
-template <class _Elem, class _Traits> class basic_memory_view;
+template <class _Elem, class _Traits>
+class basic_memory_view;
 
-template <class _Traits> class _Memory_view_iterator
+template <class _Traits> 
+class _Memory_view_iterator
 {
 public:
 	using iterator_category = std::random_access_iterator_tag;
-	using value_type        = typename _Traits::element_type;
+	using value_type        = typename _Traits::char_type;
 	using difference_type   = ptrdiff_t;
 	using pointer           = const value_type *;
 	using reference         = const value_type &;
@@ -51,8 +53,8 @@ private:
 public:
 	constexpr reference operator*() const noexcept
 	{
-		XE_ASSERT( _Mydata && "cannot dereference value-initialized basic_memory_view<std::byte> iterator" );
-		XE_ASSERT( _Myoff < _Mysize && "cannot dereference end basic_memory_view<std::byte> iterator" );
+		XE_ASSERT( _Mydata && "cannot dereference value-initialized basic_memory_view<char> iterator" );
+		XE_ASSERT( _Myoff < _Mysize && "cannot dereference end basic_memory_view<char> iterator" );
 	#ifdef XE_DEBUG
 		return _Mydata[_Myoff];
 	#else
@@ -62,8 +64,8 @@ public:
 
 	constexpr pointer operator->() const noexcept
 	{
-		XE_ASSERT( _Mydata && "cannot dereference value-initialized basic_memory_view<std::byte> iterator" );
-		XE_ASSERT( _Myoff < _Mysize && "cannot dereference end basic_memory_view<std::byte> iterator" );
+		XE_ASSERT( _Mydata && "cannot dereference value-initialized basic_memory_view<char> iterator" );
+		XE_ASSERT( _Myoff < _Mysize && "cannot dereference end basic_memory_view<char> iterator" );
 	#ifdef XE_DEBUG
 		return _Mydata + _Myoff;
 	#else 
@@ -73,8 +75,8 @@ public:
 
 	constexpr _Memory_view_iterator & operator++() noexcept
 	{
-		XE_ASSERT( _Mydata && "cannot increment value-initialized basic_memory_view<std::byte> iterator" );
-		XE_ASSERT( _Myoff < _Mysize && "cannot increment basic_memory_view<std::byte> iterator past end" );
+		XE_ASSERT( _Mydata && "cannot increment value-initialized basic_memory_view<char> iterator" );
+		XE_ASSERT( _Myoff < _Mysize && "cannot increment basic_memory_view<char> iterator past end" );
 	#ifdef XE_DEBUG
 		++_Myoff;
 	#else 
@@ -92,8 +94,8 @@ public:
 
 	constexpr _Memory_view_iterator & operator--() noexcept
 	{
-		XE_ASSERT( _Mydata && "cannot decrement value-initialized basic_memory_view<std::byte> iterator" );
-		XE_ASSERT( _Myoff != 0 && "cannot decrement basic_memory_view<std::byte> iterator before begin" );
+		XE_ASSERT( _Mydata && "cannot decrement value-initialized basic_memory_view<char> iterator" );
+		XE_ASSERT( _Myoff != 0 && "cannot decrement basic_memory_view<char> iterator before begin" );
 	#ifdef XE_DEBUG
 		--_Myoff;
 	#else 
@@ -134,18 +136,18 @@ public:
 	#ifdef XE_DEBUG
 		if( _Off != 0 )
 		{
-			XE_ASSERT( _Mydata && "cannot seek value-initialized basic_memory_view<std::byte> iterator" );
+			XE_ASSERT( _Mydata && "cannot seek value-initialized basic_memory_view<char> iterator" );
 		}
 
 		if( _Off > 0 )
 		{
-			XE_ASSERT( _Myoff >= static_cast< size_t >( _Off ) && "cannot seek basic_memory_view<std::byte> iterator before begin" );
+			XE_ASSERT( _Myoff >= static_cast< size_t >( _Off ) && "cannot seek basic_memory_view<char> iterator before begin" );
 		}
 
 		if( _Off < 0 )
 		{
 		#pragma warning(suppress : 4146)
-			XE_ASSERT( _Mysize - _Myoff >= -static_cast< size_t >( _Off ) && "cannot seek basic_memory_view<std::byte> iterator after end" );
+			XE_ASSERT( _Mysize - _Myoff >= -static_cast< size_t >( _Off ) && "cannot seek basic_memory_view<char> iterator after end" );
 		}
 
 		_Myoff -= _Off;
@@ -167,7 +169,7 @@ public:
 	constexpr difference_type operator-( const _Memory_view_iterator & _Right ) const
 		noexcept
 	{
-		XE_ASSERT( _Mydata == _Right._Mydata && _Mysize == _Right._Mysize && "cannot subtract incompatible basic_memory_view<std::byte> iterators" );
+		XE_ASSERT( _Mydata == _Right._Mydata && _Mysize == _Right._Mysize && "cannot subtract incompatible basic_memory_view<char> iterators" );
 	#ifdef XE_DEBUG
 		return static_cast< difference_type >( _Myoff - _Right._Myoff );
 	#else 
@@ -183,7 +185,7 @@ public:
 	constexpr bool operator==( const _Memory_view_iterator & _Right ) const
 		noexcept
 	{
-		XE_ASSERT( _Mydata == _Right._Mydata && _Mysize == _Right._Mysize && "cannot compare incompatible basic_memory_view<std::byte> iterators for equality" );
+		XE_ASSERT( _Mydata == _Right._Mydata && _Mysize == _Right._Mysize && "cannot compare incompatible basic_memory_view<char> iterators for equality" );
 	#ifdef XE_DEBUG
 		return _Myoff == _Right._Myoff;
 	#else 
@@ -199,7 +201,7 @@ public:
 
 	constexpr bool operator<( const _Memory_view_iterator & _Right ) const noexcept
 	{
-		XE_ASSERT( _Mydata == _Right._Mydata && _Mysize == _Right._Mysize && "cannot compare incompatible basic_memory_view<std::byte> iterators" );
+		XE_ASSERT( _Mydata == _Right._Mydata && _Mysize == _Right._Mysize && "cannot compare incompatible basic_memory_view<char> iterators" );
 	#ifdef XE_DEBUG
 		return _Myoff < _Right._Myoff;
 	#else 
@@ -226,25 +228,21 @@ public:
 private:
 	constexpr void _Verify_offset( const difference_type _Off ) const noexcept
 	{
-	#ifdef XE_DEBUG
 		if( _Off != 0 )
 		{
-			XE_ASSERT( _Mydata && "cannot seek value-initialized basic_memory_view<std::byte> iterator" );
+			XE_ASSERT( _Mydata && "cannot seek value-initialized basic_memory_view<char> iterator" );
 		}
 
 		if( _Off < 0 )
 		{
 		#pragma warning(suppress : 4146)
-			XE_ASSERT( _Myoff >= -static_cast< size_t >( _Off ) && "cannot seek basic_memory_view<std::byte> iterator before begin" );
+			XE_ASSERT( _Myoff >= -static_cast< size_t >( _Off ) && "cannot seek basic_memory_view<char> iterator before begin" );
 		}
 
 		if( _Off > 0 )
 		{
-			XE_ASSERT( _Mysize - _Myoff >= static_cast< size_t >( _Off ) && "cannot seek basic_memory_view<std::byte> iterator after end" );
+			XE_ASSERT( _Mysize - _Myoff >= static_cast< size_t >( _Off ) && "cannot seek basic_memory_view<char> iterator after end" );
 		}
-	#else 
-		(void )_Off;
-	#endif
 	}
 #endif
 
@@ -258,8 +256,8 @@ private:
 #endif 
 };
 
-
-template <class _Elem, class _Traits = XE::memory_traits<_Elem>> class basic_memory_view
+template <class _Elem, class _Traits = std::char_traits<_Elem>> 
+class basic_memory_view
 {
 public:
 	using traits_type            = _Traits;
@@ -375,7 +373,7 @@ public:
 public:
 	constexpr const_reference operator[]( const size_type _Off ) const noexcept
 	{
-		XE_ASSERT( _Off < _Mysize && "basic_memory_view<std::byte> subscript out of range" );
+		XE_ASSERT( _Off < _Mysize && "basic_memory_view<char> subscript out of range" );
 
 		return _Mydata[_Off];
 	}
@@ -388,14 +386,14 @@ public:
 
 	constexpr const_reference front() const noexcept
 	{
-		XE_ASSERT( _Mysize != 0 && "cannot call front on empty basic_memory_view<std::byte>" );
+		XE_ASSERT( _Mysize != 0 && "cannot call front on empty basic_memory_view<char>" );
 
 		return _Mydata[0];
 	}
 
 	constexpr const_reference back() const noexcept
 	{
-		XE_ASSERT( _Mysize != 0 && "cannot call back on empty basic_memory_view<std::byte>" );
+		XE_ASSERT( _Mysize != 0 && "cannot call back on empty basic_memory_view<char>" );
 
 		return _Mydata[_Mysize - 1];
 	}
@@ -463,20 +461,20 @@ private:
 
 	static void _Xran()
 	{
-		XE_ASSERT( false && "invalid basic_memory_view<std::byte> position" );
+		XE_ASSERT( false && "invalid basic_memory_view<char> position" );
 	}
 
 	const_pointer _Mydata;
 	size_type _Mysize;
 };
 
-template <class _Elem, class _Traits = XE::memory_traits<_Elem>, class _Alloc = std::allocator<_Elem>>
+template <class _Elem, class _Traits = std::char_traits<_Elem>, class _Alloc = std::allocator<_Elem>>
 class basic_memorybuf : public std::basic_streambuf<_Elem, _Traits>
 {
 public:
 	using allocator_type = _Alloc;
 	using _Mysb          = std::basic_streambuf<_Elem, _Traits>;
-	using _Myview         = basic_memory_view<_Elem, memory_traits<_Elem>>;
+	using _Myview         = basic_memory_view<_Elem, _Traits>;
 	using _Mysize_type   = typename _Myview::size_type;
 
 	explicit basic_memorybuf( std::ios_base::openmode _Mode = std::ios_base::in | std::ios_base::out )
@@ -547,7 +545,7 @@ public:
 		if( !( _Mystate & _Constant ) && _Mysb::pptr() != nullptr )
 		{
 			const auto _Base = _Mysb::pbase();
-			return _Myview( _Base, static_cast< _Mysize_type >( _Max_value( _Mysb::pptr(), _Seekhigh ) - _Base ) );
+			return _Myview( _Base, static_cast< _Mysize_type >( std::max( _Mysb::pptr(), _Seekhigh ) - _Base ) );
 		}
 		else if( !( _Mystate & _Noread ) && _Mysb::gptr() != nullptr )
 		{
@@ -887,14 +885,14 @@ private:
 	allocator_type _Al;
 };
 
-template <class _Elem, class _Traits = XE::memory_traits<_Elem>, class _Alloc = std::allocator<_Elem>>
+template <class _Elem, class _Traits = std::char_traits<_Elem>, class _Alloc = std::allocator<_Elem>>
 class basic_imemorystream : public std::basic_istream<_Elem, _Traits>
 {
 public:
 	using _Mybase        = std::basic_istream<_Elem, _Traits>;
 	using allocator_type = _Alloc;
 	using _Mysb          = basic_memorybuf<_Elem, _Traits, _Alloc>;
-	using _Myview         = basic_memory_view<_Elem, memory_traits<_Elem>>;
+	using _Myview         = basic_memory_view<_Elem, _Traits>;
 
 	explicit basic_imemorystream( std::ios_base::openmode _Mode = std::ios_base::in )
 		: _Mybase( &_Memorybuffer ), _Memorybuffer( _Mode | std::ios_base::in )
@@ -962,14 +960,14 @@ private:
 	_Mysb _Memorybuffer;
 };
 
-template <class _Elem, class _Traits = XE::memory_traits<_Elem>, class _Alloc = std::allocator<_Elem>>
+template <class _Elem, class _Traits = std::char_traits<_Elem>, class _Alloc = std::allocator<_Elem>>
 class basic_omemorystream : public std::basic_ostream<_Elem, _Traits>
 {
 public:
 	using _Mybase        = std::basic_ostream<_Elem, _Traits>;
 	using allocator_type = _Alloc;
 	using _Mysb          = basic_memorybuf<_Elem, _Traits, _Alloc>;
-	using _Myview         = basic_memory_view<_Elem, memory_traits<_Elem>>;
+	using _Myview         = basic_memory_view<_Elem, _Traits>;
 
 	explicit basic_omemorystream( std::ios_base::openmode _Mode = std::ios_base::out )
 		: _Mybase( &_Memorybuffer ), _Memorybuffer( _Mode | std::ios_base::out )
@@ -1038,7 +1036,7 @@ private:
 	_Mysb _Memorybuffer;
 };
 
-template <class _Elem, class _Traits = XE::memory_traits<_Elem>, class _Alloc = std::allocator<_Elem>>
+template <class _Elem, class _Traits = std::char_traits<_Elem>, class _Alloc = std::allocator<_Elem>>
 class basic_memorystream : public std::basic_iostream<_Elem, _Traits>
 {
 public:
@@ -1050,7 +1048,7 @@ public:
 	using pos_type       = typename _Traits::pos_type;
 	using off_type       = typename _Traits::off_type;
 	using _Mysb          = basic_memorybuf<_Elem, _Traits, _Alloc>;
-	using _Myview         = basic_memory_view<_Elem, memory_traits<_Elem>>;
+	using _Myview         = basic_memory_view<_Elem, _Traits>;
 
 	explicit basic_memorystream( std::ios_base::openmode _Mode = std::ios_base::in | std::ios_base::out )
 		: _Mybase( &_Stringbuffer ), _Stringbuffer( _Mode )
@@ -1117,37 +1115,37 @@ private:
 	_Mysb _Stringbuffer;
 };
 
-using memory_view = XE::basic_memory_view<std::byte>;
-using memorystream = XE::basic_memorystream<std::byte>;
-using imemorystream = XE::basic_imemorystream<std::byte>;
-using omemorystream = XE::basic_omemorystream<std::byte>;
+using memory_view = XE::basic_memory_view<char>;
+using memorystream = XE::basic_memorystream<char>;
+using imemorystream = XE::basic_imemorystream<char>;
+using omemorystream = XE::basic_omemorystream<char>;
 
 END_XE_NAMESPACE
 
 namespace std
 {
-	template <class _Elem, class _Traits = XE::memory_traits<_Elem>, class _Alloc = std::allocator<_Elem>>
+	template <class _Elem, class _Traits = std::char_traits<_Elem>, class _Alloc = std::allocator<_Elem>>
 	inline void swap( XE::basic_memorybuf<_Elem, _Traits, _Alloc> & _Left,
 					  XE::basic_memorybuf<_Elem, _Traits, _Alloc> & _Right )
 	{
 		_Left.swap( _Right );
 	}
 
-	template <class _Elem, class _Traits = XE::memory_traits<_Elem>, class _Alloc = std::allocator<_Elem>>
+	template <class _Elem, class _Traits = std::char_traits<_Elem>, class _Alloc = std::allocator<_Elem>>
 	inline void swap( XE::basic_imemorystream<_Elem, _Traits, _Alloc> & _Left,
 					  XE::basic_imemorystream<_Elem, _Traits, _Alloc> & _Right )
 	{
 		_Left.swap( _Right );
 	}
 
-	template <class _Elem, class _Traits = XE::memory_traits<_Elem>, class _Alloc = std::allocator<_Elem>>
+	template <class _Elem, class _Traits = std::char_traits<_Elem>, class _Alloc = std::allocator<_Elem>>
 	inline void swap( XE::basic_omemorystream<_Elem, _Traits, _Alloc> & _Left,
 					  XE::basic_omemorystream<_Elem, _Traits, _Alloc> & _Right )
 	{
 		_Left.swap( _Right );
 	}
 
-	template <class _Elem, class _Traits = XE::memory_traits<_Elem>, class _Alloc = std::allocator<_Elem>>
+	template <class _Elem, class _Traits = std::char_traits<_Elem>, class _Alloc = std::allocator<_Elem>>
 	inline void swap( XE::basic_memorystream<_Elem, _Traits, _Alloc> & _Left,
 					  XE::basic_memorystream<_Elem, _Traits, _Alloc> & _Right )
 	{

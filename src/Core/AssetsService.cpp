@@ -1,6 +1,6 @@
 #include "AssetsService.h"
 
-#include <sqlite3/sqlite3.h>
+#include <zipper/unzipper.h>
 #include <tbb/concurrent_hash_map.h>
 
 USING_XE
@@ -13,11 +13,11 @@ using AssetMap = tbb::concurrent_hash_map < MD5, AssetTuple, MD5HashCompare >;
 
 struct AssetsService::Private
 {
-	sqlite3 * _DB = nullptr;
 	AssetMap _Assets;
 	XE::float32 _Timer = 0;
 	Deque < XE::MD5 > _Erase;
 	XE::Map<XE::String, XE::MD5> _MD5Cache;
+	XE::Map<XE::MD5, XE::uint32> _MD5Index;
 };
 
 
@@ -35,10 +35,8 @@ XE::AssetsService::~AssetsService()
 void XE::AssetsService::Prepare()
 {
 	auto path = GetFramework()->GetAssetsPath() / "assets.db";
-	if( sqlite3_open_v2( path.string().c_str(), &_p->_DB, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE | SQLITE_OPEN_NOMUTEX | SQLITE_OPEN_SHAREDCACHE, NULL ) != SQLITE_OK )
-	{
-		XE_LOG( LoggerLevel::Error, "open assets sqlite fial" );
-	}
+
+
 }
 
 bool XE::AssetsService::Startup()
@@ -87,12 +85,6 @@ void XE::AssetsService::Update()
 
 void XE::AssetsService::Clearup()
 {
-	if( _p->_DB != nullptr )
-	{
-		sqlite3_close_v2( _p->_DB );
-		_p->_DB = nullptr;
-	}
-
 	_p->_Erase.clear();
 	_p->_Assets.clear();
 }
@@ -175,7 +167,7 @@ XE::AssetStatus XE::AssetsService::GetAssetStatus( const String & val ) const
 void XE::AssetsService::LoadAsset( const XE::MD5 & val )
 {
 	auto var = DeserializeObject( val );
-	if( !var.IsNull() )
+	if( var.IsInvalid() == false && var.IsNull() == false )
 	{
 		ObjectPtr asset = var.Value<ObjectPtr>();
 
@@ -209,25 +201,10 @@ XE::MD5 AssetsService::PathToMD5( const XE::String & val ) const
 	XE::MD5 md5;
 
 	auto it = _p->_MD5Cache.find( val );
+
 	if( it != _p->_MD5Cache.end() )
 	{
 		md5 = it->second;
-	}
-	else
-	{
-		auto str = XE::StringUtils::Format( "SELECT md5 FROM paths WHERE path='%1';", val );
-		sqlite3_stmt * stmt = NULL;
-		if( sqlite3_prepare_v2( _p->_DB, str.c_str(), -1, &stmt, NULL ) == SQLITE_OK )
-		{
-			if( sqlite3_step( stmt ) == SQLITE_ROW )
-			{
-				md5 = MD5::From32String( (const char * )sqlite3_column_text( stmt, 0 ) );
-
-				_p->_MD5Cache.insert( { val, md5 } );
-			}
-
-			sqlite3_finalize( stmt );
-		}
 	}
 
 	return md5;
@@ -237,23 +214,21 @@ XE::Variant AssetsService::DeserializeObject( const XE::MD5 & val ) const
 {
 	ObjectPtr ret;
 
-	auto str = XE::StringUtils::Format( "SELECT data, size FROM data WHERE md5='%1';", val.To32String() );
-	sqlite3_stmt * stmt = NULL;
+	auto it = _p->_MD5Index.find( val );
 
-	if( sqlite3_prepare_v2( _p->_DB, str.c_str(), -1, &stmt, NULL ) == SQLITE_OK )
+	if( it != _p->_MD5Index.end() )
 	{
-		if( sqlite3_step( stmt ) == SQLITE_ROW )
-		{
-			const std::byte * data = ( const std::byte * )sqlite3_column_blob( stmt, 0 );
-			int size = sqlite3_column_int( stmt, 1 );
+		auto path = XE::StringUtils::Format( "%1/assets_%2.data", GetFramework()->GetAssetsPath().string(), it->second );
 
-			XE::memory_view view( data, size );
-			XE::BinaryLoadArchive archive( view );
+		zipper::Unzipper unzip( path );
 
-			archive & ret;
-		}
+		XE::omemorystream oms;
 
-		sqlite3_finalize( stmt );
+		unzip.extractEntryToStream( val.To32String(), oms );
+
+		XE::BinaryLoadArchive load( oms.view() );
+
+		load & ret;
 	}
 
 	return ret;

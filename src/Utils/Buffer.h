@@ -13,29 +13,29 @@
 
 BEG_XE_NAMESPACE
 
-class XE_API Buffer : public XE::Array<std::byte>
+class XE_API Buffer : public XE::Array<char>
 {
 public:
 	Buffer();
 
 	template <class _Iter>
 	Buffer( _Iter _First, _Iter _Last )
-		:XE::Array<std::byte>( _First, _Last )
+		:XE::Array<char>( _First, _Last )
 	{
 	}
 
 	Buffer( Buffer && _Right )
-		: XE::Array<std::byte>( std::move( _Right ) )
+		: XE::Array<char>( std::move( _Right ) )
 	{
 	}
 
 	Buffer( const Buffer & _Right )
-		:XE::Array<std::byte>( _Right )
+		:XE::Array<char>( _Right )
 	{
 	}
 
 	Buffer( XE::memory_view _Right )
-		:XE::Array<std::byte>( _Right.data(), _Right.data() + _Right.size() )
+		:XE::Array<char>( _Right.data(), _Right.data() + _Right.size() )
 	{
 
 	}
@@ -45,7 +45,7 @@ public:
 	{
 		if( this != std::addressof( _Right ) )
 		{
-			XE::Array<std::byte>::operator=( std::move( _Right ) );
+			XE::Array<char>::operator=( std::move( _Right ) );
 		}
 
 		return *this;
@@ -65,7 +65,7 @@ public:
 	~Buffer();
 
 public:
-	void push_back( std::byte val );
+	void push_back( bool val );
 
 	void push_back( XE::int8 val );
 
