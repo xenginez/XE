@@ -89,6 +89,8 @@ enum Backend
 	BACKEND_GLES2,
 	BACKEND_GLES3,
 	BACKEND_D3D11,
+	BACKEND_D3D12,
+	BACKEND_VULKAN,
 	BACKEND_METAL_IOS,
 	BACKEND_METAL_MACOS,
 	BACKEND_METAL_SIMULATOR,
@@ -255,12 +257,12 @@ struct Features
 */
 struct Limits
 {
-	uint32_t max_image_size_2d;         /* max width/height of IMAGETYPE_2D images */
-	uint32_t max_image_size_cube;       /* max width/height of IMAGETYPE_CUBE images */
-	uint32_t max_image_size_3d;         /* max width/height/depth of IMAGETYPE_3D images */
-	uint32_t max_image_size_array;      /* max width/height pf IMAGETYPE_ARRAY images */
-	uint32_t max_image_array_layers;    /* max number of layers in IMAGETYPE_ARRAY images */
-	uint32_t max_vertex_attrs;          /* <= MAX_VERTEX_ATTRIBUTES (only on some GLES2 impls) */
+	XE::uint32 max_image_size_2d;         /* max width/height of IMAGETYPE_2D images */
+	XE::uint32 max_image_size_cube;       /* max width/height of IMAGETYPE_CUBE images */
+	XE::uint32 max_image_size_3d;         /* max width/height/depth of IMAGETYPE_3D images */
+	XE::uint32 max_image_size_array;      /* max width/height pf IMAGETYPE_ARRAY images */
+	XE::uint32 max_image_array_layers;    /* max number of layers in IMAGETYPE_ARRAY images */
+	XE::uint32 max_vertex_attrs;          /* <= MAX_VERTEX_ATTRIBUTES (only on some GLES2 impls) */
 };
 
 /*
@@ -852,11 +854,11 @@ struct StencilAttachmentAction
 
 struct PassAction
 {
-	uint32_t _start_canary;
+	XE::uint32 _start_canary;
 	ColorAttachmentAction colors[MAX_COLOR_ATTACHMENTS];
 	DepthAttachmentAction depth;
 	StencilAttachmentAction stencil;
-	uint32_t _end_canary;
+	XE::uint32 _end_canary;
 };
 
 /*
@@ -884,14 +886,14 @@ struct PassAction
 */
 struct Bindings
 {
-	uint32_t _start_canary;
+	XE::uint32 _start_canary;
 	BufferHandle vertex_buffers[MAX_SHADERSTAGE_BUFFERS];
-	int vertex_buffer_offsets[MAX_SHADERSTAGE_BUFFERS];
+	XE::int32 vertex_buffer_offsets[MAX_SHADERSTAGE_BUFFERS];
 	BufferHandle index_buffer;
-	int index_buffer_offset;
+	XE::int32 index_buffer_offset;
 	ImageHandle vs_images[MAX_SHADERSTAGE_IMAGES];
 	ImageHandle fs_images[MAX_SHADERSTAGE_IMAGES];
-	uint32_t _end_canary;
+	XE::uint32 _end_canary;
 };
 
 /*
@@ -937,8 +939,8 @@ struct Bindings
 */
 struct BufferDesc
 {
-	uint32_t _start_canary;
-	int size;
+	XE::uint32 _start_canary;
+	XE::int32 size;
 	BufferType type;
 	Usage usage;
 	const void * content;
@@ -946,7 +948,7 @@ struct BufferDesc
 	union
 	{
 		/* GL specific */
-		uint32_t gl_buffers[NUM_INFLIGHT_FRAMES];
+		XE::uint32 gl_buffers[NUM_INFLIGHT_FRAMES];
 		/* Metal specific */
 		const void * mtl_buffers[NUM_INFLIGHT_FRAMES];
 		/* D3D11 specific */
@@ -954,7 +956,7 @@ struct BufferDesc
 		/* Everything specific */
 		const void * buffer;
 	};
-	uint32_t _end_canary;
+	XE::uint32 _end_canary;
 };
 
 /*
@@ -972,7 +974,7 @@ struct BufferDesc
 struct SubimageContent
 {
 	const void * ptr;    /* pointer to subimage data */
-	int size;           /* size in bytes of pointed-to subimage data */
+	XE::int32 size;           /* size in bytes of pointed-to subimage data */
 };
 
 /*
@@ -1041,27 +1043,27 @@ struct ImageContent
 */
 struct ImageDesc
 {
-	uint32_t _start_canary;
+	XE::uint32 _start_canary;
 	ImageType type;
 	bool render_target;
-	int width;
-	int height;
+	XE::int32 width;
+	XE::int32 height;
 	union
 	{
-		int depth;
-		int layers;
+		XE::int32 depth;
+		XE::int32 layers;
 	};
-	int num_mipmaps;
+	XE::int32 num_mipmaps;
 	Usage usage;
 	PixelFormat pixel_format;
-	int sample_count;
+	XE::int32 sample_count;
 	Filter min_filter;
 	Filter mag_filter;
 	Wrap wrap_u;
 	Wrap wrap_v;
 	Wrap wrap_w;
 	BorderColor border_color;
-	uint32_t max_anisotropy;
+	XE::uint32 max_anisotropy;
 	float min_lod;
 	float max_lod;
 	ImageContent content;
@@ -1069,7 +1071,7 @@ struct ImageDesc
 	union
 	{
 		/* GL specific */
-		uint32_t gl_textures[NUM_INFLIGHT_FRAMES];
+		XE::uint32 gl_textures[NUM_INFLIGHT_FRAMES];
 		/* Metal specific */
 		const void * mtl_textures[NUM_INFLIGHT_FRAMES];
 		/* D3D11 specific */
@@ -1077,7 +1079,7 @@ struct ImageDesc
 		/* Everything specific */
 		const void * texture;
 	};
-	uint32_t _end_canary;
+	XE::uint32 _end_canary;
 };
 
 /*
@@ -1112,19 +1114,19 @@ struct ShaderAttrDesc
 {
 	XE::String name;           /* GLSL vertex attribute name (only required for GLES2) */
 	XE::String sem_name;       /* HLSL semantic name */
-	int sem_index;              /* HLSL semantic index */
+	XE::int32 sem_index;              /* HLSL semantic index */
 };
 
 struct ShaderUniformDesc
 {
 	XE::String name;
 	UniformType type;
-	int array_count;
+	XE::int32 array_count;
 };
 
 struct ShaderUniformBlockDesc
 {
-	int size;
+	XE::int32 size;
 	ShaderUniformDesc uniforms[MAX_UB_MEMBERS];
 };
 
@@ -1138,7 +1140,7 @@ struct ShaderStageDesc
 {
 	XE::String source;
 	const uint8_t * byte_code;
-	int byte_code_size;
+	XE::int32 byte_code_size;
 	XE::String entry;
 	ShaderUniformBlockDesc uniform_blocks[MAX_SHADERSTAGE_UBS];
 	ShaderImageDesc images[MAX_SHADERSTAGE_IMAGES];
@@ -1146,12 +1148,12 @@ struct ShaderStageDesc
 
 struct ShaderDesc
 {
-	uint32_t _start_canary;
+	XE::uint32 _start_canary;
 	ShaderAttrDesc attrs[MAX_VERTEX_ATTRIBUTES];
 	ShaderStageDesc vs;
 	ShaderStageDesc fs;
 	XE::String label;
-	uint32_t _end_canary;
+	XE::uint32 _end_canary;
 };
 
 /*
@@ -1227,15 +1229,15 @@ struct ShaderDesc
 */
 struct BufferLayoutDesc
 {
-	int stride;
+	XE::int32 stride;
 	VertexStep step_func;
-	int step_rate;
+	XE::int32 step_rate;
 };
 
 struct VertexAttrDesc
 {
-	int buffer_index;
-	int offset;
+	XE::int32 buffer_index;
+	XE::int32 offset;
 	VertexFormat format;
 };
 
@@ -1275,7 +1277,7 @@ struct BlendState
 	BlendFactor dst_factor_alpha;
 	BlendOp op_alpha;
 	uint8_t color_write_mask;
-	int color_attachment_count;
+	XE::int32 color_attachment_count;
 	PixelFormat color_format;
 	PixelFormat depth_format;
 	float blend_color[4];
@@ -1286,7 +1288,7 @@ struct RasterizerState
 	bool alpha_to_coverage_enabled;
 	CullMode cull_mode;
 	FaceWinding face_winding;
-	int sample_count;
+	XE::int32 sample_count;
 	float depth_bias;
 	float depth_bias_slope_scale;
 	float depth_bias_clamp;
@@ -1294,7 +1296,7 @@ struct RasterizerState
 
 struct PipelineDesc
 {
-	uint32_t _start_canary;
+	XE::uint32 _start_canary;
 	LayoutDesc layout;
 	ShaderHandle shader;
 	PrimitiveType primitive_type;
@@ -1303,7 +1305,7 @@ struct PipelineDesc
 	BlendState blend;
 	RasterizerState rasterizer;
 	XE::String label;
-	uint32_t _end_canary;
+	XE::uint32 _end_canary;
 };
 
 /*
@@ -1331,22 +1333,22 @@ struct PipelineDesc
 struct AttachmentDesc
 {
 	ImageHandle image;
-	int mip_level;
+	XE::int32 mip_level;
 	union
 	{
-		int face;
-		int layer;
-		int slice;
+		XE::int32 face;
+		XE::int32 layer;
+		XE::int32 slice;
 	};
 };
 
 struct PassDesc
 {
-	uint32_t _start_canary;
+	XE::uint32 _start_canary;
 	AttachmentDesc color_attachments[MAX_COLOR_ATTACHMENTS];
 	AttachmentDesc depth_stencil_attachment;
 	XE::String label;
-	uint32_t _end_canary;
+	XE::uint32 _end_canary;
 };
 
 /*
@@ -1373,27 +1375,27 @@ struct PassDesc
 struct SlotInfo
 {
 	ResourceState state;    /* the current state of this resource slot */
-	uint32_t res_id;        /* type-neutral resource if (e.g. BufferHandle.id) */
-	uint32_t ctx_id;        /* the context this resource belongs to */
+	XE::uint32 res_id;        /* type-neutral resource if (e.g. BufferHandle.id) */
+	XE::uint32 ctx_id;        /* the context this resource belongs to */
 };
 
 struct BufferInfo
 {
 	SlotInfo slot;              /* resource pool slot info */
-	uint32_t update_frame_index;    /* frame index of last update_buffer() */
-	uint32_t append_frame_index;    /* frame index of last append_buffer() */
-	int append_pos;                 /* current position in buffer for append_buffer() */
+	XE::uint32 update_frame_index;    /* frame index of last update_buffer() */
+	XE::uint32 append_frame_index;    /* frame index of last append_buffer() */
+	XE::int32 append_pos;                 /* current position in buffer for append_buffer() */
 	bool append_overflow;           /* is buffer in overflow state (due to append_buffer) */
-	int num_slots;                  /* number of renaming-slots for dynamically updated buffers */
-	int active_slot;                /* currently active write-slot for dynamically updated buffers */
+	XE::int32 num_slots;                  /* number of renaming-slots for dynamically updated buffers */
+	XE::int32 active_slot;                /* currently active write-slot for dynamically updated buffers */
 };
 
 struct ImageInfo
 {
 	SlotInfo slot;              /* resource pool slot info */
-	uint32_t upd_frame_index;       /* frame index of last update_image() */
-	int num_slots;                  /* number of renaming-slots for dynamically updated images */
-	int active_slot;                /* currently active write-slot for dynamically updated images */
+	XE::uint32 upd_frame_index;       /* frame index of last update_image() */
+	XE::int32 num_slots;                  /* number of renaming-slots for dynamically updated images */
+	XE::int32 active_slot;                /* currently active write-slot for dynamically updated images */
 };
 
 struct ShaderInfo
@@ -1478,13 +1480,13 @@ struct PassInfo
 */
 struct GfxDesc
 {
-	uint32_t _start_canary;
-	int buffer_pool_size;
-	int image_pool_size;
-	int shader_pool_size;
-	int pipeline_pool_size;
-	int pass_pool_size;
-	int context_pool_size;
+	XE::uint32 _start_canary;
+	XE::int32 buffer_pool_size;
+	XE::int32 image_pool_size;
+	XE::int32 shader_pool_size;
+	XE::int32 pipeline_pool_size;
+	XE::int32 pass_pool_size;
+	XE::int32 context_pool_size;
 	union
 	{
 		struct
@@ -1493,8 +1495,8 @@ struct GfxDesc
 			const void * mtl_device;
 			const void * ( *mtl_renderpass_descriptor_cb )( void );
 			const void * ( *mtl_drawable_cb )( void );
-			int mtl_global_uniform_buffer_size;
-			int mtl_sampler_cache_size;
+			XE::int32 mtl_global_uniform_buffer_size;
+			XE::int32 mtl_sampler_cache_size;
 		};
 		struct
 		{
@@ -1510,7 +1512,7 @@ struct GfxDesc
 			const void * device;
 		};
 	};
-	uint32_t _end_canary;
+	XE::uint32 _end_canary;
 };
 
 END_XE_NAMESPACE

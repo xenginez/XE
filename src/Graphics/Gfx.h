@@ -37,21 +37,21 @@ public:
 	static void DestroyShader( ShaderHandle shd );
 	static void DestroyPipeline( PipelineHandle pip );
 	static void DestroyPass( PassHandle pass );
-	static void UpdateBuffer( BufferHandle buf, const void * data_ptr, int data_size );
+	static void UpdateBuffer( BufferHandle buf, const void * data_ptr, XE::int32 data_size );
 	static void UpdateImage( ImageHandle img, const ImageContent * data );
-	static int AppendBuffer( BufferHandle buf, const void * data_ptr, int data_size );
+	static XE::int32 AppendBuffer( BufferHandle buf, const void * data_ptr, XE::int32 data_size );
 	static bool QueryBufferOverflow( BufferHandle buf );
 
 public:
 	/* rendering functions */
-	static void BeginDefaultPass( const PassAction * pass_action, int width, int height );
+	static void BeginDefaultPass( const PassAction * pass_action, XE::int32 width, XE::int32 height );
 	static void BeginPass( PassHandle pass, const PassAction * pass_action );
-	static void ApplyViewport( int x, int y, int width, int height, bool origin_top_left );
-	static void ApplyScissorRect( int x, int y, int width, int height, bool origin_top_left );
+	static void ApplyViewport( XE::int32 x, XE::int32 y, XE::int32 width, XE::int32 height, bool origin_top_left );
+	static void ApplyScissorRect( XE::int32 x, XE::int32 y, XE::int32 width, XE::int32 height, bool origin_top_left );
 	static void ApplyPipeline( PipelineHandle pip );
 	static void ApplyBindings( const Bindings * bindings );
-	static void ApplyUniforms( ShaderStage stage, int ub_index, const void * data, int num_bytes );
-	static void Draw( int base_element, int num_elements, int num_instances );
+	static void ApplyUniforms( ShaderStage stage, XE::int32 ub_index, const void * data, XE::int32 num_bytes );
+	static void Draw( XE::int32 base_element, XE::int32 num_elements, XE::int32 num_instances );
 	static void EndPass( void );
 	static void Commit( void );
 

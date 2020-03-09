@@ -214,21 +214,50 @@ XE::Variant AssetsService::DeserializeObject( const XE::MD5 & val ) const
 {
 	ObjectPtr ret;
 
-	auto it = _p->_MD5Index.find( val );
+	auto path = GetFramework()->GetAssetsPath() / "cache" / val.To32String();
 
-	if( it != _p->_MD5Index.end() )
+	if( std::filesystem::exists( path ) )
 	{
-		auto path = XE::StringUtils::Format( "%1/assets_%2.data", GetFramework()->GetAssetsPath().string(), it->second );
+		std::ifstream ifs( path, std::ios::binary );
 
-		zipper::Unzipper unzip( path );
+		XE::Buffer buf;
+		ifs.seekg( std::ios::end );
+		auto size = ifs.tellg();
+		ifs.seekg( std::ios::beg );
 
-		XE::omemorystream oms;
+		buf.resize( size );
 
-		unzip.extractEntryToStream( val.To32String(), oms );
+		ifs.read( buf.data(), size );
 
-		XE::BinaryLoadArchive load( oms.view() );
+		auto view = buf.GetView();
+		XE::BinaryLoadArchive load( view );
 
 		load & ret;
+	}
+	else
+	{
+		auto it = _p->_MD5Index.find( val );
+
+		if( it != _p->_MD5Index.end() )
+		{
+			auto path = XE::StringUtils::Format( "%1/assets_%2.data", GetFramework()->GetAssetsPath().string(), it->second );
+
+			zipper::Unzipper unzip( path );
+
+			XE::omemorystream oms;
+
+			unzip.extractEntryToStream( val.To32String(), oms );
+
+			auto view = oms.view();
+
+			XE::BinaryLoadArchive load( view );
+
+			load & ret;
+
+			std::ofstream ofs( path, std::ios::binary );
+			ofs.write( view.data(), view.size() );
+			ofs.close();
+		}
 	}
 
 	return ret;

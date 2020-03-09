@@ -96,20 +96,20 @@ USING_XE
 
 typedef struct
 {
-	_slot_t slot;
-	_buffer_common_t cmn;
+	_SlotType slot;
+	_BufferCommonType cmn;
 	struct
 	{
 		GLuint buf[NUM_INFLIGHT_FRAMES];
 		bool ext_buffers;   /* if true, external buffers were injected with BufferDesc.gl_buffers */
 	} gl;
 } _gl_buffer_t;
-typedef _gl_buffer_t _buffer_t;
+typedef _gl_buffer_t _BufferType;
 
 typedef struct
 {
-	_slot_t slot;
-	_image_common_t cmn;
+	_SlotType slot;
+	_ImageCommonType cmn;
 	struct
 	{
 		GLenum target;
@@ -119,7 +119,7 @@ typedef struct
 		bool ext_textures;  /* if true, external textures were injected with ImageDesc.gl_textures */
 	} gl;
 } _gl_image_t;
-typedef _gl_image_t _image_t;
+typedef _gl_image_t _ImageType;
 
 typedef struct
 {
@@ -131,14 +131,14 @@ typedef struct
 
 typedef struct
 {
-	int num_uniforms;
+	XE::int32 num_uniforms;
 	_gl_uniform_t uniforms[MAX_UB_MEMBERS];
 } _gl_uniform_block_t;
 
 typedef struct
 {
 	GLint gl_loc;
-	int gl_tex_slot;
+	XE::int32 gl_tex_slot;
 } _gl_shader_image_t;
 
 typedef struct
@@ -154,8 +154,8 @@ typedef struct
 
 typedef struct
 {
-	_slot_t slot;
-	_shader_common_t cmn;
+	_SlotType slot;
+	_ShaderCommonType cmn;
 	struct
 	{
 		GLuint prog;
@@ -163,7 +163,7 @@ typedef struct
 		_gl_shader_stage_t stage[NUM_SHADER_STAGES];
 	} gl;
 } _gl_shader_t;
-typedef _gl_shader_t _shader_t;
+typedef _gl_shader_t _ShaderType;
 
 typedef struct
 {
@@ -172,15 +172,15 @@ typedef struct
 	uint8_t stride;
 	uint8_t size;
 	uint8_t normalized;
-	int offset;
+	XE::int32 offset;
 	GLenum type;
 } _gl_attr_t;
 
 typedef struct
 {
-	_slot_t slot;
-	_pipeline_common_t cmn;
-	_shader_t * shader;
+	_SlotType slot;
+	_PipelineCommonType cmn;
+	_ShaderType * shader;
 	struct
 	{
 		_gl_attr_t attrs[MAX_VERTEX_ATTRIBUTES];
@@ -190,18 +190,18 @@ typedef struct
 		RasterizerState rast;
 	} gl;
 } _gl_pipeline_t;
-typedef _gl_pipeline_t _pipeline_t;
+typedef _gl_pipeline_t _PipelineType;
 
 typedef struct
 {
-	_image_t * image;
+	_ImageType * image;
 	GLuint gl_msaa_resolve_buffer;
 } _gl_attachment_t;
 
 typedef struct
 {
-	_slot_t slot;
-	_pass_common_t cmn;
+	_SlotType slot;
+	_PassCommonType cmn;
 	struct
 	{
 		GLuint fb;
@@ -209,16 +209,16 @@ typedef struct
 		_gl_attachment_t ds_att;
 	} gl;
 } _gl_pass_t;
-typedef _gl_pass_t _pass_t;
-typedef _attachment_common_t _attachment_t;
+typedef _gl_pass_t _PassType;
+typedef _AttachmentCommonType _AttachmentType;
 
 typedef struct
 {
-	_slot_t slot;
+	_SlotType slot;
 	GLuint vao;
 	GLuint default_framebuffer;
 } _gl_context_t;
-typedef _gl_context_t _context_t;
+typedef _gl_context_t _ContextType;
 
 typedef struct
 {
@@ -245,10 +245,10 @@ typedef struct
 	GLuint stored_index_buffer;
 	_gl_texture_bind_slot textures[MAX_SHADERSTAGE_IMAGES];
 	_gl_texture_bind_slot stored_texture;
-	int cur_ib_offset;
+	XE::int32 cur_ib_offset;
 	GLenum cur_primitive_type;
 	GLenum cur_index_type;
-	_pipeline_t * cur_pipeline;
+	_PipelineType * cur_pipeline;
 	PipelineHandle cur_pipeline_id;
 } _gl_state_cache_t;
 
@@ -256,56 +256,56 @@ typedef struct
 {
 	bool valid;
 	bool in_pass;
-	int cur_pass_width;
-	int cur_pass_height;
-	_context_t * cur_context;
-	_pass_t * cur_pass;
+	XE::int32 cur_pass_width;
+	XE::int32 cur_pass_height;
+	_ContextType * cur_context;
+	_PassType * cur_pass;
 	PassHandle cur_pass_id;
 	_gl_state_cache_t cache;
 	bool ext_anisotropic;
 	GLint max_anisotropy;
 	GLint max_combined_texture_image_units;
 } _gl_backend_t;
-typedef _gl_backend_t _backend_t;
+typedef _gl_backend_t _BackendType;
 
 typedef struct
 {
-	_pool_t buffer_pool;
-	_pool_t image_pool;
-	_pool_t shader_pool;
-	_pool_t pipeline_pool;
-	_pool_t pass_pool;
-	_pool_t context_pool;
-	_buffer_t * buffers;
-	_image_t * images;
-	_shader_t * shaders;
-	_pipeline_t * pipelines;
-	_pass_t * passes;
-	_context_t * contexts;
-} _pools_t;
+	_PoolType buffer_pool;
+	_PoolType image_pool;
+	_PoolType shader_pool;
+	_PoolType pipeline_pool;
+	_PoolType pass_pool;
+	_PoolType context_pool;
+	_BufferType * buffers;
+	_ImageType * images;
+	_ShaderType * shaders;
+	_PipelineType * pipelines;
+	_PassType * passes;
+	_ContextType * contexts;
+} _PoolsType;
 
 typedef struct
 {
 	bool valid;
 	GfxDesc desc;       /* original desc with default values patched in */
-	uint32_t frame_index;
+	XE::uint32 frame_index;
 	ContextHandle active_context;
 	PassHandle cur_pass;
 	PipelineHandle cur_pipeline;
 	bool pass_valid;
 	bool bindings_valid;
 	bool next_draw_valid;
-	_validate_error_t validate_error;
-	_pools_t pools;
+	_ValidateErrorType validate_error;
+	_PoolsType pools;
 	Backend backend;
 	Features features;
 	Limits limits;
 	PixelformatInfo formats[_PIXELFORMAT_NUM];
 	_gl_backend_t gl;
 	GfxTraceHooks * hooks;
-} _state_t;
+} _StateType;
 
-static _state_t _sg;
+static _StateType _sg;
 
 
 PixelFormat _default_rendertarget_colorformat( void )
@@ -316,7 +316,7 @@ PixelFormat _default_rendertarget_colorformat( void )
 /* return true if pixel format is a valid render target format */
 bool _is_valid_rendertarget_color_format( PixelFormat fmt )
 {
-	const int fmt_index = (int )fmt;
+	const XE::int32 fmt_index = (XE::int32 )fmt;
 	XE_ASSERT( ( fmt_index >= 0 ) && ( fmt_index < _PIXELFORMAT_NUM ) );
 	return _sg.formats[fmt_index].render && !_sg.formats[fmt_index].depth;
 }
@@ -324,7 +324,7 @@ bool _is_valid_rendertarget_color_format( PixelFormat fmt )
 /* return true if pixel format is a valid depth format */
 bool _is_valid_rendertarget_depth_format( PixelFormat fmt )
 {
-	const int fmt_index = (int )fmt;
+	const XE::int32 fmt_index = (XE::int32 )fmt;
 	XE_ASSERT( ( fmt_index >= 0 ) && ( fmt_index < _PIXELFORMAT_NUM ) );
 	return _sg.formats[fmt_index].render && _sg.formats[fmt_index].depth;
 }
@@ -786,7 +786,7 @@ GLenum _teximage_internal_format( PixelFormat fmt )
 	}
 }
 
-GLenum _cubeface_target( int face_index )
+GLenum _cubeface_target( XE::int32 face_index )
 {
 	switch( face_index )
 	{
@@ -856,39 +856,39 @@ void _init_rasterizer_state( RasterizerState * s )
 /* see: https://www.khronos.org/registry/OpenGL-Refpages/es3.0/html/glTexImage2D.xhtml */
 void _init_pixelformats( bool has_bgra )
 {
-	_pixelformat_all( &_sg.formats[PIXELFORMAT_R8] );
-	_pixelformat_sf( &_sg.formats[PIXELFORMAT_R8SN] );
-	_pixelformat_srm( &_sg.formats[PIXELFORMAT_R8UI] );
-	_pixelformat_srm( &_sg.formats[PIXELFORMAT_R8SI] );
-	_pixelformat_srm( &_sg.formats[PIXELFORMAT_R16UI] );
-	_pixelformat_srm( &_sg.formats[PIXELFORMAT_R16SI] );
-	_pixelformat_all( &_sg.formats[PIXELFORMAT_RG8] );
-	_pixelformat_sf( &_sg.formats[PIXELFORMAT_RG8SN] );
-	_pixelformat_srm( &_sg.formats[PIXELFORMAT_RG8UI] );
-	_pixelformat_srm( &_sg.formats[PIXELFORMAT_RG8SI] );
-	_pixelformat_sr( &_sg.formats[PIXELFORMAT_R32UI] );
-	_pixelformat_sr( &_sg.formats[PIXELFORMAT_R32SI] );
-	_pixelformat_srm( &_sg.formats[PIXELFORMAT_RG16UI] );
-	_pixelformat_srm( &_sg.formats[PIXELFORMAT_RG16SI] );
-	_pixelformat_all( &_sg.formats[PIXELFORMAT_RGBA8] );
-	_pixelformat_sf( &_sg.formats[PIXELFORMAT_RGBA8SN] );
-	_pixelformat_srm( &_sg.formats[PIXELFORMAT_RGBA8UI] );
-	_pixelformat_srm( &_sg.formats[PIXELFORMAT_RGBA8SI] );
+	_PixelFormatAll( &_sg.formats[PIXELFORMAT_R8] );
+	_PixelFormatSF( &_sg.formats[PIXELFORMAT_R8SN] );
+	_PixelFormatSRM( &_sg.formats[PIXELFORMAT_R8UI] );
+	_PixelFormatSRM( &_sg.formats[PIXELFORMAT_R8SI] );
+	_PixelFormatSRM( &_sg.formats[PIXELFORMAT_R16UI] );
+	_PixelFormatSRM( &_sg.formats[PIXELFORMAT_R16SI] );
+	_PixelFormatAll( &_sg.formats[PIXELFORMAT_RG8] );
+	_PixelFormatSF( &_sg.formats[PIXELFORMAT_RG8SN] );
+	_PixelFormatSRM( &_sg.formats[PIXELFORMAT_RG8UI] );
+	_PixelFormatSRM( &_sg.formats[PIXELFORMAT_RG8SI] );
+	_PixelFormatSR( &_sg.formats[PIXELFORMAT_R32UI] );
+	_PixelFormatSR( &_sg.formats[PIXELFORMAT_R32SI] );
+	_PixelFormatSRM( &_sg.formats[PIXELFORMAT_RG16UI] );
+	_PixelFormatSRM( &_sg.formats[PIXELFORMAT_RG16SI] );
+	_PixelFormatAll( &_sg.formats[PIXELFORMAT_RGBA8] );
+	_PixelFormatSF( &_sg.formats[PIXELFORMAT_RGBA8SN] );
+	_PixelFormatSRM( &_sg.formats[PIXELFORMAT_RGBA8UI] );
+	_PixelFormatSRM( &_sg.formats[PIXELFORMAT_RGBA8SI] );
 	if( has_bgra )
 	{
-		_pixelformat_all( &_sg.formats[PIXELFORMAT_BGRA8] );
+		_PixelFormatAll( &_sg.formats[PIXELFORMAT_BGRA8] );
 	}
-	_pixelformat_all( &_sg.formats[PIXELFORMAT_RGB10A2] );
-	_pixelformat_sf( &_sg.formats[PIXELFORMAT_RG11B10F] );
-	_pixelformat_srm( &_sg.formats[PIXELFORMAT_RG32UI] );
-	_pixelformat_srm( &_sg.formats[PIXELFORMAT_RG32SI] );
-	_pixelformat_srm( &_sg.formats[PIXELFORMAT_RGBA16UI] );
-	_pixelformat_srm( &_sg.formats[PIXELFORMAT_RGBA16SI] );
-	_pixelformat_srm( &_sg.formats[PIXELFORMAT_RGBA32UI] );
-	_pixelformat_srm( &_sg.formats[PIXELFORMAT_RGBA32SI] );
+	_PixelFormatAll( &_sg.formats[PIXELFORMAT_RGB10A2] );
+	_PixelFormatSF( &_sg.formats[PIXELFORMAT_RG11B10F] );
+	_PixelFormatSRM( &_sg.formats[PIXELFORMAT_RG32UI] );
+	_PixelFormatSRM( &_sg.formats[PIXELFORMAT_RG32SI] );
+	_PixelFormatSRM( &_sg.formats[PIXELFORMAT_RGBA16UI] );
+	_PixelFormatSRM( &_sg.formats[PIXELFORMAT_RGBA16SI] );
+	_PixelFormatSRM( &_sg.formats[PIXELFORMAT_RGBA32UI] );
+	_PixelFormatSRM( &_sg.formats[PIXELFORMAT_RGBA32SI] );
 	// FIXME: WEBGL_depth_texture extension?
-	_pixelformat_srmd( &_sg.formats[PIXELFORMAT_DEPTH] );
-	_pixelformat_srmd( &_sg.formats[PIXELFORMAT_DEPTH_STENCIL] );
+	_PixelFormatSRMD( &_sg.formats[PIXELFORMAT_DEPTH] );
+	_PixelFormatSRMD( &_sg.formats[PIXELFORMAT_DEPTH_STENCIL] );
 }
 
 /* FIXME: OES_half_float_blend */
@@ -898,30 +898,30 @@ void _init_pixelformats_half_float( bool has_colorbuffer_half_float, bool has_te
 	{
 		if( has_colorbuffer_half_float )
 		{
-			_pixelformat_all( &_sg.formats[PIXELFORMAT_R16F] );
-			_pixelformat_all( &_sg.formats[PIXELFORMAT_RG16F] );
-			_pixelformat_all( &_sg.formats[PIXELFORMAT_RGBA16F] );
+			_PixelFormatAll( &_sg.formats[PIXELFORMAT_R16F] );
+			_PixelFormatAll( &_sg.formats[PIXELFORMAT_RG16F] );
+			_PixelFormatAll( &_sg.formats[PIXELFORMAT_RGBA16F] );
 		}
 		else
 		{
-			_pixelformat_sf( &_sg.formats[PIXELFORMAT_R16F] );
-			_pixelformat_sf( &_sg.formats[PIXELFORMAT_RG16F] );
-			_pixelformat_sf( &_sg.formats[PIXELFORMAT_RGBA16F] );
+			_PixelFormatSF( &_sg.formats[PIXELFORMAT_R16F] );
+			_PixelFormatSF( &_sg.formats[PIXELFORMAT_RG16F] );
+			_PixelFormatSF( &_sg.formats[PIXELFORMAT_RGBA16F] );
 		}
 	}
 	else
 	{
 		if( has_colorbuffer_half_float )
 		{
-			_pixelformat_sbrm( &_sg.formats[PIXELFORMAT_R16F] );
-			_pixelformat_sbrm( &_sg.formats[PIXELFORMAT_RG16F] );
-			_pixelformat_sbrm( &_sg.formats[PIXELFORMAT_RGBA16F] );
+			_PixelFormatSBRM( &_sg.formats[PIXELFORMAT_R16F] );
+			_PixelFormatSBRM( &_sg.formats[PIXELFORMAT_RG16F] );
+			_PixelFormatSBRM( &_sg.formats[PIXELFORMAT_RGBA16F] );
 		}
 		else
 		{
-			_pixelformat_s( &_sg.formats[PIXELFORMAT_R16F] );
-			_pixelformat_s( &_sg.formats[PIXELFORMAT_RG16F] );
-			_pixelformat_s( &_sg.formats[PIXELFORMAT_RGBA16F] );
+			_PixelFormatS( &_sg.formats[PIXELFORMAT_R16F] );
+			_PixelFormatS( &_sg.formats[PIXELFORMAT_RG16F] );
+			_PixelFormatS( &_sg.formats[PIXELFORMAT_RGBA16F] );
 		}
 	}
 }
@@ -934,78 +934,78 @@ void _init_pixelformats_float( bool has_colorbuffer_float, bool has_texture_floa
 		{
 			if( has_float_blend )
 			{
-				_pixelformat_all( &_sg.formats[PIXELFORMAT_R32F] );
-				_pixelformat_all( &_sg.formats[PIXELFORMAT_RG32F] );
-				_pixelformat_all( &_sg.formats[PIXELFORMAT_RGBA32F] );
+				_PixelFormatAll( &_sg.formats[PIXELFORMAT_R32F] );
+				_PixelFormatAll( &_sg.formats[PIXELFORMAT_RG32F] );
+				_PixelFormatAll( &_sg.formats[PIXELFORMAT_RGBA32F] );
 			}
 			else
 			{
-				_pixelformat_sfrm( &_sg.formats[PIXELFORMAT_R32F] );
-				_pixelformat_sfrm( &_sg.formats[PIXELFORMAT_RG32F] );
-				_pixelformat_sfrm( &_sg.formats[PIXELFORMAT_RGBA32F] );
+				_PixelFormatSFRM( &_sg.formats[PIXELFORMAT_R32F] );
+				_PixelFormatSFRM( &_sg.formats[PIXELFORMAT_RG32F] );
+				_PixelFormatSFRM( &_sg.formats[PIXELFORMAT_RGBA32F] );
 			}
 		}
 		else
 		{
-			_pixelformat_sf( &_sg.formats[PIXELFORMAT_R32F] );
-			_pixelformat_sf( &_sg.formats[PIXELFORMAT_RG32F] );
-			_pixelformat_sf( &_sg.formats[PIXELFORMAT_RGBA32F] );
+			_PixelFormatSF( &_sg.formats[PIXELFORMAT_R32F] );
+			_PixelFormatSF( &_sg.formats[PIXELFORMAT_RG32F] );
+			_PixelFormatSF( &_sg.formats[PIXELFORMAT_RGBA32F] );
 		}
 	}
 	else
 	{
 		if( has_colorbuffer_float )
 		{
-			_pixelformat_sbrm( &_sg.formats[PIXELFORMAT_R32F] );
-			_pixelformat_sbrm( &_sg.formats[PIXELFORMAT_RG32F] );
-			_pixelformat_sbrm( &_sg.formats[PIXELFORMAT_RGBA32F] );
+			_PixelFormatSBRM( &_sg.formats[PIXELFORMAT_R32F] );
+			_PixelFormatSBRM( &_sg.formats[PIXELFORMAT_RG32F] );
+			_PixelFormatSBRM( &_sg.formats[PIXELFORMAT_RGBA32F] );
 		}
 		else
 		{
-			_pixelformat_s( &_sg.formats[PIXELFORMAT_R32F] );
-			_pixelformat_s( &_sg.formats[PIXELFORMAT_RG32F] );
-			_pixelformat_s( &_sg.formats[PIXELFORMAT_RGBA32F] );
+			_PixelFormatS( &_sg.formats[PIXELFORMAT_R32F] );
+			_PixelFormatS( &_sg.formats[PIXELFORMAT_RG32F] );
+			_PixelFormatS( &_sg.formats[PIXELFORMAT_RGBA32F] );
 		}
 	}
 }
 
 void _init_pixelformats_s3tc( void )
 {
-	_pixelformat_sf( &_sg.formats[PIXELFORMAT_BC1_RGBA] );
-	_pixelformat_sf( &_sg.formats[PIXELFORMAT_BC2_RGBA] );
-	_pixelformat_sf( &_sg.formats[PIXELFORMAT_BC3_RGBA] );
+	_PixelFormatSF( &_sg.formats[PIXELFORMAT_BC1_RGBA] );
+	_PixelFormatSF( &_sg.formats[PIXELFORMAT_BC2_RGBA] );
+	_PixelFormatSF( &_sg.formats[PIXELFORMAT_BC3_RGBA] );
 }
 
 void _init_pixelformats_rgtc( void )
 {
-	_pixelformat_sf( &_sg.formats[PIXELFORMAT_BC4_R] );
-	_pixelformat_sf( &_sg.formats[PIXELFORMAT_BC4_RSN] );
-	_pixelformat_sf( &_sg.formats[PIXELFORMAT_BC5_RG] );
-	_pixelformat_sf( &_sg.formats[PIXELFORMAT_BC5_RGSN] );
+	_PixelFormatSF( &_sg.formats[PIXELFORMAT_BC4_R] );
+	_PixelFormatSF( &_sg.formats[PIXELFORMAT_BC4_RSN] );
+	_PixelFormatSF( &_sg.formats[PIXELFORMAT_BC5_RG] );
+	_PixelFormatSF( &_sg.formats[PIXELFORMAT_BC5_RGSN] );
 }
 
 void _init_pixelformats_bptc( void )
 {
-	_pixelformat_sf( &_sg.formats[PIXELFORMAT_BC6H_RGBF] );
-	_pixelformat_sf( &_sg.formats[PIXELFORMAT_BC6H_RGBUF] );
-	_pixelformat_sf( &_sg.formats[PIXELFORMAT_BC7_RGBA] );
+	_PixelFormatSF( &_sg.formats[PIXELFORMAT_BC6H_RGBF] );
+	_PixelFormatSF( &_sg.formats[PIXELFORMAT_BC6H_RGBUF] );
+	_PixelFormatSF( &_sg.formats[PIXELFORMAT_BC7_RGBA] );
 }
 
 void _init_pixelformats_pvrtc( void )
 {
-	_pixelformat_sf( &_sg.formats[PIXELFORMAT_PVRTC_RGB_2BPP] );
-	_pixelformat_sf( &_sg.formats[PIXELFORMAT_PVRTC_RGB_4BPP] );
-	_pixelformat_sf( &_sg.formats[PIXELFORMAT_PVRTC_RGBA_2BPP] );
-	_pixelformat_sf( &_sg.formats[PIXELFORMAT_PVRTC_RGBA_4BPP] );
+	_PixelFormatSF( &_sg.formats[PIXELFORMAT_PVRTC_RGB_2BPP] );
+	_PixelFormatSF( &_sg.formats[PIXELFORMAT_PVRTC_RGB_4BPP] );
+	_PixelFormatSF( &_sg.formats[PIXELFORMAT_PVRTC_RGBA_2BPP] );
+	_PixelFormatSF( &_sg.formats[PIXELFORMAT_PVRTC_RGBA_4BPP] );
 }
 
 void _init_pixelformats_etc2( void )
 {
-	_pixelformat_sf( &_sg.formats[PIXELFORMAT_ETC2_RGB8] );
-	_pixelformat_sf( &_sg.formats[PIXELFORMAT_ETC2_RGB8A1] );
-	_pixelformat_sf( &_sg.formats[PIXELFORMAT_ETC2_RGBA8] );
-	_pixelformat_sf( &_sg.formats[PIXELFORMAT_ETC2_RG11] );
-	_pixelformat_sf( &_sg.formats[PIXELFORMAT_ETC2_RG11SN] );
+	_PixelFormatSF( &_sg.formats[PIXELFORMAT_ETC2_RGB8] );
+	_PixelFormatSF( &_sg.formats[PIXELFORMAT_ETC2_RGB8A1] );
+	_PixelFormatSF( &_sg.formats[PIXELFORMAT_ETC2_RGBA8] );
+	_PixelFormatSF( &_sg.formats[PIXELFORMAT_ETC2_RG11] );
+	_PixelFormatSF( &_sg.formats[PIXELFORMAT_ETC2_RG11SN] );
 }
 
 void _init_limits( void )
@@ -1076,7 +1076,7 @@ void _init_caps_gles3( void )
 	bool has_float_blend = false;
 	GLint num_ext = 0;
 	glGetIntegerv( GL_NUM_EXTENSIONS, &num_ext );
-	for( int i = 0; i < num_ext; i++ )
+	for( XE::int32 i = 0; i < num_ext; i++ )
 	{
 		XE::String ext = glGetStringi( GL_EXTENSIONS, i );
 		if( ext != "" )
@@ -1221,7 +1221,7 @@ void _restore_buffer_binding( GLenum target )
 
 void _clear_texture_bindings( bool force )
 {
-	for( int i = 0; ( i < MAX_SHADERSTAGE_IMAGES ) && ( i < _sg.gl.max_combined_texture_image_units ); i++ )
+	for( XE::int32 i = 0; ( i < MAX_SHADERSTAGE_IMAGES ) && ( i < _sg.gl.max_combined_texture_image_units ); i++ )
 	{
 		if( force || ( _sg.gl.cache.textures[i].texture != 0 ) )
 		{
@@ -1236,7 +1236,7 @@ void _clear_texture_bindings( bool force )
 	}
 }
 
-void _bind_texture( int slot_index, GLenum target, GLuint texture )
+void _bind_texture( XE::int32 slot_index, GLenum target, GLuint texture )
 {
 	/* it's valid to call this function with target=0 and/or texture=0
 	   target=0 will unbind the previous binding, texture=0 will clear
@@ -1266,13 +1266,13 @@ void _bind_texture( int slot_index, GLenum target, GLuint texture )
 	}
 }
 
-void _store_texture_binding( int slot_index )
+void _store_texture_binding( XE::int32 slot_index )
 {
 	XE_ASSERT( slot_index < MAX_SHADERSTAGE_IMAGES );
 	_sg.gl.cache.stored_texture = _sg.gl.cache.textures[slot_index];
 }
 
-void _restore_texture_binding( int slot_index )
+void _restore_texture_binding( XE::int32 slot_index )
 {
 	XE_ASSERT( slot_index < MAX_SHADERSTAGE_IMAGES );
 	const _gl_texture_bind_slot * slot = &_sg.gl.cache.stored_texture;
@@ -1308,7 +1308,7 @@ void _reset_state_cache( void )
 		_GL_CHECK_ERROR();
 		_clear_texture_bindings( true );
 		_GL_CHECK_ERROR();
-		for( uint32_t i = 0; i < _sg.limits.max_vertex_attrs; i++ )
+		for( XE::uint32 i = 0; i < _sg.limits.max_vertex_attrs; i++ )
 		{
 			_init_attr( &_sg.gl.cache.attrs[i].gl_attr );
 			glDisableVertexAttribArray( i );
@@ -1348,7 +1348,7 @@ void _reset_state_cache( void )
 	}
 }
 
-void _activate_context( _context_t * ctx )
+void _activate_context( _ContextType * ctx )
 {
 	XE_ASSERT( _sg.gl.valid );
 	/* NOTE: ctx can be 0 to unset the current context */
@@ -1357,7 +1357,7 @@ void _activate_context( _context_t * ctx )
 }
 
 /*-- GL backend resource creation and destruction ----------------------------*/
-ResourceState _create_context( _context_t * ctx )
+ResourceState _create_context( _ContextType * ctx )
 {
 	XE_ASSERT( ctx );
 	XE_ASSERT( 0 == ctx->default_framebuffer );
@@ -1372,7 +1372,7 @@ ResourceState _create_context( _context_t * ctx )
 	return RESOURCESTATE_VALID;
 }
 
-void _destroy_context( _context_t * ctx )
+void _destroy_context( _ContextType * ctx )
 {
 	XE_ASSERT( ctx );
 	if( ctx->vao )
@@ -1382,7 +1382,7 @@ void _destroy_context( _context_t * ctx )
 	_GL_CHECK_ERROR();
 }
 
-ResourceState _create_buffer( _buffer_t * buf, const BufferDesc * desc )
+ResourceState _create_buffer( _BufferType * buf, const BufferDesc * desc )
 {
 	XE_ASSERT( buf && desc );
 	_GL_CHECK_ERROR();
@@ -1390,7 +1390,7 @@ ResourceState _create_buffer( _buffer_t * buf, const BufferDesc * desc )
 	buf->gl.ext_buffers = ( 0 != desc->gl_buffers[0] );
 	GLenum gl_target = _buffer_target( buf->cmn.type );
 	GLenum gl_usage = _usage( buf->cmn.usage );
-	for( int slot = 0; slot < buf->cmn.num_slots; slot++ )
+	for( XE::int32 slot = 0; slot < buf->cmn.num_slots; slot++ )
 	{
 		GLuint gl_buf = 0;
 		if( buf->gl.ext_buffers )
@@ -1417,13 +1417,13 @@ ResourceState _create_buffer( _buffer_t * buf, const BufferDesc * desc )
 	return RESOURCESTATE_VALID;
 }
 
-void _destroy_buffer( _buffer_t * buf )
+void _destroy_buffer( _BufferType * buf )
 {
 	XE_ASSERT( buf );
 	_GL_CHECK_ERROR();
 	if( !buf->gl.ext_buffers )
 	{
-		for( int slot = 0; slot < buf->cmn.num_slots; slot++ )
+		for( XE::int32 slot = 0; slot < buf->cmn.num_slots; slot++ )
 		{
 			if( buf->gl.buf[slot] )
 			{
@@ -1436,12 +1436,12 @@ void _destroy_buffer( _buffer_t * buf )
 
 bool _supported_texture_format( PixelFormat fmt )
 {
-	const int fmt_index = (int )fmt;
+	const XE::int32 fmt_index = (XE::int32 )fmt;
 	XE_ASSERT( ( fmt_index > PIXELFORMAT_NONE ) && ( fmt_index < _PIXELFORMAT_NUM ) );
 	return _sg.formats[fmt_index].sample;
 }
 
-ResourceState _create_image( _image_t * img, const ImageDesc * desc )
+ResourceState _create_image( _ImageType * img, const ImageDesc * desc )
 {
 	XE_ASSERT( img && desc );
 	_GL_CHECK_ERROR();
@@ -1502,7 +1502,7 @@ ResourceState _create_image( _image_t * img, const ImageDesc * desc )
 		if( img->gl.ext_textures )
 		{
 			/* inject externally GL textures */
-			for( int slot = 0; slot < img->cmn.num_slots; slot++ )
+			for( XE::int32 slot = 0; slot < img->cmn.num_slots; slot++ )
 			{
 				XE_ASSERT( desc->gl_textures[slot] );
 				img->gl.tex[slot] = desc->gl_textures[slot];
@@ -1512,8 +1512,8 @@ ResourceState _create_image( _image_t * img, const ImageDesc * desc )
 		{
 			/* create our own GL texture(s) */
 			const GLenum gl_format = _teximage_format( img->cmn.pixel_format );
-			const bool is_compressed = _is_compressed_pixel_format( img->cmn.pixel_format );
-			for( int slot = 0; slot < img->cmn.num_slots; slot++ )
+			const bool is_compressed = _IsCompressedPixelFormat( img->cmn.pixel_format );
+			for( XE::int32 slot = 0; slot < img->cmn.num_slots; slot++ )
 			{
 				glGenTextures( 1, &img->gl.tex[slot] );
 				_store_texture_binding( 0 );
@@ -1548,11 +1548,11 @@ ResourceState _create_image( _image_t * img, const ImageDesc * desc )
 				/* GL spec has strange defaults for mipmap min/max lod: -1000 to +1000 */
 				glTexParameterf( img->gl.target, GL_TEXTURE_MIN_LOD, _clamp( desc->min_lod, 0.0f, 1000.0f ) );
 				glTexParameterf( img->gl.target, GL_TEXTURE_MAX_LOD, _clamp( desc->max_lod, 0.0f, 1000.0f ) );
-				const int num_faces = img->cmn.type == IMAGETYPE_CUBE ? 6 : 1;
-				int data_index = 0;
-				for( int face_index = 0; face_index < num_faces; face_index++ )
+				const XE::int32 num_faces = img->cmn.type == IMAGETYPE_CUBE ? 6 : 1;
+				XE::int32 data_index = 0;
+				for( XE::int32 face_index = 0; face_index < num_faces; face_index++ )
 				{
-					for( int mip_index = 0; mip_index < img->cmn.num_mipmaps; mip_index++, data_index++ )
+					for( XE::int32 mip_index = 0; mip_index < img->cmn.num_mipmaps; mip_index++, data_index++ )
 					{
 						GLenum gl_img_target = img->gl.target;
 						if( IMAGETYPE_CUBE == img->cmn.type )
@@ -1560,13 +1560,13 @@ ResourceState _create_image( _image_t * img, const ImageDesc * desc )
 							gl_img_target = _cubeface_target( face_index );
 						}
 						const GLvoid * data_ptr = desc->content.subimage[face_index][mip_index].ptr;
-						const int data_size = desc->content.subimage[face_index][mip_index].size;
-						int mip_width = img->cmn.width >> mip_index;
+						const XE::int32 data_size = desc->content.subimage[face_index][mip_index].size;
+						XE::int32 mip_width = img->cmn.width >> mip_index;
 						if( mip_width == 0 )
 						{
 							mip_width = 1;
 						}
-						int mip_height = img->cmn.height >> mip_index;
+						XE::int32 mip_height = img->cmn.height >> mip_index;
 						if( mip_height == 0 )
 						{
 							mip_height = 1;
@@ -1587,7 +1587,7 @@ ResourceState _create_image( _image_t * img, const ImageDesc * desc )
 						}
 						else if( ( IMAGETYPE_3D == img->cmn.type ) || ( IMAGETYPE_ARRAY == img->cmn.type ) )
 						{
-							int mip_depth = img->cmn.depth;
+							XE::int32 mip_depth = img->cmn.depth;
 							if( IMAGETYPE_3D == img->cmn.type )
 							{
 								mip_depth >>= mip_index;
@@ -1618,13 +1618,13 @@ ResourceState _create_image( _image_t * img, const ImageDesc * desc )
 	return RESOURCESTATE_VALID;
 }
 
-void _destroy_image( _image_t * img )
+void _destroy_image( _ImageType * img )
 {
 	XE_ASSERT( img );
 	_GL_CHECK_ERROR();
 	if( !img->gl.ext_textures )
 	{
-		for( int slot = 0; slot < img->cmn.num_slots; slot++ )
+		for( XE::int32 slot = 0; slot < img->cmn.num_slots; slot++ )
 		{
 			if( img->gl.tex[slot] )
 			{
@@ -1671,7 +1671,7 @@ GLuint _compile_shader( ShaderStage stage, XE::String src )
 	return gl_shd;
 }
 
-ResourceState _create_shader( _shader_t * shd, const ShaderDesc * desc )
+ResourceState _create_shader( _ShaderType * shd, const ShaderDesc * desc )
 {
 	XE_ASSERT( shd && desc );
 	XE_ASSERT( !shd->gl.prog );
@@ -1680,7 +1680,7 @@ ResourceState _create_shader( _shader_t * shd, const ShaderDesc * desc )
 	shd->cmn.init( desc );
 
 	/* copy vertex attribute names over, these are required for GLES2, and optional for GLES3 and GL3.x */
-	for( int i = 0; i < MAX_VERTEX_ATTRIBUTES; i++ )
+	for( XE::int32 i = 0; i < MAX_VERTEX_ATTRIBUTES; i++ )
 	{
 		shd->gl.attrs[i].name = desc->attrs[i].name;
 	}
@@ -1719,18 +1719,18 @@ ResourceState _create_shader( _shader_t * shd, const ShaderDesc * desc )
 
 	/* resolve uniforms */
 	_GL_CHECK_ERROR();
-	for( int stage_index = 0; stage_index < NUM_SHADER_STAGES; stage_index++ )
+	for( XE::int32 stage_index = 0; stage_index < NUM_SHADER_STAGES; stage_index++ )
 	{
 		const ShaderStageDesc * stage_desc = ( stage_index == SHADERSTAGE_VS ) ? &desc->vs : &desc->fs;
 		_gl_shader_stage_t * gl_stage = &shd->gl.stage[stage_index];
-		for( int ub_index = 0; ub_index < shd->cmn.stage[stage_index].num_uniform_blocks; ub_index++ )
+		for( XE::int32 ub_index = 0; ub_index < shd->cmn.stage[stage_index].num_uniform_blocks; ub_index++ )
 		{
 			const ShaderUniformBlockDesc * ub_desc = &stage_desc->uniform_blocks[ub_index];
 			XE_ASSERT( ub_desc->size > 0 );
 			_gl_uniform_block_t * ub = &gl_stage->uniform_blocks[ub_index];
 			XE_ASSERT( ub->num_uniforms == 0 );
-			int cur_uniform_offset = 0;
-			for( int u_index = 0; u_index < MAX_UB_MEMBERS; u_index++ )
+			XE::int32 cur_uniform_offset = 0;
+			for( XE::int32 u_index = 0; u_index < MAX_UB_MEMBERS; u_index++ )
 			{
 				const ShaderUniformDesc * u_desc = &ub_desc->uniforms[u_index];
 				if( u_desc->type == UNIFORMTYPE_INVALID )
@@ -1741,7 +1741,7 @@ ResourceState _create_shader( _shader_t * shd, const ShaderDesc * desc )
 				u->type = u_desc->type;
 				u->count = (uint8_t )u_desc->array_count;
 				u->offset = (uint16_t )cur_uniform_offset;
-				cur_uniform_offset += _uniform_size( u->type, u->count );
+				cur_uniform_offset += _UniformSize( u->type, u->count );
 				if( u_desc->name )
 				{
 					u->gl_loc = glGetUniformLocation( gl_prog, u_desc->name );
@@ -1758,12 +1758,12 @@ ResourceState _create_shader( _shader_t * shd, const ShaderDesc * desc )
 
 	/* resolve image locations */
 	_GL_CHECK_ERROR();
-	int gl_tex_slot = 0;
-	for( int stage_index = 0; stage_index < NUM_SHADER_STAGES; stage_index++ )
+	XE::int32 gl_tex_slot = 0;
+	for( XE::int32 stage_index = 0; stage_index < NUM_SHADER_STAGES; stage_index++ )
 	{
 		const ShaderStageDesc * stage_desc = ( stage_index == SHADERSTAGE_VS ) ? &desc->vs : &desc->fs;
 		_gl_shader_stage_t * gl_stage = &shd->gl.stage[stage_index];
-		for( int img_index = 0; img_index < shd->cmn.stage[stage_index].num_images; img_index++ )
+		for( XE::int32 img_index = 0; img_index < shd->cmn.stage[stage_index].num_images; img_index++ )
 		{
 			const ShaderImageDesc * img_desc = &stage_desc->images[img_index];
 			XE_ASSERT( img_desc->type != _IMAGETYPE_DEFAULT );
@@ -1787,7 +1787,7 @@ ResourceState _create_shader( _shader_t * shd, const ShaderDesc * desc )
 	return RESOURCESTATE_VALID;
 }
 
-void _destroy_shader( _shader_t * shd )
+void _destroy_shader( _ShaderType * shd )
 {
 	XE_ASSERT( shd );
 	_GL_CHECK_ERROR();
@@ -1798,7 +1798,7 @@ void _destroy_shader( _shader_t * shd )
 	_GL_CHECK_ERROR();
 }
 
-ResourceState _create_pipeline( _pipeline_t * pip, _shader_t * shd, const PipelineDesc * desc )
+ResourceState _create_pipeline( _PipelineType * pip, _ShaderType * shd, const PipelineDesc * desc )
 {
 	XE_ASSERT( pip && shd && desc );
 	XE_ASSERT( !pip->shader && pip->cmn.shader_id.GetValue() == INVALID_ID );
@@ -1812,11 +1812,11 @@ ResourceState _create_pipeline( _pipeline_t * pip, _shader_t * shd, const Pipeli
 	pip->gl.rast = desc->rasterizer;
 
 	/* resolve vertex attributes */
-	for( int attr_index = 0; attr_index < MAX_VERTEX_ATTRIBUTES; attr_index++ )
+	for( XE::int32 attr_index = 0; attr_index < MAX_VERTEX_ATTRIBUTES; attr_index++ )
 	{
 		pip->gl.attrs[attr_index].vb_index = -1;
 	}
-	for( uint32_t attr_index = 0; attr_index < _sg.limits.max_vertex_attrs; attr_index++ )
+	for( XE::uint32 attr_index = 0; attr_index < _sg.limits.max_vertex_attrs; attr_index++ )
 	{
 		const VertexAttrDesc * a_desc = &desc->layout.attrs[attr_index];
 		if( a_desc->format == VERTEXFORMAT_INVALID )
@@ -1826,7 +1826,7 @@ ResourceState _create_pipeline( _pipeline_t * pip, _shader_t * shd, const Pipeli
 		XE_ASSERT( ( a_desc->buffer_index >= 0 ) && ( a_desc->buffer_index < MAX_SHADERSTAGE_BUFFERS ) );
 		const Buffer_layout_desc * l_desc = &desc->layout.buffers[a_desc->buffer_index];
 		const VertexStep step_func = l_desc->step_func;
-		const int step_rate = l_desc->step_rate;
+		const XE::int32 step_rate = l_desc->step_rate;
 		GLint attr_loc = attr_index;
 		if( shd->gl.attrs[attr_index].name != "" )
 		{
@@ -1863,7 +1863,7 @@ ResourceState _create_pipeline( _pipeline_t * pip, _shader_t * shd, const Pipeli
 	return RESOURCESTATE_VALID;
 }
 
-void _destroy_pipeline( _pipeline_t * pip )
+void _destroy_pipeline( _PipelineType * pip )
 {
 	XE_ASSERT( pip );
 	/* empty */
@@ -1876,7 +1876,7 @@ void _destroy_pipeline( _pipeline_t * pip )
 	first entries are the color attachment images (or nullptr), last entry
 	is the depth-stencil image (or nullptr).
 */
-ResourceState _create_pass( _pass_t * pass, _image_t ** att_images, const PassDesc * desc )
+ResourceState _create_pass( _PassType * pass, _ImageType ** att_images, const PassDesc * desc )
 {
 	XE_ASSERT( pass && att_images && desc );
 	XE_ASSERT( att_images && att_images[0] );
@@ -1886,7 +1886,7 @@ ResourceState _create_pass( _pass_t * pass, _image_t ** att_images, const PassDe
 
 	/* copy image pointers */
 	const AttachmentDesc * att_desc;
-	for( int i = 0; i < pass->cmn.num_color_atts; i++ )
+	for( XE::int32 i = 0; i < pass->cmn.num_color_atts; i++ )
 	{
 		att_desc = &desc->color_attachments[i];
 		XE_ASSERT( att_desc->image.GetValue() != INVALID_ID );
@@ -1899,7 +1899,7 @@ ResourceState _create_pass( _pass_t * pass, _image_t ** att_images, const PassDe
 	att_desc = &desc->depth_stencil_attachment;
 	if( att_desc->image.GetValue() != INVALID_ID )
 	{
-		const int ds_img_index = MAX_COLOR_ATTACHMENTS;
+		const XE::int32 ds_img_index = MAX_COLOR_ATTACHMENTS;
 		XE_ASSERT( att_images[ds_img_index] && ( att_images[ds_img_index]->slot.id == att_desc->image.GetValue() ) );
 		XE_ASSERT( _is_valid_rendertarget_depth_format( att_images[ds_img_index]->cmn.pixel_format ) );
 		pass->gl.ds_att.image = att_images[ds_img_index];
@@ -1917,9 +1917,9 @@ ResourceState _create_pass( _pass_t * pass, _image_t ** att_images, const PassDe
 	const bool is_msaa = ( 0 != att_images[0]->gl.msaa_render_buffer );
 	if( is_msaa )
 	{
-		for( int i = 0; i < MAX_COLOR_ATTACHMENTS; i++ )
+		for( XE::int32 i = 0; i < MAX_COLOR_ATTACHMENTS; i++ )
 		{
-			const _image_t * att_img = pass->gl.color_atts[i].image;
+			const _ImageType * att_img = pass->gl.color_atts[i].image;
 			if( att_img )
 			{
 				const GLuint gl_render_buffer = att_img->gl.msaa_render_buffer;
@@ -1930,11 +1930,11 @@ ResourceState _create_pass( _pass_t * pass, _image_t ** att_images, const PassDe
 	}
 	else
 	{
-		for( int i = 0; i < MAX_COLOR_ATTACHMENTS; i++ )
+		for( XE::int32 i = 0; i < MAX_COLOR_ATTACHMENTS; i++ )
 		{
-			const _image_t * att_img = pass->gl.color_atts[i].image;
-			const int mip_level = pass->cmn.color_atts[i].mip_level;
-			const int slice = pass->cmn.color_atts[i].slice;
+			const _ImageType * att_img = pass->gl.color_atts[i].image;
+			const XE::int32 mip_level = pass->cmn.color_atts[i].mip_level;
+			const XE::int32 slice = pass->cmn.color_atts[i].slice;
 			if( att_img )
 			{
 				const GLuint gl_tex = att_img->gl.tex[0];
@@ -1963,7 +1963,7 @@ ResourceState _create_pass( _pass_t * pass, _image_t ** att_images, const PassDe
 		const GLuint gl_render_buffer = pass->gl.ds_att.image->gl.depth_render_buffer;
 		XE_ASSERT( gl_render_buffer );
 		glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, gl_render_buffer );
-		if( _is_depth_stencil_format( pass->gl.ds_att.image->cmn.pixel_format ) )
+		if( _IsDepthStencilFormat( pass->gl.ds_att.image->cmn.pixel_format ) )
 		{
 			glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, gl_render_buffer );
 		}
@@ -1979,10 +1979,10 @@ ResourceState _create_pass( _pass_t * pass, _image_t ** att_images, const PassDe
 	/* create MSAA resolve framebuffers if necessary */
 	if( is_msaa )
 	{
-		for( int i = 0; i < MAX_COLOR_ATTACHMENTS; i++ )
+		for( XE::int32 i = 0; i < MAX_COLOR_ATTACHMENTS; i++ )
 		{
 			_gl_attachment_t * gl_att = &pass->gl.color_atts[i];
-			_attachment_t * cmn_att = &pass->cmn.color_atts[i];
+			_AttachmentType * cmn_att = &pass->cmn.color_atts[i];
 			if( gl_att->image )
 			{
 				XE_ASSERT( 0 == gl_att->gl_msaa_resolve_buffer );
@@ -2020,7 +2020,7 @@ ResourceState _create_pass( _pass_t * pass, _image_t ** att_images, const PassDe
 	return RESOURCESTATE_VALID;
 }
 
-void _destroy_pass( _pass_t * pass )
+void _destroy_pass( _PassType * pass )
 {
 	XE_ASSERT( pass );
 	_GL_CHECK_ERROR();
@@ -2028,7 +2028,7 @@ void _destroy_pass( _pass_t * pass )
 	{
 		glDeleteFramebuffers( 1, &pass->gl.fb );
 	}
-	for( int i = 0; i < MAX_COLOR_ATTACHMENTS; i++ )
+	for( XE::int32 i = 0; i < MAX_COLOR_ATTACHMENTS; i++ )
 	{
 		if( pass->gl.color_atts[i].gl_msaa_resolve_buffer )
 		{
@@ -2042,21 +2042,21 @@ void _destroy_pass( _pass_t * pass )
 	_GL_CHECK_ERROR();
 }
 
-_image_t * _pass_color_image( const _pass_t * pass, int index )
+_ImageType * _pass_color_image( const _PassType * pass, XE::int32 index )
 {
 	XE_ASSERT( pass && ( index >= 0 ) && ( index < MAX_COLOR_ATTACHMENTS ) );
 	/* NOTE: may return null */
 	return pass->gl.color_atts[index].image;
 }
 
-_image_t * _pass_ds_image( const _pass_t * pass )
+_ImageType * _pass_ds_image( const _PassType * pass )
 {
 	/* NOTE: may return null */
 	XE_ASSERT( pass );
 	return pass->gl.ds_att.image;
 }
 
-void _begin_pass( _pass_t * pass, const PassAction * action, int w, int h )
+void _begin_pass( _PassType * pass, const PassAction * action, XE::int32 w, XE::int32 h )
 {
 	/* FIXME: what if a texture used as render target is still bound, should we
 	   unbind all currently bound textures in begin pass? */
@@ -2086,8 +2086,8 @@ void _begin_pass( _pass_t * pass, const PassAction * action, int w, int h )
 			GL_COLOR_ATTACHMENT2,
 			GL_COLOR_ATTACHMENT3
 		};
-		int num_attrs = 0;
-		for( int i = 0; i < MAX_COLOR_ATTACHMENTS; i++ )
+		XE::int32 num_attrs = 0;
+		for( XE::int32 i = 0; i < MAX_COLOR_ATTACHMENTS; i++ )
 		{
 			if( pass->gl.color_atts[num_attrs].image )
 			{
@@ -2168,7 +2168,7 @@ void _begin_pass( _pass_t * pass, const PassAction * action, int w, int h )
 	else
 	{
 		XE_ASSERT( pass );
-		for( int i = 0; i < MAX_COLOR_ATTACHMENTS; i++ )
+		for( XE::int32 i = 0; i < MAX_COLOR_ATTACHMENTS; i++ )
 		{
 			if( pass->gl.color_atts[i].image )
 			{
@@ -2212,7 +2212,7 @@ void _end_pass( void )
 	if( _sg.gl.cur_pass )
 	{
 		/* check if the pass object is still valid */
-		const _pass_t * pass = _sg.gl.cur_pass;
+		const _PassType * pass = _sg.gl.cur_pass;
 		XE_ASSERT( pass->slot.id == _sg.gl.cur_pass_id.GetValue() );
 		bool is_msaa = ( 0 != _sg.gl.cur_pass->gl.color_atts[0].gl_msaa_resolve_buffer );
 		if( is_msaa )
@@ -2220,9 +2220,9 @@ void _end_pass( void )
 			XE_ASSERT( pass->gl.fb );
 			glBindFramebuffer( GL_READ_FRAMEBUFFER, pass->gl.fb );
 			XE_ASSERT( pass->gl.color_atts[0].image );
-			const int w = pass->gl.color_atts[0].image->cmn.width;
-			const int h = pass->gl.color_atts[0].image->cmn.height;
-			for( int att_index = 0; att_index < MAX_COLOR_ATTACHMENTS; att_index++ )
+			const XE::int32 w = pass->gl.color_atts[0].image->cmn.width;
+			const XE::int32 h = pass->gl.color_atts[0].image->cmn.height;
+			for( XE::int32 att_index = 0; att_index < MAX_COLOR_ATTACHMENTS; att_index++ )
 			{
 				const _gl_attachment_t * gl_att = &pass->gl.color_atts[att_index];
 				if( gl_att->image )
@@ -2252,21 +2252,21 @@ void _end_pass( void )
 	_GL_CHECK_ERROR();
 }
 
-void _apply_viewport( int x, int y, int w, int h, bool origin_top_left )
+void _apply_viewport( XE::int32 x, XE::int32 y, XE::int32 w, XE::int32 h, bool origin_top_left )
 {
 	XE_ASSERT( _sg.gl.in_pass );
 	y = origin_top_left ? ( _sg.gl.cur_pass_height - ( y + h ) ) : y;
 	glViewport( x, y, w, h );
 }
 
-void _apply_scissor_rect( int x, int y, int w, int h, bool origin_top_left )
+void _apply_scissor_rect( XE::int32 x, XE::int32 y, XE::int32 w, XE::int32 h, bool origin_top_left )
 {
 	XE_ASSERT( _sg.gl.in_pass );
 	y = origin_top_left ? ( _sg.gl.cur_pass_height - ( y + h ) ) : y;
 	glScissor( x, y, w, h );
 }
 
-void _apply_pipeline( _pipeline_t * pip )
+void _apply_pipeline( _PipelineType * pip )
 {
 	XE_ASSERT( pip );
 	XE_ASSERT( pip->shader );
@@ -2302,7 +2302,7 @@ void _apply_pipeline( _pipeline_t * pip )
 			cache_ds->stencil_write_mask = new_ds->stencil_write_mask;
 			glStencilMask( new_ds->stencil_write_mask );
 		}
-		for( int i = 0; i < 2; i++ )
+		for( XE::int32 i = 0; i < 2; i++ )
 		{
 			const StencilState * new_ss = ( i == 0 ) ? &new_ds->stencil_front : &new_ds->stencil_back;
 			StencilState * cache_ss = ( i == 0 ) ? &cache_ds->stencil_front : &cache_ds->stencil_back;
@@ -2376,7 +2376,7 @@ void _apply_pipeline( _pipeline_t * pip )
 			!_fequal( new_b->blend_color[3], cache_b->blend_color[3], 0.0001f ) )
 		{
 			const float * bc = new_b->blend_color;
-			for( int i = 0; i < 4; i++ )
+			for( XE::int32 i = 0; i < 4; i++ )
 			{
 				cache_b->blend_color[i] = bc[i];
 			}
@@ -2443,11 +2443,11 @@ void _apply_pipeline( _pipeline_t * pip )
 }
 
 void _apply_bindings(
-	_pipeline_t * pip,
-	_buffer_t ** vbs, const int * vb_offsets, int num_vbs,
-	_buffer_t * ib, int ib_offset,
-	_image_t ** vs_imgs, int num_vs_imgs,
-	_image_t ** fs_imgs, int num_fs_imgs )
+	_PipelineType * pip,
+	_BufferType ** vbs, const XE::int32 * vb_offsets, XE::int32 num_vbs,
+	_BufferType * ib, XE::int32 ib_offset,
+	_ImageType ** vs_imgs, XE::int32 num_vs_imgs,
+	_ImageType ** fs_imgs, XE::int32 num_fs_imgs )
 {
 	XE_ASSERT( pip );
 	(void)( num_fs_imgs );
@@ -2457,18 +2457,18 @@ void _apply_bindings(
 
 	/* bind textures */
 	_GL_CHECK_ERROR();
-	for( int stage_index = 0; stage_index < NUM_SHADER_STAGES; stage_index++ )
+	for( XE::int32 stage_index = 0; stage_index < NUM_SHADER_STAGES; stage_index++ )
 	{
-		const _shader_stage_t * stage = &pip->shader->cmn.stage[stage_index];
+		const _ShaderStageType * stage = &pip->shader->cmn.stage[stage_index];
 		const _gl_shader_stage_t * gl_stage = &pip->shader->gl.stage[stage_index];
-		_image_t ** imgs = ( stage_index == SHADERSTAGE_VS ) ? vs_imgs : fs_imgs;
+		_ImageType ** imgs = ( stage_index == SHADERSTAGE_VS ) ? vs_imgs : fs_imgs;
 		XE_ASSERT( ( ( stage_index == SHADERSTAGE_VS ) ? num_vs_imgs : num_fs_imgs ) == stage->num_images );
-		for( int img_index = 0; img_index < stage->num_images; img_index++ )
+		for( XE::int32 img_index = 0; img_index < stage->num_images; img_index++ )
 		{
 			const _gl_shader_image_t * gl_shd_img = &gl_stage->images[img_index];
 			if( gl_shd_img->gl_loc != -1 )
 			{
-				_image_t * img = imgs[img_index];
+				_ImageType * img = imgs[img_index];
 				const GLuint gl_tex = img->gl.tex[img->cmn.active_slot];
 				XE_ASSERT( img && img->gl.target );
 				XE_ASSERT( ( gl_shd_img->gl_tex_slot != -1 ) && gl_tex );
@@ -2485,18 +2485,18 @@ void _apply_bindings(
 	_sg.gl.cache.cur_ib_offset = ib_offset;
 
 	/* vertex attributes */
-	for( uint32_t attr_index = 0; attr_index < _sg.limits.max_vertex_attrs; attr_index++ )
+	for( XE::uint32 attr_index = 0; attr_index < _sg.limits.max_vertex_attrs; attr_index++ )
 	{
 		_gl_attr_t * attr = &pip->gl.attrs[attr_index];
 		_gl_cache_attr_t * cache_attr = &_sg.gl.cache.attrs[attr_index];
 		bool cache_attr_dirty = false;
-		int vb_offset = 0;
+		XE::int32 vb_offset = 0;
 		GLuint gl_vb = 0;
 		if( attr->vb_index >= 0 )
 		{
 			/* attribute is enabled */
 			XE_ASSERT( attr->vb_index < num_vbs );
-			_buffer_t * vb = vbs[attr->vb_index];
+			_BufferType * vb = vbs[attr->vb_index];
 			XE_ASSERT( vb );
 			gl_vb = vb->gl.buf[vb->cmn.active_slot];
 			vb_offset = vb_offsets[attr->vb_index] + attr->offset;
@@ -2545,11 +2545,11 @@ void _apply_bindings(
 	_GL_CHECK_ERROR();
 }
 
-void _apply_uniforms( ShaderStage stage_index, int ub_index, const void * data, int num_bytes )
+void _apply_uniforms( ShaderStage stage_index, XE::int32 ub_index, const void * data, XE::int32 num_bytes )
 {
 	(void)( num_bytes );
 	XE_ASSERT( data && ( num_bytes > 0 ) );
-	XE_ASSERT( ( stage_index >= 0 ) && ( (int )stage_index < NUM_SHADER_STAGES ) );
+	XE_ASSERT( ( stage_index >= 0 ) && ( (XE::int32 )stage_index < NUM_SHADER_STAGES ) );
 	XE_ASSERT( _sg.gl.cache.cur_pipeline );
 	XE_ASSERT( _sg.gl.cache.cur_pipeline->slot.id == _sg.gl.cache.cur_pipeline_id.GetValue() );
 	XE_ASSERT( _sg.gl.cache.cur_pipeline->shader->slot.id == _sg.gl.cache.cur_pipeline->cmn.shader_id.GetValue() );
@@ -2557,7 +2557,7 @@ void _apply_uniforms( ShaderStage stage_index, int ub_index, const void * data, 
 	XE_ASSERT( _sg.gl.cache.cur_pipeline->shader->cmn.stage[stage_index].uniform_blocks[ub_index].size == num_bytes );
 	const _gl_shader_stage_t * gl_stage = &_sg.gl.cache.cur_pipeline->shader->gl.stage[stage_index];
 	const _gl_uniform_block_t * gl_ub = &gl_stage->uniform_blocks[ub_index];
-	for( int u_index = 0; u_index < gl_ub->num_uniforms; u_index++ )
+	for( XE::int32 u_index = 0; u_index < gl_ub->num_uniforms; u_index++ )
 	{
 		const _gl_uniform_t * u = &gl_ub->uniforms[u_index];
 		XE_ASSERT( u->type != UNIFORMTYPE_INVALID );
@@ -2592,15 +2592,15 @@ void _apply_uniforms( ShaderStage stage_index, int ub_index, const void * data, 
 	}
 }
 
-void _draw( int base_element, int num_elements, int num_instances )
+void _draw( XE::int32 base_element, XE::int32 num_elements, XE::int32 num_instances )
 {
 	const GLenum i_type = _sg.gl.cache.cur_index_type;
 	const GLenum p_type = _sg.gl.cache.cur_primitive_type;
 	if( 0 != i_type )
 	{
 		/* indexed rendering */
-		const int i_size = ( i_type == GL_UNSIGNED_SHORT ) ? 2 : 4;
-		const int ib_offset = _sg.gl.cache.cur_ib_offset;
+		const XE::int32 i_size = ( i_type == GL_UNSIGNED_SHORT ) ? 2 : 4;
+		const XE::int32 ib_offset = _sg.gl.cache.cur_ib_offset;
 		const GLvoid * indices = (const GLvoid * )(GLintptr )( base_element * i_size + ib_offset );
 		if( num_instances == 1 )
 		{
@@ -2639,7 +2639,7 @@ void _commit( void )
 	_clear_texture_bindings( false );
 }
 
-void _update_buffer( _buffer_t * buf, const void * data_ptr, int data_size )
+void _update_buffer( _BufferType * buf, const void * data_ptr, XE::int32 data_size )
 {
 	XE_ASSERT( buf && data_ptr && ( data_size > 0 ) );
 	/* only one update per buffer per frame allowed */
@@ -2659,7 +2659,7 @@ void _update_buffer( _buffer_t * buf, const void * data_ptr, int data_size )
 	_GL_CHECK_ERROR();
 }
 
-void _append_buffer( _buffer_t * buf, const void * data_ptr, int data_size, bool new_frame )
+void _append_buffer( _BufferType * buf, const void * data_ptr, XE::int32 data_size, bool new_frame )
 {
 	XE_ASSERT( buf && data_ptr && ( data_size > 0 ) );
 	if( new_frame )
@@ -2681,7 +2681,7 @@ void _append_buffer( _buffer_t * buf, const void * data_ptr, int data_size, bool
 	_GL_CHECK_ERROR();
 }
 
-void _update_image( _image_t * img, const ImageContent * data )
+void _update_image( _ImageType * img, const ImageContent * data )
 {
 	XE_ASSERT( img && data );
 	/* only one update per image per frame allowed */
@@ -2695,11 +2695,11 @@ void _update_image( _image_t * img, const ImageContent * data )
 	_bind_texture( 0, img->gl.target, img->gl.tex[img->cmn.active_slot] );
 	const GLenum gl_img_format = _teximage_format( img->cmn.pixel_format );
 	const GLenum gl_img_type = _teximage_type( img->cmn.pixel_format );
-	const int num_faces = img->cmn.type == IMAGETYPE_CUBE ? 6 : 1;
-	const int num_mips = img->cmn.num_mipmaps;
-	for( int face_index = 0; face_index < num_faces; face_index++ )
+	const XE::int32 num_faces = img->cmn.type == IMAGETYPE_CUBE ? 6 : 1;
+	const XE::int32 num_mips = img->cmn.num_mipmaps;
+	for( XE::int32 face_index = 0; face_index < num_faces; face_index++ )
 	{
-		for( int mip_index = 0; mip_index < num_mips; mip_index++ )
+		for( XE::int32 mip_index = 0; mip_index < num_mips; mip_index++ )
 		{
 			GLenum gl_img_target = img->gl.target;
 			if( IMAGETYPE_CUBE == img->cmn.type )
@@ -2707,12 +2707,12 @@ void _update_image( _image_t * img, const ImageContent * data )
 				gl_img_target = _cubeface_target( face_index );
 			}
 			const GLvoid * data_ptr = data->subimage[face_index][mip_index].ptr;
-			int mip_width = img->cmn.width >> mip_index;
+			XE::int32 mip_width = img->cmn.width >> mip_index;
 			if( mip_width == 0 )
 			{
 				mip_width = 1;
 			}
-			int mip_height = img->cmn.height >> mip_index;
+			XE::int32 mip_height = img->cmn.height >> mip_index;
 			if( mip_height == 0 )
 			{
 				mip_height = 1;
@@ -2727,7 +2727,7 @@ void _update_image( _image_t * img, const ImageContent * data )
 			}
 			else if( ( IMAGETYPE_3D == img->cmn.type ) || ( IMAGETYPE_ARRAY == img->cmn.type ) )
 			{
-				int mip_depth = img->cmn.depth >> mip_index;
+				XE::int32 mip_depth = img->cmn.depth >> mip_index;
 				if( mip_depth == 0 )
 				{
 					mip_depth = 1;

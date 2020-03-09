@@ -32,19 +32,19 @@ USING_XE
 
 typedef struct
 {
-	_slot_t slot;
-	_buffer_common_t cmn;
+	_SlotType slot;
+	_BufferCommonType cmn;
 	struct
 	{
 		ID3D11Buffer * buf;
 	} d3d11;
-} _d3d11_buffer_t;
-typedef _d3d11_buffer_t _buffer_t;
+} _D3D11BufferType;
+typedef _D3D11BufferType _BufferType;
 
 typedef struct
 {
-	_slot_t slot;
-	_image_common_t cmn;
+	_SlotType slot;
+	_ImageCommonType cmn;
 	struct
 	{
 		DXGI_FORMAT format;
@@ -55,45 +55,45 @@ typedef struct
 		ID3D11ShaderResourceView * srv;
 		ID3D11SamplerState * smp;
 	} d3d11;
-} _d3d11_image_t;
-typedef _d3d11_image_t _image_t;
+} _D3D11ImageType;
+typedef _D3D11ImageType _ImageType;
 
 typedef struct
 {
 	XE::String sem_name;
-	int sem_index;
-} _d3d11_shader_attr_t;
+	XE::int32 sem_index;
+} _D3D11ShaderAttrType;
 
 typedef struct
 {
 	ID3D11Buffer * cbufs[MAX_SHADERSTAGE_UBS];
-} _d3d11_shader_stage_t;
+} _D3D11ShaderStageType;
 
 typedef struct
 {
-	_slot_t slot;
-	_shader_common_t cmn;
+	_SlotType slot;
+	_ShaderCommonType cmn;
 	struct
 	{
-		_d3d11_shader_attr_t attrs[MAX_VERTEX_ATTRIBUTES];
-		_d3d11_shader_stage_t stage[NUM_SHADER_STAGES];
+		_D3D11ShaderAttrType attrs[MAX_VERTEX_ATTRIBUTES];
+		_D3D11ShaderStageType stage[NUM_SHADER_STAGES];
 		ID3D11VertexShader * vs;
 		ID3D11PixelShader * fs;
 		void * vs_blob;
-		int vs_blob_length;
+		XE::int32 vs_blob_length;
 	} d3d11;
-} _d3d11_shader_t;
-typedef _d3d11_shader_t _shader_t;
+} _D3D11ShaderType;
+typedef _D3D11ShaderType _ShaderType;
 
 typedef struct
 {
-	_slot_t slot;
-	_pipeline_common_t cmn;
-	_shader_t * shader;
+	_SlotType slot;
+	_PipelineCommonType cmn;
+	_ShaderType * shader;
 	struct
 	{
-		UINT stencil_ref;
-		UINT vb_strides[MAX_SHADERSTAGE_BUFFERS];
+		XE::uint32 stencil_ref;
+		XE::uint32 vb_strides[MAX_SHADERSTAGE_BUFFERS];
 		D3D_PRIMITIVE_TOPOLOGY topology;
 		DXGI_FORMAT index_format;
 		ID3D11InputLayout * il;
@@ -101,39 +101,39 @@ typedef struct
 		ID3D11DepthStencilState * dss;
 		ID3D11BlendState * bs;
 	} d3d11;
-} _d3d11_pipeline_t;
-typedef _d3d11_pipeline_t _pipeline_t;
+} _D3D11PipelineType;
+typedef _D3D11PipelineType _PipelineType;
 
 typedef struct
 {
-	_image_t * image;
+	_ImageType * image;
 	ID3D11RenderTargetView * rtv;
-} _d3d11_color_attachment_t;
+} _D3D11ColorAttachmentType;
 
 typedef struct
 {
-	_image_t * image;
+	_ImageType * image;
 	ID3D11DepthStencilView * dsv;
-} _d3d11_ds_attachment_t;
+} _D3D11DSAttachmentType;
 
 typedef struct
 {
-	_slot_t slot;
-	_pass_common_t cmn;
+	_SlotType slot;
+	_PassCommonType cmn;
 	struct
 	{
-		_d3d11_color_attachment_t color_atts[MAX_COLOR_ATTACHMENTS];
-		_d3d11_ds_attachment_t ds_att;
+		_D3D11ColorAttachmentType color_atts[MAX_COLOR_ATTACHMENTS];
+		_D3D11DSAttachmentType ds_att;
 	} d3d11;
-} _d3d11_pass_t;
-typedef _d3d11_pass_t _pass_t;
-typedef _attachment_common_t _attachment_t;
+} _D3D11PassType;
+typedef _D3D11PassType _PassType;
+typedef _AttachmentCommonType _AttachmentType;
 
 typedef struct
 {
-	_slot_t slot;
-} _d3d11_context_t;
-typedef _d3d11_context_t _context_t;
+	_SlotType slot;
+} _D3D11ContextType;
+typedef _D3D11ContextType _ContextType;
 
 typedef struct
 {
@@ -144,12 +144,12 @@ typedef struct
 	const void * ( *dsv_cb )( void );
 	bool in_pass;
 	bool use_indexed_draw;
-	int cur_width;
-	int cur_height;
-	int num_rtvs;
-	_pass_t * cur_pass;
+	XE::int32 cur_width;
+	XE::int32 cur_height;
+	XE::int32 num_rtvs;
+	_PassType * cur_pass;
 	PassHandle cur_pass_id;
-	_pipeline_t * cur_pipeline;
+	_PipelineType * cur_pipeline;
 	PipelineHandle cur_pipeline_id;
 	ID3D11RenderTargetView * cur_rtvs[MAX_COLOR_ATTACHMENTS];
 	ID3D11DepthStencilView * cur_dsv;
@@ -160,54 +160,54 @@ typedef struct
 	/* the following arrays are used for unbinding resources, they will always contain zeroes */
 	ID3D11RenderTargetView * zero_rtvs[MAX_COLOR_ATTACHMENTS];
 	ID3D11Buffer * zero_vbs[MAX_SHADERSTAGE_BUFFERS];
-	UINT zero_vb_offsets[MAX_SHADERSTAGE_BUFFERS];
-	UINT zero_vb_strides[MAX_SHADERSTAGE_BUFFERS];
+	XE::uint32 zero_vb_offsets[MAX_SHADERSTAGE_BUFFERS];
+	XE::uint32 zero_vb_strides[MAX_SHADERSTAGE_BUFFERS];
 	ID3D11Buffer * zero_cbs[MAX_SHADERSTAGE_UBS];
 	ID3D11ShaderResourceView * zero_srvs[MAX_SHADERSTAGE_IMAGES];
 	ID3D11SamplerState * zero_smps[MAX_SHADERSTAGE_IMAGES];
 	/* global subresourcedata array for texture updates */
 	D3D11_SUBRESOURCE_DATA subres_data[MAX_MIPMAPS * MAX_TEXTUREARRAY_LAYERS];
-} _d3d11_backend_t;
-typedef _d3d11_backend_t _backend_t;
+} _D3D11BackendType;
+typedef _D3D11BackendType _BackendType;
 
 typedef struct
 {
-	_pool_t buffer_pool;
-	_pool_t image_pool;
-	_pool_t shader_pool;
-	_pool_t pipeline_pool;
-	_pool_t pass_pool;
-	_pool_t context_pool;
-	_buffer_t * buffers;
-	_image_t * images;
-	_shader_t * shaders;
-	_pipeline_t * pipelines;
-	_pass_t * passes;
-	_context_t * contexts;
-} _pools_t;
+	_PoolType buffer_pool;
+	_PoolType image_pool;
+	_PoolType shader_pool;
+	_PoolType pipeline_pool;
+	_PoolType pass_pool;
+	_PoolType context_pool;
+	_BufferType * buffers;
+	_ImageType * images;
+	_ShaderType * shaders;
+	_PipelineType * pipelines;
+	_PassType * passes;
+	_ContextType * contexts;
+} _PoolsType;
 
 typedef struct
 {
 	bool valid;
 	GfxDesc desc;       /* original desc with default values patched in */
-	uint32_t frame_index;
+	XE::uint32 frame_index;
 	ContextHandle active_context;
 	PassHandle cur_pass;
 	PipelineHandle cur_pipeline;
 	bool pass_valid;
 	bool bindings_valid;
 	bool next_draw_valid;
-	_validate_error_t validate_error;
-	_pools_t pools;
+	_ValidateErrorType validate_error;
+	_PoolsType pools;
 	Backend backend;
 	Features features;
 	Limits limits;
 	PixelformatInfo formats[_PIXELFORMAT_NUM];
-	_backend_t d3d11;
+	_BackendType d3d11;
 	GfxTraceHooks * hooks;
-} _state_t;
+} _StateType;
 
-static _state_t _sg;
+static _StateType _sg;
 
 
 
@@ -220,7 +220,7 @@ PixelFormat _default_rendertarget_colorformat( void )
 /* return true if pixel format is a valid render target format */
 bool _is_valid_rendertarget_color_format( PixelFormat fmt )
 {
-	const int fmt_index = (int )fmt;
+	const XE::int32 fmt_index = (XE::int32 )fmt;
 	XE_ASSERT( ( fmt_index >= 0 ) && ( fmt_index < _PIXELFORMAT_NUM ) );
 	return _sg.formats[fmt_index].render && !_sg.formats[fmt_index].depth;
 }
@@ -228,7 +228,7 @@ bool _is_valid_rendertarget_color_format( PixelFormat fmt )
 /* return true if pixel format is a valid depth format */
 bool _is_valid_rendertarget_depth_format( PixelFormat fmt )
 {
-	const int fmt_index = (int )fmt;
+	const XE::int32 fmt_index = (XE::int32 )fmt;
 	XE_ASSERT( ( fmt_index >= 0 ) && ( fmt_index < _PIXELFORMAT_NUM ) );
 	return _sg.formats[fmt_index].render && _sg.formats[fmt_index].depth;
 }
@@ -252,7 +252,7 @@ D3D11_USAGE _usage( Usage usg )
 	}
 }
 
-UINT _cpu_access_flags( Usage usg )
+XE::uint32 _cpu_access_flags( Usage usg )
 {
 	switch( usg )
 	{
@@ -350,7 +350,7 @@ DXGI_FORMAT _index_format( IndexType index_type )
 	}
 }
 
-D3D11_FILTER _filter( Filter min_f, Filter mag_f, uint32_t max_anisotropy )
+D3D11_FILTER _filter( Filter min_f, Filter mag_f, XE::uint32 max_anisotropy )
 {
 	if( max_anisotropy > 1 )
 	{
@@ -565,8 +565,8 @@ void _init_caps( void )
 	_sg.limits.max_image_array_layers = 2 * 1024;
 	_sg.limits.max_vertex_attrs = MAX_VERTEX_ATTRIBUTES;
 
-	UINT dxgi_fmt_caps = 0;
-	for( int fmt = ( PIXELFORMAT_NONE + 1 ); fmt < _PIXELFORMAT_NUM; fmt++ )
+	XE::uint32 dxgi_fmt_caps = 0;
+	for( XE::int32 fmt = ( PIXELFORMAT_NONE + 1 ); fmt < _PIXELFORMAT_NUM; fmt++ )
 	{
 		DXGI_FORMAT dxgi_fmt = _pixel_format( (PixelFormat )fmt );
 		HRESULT hr = ID3D11Device_CheckFormatSupport( _sg.d3d11.dev, dxgi_fmt, &dxgi_fmt_caps );
@@ -633,26 +633,26 @@ void _reset_state_cache( void )
 	_clear_state();
 }
 
-void _activate_context( _context_t * ctx )
+void _activate_context( _ContextType * ctx )
 {
 	(void)( ctx );
 	_clear_state();
 }
 
-ResourceState _create_context( _context_t * ctx )
+ResourceState _create_context( _ContextType * ctx )
 {
 	XE_ASSERT( ctx );
 	(void)( ctx );
 	return RESOURCESTATE_VALID;
 }
 
-void _destroy_context( _context_t * ctx )
+void _destroy_context( _ContextType * ctx )
 {
 	XE_ASSERT( ctx );
 	(void)( ctx );
 }
 
-ResourceState _create_buffer( _buffer_t * buf, const BufferDesc * desc )
+ResourceState _create_buffer( _BufferType * buf, const BufferDesc * desc )
 {
 	XE_ASSERT( buf && desc );
 	XE_ASSERT( !buf->d3d11.buf );
@@ -687,7 +687,7 @@ ResourceState _create_buffer( _buffer_t * buf, const BufferDesc * desc )
 	return RESOURCESTATE_VALID;
 }
 
-void _destroy_buffer( _buffer_t * buf )
+void _destroy_buffer( _BufferType * buf )
 {
 	XE_ASSERT( buf );
 	if( buf->d3d11.buf )
@@ -696,31 +696,31 @@ void _destroy_buffer( _buffer_t * buf )
 	}
 }
 
-void _fill_subres_data( const _image_t * img, const ImageContent * content )
+void _fill_subres_data( const _ImageType * img, const ImageContent * content )
 {
-	const int num_faces = ( img->cmn.type == IMAGETYPE_CUBE ) ? 6 : 1;
-	const int num_slices = ( img->cmn.type == IMAGETYPE_ARRAY ) ? img->cmn.depth : 1;
-	int subres_index = 0;
-	for( int face_index = 0; face_index < num_faces; face_index++ )
+	const XE::int32 num_faces = ( img->cmn.type == IMAGETYPE_CUBE ) ? 6 : 1;
+	const XE::int32 num_slices = ( img->cmn.type == IMAGETYPE_ARRAY ) ? img->cmn.depth : 1;
+	XE::int32 subres_index = 0;
+	for( XE::int32 face_index = 0; face_index < num_faces; face_index++ )
 	{
-		for( int slice_index = 0; slice_index < num_slices; slice_index++ )
+		for( XE::int32 slice_index = 0; slice_index < num_slices; slice_index++ )
 		{
-			for( int mip_index = 0; mip_index < img->cmn.num_mipmaps; mip_index++, subres_index++ )
+			for( XE::int32 mip_index = 0; mip_index < img->cmn.num_mipmaps; mip_index++, subres_index++ )
 			{
 				XE_ASSERT( subres_index < ( MAX_MIPMAPS * MAX_TEXTUREARRAY_LAYERS ) );
 				D3D11_SUBRESOURCE_DATA * subres_data = &_sg.d3d11.subres_data[subres_index];
-				const int mip_width = ( ( img->cmn.width >> mip_index ) > 0 ) ? img->cmn.width >> mip_index : 1;
-				const int mip_height = ( ( img->cmn.height >> mip_index ) > 0 ) ? img->cmn.height >> mip_index : 1;
+				const XE::int32 mip_width = ( ( img->cmn.width >> mip_index ) > 0 ) ? img->cmn.width >> mip_index : 1;
+				const XE::int32 mip_height = ( ( img->cmn.height >> mip_index ) > 0 ) ? img->cmn.height >> mip_index : 1;
 				const SubimageContent * subimg_content = &( content->subimage[face_index][mip_index] );
-				const int slice_size = subimg_content->size / num_slices;
-				const int slice_offset = slice_size * slice_index;
+				const XE::int32 slice_size = subimg_content->size / num_slices;
+				const XE::int32 slice_offset = slice_size * slice_index;
 				const uint8_t * ptr = (const uint8_t * )subimg_content->ptr;
 				subres_data->pSysMem = ptr + slice_offset;
-				subres_data->SysMemPitch = _row_pitch( img->cmn.pixel_format, mip_width );
+				subres_data->SysMemPitch = _RowPitch( img->cmn.pixel_format, mip_width );
 				if( img->cmn.type == IMAGETYPE_3D )
 				{
-					/* FIXME? const int mip_depth = ((img->depth>>mip_index)>0) ? img->depth>>mip_index : 1; */
-					subres_data->SysMemSlicePitch = _surface_pitch( img->cmn.pixel_format, mip_width, mip_height );
+					/* FIXME? const XE::int32 mip_depth = ((img->depth>>mip_index)>0) ? img->depth>>mip_index : 1; */
+					subres_data->SysMemSlicePitch = _SurfacePitch( img->cmn.pixel_format, mip_width, mip_height );
 				}
 				else
 				{
@@ -731,7 +731,7 @@ void _fill_subres_data( const _image_t * img, const ImageContent * content )
 	}
 }
 
-ResourceState _create_image( _image_t * img, const ImageDesc * desc )
+ResourceState _create_image( _ImageType * img, const ImageDesc * desc )
 {
 	XE_ASSERT( img && desc );
 	XE_ASSERT( !img->d3d11.tex2d && !img->d3d11.tex3d && !img->d3d11.texds && !img->d3d11.texmsaa );
@@ -926,7 +926,7 @@ ResourceState _create_image( _image_t * img, const ImageDesc * desc )
 			d3d11_tex_desc.BindFlags = D3D11_BIND_RENDER_TARGET;
 			d3d11_tex_desc.CPUAccessFlags = 0;
 			d3d11_tex_desc.SampleDesc.Count = img->cmn.sample_count;
-			d3d11_tex_desc.SampleDesc.Quality = (UINT )D3D11_STANDARD_MULTISAMPLE_PATTERN;
+			d3d11_tex_desc.SampleDesc.Quality = (XE::uint32 )D3D11_STANDARD_MULTISAMPLE_PATTERN;
 			hr = ID3D11Device_CreateTexture2D( _sg.d3d11.dev, &d3d11_tex_desc, NULL, &img->d3d11.texmsaa );
 			XE_ASSERT( SUCCEEDED( hr ) && img->d3d11.texmsaa );
 		}
@@ -944,7 +944,7 @@ ResourceState _create_image( _image_t * img, const ImageDesc * desc )
 			/* all 0.0f */
 			break;
 		case BORDERCOLOR_OPAQUE_WHITE:
-			for( int i = 0; i < 4; i++ )
+			for( XE::int32 i = 0; i < 4; i++ )
 			{
 				d3d11_smp_desc.BorderColor[i] = 1.0f;
 			}
@@ -964,7 +964,7 @@ ResourceState _create_image( _image_t * img, const ImageDesc * desc )
 	return RESOURCESTATE_VALID;
 }
 
-void _destroy_image( _image_t * img )
+void _destroy_image( _ImageType * img )
 {
 	XE_ASSERT( img );
 	if( img->d3d11.tex2d )
@@ -1063,7 +1063,7 @@ ID3DBlob * _compile_shader( const ShaderStageDesc * stage_desc, XE::String targe
 	return output;
 }
 
-ResourceState _create_shader( _shader_t * shd, const ShaderDesc * desc )
+ResourceState _create_shader( _ShaderType * shd, const ShaderDesc * desc )
 {
 	XE_ASSERT( shd && desc );
 	XE_ASSERT( !shd->d3d11.vs && !shd->d3d11.fs && !shd->d3d11.vs_blob );
@@ -1072,20 +1072,20 @@ ResourceState _create_shader( _shader_t * shd, const ShaderDesc * desc )
 	shd->cmn.init( desc );
 
 	/* copy vertex attribute semantic names and indices */
-	for( int i = 0; i < MAX_VERTEX_ATTRIBUTES; i++ )
+	for( XE::int32 i = 0; i < MAX_VERTEX_ATTRIBUTES; i++ )
 	{
 		shd->d3d11.attrs[i].sem_name = desc->attrs[i].sem_name;
 		shd->d3d11.attrs[i].sem_index = desc->attrs[i].sem_index;
 	}
 
 	/* shader stage uniform blocks and image slots */
-	for( int stage_index = 0; stage_index < NUM_SHADER_STAGES; stage_index++ )
+	for( XE::int32 stage_index = 0; stage_index < NUM_SHADER_STAGES; stage_index++ )
 	{
-		_shader_stage_t * cmn_stage = &shd->cmn.stage[stage_index];
-		_d3d11_shader_stage_t * d3d11_stage = &shd->d3d11.stage[stage_index];
-		for( int ub_index = 0; ub_index < cmn_stage->num_uniform_blocks; ub_index++ )
+		_ShaderStageType * cmn_stage = &shd->cmn.stage[stage_index];
+		_D3D11ShaderStageType * d3d11_stage = &shd->d3d11.stage[stage_index];
+		for( XE::int32 ub_index = 0; ub_index < cmn_stage->num_uniform_blocks; ub_index++ )
 		{
-			const _uniform_block_t * ub = &cmn_stage->uniform_blocks[ub_index];
+			const _UniformBlockType * ub = &cmn_stage->uniform_blocks[ub_index];
 
 			/* create a D3D constant buffer for each uniform block */
 			XE_ASSERT( 0 == d3d11_stage->cbufs[ub_index] );
@@ -1133,8 +1133,8 @@ ResourceState _create_shader( _shader_t * shd, const ShaderDesc * desc )
 		XE_ASSERT( SUCCEEDED( hr ) && shd->d3d11.fs );
 
 		/* need to store the vertex shader byte code, this is needed later in create_pipeline */
-		shd->d3d11.vs_blob_length = (int )vs_length;
-		shd->d3d11.vs_blob = malloc( (int )vs_length );
+		shd->d3d11.vs_blob_length = (XE::int32 )vs_length;
+		shd->d3d11.vs_blob = malloc( (XE::int32 )vs_length );
 		XE_ASSERT( shd->d3d11.vs_blob );
 		memcpy( shd->d3d11.vs_blob, vs_ptr, vs_length );
 
@@ -1151,7 +1151,7 @@ ResourceState _create_shader( _shader_t * shd, const ShaderDesc * desc )
 	return result;
 }
 
-void _destroy_shader( _shader_t * shd )
+void _destroy_shader( _ShaderType * shd )
 {
 	XE_ASSERT( shd );
 	if( shd->d3d11.vs )
@@ -1166,11 +1166,11 @@ void _destroy_shader( _shader_t * shd )
 	{
 		free( shd->d3d11.vs_blob );
 	}
-	for( int stage_index = 0; stage_index < NUM_SHADER_STAGES; stage_index++ )
+	for( XE::int32 stage_index = 0; stage_index < NUM_SHADER_STAGES; stage_index++ )
 	{
-		_shader_stage_t * cmn_stage = &shd->cmn.stage[stage_index];
-		_d3d11_shader_stage_t * d3d11_stage = &shd->d3d11.stage[stage_index];
-		for( int ub_index = 0; ub_index < cmn_stage->num_uniform_blocks; ub_index++ )
+		_ShaderStageType * cmn_stage = &shd->cmn.stage[stage_index];
+		_D3D11ShaderStageType * d3d11_stage = &shd->d3d11.stage[stage_index];
+		for( XE::int32 ub_index = 0; ub_index < cmn_stage->num_uniform_blocks; ub_index++ )
 		{
 			if( d3d11_stage->cbufs[ub_index] != nullptr )
 			{
@@ -1180,7 +1180,7 @@ void _destroy_shader( _shader_t * shd )
 	}
 }
 
-ResourceState _create_pipeline( _pipeline_t * pip, _shader_t * shd, const PipelineDesc * desc )
+ResourceState _create_pipeline( _PipelineType * pip, _ShaderType * shd, const PipelineDesc * desc )
 {
 	XE_ASSERT( pip && shd && desc );
 	XE_ASSERT( desc->shader.GetValue() == shd->slot.id );
@@ -1198,7 +1198,7 @@ ResourceState _create_pipeline( _pipeline_t * pip, _shader_t * shd, const Pipeli
 	HRESULT hr;
 	D3D11_INPUT_ELEMENT_DESC d3d11_comps[MAX_VERTEX_ATTRIBUTES];
 	memset( d3d11_comps, 0, sizeof( d3d11_comps ) );
-	int attr_index = 0;
+	XE::int32 attr_index = 0;
 	for( ; attr_index < MAX_VERTEX_ATTRIBUTES; attr_index++ )
 	{
 		const VertexAttrDesc * a_desc = &desc->layout.attrs[attr_index];
@@ -1209,7 +1209,7 @@ ResourceState _create_pipeline( _pipeline_t * pip, _shader_t * shd, const Pipeli
 		XE_ASSERT( ( a_desc->buffer_index >= 0 ) && ( a_desc->buffer_index < MAX_SHADERSTAGE_BUFFERS ) );
 		const BufferLayoutDesc * l_desc = &desc->layout.buffers[a_desc->buffer_index];
 		const VertexStep step_func = l_desc->step_func;
-		const int step_rate = l_desc->step_rate;
+		const XE::int32 step_rate = l_desc->step_rate;
 		D3D11_INPUT_ELEMENT_DESC * d3d11_comp = &d3d11_comps[attr_index];
 		d3d11_comp->SemanticName = shd->d3d11.attrs[attr_index].sem_name.ToCString();
 		d3d11_comp->SemanticIndex = shd->d3d11.attrs[attr_index].sem_index;
@@ -1223,7 +1223,7 @@ ResourceState _create_pipeline( _pipeline_t * pip, _shader_t * shd, const Pipeli
 		}
 		pip->cmn.vertex_layout_valid[a_desc->buffer_index] = true;
 	}
-	for( int layout_index = 0; layout_index < MAX_SHADERSTAGE_BUFFERS; layout_index++ )
+	for( XE::int32 layout_index = 0; layout_index < MAX_SHADERSTAGE_BUFFERS; layout_index++ )
 	{
 		if( pip->cmn.vertex_layout_valid[layout_index] )
 		{
@@ -1301,7 +1301,7 @@ ResourceState _create_pipeline( _pipeline_t * pip, _shader_t * shd, const Pipeli
 	return RESOURCESTATE_VALID;
 }
 
-void _destroy_pipeline( _pipeline_t * pip )
+void _destroy_pipeline( _PipelineType * pip )
 {
 	XE_ASSERT( pip );
 	if( pip->d3d11.il )
@@ -1322,7 +1322,7 @@ void _destroy_pipeline( _pipeline_t * pip )
 	}
 }
 
-ResourceState _create_pass( _pass_t * pass, _image_t ** att_images, const PassDesc * desc )
+ResourceState _create_pass( _PassType * pass, _ImageType ** att_images, const PassDesc * desc )
 {
 	XE_ASSERT( pass && desc );
 	XE_ASSERT( att_images && att_images[0] );
@@ -1330,18 +1330,18 @@ ResourceState _create_pass( _pass_t * pass, _image_t ** att_images, const PassDe
 
 	pass->cmn.init( desc );
 
-	for( int i = 0; i < pass->cmn.num_color_atts; i++ )
+	for( XE::int32 i = 0; i < pass->cmn.num_color_atts; i++ )
 	{
 		const AttachmentDesc * att_desc = &desc->color_attachments[i];
 		XE_ASSERT( att_desc->image );
-		_image_t * att_img = att_images[i];
+		_ImageType * att_img = att_images[i];
 		XE_ASSERT( att_img && ( att_img->slot.id == att_desc->image.GetValue() ) );
 		XE_ASSERT( _is_valid_rendertarget_color_format( att_img->cmn.pixel_format ) );
 		XE_ASSERT( 0 == pass->d3d11.color_atts[i].image );
 		pass->d3d11.color_atts[i].image = att_img;
 
 		/* create D3D11 render-target-view */
-		const _attachment_t * cmn_att = &pass->cmn.color_atts[i];
+		const _AttachmentType * cmn_att = &pass->cmn.color_atts[i];
 		XE_ASSERT( 0 == pass->d3d11.color_atts[i].rtv );
 		ID3D11Resource * d3d11_res = 0;
 		const bool is_msaa = att_img->cmn.sample_count > 1;
@@ -1390,9 +1390,9 @@ ResourceState _create_pass( _pass_t * pass, _image_t ** att_images, const PassDe
 	XE_ASSERT( 0 == pass->d3d11.ds_att.dsv );
 	if( desc->depth_stencil_attachment.image )
 	{
-		const int ds_img_index = MAX_COLOR_ATTACHMENTS;
+		const XE::int32 ds_img_index = MAX_COLOR_ATTACHMENTS;
 		const AttachmentDesc * att_desc = &desc->depth_stencil_attachment;
-		_image_t * att_img = att_images[ds_img_index];
+		_ImageType * att_img = att_images[ds_img_index];
 		XE_ASSERT( att_img && ( att_img->slot.id == att_desc->image.GetValue() ) );
 		XE_ASSERT( _is_valid_rendertarget_depth_format( att_img->cmn.pixel_format ) );
 		XE_ASSERT( 0 == pass->d3d11.ds_att.image );
@@ -1420,10 +1420,10 @@ ResourceState _create_pass( _pass_t * pass, _image_t ** att_images, const PassDe
 	return RESOURCESTATE_VALID;
 }
 
-void _destroy_pass( _pass_t * pass )
+void _destroy_pass( _PassType * pass )
 {
 	XE_ASSERT( pass );
-	for( int i = 0; i < MAX_COLOR_ATTACHMENTS; i++ )
+	for( XE::int32 i = 0; i < MAX_COLOR_ATTACHMENTS; i++ )
 	{
 		if( pass->d3d11.color_atts[i].rtv )
 		{
@@ -1436,21 +1436,21 @@ void _destroy_pass( _pass_t * pass )
 	}
 }
 
-_image_t * _pass_color_image( const _pass_t * pass, int index )
+_ImageType * _pass_color_image( const _PassType * pass, XE::int32 index )
 {
 	XE_ASSERT( pass && ( index >= 0 ) && ( index < MAX_COLOR_ATTACHMENTS ) );
 	/* NOTE: may return null */
 	return pass->d3d11.color_atts[index].image;
 }
 
-_image_t * _pass_ds_image( const _pass_t * pass )
+_ImageType * _pass_ds_image( const _PassType * pass )
 {
 	/* NOTE: may return null */
 	XE_ASSERT( pass );
 	return pass->d3d11.ds_att.image;
 }
 
-void _begin_pass( _pass_t * pass, const PassAction * action, int w, int h )
+void _begin_pass( _PassType * pass, const PassAction * action, XE::int32 w, XE::int32 h )
 {
 	XE_ASSERT( action );
 	XE_ASSERT( !_sg.d3d11.in_pass );
@@ -1462,7 +1462,7 @@ void _begin_pass( _pass_t * pass, const PassAction * action, int w, int h )
 		_sg.d3d11.cur_pass = pass;
 		_sg.d3d11.cur_pass_id = pass->slot.id;
 		_sg.d3d11.num_rtvs = 0;
-		for( int i = 0; i < MAX_COLOR_ATTACHMENTS; i++ )
+		for( XE::int32 i = 0; i < MAX_COLOR_ATTACHMENTS; i++ )
 		{
 			_sg.d3d11.cur_rtvs[i] = pass->d3d11.color_atts[i].rtv;
 			if( _sg.d3d11.cur_rtvs[i] )
@@ -1479,7 +1479,7 @@ void _begin_pass( _pass_t * pass, const PassAction * action, int w, int h )
 		_sg.d3d11.cur_pass_id = XE::PassHandle::Invalid;
 		_sg.d3d11.num_rtvs = 1;
 		_sg.d3d11.cur_rtvs[0] = (ID3D11RenderTargetView * )_sg.d3d11.rtv_cb();
-		for( int i = 1; i < MAX_COLOR_ATTACHMENTS; i++ )
+		for( XE::int32 i = 1; i < MAX_COLOR_ATTACHMENTS; i++ )
 		{
 			_sg.d3d11.cur_rtvs[i] = 0;
 		}
@@ -1504,14 +1504,14 @@ void _begin_pass( _pass_t * pass, const PassAction * action, int w, int h )
 	ID3D11DeviceContext_RSSetScissorRects( _sg.d3d11.ctx, 1, &rect );
 
 	/* perform clear action */
-	for( int i = 0; i < _sg.d3d11.num_rtvs; i++ )
+	for( XE::int32 i = 0; i < _sg.d3d11.num_rtvs; i++ )
 	{
 		if( action->colors[i].action == ACTION_CLEAR )
 		{
 			ID3D11DeviceContext_ClearRenderTargetView( _sg.d3d11.ctx, _sg.d3d11.cur_rtvs[i], action->colors[i].val );
 		}
 	}
-	UINT ds_flags = 0;
+	XE::uint32 ds_flags = 0;
 	if( action->depth.action == ACTION_CLEAR )
 	{
 		ds_flags |= D3D11_CLEAR_DEPTH;
@@ -1526,7 +1526,7 @@ void _begin_pass( _pass_t * pass, const PassAction * action, int w, int h )
 	}
 }
 
-UINT _calcsubresource( UINT mip_slice, UINT array_slice, UINT mip_levels )
+XE::uint32 _calcsubresource( XE::uint32 mip_slice, XE::uint32 array_slice, XE::uint32 mip_levels )
 {
 	return mip_slice + array_slice * mip_levels;
 }
@@ -1540,17 +1540,17 @@ void _end_pass( void )
 	if( _sg.d3d11.cur_pass )
 	{
 		XE_ASSERT( _sg.d3d11.cur_pass->slot.id == _sg.d3d11.cur_pass_id.GetValue() );
-		for( int i = 0; i < _sg.d3d11.num_rtvs; i++ )
+		for( XE::int32 i = 0; i < _sg.d3d11.num_rtvs; i++ )
 		{
-			_attachment_t * cmn_att = &_sg.d3d11.cur_pass->cmn.color_atts[i];
-			_image_t * att_img = _sg.d3d11.cur_pass->d3d11.color_atts[i].image;
+			_AttachmentType * cmn_att = &_sg.d3d11.cur_pass->cmn.color_atts[i];
+			_ImageType * att_img = _sg.d3d11.cur_pass->d3d11.color_atts[i].image;
 			XE_ASSERT( att_img && ( att_img->slot.id == cmn_att->image_id.GetValue() ) );
 			if( att_img->cmn.sample_count > 1 )
 			{
 				/* FIXME: support MSAA resolve into 3D texture */
 				XE_ASSERT( att_img->d3d11.tex2d && att_img->d3d11.texmsaa && !att_img->d3d11.tex3d );
 				XE_ASSERT( DXGI_FORMAT_UNKNOWN != att_img->d3d11.format );
-				UINT dst_subres = _calcsubresource( cmn_att->mip_level, cmn_att->slice, att_img->cmn.num_mipmaps );
+				XE::uint32 dst_subres = _calcsubresource( cmn_att->mip_level, cmn_att->slice, att_img->cmn.num_mipmaps );
 				ID3D11DeviceContext_ResolveSubresource( _sg.d3d11.ctx,
 					(ID3D11Resource * )att_img->d3d11.tex2d,     /* pDstResource */
 														dst_subres,                                 /* DstSubresource */
@@ -1564,7 +1564,7 @@ void _end_pass( void )
 	_sg.d3d11.cur_pass_id = XE::PassHandle::Invalid;
 	_sg.d3d11.cur_pipeline = 0;
 	_sg.d3d11.cur_pipeline_id = XE::PipelineHandle::Invalid;
-	for( int i = 0; i < MAX_COLOR_ATTACHMENTS; i++ )
+	for( XE::int32 i = 0; i < MAX_COLOR_ATTACHMENTS; i++ )
 	{
 		_sg.d3d11.cur_rtvs[i] = 0;
 	}
@@ -1572,7 +1572,7 @@ void _end_pass( void )
 	_clear_state();
 }
 
-void _apply_viewport( int x, int y, int w, int h, bool origin_top_left )
+void _apply_viewport( XE::int32 x, XE::int32 y, XE::int32 w, XE::int32 h, bool origin_top_left )
 {
 	XE_ASSERT( _sg.d3d11.ctx );
 	XE_ASSERT( _sg.d3d11.in_pass );
@@ -1586,7 +1586,7 @@ void _apply_viewport( int x, int y, int w, int h, bool origin_top_left )
 	ID3D11DeviceContext_RSSetViewports( _sg.d3d11.ctx, 1, &vp );
 }
 
-void _apply_scissor_rect( int x, int y, int w, int h, bool origin_top_left )
+void _apply_scissor_rect( XE::int32 x, XE::int32 y, XE::int32 w, XE::int32 h, bool origin_top_left )
 {
 	XE_ASSERT( _sg.d3d11.ctx );
 	XE_ASSERT( _sg.d3d11.in_pass );
@@ -1598,7 +1598,7 @@ void _apply_scissor_rect( int x, int y, int w, int h, bool origin_top_left )
 	ID3D11DeviceContext_RSSetScissorRects( _sg.d3d11.ctx, 1, &rect );
 }
 
-void _apply_pipeline( _pipeline_t * pip )
+void _apply_pipeline( _PipelineType * pip )
 {
 	XE_ASSERT( pip );
 	XE_ASSERT( pip->shader );
@@ -1622,11 +1622,11 @@ void _apply_pipeline( _pipeline_t * pip )
 }
 
 void _apply_bindings(
-	_pipeline_t * pip,
-	_buffer_t ** vbs, const int * vb_offsets, int num_vbs,
-	_buffer_t * ib, int ib_offset,
-	_image_t ** vs_imgs, int num_vs_imgs,
-	_image_t ** fs_imgs, int num_fs_imgs )
+	_PipelineType * pip,
+	_BufferType ** vbs, const XE::int32 * vb_offsets, XE::int32 num_vbs,
+	_BufferType * ib, XE::int32 ib_offset,
+	_ImageType ** vs_imgs, XE::int32 num_vs_imgs,
+	_ImageType ** fs_imgs, XE::int32 num_fs_imgs )
 {
 	XE_ASSERT( pip );
 	XE_ASSERT( _sg.d3d11.ctx );
@@ -1635,12 +1635,12 @@ void _apply_bindings(
 	/* gather all the D3D11 resources into arrays */
 	ID3D11Buffer * d3d11_ib = ib ? ib->d3d11.buf : 0;
 	ID3D11Buffer * d3d11_vbs[MAX_SHADERSTAGE_BUFFERS];
-	UINT d3d11_vb_offsets[MAX_SHADERSTAGE_BUFFERS];
+	XE::uint32 d3d11_vb_offsets[MAX_SHADERSTAGE_BUFFERS];
 	ID3D11ShaderResourceView * d3d11_vs_srvs[MAX_SHADERSTAGE_IMAGES];
 	ID3D11SamplerState * d3d11_vs_smps[MAX_SHADERSTAGE_IMAGES];
 	ID3D11ShaderResourceView * d3d11_fs_srvs[MAX_SHADERSTAGE_IMAGES];
 	ID3D11SamplerState * d3d11_fs_smps[MAX_SHADERSTAGE_IMAGES];
-	int i;
+	XE::int32 i;
 	for( i = 0; i < num_vbs; i++ )
 	{
 		XE_ASSERT( vbs[i]->d3d11.buf );
@@ -1685,12 +1685,12 @@ void _apply_bindings(
 	ID3D11DeviceContext_PSSetSamplers( _sg.d3d11.ctx, 0, MAX_SHADERSTAGE_IMAGES, d3d11_fs_smps );
 }
 
-void _apply_uniforms( ShaderStage stage_index, int ub_index, const void * data, int num_bytes )
+void _apply_uniforms( ShaderStage stage_index, XE::int32 ub_index, const void * data, XE::int32 num_bytes )
 {
 	(void)( num_bytes );
 	XE_ASSERT( _sg.d3d11.ctx && _sg.d3d11.in_pass );
 	XE_ASSERT( data && ( num_bytes > 0 ) );
-	XE_ASSERT( ( stage_index >= 0 ) && ( (int )stage_index < NUM_SHADER_STAGES ) );
+	XE_ASSERT( ( stage_index >= 0 ) && ( (XE::int32 )stage_index < NUM_SHADER_STAGES ) );
 	XE_ASSERT( ( ub_index >= 0 ) && ( ub_index < MAX_SHADERSTAGE_UBS ) );
 	XE_ASSERT( _sg.d3d11.cur_pipeline && _sg.d3d11.cur_pipeline->slot.id == _sg.d3d11.cur_pipeline_id.GetValue() );
 	XE_ASSERT( _sg.d3d11.cur_pipeline->shader && _sg.d3d11.cur_pipeline->shader->slot.id == _sg.d3d11.cur_pipeline->cmn.shader_id.GetValue() );
@@ -1701,7 +1701,7 @@ void _apply_uniforms( ShaderStage stage_index, int ub_index, const void * data, 
 	ID3D11DeviceContext_UpdateSubresource( _sg.d3d11.ctx, (ID3D11Resource * )cb, 0, NULL, data, 0, 0 );
 }
 
-void _draw( int base_element, int num_elements, int num_instances )
+void _draw( XE::int32 base_element, XE::int32 num_elements, XE::int32 num_instances )
 {
 	XE_ASSERT( _sg.d3d11.in_pass );
 	if( _sg.d3d11.use_indexed_draw )
@@ -1733,7 +1733,7 @@ void _commit( void )
 	XE_ASSERT( !_sg.d3d11.in_pass );
 }
 
-void _update_buffer( _buffer_t * buf, const void * data_ptr, int data_size )
+void _update_buffer( _BufferType * buf, const void * data_ptr, XE::int32 data_size )
 {
 	XE_ASSERT( buf && data_ptr && ( data_size > 0 ) );
 	XE_ASSERT( _sg.d3d11.ctx );
@@ -1746,7 +1746,7 @@ void _update_buffer( _buffer_t * buf, const void * data_ptr, int data_size )
 	ID3D11DeviceContext_Unmap( _sg.d3d11.ctx, (ID3D11Resource * )buf->d3d11.buf, 0 );
 }
 
-void _append_buffer( _buffer_t * buf, const void * data_ptr, int data_size, bool new_frame )
+void _append_buffer( _BufferType * buf, const void * data_ptr, XE::int32 data_size, bool new_frame )
 {
 	XE_ASSERT( buf && data_ptr && ( data_size > 0 ) );
 	XE_ASSERT( _sg.d3d11.ctx );
@@ -1761,7 +1761,7 @@ void _append_buffer( _buffer_t * buf, const void * data_ptr, int data_size, bool
 	ID3D11DeviceContext_Unmap( _sg.d3d11.ctx, (ID3D11Resource * )buf->d3d11.buf, 0 );
 }
 
-void _update_image( _image_t * img, const ImageContent * data )
+void _update_image( _ImageType * img, const ImageContent * data )
 {
 	XE_ASSERT( img && data );
 	XE_ASSERT( _sg.d3d11.ctx );
@@ -1776,38 +1776,38 @@ void _update_image( _image_t * img, const ImageContent * data )
 		d3d11_res = (ID3D11Resource * )img->d3d11.tex2d;
 	}
 	XE_ASSERT( d3d11_res );
-	const int num_faces = ( img->cmn.type == IMAGETYPE_CUBE ) ? 6 : 1;
-	const int num_slices = ( img->cmn.type == IMAGETYPE_ARRAY ) ? img->cmn.depth : 1;
-	int subres_index = 0;
+	const XE::int32 num_faces = ( img->cmn.type == IMAGETYPE_CUBE ) ? 6 : 1;
+	const XE::int32 num_slices = ( img->cmn.type == IMAGETYPE_ARRAY ) ? img->cmn.depth : 1;
+	XE::int32 subres_index = 0;
 	HRESULT hr;
 	D3D11_MAPPED_SUBRESOURCE d3d11_msr;
-	for( int face_index = 0; face_index < num_faces; face_index++ )
+	for( XE::int32 face_index = 0; face_index < num_faces; face_index++ )
 	{
-		for( int slice_index = 0; slice_index < num_slices; slice_index++ )
+		for( XE::int32 slice_index = 0; slice_index < num_slices; slice_index++ )
 		{
-			for( int mip_index = 0; mip_index < img->cmn.num_mipmaps; mip_index++, subres_index++ )
+			for( XE::int32 mip_index = 0; mip_index < img->cmn.num_mipmaps; mip_index++, subres_index++ )
 			{
 				XE_ASSERT( subres_index < ( MAX_MIPMAPS * MAX_TEXTUREARRAY_LAYERS ) );
-				const int mip_width = ( ( img->cmn.width >> mip_index ) > 0 ) ? img->cmn.width >> mip_index : 1;
-				const int mip_height = ( ( img->cmn.height >> mip_index ) > 0 ) ? img->cmn.height >> mip_index : 1;
-				const int src_pitch = _row_pitch( img->cmn.pixel_format, mip_width );
+				const XE::int32 mip_width = ( ( img->cmn.width >> mip_index ) > 0 ) ? img->cmn.width >> mip_index : 1;
+				const XE::int32 mip_height = ( ( img->cmn.height >> mip_index ) > 0 ) ? img->cmn.height >> mip_index : 1;
+				const XE::int32 src_pitch = _RowPitch( img->cmn.pixel_format, mip_width );
 				const SubimageContent * subimg_content = &( data->subimage[face_index][mip_index] );
-				const int slice_size = subimg_content->size / num_slices;
-				const int slice_offset = slice_size * slice_index;
+				const XE::int32 slice_size = subimg_content->size / num_slices;
+				const XE::int32 slice_offset = slice_size * slice_index;
 				const uint8_t * slice_ptr = ( (const uint8_t * )subimg_content->ptr ) + slice_offset;
 				hr = ID3D11DeviceContext_Map( _sg.d3d11.ctx, d3d11_res, subres_index, D3D11_MAP_WRITE_DISCARD, 0, &d3d11_msr );
 				XE_ASSERT( SUCCEEDED( hr ) );
 				/* FIXME: need to handle difference in depth-pitch for 3D textures as well! */
-				if( src_pitch == (int )d3d11_msr.RowPitch )
+				if( src_pitch == (XE::int32 )d3d11_msr.RowPitch )
 				{
 					memcpy( d3d11_msr.pData, slice_ptr, slice_size );
 				}
 				else
 				{
-					XE_ASSERT( src_pitch < (int )d3d11_msr.RowPitch );
+					XE_ASSERT( src_pitch < (XE::int32 )d3d11_msr.RowPitch );
 					const uint8_t * src_ptr = slice_ptr;
 					uint8_t * dst_ptr = (uint8_t * )d3d11_msr.pData;
-					for( int row_index = 0; row_index < mip_height; row_index++ )
+					for( XE::int32 row_index = 0; row_index < mip_height; row_index++ )
 					{
 						memcpy( dst_ptr, src_ptr, src_pitch );
 						src_ptr += src_pitch;

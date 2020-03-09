@@ -57,7 +57,7 @@ void GfxTraceHooks::DestroyPass( PassHandle pass )
 
 }
 
-void GfxTraceHooks::UpdateBuffer( BufferHandle buf, const void * data_ptr, int data_size )
+void GfxTraceHooks::UpdateBuffer( BufferHandle buf, const void * data_ptr, XE::int32 data_size )
 {
 
 }
@@ -67,12 +67,12 @@ void GfxTraceHooks::UpdateImage( ImageHandle img, const ImageContent * data )
 
 }
 
-void GfxTraceHooks::AppendBuffer( BufferHandle buf, const void * data_ptr, int data_size, int result )
+void GfxTraceHooks::AppendBuffer( BufferHandle buf, const void * data_ptr, XE::int32 data_size, XE::int32 result )
 {
 
 }
 
-void GfxTraceHooks::BeginDefaultPass( const PassAction * pass_action, int width, int height )
+void GfxTraceHooks::BeginDefaultPass( const PassAction * pass_action, XE::int32 width, XE::int32 height )
 {
 
 }
@@ -82,12 +82,12 @@ void GfxTraceHooks::BeginPass( PassHandle pass, const PassAction * pass_action )
 
 }
 
-void GfxTraceHooks::ApplyViewport( int x, int y, int width, int height, bool origin_top_left )
+void GfxTraceHooks::ApplyViewport( XE::int32 x, XE::int32 y, XE::int32 width, XE::int32 height, bool origin_top_left )
 {
 
 }
 
-void GfxTraceHooks::ApplyScissorRect( int x, int y, int width, int height, bool origin_top_left )
+void GfxTraceHooks::ApplyScissorRect( XE::int32 x, XE::int32 y, XE::int32 width, XE::int32 height, bool origin_top_left )
 {
 
 }
@@ -102,12 +102,12 @@ void GfxTraceHooks::ApplyBindings( const Bindings * bindings )
 
 }
 
-void GfxTraceHooks::ApplyUniforms( ShaderStage stage, int ub_index, const void * data, int num_bytes )
+void GfxTraceHooks::ApplyUniforms( ShaderStage stage, XE::int32 ub_index, const void * data, XE::int32 num_bytes )
 {
 
 }
 
-void GfxTraceHooks::Draw( int base_element, int num_elements, int num_instances )
+void GfxTraceHooks::Draw( XE::int32 base_element, XE::int32 num_elements, XE::int32 num_instances )
 {
 
 }
