@@ -612,7 +612,7 @@ XE::int32 _SurfacePitch( PixelFormat fmt, XE::int32 width, XE::int32 height )
 }
 
 /* capability table pixel format helper functions */
-void _PixelFormatAll( PixelformatInfo * pfi )
+void _PixelFormatAll( PixelFormatInfo * pfi )
 {
 	pfi->sample = true;
 	pfi->filter = true;
@@ -621,24 +621,24 @@ void _PixelFormatAll( PixelformatInfo * pfi )
 	pfi->msaa = true;
 }
 
-void _PixelFormatS( PixelformatInfo * pfi )
+void _PixelFormatS( PixelFormatInfo * pfi )
 {
 	pfi->sample = true;
 }
 
-void _PixelFormatSF( PixelformatInfo * pfi )
+void _PixelFormatSF( PixelFormatInfo * pfi )
 {
 	pfi->sample = true;
 	pfi->filter = true;
 }
 
-void _PixelFormatSR( PixelformatInfo * pfi )
+void _PixelFormatSR( PixelFormatInfo * pfi )
 {
 	pfi->sample = true;
 	pfi->render = true;
 }
 
-void _PixelFormatSRMD( PixelformatInfo * pfi )
+void _PixelFormatSRMD( PixelFormatInfo * pfi )
 {
 	pfi->sample = true;
 	pfi->render = true;
@@ -646,21 +646,21 @@ void _PixelFormatSRMD( PixelformatInfo * pfi )
 	pfi->depth = true;
 }
 
-void _PixelFormatSRM( PixelformatInfo * pfi )
+void _PixelFormatSRM( PixelFormatInfo * pfi )
 {
 	pfi->sample = true;
 	pfi->render = true;
 	pfi->msaa = true;
 }
 
-void _PixelFormatSFRM( PixelformatInfo * pfi )
+void _PixelFormatSFRM( PixelFormatInfo * pfi )
 {
 	pfi->sample = true;
 	pfi->filter = true;
 	pfi->render = true;
 	pfi->msaa = true;
 }
-void _PixelFormatSBRM( PixelformatInfo * pfi )
+void _PixelFormatSBRM( PixelFormatInfo * pfi )
 {
 	pfi->sample = true;
 	pfi->blend = true;
@@ -668,14 +668,14 @@ void _PixelFormatSBRM( PixelformatInfo * pfi )
 	pfi->msaa = true;
 }
 
-void _PixelFormatSBR( PixelformatInfo * pfi )
+void _PixelFormatSBR( PixelFormatInfo * pfi )
 {
 	pfi->sample = true;
 	pfi->blend = true;
 	pfi->render = true;
 }
 
-void _PixelFormatSFBR( PixelformatInfo * pfi )
+void _PixelFormatSFBR( PixelFormatInfo * pfi )
 {
 	pfi->sample = true;
 	pfi->filter = true;
@@ -2802,7 +2802,7 @@ Limits Gfx::QueryLimits( void )
 	return _sg.limits;
 }
 
-PixelformatInfo Gfx::QueryPixelformat( PixelFormat fmt )
+PixelFormatInfo Gfx::QueryPixelformat( PixelFormat fmt )
 {
 	XE_ASSERT( _sg.valid );
 	XE::int32 fmt_index = (XE::int32 )fmt;

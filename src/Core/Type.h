@@ -13,7 +13,6 @@
 
 BEG_XE_NAMESPACE
 
-DECL_PTR( GUIService );
 DECL_PTR( EventService );
 DECL_PTR( TimerService );
 DECL_PTR( AudioService );

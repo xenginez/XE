@@ -61,7 +61,7 @@ public:
 	static Backend QueryBackend( void );
 	static Features QueryFeatures( void );
 	static Limits QueryLimits( void );
-	static PixelformatInfo QueryPixelformat( PixelFormat fmt );
+	static PixelFormatInfo QueryPixelformat( PixelFormat fmt );
 	/* get current state of a resource (INITIAL, ALLOC, VALID, FAILED, INVALID) */
 	static ResourceState QueryBufferState( BufferHandle buf );
 	static ResourceState QueryImageState( ImageHandle img );

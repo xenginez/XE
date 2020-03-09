@@ -225,7 +225,7 @@ typedef struct
 	Backend backend;
 	Features features;
 	Limits limits;
-	PixelformatInfo formats[_PIXELFORMAT_NUM];
+	PixelFormatInfo formats[_PIXELFORMAT_NUM];
 	_BackendType mtl;
 #if defined(SOKOL_TRACE_HOOKS)
 	GfxTraceHooks hooks;

@@ -32,8 +32,6 @@ public:
 	}
 
 public:
-	virtual IGUIServicePtr GetGUIService() const = 0;
-
 	virtual ITimerServicePtr GetTimerService() const = 0;
 
 	virtual IEventServicePtr GetEventService() const = 0;

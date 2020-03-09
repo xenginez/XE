@@ -18,7 +18,9 @@ USING_XE
 #endif
 
 #include <windows.h>
+#include <windowsx.h>
 #include <d3d11.h>
+#include <dxgi.h>
 #include <d3dcompiler.h>
 
 #if (defined(WINAPI_FAMILY_PARTITION) && !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP))
@@ -140,8 +142,6 @@ typedef struct
 	bool valid;
 	ID3D11Device * dev;
 	ID3D11DeviceContext * ctx;
-	const void * ( *rtv_cb )( void );
-	const void * ( *dsv_cb )( void );
 	bool in_pass;
 	bool use_indexed_draw;
 	XE::int32 cur_width;
@@ -167,6 +167,15 @@ typedef struct
 	ID3D11SamplerState * zero_smps[MAX_SHADERSTAGE_IMAGES];
 	/* global subresourcedata array for texture updates */
 	D3D11_SUBRESOURCE_DATA subres_data[MAX_MIPMAPS * MAX_TEXTUREARRAY_LAYERS];
+
+	ID3D11Device * device;
+	ID3D11DeviceContext * device_context;
+	IDXGISwapChain * swap_chain;
+	ID3D11Texture2D * render_target;
+	ID3D11RenderTargetView * render_target_view;
+	ID3D11Texture2D * depth_stencil_buffer;
+	ID3D11DepthStencilView * depth_stencil_view;
+
 } _D3D11BackendType;
 typedef _D3D11BackendType _BackendType;
 
@@ -202,7 +211,7 @@ typedef struct
 	Backend backend;
 	Features features;
 	Limits limits;
-	PixelformatInfo formats[_PIXELFORMAT_NUM];
+	PixelFormatInfo formats[_PIXELFORMAT_NUM];
 	_BackendType d3d11;
 	GfxTraceHooks * hooks;
 } _StateType;
@@ -571,7 +580,7 @@ void _init_caps( void )
 		DXGI_FORMAT dxgi_fmt = _pixel_format( (PixelFormat )fmt );
 		HRESULT hr = ID3D11Device_CheckFormatSupport( _sg.d3d11.dev, dxgi_fmt, &dxgi_fmt_caps );
 		XE_ASSERT( SUCCEEDED( hr ) );
-		PixelformatInfo * info = &_sg.formats[fmt];
+		PixelFormatInfo * info = &_sg.formats[fmt];
 		info->sample = 0 != ( dxgi_fmt_caps & D3D11_FORMAT_SUPPORT_TEXTURE2D );
 		info->filter = 0 != ( dxgi_fmt_caps & D3D11_FORMAT_SUPPORT_SHADER_SAMPLE );
 		info->render = 0 != ( dxgi_fmt_caps & D3D11_FORMAT_SUPPORT_RENDER_TARGET );
@@ -585,20 +594,76 @@ void _init_caps( void )
 	}
 }
 
+void _create_device_swap_chain_render_target( const GfxDesc * desc )
+{
+	DXGI_SWAP_CHAIN_DESC swap_chain_desc;
+
+	swap_chain_desc.BufferDesc.Width = desc->window_width;
+	swap_chain_desc.BufferDesc.Height = desc->window_height;
+	swap_chain_desc.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
+	swap_chain_desc.BufferDesc.RefreshRate.Numerator = 60;
+	swap_chain_desc.BufferDesc.RefreshRate.Denominator = 1;
+	swap_chain_desc.OutputWindow = (HWND )desc->window_handle.GetValue();
+	swap_chain_desc.Windowed = true;
+	swap_chain_desc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+	swap_chain_desc.BufferCount = 1;
+	swap_chain_desc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+	swap_chain_desc.SampleDesc.Count = 4;
+	swap_chain_desc.SampleDesc.Quality = D3D11_STANDARD_MULTISAMPLE_PATTERN;
+
+	XE::int32 create_flags = D3D11_CREATE_DEVICE_SINGLETHREADED;
+#ifdef XE_DEBUG
+	create_flags |= D3D11_CREATE_DEVICE_DEBUG;
+#endif
+	D3D_FEATURE_LEVEL feature_level;
+	HRESULT hr = D3D11CreateDeviceAndSwapChain(
+		NULL,                       /* pAdapter (use default) */
+		D3D_DRIVER_TYPE_HARDWARE,   /* DriverType */
+		NULL,                       /* Software */
+		create_flags,               /* Flags */
+		NULL,                       /* pFeatureLevels */
+		0,                          /* FeatureLevels */
+		D3D11_SDK_VERSION,          /* SDKVersion */
+		&swap_chain_desc,           /* pSwapChainDesc */
+		&_sg.d3d11.swap_chain,                /* ppSwapChain */
+		&_sg.d3d11.device,                    /* ppDevice */
+		&feature_level,             /* pFeatureLevel */
+		&_sg.d3d11.device_context );           /* ppImmediateContext */
+	XE_ASSERT( SUCCEEDED( hr ) && _sg.d3d11.swap_chain && _sg.d3d11.device && _sg.d3d11.device_context );
+
+	// d3d11_create_default_render_target
+	hr = IDXGISwapChain_GetBuffer( _sg.d3d11.swap_chain, 0, IID_ID3D11Texture2D, (void ** )& _sg.d3d11.render_target );
+	XE_ASSERT( SUCCEEDED( hr ) && _sg.d3d11.render_target );
+	hr = ID3D11Device_CreateRenderTargetView( _sg.d3d11.device, (ID3D11Resource * )_sg.d3d11.render_target, NULL, &_sg.d3d11.render_target_view );
+	XE_ASSERT( SUCCEEDED( hr ) && _sg.d3d11.render_target_view );
+
+	D3D11_TEXTURE2D_DESC ds_desc;
+	ds_desc.Width = desc->window_width;
+	ds_desc.Height = desc->window_height;
+	ds_desc.MipLevels = 1;
+	ds_desc.ArraySize = 1;
+	ds_desc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	ds_desc.SampleDesc = swap_chain_desc.SampleDesc;
+	ds_desc.Usage = D3D11_USAGE_DEFAULT;
+	ds_desc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+
+	hr = ID3D11Device_CreateTexture2D( _sg.d3d11.device, &ds_desc, NULL, &_sg.d3d11.depth_stencil_buffer );
+	XE_ASSERT( SUCCEEDED( hr ) && _sg.d3d11.depth_stencil_buffer );
+
+	const XE::int32 sample_count = swap_chain_desc.SampleDesc.Count;
+	D3D11_DEPTH_STENCIL_VIEW_DESC dsv_desc;
+	dsv_desc.Format = ds_desc.Format;
+	dsv_desc.ViewDimension = sample_count > 1 ? D3D11_DSV_DIMENSION_TEXTURE2DMS : D3D11_DSV_DIMENSION_TEXTURE2D;
+	hr = ID3D11Device_CreateDepthStencilView( _sg.d3d11.device, (ID3D11Resource * )_sg.d3d11.depth_stencil_buffer, &dsv_desc, &_sg.d3d11.depth_stencil_view );
+	XE_ASSERT( SUCCEEDED( hr ) && _sg.d3d11.depth_stencil_view );
+
+	_sg.d3d11.valid = true;
+}
+
 void _setup_backend( const GfxDesc * desc )
 {
-	/* assume _sg.d3d11 already is zero-initialized */
-	XE_ASSERT( desc );
-	XE_ASSERT( desc->d3d11_device );
-	XE_ASSERT( desc->d3d11_device_context );
-	XE_ASSERT( desc->d3d11_render_target_view_cb );
-	XE_ASSERT( desc->d3d11_depth_stencil_view_cb );
-	XE_ASSERT( desc->d3d11_render_target_view_cb != desc->d3d11_depth_stencil_view_cb );
-	_sg.d3d11.valid = true;
-	_sg.d3d11.dev = (ID3D11Device * )desc->d3d11_device;
-	_sg.d3d11.ctx = (ID3D11DeviceContext * )desc->d3d11_device_context;
-	_sg.d3d11.rtv_cb = desc->d3d11_render_target_view_cb;
-	_sg.d3d11.dsv_cb = desc->d3d11_depth_stencil_view_cb;
+	_create_device_swap_chain_render_target( desc );
+
 	_init_caps();
 }
 
@@ -711,7 +776,7 @@ void _fill_subres_data( const _ImageType * img, const ImageContent * content )
 				D3D11_SUBRESOURCE_DATA * subres_data = &_sg.d3d11.subres_data[subres_index];
 				const XE::int32 mip_width = ( ( img->cmn.width >> mip_index ) > 0 ) ? img->cmn.width >> mip_index : 1;
 				const XE::int32 mip_height = ( ( img->cmn.height >> mip_index ) > 0 ) ? img->cmn.height >> mip_index : 1;
-				const SubimageContent * subimg_content = &( content->subimage[face_index][mip_index] );
+				const SubImageContent * subimg_content = &( content->subimage[face_index][mip_index] );
 				const XE::int32 slice_size = subimg_content->size / num_slices;
 				const XE::int32 slice_offset = slice_size * slice_index;
 				const uint8_t * ptr = (const uint8_t * )subimg_content->ptr;
@@ -993,18 +1058,11 @@ void _destroy_image( _ImageType * img )
 	}
 }
 
-#define _roundup(val, round_to) (((val)+((round_to)-1))&~((round_to)-1))
-
-#if (defined(WINAPI_FAMILY_PARTITION) && !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP))
-#define _D3DCompile D3DCompile
-#else
-#define _D3DCompile _sg.d3d11.D3DCompile_func
-#endif
-
 bool _load_d3dcompiler_dll( void )
 {
 	/* on UWP, don't do anything (not tested) */
 #if (defined(WINAPI_FAMILY_PARTITION) && !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP))
+	_sg.d3d11.D3DCompile_func = D3DCompile;
 	return true;
 #else
 	/* load DLL on demand */
@@ -1034,7 +1092,8 @@ ID3DBlob * _compile_shader( const ShaderStageDesc * stage_desc, XE::String targe
 	}
 	ID3DBlob * output = NULL;
 	ID3DBlob * errors_or_warnings = NULL;
-	HRESULT hr = _D3DCompile(
+	
+	HRESULT hr = _sg.d3d11.D3DCompile_func(
 		stage_desc->source,             /* pSrcData */
 		strlen( stage_desc->source ),     /* SrcDataSize */
 		NULL,                           /* pSourceName */
@@ -1091,7 +1150,7 @@ ResourceState _create_shader( _ShaderType * shd, const ShaderDesc * desc )
 			XE_ASSERT( 0 == d3d11_stage->cbufs[ub_index] );
 			D3D11_BUFFER_DESC cb_desc;
 			memset( &cb_desc, 0, sizeof( cb_desc ) );
-			cb_desc.ByteWidth = _roundup( ub->size, 16 );
+			cb_desc.ByteWidth = ( ( ( ub->size ) + ( ( 16 ) - 1 ) ) & ~( ( 16 ) - 1 ) );
 			cb_desc.Usage = D3D11_USAGE_DEFAULT;
 			cb_desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 			hr = ID3D11Device_CreateBuffer( _sg.d3d11.dev, &cb_desc, NULL, &d3d11_stage->cbufs[ub_index] );
@@ -1478,12 +1537,12 @@ void _begin_pass( _PassType * pass, const PassAction * action, XE::int32 w, XE::
 		_sg.d3d11.cur_pass = 0;
 		_sg.d3d11.cur_pass_id = XE::PassHandle::Invalid;
 		_sg.d3d11.num_rtvs = 1;
-		_sg.d3d11.cur_rtvs[0] = (ID3D11RenderTargetView * )_sg.d3d11.rtv_cb();
+		_sg.d3d11.cur_rtvs[0] = _sg.d3d11.render_target_view;
 		for( XE::int32 i = 1; i < MAX_COLOR_ATTACHMENTS; i++ )
 		{
 			_sg.d3d11.cur_rtvs[i] = 0;
 		}
-		_sg.d3d11.cur_dsv = (ID3D11DepthStencilView * )_sg.d3d11.dsv_cb();
+		_sg.d3d11.cur_dsv = _sg.d3d11.depth_stencil_view;
 		XE_ASSERT( _sg.d3d11.cur_rtvs[0] && _sg.d3d11.cur_dsv );
 	}
 	/* apply the render-target- and depth-stencil-views */
@@ -1791,7 +1850,7 @@ void _update_image( _ImageType * img, const ImageContent * data )
 				const XE::int32 mip_width = ( ( img->cmn.width >> mip_index ) > 0 ) ? img->cmn.width >> mip_index : 1;
 				const XE::int32 mip_height = ( ( img->cmn.height >> mip_index ) > 0 ) ? img->cmn.height >> mip_index : 1;
 				const XE::int32 src_pitch = _RowPitch( img->cmn.pixel_format, mip_width );
-				const SubimageContent * subimg_content = &( data->subimage[face_index][mip_index] );
+				const SubImageContent * subimg_content = &( data->subimage[face_index][mip_index] );
 				const XE::int32 slice_size = subimg_content->size / num_slices;
 				const XE::int32 slice_offset = slice_size * slice_index;
 				const uint8_t * slice_ptr = ( (const uint8_t * )subimg_content->ptr ) + slice_offset;

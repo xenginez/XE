@@ -7,6 +7,8 @@ END_META()
 
 struct XE::RenderService::Private
 {
+	RenderWindowPtr _MainWindow;
+
 	Array<LightPtr> _Lights;
 	Array<XE::CameraPtr> _Cameras;
 	Array<XE::RenderablePtr> _Renderables;
@@ -25,22 +27,37 @@ XE::RenderService::~RenderService()
 
 void XE::RenderService::Prepare()
 {
-// 	bgfx::Init _init;
-// 	
-// 	_init.type = bgfx::RendererType::Enum::Direct3D11;
-// 	_init.vendorId = BGFX_PCI_ID_NONE;
-// 	_init.resolution.width = 800;
-// 	_init.resolution.height = 600;
-// 	_init.resolution.reset = BGFX_RESET_VSYNC;
-// 	
-// 	bgfx::init( _init );
-// 
-// 	Gfx::setDebug( BGFX_DEBUG_NONE );
+	_p->_MainWindow = XE::MakeShared<RenderWindow>();
+
+
+	if( GetFramework()->GetConfigService()->GetBool( "Window/Fullscreen", false ) )
+	{
+		_p->_MainWindow->Fullscreen();
+	}
+	else
+	{
+		XE::float32 width = GetFramework()->GetConfigService()->GetFloat32( "Window/Width", 1024 );
+		XE::float32 height = GetFramework()->GetConfigService()->GetFloat32( "Window/Height", 768 );
+		_p->_MainWindow->SetSize( { width, height } );
+
+		XE::uint32 desktop_w, desktop_h;
+		Platform::GetDesktopSize( desktop_w, desktop_h );
+
+		_p->_MainWindow->SetPosition( { desktop_w / 2 - width / 2, desktop_h / 2 - height / 2 } );
+
+		_p->_MainWindow->Show();
+	}
 }
 
 bool XE::RenderService::Startup()
 {
-//	Gfx::touch( 0 );
+	GfxDesc desc = { 0 };
+
+	desc.window_handle = _p->_MainWindow->GetWindowHandle();
+	desc.window_width = _p->_MainWindow->GetSize().x;
+	desc.window_height = _p->_MainWindow->GetSize().y;
+
+	Gfx::Setup( &desc );
 
 	return true;
 }
@@ -51,8 +68,6 @@ void XE::RenderService::Update()
 	{
 
 	}
-	
-//	Gfx::frame();
 }
 
 void XE::RenderService::Clearup()
@@ -60,8 +75,6 @@ void XE::RenderService::Clearup()
 	_p->_Lights.clear();
 	_p->_Cameras.clear();
 	_p->_Renderables.clear();
-
-//	bgfx::shutdown();
 }
 
 void XE::RenderService::RegisterLight( const LightPtr & val )

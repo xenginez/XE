@@ -11,7 +11,6 @@
 
 #include "IService.h"
 #include "IFramework.h"
-#include "IGUIService.h"
 #include "IAudioService.h"
 #include "ITimerService.h"
 #include "IWorldService.h"

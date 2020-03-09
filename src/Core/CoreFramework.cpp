@@ -1,6 +1,5 @@
 #include "CoreFramework.h"
 
-#include "GUIService.h"
 #include "TimerService.h"
 #include "EventService.h"
 #include "AudioService.h"
@@ -65,11 +64,6 @@ int XE::CoreFramework::Exec( std::function<void()> val )
 	Clearup();
 
 	return 0;
-}
-
-XE::IGUIServicePtr XE::CoreFramework::GetGUIService() const
-{
-	return GetServiceT<IGUIService>();
 }
 
 XE::ITimerServicePtr XE::CoreFramework::GetTimerService() const

@@ -31,46 +31,29 @@ DECL_HANDLE( XE_API, Pipeline );
 DECL_HANDLE( XE_API, Pass );
 DECL_HANDLE( XE_API, Context );
 
-/* default clear values */
-#ifndef DEFAULT_CLEAR_RED
-#define DEFAULT_CLEAR_RED (0.5f)
-#endif
-#ifndef DEFAULT_CLEAR_GREEN
-#define DEFAULT_CLEAR_GREEN (0.5f)
-#endif
-#ifndef DEFAULT_CLEAR_BLUE
-#define DEFAULT_CLEAR_BLUE (0.5f)
-#endif
-#ifndef DEFAULT_CLEAR_ALPHA
-#define DEFAULT_CLEAR_ALPHA (1.0f)
-#endif
-#ifndef DEFAULT_CLEAR_DEPTH
-#define DEFAULT_CLEAR_DEPTH (1.0f)
-#endif
-#ifndef DEFAULT_CLEAR_STENCIL
-#define DEFAULT_CLEAR_STENCIL (0)
-#endif
-
 /*
 	various compile-time constants
 
 	FIXME: it may make sense to convert some of those into defines so
 	that the user code can override them.
 */
-enum
-{
-	INVALID_SLOT_INDEX = 0,
-	NUM_SHADER_STAGES = 2,
-	NUM_INFLIGHT_FRAMES = 2,
-	MAX_COLOR_ATTACHMENTS = 4,
-	MAX_SHADERSTAGE_BUFFERS = 8,
-	MAX_SHADERSTAGE_IMAGES = 12,
-	MAX_SHADERSTAGE_UBS = 4,
-	MAX_UB_MEMBERS = 16,
-	MAX_VERTEX_ATTRIBUTES = 16,      /* NOTE: actual max vertex attrs can be less on GLES2, see Limits! */
-	MAX_MIPMAPS = 16,
-	MAX_TEXTUREARRAY_LAYERS = 128
-};
+static constexpr XE::uint32 INVALID_SLOT_INDEX = 0;
+static constexpr XE::uint32 NUM_SHADER_STAGES = 2;
+static constexpr XE::uint32 NUM_INFLIGHT_FRAMES = 2;
+static constexpr XE::uint32 MAX_COLOR_ATTACHMENTS = 4;
+static constexpr XE::uint32 MAX_SHADERSTAGE_BUFFERS = 8;
+static constexpr XE::uint32 MAX_SHADERSTAGE_IMAGES = 12;
+static constexpr XE::uint32 MAX_SHADERSTAGE_UBS = 4;
+static constexpr XE::uint32 MAX_UB_MEMBERS = 16;
+static constexpr XE::uint32 MAX_VERTEX_ATTRIBUTES = 16;      /* NOTE: actual max vertex attrs can be less on GLES2, see Limits! */
+static constexpr XE::uint32 MAX_MIPMAPS = 16;
+static constexpr XE::uint32 MAX_TEXTUREARRAY_LAYERS = 128;
+static constexpr XE::float32 DEFAULT_CLEAR_RED = 0.5f;
+static constexpr XE::float32 DEFAULT_CLEAR_GREEN = 0.5f;
+static constexpr XE::float32 DEFAULT_CLEAR_BLUE = 0.5f;
+static constexpr XE::float32 DEFAULT_CLEAR_ALPHA = 1.0f;
+static constexpr XE::float32 DEFAULT_CLEAR_DEPTH = 1.0f;
+static constexpr XE::float32 DEFAULT_CLEAR_STENCIL = 0;
 
 /*
 	Backend
@@ -118,7 +101,7 @@ enum Backend
 
 	Not all pixel formats can be used for everything, call query_pixelformat()
 	to inspect the capabilities of a given pixelformat. The function returns
-	an PixelformatInfo struct with the following bool members:
+	an PixelFormatInfo struct with the following bool members:
 
 		- sample: the pixelformat can be sampled as texture at least with
 				  nearest filtering
@@ -221,48 +204,6 @@ enum PixelFormat
 
 	_PIXELFORMAT_NUM,
 	_PIXELFORMAT_FORCE_U32 = 0x7FFFFFFF
-};
-
-/*
-	Runtime information about a pixel format, returned
-	by query_pixelformat().
-*/
-struct PixelformatInfo
-{
-	bool sample;        /* pixel format can be sampled in shaders */
-	bool filter;        /* pixel format can be sampled with filtering */
-	bool render;        /* pixel format can be used as render target */
-	bool blend;         /* alpha-blending is supported */
-	bool msaa;          /* pixel format can be used as MSAA render target */
-	bool depth;         /* pixel format is a depth format */
-};
-
-/*
-	Runtime information about available optional features,
-	returned by query_features()
-*/
-struct Features
-{
-	bool instancing;                /* hardware instancing supported */
-	bool origin_top_left;           /* framebuffer and texture origin is in top left corner */
-	bool multiple_render_targets;   /* offscreen render passes can have multiple render targets attached */
-	bool msaa_render_targets;       /* offscreen render passes support MSAA antialiasing */
-	bool imagetype_3d;              /* creation of IMAGETYPE_3D images is supported */
-	bool imagetype_array;           /* creation of IMAGETYPE_ARRAY images is supported */
-	bool image_clamp_to_border;     /* border color and clamp-to-border UV-wrap mode is supported */
-};
-
-/*
-	Runtime information about resource limits, returned by query_limit()
-*/
-struct Limits
-{
-	XE::uint32 max_image_size_2d;         /* max width/height of IMAGETYPE_2D images */
-	XE::uint32 max_image_size_cube;       /* max width/height of IMAGETYPE_CUBE images */
-	XE::uint32 max_image_size_3d;         /* max width/height/depth of IMAGETYPE_3D images */
-	XE::uint32 max_image_size_array;      /* max width/height pf IMAGETYPE_ARRAY images */
-	XE::uint32 max_image_array_layers;    /* max number of layers in IMAGETYPE_ARRAY images */
-	XE::uint32 max_vertex_attrs;          /* <= MAX_VERTEX_ATTRIBUTES (only on some GLES2 impls) */
 };
 
 /*
@@ -816,6 +757,48 @@ enum Action
 };
 
 /*
+	Runtime information about a pixel format, returned
+	by query_pixelformat().
+*/
+struct PixelFormatInfo
+{
+	bool sample;        /* pixel format can be sampled in shaders */
+	bool filter;        /* pixel format can be sampled with filtering */
+	bool render;        /* pixel format can be used as render target */
+	bool blend;         /* alpha-blending is supported */
+	bool msaa;          /* pixel format can be used as MSAA render target */
+	bool depth;         /* pixel format is a depth format */
+};
+
+/*
+	Runtime information about available optional features,
+	returned by query_features()
+*/
+struct Features
+{
+	bool instancing;                /* hardware instancing supported */
+	bool origin_top_left;           /* framebuffer and texture origin is in top left corner */
+	bool multiple_render_targets;   /* offscreen render passes can have multiple render targets attached */
+	bool msaa_render_targets;       /* offscreen render passes support MSAA antialiasing */
+	bool imagetype_3d;              /* creation of IMAGETYPE_3D images is supported */
+	bool imagetype_array;           /* creation of IMAGETYPE_ARRAY images is supported */
+	bool image_clamp_to_border;     /* border color and clamp-to-border UV-wrap mode is supported */
+};
+
+/*
+	Runtime information about resource limits, returned by query_limit()
+*/
+struct Limits
+{
+	XE::uint32 max_image_size_2d;         /* max width/height of IMAGETYPE_2D images */
+	XE::uint32 max_image_size_cube;       /* max width/height of IMAGETYPE_CUBE images */
+	XE::uint32 max_image_size_3d;         /* max width/height/depth of IMAGETYPE_3D images */
+	XE::uint32 max_image_size_array;      /* max width/height pf IMAGETYPE_ARRAY images */
+	XE::uint32 max_image_array_layers;    /* max number of layers in IMAGETYPE_ARRAY images */
+	XE::uint32 max_vertex_attrs;          /* <= MAX_VERTEX_ATTRIBUTES (only on some GLES2 impls) */
+};
+
+/*
 	PassAction
 
 	The PassAction struct defines the actions to be performed
@@ -960,18 +943,18 @@ struct BufferDesc
 };
 
 /*
-	SubimageContent
+	SubImageContent
 
 	Pointer to and size of a subimage-surface data, this is
 	used to describe the initial content of immutable-usage images,
 	or for updating a dynamic- or stream-usage images.
 
-	For 3D- or array-textures, one SubimageContent item
+	For 3D- or array-textures, one SubImageContent item
 	describes an entire mipmap level consisting of all array- or
 	3D-slices of the mipmap level. It is only possible to update
 	an entire mipmap level, not parts of it.
 */
-struct SubimageContent
+struct SubImageContent
 {
 	const void * ptr;    /* pointer to subimage data */
 	XE::int32 size;           /* size in bytes of pointed-to subimage data */
@@ -981,13 +964,13 @@ struct SubimageContent
 	ImageContent
 
 	Defines the content of an image through a 2D array
-	of SubimageContent structs. The first array dimension
+	of SubImageContent structs. The first array dimension
 	is the cubemap face, and the second array dimension the
 	mipmap level.
 */
 struct ImageContent
 {
-	SubimageContent subimage[CUBEFACE_NUM][MAX_MIPMAPS];
+	SubImageContent subimage[CUBEFACE_NUM][MAX_MIPMAPS];
 };
 
 /*
@@ -1513,6 +1496,9 @@ struct GfxDesc
 		};
 	};
 	XE::uint32 _end_canary;
+	WindowHandle window_handle;
+	XE::uint32 window_width;
+	XE::uint32 window_height;
 };
 
 END_XE_NAMESPACE

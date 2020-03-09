@@ -29,8 +29,6 @@ public:
 	int Exec( std::function<void()> val = nullptr );
 
 public:
-	IGUIServicePtr GetGUIService() const override;
-
 	ITimerServicePtr GetTimerService() const override;
 
 	IEventServicePtr GetEventService() const override;

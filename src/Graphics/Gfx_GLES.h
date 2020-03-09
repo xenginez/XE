@@ -300,7 +300,7 @@ typedef struct
 	Backend backend;
 	Features features;
 	Limits limits;
-	PixelformatInfo formats[_PIXELFORMAT_NUM];
+	PixelFormatInfo formats[_PIXELFORMAT_NUM];
 	_gl_backend_t gl;
 	GfxTraceHooks * hooks;
 } _StateType;
