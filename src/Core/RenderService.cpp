@@ -68,6 +68,10 @@ void XE::RenderService::Update()
 	{
 
 	}
+
+	Gfx::Commit();
+
+	Gfx::Present();
 }
 
 void XE::RenderService::Clearup()
@@ -75,6 +79,8 @@ void XE::RenderService::Clearup()
 	_p->_Lights.clear();
 	_p->_Cameras.clear();
 	_p->_Renderables.clear();
+
+	Gfx::ShutDown();
 }
 
 void XE::RenderService::RegisterLight( const LightPtr & val )

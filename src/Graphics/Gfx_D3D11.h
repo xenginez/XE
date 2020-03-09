@@ -140,8 +140,8 @@ typedef _D3D11ContextType _ContextType;
 typedef struct
 {
 	bool valid;
-	ID3D11Device * dev;
-	ID3D11DeviceContext * ctx;
+	ID3D11Device * dev = nullptr;
+	ID3D11DeviceContext * ctx = nullptr;
 	bool in_pass;
 	bool use_indexed_draw;
 	XE::int32 cur_width;
@@ -168,13 +168,13 @@ typedef struct
 	/* global subresourcedata array for texture updates */
 	D3D11_SUBRESOURCE_DATA subres_data[MAX_MIPMAPS * MAX_TEXTUREARRAY_LAYERS];
 
-	ID3D11Device * device;
-	ID3D11DeviceContext * device_context;
-	IDXGISwapChain * swap_chain;
-	ID3D11Texture2D * render_target;
-	ID3D11RenderTargetView * render_target_view;
-	ID3D11Texture2D * depth_stencil_buffer;
-	ID3D11DepthStencilView * depth_stencil_view;
+	ID3D11Device * device = nullptr;
+	ID3D11DeviceContext * device_context = nullptr;
+	IDXGISwapChain * swap_chain = nullptr;
+	ID3D11Texture2D * render_target = nullptr;
+	ID3D11RenderTargetView * render_target_view = nullptr;
+	ID3D11Texture2D * depth_stencil_buffer = nullptr;
+	ID3D11DepthStencilView * depth_stencil_view = nullptr;
 
 } _D3D11BackendType;
 typedef _D3D11BackendType _BackendType;
@@ -596,7 +596,7 @@ void _init_caps( void )
 
 void _create_device_swap_chain_render_target( const GfxDesc * desc )
 {
-	DXGI_SWAP_CHAIN_DESC swap_chain_desc;
+	DXGI_SWAP_CHAIN_DESC swap_chain_desc = { 0 };
 
 	swap_chain_desc.BufferDesc.Width = desc->window_width;
 	swap_chain_desc.BufferDesc.Height = desc->window_height;
@@ -609,13 +609,14 @@ void _create_device_swap_chain_render_target( const GfxDesc * desc )
 	swap_chain_desc.BufferCount = 1;
 	swap_chain_desc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 	swap_chain_desc.SampleDesc.Count = 4;
-	swap_chain_desc.SampleDesc.Quality = D3D11_STANDARD_MULTISAMPLE_PATTERN;
+	swap_chain_desc.SampleDesc.Quality = 0;
+	swap_chain_desc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
-	XE::int32 create_flags = D3D11_CREATE_DEVICE_SINGLETHREADED;
+	XE::int32 create_flags = 0;
 #ifdef XE_DEBUG
 	create_flags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
-	D3D_FEATURE_LEVEL feature_level;
+	D3D_FEATURE_LEVEL feature_level = D3D_FEATURE_LEVEL_11_0;
 	HRESULT hr = D3D11CreateDeviceAndSwapChain(
 		NULL,                       /* pAdapter (use default) */
 		D3D_DRIVER_TYPE_HARDWARE,   /* DriverType */
@@ -637,7 +638,7 @@ void _create_device_swap_chain_render_target( const GfxDesc * desc )
 	hr = ID3D11Device_CreateRenderTargetView( _sg.d3d11.device, (ID3D11Resource * )_sg.d3d11.render_target, NULL, &_sg.d3d11.render_target_view );
 	XE_ASSERT( SUCCEEDED( hr ) && _sg.d3d11.render_target_view );
 
-	D3D11_TEXTURE2D_DESC ds_desc;
+	D3D11_TEXTURE2D_DESC ds_desc = { 0 };
 	ds_desc.Width = desc->window_width;
 	ds_desc.Height = desc->window_height;
 	ds_desc.MipLevels = 1;
@@ -652,12 +653,20 @@ void _create_device_swap_chain_render_target( const GfxDesc * desc )
 
 	const XE::int32 sample_count = swap_chain_desc.SampleDesc.Count;
 	D3D11_DEPTH_STENCIL_VIEW_DESC dsv_desc;
+	dsv_desc.Flags = 0;
 	dsv_desc.Format = ds_desc.Format;
 	dsv_desc.ViewDimension = sample_count > 1 ? D3D11_DSV_DIMENSION_TEXTURE2DMS : D3D11_DSV_DIMENSION_TEXTURE2D;
 	hr = ID3D11Device_CreateDepthStencilView( _sg.d3d11.device, (ID3D11Resource * )_sg.d3d11.depth_stencil_buffer, &dsv_desc, &_sg.d3d11.depth_stencil_view );
 	XE_ASSERT( SUCCEEDED( hr ) && _sg.d3d11.depth_stencil_view );
 
 	_sg.d3d11.valid = true;
+	_sg.d3d11.dev = _sg.d3d11.device;
+	_sg.d3d11.ctx = _sg.d3d11.device_context;
+}
+
+void _present()
+{
+	IDXGISwapChain_Present( _sg.d3d11.swap_chain, 1, 0 );
 }
 
 void _setup_backend( const GfxDesc * desc )
@@ -1877,6 +1886,19 @@ void _update_image( _ImageType * img, const ImageContent * data )
 			}
 		}
 	}
+}
+
+#define SAFE_RELEASE(class, obj) if (obj) { class##_Release(obj); obj=0; }
+void _shutdown()
+{
+	SAFE_RELEASE( ID3D11Texture2D, _sg.d3d11.render_target );
+	SAFE_RELEASE( ID3D11RenderTargetView, _sg.d3d11.render_target_view );
+	SAFE_RELEASE( ID3D11Texture2D, _sg.d3d11.depth_stencil_buffer );
+	SAFE_RELEASE( ID3D11DepthStencilView, _sg.d3d11.depth_stencil_view );
+
+	SAFE_RELEASE( IDXGISwapChain, _sg.d3d11.swap_chain );
+	SAFE_RELEASE( ID3D11DeviceContext, _sg.d3d11.device_context );
+	SAFE_RELEASE( ID3D11Device, _sg.d3d11.device );
 }
 
 #endif

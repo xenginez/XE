@@ -2778,6 +2778,11 @@ void Gfx::Commit( void )
 	_sg.frame_index++;
 }
 
+void XE::Gfx::Present( void )
+{
+	_present();
+}
+
 GfxDesc Gfx::QueryDesc( void )
 {
 	XE_ASSERT( _sg.valid );

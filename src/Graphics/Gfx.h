@@ -54,6 +54,7 @@ public:
 	static void Draw( XE::int32 base_element, XE::int32 num_elements, XE::int32 num_instances );
 	static void EndPass( void );
 	static void Commit( void );
+	static void Present( void );
 
 public:
 	/* getting information */
