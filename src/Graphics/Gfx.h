@@ -18,6 +18,7 @@ class Gfx
 public:
 	/* setup and misc functions */
 	static void Setup( const GfxDesc * desc );
+	static void Present( void );
 	static void ShutDown( void );
 	static bool IsValid( void );
 	static void ResetStateCache( void );
@@ -54,7 +55,20 @@ public:
 	static void Draw( XE::int32 base_element, XE::int32 num_elements, XE::int32 num_instances );
 	static void EndPass( void );
 	static void Commit( void );
-	static void Present( void );
+
+public:
+	/* encoder rendering functions */
+	static EncoderHandle Begin( void );
+	static void BeginDefaultPass( EncoderHandle encoder, const PassAction * pass_action, XE::int32 width, XE::int32 height );
+	static void BeginPass( EncoderHandle encoder, PassHandle pass, const PassAction * pass_action );
+	static void ApplyViewport( EncoderHandle encoder, XE::int32 x, XE::int32 y, XE::int32 width, XE::int32 height, bool origin_top_left );
+	static void ApplyScissorRect( EncoderHandle encoder, XE::int32 x, XE::int32 y, XE::int32 width, XE::int32 height, bool origin_top_left );
+	static void ApplyPipeline( EncoderHandle encoder, PipelineHandle pip );
+	static void ApplyBindings( EncoderHandle encoder, const Bindings * bindings );
+	static void ApplyUniforms( EncoderHandle encoder, ShaderStage stage, XE::int32 ub_index, const void * data, XE::int32 num_bytes );
+	static void Draw( EncoderHandle encoder, XE::int32 base_element, XE::int32 num_elements, XE::int32 num_instances );
+	static void EndPass( EncoderHandle encoder );
+	static void End( EncoderHandle encoder );
 
 public:
 	/* getting information */
@@ -62,7 +76,7 @@ public:
 	static Backend QueryBackend( void );
 	static Features QueryFeatures( void );
 	static Limits QueryLimits( void );
-	static PixelFormatInfo QueryPixelformat( PixelFormat fmt );
+	static PixelFormatInfo QueryPixelFormat( PixelFormat fmt );
 	/* get current state of a resource (INITIAL, ALLOC, VALID, FAILED, INVALID) */
 	static ResourceState QueryBufferState( BufferHandle buf );
 	static ResourceState QueryImageState( ImageHandle img );

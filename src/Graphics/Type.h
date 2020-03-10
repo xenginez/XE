@@ -30,6 +30,7 @@ DECL_HANDLE( XE_API, Shader );
 DECL_HANDLE( XE_API, Pipeline );
 DECL_HANDLE( XE_API, Pass );
 DECL_HANDLE( XE_API, Context );
+DECL_HANDLE( XE_API, Encoder );
 
 /*
 	various compile-time constants

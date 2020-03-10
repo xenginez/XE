@@ -2166,9 +2166,6 @@ void _InitPass( PassHandle pass_id, const PassDesc * desc )
 
 
 
-
-
-
 void Gfx::Setup( const GfxDesc * desc )
 {
 	XE_ASSERT( desc );
@@ -2778,6 +2775,61 @@ void Gfx::Commit( void )
 	_sg.frame_index++;
 }
 
+XE::EncoderHandle XE::Gfx::Begin( void )
+{
+	return EncoderHandle();
+}
+
+void XE::Gfx::BeginDefaultPass( EncoderHandle encoder, const PassAction * pass_action, XE::int32 width, XE::int32 height )
+{
+
+}
+
+void XE::Gfx::BeginPass( EncoderHandle encoder, PassHandle pass, const PassAction * pass_action )
+{
+
+}
+
+void XE::Gfx::ApplyViewport( EncoderHandle encoder, XE::int32 x, XE::int32 y, XE::int32 width, XE::int32 height, bool origin_top_left )
+{
+
+}
+
+void XE::Gfx::ApplyScissorRect( EncoderHandle encoder, XE::int32 x, XE::int32 y, XE::int32 width, XE::int32 height, bool origin_top_left )
+{
+
+}
+
+void XE::Gfx::ApplyPipeline( EncoderHandle encoder, PipelineHandle pip )
+{
+
+}
+
+void XE::Gfx::ApplyBindings( EncoderHandle encoder, const Bindings * bindings )
+{
+
+}
+
+void XE::Gfx::ApplyUniforms( EncoderHandle encoder, ShaderStage stage, XE::int32 ub_index, const void * data, XE::int32 num_bytes )
+{
+
+}
+
+void XE::Gfx::Draw( EncoderHandle encoder, XE::int32 base_element, XE::int32 num_elements, XE::int32 num_instances )
+{
+
+}
+
+void XE::Gfx::EndPass( EncoderHandle encoder )
+{
+
+}
+
+void XE::Gfx::End( EncoderHandle encoder )
+{
+
+}
+
 void XE::Gfx::Present( void )
 {
 	_present();
@@ -2807,7 +2859,7 @@ Limits Gfx::QueryLimits( void )
 	return _sg.limits;
 }
 
-PixelFormatInfo Gfx::QueryPixelformat( PixelFormat fmt )
+PixelFormatInfo Gfx::QueryPixelFormat( PixelFormat fmt )
 {
 	XE_ASSERT( _sg.valid );
 	XE::int32 fmt_index = (XE::int32 )fmt;
