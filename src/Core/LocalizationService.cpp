@@ -24,7 +24,7 @@ XE::LocalizationService::~LocalizationService()
 
 bool XE::LocalizationService::Startup()
 {
-	String LanguageName = GetFramework()->GetConfigService()->GetString( "System/Language" );
+	String LanguageName = GetFramework()->GetString( "System/Language" );
 
 	if ( LanguageName == "" )
 	{
@@ -59,7 +59,7 @@ void XE::LocalizationService::SetCurrentLanguage( Language val )
 {
 	_p->_Language = val;
 
-	GetFramework()->GetConfigService()->SetString( "System.Language", EnumID<Language>::Get()->FindName( (XE::int64)_p->_Language ) );
+	GetFramework()->SetString( "System/Language", EnumID<Language>::Get()->FindName( (XE::int64)_p->_Language ) );
 
 	UpdateLocalized();
 }

@@ -60,7 +60,6 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${CMAKE_CURRENT_SOURCE_DIR}/target/re
 include_directories(
 		${CMAKE_CURRENT_SOURCE_DIR}/src
 		${CMAKE_CURRENT_SOURCE_DIR}/depend/include
-		${CMAKE_CURRENT_SOURCE_DIR}/depend/include/PhysX
 )
 
 link_directories(

@@ -16,7 +16,6 @@
 #include "EventService.h"
 #include "WorldService.h"
 #include "AssetsService.h"
-#include "ConfigService.h"
 #include "CoreFramework.h"
 #include "LoggerService.h"
 #include "RenderService.h"

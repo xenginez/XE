@@ -30,14 +30,14 @@ void XE::RenderService::Prepare()
 	_p->_MainWindow = XE::MakeShared<RenderWindow>();
 
 
-	if( GetFramework()->GetConfigService()->GetBool( "Window/Fullscreen", false ) )
+	if( GetFramework()->GetBool( "Window/Fullscreen", false ) )
 	{
 		_p->_MainWindow->Fullscreen();
 	}
 	else
 	{
-		XE::float32 width = GetFramework()->GetConfigService()->GetFloat32( "Window/Width", 1024 );
-		XE::float32 height = GetFramework()->GetConfigService()->GetFloat32( "Window/Height", 768 );
+		XE::float32 width = GetFramework()->GetFloat32( "Window/Width", 1024 );
+		XE::float32 height = GetFramework()->GetFloat32( "Window/Height", 768 );
 		_p->_MainWindow->SetSize( { width, height } );
 
 		XE::uint32 desktop_w, desktop_h;

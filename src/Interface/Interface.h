@@ -19,7 +19,6 @@
 #include "IRenderService.h"
 #include "IThreadService.h"
 #include "IAssetsService.h"
-#include "IConfigService.h"
 #include "ILoggerService.h"
 #include "IPhysicsService.h"
 #include "IProfilerService.h"

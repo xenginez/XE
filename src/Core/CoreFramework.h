@@ -43,8 +43,6 @@ public:
 
 	IAssetsServicePtr GetAssetsService() const override;
 
-	IConfigServicePtr GetConfigService() const override;
-
 	ILoggerServicePtr GetLoggerService() const override;
 
 	IRenderServicePtr GetRenderService() const override;
@@ -89,6 +87,21 @@ protected:
 	virtual void LoadModules();
 
 	virtual void LoadServices();
+
+public:
+	void Save() override;
+
+	void Reload() override;
+
+protected:
+	void Save( const std::filesystem::path & path, const Map < String, String > & values ) const;
+
+	void Reload( const std::filesystem::path & path, Map < String, String > & values ) const;
+
+protected:
+	String GetValue( const String & key ) override;
+
+	void SetValue( const String & key, const String & val ) override;
 
 private:
 	Private * _p;

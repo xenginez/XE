@@ -28,7 +28,7 @@ void XE::WorldService::Prepare()
 
 bool XE::WorldService::Startup()
 {
-	auto path = GetFramework()->GetServiceT<XE::IConfigService>()->GetString( "System/StartWorld" );
+	auto path = GetFramework()->GetString( "System/StartWorld" );
 
 	if( path != "" )
 	{

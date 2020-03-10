@@ -6,7 +6,6 @@
 #include "InputService.h"
 #include "WorldService.h"
 #include "LoggerService.h"
-#include "ConfigService.h"
 #include "ThreadService.h"
 #include "RenderService.h"
 #include "AssetsService.h"
@@ -17,7 +16,37 @@
 
 #include <rapidjson/rapidjson.h>
 #include <rapidjson/document.h>
+#include <rapidjson/prettywriter.h>
 #include <rapidjson/istreamwrapper.h>
+#include <rapidjson/ostreamwrapper.h>
+
+void nest_json( rapidjson::Value & parent, std::vector<std::string>::const_iterator beg, std::vector<std::string>::const_iterator end, const std::string & str, rapidjson::MemoryPoolAllocator<> & allocator )
+{
+	if( beg != end )
+	{
+		auto it = parent.FindMember( beg->c_str() );
+		if( it == parent.MemberEnd() )
+		{
+			parent.AddMember(
+				rapidjson::Value().SetString( beg->c_str(), allocator ).Move(),
+				rapidjson::Value( rapidjson::kObjectType ).Move(),
+				allocator
+			);
+
+			it = parent.FindMember( beg->c_str() );
+		}
+
+		nest_json( it->value, beg + 1, end, str, allocator );
+	}
+	else
+	{
+		parent.AddMember(
+			rapidjson::Value().SetString( beg->c_str(), allocator ).Move(),
+			rapidjson::Value().SetString( str.c_str(), allocator ).Move(),
+			allocator
+		);
+	}
+}
 
 
 USING_XE
@@ -28,9 +57,8 @@ END_META()
 struct XE::CoreFramework::Private
 {
 	std::atomic_bool _Exit = false;
-
+	Map < String, String > Values;
 	Array < IServicePtr > _Services;
-
 	std::function<void()> _SysEventLoop;
 };
 
@@ -99,11 +127,6 @@ XE::IThreadServicePtr XE::CoreFramework::GetThreadService() const
 XE::IAssetsServicePtr XE::CoreFramework::GetAssetsService() const
 {
 	return GetServiceT<IAssetsService>();
-}
-
-XE::IConfigServicePtr XE::CoreFramework::GetConfigService() const
-{
-	return GetServiceT<IConfigService>();
 }
 
 XE::ILoggerServicePtr XE::CoreFramework::GetLoggerService() const
@@ -220,6 +243,8 @@ std::filesystem::path XE::CoreFramework::GetApplicationPath() const
 
 void XE::CoreFramework::Prepare()
 {
+	Reload();
+
 	LoadServices();
 
 	for( auto service : _p->_Services )
@@ -274,11 +299,13 @@ void XE::CoreFramework::Clearup()
 		}
 	}
 	_p->_Services.clear();
+
+	_p->Values.clear();
 }
 
 void XE::CoreFramework::LoadModules()
 {
-	auto modules = StringUtils::Split( GetConfigService()->GetString( "System/Modules" ), "," );
+	auto modules = StringUtils::Split( GetString( "System/Modules" ), "," );
 	for( auto module : modules )
 	{
 		auto path = GetModulePath() / module;
@@ -292,7 +319,70 @@ void XE::CoreFramework::LoadModules()
 
 void CoreFramework::LoadServices()
 {
+	auto services = StringUtils::Split( GetString("System/Services"), "," );
+	for( auto service : services )
+	{
+		if( auto meta = Reflection::FindClass( service ) )
+		{
+			if( auto ser = meta->ConstructPtr().Value<IServicePtr>() )
+			{
+				_p->_Services.push_back( ser );
+			}
+		}
+	}
+}
+
+void CoreFramework::Save()
+{
 	auto path = GetUserDataPath() / "config.json";
+
+	Save( path, _p->Values );
+}
+
+void CoreFramework::Save( const std::filesystem::path & path, const Map < String, String > & values ) const
+{
+	rapidjson::Document doc;
+	auto & allocator = doc.GetAllocator();
+	doc.SetObject();
+
+	for( const auto & it : values )
+	{
+		auto list = StringUtils::Split( it.first, "/" );
+
+		auto json_it = doc.FindMember( list.front().c_str() );
+		if( json_it == doc.MemberEnd() )
+		{
+			doc.AddMember(
+				rapidjson::Value().SetString( list.front().c_str(), allocator ).Move(),
+				rapidjson::Value( rapidjson::kObjectType ).Move(),
+				allocator );
+			json_it = doc.FindMember( list.front().c_str() );
+		}
+
+		nest_json( json_it->value, list.begin() + 1, list.end() - 1, it.second, allocator );
+	}
+
+	std::ofstream ofs( path.string(), std::ios::out );
+	if( ofs.is_open() )
+	{
+		rapidjson::OStreamWrapper wrapper( ofs );
+		rapidjson::PrettyWriter<rapidjson::OStreamWrapper> writer( wrapper );
+		doc.Accept( writer );
+	}
+	ofs.close();
+}
+
+void CoreFramework::Reload()
+{
+	_p->Values.clear();
+
+	auto path = GetUserDataPath() / "config.json";
+
+	Reload( path, _p->Values );
+}
+
+void CoreFramework::Reload( const std::filesystem::path & path, Map < String, String > & values ) const
+{
 	std::ifstream ifs( path.string() );
 	if( ifs.is_open() )
 	{
@@ -301,18 +391,52 @@ void CoreFramework::LoadServices()
 		doc.ParseStream( wrapper );
 		if( !doc.HasParseError() )
 		{
-			auto services = StringUtils::Split( doc["System"]["Services"].GetString(), "," );
-			for( auto service : services )
+			Stack<Pair<std::string, rapidjson::Value::ConstMemberIterator>> stack;
+
+			for( rapidjson::Value::ConstMemberIterator iter = doc.MemberBegin(); iter != doc.MemberEnd(); ++iter )
 			{
-				if( auto meta = Reflection::FindClass( service ) )
+				stack.push( { iter->name.GetString(), iter } );
+			}
+
+			while( !stack.empty() )
+			{
+				Pair<std::string, rapidjson::Value::ConstMemberIterator> pair = stack.top();
+				stack.pop();
+
+				if( !pair.second->value.IsObject() )
 				{
-					if( auto ser = meta->ConstructPtr().Value<IServicePtr>() )
+					values.insert( { pair.first, pair.second->value.GetString() } );
+				}
+				else
+				{
+					for( rapidjson::Value::ConstMemberIterator it = pair.second->value.MemberBegin(); it != pair.second->value.MemberEnd(); ++it )
 					{
-						_p->_Services.push_back( ser );
+						stack.push( { pair.first + "/" + it->name.GetString(), it } );
 					}
 				}
 			}
 		}
 	}
 	ifs.close();
+}
+
+String XE::CoreFramework::GetValue( const String & key )
+{
+	auto it = _p->Values.find( key );
+
+	if( it != _p->Values.end() )
+	{
+		return it->second;
+	}
+	else
+	{
+		_p->Values.insert( { key, "" } );
+	}
+
+	return "";
+}
+
+void XE::CoreFramework::SetValue( const String & key, const String & val )
+{
+	_p->Values[key] = val;
 }
