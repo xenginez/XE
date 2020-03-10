@@ -245,6 +245,8 @@ void XE::CoreFramework::Prepare()
 {
 	Reload();
 
+	LoadModules();
+
 	LoadServices();
 
 	for( auto service : _p->_Services )
@@ -252,8 +254,6 @@ void XE::CoreFramework::Prepare()
 		service->SetFramework( this );
 		service->Prepare();
 	}
-
-	LoadModules();
 }
 
 void XE::CoreFramework::Startup()
@@ -317,7 +317,7 @@ void XE::CoreFramework::LoadModules()
 	}
 }
 
-void CoreFramework::LoadServices()
+void XE::CoreFramework::LoadServices()
 {
 	auto services = StringUtils::Split( GetString("System/Services"), "," );
 	for( auto service : services )
@@ -332,14 +332,14 @@ void CoreFramework::LoadServices()
 	}
 }
 
-void CoreFramework::Save()
+void XE::CoreFramework::Save()
 {
 	auto path = GetUserDataPath() / "config.json";
 
 	Save( path, _p->Values );
 }
 
-void CoreFramework::Save( const std::filesystem::path & path, const Map < String, String > & values ) const
+void XE::CoreFramework::Save( const std::filesystem::path & path, const Map < String, String > & values ) const
 {
 	rapidjson::Document doc;
 	auto & allocator = doc.GetAllocator();
@@ -372,7 +372,7 @@ void CoreFramework::Save( const std::filesystem::path & path, const Map < String
 	ofs.close();
 }
 
-void CoreFramework::Reload()
+void XE::CoreFramework::Reload()
 {
 	_p->Values.clear();
 
@@ -381,7 +381,7 @@ void CoreFramework::Reload()
 	Reload( path, _p->Values );
 }
 
-void CoreFramework::Reload( const std::filesystem::path & path, Map < String, String > & values ) const
+void XE::CoreFramework::Reload( const std::filesystem::path & path, Map < String, String > & values ) const
 {
 	std::ifstream ifs( path.string() );
 	if( ifs.is_open() )
