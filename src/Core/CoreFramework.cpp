@@ -243,6 +243,8 @@ std::filesystem::path XE::CoreFramework::GetApplicationPath() const
 
 void XE::CoreFramework::Prepare()
 {
+	Library::RegisterEnvPath( GetModulePath().u8string() );
+
 	Reload();
 
 	LoadModules();
@@ -306,13 +308,11 @@ void XE::CoreFramework::Clearup()
 void XE::CoreFramework::LoadModules()
 {
 	auto modules = StringUtils::Split( GetString( "System/Modules" ), "," );
-	for( auto module : modules )
+	for( const auto & module : modules )
 	{
-		auto path = GetModulePath() / module;
-		if( std::filesystem::is_directory( path ) )
+		if( Library::Open( module ) == LibraryHandle::Invalid )
 		{
-			path = path / ( module + DLL_EXT_NAME );
-			Library::Open( path.u8string() );
+			std::cout << "load module \"" << module << "\" fail" << std::endl;
 		}
 	}
 }

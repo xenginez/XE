@@ -15,8 +15,16 @@ BEG_XE_NAMESPACE
 
 class Library; using LibraryHandle = XE::Handle< XE::Library >; DECL_META_CLASS( XE_API, LibraryHandle );
 
-class XE_API Library
+class XE_API Library : public XE::Singleton< Library >
 {
+private:
+	struct Private;
+
+public:
+	Library();
+
+	~Library();
+
 public:
 	static LibraryHandle Open( const String& name );
 
@@ -30,6 +38,10 @@ public:
 
 	static bool Close( XE::LibraryHandle handle );
 
+	static void RegisterEnvPath( const XE::String & path );
+
+private:
+	Private * _p;
 };
 
 END_XE_NAMESPACE
