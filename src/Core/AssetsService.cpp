@@ -34,14 +34,24 @@ XE::AssetsService::~AssetsService()
 
 void XE::AssetsService::Prepare()
 {
-	auto path = GetFramework()->GetAssetsPath() / "assets.db";
+	auto path = GetFramework()->GetUserDataPath() / "assets.txt";
+	std::ifstream ifs( path );
+	if( ifs.is_open() )
+	{
+		char buf[512] = { 0 };
 
-
+		while( !ifs.eof() )
+		{
+			ifs.getline( buf, 512 );
+			auto list = XE::StringUtils::Split( buf, ":" );
+			_p->_MD5Cache.insert( { list[0], list[1] } );
+			_p->_MD5Index.insert( { list[1], std::stoi( list[2] ) } );
+		}
+	}
 }
 
 bool XE::AssetsService::Startup()
 {
-
 	return true;
 }
 
@@ -214,7 +224,7 @@ XE::Variant AssetsService::DeserializeObject( const XE::MD5 & val ) const
 {
 	ObjectPtr ret;
 
-	auto path = GetFramework()->GetAssetsPath() / "cache" / val.To32String();
+	auto path = GetFramework()->GetUserDataPath() / "cache" / val.To32String();
 
 	if( std::filesystem::exists( path ) )
 	{
