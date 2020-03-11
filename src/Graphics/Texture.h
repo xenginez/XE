@@ -50,8 +50,6 @@ public:
 public:
 	void AssetLoad() override;
 
-	void AssetUnload() override;
-
 private:
 	XE::uint16 _Width;
 	XE::uint16 _Height;

@@ -34,8 +34,6 @@ public:
 public:
 	void AssetLoad() override;
 
-	void AssetUnload() override;
-
 private:
 	XE::Buffer _Data;
 	XE::String _Source;

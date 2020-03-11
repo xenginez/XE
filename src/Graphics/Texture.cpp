@@ -88,8 +88,3 @@ void XE::Texture::AssetLoad()
 {
 
 }
-
-void XE::Texture::AssetUnload()
-{
-
-}

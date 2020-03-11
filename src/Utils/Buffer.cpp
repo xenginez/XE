@@ -245,6 +245,11 @@ void Buffer::push_back( XE::float64 val )
 	XE::Array<char>::push_back( un.x8 );
 }
 
+void XE::Buffer::Wirte( const char * ptr, XE::uint64 size )
+{
+	XE::Array<char>::insert( end(), ptr, ptr + size );
+}
+
 XE::memory_view Buffer::GetView() const
 {
 	return XE::memory_view( this->data(), this->size() );

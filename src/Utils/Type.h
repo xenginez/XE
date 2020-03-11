@@ -19,9 +19,10 @@ DECL_PTR( Message );
 
 enum class AssetStatus
 {
-	Undefined,
-	Loading,
-	Ready,
+	UNDEFINED,
+	LOADING,
+	READY,
+	FAILED,
 };
 DECL_META_ENUM( XE_API, AssetStatus );
 

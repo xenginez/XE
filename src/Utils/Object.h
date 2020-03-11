@@ -25,8 +25,6 @@ public:
 public:
 	virtual void AssetLoad();
 
-	virtual void AssetUnload();
-
 public:
 	virtual void ProcessEvent( EventPtr & val );
 };

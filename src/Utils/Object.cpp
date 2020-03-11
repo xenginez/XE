@@ -20,11 +20,6 @@ void XE::Object::AssetLoad()
 
 }
 
-void XE::Object::AssetUnload()
-{
-
-}
-
 void Object::ProcessEvent( EventPtr & val )
 {
 

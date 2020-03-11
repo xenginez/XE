@@ -42,22 +42,25 @@ public:
 
 	void AsynLoad( const String & val ) override;
 
-	void Unload( const String & val ) override;
-
 public:
 	ObjectPtr GetAsset( const String & val ) const override;
 
 	AssetStatus GetAssetStatus( const String & val ) const override;
 
-protected:
-	XE::MD5 PathToMD5( const XE::String & val ) const;
+public:
+	void ResetMD5Cache();
 
-	virtual XE::Variant DeserializeObject( const XE::MD5 & val ) const;
+protected:
+	virtual XE::Buffer SearchAssetData( const XE::String & val ) const;
 
 private:
-	void LoadAsset( const XE::MD5 & val );
+	XE::ObjectPtr LoadAsset( const XE::String & val );
 
-	void UnloadAsset( const XE::MD5 & val );
+	XE::MD5 PathToMD5( const XE::String & val ) const;
+
+	XE::ObjectPtr DeserializeObject( XE::Buffer && val ) const;
+
+	void SetAssetStatus( const XE::MD5 & md5, const XE::ObjectPtr & asset, AssetStatus status );
 
 private:
 	Private * _p;

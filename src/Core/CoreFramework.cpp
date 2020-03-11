@@ -243,7 +243,7 @@ std::filesystem::path XE::CoreFramework::GetApplicationPath() const
 
 void XE::CoreFramework::Prepare()
 {
-	Library::RegisterEnvPath( GetModulePath().u8string() );
+	Library::RegisterEnvPath( GetModulePath() );
 
 	Reload();
 

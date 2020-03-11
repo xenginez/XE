@@ -46,11 +46,3 @@ void RenderShader::AssetLoad()
 		//_Handle = Gfx::createShader( _Data.GetView() );
 	}
 }
-
-void RenderShader::AssetUnload()
-{
-	if( _Handle != ShaderHandle::Invalid )
-	{
-		//Gfx::destroy( _Handle );
-	}
-}

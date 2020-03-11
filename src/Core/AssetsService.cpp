@@ -14,8 +14,7 @@ using AssetMap = tbb::concurrent_hash_map < MD5, AssetTuple, MD5HashCompare >;
 struct AssetsService::Private
 {
 	AssetMap _Assets;
-	XE::float32 _Timer = 0;
-	Deque < XE::MD5 > _Erase;
+	XE::float32 _Timer;
 	XE::Map<XE::String, XE::MD5> _MD5Cache;
 	XE::Map<XE::MD5, XE::uint32> _MD5Index;
 };
@@ -34,42 +33,18 @@ XE::AssetsService::~AssetsService()
 
 void XE::AssetsService::Prepare()
 {
-	auto path = GetFramework()->GetUserDataPath() / "assets.txt";
-	std::ifstream ifs( path );
-	if( ifs.is_open() )
-	{
-		char buf[512] = { 0 };
-
-		while( !ifs.eof() )
-		{
-			ifs.getline( buf, 512 );
-			auto list = XE::StringUtils::Split( buf, ":" );
-			_p->_MD5Cache.insert( { list[0], list[1] } );
-			_p->_MD5Index.insert( { list[1], std::stoi( list[2] ) } );
-		}
-	}
+	ResetMD5Cache();
 }
 
 bool XE::AssetsService::Startup()
 {
+	_p->_Timer = 0;
+
 	return true;
 }
 
 void XE::AssetsService::Update()
 {
-	if( auto threadService = GetFramework()->GetThreadService() )
-	{
-		for( auto it : _p->_Erase )
-		{
-			threadService->PostTask( [&]()
-									 {
-										 UnloadAsset( it );
-										 return false;
-									 }, ThreadType::IO );
-		}
-	}
-	_p->_Erase.clear();
-
 	_p->_Timer += GetFramework()->GetTimerService()->GetUnscaleDeltaTime();
 	if( _p->_Timer > AssetCacheTime )
 	{
@@ -80,9 +55,13 @@ void XE::AssetsService::Update()
 		{
 			if( ObjectPtr asset = std::get < 1 >( it->second ) )
 			{
-				if( asset.use_count() == 1 && ( ( time - std::get < 2 >( it->second ) ) > AssetCacheTime ) )
+				if( asset.use_count() <= 2 && ( ( time - std::get < 2 >( it->second ) ) > AssetCacheTime ) )
 				{
-					_p->_Erase.push_back( it->first );
+					AssetMap::accessor it;
+					if( _p->_Assets.find( it, it->first ) )
+					{
+						_p->_Assets.erase( it );
+					}
 				}
 				else
 				{
@@ -95,8 +74,10 @@ void XE::AssetsService::Update()
 
 void XE::AssetsService::Clearup()
 {
-	_p->_Erase.clear();
+	_p->_Timer = 0;
 	_p->_Assets.clear();
+	_p->_MD5Cache.clear();
+	_p->_MD5Index.clear();
 }
 
 XE::ObjectPtr XE::AssetsService::Load( const String & val )
@@ -105,11 +86,19 @@ XE::ObjectPtr XE::AssetsService::Load( const String & val )
 
 	if( obj == nullptr )
 	{
-		_p->_Assets.insert( std::make_pair( PathToMD5( val ), std::make_tuple( AssetStatus::Loading, nullptr, GetFramework()->GetTimerService()->GetTime() ) ) );
-		LoadAsset( PathToMD5( val ) );
+		SetAssetStatus( PathToMD5( val ), nullptr, AssetStatus::LOADING );
+		auto asset = LoadAsset( val );
+		if( asset )
+		{
+			SetAssetStatus( PathToMD5( val ), asset, AssetStatus::READY );
+		}
+		else
+		{
+			SetAssetStatus( PathToMD5( val ), asset, AssetStatus::FAILED );
+		}
 	}
 
-	return GetAsset( val );
+	return obj;
 }
 
 void XE::AssetsService::AsynLoad( const String & val )
@@ -120,34 +109,26 @@ void XE::AssetsService::AsynLoad( const String & val )
 	{
 		if( GetFramework()->GetThreadService()->GetCurrentThreadType() == ThreadType::IO )
 		{
-			LoadAsset( PathToMD5( val ) );
-			_p->_Assets.insert( std::make_pair( PathToMD5( val ), std::make_tuple( AssetStatus::Ready, nullptr, GetFramework()->GetTimerService()->GetTime() ) ) );
+			SetAssetStatus( PathToMD5( val ), nullptr, AssetStatus::LOADING );
+			auto asset = LoadAsset( val );
+			if( asset )
+			{
+				SetAssetStatus( PathToMD5( val ), asset, AssetStatus::READY );
+			}
+			else
+			{
+				SetAssetStatus( PathToMD5( val ), asset, AssetStatus::FAILED );
+			}
 		}
 		else
 		{
-			GetFramework()->GetThreadService()->PostTask( [&]()
+			SetAssetStatus( PathToMD5( val ), nullptr, AssetStatus::LOADING );
+			GetFramework()->GetThreadService()->PostTask( [this, val]()
 														  {
-															  LoadAsset( PathToMD5( val ) );
+															  AsynLoad( val );
 															  return false;
 														  }, ThreadType::IO );
-			_p->_Assets.insert( std::make_pair( PathToMD5( val ), std::make_tuple( AssetStatus::Loading, nullptr, GetFramework()->GetTimerService()->GetTime() ) ) );
 		}
-	}
-}
-
-void XE::AssetsService::Unload( const String & val )
-{
-	if( GetFramework()->GetThreadService()->GetCurrentThreadType() == ThreadType::IO )
-	{
-		UnloadAsset( PathToMD5( val ) );
-	}
-	else
-	{
-		GetFramework()->GetThreadService()->PostTask( [&]()
-													  {
-														  UnloadAsset( PathToMD5( val ) );
-														  return false;
-													  }, ThreadType::IO );
 	}
 }
 
@@ -171,38 +152,62 @@ XE::AssetStatus XE::AssetsService::GetAssetStatus( const String & val ) const
 		return std::get < 0 >( it->second );
 	}
 
-	return AssetStatus::Undefined;
+	return AssetStatus::UNDEFINED;
 }
 
-void XE::AssetsService::LoadAsset( const XE::MD5 & val )
+XE::ObjectPtr XE::AssetsService::LoadAsset( const XE::String & val )
 {
-	auto var = DeserializeObject( val );
-	if( var.IsInvalid() == false && var.IsNull() == false )
-	{
-		ObjectPtr asset = var.Value<ObjectPtr>();
+	auto stream = SearchAssetData( val );
 
+	auto asset = DeserializeObject( std::move( stream ) );
+	if( asset )
+	{
 		asset->AssetLoad();
-
-		{
-			AssetMap::accessor it;
-			if( _p->_Assets.find( it, val ) )
-			{
-				std::get < 0 >( it->second ) = AssetStatus::Ready;
-				std::get < 1 >( it->second ) = asset;
-				std::get < 2 >( it->second ) = GetFramework()->GetTimerService()->GetTime();
-			}
-		}
+		return asset;
 	}
+
+	return nullptr;
 }
 
-void XE::AssetsService::UnloadAsset( const XE::MD5 & val )
+XE::Buffer XE::AssetsService::SearchAssetData( const XE::String & val ) const
 {
-	AssetMap::accessor it;
-	if( _p->_Assets.find( it, val ) )
-	{
-		std::get < 1 >( it->second )->AssetUnload();
+	auto md5 = PathToMD5( val );
 
-		_p->_Assets.erase( it );
+	XE::Buffer buf;
+
+	auto it = _p->_MD5Index.find( md5 );
+	if( it != _p->_MD5Index.end() )
+	{
+		auto path = XE::StringUtils::Format( "%1/assets_%2.data", GetFramework()->GetAssetsPath().string(), it->second );
+
+		zipper::Unzipper unzip( path );
+
+		std::vector<unsigned char> data;
+		unzip.extractEntryToMemory( md5.To32String(), data );
+		buf.Wirte( ( const char * )data.data(), data.size() );
+	}
+
+	return buf;
+}
+
+void XE::AssetsService::ResetMD5Cache()
+{
+	_p->_MD5Cache.clear();
+	_p->_MD5Index.clear();
+
+	auto path = GetFramework()->GetUserDataPath() / "assets.data";
+	std::ifstream ifs( path );
+	if( ifs.is_open() )
+	{
+		char buf[512] = { 0 };
+
+		while( !ifs.eof() )
+		{
+			ifs.getline( buf, 512 );
+			auto list = XE::StringUtils::Split( buf, ":" );
+			_p->_MD5Cache.insert( { list[0], list[1] } );
+			_p->_MD5Index.insert( { list[1], std::stoi( list[2] ) } );
+		}
 	}
 }
 
@@ -220,55 +225,28 @@ XE::MD5 AssetsService::PathToMD5( const XE::String & val ) const
 	return md5;
 }
 
-XE::Variant AssetsService::DeserializeObject( const XE::MD5 & val ) const
+XE::ObjectPtr XE::AssetsService::DeserializeObject( XE::Buffer && val ) const
 {
-	ObjectPtr ret;
+	XE::ObjectPtr obj;
 
-	auto path = GetFramework()->GetUserDataPath() / "cache" / val.To32String();
+	auto view = val.GetView();
+	XE::BinaryLoadArchive load( view );
+	load & obj;
 
-	if( std::filesystem::exists( path ) )
+	return obj;
+}
+
+void XE::AssetsService::SetAssetStatus( const XE::MD5 & md5, const XE::ObjectPtr & asset, AssetStatus status )
+{
+	AssetMap::accessor it;
+	if( _p->_Assets.find( it, md5 ) )
 	{
-		std::ifstream ifs( path, std::ios::binary );
-
-		XE::Buffer buf;
-		ifs.seekg( std::ios::end );
-		auto size = ifs.tellg();
-		ifs.seekg( std::ios::beg );
-
-		buf.resize( size );
-
-		ifs.read( buf.data(), size );
-
-		auto view = buf.GetView();
-		XE::BinaryLoadArchive load( view );
-
-		load & ret;
+		std::get < 0 >( it->second ) = status;
+		std::get < 1 >( it->second ) = asset;
+		std::get < 2 >( it->second ) = GetFramework()->GetTimerService()->GetTime();
 	}
 	else
 	{
-		auto it = _p->_MD5Index.find( val );
-
-		if( it != _p->_MD5Index.end() )
-		{
-			auto path = XE::StringUtils::Format( "%1/assets_%2.data", GetFramework()->GetAssetsPath().string(), it->second );
-
-			zipper::Unzipper unzip( path );
-
-			XE::omemorystream oms;
-
-			unzip.extractEntryToStream( val.To32String(), oms );
-
-			auto view = oms.view();
-
-			XE::BinaryLoadArchive load( view );
-
-			load & ret;
-
-			std::ofstream ofs( path, std::ios::binary );
-			ofs.write( view.data(), view.size() );
-			ofs.close();
-		}
+		_p->_Assets.insert( std::make_pair( md5, std::make_tuple( status, asset, GetFramework()->GetTimerService()->GetTime() ) ) );
 	}
-
-	return ret;
 }

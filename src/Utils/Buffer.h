@@ -88,6 +88,9 @@ public:
 	void push_back( XE::float64 val );
 
 public:
+	void Wirte( const char * ptr, XE::uint64 size );
+
+public:
 	XE::memory_view GetView() const;
 
 };

@@ -4,7 +4,7 @@ USING_XE
 
 struct XE::Library::Private
 {
-	XE::Set<XE::String> _Env;
+	XE::Set<std::filesystem::path> _Env;
 };
 
 XE::Library::Library()
@@ -18,7 +18,7 @@ XE::Library::~Library()
 	delete _p;
 }
 
-void XE::Library::RegisterEnvPath( const XE::String & path )
+void XE::Library::RegisterEnvPath( const std::filesystem::path & path )
 {
 	Instance()->_p->_Env.insert( path );
 }
@@ -38,7 +38,7 @@ XE::LibraryHandle XE::Library::Open( const String & val )
 
 	for( const auto & p : Instance()->_p->_Env )
 	{
-		HMODULE module = ::LoadLibrary( ( p + "\\" + val ).ToCString() );
+		HMODULE module = ::LoadLibrary( ( p / val.ToCString() ).u8string().c_str() );
 		if( module != nullptr )
 		{
 			return ( XE::uint64 )( module );
@@ -71,7 +71,7 @@ XE::LibraryHandle XE::Library::Open( const String & val )
 
 	for( const auto & p : Instance()->_p->_Env )
 	{
-		HMODULE module = ::dlopen( ( p + "/" + val ).ToCString() );
+		HMODULE module = ::dlopen( ( p / val.ToCString() ).u8string().c_str() );
 		if( module != nullptr )
 		{
 			return ( XE::uint64 )( module );

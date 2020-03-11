@@ -729,9 +729,10 @@ type->Value( "Level20", LoggerLevel::Level20 );
 END_META()
 
 BEG_META( AssetStatus )
-type->Value( "Undefined", AssetStatus::Undefined );
-type->Value( "Loading", AssetStatus::Loading );
-type->Value( "Ready", AssetStatus::Ready );
+type->Value( "UNDEFINED", AssetStatus::UNDEFINED );
+type->Value( "LOADING", AssetStatus::LOADING );
+type->Value( "READY", AssetStatus::READY );
+type->Value( "FAILED", AssetStatus::FAILED );
 END_META()
 
 BEG_META( ThreadType )
