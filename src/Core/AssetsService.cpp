@@ -187,7 +187,7 @@ XE::Buffer XE::AssetsService::SearchAssetData( const XE::String & val ) const
 		buf.Wirte( ( const char * )data.data(), data.size() );
 	}
 
-	return buf;
+	return std::move( buf );
 }
 
 void XE::AssetsService::ResetMD5Cache()
@@ -205,8 +205,11 @@ void XE::AssetsService::ResetMD5Cache()
 		{
 			ifs.getline( buf, 512 );
 			auto list = XE::StringUtils::Split( buf, ":" );
-			_p->_MD5Cache.insert( { list[0], list[1] } );
-			_p->_MD5Index.insert( { list[1], std::stoi( list[2] ) } );
+			if( list.size() == 3 )
+			{
+				_p->_MD5Cache.insert( { list[0], list[1] } );
+				_p->_MD5Index.insert( { list[1], std::stoi( list[2] ) } );
+			}
 		}
 	}
 }
