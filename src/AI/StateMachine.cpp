@@ -126,12 +126,15 @@ void XE::StateMachine::RemoveState( XE::StateHandle val )
 	{
 		if( s )
 		{
-			for( auto it = s->_Conditions.begin(); it != s->_Conditions.end(); ++it )
+			for( auto it = s->_Conditions.begin(); it != s->_Conditions.end(); )
 			{
 				if( ( *it )->GetNextStateHandle() == val )
 				{
 					it = s->_Conditions.erase( it );
+					continue;
 				}
+
+				++it;
 			}
 		}
 	}
