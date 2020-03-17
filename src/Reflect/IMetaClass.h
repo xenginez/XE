@@ -30,6 +30,15 @@ public:
 	bool IsSingleton() const;
 
 public:
+	XE::uint64 GetMethodSize() const;
+
+	XE::uint64 GetPropertySize() const;
+
+	XE::uint64 GetOperatorSize() const;
+
+	XE::uint64 GetDerivedClassSize() const;
+
+public:
 	bool CanConvert( const IMetaClassPtr& val ) const;
 
 public:

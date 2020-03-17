@@ -34,8 +34,12 @@ public:
 
 	void SetName( const XE::String & val );
 
+public:
+	BlackBoardPtr GetBlackBoard() const;
+
 private:
 	XE::String _Name;
+	BlackBoardPtr _Blackboard;
 };
 
 END_XE_NAMESPACE

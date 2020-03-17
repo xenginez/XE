@@ -10,7 +10,7 @@ XE::ObjectPtr AssetLoad::Load( const XE::String & val )
 	return XE::IFramework::GetCurrentFramework()->GetServiceT<XE::IAssetsService>()->Load( val );
 }
 
-void AssetLoad::AsynLoad( const XE::String & val )
+void AssetLoad::AsyncLoad( const XE::String & val )
 {
-	XE::IFramework::GetCurrentFramework()->GetServiceT<XE::IAssetsService>()->AsynLoad( val );
+	XE::IFramework::GetCurrentFramework()->GetServiceT<XE::IAssetsService>()->AsyncLoad( val );
 }

@@ -1,13 +1,10 @@
 #include "Node.h"
 
-#include "Condition.h"
 #include "BehaviorTree.h"
 
 USING_XE
 
 BEG_META( Node )
-type->Property( "PreCondition", &Node::_PreCondition );
-type->Property( "ConditionStatus", &Node::_ConditionStatus );
 END_META()
 
 XE::Node::Node()
@@ -63,31 +60,11 @@ void XE::Node::SetStatus( NodeStatus val )
 
 void XE::Node::Startup()
 {
-	if ( _PreCondition )
-	{
-		_PreCondition->SetAIModule( GetBehaviorTree() );
-
-		if ( !_PreCondition->Judgment() )
-		{
-			return;
-		}
-	}
-
 	OnStartup();
 }
 
 void XE::Node::Update( XE::float32 dt )
 {
-	if ( _PreCondition && _ConditionStatus == ConditionStatus::Always )
-	{
-		if ( !_PreCondition->Judgment() )
-		{
-			SetStatus( NodeStatus::Failure );
-
-			return;
-		}
-	}
-
 	OnUpdate( dt );
 }
 

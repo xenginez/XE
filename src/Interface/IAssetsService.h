@@ -25,7 +25,7 @@ public:
 public:
 	virtual ObjectPtr Load( const String & val ) = 0;
 
-	virtual void AsynLoad( const String & val ) = 0;
+	virtual void AsyncLoad( const String & val ) = 0;
 
 public:
 	virtual ObjectPtr GetAsset( const String & val ) const = 0;

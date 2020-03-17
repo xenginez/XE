@@ -204,23 +204,23 @@ public:
 		{
 			return val->Clone();
 		}
-		else
+
+		if( auto cls = ClassID<T>::Get( val ) )
 		{
-			if( auto cls = ClassID<T>::Get( val ) )
-			{
-				auto ret = cls->Construct().Value< U * >();
+			auto ret = cls->Construct().Value< U * >();
 
-				cls->VisitProperty( [&]( IMetaPropertyPtr prop )
+			cls->VisitProperty( [&]( IMetaPropertyPtr prop )
+								{
+									if( !( prop->GetFlag() & IMetaProperty::NoClone ) && !prop->IsStatic() )
 									{
-										if( !( prop->GetFlag() & IMetaProperty::NoClone ) && !prop->IsStatic() )
-										{
-											prop->Set( ret, prop->Get( val ) );
-										}
-									} );
+										prop->Set( ret, prop->Get( val ) );
+									}
+								} );
 
-				return ret;
-			}
+			return ret;
 		}
+
+		return nullptr;
 	}
 
 	static XE::SharedPtr<T> Clone( XE::SharedPtr<T> val )
@@ -229,23 +229,23 @@ public:
 		{
 			return val->Clone();
 		}
-		else
+
+		if( auto cls = ClassID<T>::Get( val.get() ) )
 		{
-			if( auto cls = ClassID<T>::Get( val ) )
-			{
-				auto ret = cls->ConstructPtr().Value< XE::SharedPtr<U> >();
+			auto ret = cls->ConstructPtr().Value< XE::SharedPtr<T> >();
 
-				cls->VisitProperty( [&]( IMetaPropertyPtr prop )
+			cls->VisitProperty( [&]( IMetaPropertyPtr prop )
+								{
+									if( !( prop->GetFlag() & IMetaProperty::NoClone ) && !prop->IsStatic() )
 									{
-										if( !( prop->GetFlag() & IMetaProperty::NoClone ) && !prop->IsStatic() )
-										{
-											prop->Set( ret, prop->Get( val ) );
-										}
-									} );
+										prop->Set( ret, prop->Get( val ) );
+									}
+								} );
 
-				return ret;
-			}
+			return ret;
 		}
+
+		return nullptr;
 	}
 };
 

@@ -29,6 +29,21 @@ public:
 
 	virtual void Clearup() override;
 
+public:
+	XE::StateHandle GetRoot() const;
+
+	void SetRoot( XE::StateHandle val );
+
+public:
+	XE::StatePtr GetState( XE::StateHandle val );
+
+	const XE::Array< XE::StatePtr > & GetAllState() const;
+
+public:
+	XE::StateHandle AddState( const XE::IMetaClassPtr & val );
+
+	void RemoveState( XE::StateHandle val );
+
 private:
 	StateHandle _Root;
 	StateHandle _Current;

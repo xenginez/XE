@@ -101,7 +101,7 @@ XE::ObjectPtr XE::AssetsService::Load( const String & val )
 	return obj;
 }
 
-void XE::AssetsService::AsynLoad( const String & val )
+void XE::AssetsService::AsyncLoad( const String & val )
 {
 	auto obj = GetAsset( val );
 
@@ -125,7 +125,7 @@ void XE::AssetsService::AsynLoad( const String & val )
 			SetAssetStatus( PathToMD5( val ), nullptr, AssetStatus::LOADING );
 			GetFramework()->GetThreadService()->PostTask( [this, val]()
 														  {
-															  AsynLoad( val );
+															  AsyncLoad( val );
 															  return false;
 														  }, ThreadType::IO );
 		}
@@ -157,10 +157,7 @@ XE::AssetStatus XE::AssetsService::GetAssetStatus( const String & val ) const
 
 XE::ObjectPtr XE::AssetsService::LoadAsset( const XE::String & val )
 {
-	auto stream = SearchAssetData( val );
-
-	auto asset = DeserializeObject( std::move( stream ) );
-	if( asset )
+	if( auto asset = SearchAssetData( val ) )
 	{
 		asset->AssetLoad();
 		return asset;
@@ -169,7 +166,7 @@ XE::ObjectPtr XE::AssetsService::LoadAsset( const XE::String & val )
 	return nullptr;
 }
 
-XE::Buffer XE::AssetsService::SearchAssetData( const XE::String & val ) const
+XE::ObjectPtr XE::AssetsService::SearchAssetData( const XE::String & val ) const
 {
 	auto md5 = PathToMD5( val );
 
@@ -184,10 +181,18 @@ XE::Buffer XE::AssetsService::SearchAssetData( const XE::String & val ) const
 
 		std::vector<unsigned char> data;
 		unzip.extractEntryToMemory( md5.To32String(), data );
-		buf.Wirte( ( const char * )data.data(), data.size() );
+		buf.Wirte( (const char * )data.data(), data.size() );
+
+		XE::ObjectPtr obj;
+
+		auto view = buf.GetView();
+		XE::BinaryLoadArchive load( view );
+		load & obj;
+
+		return obj;
 	}
 
-	return std::move( buf );
+	return nullptr;
 }
 
 void XE::AssetsService::ResetMD5Cache()
@@ -226,17 +231,6 @@ XE::MD5 AssetsService::PathToMD5( const XE::String & val ) const
 	}
 
 	return md5;
-}
-
-XE::ObjectPtr XE::AssetsService::DeserializeObject( XE::Buffer && val ) const
-{
-	XE::ObjectPtr obj;
-
-	auto view = val.GetView();
-	XE::BinaryLoadArchive load( view );
-	load & obj;
-
-	return obj;
 }
 
 void XE::AssetsService::SetAssetStatus( const XE::MD5 & md5, const XE::ObjectPtr & asset, AssetStatus status )

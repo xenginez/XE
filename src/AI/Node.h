@@ -9,13 +9,13 @@
 #ifndef __NODE_H__4E15E329_D9A1_4F5D_B63A_CA4079844C18
 #define __NODE_H__4E15E329_D9A1_4F5D_B63A_CA4079844C18
 
-#include "Type.h"
+#include "Item.h"
 
 BEG_XE_NAMESPACE
 
-class XE_API Node : public XE::Object
+class XE_API Node : public XE::Item
 {
-	OBJECT( Node, Object )
+	OBJECT( Node, Item )
 
 private:
 	friend class BehaviorTree;
@@ -65,8 +65,6 @@ private:
 	NodeHandle _Handle;
 	NodeHandle _Parent;
 	NodeStatus _Status;
-	ConditionPtr _PreCondition;
-	ConditionStatus _ConditionStatus;
 
 	BehaviorTreePtr _BehaviorTree;
 };

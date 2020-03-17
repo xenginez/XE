@@ -30,6 +30,26 @@ bool XE::IMetaClass::IsSingleton() const
 	return _IsSingleton;
 }
 
+XE::uint64 XE::IMetaClass::GetMethodSize() const
+{
+	return _Methods.size();
+}
+
+XE::uint64 XE::IMetaClass::GetPropertySize() const
+{
+	return _Propertys.size();
+}
+
+XE::uint64 XE::IMetaClass::GetOperatorSize() const
+{
+	return _Operators.size();
+}
+
+XE::uint64 XE::IMetaClass::GetDerivedClassSize() const
+{
+	return _DerivedClasses.size();
+}
+
 bool XE::IMetaClass::CanConvert( const IMetaClassPtr& val ) const
 {
 	auto cls = SP_CAST<const IMetaClass>( shared_from_this() );

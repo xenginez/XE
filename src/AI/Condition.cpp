@@ -3,6 +3,7 @@
 USING_XE
 
 BEG_META( Condition )
+type->Property( "NextState", &Condition::_NextState );
 END_META()
 
 XE::Condition::Condition()
@@ -29,4 +30,14 @@ const XE::AIModulePtr & XE::Condition::GetAIModule() const
 void XE::Condition::SetAIModule( const AIModulePtr & val )
 {
 	_AIModule = val;
+}
+
+XE::StateHandle XE::Condition::GetNextStateHandle() const
+{
+	return _NextState;
+}
+
+void XE::Condition::SetNextStateHandle( XE::StateHandle val )
+{
+	_NextState = val;
 }

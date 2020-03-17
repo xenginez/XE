@@ -23,7 +23,24 @@ XE::StateHandle XE::State::GetHandle() const
 	return _Handle;
 }
 
-const XE::Array< Pair<ConditionPtr, StateHandle> >& XE::State::GetConditions() const
+void XE::State::AddConditions( const XE::ConditionPtr & val )
+{
+	_Conditions.push_back( val );
+}
+
+void XE::State::RemoveConditions( const XE::ConditionPtr & val )
+{
+	for( auto it = _Conditions.begin(); it != _Conditions.end(); ++it )
+	{
+		if( ( *it ) == val )
+		{
+			_Conditions.erase( it );
+			return;
+		}
+	}
+}
+
+const XE::Array< ConditionPtr > & XE::State::GetConditions() const
 {
 	return _Conditions;
 }

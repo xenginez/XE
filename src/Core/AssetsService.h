@@ -40,7 +40,7 @@ public:
 public:
 	ObjectPtr Load( const String & val ) override;
 
-	void AsynLoad( const String & val ) override;
+	void AsyncLoad( const String & val ) override;
 
 public:
 	ObjectPtr GetAsset( const String & val ) const override;
@@ -51,14 +51,12 @@ public:
 	void ResetMD5Cache();
 
 protected:
-	virtual XE::Buffer SearchAssetData( const XE::String & val ) const;
+	virtual XE::ObjectPtr SearchAssetData( const XE::String & val ) const;
 
 private:
 	XE::ObjectPtr LoadAsset( const XE::String & val );
 
 	XE::MD5 PathToMD5( const XE::String & val ) const;
-
-	XE::ObjectPtr DeserializeObject( XE::Buffer && val ) const;
 
 	void SetAssetStatus( const XE::MD5 & md5, const XE::ObjectPtr & asset, AssetStatus status );
 

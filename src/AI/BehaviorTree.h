@@ -34,8 +34,6 @@ public:
 
 	void SetRoot( NodeHandle val );
 
-	BlackBoardPtr GetBlackBoard() const;
-
 	const NodePtr & GetNode( NodeHandle val ) const;
 
 public:
@@ -47,7 +45,6 @@ public:
 
 public:
 	NodeHandle _Root;
-	BlackBoardPtr _Blackboard;
 	Array< NodePtr > _Nodes;
 };
 

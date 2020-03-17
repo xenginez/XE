@@ -18,7 +18,7 @@ class XE_API AssetLoad
 public:
 	static XE::ObjectPtr Load( const XE::String & val );
 
-	static void AsynLoad( const XE::String & val );
+	static void AsyncLoad( const XE::String & val );
 
 };
 
@@ -36,7 +36,7 @@ public:
 	}
 
 	Asset( const Asset & val )
-		:_Path( val._Path )
+		:_Path( val._Path ), _Obj( val._Obj )
 	{
 
 	}
@@ -53,35 +53,43 @@ public:
 	}
 
 public:
+	Asset & operator=( std::nullptr_t )
+	{
+		_Path = "";
+		_Obj = nullptr;
+
+		return *this;
+	}
+
 	Asset & operator=( const Asset & val )
 	{
 		if( _Path != val._Path )
 		{
 			_Path = val._Path;
 
-			_Obj = nullptr;
+			_Obj = val._Obj;
 		}
 
 		return *this;
 	}
 
 public:
-	T * operator->()
+	const T * operator->()
 	{
 		return get();
 	}
 
-	T * operator->() const
+	const T * operator->() const
 	{
 		return get();
 	}
 
-	T & operator *()
+	const T & operator *()
 	{
 		return *( get() );
 	}
 
-	T & operator *() const
+	const T & operator *() const
 	{
 		return *( get() );
 	}
@@ -95,7 +103,7 @@ public:
 
 		if( _Path != "" )
 		{
-			AssetLoad::AsynLoad( _Path );
+			AssetLoad::AsyncLoad( _Path );
 
 			return AssetLoad::Load( _Path ) != nullptr;
 		}
@@ -104,7 +112,7 @@ public:
 	}
 
 public:
-	T * get()
+	const T * get()
 	{
 		if( _Obj == nullptr && _Path != "" )
 		{
@@ -114,7 +122,7 @@ public:
 		return _Obj.get();
 	}
 
-	T * get() const
+	const T * get() const
 	{
 		if( _Obj == nullptr && _Path != "" )
 		{
@@ -125,6 +133,15 @@ public:
 	}
 
 public:
+	void async()
+	{
+		if( _Obj == nullptr && _Path != "" )
+		{
+			AssetLoad::AsyncLoad( _Path )
+		}
+	}
+
+public:
 	const XE::String & GetPath() const
 	{
 		return _Path;
@@ -132,7 +149,7 @@ public:
 
 private:
 	XE::String _Path;
-	XE::SharedPtr< T > _Obj;
+	XE::SharedPtr< const T > _Obj;
 };
 
 template<> struct XE_API ClassID< Asset< Object > >
@@ -242,7 +259,7 @@ public:
 
 		arc & path;
 
-		( *val ) = path;
+		( *val ) = Asset< T >( path );
 	}
 };
 

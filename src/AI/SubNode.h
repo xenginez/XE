@@ -30,7 +30,7 @@ protected:
 	virtual void OnClearup() override;
 
 private:
-	AIModulePtr _SubAI;
+	XE::AssetInstance< AIModule > _SubAI;
 };
 
 END_XE_NAMESPACE

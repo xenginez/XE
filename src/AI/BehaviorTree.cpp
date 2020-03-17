@@ -76,11 +76,6 @@ void BehaviorTree::SetRoot( NodeHandle val )
 	_Root = val;
 }
 
-XE::BlackBoardPtr XE::BehaviorTree::GetBlackBoard() const
-{
-	return _Blackboard;
-}
-
 const XE::NodePtr & XE::BehaviorTree::GetNode( NodeHandle val ) const
 {
 	XE_ASSERT( val.GetValue() < _Nodes.size() );

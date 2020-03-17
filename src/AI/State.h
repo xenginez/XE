@@ -9,13 +9,16 @@
 #ifndef __STATE_H__0F576F56_4DD5_458C_8B62_10766BAE42AF
 #define __STATE_H__0F576F56_4DD5_458C_8B62_10766BAE42AF
 
-#include "Type.h"
+#include "Item.h"
 
 BEG_XE_NAMESPACE
 
-class XE_API State : public XE::Object
+class XE_API State : public XE::Item
 {
-	OBJECT( State, Object )
+	OBJECT( State, Item )
+
+public:
+	friend class StateMachine;
 
 public:
 	State();
@@ -25,7 +28,12 @@ public:
 public:
 	StateHandle GetHandle() const;
 
-	const Array< Pair<ConditionPtr, StateHandle> >& GetConditions() const;
+public:
+	void AddConditions( const XE::ConditionPtr & val );
+
+	void RemoveConditions( const XE::ConditionPtr & val );
+
+	const Array< ConditionPtr > & GetConditions() const;
 
 public:
 	const StateMachinePtr & GetStateMachine() const;
@@ -49,7 +57,7 @@ protected:
 private:
 	StateHandle _Handle;
 	StateMachinePtr _StateMachine;
-	Array< Pair<ConditionPtr, StateHandle> > _Conditions;
+	Array< ConditionPtr > _Conditions;
 };
 
 END_XE_NAMESPACE
