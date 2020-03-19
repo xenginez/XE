@@ -1,6 +1,7 @@
 #include "State.h"
 
 #include "Condition.h"
+#include "StateMachine.h"
 
 USING_XE
 
@@ -83,4 +84,54 @@ void XE::State::OnUpdate( XE::float32 dt )
 void XE::State::OnClearup()
 {
 
+}
+
+BEG_META( SubState )
+type->Property( "SubAI", &SubState::_SubAI );
+type->Property( "ConnectKeys", &SubState::_ConnectKeys );
+END_META()
+
+XE::SubState::SubState()
+{
+
+}
+
+XE::SubState::~SubState()
+{
+
+}
+
+void XE::SubState::OnStartup()
+{
+	for( const auto & keys : _ConnectKeys )
+	{
+		_SubAI->SetKey( keys.second, GetStateMachine()->GetKey( keys.first ) );
+	}
+
+	_SubAI->Startup();
+}
+
+void XE::SubState::OnUpdate( XE::float32 dt )
+{
+	for( const auto & keys : _ConnectKeys )
+	{
+		_SubAI->SetKey( keys.second, GetStateMachine()->GetKey( keys.first ) );
+	}
+
+	_SubAI->Update( dt );
+}
+
+void XE::SubState::OnClearup()
+{
+	_SubAI->Clearup();
+}
+
+const XE::Map<XE::Key, XE::Key> & XE::SubState::GetConnectKeys() const
+{
+	return _ConnectKeys;
+}
+
+void XE::SubState::SetConnectKeys( const XE::Map<XE::Key, XE::Key> & val )
+{
+	_ConnectKeys = val;
 }

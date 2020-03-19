@@ -23,6 +23,8 @@ DECL_PTR( State );
 DECL_PTR( Condition );
 DECL_PTR( StateMachine );
 
+class Key;
+template<typename T> class KeyT;
 
 
 enum class NodeStatus

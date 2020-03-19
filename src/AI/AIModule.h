@@ -34,12 +34,24 @@ public:
 
 	void SetName( const XE::String & val );
 
+	XE::Variant GetKey( const Key & val ) const;
+
+	void SetKey( const Key & key, const XE::Variant & val );
+
 public:
-	BlackBoardPtr GetBlackBoard() const;
+	template< typename T > T GetKeyT( const KeyT<T> & val ) const
+	{
+		return GetKey( val ).Value<T>();
+	}
+
+	template< typename T > void SetKeyT( const KeyT<T> & key, const T & val )
+	{
+		SetKey( key, val );
+	}
 
 private:
 	XE::String _Name;
-	BlackBoardPtr _Blackboard;
+	XE::Map<XE::String, XE::Variant> _Keys;
 };
 
 END_XE_NAMESPACE

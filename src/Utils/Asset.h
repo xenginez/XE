@@ -132,6 +132,26 @@ public:
 		return nullptr;
 	}
 
+	XE::SharedPtr< const T > get_shared()
+	{
+		if( _Obj == nullptr && _Path != "" )
+		{
+			_Obj = AssetLoad::Load( _Path )
+		}
+
+		return _Obj;
+	}
+
+	XE::SharedPtr< const T > get_shared() const
+	{
+		if( _Obj == nullptr && _Path != "" )
+		{
+			_Obj = AssetLoad::Load( _Path )
+		}
+
+		return _Obj;
+	}
+
 public:
 	void async()
 	{

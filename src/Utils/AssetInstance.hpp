@@ -133,6 +133,17 @@ public:
 		return _Obj.get();
 	}
 
+	XE::SharedPtr< T > get_shared()
+	{
+		if( _Obj == nullptr && _Path != "" )
+		{
+			_Obj = DP_CAST<T>( AssetLoad::Load( _Path ) );
+			_Obj = XE::Cloneable<T>::Clone( _Obj );
+		}
+
+		return _Obj;
+	}
+
 public:
 	void async()
 	{

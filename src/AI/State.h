@@ -9,6 +9,7 @@
 #ifndef __STATE_H__0F576F56_4DD5_458C_8B62_10766BAE42AF
 #define __STATE_H__0F576F56_4DD5_458C_8B62_10766BAE42AF
 
+#include "Key.h"
 #include "Item.h"
 
 BEG_XE_NAMESPACE
@@ -58,6 +59,32 @@ private:
 	StateHandle _Handle;
 	StateMachinePtr _StateMachine;
 	Array< ConditionPtr > _Conditions;
+};
+
+class XE_API SubState : public XE::State
+{
+	OBJECT( SubState, State )
+
+public:
+	SubState();
+
+	~SubState();
+
+public:
+	const XE::Map<XE::Key, XE::Key> & GetConnectKeys() const;
+
+	void SetConnectKeys( const XE::Map<XE::Key, XE::Key> & val );
+
+protected:
+	virtual void OnStartup() override;
+
+	virtual void OnUpdate( XE::float32 dt ) override;
+
+	virtual void OnClearup() override;
+
+private:
+	XE::AssetInstance< AIModule > _SubAI;
+	XE::Map<XE::Key, XE::Key> _ConnectKeys;
 };
 
 END_XE_NAMESPACE

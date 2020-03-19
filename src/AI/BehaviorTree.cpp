@@ -1,6 +1,6 @@
 #include "BehaviorTree.h"
 
-#include "CompositeNode.h"
+#include "Node.h"
 
 USING_XE
 
@@ -19,11 +19,6 @@ XE::BehaviorTree::~BehaviorTree()
 
 void XE::BehaviorTree::Startup()
 {
-	if( _Nodes.empty() )
-	{
-		_Root = AddNode( SequenceNode::GetMetaClassStatic() );
-	}
-
 	for ( auto node : _Nodes )
 	{
 		node->SetBehaviorTree( XE_THIS( BehaviorTree ) );
@@ -32,6 +27,11 @@ void XE::BehaviorTree::Startup()
 
 void XE::BehaviorTree::Update( XE::float32 dt )
 {
+	if( _Root == NodeHandle::Invalid )
+	{
+		return;
+	}
+
 	NodePtr root = _Nodes[_Root.GetValue()];
 
 	if ( root->GetStatus() == NodeStatus::Finish )
@@ -89,6 +89,7 @@ NodeHandle BehaviorTree::AddNode( const IMetaClassPtr & val )
 	{
 		if( NodePtr node = val->ConstructPtr().Value<NodePtr>() )
 		{
+			node->SetName( val->GetName() );
 			node->SetHandle( _Nodes.size() );
 			node->SetBehaviorTree( XE_THIS( BehaviorTree ) );
 
