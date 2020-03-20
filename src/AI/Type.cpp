@@ -15,8 +15,5 @@ type->Value( "Once", ConditionStatus::Once );
 type->Value( "Always", ConditionStatus::Always );
 END_META()
 
-BEG_META( NodeHandle )
-END_META()
-
-BEG_META( StateHandle )
-END_META()
+IMPLEMENT_META( NodeHandle )
+IMPLEMENT_META( StateHandle )

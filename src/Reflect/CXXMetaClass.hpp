@@ -64,6 +64,18 @@ public:
 		}
 	}
 
+	virtual Variant Clone( const Variant & val ) const override
+	{
+		auto ret = Construct( nullptr );
+
+		VisitProperty( [&]( IMetaPropertyPtr prop )
+					   {
+						   prop->Set( ret, prop->Get( val ) );
+					   } );
+
+		return ret;
+	}
+
 	virtual void Destruct( Variant & val ) const override
 	{
 		( (ClassType * )val.ToPointer() )->~ClassType();
@@ -184,24 +196,17 @@ public:
 public:
 	virtual Variant Construct( void * ptr ) const override
 	{
-		if( ptr != nullptr )
-		{
-			return new ( ptr ) ClassType( 0 );
-		}
-
 		return (ClassType )0;
 	}
 
 	virtual Variant ConstructPtr( XE::SharedPtr<void> ptr ) const override
 	{
-		if( ptr != nullptr )
-		{
-			Construct( ptr.get() );
+		return (ClassType )0;
+	}
 
-			return SP_CAST<ClassType>( ptr );
-		}
-
-		return XE::MakeShared<ClassType>( (ClassType )0 );
+	virtual Variant Clone( const Variant & val ) const override
+	{
+		return val;
 	}
 
 	virtual void Destruct( Variant & val ) const override

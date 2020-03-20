@@ -32,7 +32,7 @@ bool XE::WorldService::Startup()
 
 	if( path != "" )
 	{
-		_p->_World = DP_CAST<XE::World>( GetFramework()->GetServiceT<XE::IAssetsService>()->Load( path )->Clone() );
+		_p->_World = DP_CAST<XE::World>( GetFramework()->GetServiceT<XE::IAssetsService>()->Load( path ) );
 	}
 	else
 	{
@@ -71,7 +71,7 @@ void WorldService::LoadWorld( const XE::String & val )
 																		 _p->_World = nullptr;
 																	 }
 
-																	 _p->_World = SP_CAST<XE::World>( GetFramework()->GetServiceT<XE::IAssetsService>()->Load( val )->Clone() );
+																	 _p->_World = SP_CAST<XE::World>( GetFramework()->GetServiceT<XE::IAssetsService>()->Load( val ) );
 
 																	 _p->_World->Startup();
 

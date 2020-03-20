@@ -46,9 +46,6 @@ public:
 	}
 
 public:
-	virtual ReflectObjectPtr Clone() const;
-
-public:
 	virtual void Serialize( Archive & val );
 
 };

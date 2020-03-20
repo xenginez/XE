@@ -185,39 +185,11 @@ private:
 template< typename T > struct Cloneable
 {
 public:
-	template<typename U> struct HasMemberClone
-	{
-	private:
-		template <typename Ty, XE::SharedPtr<U>( Ty:: * )() = &Ty::Clone>
-		static constexpr auto check( Ty * ) { return true; };
-
-		static constexpr bool check( ... ) { return false; };
-
-	public:
-		static constexpr bool value = check( static_cast< U * >( nullptr ) );
-	};
-
-public:
 	static T * Clone( T * val )
 	{
-		if constexpr( HasMemberClone<T>::value )
-		{
-			return val->Clone();
-		}
-
 		if( auto cls = ClassID<T>::Get( val ) )
 		{
-			auto ret = cls->Construct().Value< U * >();
-
-			cls->VisitProperty( [&]( IMetaPropertyPtr prop )
-								{
-									if( !( prop->GetFlag() & IMetaProperty::NoClone ) && !prop->IsStatic() )
-									{
-										prop->Set( ret, prop->Get( val ) );
-									}
-								} );
-
-			return ret;
+			return cls->Clone( val ).Value<T *>();
 		}
 
 		return nullptr;
@@ -225,24 +197,9 @@ public:
 
 	static XE::SharedPtr<T> Clone( XE::SharedPtr<T> val )
 	{
-		if constexpr( HasMemberClone<T>::value )
-		{
-			return val->Clone();
-		}
-
 		if( auto cls = ClassID<T>::Get( val.get() ) )
 		{
-			auto ret = cls->ConstructPtr().Value< XE::SharedPtr<T> >();
-
-			cls->VisitProperty( [&]( IMetaPropertyPtr prop )
-								{
-									if( !( prop->GetFlag() & IMetaProperty::NoClone ) && !prop->IsStatic() )
-									{
-										prop->Set( ret, prop->Get( val ) );
-									}
-								} );
-
-			return ret;
+			return XE::SharedPtr<T>( cls->Clone( val.get() ).Value<T *>() );
 		}
 
 		return nullptr;

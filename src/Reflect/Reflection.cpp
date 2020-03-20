@@ -58,8 +58,6 @@ struct XE::Reflection::Private
 XE::Reflection::Reflection()
 	:_p( new Private )
 {
-	_p->Classes.insert( std::make_pair( "void", nullptr ) );
-
 	_p->Classes.insert( { TypeID<std::nullptr_t>::Get()->GetFullName(), ClassID<std::nullptr_t>::Get() } );
 	_p->Classes.insert( { TypeID<bool>::Get()->GetFullName(), ClassID<bool>::Get() } );
 	_p->Classes.insert( { TypeID<XE::int8>::Get()->GetFullName(), ClassID<XE::int8>::Get() } );

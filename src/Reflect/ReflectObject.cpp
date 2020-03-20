@@ -53,18 +53,3 @@ void XE::ReflectObject::Serialize( Archive &val )
 	XE::Variant v(this);
 	GetMetaClass()->Serialize(&val, v);
 }
-
-XE::ReflectObjectPtr XE::ReflectObject::Clone() const
-{
-	auto ret = GetMetaClass()->ConstructPtr().Value<ReflectObjectPtr>();
-
-	GetMetaClass()->VisitProperty( [&]( IMetaPropertyPtr prop )
-								   {
-									   if( !( prop->GetFlag() & IMetaProperty::NoClone ) && !prop->IsStatic() )
-									   {
-										   prop->Set( ret, prop->Get( this ) );
-									   }
-								   } );
-
-	return ret;
-}

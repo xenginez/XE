@@ -146,6 +146,32 @@ template< typename T > struct VariantCast<Handle<T>>
 	}
 };
 
+template< typename T > struct VariantCast<Handle<T> *>
+{
+	static Handle<T> * Cast( const Variant * val )
+	{
+		if( ( val->GetFlag() == Variant::Flag::HANDLE ) && val->GetType() == TypeID< Handle<T> >::Get() )
+		{
+			return ( Handle<T> * ) & ( val->_Data.u64 );
+		}
+
+		throw VariantException( *val, "cast fail" );
+	}
+};
+
+template< typename T > struct Serializable< Handle< T > >
+{
+public:
+	static void Serialize( Archive & arc, Handle< T > * val )
+	{
+		XE::uint64 value = val->GetValue();
+
+		arc & value;
+
+		*val = Handle< T >( value );
+	}
+};
+
 END_XE_NAMESPACE
 
 template< typename T > bool operator<( XE::uint64 left, XE::Handle< T > right )

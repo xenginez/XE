@@ -87,14 +87,14 @@ XE::ObjectPtr XE::AssetsService::Load( const String & val )
 	if( obj == nullptr )
 	{
 		SetAssetStatus( PathToMD5( val ), nullptr, AssetStatus::LOADING );
-		auto asset = LoadAsset( val );
-		if( asset )
+		obj = LoadAsset( val );
+		if( obj )
 		{
-			SetAssetStatus( PathToMD5( val ), asset, AssetStatus::READY );
+			SetAssetStatus( PathToMD5( val ), obj, AssetStatus::READY );
 		}
 		else
 		{
-			SetAssetStatus( PathToMD5( val ), asset, AssetStatus::FAILED );
+			SetAssetStatus( PathToMD5( val ), obj, AssetStatus::FAILED );
 		}
 	}
 

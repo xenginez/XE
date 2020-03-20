@@ -5,6 +5,8 @@
 USING_XE
 
 BEG_META( BehaviorTree )
+type->Property( "Root", &BehaviorTree::_Root, IMetaProperty::NoDesign );
+type->Property( "Nodes", &BehaviorTree::_Nodes, IMetaProperty::NoDesign );
 END_META()
 
 XE::BehaviorTree::BehaviorTree()

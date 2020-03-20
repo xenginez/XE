@@ -38,6 +38,10 @@ public:
 
 	void SetKey( const Key & key, const XE::Variant & val );
 
+	const XE::Map<XE::String, XE::Variant> & GetKeys() const;
+
+	void SetKeys( const XE::Map<XE::String, XE::Variant> & val );
+
 public:
 	template< typename T > T GetKeyT( const KeyT<T> & val ) const
 	{

@@ -43,3 +43,13 @@ void XE::AIModule::SetKey( const Key & key, const XE::Variant & val )
 {
 	_Keys[key.GetKey()] = val;
 }
+
+const XE::Map<XE::String, XE::Variant> & XE::AIModule::GetKeys() const
+{
+	return _Keys;
+}
+
+void XE::AIModule::SetKeys( const XE::Map<XE::String, XE::Variant> & val )
+{
+	_Keys = val;
+}

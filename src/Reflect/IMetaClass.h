@@ -65,6 +65,8 @@ public:
 
 	virtual Variant ConstructPtr( XE::SharedPtr<void> ptr = nullptr ) const = 0;
 
+	virtual Variant Clone( const Variant & val ) const = 0;
+
 	virtual void Destruct( Variant & val ) const = 0;
 
 	virtual void Serialize( Archive * arc, Variant & val ) const = 0;
