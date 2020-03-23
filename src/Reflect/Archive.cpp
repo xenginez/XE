@@ -5,6 +5,7 @@
 #include <rapidjson/rapidjson.h>
 #include <rapidjson/document.h>
 #include <rapidjson/writer.h>
+#include <rapidjson/prettywriter.h>
 #include <rapidjson/istreamwrapper.h>
 #include <rapidjson/ostreamwrapper.h>
 
@@ -120,7 +121,8 @@ void XE::JsonLoadArchive::Serialize( NameValue & val )
 			for( XE::uint64 i = 0; i < size; ++i )
 			{
 				Variant v;
-				( *this ) & NVP( "@item_" + std::to_string( i ), v );
+				auto nvp = NVP( "@item_" + std::to_string( i ), v );
+				( *this ) & nvp;
 				arr[i] = v;
 			}
 			_p->Values.pop();
@@ -173,7 +175,9 @@ XE::JsonSaveArchive::~JsonSaveArchive()
 void XE::JsonSaveArchive::Save( std::ostream & val ) const
 {
 	rapidjson::OStreamWrapper wrapper( val );
-	rapidjson::Writer<rapidjson::OStreamWrapper> writer( wrapper );
+
+	rapidjson::PrettyWriter<rapidjson::OStreamWrapper> writer( wrapper );
+
 	_p->Doc.Accept( writer );
 }
 
@@ -279,7 +283,7 @@ void XE::JsonSaveArchive::Serialize( NameValue & val )
 		}
 		else if( flag == ( XE::uint32 )Variant::Flag::CONTAINER )
 		{
-			VariantArray arr = val.Value.Value<VariantArray>();
+			VariantArray arr = val.Value.ToArray();
 
 			rapidjson::Value v( rapidjson::kNumberType );
 			v.SetUint64( arr.size() );
@@ -415,7 +419,8 @@ void XE::BinaryLoadArchive::Serialize( NameValue & val )
 			for( XE::uint64 i = 0; i < size; ++i )
 			{
 				Variant v;
-				( *this ) & NVP( nullptr, v );
+				auto nvp = NVP( nullptr, v );
+				( *this ) & nvp;
 				arr[i] = v;
 			}
 		}

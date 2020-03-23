@@ -141,7 +141,7 @@ void XE::Reflection::RegisterMetaInfo( IMetaInfoPtr val )
 	}
 }
 
-void XE::Reflection::VisitMeta( std::function<void( IMetaInfoPtr )> val )
+void XE::Reflection::VisitMeta( const std::function<void( IMetaInfoPtr )> & val )
 {
 	VisitEnum( [&]( IMetaEnumPtr var )
 			   {
@@ -169,7 +169,7 @@ void XE::Reflection::VisitMeta( std::function<void( IMetaInfoPtr )> val )
 				   } );
 }
 
-void XE::Reflection::VisitType( std::function<void( IMetaTypePtr )> val )
+void XE::Reflection::VisitType( const std::function<void( IMetaTypePtr )> & val )
 {
 	VisitEnum( [&]( IMetaEnumPtr enm )
 			   {
@@ -182,7 +182,7 @@ void XE::Reflection::VisitType( std::function<void( IMetaTypePtr )> val )
 				} );
 }
 
-void XE::Reflection::VisitEnum( std::function<void( IMetaEnumPtr )> val )
+void XE::Reflection::VisitEnum( const std::function<void( IMetaEnumPtr )> & val )
 {
 	for( auto var : Instance()->_p->Enums )
 	{
@@ -190,7 +190,7 @@ void XE::Reflection::VisitEnum( std::function<void( IMetaEnumPtr )> val )
 	}
 }
 
-void XE::Reflection::VisitClass( std::function<void( IMetaClassPtr )> val )
+void XE::Reflection::VisitClass( const std::function<void( IMetaClassPtr )> & val )
 {
 	for( auto var : Instance()->_p->Classes )
 	{
@@ -198,7 +198,7 @@ void XE::Reflection::VisitClass( std::function<void( IMetaClassPtr )> val )
 	}
 }
 
-void XE::Reflection::VisitMethod( std::function<void( IMetaMethodPtr )> val )
+void XE::Reflection::VisitMethod( const std::function<void( IMetaMethodPtr )> & val )
 {
 	for( auto var : Instance()->_p->Methods )
 	{
@@ -206,7 +206,7 @@ void XE::Reflection::VisitMethod( std::function<void( IMetaMethodPtr )> val )
 	}
 }
 
-void XE::Reflection::VisitProperty( std::function<void( IMetaPropertyPtr )> val )
+void XE::Reflection::VisitProperty( const std::function<void( IMetaPropertyPtr )> & val )
 {
 	for( auto var : Instance()->_p->Propertys )
 	{
@@ -214,7 +214,7 @@ void XE::Reflection::VisitProperty( std::function<void( IMetaPropertyPtr )> val 
 	}
 }
 
-void XE::Reflection::VisitOperator( std::function<void( IMetaOperatorPtr )> val )
+void XE::Reflection::VisitOperator( const std::function<void( IMetaOperatorPtr )> & val )
 {
 	for( auto var : Instance()->_p->Operators )
 	{

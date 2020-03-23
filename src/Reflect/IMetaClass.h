@@ -45,13 +45,13 @@ public:
 	IMetaClassPtr GetSuper() const;
 
 public:
-	void VisitMethod( std::function<void( IMetaMethodPtr )> val ) const;
+	void VisitMethod( const std::function<void( IMetaMethodPtr )> & val ) const;
 
-	void VisitProperty( std::function<void( IMetaPropertyPtr )> val ) const;
+	void VisitProperty( const std::function<void( IMetaPropertyPtr )> & val ) const;
 
-	void VisitOperator( std::function<void( IMetaOperatorPtr )> val ) const;
+	void VisitOperator( const std::function<void( IMetaOperatorPtr )> & val ) const;
 
-	void VisitDerivedClass( std::function<void( IMetaClassPtr )> val ) const;
+	void VisitDerivedClass( const  std::function<void( IMetaClassPtr )> & val ) const;
 
 public:
 	IMetaMethodPtr FindMethod( const String& Name, const ParameterType& Types = MakeParameterType() ) const;

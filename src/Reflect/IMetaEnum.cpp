@@ -44,7 +44,7 @@ XE::Variant XE::IMetaEnum::FindValue( const String& val ) const
 	return XE::Variant();
 }
 
-void XE::IMetaEnum::Visit( std::function<void( String, XE::Variant )> val ) const
+void XE::IMetaEnum::Visit( const std::function<void( String, XE::Variant )> & val ) const
 {
 	for ( auto var : _Values )
 	{

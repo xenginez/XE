@@ -310,9 +310,12 @@ void XE::CoreFramework::LoadModules()
 	auto modules = StringUtils::Split( GetString( "System/Modules" ), "," );
 	for( const auto & module : modules )
 	{
-		if( Library::Open( module ) == LibraryHandle::Invalid )
+		if ( module != "" )
 		{
-			std::cout << "load module \"" << module << "\" fail" << std::endl;
+			if( Library::Open( module ) == LibraryHandle::Invalid )
+			{
+				std::cout << "load module \"" << module << "\" fail" << std::endl;
+			}
 		}
 	}
 }

@@ -50,19 +50,19 @@ public:
 	static void RegisterMetaInfo( IMetaInfoPtr val );
 
 public:
-	static void VisitMeta( std::function<void( IMetaInfoPtr )> val );
+	static void VisitMeta( const std::function<void( IMetaInfoPtr )> & val );
 
-	static void VisitType( std::function<void( IMetaTypePtr )> val );
+	static void VisitType( const std::function<void( IMetaTypePtr )> & val );
 
-	static void VisitEnum( std::function<void( IMetaEnumPtr )> val );
+	static void VisitEnum( const std::function<void( IMetaEnumPtr )> & val );
 
-	static void VisitClass( std::function<void( IMetaClassPtr )> val );
+	static void VisitClass( const std::function<void( IMetaClassPtr )> & val );
 
-	static void VisitMethod( std::function<void( IMetaMethodPtr )> val );
+	static void VisitMethod( const  std::function<void( IMetaMethodPtr )> & val );
 
-	static void VisitProperty( std::function<void( IMetaPropertyPtr )> val );
+	static void VisitProperty( const std::function<void( IMetaPropertyPtr )> & val );
 
-	static void VisitOperator( std::function<void( IMetaOperatorPtr )> val );
+	static void VisitOperator( const std::function<void( IMetaOperatorPtr )> & val );
 
 public:
 	static IMetaInfoPtr FindMeta( const String & FullName );

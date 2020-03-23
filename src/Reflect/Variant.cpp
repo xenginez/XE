@@ -22,12 +22,18 @@ public:
 public:
 	XE::SharedPtr<void> * Register( XE::SharedPtr<void> val )
 	{
-		if( val.get() == nullptr )
+		if( val == nullptr )
 		{
 			return nullptr;
 		}
 
 		std::lock_guard<std::mutex> lock( Instance()->_Lock );
+
+		auto it = _Ptr.find( val.get() );
+		if( it != _Ptr.end() )
+		{
+			return &( it->second.Ptr );
+		}
 
 		Data & d = _Ptr[val.get()];
 
@@ -51,6 +57,10 @@ public:
 		{
 			it->second.Count++;
 		}
+		else
+		{
+			std::cout << "lock error" << std::endl;
+		}
 	}
 
 	void Unlock( XE::SharedPtr<void> * val )
@@ -70,6 +80,10 @@ public:
 			{
 				_Ptr.erase( it );
 			}
+		}
+		else
+		{
+			std::cout << "unlock error" << std::endl;
 		}
 	}
 
@@ -165,6 +179,12 @@ XE::Variant::Variant( const char * val )
 	Lock();
 }
 
+XE::Variant::Variant( const Variant & val )
+	:_Flag( val._Flag ), _Data( val._Data ), _Type( val._Type )
+{
+	Lock();
+}
+
 XE::Variant::Variant( IMetaTypePtr meta, UnionData data, XE::Variant::Flag flag )
 	: _Data( data ), _Type( meta ), _Flag( flag )
 {
@@ -186,6 +206,11 @@ XE::Variant::~Variant()
 
 XE::Variant & XE::Variant::operator=( const Variant & val )
 {
+	if( _Flag == val._Flag && _Type == val._Type && _Data.sp == val._Data.sp )
+	{
+		return *this;
+	}
+
 	Unlock();
 
 	_Type = val._Type;
@@ -259,7 +284,7 @@ bool XE::Variant::operator!=( const Variant & val ) const
 
 bool XE::Variant::IsNull() const
 {
-	return ( _Flag == Flag::NIL || _Flag == Flag::POINTER || _Flag == Flag::SHAREDPTR || _Flag == Flag::PRIVATEPTR ) && _Data.p == nullptr;
+	return ( _Flag == Flag::INVALID || _Flag == Flag::NIL || _Flag == Flag::POINTER || _Flag == Flag::SHAREDPTR || _Flag == Flag::PRIVATEPTR ) && _Data.p == nullptr;
 }
 
 bool XE::Variant::IsEnum() const
@@ -984,100 +1009,12 @@ XE::Array<XE::Variant> Variant::ToArray() const
 {
 	XE::VariantArray ret;
 
-	if( _Type == TypeID<VariantList>::Get() )
+	if( GetFlag() == Flag::CONTAINER )
 	{
-		VariantList list = Value< VariantList >();
-
-		for( const auto & it : list )
-		{
-			ret.push_back( it );
-		}
-	}
-	else if( _Type == TypeID<VariantDeque>::Get() )
-	{
-		VariantDeque deque = Value< VariantDeque >();
-
-		for( const auto & it : deque )
-		{
-			ret.push_back( it );
-		}
-	}
-	else if( _Type == TypeID<VariantStack>::Get() )
-	{
-		VariantStack stack = Value< VariantStack >();
-
-		for( ; !stack.empty(); )
-		{
-			ret.push_back( stack.top() );
-			stack.pop();
-		}
-	}
-	else if( _Type == TypeID<VariantQueue>::Get() )
-	{
-		VariantQueue queue = Value< VariantQueue >();
-
-		for( ; !queue.empty(); )
-		{
-			ret.push_back( queue.front() );
-			queue.pop();
-		}
-	}
-	else if( _Type == TypeID<VariantArray>::Get() )
-	{
-		ret = *( (VariantArray * )ToPointer() );
-	}
-	else if( _Type == TypeID<VariantSet>::Get() )
-	{
-		VariantSet set = Value< VariantSet >();
-
-		for( const auto & it : set )
-		{
-			ret.push_back( it );
-		}
-	}
-	else if( _Type == TypeID<VariantMap>::Get() )
-	{
-		VariantMap map = Value< VariantMap >();
-
-		for( const auto & it : map )
-		{
-			VariantPair pair;
-
-			pair.first = it.first;
-			pair.second = it.second;
-
-			ret.push_back( pair );
-		}
-	}
-	else if( _Type == TypeID<VariantMultiSet>::Get() )
-	{
-		VariantMultiSet multiset = Value< VariantMultiSet >();
-
-		for( const auto & it : multiset )
-		{
-			ret.push_back( it );
-		}
-	}
-	else if( _Type == TypeID<VariantMultiMap>::Get() )
-	{
-		VariantMultiMap multimap = Value< VariantMultiMap >();
-
-		for( const auto & it : multimap )
-		{
-			VariantPair pair;
-
-			pair.first = it.first;
-			pair.second = it.second;
-
-			ret.push_back( pair );
-		}
-	}
-	else
-	{
-		throw XE::VariantException( *this, "cast fail !" );
+		return *( ( XE::VariantArray * ) _Data.pp->Data() );
 	}
 
-	return ret;
+	throw XE::VariantException( *this, "cast fail !" );
 }
 
 XE::Variant::Flag XE::Variant::GetFlag() const

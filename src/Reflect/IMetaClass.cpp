@@ -73,46 +73,39 @@ XE::IMetaClassPtr XE::IMetaClass::GetSuper() const
 	return _Super.lock();
 }
 
-void XE::IMetaClass::VisitMethod( std::function<void( IMetaMethodPtr )> val ) const
+void XE::IMetaClass::VisitMethod( const std::function<void( IMetaMethodPtr )> & val ) const
 {
-	if (auto super = _Super.lock())
-	{
-		super->VisitMethod( val );
-	}
-
 	for ( auto var : _Methods )
 	{
 		val( var );
 	}
+	if( auto super = _Super.lock() )
+	{
+		super->VisitMethod( val );
+	}
 }
 
-void XE::IMetaClass::VisitProperty( std::function<void( IMetaPropertyPtr )> val ) const
+void XE::IMetaClass::VisitProperty( const std::function<void( IMetaPropertyPtr )> & val ) const
 {
-	if ( auto super = _Super.lock() )
-	{
-		super->VisitProperty( val );
-	}
-
 	for ( auto var : _Propertys )
 	{
 		val( var );
 	}
+	if( auto super = _Super.lock() )
+	{
+		super->VisitProperty( val );
+	}
 }
 
-void XE::IMetaClass::VisitOperator( std::function<void( IMetaOperatorPtr )> val ) const
+void XE::IMetaClass::VisitOperator( const std::function<void( IMetaOperatorPtr )> & val ) const
 {
-	if ( auto super = _Super.lock() )
-	{
-		super->VisitOperator( val );
-	}
-
 	for ( auto var : _Operators )
 	{
 		val( var );
 	}
 }
 
-void XE::IMetaClass::VisitDerivedClass( std::function<void( IMetaClassPtr )> val ) const
+void XE::IMetaClass::VisitDerivedClass( const std::function<void( IMetaClassPtr )> & val ) const
 {
 	for ( const auto& var : _DerivedClasses )
 	{

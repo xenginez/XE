@@ -30,7 +30,7 @@ public:
 
 	XE::Variant FindValue( const String& val ) const;
 
-	void Visit( std::function<void( String, XE::Variant )> val ) const;
+	void Visit( const std::function<void( String, XE::Variant )> & val ) const;
 
 protected:
 	void _RegisterValue( const String& Name, XE::Variant Val );

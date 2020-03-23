@@ -52,10 +52,7 @@ public:
 
 		Serialize( nv );
 
-		if( GetType() == ArchiveType::LOAD )
-		{
-			val = nv.Value.Value<T>();
-		}
+		val = nv.Value.Value<T>();
 
 		return *this;
 	}
@@ -70,10 +67,7 @@ public:
 
 		Serialize( nv );
 
-		if( GetType() == ArchiveType::LOAD )
-		{
-			val.Value = nv.Value.Value<T>();
-		}
+		val.Value = nv.Value.Value<T>();
 
 		return *this;
 	}
@@ -95,7 +89,6 @@ public:
 		NameValue nv;
 
 		nv.Name = val.Name;
-
 		nv.Value = val.Value;
 
 		Serialize( nv );
@@ -238,12 +231,11 @@ public:
 										{
 											Variant v = prop->Get( val );
 
-											arc & Archive::NVP( prop->GetName(), v );
+											auto nvp = Archive::NVP( prop->GetName(), v );
 
-											if( arc.GetType() == ArchiveType::LOAD )
-											{
-												prop->Set( val, v );
-											}
+											arc & nvp;
+
+											prop->Set( val, v );
 										}
 									} );
 			}
