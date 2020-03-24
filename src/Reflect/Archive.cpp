@@ -145,6 +145,10 @@ void XE::JsonLoadArchive::Serialize( NameValue & val )
 				{
 					val.Value = cls->ConstructPtr();
 				}
+				else if( flag == ( XE::uint32 )Variant::Flag::HANDLE )
+				{
+					val.Value = XE::Variant( type, Variant::UnionData( std::numeric_limits<XE::uint64>::max() ), Variant::Flag::HANDLE );
+				}
 			}
 
 			_p->Values.push( &node );

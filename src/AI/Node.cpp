@@ -5,6 +5,7 @@
 USING_XE
 
 BEG_META( Node )
+type->Property( "Handle", &Node::_Handle, IMetaProperty::NoDesign );
 END_META()
 
 XE::Node::Node()

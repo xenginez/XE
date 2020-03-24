@@ -6,6 +6,7 @@
 USING_XE
 
 BEG_META( State )
+type->Property( "Handle", &State::_Handle, IMetaProperty::NoDesign );
 type->Property( "Conditions", &State::_Conditions );
 END_META()
 
