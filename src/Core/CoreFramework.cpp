@@ -223,7 +223,7 @@ XE::Language XE::CoreFramework::GetSystemLanguage() const
 
 std::filesystem::path XE::CoreFramework::GetModulePath() const
 {
-	return GetApplicationPath() / "module";
+	return GetApplicationPath() / "modules";
 }
 
 std::filesystem::path XE::CoreFramework::GetAssetsPath() const
@@ -307,14 +307,17 @@ void XE::CoreFramework::Clearup()
 
 void XE::CoreFramework::LoadModules()
 {
-	auto modules = StringUtils::Split( GetString( "System/Modules" ), "," );
-	for( const auto & module : modules )
+	auto path = GetModulePath();
+
+	std::filesystem::directory_iterator end;
+	for( std::filesystem::directory_iterator iter( path ); iter != end; ++iter )
 	{
-		if ( module != "" )
+		if( std::filesystem::is_directory( *iter ) )
 		{
-			if( Library::Open( module ) == LibraryHandle::Invalid )
+			auto module = ( *iter ).path() / ( ( *iter ).path().stem().u8string() + DLL_EXT_NAME );
+			if( Library::Open( module.u8string() ) == LibraryHandle::Invalid )
 			{
-				std::cout << "load module \"" << module << "\" fail" << std::endl;
+				std::cout << "load module \"" << module.u8string() << "\" fail" << std::endl;
 			}
 		}
 	}
