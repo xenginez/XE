@@ -17,8 +17,6 @@ class Variant;
 template< typename T > struct VariantCreate;
 template< typename T > struct VariantCast;
 
-
-
 class XE_API Variant
 {
 public:
@@ -318,7 +316,23 @@ private:
 	IMetaTypePtr _Type;
 };
 
+END_XE_NAMESPACE
 
+namespace std
+{
+	template <> struct hash< XE::Variant >
+	{
+		typedef XE::Variant argument_type;
+		typedef XE::uint64 result_type;
+
+		XE::uint64 operator()( const XE::Variant & _Keyval ) const noexcept
+		{
+			return std::hash<void *>()( _Keyval.ToPointer() );
+		}
+	};
+}
+
+BEG_XE_NAMESPACE
 
 using VariantList =  XE::List<Variant>;
 using VariantDeque = XE::Deque<Variant>;
@@ -330,6 +344,10 @@ using VariantSet =  XE::Set<Variant>;
 using VariantMap =  XE::Map<Variant, Variant>;
 using VariantMultiSet = XE::MultiSet<Variant>;
 using VariantMultiMap = XE::MultiMap<Variant, Variant>;
+using VariantUnorderedSet = XE::UnorderedSet<Variant>;
+using VariantUnorderedMap = XE::UnorderedMap<Variant, Variant>;
+using VariantUnorderedMultiSet = XE::UnorderedMultiSet<Variant>;
+using VariantUnorderedMultiMap = XE::UnorderedMultiMap<Variant, Variant>;
 
 
 class XE_API VariantException : public RuntimeException
@@ -351,7 +369,6 @@ private:
 };
 
 
-
 template< typename T > struct VariantCreate
 {
 	static void Create( Variant * var, const T & val )
@@ -365,7 +382,10 @@ template< typename T > struct VariantCreate
 		else if constexpr( std::is_shared_ptr_v<T> )
 		{
 			var->_Type = TypeID<T>::Get( &val );
-			var->_Data.sp = Variant::RegisterSharedPtr( val );
+			if( val.get() )
+			{
+				var->_Data.sp = Variant::RegisterSharedPtr( val );
+			}
 			var->_Flag = Variant::Flag::SHAREDPTR;
 		}
 		else
@@ -399,7 +419,7 @@ template< typename ... Args > struct VariantCreate< std::list< Args... > >
 {
 	static void Create( Variant * var, const std::list< Args... > & val )
 	{
-		VariantArray list;
+		VariantList list;
 
 		for( const auto & it : val )
 		{
@@ -407,7 +427,7 @@ template< typename ... Args > struct VariantCreate< std::list< Args... > >
 		}
 
 		var->_Type = TypeID<VariantList>::Get();
-		var->_Data = new Variant::PrivatePtrTpl<VariantArray>( list );
+		var->_Data = new Variant::PrivatePtrTpl<VariantList>( list );
 		var->_Flag = Variant::Flag::CONTAINER;
 	}
 };
@@ -416,7 +436,7 @@ template< typename ... Args > struct VariantCreate< std::deque< Args... > >
 {
 	static void Create( Variant * var, const std::deque< Args... > & val )
 	{
-		VariantArray deque;
+		VariantDeque deque;
 
 		for( const auto & it : val )
 		{
@@ -424,7 +444,7 @@ template< typename ... Args > struct VariantCreate< std::deque< Args... > >
 		}
 
 		var->_Type = TypeID<VariantDeque>::Get();
-		var->_Data = new Variant::PrivatePtrTpl<VariantArray>( deque );
+		var->_Data = new Variant::PrivatePtrTpl<VariantDeque>( deque );
 		var->_Flag = Variant::Flag::CONTAINER;
 	}
 };
@@ -433,15 +453,15 @@ template< typename ... Args > struct VariantCreate< std::stack< Args... > >
 {
 	static void Create( Variant * var, const std::stack< Args... > & val )
 	{
-		VariantArray stack;
+		VariantStack stack;
 
 		for( const auto & it : val )
 		{
-			stack.push_back( it );
+			stack.push( it );
 		}
 
 		var->_Type = TypeID<VariantStack>::Get();
-		var->_Data = new Variant::PrivatePtrTpl<VariantArray>( stack );
+		var->_Data = new Variant::PrivatePtrTpl<VariantStack>( stack );
 		var->_Flag = Variant::Flag::CONTAINER;
 	}
 };
@@ -450,15 +470,15 @@ template< typename ... Args > struct VariantCreate< std::queue< Args... > >
 {
 	static void Create( Variant * var, const std::queue< Args... > & val )
 	{
-		VariantArray queue;
+		VariantQueue queue;
 
 		for( const auto & it : val )
 		{
-			queue.push_back( it );
+			queue.push( it );
 		}
 
 		var->_Type = TypeID<VariantQueue>::Get();
-		var->_Data = new Variant::PrivatePtrTpl<VariantArray>( queue );
+		var->_Data = new Variant::PrivatePtrTpl<VariantQueue>( queue );
 		var->_Flag = Variant::Flag::CONTAINER;
 	}
 };
@@ -491,7 +511,7 @@ template< typename ... Args > struct VariantCreate< std::pair< Args... > >
 
 		var->_Type = TypeID<VariantPair>::Get();
 		var->_Data = new Variant::PrivatePtrTpl<VariantPair>( pair );
-		var->_Flag = Variant::Flag::PRIVATEPTR;
+		var->_Flag = Variant::Flag::CONTAINER;
 	}
 };
 
@@ -499,15 +519,15 @@ template< typename ... Args > struct VariantCreate< std::set< Args... > >
 {
 	static void Create( Variant * var, const std::set< Args... > & val )
 	{
-		VariantArray set;
+		VariantSet set;
 
 		for( const auto & it : val )
 		{
-			set.push_back( it );
+			set.insert( it );
 		}
 
 		var->_Type = TypeID<VariantSet>::Get();
-		var->_Data = new Variant::PrivatePtrTpl<VariantArray>( set );
+		var->_Data = new Variant::PrivatePtrTpl<VariantSet>( set );
 		var->_Flag = Variant::Flag::CONTAINER;
 	}
 };
@@ -516,7 +536,7 @@ template< typename ... Args > struct VariantCreate< std::map< Args... > >
 {
 	static void Create( Variant * var, const std::map< Args... > & val )
 	{
-		VariantArray map;
+		VariantMap map;
 
 		for( const auto & it : val )
 		{
@@ -525,11 +545,11 @@ template< typename ... Args > struct VariantCreate< std::map< Args... > >
 			pair.first = it.first;
 			pair.second = it.second;
 
-			map.push_back( pair );
+			map.insert( pair );
 		}
 
 		var->_Type = TypeID<VariantMap>::Get();
-		var->_Data = new Variant::PrivatePtrTpl<VariantArray>( map );
+		var->_Data = new Variant::PrivatePtrTpl<VariantMap>( map );
 		var->_Flag = Variant::Flag::CONTAINER;
 	}
 };
@@ -538,15 +558,15 @@ template< typename ... Args > struct VariantCreate< std::multiset< Args... > >
 {
 	static void Create( Variant * var, const std::multiset< Args... > & val )
 	{
-		VariantArray multiset;
+		VariantMultiSet multiset;
 
 		for( const auto & it : val )
 		{
-			multiset.push_back( it );
+			multiset.insert( it );
 		}
 
 		var->_Type = TypeID<VariantMultiSet>::Get();
-		var->_Data = new Variant::PrivatePtrTpl<VariantArray>( multiset );
+		var->_Data = new Variant::PrivatePtrTpl<VariantMultiSet>( multiset );
 		var->_Flag = Variant::Flag::CONTAINER;
 	}
 };
@@ -555,7 +575,7 @@ template< typename ... Args > struct VariantCreate< std::multimap< Args... > >
 {
 	static void Create( Variant * var, const std::multimap< Args... > & val )
 	{
-		VariantArray multimap;
+		VariantMultiMap multimap;
 
 		for( const auto & it : val )
 		{
@@ -564,11 +584,89 @@ template< typename ... Args > struct VariantCreate< std::multimap< Args... > >
 			pair.first = it.first;
 			pair.second = it.second;
 
-			multimap.push_back( pair );
+			multimap.insert( pair );
 		}
 
 		var->_Type = TypeID<VariantMultiMap>::Get();
-		var->_Data = new Variant::PrivatePtrTpl<VariantArray>( multimap );
+		var->_Data = new Variant::PrivatePtrTpl<VariantMultiMap>( multimap );
+		var->_Flag = Variant::Flag::CONTAINER;
+	}
+};
+
+template< typename ... Args > struct VariantCreate< std::unordered_set< Args... > >
+{
+	static void Create( Variant * var, const std::unordered_set< Args... > & val )
+	{
+		VariantUnorderedSet set;
+
+		for( const auto & it : val )
+		{
+			set.insert( it );
+		}
+
+		var->_Type = TypeID<VariantUnorderedSet>::Get();
+		var->_Data = new Variant::PrivatePtrTpl<VariantUnorderedSet>( set );
+		var->_Flag = Variant::Flag::CONTAINER;
+	}
+};
+
+template< typename ... Args > struct VariantCreate< std::unordered_map< Args... > >
+{
+	static void Create( Variant * var, const std::unordered_map< Args... > & val )
+	{
+		VariantUnorderedMap map;
+
+		for( const auto & it : val )
+		{
+			VariantPair pair;
+
+			pair.first = it.first;
+			pair.second = it.second;
+
+			map.insert( pair );
+		}
+
+		var->_Type = TypeID<VariantUnorderedMap>::Get();
+		var->_Data = new Variant::PrivatePtrTpl<VariantUnorderedMap>( map );
+		var->_Flag = Variant::Flag::CONTAINER;
+	}
+};
+
+template< typename ... Args > struct VariantCreate< std::unordered_multiset< Args... > >
+{
+	static void Create( Variant * var, const std::unordered_multiset< Args... > & val )
+	{
+		VariantUnorderedMultiSet multiset;
+
+		for( const auto & it : val )
+		{
+			multiset.insert( it );
+		}
+
+		var->_Type = TypeID<VariantUnorderedMultiSet>::Get();
+		var->_Data = new Variant::PrivatePtrTpl<VariantUnorderedMultiSet>( multiset );
+		var->_Flag = Variant::Flag::CONTAINER;
+	}
+};
+
+template< typename ... Args > struct VariantCreate< std::unordered_multimap< Args... > >
+{
+	static void Create( Variant * var, const std::unordered_multimap< Args... > & val )
+	{
+		VariantUnorderedMultiMap multimap;
+
+		for( const auto & it : val )
+		{
+			VariantPair pair;
+
+			pair.first = it.first;
+			pair.second = it.second;
+
+			multimap.insert( pair );
+		}
+
+		var->_Type = TypeID<VariantUnorderedMultiMap>::Get();
+		var->_Data = new Variant::PrivatePtrTpl<VariantUnorderedMultiMap>( multimap );
 		var->_Flag = Variant::Flag::CONTAINER;
 	}
 };
@@ -901,10 +999,12 @@ template< typename K, typename V > struct VariantCast< std::pair< K, V > >
 	{
 		std::pair< K, V > pair;
 
-		auto v_pair = val->Value< VariantPair >();
-
-		pair.first = v_pair.first.Value< K >();
-		pair.second = v_pair.second.Value< V >();
+		const VariantArray & v_array = val->ToArray();
+		if( v_array.size() == 2 )
+		{
+			pair.first = v_array[0].Value<K>();
+			pair.second = v_array[1].Value<V>();
+		}
 
 		return pair;
 	}
@@ -963,6 +1063,70 @@ template< typename K, typename V, typename ... Args > struct VariantCast< std::m
 	static std::multimap< K, V, Args... > Cast( const Variant * val )
 	{
 		std::multimap< K, V, Args... > multimap;
+
+		auto v_multimap = val->ToArray();
+		for( const auto & it : v_multimap )
+		{
+			multimap.insert( it.Value< XE::Pair<K, V> >() );
+		}
+
+		return multimap;
+	}
+};
+
+template< typename T, typename ... Args > struct VariantCast< std::unordered_set< T, Args... > >
+{
+	static std::unordered_set< T, Args... > Cast( const Variant * val )
+	{
+		std::unordered_set< T, Args... > set;
+
+		auto v_set = val->ToArray();
+		for( const auto & it : v_set )
+		{
+			set.insert( it.Value< T >() );
+		}
+
+		return set;
+	}
+};
+
+template< typename K, typename V, typename ... Args > struct VariantCast< std::unordered_map< K, V, Args... > >
+{
+	static std::unordered_map< K, V, Args... > Cast( const Variant * val )
+	{
+		std::unordered_map< K, V, Args... > map;
+
+		auto v_map = val->ToArray();
+		for( const auto & it : v_map )
+		{
+			map.insert( it.Value< XE::Pair<K, V> >() );
+		}
+
+		return map;
+	}
+};
+
+template< typename T, typename ... Args > struct VariantCast< std::unordered_multiset< T, Args... > >
+{
+	static std::unordered_multiset< T, Args... > Cast( const Variant * val )
+	{
+		std::unordered_multiset< T, Args... > multiset;
+
+		auto v_multiset = val->ToArray();
+		for( const auto & it : v_multiset )
+		{
+			multiset.insert( it.Value< T >() );
+		}
+
+		return multiset;
+	}
+};
+
+template< typename K, typename V, typename ... Args > struct VariantCast< std::unordered_multimap< K, V, Args... > >
+{
+	static std::unordered_multimap< K, V, Args... > Cast( const Variant * val )
+	{
+		std::unordered_multimap< K, V, Args... > multimap;
 
 		auto v_multimap = val->ToArray();
 		for( const auto & it : v_multimap )

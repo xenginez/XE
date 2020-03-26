@@ -50,7 +50,7 @@ private:
 	{
 		std::regex regex( ( "%" + std::to_string( index ) ).c_str() );
 
-		fmt = std::regex_replace( fmt, regex, std::to_string( val ), std::regex_constants::format_first_only );
+		fmt = std::regex_replace( fmt, regex, std::to_string( val ) );
 	}
 
 	template< typename T, typename ... ARGS > static void _Format( std::string & fmt, XE::uint64 index, T val, ARGS && ... args )

@@ -276,10 +276,10 @@ public:
 	static void Serialize( Archive & arc, Asset< T > * val )
 	{
 		auto path = val->GetPath();
+		auto nvp = XE::Archive::NVP( "path", path );
+		arc & nvp;
 
-		arc & path;
-
-		( *val ) = Asset< T >( path );
+		( *val ) = Asset< T >( nvp.Value );
 	}
 };
 

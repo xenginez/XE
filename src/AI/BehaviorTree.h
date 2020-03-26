@@ -34,7 +34,7 @@ public:
 
 	void SetRoot( NodeHandle val );
 
-	const NodePtr & GetNode( NodeHandle val ) const;
+	NodePtr GetNode( NodeHandle val ) const;
 
 public:
 	NodeHandle AddNode( const IMetaClassPtr & val );
@@ -45,7 +45,8 @@ public:
 
 public:
 	NodeHandle _Root;
-	Array< NodePtr > _Nodes;
+	XE::uint64 _Handles;
+	XE::Map< XE::NodeHandle,  NodePtr > _Nodes;
 };
 
 END_XE_NAMESPACE

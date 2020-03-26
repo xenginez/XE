@@ -475,6 +475,42 @@ template<> struct XE_API ClassID< VariantMultiMap >
 	}
 };
 
+template<> struct XE_API ClassID< VariantUnorderedSet >
+{
+	static IMetaClassPtr Get( const VariantUnorderedSet * val = nullptr )
+	{
+		static auto meta = XE::MakeShared< CXXMetaClass<VariantUnorderedSet> >( "UnorderedSet", nullptr, nullptr );
+		return meta;
+	}
+};
+
+template<> struct XE_API ClassID< VariantUnorderedMap >
+{
+	static IMetaClassPtr Get( const VariantUnorderedMap * val = nullptr )
+	{
+		static auto meta = XE::MakeShared< CXXMetaClass<VariantUnorderedMap> >( "UnorderedMap", nullptr, nullptr );
+		return meta;
+	}
+};
+
+template<> struct XE_API ClassID< VariantUnorderedMultiSet >
+{
+	static IMetaClassPtr Get( const VariantUnorderedMultiSet * val = nullptr )
+	{
+		static auto meta = XE::MakeShared< CXXMetaClass<VariantUnorderedMultiSet> >( "UnorderedMultiSet", nullptr, nullptr );
+		return meta;
+	}
+};
+
+template<> struct XE_API ClassID< VariantUnorderedMultiMap >
+{
+	static IMetaClassPtr Get( const VariantUnorderedMultiMap * val = nullptr )
+	{
+		static auto meta = XE::MakeShared< CXXMetaClass<VariantUnorderedMultiMap> >( "UnorderedMultiMap", nullptr, nullptr );
+		return meta;
+	}
+};
+
 
 template<typename ... Types> struct ClassID< std::basic_string<Types...> >
 {

@@ -2392,10 +2392,10 @@ public:
 	static void Serialize( Archive & arc, XE::Vec2 * val )
 	{
 		std::string str = std::to_string( *val );
+		auto nvp = XE::Archive::NVP( "@value", str );
+		arc & nvp;
 
-		arc & str;
-
-		std::from_string( str, *val );
+		std::from_string( nvp.Value, *val );
 	}
 };
 
@@ -2405,10 +2405,10 @@ public:
 	static void Serialize( Archive & arc, XE::Vec3 * val )
 	{
 		std::string str = std::to_string( *val );
+		auto nvp = XE::Archive::NVP( "@value", str );
+		arc & nvp;
 
-		arc & str;
-
-		std::from_string( str, *val );
+		std::from_string( nvp.Value, *val );
 	}
 };
 
@@ -2418,10 +2418,10 @@ public:
 	static void Serialize( Archive & arc, XE::Vec4 * val )
 	{
 		std::string str = std::to_string( *val );
+		auto nvp = XE::Archive::NVP( "@value", str );
+		arc & nvp;
 
-		arc & str;
-
-		std::from_string( str, *val );
+		std::from_string( nvp.Value, *val );
 	}
 };
 
@@ -2431,10 +2431,10 @@ public:
 	static void Serialize( Archive & arc, XE::Quat * val )
 	{
 		std::string str = std::to_string( *val );
+		auto nvp = XE::Archive::NVP( "@value", str );
+		arc & nvp;
 
-		arc & str;
-
-		std::from_string( str, *val );
+		std::from_string( nvp.Value, *val );
 	}
 };
 
@@ -2444,10 +2444,10 @@ public:
 	static void Serialize( Archive & arc, XE::Mat3 * val )
 	{
 		std::string str = std::to_string( *val );
+		auto nvp = XE::Archive::NVP( "@value", str );
+		arc & nvp;
 
-		arc & str;
-
-		std::from_string( str, *val );
+		std::from_string( nvp.Value, *val );
 	}
 };
 
@@ -2457,10 +2457,10 @@ public:
 	static void Serialize( Archive & arc, XE::Mat4 * val )
 	{
 		std::string str = std::to_string( *val );
+		auto nvp = XE::Archive::NVP( "@value", str );
+		arc & nvp;
 
-		arc & str;
-
-		std::from_string( str, *val );
+		std::from_string( nvp.Value, *val );
 	}
 };
 
@@ -2470,10 +2470,10 @@ public:
 	static void Serialize( Archive & arc, XE::float16 * val )
 	{
 		XE::float32 f = val->ToFloat32();
+		auto nvp = XE::Archive::NVP( "@value", f );
+		arc & nvp;
 
-		arc & f;
-
-		val->FormFloat32( f );
+		val->FormFloat32( nvp.Value );
 	}
 };
 

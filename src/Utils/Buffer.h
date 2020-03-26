@@ -103,24 +103,16 @@ template<> struct XE::Serializable<XE::Buffer>
 public:
 	static void Serialize( Archive & arc, XE::Buffer * val )
 	{
-		if( arc.GetType() == ArchiveType::LOAD )
-		{
-			std::string str;
+		std::string code;
+		BASE64::Encode( (const char * )val->data(), val->size(), &code );
 
-			arc & Archive::NVP( "data", str );
+		auto nvp = XE::Archive::NVP( "data", code );
 
-			val->resize( BASE64::DecodedLength( str ) );
+		arc & nvp;
 
-			BASE64::Decode( str, (char * )val->data(), val->size() );
-		}
-		else
-		{
-			std::string str;
+		val->resize( BASE64::DecodedLength( code ) );
 
-			BASE64::Encode( (const char * )val->data(), val->size(), &str );
-
-			arc & Archive::NVP( "data", str );
-		}
+		BASE64::Decode( code, (char * )val->data(), val->size() );
 	}
 };
 

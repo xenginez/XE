@@ -5,11 +5,13 @@
 USING_XE
 
 BEG_META( BehaviorTree )
+type->Property( "Handles", &BehaviorTree::_Handles, IMetaProperty::NoDesign );
 type->Property( "Root", &BehaviorTree::_Root, IMetaProperty::NoDesign );
 type->Property( "Nodes", &BehaviorTree::_Nodes, IMetaProperty::NoDesign );
 END_META()
 
 XE::BehaviorTree::BehaviorTree()
+	:_Handles( 0 )
 {
 
 }
@@ -21,9 +23,9 @@ XE::BehaviorTree::~BehaviorTree()
 
 void XE::BehaviorTree::Startup()
 {
-	for ( auto node : _Nodes )
+	for( auto node : _Nodes )
 	{
-		node->SetBehaviorTree( XE_THIS( BehaviorTree ) );
+		node.second->SetBehaviorTree( XE_THIS( BehaviorTree ) );
 	}
 }
 
@@ -36,22 +38,22 @@ void XE::BehaviorTree::Update( XE::float32 dt )
 
 	NodePtr root = _Nodes[_Root.GetValue()];
 
-	if ( root->GetStatus() == NodeStatus::Finish )
+	if( root->GetStatus() == NodeStatus::Finish )
 	{
 		return;
 	}
 
-	if ( root->GetStatus() == NodeStatus::None )
+	if( root->GetStatus() == NodeStatus::None )
 	{
 		root->Startup();
 	}
 
-	if ( root->GetStatus() == NodeStatus::Running )
+	if( root->GetStatus() == NodeStatus::Running )
 	{
 		root->Update( dt );
 	}
 
-	if ( root->GetStatus() == NodeStatus::Success || root->GetStatus() == NodeStatus::Failure )
+	if( root->GetStatus() == NodeStatus::Success || root->GetStatus() == NodeStatus::Failure )
 	{
 		root->Clearup();
 	}
@@ -59,11 +61,11 @@ void XE::BehaviorTree::Update( XE::float32 dt )
 
 void XE::BehaviorTree::Clearup()
 {
-	for ( auto node : _Nodes )
+	for( auto node : _Nodes )
 	{
-		if ( node->GetStatus() != NodeStatus::Finish )
+		if( node.second->GetStatus() != NodeStatus::Finish )
 		{
-			node->Clearup();
+			node.second->Clearup();
 		}
 	}
 }
@@ -78,11 +80,16 @@ void BehaviorTree::SetRoot( NodeHandle val )
 	_Root = val;
 }
 
-const XE::NodePtr & XE::BehaviorTree::GetNode( NodeHandle val ) const
+XE::NodePtr XE::BehaviorTree::GetNode( NodeHandle val ) const
 {
-	XE_ASSERT( val.GetValue() < _Nodes.size() );
+	auto it = _Nodes.find( val );
 
-	return _Nodes[val.GetValue()];
+	if( it != _Nodes.end() )
+	{
+		return it->second;
+	}
+
+	return nullptr;
 }
 
 NodeHandle BehaviorTree::AddNode( const IMetaClassPtr & val )
@@ -92,10 +99,10 @@ NodeHandle BehaviorTree::AddNode( const IMetaClassPtr & val )
 		if( NodePtr node = val->ConstructPtr().Value<NodePtr>() )
 		{
 			node->SetName( val->GetName() );
-			node->SetHandle( _Nodes.size() );
 			node->SetBehaviorTree( XE_THIS( BehaviorTree ) );
+			node->SetHandle( _Handles++ );
 
-			_Nodes.push_back( node );
+			_Nodes.insert( { node->GetHandle(), node } );
 
 			return node->GetHandle();
 		}
@@ -106,11 +113,12 @@ NodeHandle BehaviorTree::AddNode( const IMetaClassPtr & val )
 
 void BehaviorTree::RemoveNode( XE::NodeHandle val )
 {
-	XE_ASSERT( val.GetValue() < _Nodes.size() );
-
-	_Nodes[val.GetValue()]->OnRemove();
-
-	_Nodes[val.GetValue()] = nullptr;
+	auto it = _Nodes.find( val );
+	if( it != _Nodes.end() )
+	{
+		it->second->OnRemove();
+		_Nodes.erase( it );
+	}
 }
 
 void BehaviorTree::SwapNodeHandle( XE::NodeHandle node1, XE::NodeHandle node2 )

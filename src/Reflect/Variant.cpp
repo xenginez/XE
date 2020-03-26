@@ -1007,11 +1007,123 @@ void * XE::Variant::ToPointer() const
 
 XE::Array<XE::Variant> Variant::ToArray() const
 {
-	XE::VariantArray ret;
-
 	if( GetFlag() == Flag::CONTAINER )
 	{
-		return *( ( XE::VariantArray * ) _Data.pp->Data() );
+		XE::VariantArray ret;
+
+		if( GetType() == TypeID<VariantList>::Get() )
+		{
+			auto p = (VariantList * )ToPointer();
+			for( const auto & it : *p )
+			{
+				ret.push_back( it );
+			}
+		}
+		if( GetType() == TypeID<VariantDeque>::Get() )
+		{
+			auto p = (VariantDeque * )ToPointer();
+			for( const auto & it : *p )
+			{
+				ret.push_back( it );
+			}
+		}
+		if( GetType() == TypeID<VariantStack>::Get() )
+		{
+			VariantArray arr;
+			auto p = (VariantStack * )ToPointer();
+			for( ; p->size() != 0; )
+			{
+				arr.push_back( p->top() );
+				p->pop();
+			}
+			ret.insert( ret.end(), arr.rbegin(), arr.rend() );
+		}
+		if( GetType() == TypeID<VariantQueue>::Get() )
+		{
+			auto p = (VariantQueue * )ToPointer();
+			for( ; p->size() != 0; )
+			{
+				ret.push_back( p->front() );
+				p->pop();
+			}
+		}
+		if( GetType() == TypeID<VariantArray>::Get() )
+		{
+			auto p = (VariantArray * )ToPointer();
+			ret = *p;
+		}
+		if( GetType() == TypeID<VariantPair>::Get() )
+		{
+			auto p = (VariantPair * )ToPointer();
+			ret.push_back( p->first );
+			ret.push_back( p->second );
+		}
+		if( GetType() == TypeID<VariantSet>::Get() )
+		{
+			auto p = (VariantSet * )ToPointer();
+			for( const auto & it : *p )
+			{
+				ret.push_back( it );
+			}
+		}
+		if( GetType() == TypeID<VariantMap>::Get() )
+		{
+			auto p = (VariantMap * )ToPointer();
+			for( const auto & it : *p )
+			{
+				ret.push_back( it );
+			}
+		}
+		if( GetType() == TypeID<VariantMultiSet>::Get() )
+		{
+			auto p = (VariantMultiSet * )ToPointer();
+			for( const auto & it : *p )
+			{
+				ret.push_back( it );
+			}
+		}
+		if( GetType() == TypeID<VariantMultiMap>::Get() )
+		{
+			auto p = (VariantMultiMap * )ToPointer();
+			for( const auto & it : *p )
+			{
+				ret.push_back( it );
+			}
+		}
+		if( GetType() == TypeID<VariantUnorderedSet>::Get() )
+		{
+			auto p = (VariantUnorderedSet * )ToPointer();
+			for( const auto & it : *p )
+			{
+				ret.push_back( it );
+			}
+		}
+		if( GetType() == TypeID<VariantUnorderedMap>::Get() )
+		{
+			auto p = (VariantUnorderedMap * )ToPointer();
+			for( const auto & it : *p )
+			{
+				ret.push_back( it );
+			}
+		}
+		if( GetType() == TypeID<VariantUnorderedMultiSet>::Get() )
+		{
+			auto p = (VariantUnorderedMultiSet * )ToPointer();
+			for( const auto & it : *p )
+			{
+				ret.push_back( it );
+			}
+		}
+		if( GetType() == TypeID<VariantUnorderedMultiMap>::Get() )
+		{
+			auto p = (VariantUnorderedMultiMap * )ToPointer();
+			for( const auto & it : *p )
+			{
+				ret.push_back( it );
+			}
+		}
+
+		return ret;
 	}
 
 	throw XE::VariantException( *this, "cast fail !" );

@@ -44,104 +44,62 @@ XE::JsonLoadArchive::~JsonLoadArchive()
 void XE::JsonLoadArchive::Serialize( NameValue & val )
 {
 	std::string name = val.Name == "" ? "@item" : val.Name;
-
-	rapidjson::Value & node = _p->Values.top()->FindMember( name.c_str() )->value;
-	auto type = Reflection::FindType( node.FindMember( "@type" )->value.GetString() );
-	XE::uint32 flag = node.FindMember( "@flag" )->value.GetUint();
-
-	if( type->GetType() == MetaType::ENUM )
+	if (name == "Handle")
 	{
-		if( auto enm = SP_CAST<IMetaEnum>( type ) )
+		int i = 0;
+	}
+	rapidjson::Value & node = _p->Values.top()->FindMember( name.c_str() )->value;
+
+	if( node.IsBool() )
+	{
+		val.Value = node.GetBool();
+	}
+	else if( node.IsInt() )
+	{
+		val.Value = node.GetInt();
+	}
+	else if( node.IsInt64() )
+	{
+		val.Value = node.GetInt64();
+	}
+	else if( node.IsUint() )
+	{
+		val.Value = node.GetUint();
+	}
+	else if( node.IsUint64() )
+	{
+		val.Value = node.GetUint64();
+	}
+	else if( node.IsFloat() )
+	{
+		val.Value = node.GetFloat();
+	}
+	else if( node.IsDouble() )
+	{
+		val.Value = node.GetDouble();
+	}
+	else if( node.IsString() )
+	{
+		val.Value = XE::String( node.GetString() );
+	}
+	else
+	{
+		auto type = Reflection::FindType( node.FindMember( "@type" )->value.GetString() );
+		XE::uint32 flag = node.FindMember( "@flag" )->value.GetUint();
+
+		if( flag != ( XE::uint32 )XE::Variant::Flag::HANDLE && node.FindMember( "@value" )->value.IsNull() )
+		{
+			val.Value = XE::Variant( type, XE::Variant::UnionData(), ( XE::Variant::Flag )flag );
+		}
+		else if( auto enm = DP_CAST<IMetaEnum>( type ) )
 		{
 			val.Value = enm->FindValue( node.FindMember( "@value" )->value.GetString() );
 		}
-	}
-	else if( auto cls = SP_CAST<IMetaClass>( type ) )
-	{
-		if( flag == ( XE::uint32 )Variant::Flag::FUNDAMENTAL )
-		{
-			if( type == TypeID<std::nullptr_t>::Get() )
-			{
-				val.Value = nullptr;
-			}
-			else if( type == TypeID<bool>::Get() )
-			{
-				val.Value = ( std::string( node.FindMember( "@value" )->value.GetString() ) == "true" );
-			}
-			else if( type == TypeID<XE::int8>::Get() )
-			{
-				val.Value = ( XE::int8 )node.FindMember( "@value" )->value.GetInt();
-			}
-			else if( type == TypeID<XE::int16>::Get() )
-			{
-				val.Value = ( XE::int16 )node.FindMember( "@value" )->value.GetInt();
-			}
-			else if( type == TypeID<XE::int32>::Get() )
-			{
-				val.Value = node.FindMember( "@value" )->value.GetInt();
-			}
-			else if( type == TypeID<XE::int64>::Get() )
-			{
-				val.Value = node.FindMember( "@value" )->value.GetInt64();
-			}
-			else if( type == TypeID<XE::uint8>::Get() )
-			{
-				val.Value = ( XE::uint8 )node.FindMember( "@value" )->value.GetUint();
-			}
-			else if( type == TypeID<XE::uint16>::Get() )
-			{
-				val.Value = ( XE::uint16 )node.FindMember( "@value" )->value.GetUint();
-			}
-			else if( type == TypeID<XE::uint32>::Get() )
-			{
-				val.Value = node.FindMember( "@value" )->value.GetUint();
-			}
-			else if( type == TypeID<XE::uint64>::Get() )
-			{
-				val.Value = node.FindMember( "@value" )->value.GetUint64();
-			}
-			else if( type == TypeID<XE::float32>::Get() )
-			{
-				val.Value = node.FindMember( "@value" )->value.GetFloat();
-			}
-			else if( type == TypeID<XE::float32>::Get() )
-			{
-				val.Value = node.FindMember( "@value" )->value.GetDouble();
-			}
-		}
-		else if( flag == ( XE::uint32 )Variant::Flag::CONTAINER )
-		{
-			VariantArray arr;
-
-			XE::uint64 size = node.FindMember( "@count" )->value.GetUint64();
-
-			arr.resize( size );
-
-			_p->Values.push( &node );
-			for( XE::uint64 i = 0; i < size; ++i )
-			{
-				Variant v;
-				auto nvp = NVP( "@item_" + std::to_string( i ), v );
-				( *this ) & nvp;
-				arr[i] = v;
-			}
-			_p->Values.pop();
-
-			val.Value = arr;
-		}
-		else if( type == TypeID<String>::Get() )
-		{
-			val.Value = std::string( node.FindMember( "@value" )->value.GetString() );
-		}
-		else
+		else if( auto cls = DP_CAST<IMetaClass>( type ) )
 		{
 			if( val.Value.IsNull() )
 			{
-				if( flag == ( XE::uint32 )Variant::Flag::POINTER )
-				{
-					val.Value = cls->Construct();
-				}
-				else if( flag == ( XE::uint32 )Variant::Flag::SHAREDPTR )
+				if( flag == ( XE::uint32 )Variant::Flag::POINTER || flag == ( XE::uint32 )Variant::Flag::PRIVATEPTR || flag == ( XE::uint32 )Variant::Flag::SHAREDPTR )
 				{
 					val.Value = cls->ConstructPtr();
 				}
@@ -187,135 +145,95 @@ void XE::JsonSaveArchive::Save( std::ostream & val ) const
 
 void XE::JsonSaveArchive::Serialize( NameValue & val )
 {
-	rapidjson::Value value( rapidjson::kObjectType );
+	std::string name = val.Name == "" ? "@item" : val.Name;
 
-	auto type = val.Value.GetType();
-	XE::uint32 flag = ( XE::uint32 )val.Value.GetFlag();
-
-	rapidjson::Value v_type( rapidjson::kStringType );
-	v_type.SetString( type->GetFullName().ToCString(), _p->Doc.GetAllocator() );
-	value.AddMember( rapidjson::StringRef( "@type" ), v_type, _p->Doc.GetAllocator() );
-	rapidjson::Value v_flag( rapidjson::kNumberType );
-	v_flag.SetUint( flag );
-	value.AddMember( rapidjson::StringRef( "@flag" ), v_flag, _p->Doc.GetAllocator() );
-
-	if( type->GetType() == MetaType::ENUM )
+	if( val.Value.GetType() == TypeID<bool>::Get() )
 	{
-		if( auto enm = SP_CAST<IMetaEnum>( type ) )
+		rapidjson::Value value( rapidjson::kFalseType );
+		value.SetBool( val.Value.Value<bool>() );
+		_p->Values.top()->AddMember( rapidjson::Value( name.c_str(), _p->Doc.GetAllocator() ).Move(), value, _p->Doc.GetAllocator() );
+	}
+	else if( val.Value.GetType() == TypeID<XE::int8>::Get() ||
+			 val.Value.GetType() == TypeID<XE::int16>::Get() ||
+			 val.Value.GetType() == TypeID<XE::int32>::Get() )
+	{
+		rapidjson::Value value( rapidjson::kNumberType );
+		value.SetInt( val.Value.Value<XE::int32>() );
+		_p->Values.top()->AddMember( rapidjson::Value( name.c_str(), _p->Doc.GetAllocator() ).Move(), value, _p->Doc.GetAllocator() );
+	}
+	else if( val.Value.GetType() == TypeID<XE::int64>::Get() )
+	{
+		rapidjson::Value value( rapidjson::kNumberType );
+		value.SetInt64( val.Value.Value<XE::int64>() );
+		_p->Values.top()->AddMember( rapidjson::Value( name.c_str(), _p->Doc.GetAllocator() ).Move(), value, _p->Doc.GetAllocator() );
+	}
+	else if( val.Value.GetType() == TypeID<XE::uint8>::Get() ||
+			 val.Value.GetType() == TypeID<XE::uint16>::Get() ||
+			 val.Value.GetType() == TypeID<XE::uint32>::Get() )
+	{
+		rapidjson::Value value( rapidjson::kNumberType );
+		value.SetUint( val.Value.Value<XE::uint32>() );
+		_p->Values.top()->AddMember( rapidjson::Value( name.c_str(), _p->Doc.GetAllocator() ).Move(), value, _p->Doc.GetAllocator() );
+	}
+	else if( val.Value.GetType() == TypeID<XE::uint64>::Get() )
+	{
+		rapidjson::Value value( rapidjson::kNumberType );
+		value.SetUint64( val.Value.Value<XE::uint64>() );
+		_p->Values.top()->AddMember( rapidjson::Value( name.c_str(), _p->Doc.GetAllocator() ).Move(), value, _p->Doc.GetAllocator() );
+	}
+	else if( val.Value.GetType() == TypeID<XE::float32>::Get() )
+	{
+		rapidjson::Value value( rapidjson::kNumberType );
+		value.SetFloat( val.Value.Value<XE::float32>() );
+		_p->Values.top()->AddMember( rapidjson::Value( name.c_str(), _p->Doc.GetAllocator() ).Move(), value, _p->Doc.GetAllocator() );
+	}
+	else if( val.Value.GetType() == TypeID<XE::float64>::Get() )
+	{
+		rapidjson::Value value( rapidjson::kNumberType );
+		value.SetDouble( val.Value.Value<XE::float64>() );
+		_p->Values.top()->AddMember( rapidjson::Value( name.c_str(), _p->Doc.GetAllocator() ).Move(), value, _p->Doc.GetAllocator() );
+	}
+	else if( val.Value.GetType() == TypeID<String>::Get() )
+	{
+		rapidjson::Value value( rapidjson::kStringType );
+		value.SetString( val.Value.Value<String>().ToCString(), _p->Doc.GetAllocator() );
+		_p->Values.top()->AddMember( rapidjson::Value( name.c_str(), _p->Doc.GetAllocator() ).Move(), value, _p->Doc.GetAllocator() );
+	}
+	else
+	{
+		rapidjson::Value value( rapidjson::kObjectType );
+
+		auto type = val.Value.GetType();
+		XE::uint32 flag = ( XE::uint32 )val.Value.GetFlag();
+
+		rapidjson::Value v_type( rapidjson::kStringType );
+		v_type.SetString( type->GetFullName().ToCString(), _p->Doc.GetAllocator() );
+		value.AddMember( rapidjson::StringRef( "@type" ), v_type, _p->Doc.GetAllocator() );
+		rapidjson::Value v_flag( rapidjson::kNumberType );
+		v_flag.SetUint( flag );
+		value.AddMember( rapidjson::StringRef( "@flag" ), v_flag, _p->Doc.GetAllocator() );
+
+		if( val.Value.IsNull() )
+		{
+			rapidjson::Value v( rapidjson::kStringType );
+			v.SetNull();
+			value.AddMember( rapidjson::StringRef( "@value" ), v.Move(), _p->Doc.GetAllocator() );
+		}
+		else if( auto enm = DP_CAST<IMetaEnum>( type ) )
 		{
 			rapidjson::Value v( rapidjson::kStringType );
 			v.SetString( enm->FindName( val.Value ).ToCString(), _p->Doc.GetAllocator() );
 			value.AddMember( rapidjson::StringRef( "@value" ), v.Move(), _p->Doc.GetAllocator() );
 		}
-	}
-	else if( auto cls = SP_CAST<IMetaClass>( type ) )
-	{
-		if( flag == ( XE::uint32 )Variant::Flag::FUNDAMENTAL )
-		{
-			if( type == TypeID<std::nullptr_t>::Get() )
-			{
-				rapidjson::Value v( rapidjson::kStringType );
-				v.SetString( "null", _p->Doc.GetAllocator() );
-				value.AddMember( rapidjson::StringRef( "@value" ), v.Move(), _p->Doc.GetAllocator() );
-			}
-			else if( type == TypeID<bool>::Get() )
-			{
-				rapidjson::Value v( rapidjson::kStringType );
-				v.SetString( val.Value.Value<bool>() ? "true" : "false", _p->Doc.GetAllocator() );
-				value.AddMember( rapidjson::StringRef( "@value" ), v.Move(), _p->Doc.GetAllocator() );
-			}
-			else if( type == TypeID<XE::int8>::Get() )
-			{
-				rapidjson::Value v( rapidjson::kNumberType );
-				v.SetInt( val.Value.Value<XE::int8>() );
-				value.AddMember( rapidjson::StringRef( "@value" ), v.Move(), _p->Doc.GetAllocator() );
-			}
-			else if( type == TypeID<XE::int16>::Get() )
-			{
-				rapidjson::Value v( rapidjson::kNumberType );
-				v.SetInt( val.Value.Value<XE::int16>() );
-				value.AddMember( rapidjson::StringRef( "@value" ), v.Move(), _p->Doc.GetAllocator() );
-			}
-			else if( type == TypeID<XE::int32>::Get() )
-			{
-				rapidjson::Value v( rapidjson::kNumberType );
-				v.SetInt( val.Value.Value<XE::int32>() );
-				value.AddMember( rapidjson::StringRef( "@value" ), v.Move(), _p->Doc.GetAllocator() );
-			}
-			else if( type == TypeID<XE::int64>::Get() )
-			{
-				rapidjson::Value v( rapidjson::kNumberType );
-				v.SetInt64( val.Value.Value<XE::int64>() );
-				value.AddMember( rapidjson::StringRef( "@value" ), v.Move(), _p->Doc.GetAllocator() );
-			}
-			else if( type == TypeID<XE::uint8>::Get() )
-			{
-				rapidjson::Value v( rapidjson::kNumberType );
-				v.SetUint( val.Value.Value<XE::uint8>() );
-				value.AddMember( rapidjson::StringRef( "@value" ), v.Move(), _p->Doc.GetAllocator() );
-			}
-			else if( type == TypeID<XE::uint16>::Get() )
-			{
-				rapidjson::Value v( rapidjson::kNumberType );
-				v.SetUint( val.Value.Value<XE::uint16>() );
-				value.AddMember( rapidjson::StringRef( "@value" ), v.Move(), _p->Doc.GetAllocator() );
-			}
-			else if( type == TypeID<XE::uint32>::Get() )
-			{
-				rapidjson::Value v( rapidjson::kNumberType );
-				v.SetUint( val.Value.Value<XE::uint32>() );
-				value.AddMember( rapidjson::StringRef( "@value" ), v.Move(), _p->Doc.GetAllocator() );
-			}
-			else if( type == TypeID<XE::uint64>::Get() )
-			{
-				rapidjson::Value v( rapidjson::kNumberType );
-				v.SetUint64( val.Value.Value<XE::uint64>() );
-				value.AddMember( rapidjson::StringRef( "@value" ), v.Move(), _p->Doc.GetAllocator() );
-			}
-			else if( type == TypeID<XE::float32>::Get() )
-			{
-				rapidjson::Value v( rapidjson::kNumberType );
-				v.SetFloat( val.Value.Value<XE::float32>() );
-				value.AddMember( rapidjson::StringRef( "@value" ), v.Move(), _p->Doc.GetAllocator() );
-			}
-			else if( type == TypeID<XE::float32>::Get() )
-			{
-				rapidjson::Value v( rapidjson::kNumberType );
-				v.SetDouble( val.Value.Value<XE::float64>() );
-				value.AddMember( rapidjson::StringRef( "@value" ), v.Move(), _p->Doc.GetAllocator() );
-			}
-		}
-		else if( flag == ( XE::uint32 )Variant::Flag::CONTAINER )
-		{
-			VariantArray arr = val.Value.ToArray();
-
-			rapidjson::Value v( rapidjson::kNumberType );
-			v.SetUint64( arr.size() );
-			value.AddMember( rapidjson::StringRef( "@count" ), v.Move(), _p->Doc.GetAllocator() );
-
-			_p->Values.push( &value );
-			for( XE::uint64 i = 0; i < arr.size(); ++i )
-			{
-				( *this ) & NVP( "@item_" + std::to_string( i ), arr[i] );
-			}
-			_p->Values.pop();
-		}
-		else if( type == TypeID<String>::Get() )
-		{
-			rapidjson::Value v( rapidjson::kStringType );
-			v.SetString( val.Value.Value<String>().ToCString(), _p->Doc.GetAllocator() );
-			value.AddMember( rapidjson::StringRef( "@value" ), v.Move(), _p->Doc.GetAllocator() );
-		}
-		else
+		else if( auto cls = DP_CAST<IMetaClass>( type ) )
 		{
 			_p->Values.push( &value );
 			cls->Serialize( this, val.Value );
 			_p->Values.pop();
 		}
-	}
 
-	std::string name = val.Name == "" ? "@item" : val.Name;
-	_p->Values.top()->AddMember( rapidjson::Value( name.c_str(), _p->Doc.GetAllocator() ).Move(), value, _p->Doc.GetAllocator() );
+		_p->Values.top()->AddMember( rapidjson::Value( name.c_str(), _p->Doc.GetAllocator() ).Move(), value, _p->Doc.GetAllocator() );
+	}
 }
 
 struct XE::BinaryLoadArchive::Private

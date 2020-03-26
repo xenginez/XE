@@ -165,10 +165,10 @@ public:
 	static void Serialize( Archive & arc, Handle< T > * val )
 	{
 		XE::uint64 value = val->GetValue();
+		auto nvp = XE::Archive::NVP( "@value", value );
+		arc & nvp;
 
-		arc & value;
-
-		*val = Handle< T >( value );
+		*val = Handle< T >( nvp.Value );
 	}
 };
 

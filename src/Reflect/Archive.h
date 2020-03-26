@@ -243,6 +243,413 @@ public:
 	}
 };
 
+
+template<> struct Serializable< VariantList >
+{
+	static void Serialize( Archive & arc, VariantList * val )
+	{
+		XE::uint64 size = val->size();
+		auto nv = Archive::NVP( "@count", size );
+		arc & nv;
+		val->resize( size );
+
+		auto it = val->begin();
+		for( int i = 0; i < size; ++i, ++it )
+		{
+			auto nvp = Archive::NVP( "@item_" + std::to_string( i ), *it );
+
+			arc & nvp;
+
+			*it = nvp.Value;
+		}
+	}
+};
+template<> struct Serializable< VariantDeque >
+{
+	static void Serialize( Archive & arc, VariantDeque * val )
+	{
+		XE::uint64 size = val->size();
+		auto nv = Archive::NVP( "@count", size );
+		arc & nv;
+		val->resize( size );
+
+		auto it = val->begin();
+		for( int i = 0; i < size; ++i, ++it )
+		{
+			auto nvp = Archive::NVP( "@item_" + std::to_string( i ), *it );
+
+			arc & nvp;
+
+			*it = nvp.Value;
+		}
+	}
+};
+template<> struct Serializable< VariantStack >
+{
+	static void Serialize( Archive & arc, VariantStack * val )
+	{
+		VariantArray arr;
+		for( ; val->size() != 0; )
+		{
+			arr.push_back( val->top() );
+			val->pop();
+		}
+
+		XE::uint64 size = arr.size();
+		auto nv = Archive::NVP( "@count", size );
+		arc & nv;
+		arr.resize( size );
+
+		auto it = arr.begin();
+		for( int i = 0; i < size; ++i, ++it )
+		{
+			auto nvp = Archive::NVP( "@item_" + std::to_string( i ), *it );
+
+			arc & nvp;
+
+			*it = nvp.Value;
+		}
+
+		for( auto it = arr.rbegin(); it != arr.rend(); ++it )
+		{
+			val->push( *it );
+		}
+	}
+};
+template<> struct Serializable< VariantQueue >
+{
+	static void Serialize( Archive & arc, VariantQueue * val )
+	{
+		VariantArray arr;
+		for( ; val->size() != 0; )
+		{
+			arr.push_back( val->front() );
+			val->pop();
+		}
+
+		XE::uint64 size = arr.size();
+		auto nv = Archive::NVP( "@count", size );
+		arc & nv;
+		arr.resize( size );
+
+		auto it = arr.begin();
+		for( int i = 0; i < size; ++i, ++it )
+		{
+			auto nvp = Archive::NVP( "@item_" + std::to_string( i ), *it );
+
+			arc & nvp;
+
+			*it = nvp.Value;
+		}
+
+		for( auto it = arr.begin(); it != arr.end(); ++it )
+		{
+			val->push( *it );
+		}
+	}
+};
+template<> struct Serializable< VariantArray >
+{
+	static void Serialize( Archive & arc, VariantArray * val )
+	{
+		XE::uint64 size = val->size();
+		auto nv = Archive::NVP( "@count", size );
+		arc & nv;
+		val->resize( size );
+
+		auto it = val->begin();
+		for( int i = 0; i < size; ++i, ++it )
+		{
+			auto nvp = Archive::NVP( "@item_" + std::to_string( i ), *it );
+
+			arc & nvp;
+
+			*it = nvp.Value;
+		}
+	}
+};
+template<> struct Serializable< VariantPair >
+{
+	static void Serialize( Archive & arc, VariantPair * val )
+	{
+		auto nvp_f = Archive::NVP( "first", val->first );
+		arc & nvp_f;
+		val->first = nvp_f.Value;
+
+		auto nvp_s = Archive::NVP( "second", val->second );
+		arc & nvp_s;
+		val->second = nvp_s.Value;
+	}
+};
+template<> struct Serializable< VariantSet >
+{
+	static void Serialize( Archive & arc, VariantSet * val )
+	{
+		VariantArray arr;
+		for( const auto & it : *val )
+		{
+			arr.push_back( it );
+		}
+
+		XE::uint64 size = arr.size();
+		auto nv = Archive::NVP( "@count", size );
+		arc & nv;
+		arr.resize( size );
+		auto it = arr.begin();
+		for( int i = 0; i < size; ++i, ++it )
+		{
+			XE::Variant value = *it;
+			auto nvp = Archive::NVP( "@item_" + std::to_string( i ), value );
+
+			arc & nvp;
+
+			arr[i] = nvp.Value;
+		}
+
+		val->clear();
+		for( const auto & it : arr )
+		{
+			val->insert( it );
+		}
+	}
+};
+template<> struct Serializable< VariantMap >
+{
+	static void Serialize( Archive & arc, VariantMap * val )
+	{
+		XE::Array<VariantPair> arr;
+		for( const auto & it : *val )
+		{
+			arr.push_back( it );
+		}
+
+		XE::uint64 size = arr.size();
+		auto nv = Archive::NVP( "@count", size );
+		arc & nv;
+		arr.resize( size );
+		auto it = arr.begin();
+		for( int i = 0; i < size; ++i, ++it )
+		{
+			VariantPair pair;
+			pair.first = it->first;
+			pair.second = it->second;
+
+			auto nvp = Archive::NVP( "@item_" + std::to_string( i ), pair );
+
+			arc & nvp;
+
+			arr[i] = nvp.Value;
+		}
+
+		val->clear();
+		for( const auto & it : arr )
+		{
+			val->insert( it );
+		}
+	}
+};
+template<> struct Serializable< VariantMultiSet >
+{
+	static void Serialize( Archive & arc, VariantMultiSet * val )
+	{
+		VariantArray arr;
+		for( const auto & it : *val )
+		{
+			arr.push_back( it );
+		}
+
+		XE::uint64 size = arr.size();
+		auto nv = Archive::NVP( "@count", size );
+		arc & nv;
+		arr.resize( size );
+		auto it = arr.begin();
+		for( int i = 0; i < size; ++i, ++it )
+		{
+			XE::Variant value = *it;
+			auto nvp = Archive::NVP( "@item_" + std::to_string( i ), value );
+
+			arc & nvp;
+
+			arr[i] = nvp.Value;
+		}
+
+		val->clear();
+		for( const auto & it : arr )
+		{
+			val->insert( it );
+		}
+	}
+};
+template<> struct Serializable< VariantMultiMap >
+{
+	static void Serialize( Archive & arc, VariantMultiMap * val )
+	{
+		XE::Array<VariantPair> arr;
+		for( const auto & it : *val )
+		{
+			arr.push_back( it );
+		}
+
+		XE::uint64 size = arr.size();
+		auto nv = Archive::NVP( "@count", size );
+		arc & nv;
+		arr.resize( size );
+		auto it = arr.begin();
+		for( int i = 0; i < size; ++i, ++it )
+		{
+			VariantPair pair;
+			pair.first = it->first;
+			pair.second = it->second;
+
+			auto nvp = Archive::NVP( "@item_" + std::to_string( i ), pair );
+
+			arc & nvp;
+
+			arr[i] = nvp.Value;
+		}
+
+		val->clear();
+		for( const auto & it : arr )
+		{
+			val->insert( it );
+		}
+	}
+};
+template<> struct Serializable< VariantUnorderedSet >
+{
+	static void Serialize( Archive & arc, VariantUnorderedSet * val )
+	{
+		VariantArray arr;
+		for( const auto & it : *val )
+		{
+			arr.push_back( it );
+		}
+
+		XE::uint64 size = arr.size();
+		auto nv = Archive::NVP( "@count", size );
+		arc & nv;
+		arr.resize( size );
+		auto it = arr.begin();
+		for( int i = 0; i < size; ++i, ++it )
+		{
+			XE::Variant value = *it;
+			auto nvp = Archive::NVP( "@item_" + std::to_string( i ), value );
+
+			arc & nvp;
+
+			arr[i] = nvp.Value;
+		}
+
+		val->clear();
+		for( const auto & it : arr )
+		{
+			val->insert( it );
+		}
+	}
+};
+template<> struct Serializable< VariantUnorderedMap >
+{
+	static void Serialize( Archive & arc, VariantUnorderedMap * val )
+	{
+		XE::Array<VariantPair> arr;
+		for( const auto & it : *val )
+		{
+			arr.push_back( it );
+		}
+
+		XE::uint64 size = arr.size();
+		auto nv = Archive::NVP( "@count", size );
+		arc & nv;
+		arr.resize( size );
+		auto it = arr.begin();
+		for( int i = 0; i < size; ++i, ++it )
+		{
+			VariantPair pair;
+			pair.first = it->first;
+			pair.second = it->second;
+
+			auto nvp = Archive::NVP( "@item_" + std::to_string( i ), pair );
+
+			arc & nvp;
+
+			arr[i] = nvp.Value;
+		}
+
+		val->clear();
+		for( const auto & it : arr )
+		{
+			val->insert( it );
+		}
+	}
+};
+template<> struct Serializable< VariantUnorderedMultiSet >
+{
+	static void Serialize( Archive & arc, VariantUnorderedMultiSet * val )
+	{
+		VariantArray arr;
+		for( const auto & it : *val )
+		{
+			arr.push_back( it );
+		}
+
+		XE::uint64 size = arr.size();
+		auto nv = Archive::NVP( "@count", size );
+		arc & nv;
+		arr.resize( size );
+		auto it = arr.begin();
+		for( int i = 0; i < size; ++i, ++it )
+		{
+			XE::Variant value = *it;
+			auto nvp = Archive::NVP( "@item_" + std::to_string( i ), value );
+
+			arc & nvp;
+
+			arr[i] = nvp.Value;
+		}
+
+		val->clear();
+		for( const auto & it : arr )
+		{
+			val->insert( it );
+		}
+	}
+};
+template<> struct Serializable< VariantUnorderedMultiMap >
+{
+	static void Serialize( Archive & arc, VariantUnorderedMultiMap * val )
+	{
+		XE::Array<VariantPair> arr;
+		for( const auto & it : *val )
+		{
+			arr.push_back( it );
+		}
+
+		XE::uint64 size = arr.size();
+		auto nv = Archive::NVP( "@count", size );
+		arc & nv;
+		arr.resize( size );
+		auto it = arr.begin();
+		for( int i = 0; i < size; ++i, ++it )
+		{
+			VariantPair pair;
+			pair.first = it->first;
+			pair.second = it->second;
+
+			auto nvp = Archive::NVP( "@item_" + std::to_string( i ), pair );
+
+			arc & nvp;
+
+			arr[i] = nvp.Value;
+		}
+
+		val->clear();
+		for( const auto & it : arr )
+		{
+			val->insert( it );
+		}
+	}
+};
+
 END_XE_NAMESPACE
 
 #endif // __ARCHIVE_H__2AE531B5_C127_4A0B_A947_6B304A884EAA
