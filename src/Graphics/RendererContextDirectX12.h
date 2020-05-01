@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class RendererContextDirectX12 : public RendererContext
+class RendererContextDirectX12 : public XE::RendererContext
 {
 public:
 	RendererContextDirectX12();

@@ -67,7 +67,7 @@ public:
 		return *this;
 	}
 
-	Flags & operator=( const Flags & val )
+	Flags & operator =( const Flags & val )
 	{
 		_Value = val._Value;
 

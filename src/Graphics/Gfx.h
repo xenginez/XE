@@ -94,7 +94,7 @@ public:
 
 	XE::Array<UniformHandle> GetShaderUniforms( ShaderHandle handle );
 
-	ProgramHandle CreateProgram( ShaderHandle vs, ShaderHandle fs, bool des_shader = false );
+	ProgramHandle CreateProgram( ShaderHandle vs, ShaderHandle fs, ShaderHandle hs = ShaderHandle::Invalid, ShaderHandle ds = ShaderHandle::Invalid, ShaderHandle gs = ShaderHandle::Invalid, bool des_shader = false );
 
 	ProgramHandle CreateProgram( ShaderHandle cs, bool des_shader = false );
 

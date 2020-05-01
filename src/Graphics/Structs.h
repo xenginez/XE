@@ -23,23 +23,24 @@ static constexpr XE::uint32 MAX_TEXTURE_SAMPLERS = 16;
 static constexpr XE::uint32 MAX_FRAME_BUFFERS = 128;
 static constexpr XE::uint32 MAX_ATTACHMENTS = 8;
 static constexpr XE::uint32 MAX_UNIFORMS = 512;
-static constexpr XE::uint32 MAX_OCCLUSION_QUERIES = 256;
+static constexpr XE::uint32 MAX_OCCLUSION = 256;
 static constexpr XE::uint32 MAX_VERTEXS = 4;
 static constexpr XE::uint32 MAX_DRAW_CALLS = 65535;
+static constexpr XE::uint32 MAX_PROGRAMS = 512;
 
 
 class View
 {
 public:
-	XE::Color color;
-	XE::float32 depth;
-	XE::uint8 stencil;
-	XE::Rect rect;
-	XE::Rect scissor;
-	XE::Mat4 view;
-	XE::Mat4 proj;
-	ViewMode mode;
-	FrameBufferHandle handle;
+	XE::Color Color;
+	XE::float32 Depth;
+	XE::uint8 Stencil;
+	XE::Rect Rect;
+	XE::Rect Scissor;
+	XE::Mat4 ViewMat;
+	XE::Mat4 ProjMat;
+	ViewMode Mode;
+	FrameBufferHandle Handle;
 };
 
 class RenderBind
@@ -73,7 +74,7 @@ class RenderDraw
 		VertexLayoutHandle layout_handle;
 	};
 
-	Vertexs vertexs[MAX_VERTEXS];
+	std::array<Vertexs, MAX_VERTEXS> Vertexs;
 	XE::Flags<XE::StateFlag> StateFlags;
 	XE::Flags <XE::StencilFlag> StencilFlags;
 	XE::Color Rgba;
@@ -100,6 +101,23 @@ class RenderDraw
 	XE::OcclusionQueryHandle OcclusionQuery;
 };
 
+class RenderBlit
+{
+	XE::uint32 SrcX;
+	XE::uint32 SrcY;
+	XE::uint32 SrcZ;
+	XE::uint32 DstX;
+	XE::uint32 DstY;
+	XE::uint32 DstZ;
+	XE::uint32 Width;
+	XE::uint32 Height;
+	XE::uint32 Depth;
+	XE::uint32 SrcMip;
+	XE::uint32 DstMip;
+	TextureHandle Src;
+	TextureHandle Dst;
+};
+
 class RenderCompute
 {
 	XE::uint32 UniformBegin = 0;
@@ -119,18 +137,42 @@ class RenderCompute
 
 union RenderItem
 {
-	RenderDraw draw;
-	RenderCompute compute;
+	RenderDraw Draw;
+	RenderCompute Compute;
 };
 
 class Frame
 {
+	std::uint64 RenderViewSize;
 	std::array<View, MAX_VIEW> Views;
+
+	std::uint64 RenderOcclusionSize;
+	std::array<XE::int32, MAX_OCCLUSION> Occlusion;
+
+	std::uint64 RenderBindSize;
+	std::array<RenderBind, MAX_DRAW_CALLS> RenderBinds;
+
+	std::uint64 RenderItemSize;
+	std::array<RenderItem, MAX_DRAW_CALLS> RenderItems;
+	std::array<XE::uint64, MAX_DRAW_CALLS> RenderItemKeys;
+
+	std::uint64 RenderBlitSize;
+	std::array<RenderBlit, MAX_DRAW_CALLS> RenderBlits;
+	std::array<XE::uint64, MAX_DRAW_CALLS> RenderBlitKeys;
+
 	XE::FreeHandleAlloctor<XE::View, MAX_VIEW> ViewHandleAlloc;
+	XE::FreeHandleAlloctor<XE::ShaderHandle, MAX_SHADERS> ShaderHandleAlloc;
+	XE::FreeHandleAlloctor<XE::ProgramHandle, MAX_PROGRAMS> ProgramHandleAlloc;
+	XE::FreeHandleAlloctor<XE::TextureHandle, MAX_TEXTURES> TextureHandleAlloc;
+	XE::FreeHandleAlloctor<XE::UniformHandle, MAX_UNIFORMS> UniformHandleAlloc;
+	XE::FreeHandleAlloctor<XE::FrameBufferHandle, MAX_FRAME_BUFFERS> FrameBufferHandleAlloc;
+	XE::FreeHandleAlloctor<XE::IndexBufferHandle, MAX_INDEX_BUFFERS>  IndexBufferHandleAlloc;
+	XE::FreeHandleAlloctor<XE::VertexLayoutHandle, MAX_VERTEX_LAYOUTS> VertexLayoutHandleAlloc;
+	XE::FreeHandleAlloctor<XE::VertexBufferHandle, MAX_VERTEX_BUFFERS> VertexBufferHandleAlloc;
 
-
+	XE::Buffer PrevCmdBuffer;
+	XE::Buffer PostCmdBuffer;
 };
-
 
 END_XE_NAMESPACE
 
