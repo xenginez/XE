@@ -10,15 +10,6 @@
 #define GRAPHICS_H__3395C70E_21C1_42D6_927A_EAAC9DBB1558
 
 #include "Gfx.h"
-#include "Mesh.h"
-#include "Light.h"
-#include "Camera.h"
-#include "Texture.h"
-#include "Skeleton.h"
-#include "Renderer.h"
-#include "Renderable.h"
-#include "RenderShader.h"
-#include "RenderWindow.h"
-#include "RenderMaterial.h"
+#include "Encoder.h"
 
 #endif // GRAPHICS_H__3395C70E_21C1_42D6_927A_EAAC9DBB1558

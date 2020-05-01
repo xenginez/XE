@@ -11,7 +11,6 @@ type->Property( "Nodes", &BehaviorTree::_Nodes, IMetaProperty::NoDesign );
 END_META()
 
 XE::BehaviorTree::BehaviorTree()
-	:_Handles( 0 )
 {
 
 }
@@ -100,7 +99,7 @@ NodeHandle BehaviorTree::AddNode( const IMetaClassPtr & val )
 		{
 			node->SetName( val->GetName() );
 			node->SetBehaviorTree( XE_THIS( BehaviorTree ) );
-			node->SetHandle( _Handles++ );
+			node->SetHandle( _Handles.Alloc() );
 
 			_Nodes.insert( { node->GetHandle(), node } );
 

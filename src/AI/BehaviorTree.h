@@ -45,7 +45,7 @@ public:
 
 public:
 	NodeHandle _Root;
-	XE::uint64 _Handles;
+	XE::HandleAlloctor< XE::Node > _Handles;
 	XE::Map< XE::NodeHandle,  NodePtr > _Nodes;
 };
 

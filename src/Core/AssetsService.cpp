@@ -170,8 +170,6 @@ XE::ObjectPtr XE::AssetsService::SearchAssetData( const XE::String & val ) const
 {
 	auto md5 = PathToMD5( val );
 
-	XE::Buffer buf;
-
 	auto it = _p->_MD5Index.find( md5 );
 	if( it != _p->_MD5Index.end() )
 	{
@@ -181,11 +179,10 @@ XE::ObjectPtr XE::AssetsService::SearchAssetData( const XE::String & val ) const
 
 		std::vector<unsigned char> data;
 		unzip.extractEntryToMemory( md5.To32String(), data );
-		buf.Wirte( (const char * )data.data(), data.size() );
+		XE::memory_view view = { (char *)data.data(), data.size() };
 
 		XE::ObjectPtr obj;
 
-		auto view = buf.GetView();
 		XE::BinaryLoadArchive load( view );
 		load & obj;
 

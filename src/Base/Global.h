@@ -29,6 +29,7 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <optional>
 #include <exception>
 #include <filesystem>
 #include <functional>

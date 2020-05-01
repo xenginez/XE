@@ -19,6 +19,7 @@
 #include "BASE64.h"
 #include "Buffer.h"
 #include "Object.h"
+#include "Flags.hpp"
 #include "Library.h"
 #include "Platform.h"
 #include "Handle.hpp"

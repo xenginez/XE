@@ -15,6 +15,7 @@ BEG_XE_NAMESPACE
 
 DECL_PTR( Event );
 DECL_PTR( Object );
+DECL_PTR( Buffer );
 DECL_PTR( Message );
 
 enum class AssetStatus

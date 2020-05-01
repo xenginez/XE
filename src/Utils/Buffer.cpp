@@ -5,6 +5,23 @@ USING_XE
 IMPLEMENT_META( Buffer )
 
 Buffer::Buffer()
+	:_pos( 0 )
+{
+
+}
+
+Buffer::Buffer( Buffer && _Right )
+: _pos( _Right._pos ), _data( std::move( _Right._data ) )
+{
+}
+
+Buffer::Buffer( const Buffer & _Right )
+	:_pos( _Right._data.size() ), _data( _Right._data )
+{
+}
+
+Buffer::Buffer( XE::memory_view _Right )
+	:_pos( _Right.size() ), _data( _Right.data(), _Right.data() + _Right.size() )
 {
 
 }
@@ -14,243 +31,83 @@ Buffer::~Buffer()
 
 }
 
-void Buffer::push_back( bool val )
+Buffer & Buffer::operator=( Buffer && _Right )
 {
-	XE::Array<char>::push_back( val ? 1 : 0 );
-}
-
-void Buffer::push_back( XE::int8 val )
-{
-	XE::Array<char>::push_back( ( char )val );
-}
-
-void Buffer::push_back( XE::int16 val )
-{
-	union _union
+	if( this != std::addressof( _Right ) )
 	{
-		struct
-		{
-			char x1;
-			char x2;
-		};
+		_data = std::move( _Right._data );
+		_pos = _data.size();
+	}
 
-		XE::int16 x;
-	};
-
-	_union un;
-
-	un.x = val;
-
-	XE::Array<char>::push_back( un.x1 );
-	XE::Array<char>::push_back( un.x2 );
+	return *this;
 }
 
-void Buffer::push_back( XE::int32 val )
+Buffer & Buffer::operator=( const Buffer & _Right )
 {
-	union _union
+	if( this != std::addressof( _Right ) )
 	{
-		struct
-		{
-			char x1;
-			char x2;
-			char x3;
-			char x4;
-		};
+		_data = _Right._data;
+		_pos = _data.size();
+	}
 
-		XE::int32 x;
-	};
-
-	_union un;
-
-	un.x = val;
-
-	XE::Array<char>::push_back( un.x1 );
-	XE::Array<char>::push_back( un.x2 );
-	XE::Array<char>::push_back( un.x3 );
-	XE::Array<char>::push_back( un.x4 );
+	return *this;
 }
 
-void Buffer::push_back( XE::int64 val )
+XE::uint64 XE::Buffer::pos() const
 {
-	union _union
+	return _pos;
+}
+
+void XE::Buffer::seek( XE::uint64 val )
+{
+	if( val > _data.size() )
 	{
-		struct
-		{
-			char x1;
-			char x2;
-			char x3;
-			char x4;
-			char x5;
-			char x6;
-			char x7;
-			char x8;
-		};
-
-		XE::int64 x;
-	};
-
-	_union un;
-
-	un.x = val;
-
-	XE::Array<char>::push_back( un.x1 );
-	XE::Array<char>::push_back( un.x2 );
-	XE::Array<char>::push_back( un.x3 );
-	XE::Array<char>::push_back( un.x4 );
-	XE::Array<char>::push_back( un.x5 );
-	XE::Array<char>::push_back( un.x6 );
-	XE::Array<char>::push_back( un.x7 );
-	XE::Array<char>::push_back( un.x8 );
-}
-
-void Buffer::push_back( XE::uint8 val )
-{
-	XE::Array<char>::push_back( ( char )val );
-}
-
-void Buffer::push_back( XE::uint16 val )
-{
-	union _union
+		_pos = _data.size();
+	}
+	else
 	{
-		struct
-		{
-			char x1;
-			char x2;
-		};
-
-		XE::uint16 x;
-	};
-
-	_union un;
-
-	un.x = val;
-
-	XE::Array<char>::push_back( un.x1 );
-	XE::Array<char>::push_back( un.x2 );
+		_pos = val;
+	}
 }
 
-void Buffer::push_back( XE::uint32 val )
+void XE::Buffer::resize( XE::uint64 val )
 {
-	union _union
+	if( _data.size() < val )
 	{
-		struct
-		{
-			char x1;
-			char x2;
-			char x3;
-			char x4;
-		};
-
-		XE::uint32 x;
-	};
-
-	_union un;
-
-	un.x = val;
-
-	XE::Array<char>::push_back( un.x1 );
-	XE::Array<char>::push_back( un.x2 );
-	XE::Array<char>::push_back( un.x3 );
-	XE::Array<char>::push_back( un.x4 );
+		_data.resize( val );
+		_pos = val;
+	}
 }
 
-void Buffer::push_back( XE::uint64 val )
+void XE::Buffer::read( std::string & val )
 {
-	union _union
-	{
-		struct
-		{
-			char x1;
-			char x2;
-			char x3;
-			char x4;
-			char x5;
-			char x6;
-			char x7;
-			char x8;
-		};
+	XE::uint64 size = 0;
 
-		XE::uint64 x;
-	};
+	read( size );
+	val.resize( size );
 
-	_union un;
-
-	un.x = val;
-
-	XE::Array<char>::push_back( un.x1 );
-	XE::Array<char>::push_back( un.x2 );
-	XE::Array<char>::push_back( un.x3 );
-	XE::Array<char>::push_back( un.x4 );
-	XE::Array<char>::push_back( un.x5 );
-	XE::Array<char>::push_back( un.x6 );
-	XE::Array<char>::push_back( un.x7 );
-	XE::Array<char>::push_back( un.x8 );
+	read( val.data(), size );
 }
 
-void Buffer::push_back( XE::float32 val )
+void XE::Buffer::wirte( const std::string & val )
 {
-	union _union
-	{
-		struct
-		{
-			char x1;
-			char x2;
-			char x3;
-			char x4;
-		};
-
-		XE::float32 x;
-	};
-
-	_union un;
-
-	un.x = val;
-
-	XE::Array<char>::push_back( un.x1 );
-	XE::Array<char>::push_back( un.x2 );
-	XE::Array<char>::push_back( un.x3 );
-	XE::Array<char>::push_back( un.x4 );
+	wirte( val.size() );
+	wirte( val.c_str(), val.size() );
 }
 
-void Buffer::push_back( XE::float64 val )
+void XE::Buffer::read( char * ptr, XE::uint64 size )
 {
-	union _union
-	{
-		struct
-		{
-			char x1;
-			char x2;
-			char x3;
-			char x4;
-			char x5;
-			char x6;
-			char x7;
-			char x8;
-		};
-
-		XE::float64 x;
-	};
-
-	_union un;
-
-	un.x = val;
-
-	XE::Array<char>::push_back( un.x1 );
-	XE::Array<char>::push_back( un.x2 );
-	XE::Array<char>::push_back( un.x3 );
-	XE::Array<char>::push_back( un.x4 );
-	XE::Array<char>::push_back( un.x5 );
-	XE::Array<char>::push_back( un.x6 );
-	XE::Array<char>::push_back( un.x7 );
-	XE::Array<char>::push_back( un.x8 );
+	std::memcpy( &( *( _data.begin() + _pos ) ), ptr, size );
+	_pos += size;
 }
 
-void XE::Buffer::Wirte( const char * ptr, XE::uint64 size )
+void XE::Buffer::wirte( const char * ptr, XE::uint64 size )
 {
-	XE::Array<char>::insert( end(), ptr, ptr + size );
+	_data.insert( _data.begin() + _pos, ptr, ptr + size );
+	_pos += size;
 }
 
-XE::memory_view Buffer::GetView() const
+XE::memory_view Buffer::view() const
 {
-	return XE::memory_view( this->data(), this->size() );
+	return XE::memory_view( _data.data(), _data.size() );
 }
