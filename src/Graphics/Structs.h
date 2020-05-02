@@ -9,6 +9,8 @@
 #ifndef STRUCTS_H__F731AAF0_BE7D_47A2_BCEC_5E0622CFE54D
 #define STRUCTS_H__F731AAF0_BE7D_47A2_BCEC_5E0622CFE54D
 
+#include "Type.h"
+
 BEG_XE_NAMESPACE
 
 static constexpr XE::uint32 MAX_VIEW = 256;
@@ -45,16 +47,22 @@ public:
 
 class RenderBind
 {
+public:
 	struct Binding
 	{
+		Binding()
+		{
+
+		}
+
 		enum BindingType : XE::uint8
 		{
-			Image,
-			IndexBuffer,
-			VertexBuffer,
-			Texture,
+			IMAGE,
+			INDEXBUFFER,
+			VERTEXBUFFER,
+			TEXTURE,
 
-			Count
+			COUNT
 		};
 
 		XE::uint32 SamplerFlags;
@@ -68,6 +76,7 @@ class RenderBind
 
 class RenderDraw
 {
+public:
 	struct Vertexs
 	{
 		VertexBufferHandle buffer_handle;
@@ -75,8 +84,8 @@ class RenderDraw
 	};
 
 	std::array<Vertexs, MAX_VERTEXS> Vertexs;
-	XE::Flags<XE::StateFlag> StateFlags;
-	XE::Flags <XE::StencilFlag> StencilFlags;
+	XE::Flags<XE::StateFlag> StateFlags = XE::StateFlag::NONE;
+	XE::Flags <XE::StencilFlag> StencilFlags = XE::StencilFlag::NONE;
 	XE::Color Rgba;
 	XE::uint32 UniformBegin;
 	XE::uint32 UniformEnd;
@@ -95,31 +104,33 @@ class RenderDraw
 	XE::uint8 StreamMask;
 	XE::uint8 UniformIdx;
 
-	XE::IndexBufferHandle    IndexBuffer;
-	XE::VertexBufferHandle   InstanceDataBuffer;
+	XE::IndexBufferHandle IndexBuffer;
+	XE::VertexBufferHandle InstanceDataBuffer;
 	XE::IndirectBufferHandle IndirectBuffer;
 	XE::OcclusionQueryHandle OcclusionQuery;
 };
 
 class RenderBlit
 {
-	XE::uint32 SrcX;
-	XE::uint32 SrcY;
-	XE::uint32 SrcZ;
-	XE::uint32 DstX;
-	XE::uint32 DstY;
-	XE::uint32 DstZ;
-	XE::uint32 Width;
-	XE::uint32 Height;
-	XE::uint32 Depth;
-	XE::uint32 SrcMip;
-	XE::uint32 DstMip;
+public:
+	XE::uint32 SrcX = 0;
+	XE::uint32 SrcY = 0;
+	XE::uint32 SrcZ = 0;
+	XE::uint32 DstX = 0;
+	XE::uint32 DstY = 0;
+	XE::uint32 DstZ = 0;
+	XE::uint32 Width = 0;
+	XE::uint32 Height = 0;
+	XE::uint32 Depth = 0;
+	XE::uint32 SrcMip = 0;
+	XE::uint32 DstMip = 0;
 	TextureHandle Src;
 	TextureHandle Dst;
 };
 
 class RenderCompute
 {
+public:
 	XE::uint32 UniformBegin = 0;
 	XE::uint32 UniformEnd = 0;
 	XE::uint32 StartMatrix = 0;
@@ -137,28 +148,39 @@ class RenderCompute
 
 union RenderItem
 {
+	RenderItem()
+	{
+
+	}
+
+	~RenderItem()
+	{
+
+	}
+
 	RenderDraw Draw;
 	RenderCompute Compute;
 };
 
 class Frame
 {
-	std::uint64 RenderViewSize;
-	std::array<View, MAX_VIEW> Views;
+public:
+	XE::uint64 RenderViewSize;
+	std::array<View, MAX_VIEW> Views = {};
 
-	std::uint64 RenderOcclusionSize;
-	std::array<XE::int32, MAX_OCCLUSION> Occlusion;
+	XE::uint64 RenderOcclusionSize;
+	std::array<XE::int32, MAX_OCCLUSION> Occlusion = {};
 
-	std::uint64 RenderBindSize;
-	std::array<RenderBind, MAX_DRAW_CALLS> RenderBinds;
+	XE::uint64 RenderBindSize;
+	std::array<RenderBind, MAX_DRAW_CALLS> RenderBinds = {};
 
-	std::uint64 RenderItemSize;
-	std::array<RenderItem, MAX_DRAW_CALLS> RenderItems;
-	std::array<XE::uint64, MAX_DRAW_CALLS> RenderItemKeys;
+	XE::uint64 RenderItemSize;
+	std::array<RenderItem, MAX_DRAW_CALLS> RenderItems = {};
+	std::array<XE::uint64, MAX_DRAW_CALLS> RenderItemKeys = {};
 
-	std::uint64 RenderBlitSize;
-	std::array<RenderBlit, MAX_DRAW_CALLS> RenderBlits;
-	std::array<XE::uint64, MAX_DRAW_CALLS> RenderBlitKeys;
+	XE::uint64 RenderBlitSize;
+	std::array<RenderBlit, MAX_DRAW_CALLS> RenderBlits = {};
+	std::array<XE::uint64, MAX_DRAW_CALLS> RenderBlitKeys = {};
 
 	XE::FreeHandleAlloctor<XE::View, MAX_VIEW> ViewHandleAlloc;
 	XE::FreeHandleAlloctor<XE::ShaderHandle, MAX_SHADERS> ShaderHandleAlloc;
@@ -170,8 +192,8 @@ class Frame
 	XE::FreeHandleAlloctor<XE::VertexLayoutHandle, MAX_VERTEX_LAYOUTS> VertexLayoutHandleAlloc;
 	XE::FreeHandleAlloctor<XE::VertexBufferHandle, MAX_VERTEX_BUFFERS> VertexBufferHandleAlloc;
 
-	XE::Buffer PrevCmdBuffer;
-	XE::Buffer PostCmdBuffer;
+	XE::Buffer PrevCmd;
+	XE::Buffer PostCmd;
 };
 
 END_XE_NAMESPACE

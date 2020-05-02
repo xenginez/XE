@@ -38,9 +38,9 @@ public:
 	void Reset( XE::uint32 width, XE::uint32 height, XE::Flags<XE::ResetFlag> flags = XE::ResetFlag::NONE, XE::TextureFormat format = XE::TextureFormat::COUNT );
 
 public:
-	XE::EncoderPtr Begin( bool forthread = false );
+	XE::Encoder * Begin( bool forthread = false );
 
-	void End( const XE::EncoderPtr & val );
+	void End( XE::Encoder * val );
 
 	XE::uint32 Frame( bool capture = false );
 

@@ -13,6 +13,8 @@
 
 BEG_XE_NAMESPACE
 
+class Frame;
+
 DECL_PTR( Encoder );
 DECL_PTR( RenderContext );
 
@@ -35,140 +37,140 @@ DECL_HANDLE( XE_API, TransientVertexBuffer );
 enum class ResetFlag
 {
 	NONE = 0,
-	FULLSCREEN = 1 << 0,
-	VSYNC = 1 << 1,
-	MAXANISOTROPY = 1 << 2,
-	CAPTURE = 1 << 3,
-	FLUSH_AFTER_RENDER = 1 << 4,
-	FLIP_AFTER_RENDER = 1 << 5,
-	SRGB_BACKBUFFER = 1 << 6,
-	HDR10 = 1 << 7,
-	HIDPI = 1 << 8,
-	DEPTH_CLAMP = 1 << 9,
-	SUSPEND = 1 << 10,
+	FULLSCREEN = 1ull << 0,
+	VSYNC = 1ull << 1,
+	MAXANISOTROPY = 1ull << 2,
+	CAPTURE = 1ull << 3,
+	FLUSH_AFTER_RENDER = 1ull << 4,
+	FLIP_AFTER_RENDER = 1ull << 5,
+	SRGB_BACKBUFFER = 1ull << 6,
+	HDR10 = 1ull << 7,
+	HIDPI = 1ull << 8,
+	DEPTH_CLAMP = 1ull << 9,
+	SUSPEND = 1ull << 10,
 };
 
 enum class DebugFlag
 {
 	NONE = 0,
-	WIREFRAME = 1 << 0,
-	IFH = 1 << 1,
-	STATS = 1 << 2,
-	TEXT = 1 << 3,
-	PROFILER = 1 << 4,
+	WIREFRAME = 1ull << 0,
+	IFH = 1ull << 1,
+	STATS = 1ull << 2,
+	TEXT = 1ull << 3,
+	PROFILER = 1ull << 4,
 };
 
 enum class BufferFlag
 {
 	NONE,
-	COMPUTE_READ = 1 << 0,
-	COMPUTE_WRITE = 1 << 1,
-	DRAW_INDIRECT = 1 << 2,
-	ALLOW_RESIZE = 1 << 3,
-	INDEX32 = 1 << 4,
+	COMPUTE_READ = 1ull << 0,
+	COMPUTE_WRITE = 1ull << 1,
+	DRAW_INDIRECT = 1ull << 2,
+	ALLOW_RESIZE = 1ull << 3,
+	INDEX32 = 1ull << 4,
 	COMPUTE_READ_WRITE = COMPUTE_READ | COMPUTE_WRITE,
 };
 
 enum class TextureFlag
 {
 	NONE = 0,
-	MSAA_SAMPLE = 1 << 0,
-	RT = 1 << 1,
-	COMPUTE_WRITE = 1 << 2,
-	SRGB = 1 << 3,
-	BLIT_DST = 1 << 4,
-	READ_BACK = 1 << 5,
-	RT_MSAA_X2 = 1 << 6,
-	RT_MSAA_X4 = 1 << 7,
-	RT_MSAA_X8 = 1 << 8,
-	RT_MSAA_X16 = 1 << 9,
-	RT_WRITE_ONLY = 1 << 10,
+	MSAA_SAMPLE = 1ull << 0,
+	RT = 1ull << 1,
+	COMPUTE_WRITE = 1ull << 2,
+	SRGB = 1ull << 3,
+	BLIT_DST = 1ull << 4,
+	READ_BACK = 1ull << 5,
+	RT_MSAA_X2 = 1ull << 6,
+	RT_MSAA_X4 = 1ull << 7,
+	RT_MSAA_X8 = 1ull << 8,
+	RT_MSAA_X16 = 1ull << 9,
+	RT_WRITE_ONLY = 1ull << 10,
 };
 
 enum class StateFlag : XE::uint64
 {
 	WRITE_R = 0,
-	WRITE_G = 1 << 0,
-	WRITE_B = 1 << 1,
-	WRITE_A = 1 << 2,
-	WRITE_Z = 1 << 3,
+	WRITE_G = 1ull << 0,
+	WRITE_B = 1ull << 1,
+	WRITE_A = 1ull << 2,
+	WRITE_Z = 1ull << 3,
 	WIRTE_RGB = WRITE_R | WRITE_G | WRITE_B,
-	DEPTH_TEST_LESS = 1 << 4,
-	DEPTH_TEST_LEQUAL = 1 << 5,
-	DEPTH_TEST_EQUAL = 1 << 6,
-	DEPTH_TEST_GEQUAL = 1 << 7,
-	DEPTH_TEST_GREATER = 1 << 8,
-	DEPTH_TEST_NOTEQUAL = 1 << 9,
-	DEPTH_TEST_NEVER = 1 << 10,
-	DEPTH_TEST_ALWAYS = 1 << 11,
-	BLEND_ZERO = 1 << 12,
-	BLEND_ONE = 1 << 13,
-	BLEND_SRC_COLOR = 1 << 14,
-	BLEND_INV_SRC_COLOR = 1 << 15,
-	BLEND_SRC_ALPHA = 1 << 16,
-	BLEND_INV_SRC_ALPHA = 1 << 17,
-	BLEND_DST_ALPHA = 1 << 18,
-	BLEND_INV_DST_ALPHA = 1 << 19,
-	BLEND_DST_COLOR = 1 << 20,
-	BLEND_INV_DST_COLOR = 1 << 21,
-	BLEND_SRC_ALPHA_SAT = 1 << 22,
-	BLEND_FACTOR = 1 << 23,
-	BLEND_INV_FACTOR = 1 << 24,
-	BLEND_EQUATION_ADD = 1 << 25,
-	BLEND_EQUATION_SUB = 1 << 26,
-	BLEND_EQUATION_REVSUB = 1 << 27,
-	BLEND_EQUATION_MIN = 1 << 28,
-	BLEND_EQUATION_MAX = 1 << 29,
-	CULL_CW = 1 << 30,
-	CULL_CCW = 1 << 31,
-	PT_TRISTRIP = 1 << 32,
-	PT_LINES = 1 << 33,
-	PT_LINESTRIP = 1 << 34,
-	PT_POINTS = 1 << 35,
-	MSAA = 1 << 36,
-	LINEAA = 1 << 37,
-	CONSERVATIVE_RASTER = 1 << 38,
-	NONE = 1 << 39,
-	BLEND_INDEPENDENT = 1 << 40,
-	BLEND_ALPHA_TO_COVERAGE = 1 << 41,
+	DEPTH_TEST_LESS = 1ull << 4,
+	DEPTH_TEST_LEQUAL = 1ull << 5,
+	DEPTH_TEST_EQUAL = 1ull << 6,
+	DEPTH_TEST_GEQUAL = 1ull << 7,
+	DEPTH_TEST_GREATER = 1ull << 8,
+	DEPTH_TEST_NOTEQUAL = 1ull << 9,
+	DEPTH_TEST_NEVER = 1ull << 10,
+	DEPTH_TEST_ALWAYS = 1ull << 11,
+	BLEND_ZERO = 1ull << 12,
+	BLEND_ONE = 1ull << 13,
+	BLEND_SRC_COLOR = 1ull << 14,
+	BLEND_INV_SRC_COLOR = 1ull << 15,
+	BLEND_SRC_ALPHA = 1ull << 16,
+	BLEND_INV_SRC_ALPHA = 1ull << 17,
+	BLEND_DST_ALPHA = 1ull << 18,
+	BLEND_INV_DST_ALPHA = 1ull << 19,
+	BLEND_DST_COLOR = 1ull << 20,
+	BLEND_INV_DST_COLOR = 1ull << 21,
+	BLEND_SRC_ALPHA_SAT = 1ull << 22,
+	BLEND_FACTOR = 1ull << 23,
+	BLEND_INV_FACTOR = 1ull << 24,
+	BLEND_EQUATION_ADD = 1ull << 25,
+	BLEND_EQUATION_SUB = 1ull << 26,
+	BLEND_EQUATION_REVSUB = 1ull << 27,
+	BLEND_EQUATION_MIN = 1ull << 28,
+	BLEND_EQUATION_MAX = 1ull << 29,
+	CULL_CW = 1ull << 30,
+	CULL_CCW = 1ull << 31,
+	PT_TRISTRIP = 1ull << 32,
+	PT_LINES = 1ull << 33,
+	PT_LINESTRIP = 1ull << 34,
+	PT_POINTS = 1ull << 35,
+	MSAA = 1ull << 36,
+	LINEAA = 1ull << 37,
+	CONSERVATIVE_RASTER = 1ull << 38,
+	NONE = 1ull << 39,
+	BLEND_INDEPENDENT = 1ull << 40,
+	BLEND_ALPHA_TO_COVERAGE = 1ull << 41,
 	DEFAULT = WIRTE_RGB | WRITE_A | WRITE_Z | DEPTH_TEST_LESS | CULL_CW | MSAA,
 };
 
 enum class StencilFlag : XE::uint32
 {
 	NONE = 0,
-	TEST_LESS = 1 << 0,
-	TEST_LEQUAL = 1 << 1,
-	TEST_EQUAL = 1 << 2,
-	TEST_GEQUAL = 1 << 3,
-	TEST_GREATER = 1 << 4,
-	TEST_NOTEQUAL = 1 << 5,
-	TEST_NEVER = 1 << 6,
-	TEST_ALWAYS = 1 << 7,
-	OP_FAIL_S_ZERO = 1 << 8,
-	OP_FAIL_S_KEEP = 1 << 9,
-	OP_FAIL_S_REPLACE = 1 << 10,
-	OP_FAIL_S_INCR = 1 << 11,
-	OP_FAIL_S_INCRSAT = 1 << 12,
-	OP_FAIL_S_DECR = 1 << 13,
-	OP_FAIL_S_DECRSAT = 1 << 14,
-	OP_FAIL_S_INVERT = 1 << 15,
-	OP_FAIL_Z_ZERO = 1 << 16,
-	OP_FAIL_Z_KEEP = 1 << 17,
-	OP_FAIL_Z_REPLACE = 1 << 18,
-	OP_FAIL_Z_INCR = 1 << 19,
-	OP_FAIL_Z_INCRSAT = 1 << 20,
-	OP_FAIL_Z_DECR = 1 << 21,
-	OP_FAIL_Z_DECRSAT = 1 << 22,
-	OP_FAIL_Z_INVERT = 1 << 23,
-	OP_PASS_Z_ZERO = 1 << 24,
-	OP_PASS_Z_KEEP = 1 << 25,
-	OP_PASS_Z_REPLACE = 1 << 26,
-	OP_PASS_Z_INCR = 1 << 27,
-	OP_PASS_Z_INCRSAT = 1 << 28,
-	OP_PASS_Z_DECR = 1 << 29,
-	OP_PASS_Z_DECRSAT = 1 << 30,
-	OP_PASS_Z_INVERT = 1 << 31,
+	TEST_LESS = 1ull << 0,
+	TEST_LEQUAL = 1ull << 1,
+	TEST_EQUAL = 1ull << 2,
+	TEST_GEQUAL = 1ull << 3,
+	TEST_GREATER = 1ull << 4,
+	TEST_NOTEQUAL = 1ull << 5,
+	TEST_NEVER = 1ull << 6,
+	TEST_ALWAYS = 1ull << 7,
+	OP_FAIL_S_ZERO = 1ull << 8,
+	OP_FAIL_S_KEEP = 1ull << 9,
+	OP_FAIL_S_REPLACE = 1ull << 10,
+	OP_FAIL_S_INCR = 1ull << 11,
+	OP_FAIL_S_INCRSAT = 1ull << 12,
+	OP_FAIL_S_DECR = 1ull << 13,
+	OP_FAIL_S_DECRSAT = 1ull << 14,
+	OP_FAIL_S_INVERT = 1ull << 15,
+	OP_FAIL_Z_ZERO = 1ull << 16,
+	OP_FAIL_Z_KEEP = 1ull << 17,
+	OP_FAIL_Z_REPLACE = 1ull << 18,
+	OP_FAIL_Z_INCR = 1ull << 19,
+	OP_FAIL_Z_INCRSAT = 1ull << 20,
+	OP_FAIL_Z_DECR = 1ull << 21,
+	OP_FAIL_Z_DECRSAT = 1ull << 22,
+	OP_FAIL_Z_INVERT = 1ull << 23,
+	OP_PASS_Z_ZERO = 1ull << 24,
+	OP_PASS_Z_KEEP = 1ull << 25,
+	OP_PASS_Z_REPLACE = 1ull << 26,
+	OP_PASS_Z_INCR = 1ull << 27,
+	OP_PASS_Z_INCRSAT = 1ull << 28,
+	OP_PASS_Z_DECR = 1ull << 29,
+	OP_PASS_Z_DECRSAT = 1ull << 30,
+	OP_PASS_Z_INVERT = 1ull << 31,
 };
 
 enum class PCIType
@@ -205,7 +207,12 @@ enum class ContextType
 	NOOP,         //!< No rendering.
 	METAL,        //!< Metal
 	VULKAN,       //!< Vulkan
+	GLES2,		  //!< OpenGLES 2.0
+	GLES3,		  //!< OpenGLES 3.0
+	OPENGL,		  //!< OpenGL
+	DIRECT3D11,   //!< Direct3D 11.0
 	DIRECT3D12,   //!< Direct3D 12.0
+	SOFTWARE,	  //!< Software
 };
 
 enum class Attribute
@@ -529,10 +536,10 @@ struct XE_API Caps
 	uint64_t supported = 0;
 
 	PCIType vendorId = PCIType::NONE;
-	uint16_t deviceId = 0;        
+	uint16_t deviceId = 0;
 	bool     homogeneousDepth = false;
 	bool     originBottomLeft = false;
-	uint8_t  numGPUs = 0;         
+	uint8_t  numGPUs = 0;
 
 	struct
 	{
@@ -567,16 +574,18 @@ struct XE_API Caps
 	uint16_t formats[( XE::uint64 )TextureFormat::COUNT];
 };
 
-struct XE_API TransientIndexBuffer
+class XE_API TransientIndexBuffer
 {
+public:
 	uint8_t * data = nullptr;
 	uint32_t size = 0;
 	uint32_t startIndex = 0;
 	IndexBufferHandle handle;
 };
 
-struct XE_API TransientVertexBuffer
+class XE_API TransientVertexBuffer
 {
+public:
 	uint8_t * data = nullptr;
 	uint32_t size = 0;
 	uint32_t startVertex = 0;
@@ -585,8 +594,9 @@ struct XE_API TransientVertexBuffer
 	VertexLayoutHandle layoutHandle;
 };
 
-struct XE_API InstanceDataBuffer
+class XE_API InstanceDataBuffer
 {
+public:
 	uint8_t * data = nullptr;
 	uint32_t size = 0;
 	uint32_t offset = 0;
@@ -595,8 +605,9 @@ struct XE_API InstanceDataBuffer
 	VertexBufferHandle handle;
 };
 
-struct XE_API TextureInfo
+class XE_API TextureInfo
 {
+public:
 	TextureFormat format = TextureFormat::COUNT;
 	uint32_t storageSize = 0;
 	uint16_t width = 0;
@@ -608,15 +619,17 @@ struct XE_API TextureInfo
 	bool cubeMap = false;
 };
 
-struct XE_API UniformInfo
+class XE_API UniformInfo
 {
+public:
 	std::string name;
 	UniformType type = UniformType::COUNT;
 	uint16_t num = 0;
 };
 
-struct XE_API Attachment
+class XE_API Attachment
 {
+public:
 	Access access = Access::COUNT;
 	TextureHandle handle;
 	uint16_t mip = 0;
@@ -624,8 +637,9 @@ struct XE_API Attachment
 	bool auto_gen_mips = false;
 };
 
-struct XE_API InitInfo
+class XE_API InitInfo
 {
+public:
 	ContextType type = ContextType::NOOP;
 
 	PCIType vendorId = PCIType::NONE;
@@ -648,8 +662,9 @@ struct XE_API InitInfo
 	uint32_t transientIbSize = 0;
 };
 
-struct XE_API VertexLayout
+class XE_API VertexLayout
 {
+public:
 	Attribute Attr;
 	AttributeType Type;
 };

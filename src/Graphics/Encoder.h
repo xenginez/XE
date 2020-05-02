@@ -15,11 +15,13 @@ BEG_XE_NAMESPACE
 
 class XE_API Encoder
 {
+	friend class Gfx;
+
 private:
 	struct Private;
 
-public:
-	Encoder();
+private:
+	Encoder( Frame * val );
 
 	~Encoder();
 

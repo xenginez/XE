@@ -88,7 +88,7 @@ public:
 		arc & nvp;
 
 		val->resize( BASE64::DecodedLength( code ) );
-		auto view = val->view();
+		view = val->view();
 		BASE64::Decode( code, (char * )view.data(), view.size() );
 	}
 };
