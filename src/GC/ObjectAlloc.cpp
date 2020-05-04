@@ -3,7 +3,6 @@
 #include "Allocator.hpp"
 
 #include <tbb/concurrent_hash_map.h>
-#include "Base/concurrent_list.hpp"
 
 USING_XE
 

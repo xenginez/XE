@@ -32,34 +32,6 @@ public:
 public:
 	String& operator = ( const String& val );
 
-	String& operator += ( bool val );
-
-	String& operator += ( XE::int8  val );
-
-	String& operator += ( XE::int16  val );
-
-	String& operator += ( XE::int32  val );
-
-	String& operator += ( XE::int64  val );
-
-	String& operator += ( XE::uint8  val );
-
-	String& operator += ( XE::uint16 val );
-
-	String& operator += ( XE::uint32 val );
-
-	String& operator += ( XE::uint64 val );
-
-	String& operator += ( XE::float32 val );
-
-	String& operator += ( XE::float64 val );
-
-	String& operator += ( const char * val );
-
-	String& operator += ( const String& val );
-
-	String& operator += ( const std::string& val );
-
 	String operator + ( bool  val ) const;
 
 	String operator + ( XE::int8  val ) const;
@@ -135,7 +107,7 @@ public:
 
 	String& FromCString( const char * val );
 
-	const std::string& ToStdString() const;
+	std::string ToStdString() const;
 
 	String& FromStdString( const std::string& val );
 
@@ -157,7 +129,7 @@ public:
 	String SubString( XE::uint64 offset = 0, XE::uint64 count = npos ) const;
 
 private:
-	const std::string * _String;
+	std::string_view _View;
 };
 
 END_XE_NAMESPACE

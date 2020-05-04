@@ -15,7 +15,6 @@
 #include "Exception.h"
 #include "StringUtils.h"
 #include "Singleton.hpp"
-#include "concurrent_list.hpp"
 
 #define SINGLETON( TYPE ) friend class XE::Singleton< TYPE >;
 
