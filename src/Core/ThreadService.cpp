@@ -123,14 +123,14 @@ struct XEPSpecialThread : public XEPThread
 
 	void Handler() override
 	{
-		std::unique_lock<std::mutex> Lock( _Lock );
-
 		while( !_Exit )
 		{
 			FrameAlloc::Reset();
 
 			if( QueueSize() == 0 )
 			{
+				std::unique_lock<std::mutex> Lock( _Lock );
+
 				_Variable.wait( Lock );
 			}
 
@@ -190,7 +190,7 @@ struct XEPWorkThread : public XEPThread
 	{
 		for( XE::uint64 i = 0; i < std::thread::hardware_concurrency(); ++i )
 		{
-			_Threads.push_back( std::thread( &XEPWorkThread::Handler, this ) );
+			_Threads.emplace_back( [this]() { Handler(); } );
 		}
 	}
 
@@ -211,14 +211,14 @@ struct XEPWorkThread : public XEPThread
 
 	void Handler()
 	{
-		std::unique_lock<std::mutex> Lock( _Lock );
-
 		while( !_Exit )
 		{
 			FrameAlloc::Reset();
 
 			if( QueueSize() == 0 )
 			{
+				std::unique_lock<std::mutex> Lock( _Lock );
+
 				_Variable.wait( Lock );
 			}
 
