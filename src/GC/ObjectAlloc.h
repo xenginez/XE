@@ -15,10 +15,12 @@ BEG_XE_NAMESPACE
 
 class XE_API ObjectAlloc : public XE::Singleton< ObjectAlloc >
 {
+	SINGLETON( ObjectAlloc )
+
 private:
 	struct Private;
 
-public:
+private:
 	ObjectAlloc();
 
 	~ObjectAlloc();

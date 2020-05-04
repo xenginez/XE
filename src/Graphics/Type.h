@@ -16,7 +16,7 @@ BEG_XE_NAMESPACE
 class Frame;
 
 DECL_PTR( Encoder );
-DECL_PTR( RenderContext );
+DECL_PTR( RendererContext );
 
 DECL_HANDLE( XE_API, View );
 DECL_HANDLE( XE_API, Shader );

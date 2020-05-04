@@ -6,6 +6,8 @@ USING_XE
 
 class VariantSharedPool : public XE::Singleton<VariantSharedPool>
 {
+	SINGLETON( VariantSharedPool )
+
 public:
 	struct Data
 	{
@@ -13,7 +15,12 @@ public:
 		XE::SharedPtr<void> Ptr;
 	};
 
-public:
+private:
+	VariantSharedPool()
+	{
+
+	}
+
 	~VariantSharedPool()
 	{
 		int i = 0;

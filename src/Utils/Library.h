@@ -17,10 +17,12 @@ class Library; using LibraryHandle = XE::Handle< XE::Library >; DECL_META_CLASS(
 
 class XE_API Library : public XE::Singleton< Library >
 {
+	SINGLETON( Library )
+
 private:
 	struct Private;
 
-public:
+private:
 	Library();
 
 	~Library();

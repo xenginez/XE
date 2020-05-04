@@ -9,6 +9,8 @@
 #ifndef RENDERERCONTEXTDIRECTX11_H__0BC8ECE7_63A4_479F_9079_39840765BAB4
 #define RENDERERCONTEXTDIRECTX11_H__0BC8ECE7_63A4_479F_9079_39840765BAB4
 
+#if PLATFORM_OS & (OS_WINDOWS)
+
 #include "RendererContext.h"
 
 BEG_XE_NAMESPACE
@@ -26,6 +28,11 @@ public:
 	void Shutdown();
 
 public:
+	XE::Caps GetCaps() override;
+
+	XE::ContextType GetContextType() override;
+
+public:
 	void ExecCommandBuffer( XE::Buffer & val ) override;
 
 private:
@@ -33,5 +40,16 @@ private:
 };
 
 END_XE_NAMESPACE
+
+XE::RendererContext * CreateRendererContextDirectX11()
+{
+	return new XE::RendererContextDirectX11();
+}
+#else
+XE::RendererContext * CreateRendererContextDirectX11()
+{
+	return nullptr;
+}
+#endif
 
 #endif // RENDERERCONTEXTDIRECTX11_H__0BC8ECE7_63A4_479F_9079_39840765BAB4

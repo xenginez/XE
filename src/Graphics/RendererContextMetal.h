@@ -9,6 +9,8 @@
 #ifndef RENDERERCONTEXTMETAL_H__BF952A7B_7F86_459B_BBBC_1D37DED72BDF
 #define RENDERERCONTEXTMETAL_H__BF952A7B_7F86_459B_BBBC_1D37DED72BDF
 
+#if PLATFORM_OS & (OS_MAC | OS_IOS)
+
 #include "RendererContext.h"
 
 BEG_XE_NAMESPACE
@@ -18,12 +20,17 @@ class RendererContextMetal : public XE::RendererContext
 public:
 	RendererContextMetal();
 
-	~RendererContextMetal()() override;
+	~RendererContextMetal() override;
 
 public:
 	void Init( const InitInfo & val );
 
 	void Shutdown();
+
+public:
+	XE::Caps GetCaps() override;
+
+	XE::ContextType GetContextType() override;
 
 public:
 	void ExecCommandBuffer( XE::Buffer & val ) override;
@@ -33,5 +40,16 @@ private:
 };
 
 END_XE_NAMESPACE
+
+XE::RendererContext * CreateRendererContextMetal()
+{
+	return new XE::RendererContextMetal();
+}
+#else
+XE::RendererContext * CreateRendererContextMetal()
+{
+	return nullptr;
+}
+#endif
 
 #endif // RENDERERCONTEXTMETAL_H__BF952A7B_7F86_459B_BBBC_1D37DED72BDF

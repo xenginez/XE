@@ -13,15 +13,15 @@
 
 BEG_XE_NAMESPACE
 
-class RenderContext
+class RendererContext
 {
 private:
 	struct Private;
 
 public:
-	RenderContext();
+	RendererContext();
 
-	virtual ~RenderContext();
+	virtual ~RendererContext();
 
 public:
 	virtual XE::Caps GetCaps() = 0;

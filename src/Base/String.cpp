@@ -6,9 +6,11 @@
 
 USING_XE
 
-class ConstStringPool : public Singleton<ConstStringPool>
+class ConstStringPool : public XE::Singleton<ConstStringPool>
 {
-public:
+	SINGLETON( ConstStringPool )
+
+private:
 	ConstStringPool()
 	{
 		_Strings.insert( "" );

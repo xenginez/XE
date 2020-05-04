@@ -13,8 +13,17 @@
 
 BEG_XE_NAMESPACE
 
+template< typename T > class HandleAlloctor;
+template< typename T, XE::uint64 Max > class FreeHandleAlloctor;
+
 template< typename T > class Handle
 {
+	template< typename T > friend struct Serializable;
+
+	template< typename T > friend class HandleAlloctor;
+
+	template< typename T, XE::uint64 Max > friend class FreeHandleAlloctor;
+
 public:
 	using Type = T;
 
@@ -27,13 +36,14 @@ public:
 	{
 	}
 
-	Handle( XE::uint64 val )
-		:_value( val )
+	Handle( const Handle & val )
+		:_value( val._value )
 	{
 	}
 
-	Handle( const Handle & val )
-		:_value( val._value )
+private:
+	Handle( XE::uint64 val )
+		:_value( val )
 	{
 	}
 
@@ -267,13 +277,11 @@ public:
 public:
 	XE::Handle< T > Alloc()
 	{
-		if( _Pos < Max )
+		if( !_Queue.empty() )
 		{
-			XE::uint64 index = _Pos++;
-
-			_Next[_Prev[index]] = index;
-
-			return _Prev[index];
+			auto handle = _Queue.top();
+			_Queue.pop();
+			return handle;
 		}
 
 		return XE::Handle< T >::Invalid;
@@ -281,42 +289,21 @@ public:
 
 	void Free( XE::Handle< T > handle )
 	{
-		XE::uint64 _handle = handle.GetValue();
-
-		XE::uint64 index = _Next[_handle];
-		
-		--_Pos;
-		
-		XE::uint64 temp = _Prev[_Pos];
-
-		_Prev[_Pos] = _handle;
-		_Next[temp] = index;
-		_Prev[index] = temp;
-	}
-
-	bool IsValid( XE::Handle< T > handle )
-	{
-		XE::uint64 _handle = handle.GetValue();
-
-		uint16_t  index = _Next[_handle];
-
-		return index < _Pos && _Prev[index] == _handle;
+		_Queue.push( handle.GetValue() );
 	}
 
 	void Reset()
 	{
-		_Pos = 0;
+		_Queue = {};
 
 		for( XE::uint64 i = 0; i < Max; ++i )
 		{
-			_Prev[i] = i;
+			_Queue.push( i );
 		}
 	}
 
 private:
-	XE::uint64 _Pos;
-	XE::uint64 _Prev[Max];
-	XE::uint64 _Next[Max];
+	std::priority_queue<XE::uint64, XE::Array<XE::uint64>> _Queue;
 };
 
 END_XE_NAMESPACE

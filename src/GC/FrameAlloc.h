@@ -15,10 +15,12 @@ BEG_XE_NAMESPACE
 
 class XE_API FrameAlloc : public XE::Singleton< FrameAlloc >
 {
+    SINGLETON( FrameAlloc )
+
 private:
 	struct Private;
 
-public:
+private:
 	FrameAlloc();
 
 	~FrameAlloc();

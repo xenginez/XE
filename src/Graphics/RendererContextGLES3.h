@@ -9,6 +9,8 @@
 #ifndef RENDERERCONTEXTGLES3_H__249AD269_9E1C_4E09_B408_2500405B6C28
 #define RENDERERCONTEXTGLES3_H__249AD269_9E1C_4E09_B408_2500405B6C28
 
+#if PLATFORM_OS & (OS_ANDROID)
+
 #include "RendererContext.h"
 
 BEG_XE_NAMESPACE
@@ -26,6 +28,11 @@ public:
 	void Shutdown();
 
 public:
+	XE::Caps GetCaps() override;
+
+	XE::ContextType GetContextType() override;
+
+public:
 	void ExecCommandBuffer( XE::Buffer & val ) override;
 
 private:
@@ -33,5 +40,16 @@ private:
 };
 
 END_XE_NAMESPACE
+
+XE::RendererContext * CreateRendererContextGLES3()
+{
+	return new XE::RendererContextGLES3();
+}
+#else
+XE::RendererContext * CreateRendererContextGLES3()
+{
+	return nullptr;
+}
+#endif
 
 #endif // RENDERERCONTEXTGLES3_H__249AD269_9E1C_4E09_B408_2500405B6C28

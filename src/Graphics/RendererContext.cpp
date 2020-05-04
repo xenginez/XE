@@ -2,18 +2,18 @@
 
 #include "Structs.h"
 
-struct XE::RenderContext::Private
+struct XE::RendererContext::Private
 {
 
 };
 
-XE::RenderContext::RenderContext()
+XE::RendererContext::RendererContext()
 	:_p( new Private )
 {
 
 }
 
-XE::RenderContext::~RenderContext()
+XE::RendererContext::~RendererContext()
 {
 	delete _p;
 }

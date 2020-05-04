@@ -9,16 +9,18 @@
 #ifndef GFX_H__03DAE83A_A925_4FCA_8E63_633C5869DEB0
 #define GFX_H__03DAE83A_A925_4FCA_8E63_633C5869DEB0
 
-#include "Encoder.h"
+#include "Type.h"
 
 BEG_XE_NAMESPACE
 
 class XE_API Gfx : public XE::Singleton< Gfx >
 {
+	SINGLETON( Gfx )
+
 private:
 	struct Private;
 
-public:
+private:
 	Gfx();
 
 	~Gfx();
