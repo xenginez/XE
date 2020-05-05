@@ -15,13 +15,13 @@ BEG_XE_NAMESPACE
 
 class XE_API Encoder
 {
-	friend class Gfx;
+	friend class RendererContext;
 
 private:
 	struct Private;
 
 private:
-	Encoder( Frame * val );
+	Encoder();
 
 	~Encoder();
 
@@ -114,6 +114,9 @@ public:
 			   TextureHandle dst, XE::uint8 dst_mip, XE::uint32 dst_x, XE::uint32 dst_y, XE::uint32 dst_z,
 			   TextureHandle src, XE::uint8 src_mip, XE::uint32 src_x, XE::uint32 src_y, XE::uint32 src_z,
 			   XE::uint32 width, XE::uint32 height, XE::uint32 depth );
+
+private:
+	void SetFrame( Frame * val );
 
 private:
 	Private * _p;

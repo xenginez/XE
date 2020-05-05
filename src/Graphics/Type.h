@@ -202,7 +202,7 @@ enum class Access
 	COUNT
 };
 
-enum class ContextType
+enum class RendererContextType
 {
 	NOOP,         //!< No rendering.
 	METAL,        //!< Metal
@@ -531,7 +531,7 @@ enum class CommandType : XE::uint8
 
 struct XE_API Caps
 {
-	ContextType contextType = ContextType::NOOP;
+	RendererContextType contextType = RendererContextType::NOOP;
 
 	uint64_t supported = 0;
 
@@ -640,7 +640,7 @@ public:
 class XE_API InitInfo
 {
 public:
-	ContextType type = ContextType::NOOP;
+	RendererContextType type = RendererContextType::NOOP;
 
 	PCIType vendorId = PCIType::NONE;
 	uint16_t deviceId = 0;

@@ -28,9 +28,9 @@ private:
 public:
 	XE::Caps GetCaps();
 
-	XE::ContextType GetContextType();
+	XE::RendererContextType GetContextType();
 
-	XE::Array<XE::ContextType> GetSupportedContext();
+	XE::Array<XE::RendererContextType> GetSupportedContext();
 
 public:
 	void Init( const XE::InitInfo & val );

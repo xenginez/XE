@@ -20,10 +20,7 @@ public:
 public:
 	XE::Caps GetCaps() override;
 
-	XE::ContextType GetContextType() override;
-
-public:
-	void ExecCommandBuffer( XE::Buffer & val ) override;
+	XE::RendererContextType GetType() override;
 
 private:
 
