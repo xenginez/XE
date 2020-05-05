@@ -165,34 +165,25 @@ union RenderItem
 class Frame
 {
 public:
-	XE::uint64 RenderViewSize;
+	XE::Buffer PrevCmd;
+
+	XE::uint64 ViewsSize = 0;
 	std::array<View, MAX_VIEW> Views = {};
 
-	XE::uint64 RenderOcclusionSize;
+	XE::uint64 RenderOcclusionSize = 0;
 	std::array<XE::int32, MAX_OCCLUSION> Occlusion = {};
 
-	XE::uint64 RenderBindSize;
+	XE::uint64 RenderBindSize = 0;
 	std::array<RenderBind, MAX_DRAW_CALLS> RenderBinds = {};
 
-	XE::uint64 RenderItemSize;
+	XE::uint64 RenderItemSize = 0;
 	std::array<RenderItem, MAX_DRAW_CALLS> RenderItems = {};
 	std::array<XE::uint64, MAX_DRAW_CALLS> RenderItemKeys = {};
 
-	XE::uint64 RenderBlitSize;
+	XE::uint64 RenderBlitSize = 0;
 	std::array<RenderBlit, MAX_DRAW_CALLS> RenderBlits = {};
 	std::array<XE::uint64, MAX_DRAW_CALLS> RenderBlitKeys = {};
 
-	XE::FreeHandleAlloctor<XE::View, MAX_VIEW> ViewHandleAlloc;
-	XE::FreeHandleAlloctor<XE::ShaderHandle, MAX_SHADERS> ShaderHandleAlloc;
-	XE::FreeHandleAlloctor<XE::ProgramHandle, MAX_PROGRAMS> ProgramHandleAlloc;
-	XE::FreeHandleAlloctor<XE::TextureHandle, MAX_TEXTURES> TextureHandleAlloc;
-	XE::FreeHandleAlloctor<XE::UniformHandle, MAX_UNIFORMS> UniformHandleAlloc;
-	XE::FreeHandleAlloctor<XE::FrameBufferHandle, MAX_FRAME_BUFFERS> FrameBufferHandleAlloc;
-	XE::FreeHandleAlloctor<XE::IndexBufferHandle, MAX_INDEX_BUFFERS>  IndexBufferHandleAlloc;
-	XE::FreeHandleAlloctor<XE::VertexLayoutHandle, MAX_VERTEX_LAYOUTS> VertexLayoutHandleAlloc;
-	XE::FreeHandleAlloctor<XE::VertexBufferHandle, MAX_VERTEX_BUFFERS> VertexBufferHandleAlloc;
-
-	XE::Buffer PrevCmd;
 	XE::Buffer PostCmd;
 };
 
