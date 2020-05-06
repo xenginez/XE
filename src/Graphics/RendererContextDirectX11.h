@@ -27,11 +27,6 @@ public:
 
 	void Shutdown();
 
-public:
-	XE::Caps GetCaps() override;
-
-	XE::RendererContextType GetType() override;
-
 private:
 
 };

@@ -28,14 +28,9 @@ XE::Gfx::~Gfx()
 	delete _p;
 }
 
-XE::Caps XE::Gfx::GetCaps()
+const XE::Caps & XE::Gfx::GetCaps()
 {
 	return _p->_Context->GetCaps();
-}
-
-XE::RendererContextType XE::Gfx::GetContextType()
-{
-	return _p->_Context->GetType();
 }
 
 XE::Array<XE::RendererContextType> XE::Gfx::GetSupportedContext()
@@ -354,11 +349,11 @@ XE::Array<XE::UniformHandle> XE::Gfx::GetShaderUniforms( ShaderHandle handle )
 	return _p->_Context->GetShaderUniforms( handle );
 }
 
-XE::ProgramHandle XE::Gfx::CreateProgram( ShaderHandle vs, ShaderHandle fs, ShaderHandle hs /*= ShaderHandle::Invalid*/, ShaderHandle ds /*= ShaderHandle::Invalid*/, ShaderHandle gs /*= ShaderHandle::Invalid*/, bool des_shader /*= false */ )
+XE::ProgramHandle XE::Gfx::CreateProgram( ShaderHandle vs, ShaderHandle fs, bool des_shader /*= false */ )
 {
 	XE_ASSERT( _p->_Context != nullptr );
 
-	return _p->_Context->CreateProgram( vs, fs, hs, ds, gs, des_shader );
+	return _p->_Context->CreateProgram( vs, fs, des_shader );
 }
 
 XE::ProgramHandle XE::Gfx::CreateProgram( ShaderHandle cs, bool des_shader /*= false */ )

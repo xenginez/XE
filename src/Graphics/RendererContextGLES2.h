@@ -23,14 +23,9 @@ public:
 	~RendererContextGLES2() override;
 
 public:
-	void Init( const InitInfo & val );
+	void Init( const InitInfo & val ) override;
 
-	void Shutdown();
-
-public:
-	XE::Caps GetCaps() override;
-
-	XE::RendererContextType GetType() override;
+	void Shutdown() override;
 
 private:
 

@@ -34,6 +34,27 @@ DECL_HANDLE( XE_API, DynamicVertexBuffer );
 DECL_HANDLE( XE_API, TransientIndexBuffer );
 DECL_HANDLE( XE_API, TransientVertexBuffer );
 
+static constexpr XE::uint32 GFX_MAX_VIEW = 256;
+static constexpr XE::uint32 GFX_MAX_VERTEX_LAYOUTS = 64;
+static constexpr XE::uint32 GFX_MAX_INDEX_BUFFERS = 4096;
+static constexpr XE::uint32 GFX_MAX_VERTEX_BUFFERS = 4096;
+static constexpr XE::uint32 GFX_MAX_DYNAMIC_INDEX_BUFFERS = 4096;
+static constexpr XE::uint32 GFX_MAX_DYNAMIC_VERTEX_BUFFERS = 4096;
+static constexpr XE::uint32 GFX_MAX_SHADERS = 512;
+static constexpr XE::uint32 GFX_MAX_TEXTURES = 4096;
+static constexpr XE::uint32 GFX_MAX_TEXTURE_SAMPLERS = 16;
+static constexpr XE::uint32 GFX_MAX_FRAME_BUFFERS = 128;
+static constexpr XE::uint32 GFX_MAX_ATTACHMENTS = 8;
+static constexpr XE::uint32 GFX_MAX_UNIFORMS = 512;
+static constexpr XE::uint32 GFX_MAX_OCCLUSION = 256;
+static constexpr XE::uint32 GFX_MAX_VERTEXS = 4;
+static constexpr XE::uint32 GFX_MAX_DRAW_CALLS = 65535;
+static constexpr XE::uint32 GFX_MAX_BLITITEMS = 1024;
+static constexpr XE::uint32 GFX_MAX_PROGRAMS = 512;
+static constexpr XE::uint32 GFX_MAX_SAMPLERS = 16;
+static constexpr XE::uint32 GFX_MAX_LAYOUTS = 64;
+
+
 enum class ResetFlag
 {
 	NONE = 0,
@@ -545,31 +566,31 @@ struct XE_API Caps
 	{
 		PCIType vendorId = PCIType::NONE;
 		uint16_t deviceId = 0;
-	} gpu[4]; //!< Enumerated GPUs.
+	} gpu[4];
 
-	uint32_t maxDrawCalls;            //!< Maximum number of draw calls.
-	uint32_t maxBlits;                //!< Maximum number of blit calls.
-	uint32_t maxTextureSize;          //!< Maximum texture size.
-	uint32_t maxTextureLayers;        //!< Maximum texture layers.
-	uint32_t maxViews;                //!< Maximum number of views.
-	uint32_t maxFrameBuffers;         //!< Maximum number of frame buffer handles.
-	uint32_t maxFBAttachments;        //!< Maximum number of frame buffer attachments.
-	uint32_t maxPrograms;             //!< Maximum number of program handles.
-	uint32_t maxShaders;              //!< Maximum number of shader handles.
-	uint32_t maxTextures;             //!< Maximum number of texture handles.
-	uint32_t maxTextureSamplers;      //!< Maximum number of texture samplers.
-	uint32_t maxComputeBindings;      //!< Maximum number of compute bindings.
-	uint32_t maxVertexLayouts;        //!< Maximum number of vertex format layouts.
-	uint32_t maxVertexStreams;        //!< Maximum number of vertex streams.
-	uint32_t maxIndexBuffers;         //!< Maximum number of index buffer handles.
-	uint32_t maxVertexBuffers;        //!< Maximum number of vertex buffer handles.
-	uint32_t maxDynamicIndexBuffers;  //!< Maximum number of dynamic index buffer handles.
-	uint32_t maxDynamicVertexBuffers; //!< Maximum number of dynamic vertex buffer handles.
-	uint32_t maxUniforms;             //!< Maximum number of uniform handles.
-	uint32_t maxOcclusionQueries;     //!< Maximum number of occlusion query handles.
-	uint32_t maxEncoders;             //!< Maximum number of encoder threads.
-	uint32_t transientVbSize;         //!< Maximum transient vertex buffer size.
-	uint32_t transientIbSize;         //!< Maximum transient index buffer size.
+	uint32_t maxDrawCalls = GFX_MAX_DRAW_CALLS;
+	uint32_t maxBlits = GFX_MAX_BLITITEMS;
+	uint32_t maxTextureSize = 0;
+	uint32_t maxTextureLayers = 1;
+	uint32_t maxViews = GFX_MAX_VIEW;
+	uint32_t maxFrameBuffers = GFX_MAX_FRAME_BUFFERS;
+	uint32_t maxFBAttachments = GFX_MAX_ATTACHMENTS;
+	uint32_t maxPrograms = GFX_MAX_PROGRAMS;
+	uint32_t maxShaders = GFX_MAX_SHADERS;
+	uint32_t maxTextures = GFX_MAX_TEXTURES;
+	uint32_t maxTextureSamplers = GFX_MAX_SAMPLERS;
+	uint32_t maxComputeBindings = 0;
+	uint32_t maxVertexLayouts = GFX_MAX_LAYOUTS;
+	uint32_t maxVertexStreams = 1;
+	uint32_t maxIndexBuffers = GFX_MAX_INDEX_BUFFERS;
+	uint32_t maxVertexBuffers = GFX_MAX_VERTEX_BUFFERS;
+	uint32_t maxDynamicIndexBuffers = GFX_MAX_DYNAMIC_INDEX_BUFFERS;
+	uint32_t maxDynamicVertexBuffers = GFX_MAX_DYNAMIC_VERTEX_BUFFERS;
+	uint32_t maxUniforms = GFX_MAX_UNIFORMS;
+	uint32_t maxOcclusionQueries = GFX_MAX_OCCLUSION;
+	uint32_t maxEncoders = 1;
+	uint32_t transientVbSize = 0;
+	uint32_t transientIbSize = 0;
 
 	uint16_t formats[( XE::uint64 )TextureFormat::COUNT];
 };

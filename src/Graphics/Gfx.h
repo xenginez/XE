@@ -26,9 +26,7 @@ private:
 	~Gfx();
 
 public:
-	XE::Caps GetCaps();
-
-	XE::RendererContextType GetContextType();
+	const XE::Caps & GetCaps();
 
 	XE::Array<XE::RendererContextType> GetSupportedContext();
 
@@ -96,7 +94,7 @@ public:
 
 	XE::Array<UniformHandle> GetShaderUniforms( ShaderHandle handle );
 
-	ProgramHandle CreateProgram( ShaderHandle vs, ShaderHandle fs, ShaderHandle hs = ShaderHandle::Invalid, ShaderHandle ds = ShaderHandle::Invalid, ShaderHandle gs = ShaderHandle::Invalid, bool des_shader = false );
+	ProgramHandle CreateProgram( ShaderHandle vs, ShaderHandle fs, bool des_shader = false );
 
 	ProgramHandle CreateProgram( ShaderHandle cs, bool des_shader = false );
 
@@ -189,6 +187,8 @@ public:
 	void Destory( OcclusionQueryHandle handle );
 
 public:
+	ViewHandle CreateView();
+
 	void SetViewName( ViewHandle handle, const XE::String & name );
 
 	void SetViewRect( ViewHandle handle, const XE::Rect & rect );
@@ -210,6 +210,8 @@ public:
 
 	void ResetView( ViewHandle handle );
 	
+	void Destory( ViewHandle handle );
+
 public:
 	void RequestScreenShot( FrameBufferHandle handle, const std::filesystem::path & path );
 

@@ -13,77 +13,50 @@
 
 BEG_XE_NAMESPACE
 
-static constexpr XE::uint32 MAX_VIEW = 256;
-static constexpr XE::uint32 MAX_VERTEX_LAYOUTS = 64;
-static constexpr XE::uint32 MAX_INDEX_BUFFERS = 4096;
-static constexpr XE::uint32 MAX_VERTEX_BUFFERS = 4096;
-static constexpr XE::uint32 MAX_DYNAMIC_INDEX_BUFFERS = 4096;
-static constexpr XE::uint32 MAX_DYNAMIC_VERTEX_BUFFERS = 4096;
-static constexpr XE::uint32 MAX_SHADERS = 512;
-static constexpr XE::uint32 MAX_TEXTURES = 4096;
-static constexpr XE::uint32 MAX_TEXTURE_SAMPLERS = 16;
-static constexpr XE::uint32 MAX_FRAME_BUFFERS = 128;
-static constexpr XE::uint32 MAX_ATTACHMENTS = 8;
-static constexpr XE::uint32 MAX_UNIFORMS = 512;
-static constexpr XE::uint32 MAX_OCCLUSION = 256;
-static constexpr XE::uint32 MAX_VERTEXS = 4;
-static constexpr XE::uint32 MAX_DRAW_CALLS = 65535;
-static constexpr XE::uint32 MAX_PROGRAMS = 512;
-
-
 class View
 {
 public:
 	XE::Color Color;
-	XE::float32 Depth;
+	XE::float32 Depth = 0.0f;
 	XE::uint8 Stencil;
 	XE::Rect Rect;
 	XE::Rect Scissor;
 	XE::Mat4 ViewMat;
 	XE::Mat4 ProjMat;
-	ViewMode Mode;
+	ViewMode Mode = XE::ViewMode::Default;
 	FrameBufferHandle Handle;
 };
 
 class RenderBind
 {
 public:
-	struct Binding
+	enum BindType : XE::uint8
 	{
-		Binding()
-		{
+		IMAGE,
+		INDEXBUFFER,
+		VERTEXBUFFER,
+		TEXTURE,
 
-		}
-
-		enum BindingType : XE::uint8
-		{
-			IMAGE,
-			INDEXBUFFER,
-			VERTEXBUFFER,
-			TEXTURE,
-
-			COUNT
-		};
-
-		XE::uint32 SamplerFlags;
-		XE::uint16 Index;
-		BindingType Type;
-		XE::TextureFormat Format;
-		XE::Access Access;
-		XE::uint8 Mip;
+		COUNT
 	};
+
+	BindType Type;
+	XE::uint32 SamplerFlags;
+	XE::uint16 Index;
+	XE::TextureFormat Format;
+	XE::Access Access;
+	XE::uint8 Mip;
 };
 
 class RenderDraw
 {
 public:
-	struct Vertexs
+	struct
 	{
 		VertexBufferHandle buffer_handle;
 		VertexLayoutHandle layout_handle;
-	};
+	} Vertexs[GFX_MAX_VERTEXS];
 
-	std::array<Vertexs, MAX_VERTEXS> Vertexs;
 	XE::Flags<XE::StateFlag> StateFlags = XE::StateFlag::NONE;
 	XE::Flags <XE::StencilFlag> StencilFlags = XE::StencilFlag::NONE;
 	XE::Color Rgba;
@@ -146,8 +119,16 @@ public:
 	XE::uint8  UniformIdx = 0;
 };
 
-union RenderItem
+class RenderItem
 {
+public:
+	enum class ItemType
+	{
+		RENDERDRAW,
+		RENDERCOMPUTE,
+	};
+
+public:
 	RenderItem()
 	{
 
@@ -158,8 +139,13 @@ union RenderItem
 
 	}
 
-	RenderDraw Draw;
-	RenderCompute Compute;
+public:
+	ItemType Type;
+	union
+	{
+		RenderDraw Draw;
+		RenderCompute Compute;
+	};
 };
 
 class Frame
@@ -167,22 +153,19 @@ class Frame
 public:
 	XE::Buffer PrevCmd;
 
-	XE::uint64 ViewsSize = 0;
-	std::array<View, MAX_VIEW> Views = {};
-
 	XE::uint64 RenderOcclusionSize = 0;
-	std::array<XE::int32, MAX_OCCLUSION> Occlusion = {};
+	std::array<XE::int32, GFX_MAX_OCCLUSION> Occlusion = {};
 
 	XE::uint64 RenderBindSize = 0;
-	std::array<RenderBind, MAX_DRAW_CALLS> RenderBinds = {};
+	std::array<RenderBind, GFX_MAX_DRAW_CALLS> RenderBinds = {};
 
 	XE::uint64 RenderItemSize = 0;
-	std::array<RenderItem, MAX_DRAW_CALLS> RenderItems = {};
-	std::array<XE::uint64, MAX_DRAW_CALLS> RenderItemKeys = {};
+	std::array<RenderItem, GFX_MAX_DRAW_CALLS> RenderItems = {};
+	std::array<XE::uint64, GFX_MAX_DRAW_CALLS> RenderItemKeys = {};
 
 	XE::uint64 RenderBlitSize = 0;
-	std::array<RenderBlit, MAX_DRAW_CALLS> RenderBlits = {};
-	std::array<XE::uint64, MAX_DRAW_CALLS> RenderBlitKeys = {};
+	std::array<RenderBlit, GFX_MAX_DRAW_CALLS> RenderBlits = {};
+	std::array<XE::uint64, GFX_MAX_DRAW_CALLS> RenderBlitKeys = {};
 
 	XE::Buffer PostCmd;
 };

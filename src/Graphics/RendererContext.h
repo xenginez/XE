@@ -24,15 +24,10 @@ public:
 	virtual ~RendererContext();
 
 public:
-	virtual XE::Caps GetCaps() = 0;
+	virtual void Init( const InitInfo & val );
 
-	virtual XE::RendererContextType GetType() = 0;
-
-public:
-	virtual void Init( const InitInfo & val ) = 0;
-
-	virtual void Shutdown() = 0;
-
+	virtual void Shutdown();
+	
 public:
 	void Reset( XE::uint32 width, XE::uint32 height, XE::Flags<XE::ResetFlag> flags, XE::TextureFormat format );
 
@@ -42,6 +37,9 @@ public:
 	void End( XE::Encoder * val );
 
 	XE::uint32 Frame( bool capture  );
+
+public:
+	const XE::Caps & GetCaps();
 
 public:
 	void SetDebug( XE::Flags<XE::DebugFlag> flags );
@@ -93,7 +91,7 @@ public:
 
 	XE::Array<UniformHandle> GetShaderUniforms( ShaderHandle handle );
 
-	ProgramHandle CreateProgram( ShaderHandle vs, ShaderHandle fs, ShaderHandle hs, ShaderHandle ds, ShaderHandle gs, bool des_shader );
+	ProgramHandle CreateProgram( ShaderHandle vs, ShaderHandle fs, bool des_shader );
 
 	ProgramHandle CreateProgram( ShaderHandle cs, bool des_shader);
 
@@ -186,6 +184,8 @@ public:
 	void Destory( OcclusionQueryHandle handle );
 
 public:
+	ViewHandle CreateView();
+
 	void SetViewName( ViewHandle handle, const XE::String & name );
 
 	void SetViewRect( ViewHandle handle, const XE::Rect & rect );
@@ -206,6 +206,8 @@ public:
 	void SetViewOrder( ViewHandle handle, const XE::Array<ViewHandle> & remap );
 
 	void ResetView( ViewHandle handle );
+
+	void Destory( ViewHandle handle );
 
 public:
 	void RequestScreenShot( FrameBufferHandle handle, const std::filesystem::path & path );

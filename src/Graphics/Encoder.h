@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class XE_API Encoder
+class XE_API Encoder : public XE::NonCopyable
 {
 	friend class RendererContext;
 
