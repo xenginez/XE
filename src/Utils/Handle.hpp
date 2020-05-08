@@ -14,7 +14,7 @@
 BEG_XE_NAMESPACE
 
 template< typename T > class HandleAlloctor;
-template< typename T, XE::uint64 Max > class FreeHandleAlloctor;
+template< typename T, XE::uint64 _Max > class FreeHandleAlloctor;
 
 template< typename T > class Handle
 {
@@ -22,7 +22,7 @@ template< typename T > class Handle
 
 	template< typename T > friend class HandleAlloctor;
 
-	template< typename T, XE::uint64 Max > friend class FreeHandleAlloctor;
+	template< typename T, XE::uint64 _Max > friend class FreeHandleAlloctor;
 
 public:
 	using Type = T;
@@ -201,7 +201,7 @@ public:
 		return _Value++;
 	}
 
-	void Reset( XE::uint64 val )
+	void Reset( XE::uint64 val = 0 )
 	{
 		_Value = val;
 	}
@@ -266,10 +266,10 @@ public:
 	}
 };
 
-template< typename T, XE::uint64 Max > class FreeHandleAlloctor
+template< typename T, XE::uint64 _Max > class QueueHandleAlloctor
 {
 public:
-	FreeHandleAlloctor()
+	QueueHandleAlloctor()
 	{
 		Reset();
 	}
@@ -296,7 +296,7 @@ public:
 	{
 		_Queue = {};
 
-		for( XE::uint64 i = 0; i < Max; ++i )
+		for( XE::uint64 i = 0; i < _Max; ++i )
 		{
 			_Queue.push( i );
 		}
@@ -304,6 +304,73 @@ public:
 
 private:
 	std::priority_queue<XE::uint64, XE::Array<XE::uint64>> _Queue;
+};
+
+template< typename T, XE::uint64 _Max > class ConcurrentHandleAlloctor
+{
+public:
+	ConcurrentHandleAlloctor()
+	{
+		Reset();
+	}
+
+public:
+	XE::Handle< T > Alloc()
+	{
+		if( _Pos < _Max )
+		{
+			XE::uint64 pos = 0;
+			do 
+			{
+				pos = _Pos;
+				if( _Pos >= _Max )
+				{
+					return XE::Handle< T >::Invalid;
+				}
+			} while( !_Pos.compare_exchange_weak( pos, pos + 1 ) );
+
+			XE::uint64 handle = _Dense[pos];
+			_Sparse[handle] = pos;
+			return handle;
+		}
+
+		return XE::Handle< T >::Invalid;
+	}
+
+	void Free( XE::Handle< T > handle )
+	{
+		XE::uint64 pos = 0;
+		do
+		{
+			pos = _Pos;
+		} while( !_Pos.compare_exchange_weak( pos, pos - 1 ) );
+
+		XE::uint64 index = _Sparse[handle.GetValue()];
+		XE::uint64 temp = _Dense[pos];
+		_Dense[pos] = handle.GetValue();
+		_Sparse[temp] = index;
+		_Dense[index] = temp;
+	}
+
+	bool IsValid( XE::Handle< T > handle ) const
+	{
+		return index < _Pos && _Dense[_Sparse[handle.GetValue()]] == handle.GetValue();
+	}
+
+	void Reset()
+	{
+		_Pos = 0;
+
+		for( int i = 0; i < _Max; ++i )
+		{
+			_Dense[i] = i;
+		}
+	}
+
+private:
+	std::atomic<XE::uint64> _Pos;
+	std::array<XE::uint64, _Max> _Dense;
+	std::array<XE::uint64, _Max> _Sparse;
 };
 
 END_XE_NAMESPACE

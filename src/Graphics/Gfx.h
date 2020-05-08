@@ -26,7 +26,7 @@ private:
 	~Gfx();
 
 public:
-	const XE::Caps & GetCaps();
+	const XE::CapsInfo & GetCaps();
 
 	XE::Array<XE::RendererContextType> GetSupportedContext();
 
@@ -42,13 +42,9 @@ public:
 
 	void End( XE::Encoder * val );
 
-	XE::uint32 Frame( bool capture = false );
+	void Frame( bool capture = false );
 
 public:
-	void SetDebug( XE::Flags<XE::DebugFlag> flags = XE::DebugFlag::NONE );
-
-	void DebugTextClear();
-
 	void DebugTextPrint( XE::uint32 x, XE::uint32 y, const XE::Color & color, const std::string & text );
 
 public:

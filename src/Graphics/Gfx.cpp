@@ -28,7 +28,7 @@ XE::Gfx::~Gfx()
 	delete _p;
 }
 
-const XE::Caps & XE::Gfx::GetCaps()
+const XE::CapsInfo & XE::Gfx::GetCaps()
 {
 	return _p->_Context->GetCaps();
 }
@@ -141,25 +141,11 @@ void XE::Gfx::End( XE::Encoder * val )
 	_p->_Context->End( val );
 }
 
-XE::uint32 XE::Gfx::Frame( bool capture /*= false */ )
+void XE::Gfx::Frame( bool capture /*= false */ )
 {
 	XE_ASSERT( _p->_Context != nullptr );
 
-	return _p->_Context->Frame( capture );
-}
-
-void XE::Gfx::SetDebug( XE::Flags<XE::DebugFlag> flags /*= XE::DebugFlag::NONE */ )
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	_p->_Context->SetDebug( flags );
-}
-
-void XE::Gfx::DebugTextClear()
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	_p->_Context->DebugTextClear();
+	_p->_Context->Frame( capture );
 }
 
 void XE::Gfx::DebugTextPrint( XE::uint32 x, XE::uint32 y, const XE::Color & color, const std::string & text )

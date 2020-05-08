@@ -36,17 +36,14 @@ public:
 
 	void End( XE::Encoder * val );
 
-	XE::uint32 Frame( bool capture  );
+	void Frame( bool capture  );
+
+	void Render();
 
 public:
-	const XE::Caps & GetCaps();
+	const XE::CapsInfo & GetCaps() const;
 
-public:
-	void SetDebug( XE::Flags<XE::DebugFlag> flags );
-
-	void DebugTextClear();
-
-	void DebugTextPrint( XE::uint32 x, XE::uint32 y, const XE::Color & color, const std::string & text );
+	const XE::InitInfo & GetInitInfo() const;
 
 public:
 	IndexBufferHandle CreateIndexBuffer( const XE::String & name, XE::memory_view mem, XE::Flags< XE::BufferFlag > flags );
@@ -208,6 +205,9 @@ public:
 	void ResetView( ViewHandle handle );
 
 	void Destory( ViewHandle handle );
+
+public:
+	void DebugTextPrint( XE::uint32 x, XE::uint32 y, const XE::Color & color, const std::string & text );
 
 public:
 	void RequestScreenShot( FrameBufferHandle handle, const std::filesystem::path & path );

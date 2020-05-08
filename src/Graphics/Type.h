@@ -54,6 +54,37 @@ static constexpr XE::uint32 GFX_MAX_PROGRAMS = 512;
 static constexpr XE::uint32 GFX_MAX_SAMPLERS = 16;
 static constexpr XE::uint32 GFX_MAX_LAYOUTS = 64;
 
+enum class CapsFlag
+{
+	ALPHA_TO_COVERAGE = 1ull << 0,
+	BLEND_INDEPENDENT = 1ull << 1,
+	COMPUTE = 1ull << 2,
+	CONSERVATIVE_RASTER = 1ull << 3,
+	DRAW_INDIRECT = 1ull << 4,
+	FRAGMENT_DEPTH = 1ull << 5,
+	FRAGMENT_ORDERING = 1ull << 6,
+	FRAMEBUFFER_RW = 1ull << 7,
+	GRAPHICS_DEBUGGER = 1ull << 8,
+	RESERVED = 1ull << 9,
+	HDR10 = 1ull << 10,
+	HIDPI = 1ull << 11,
+	INDEX32 = 1ull << 12,
+	INSTANCING = 1ull << 13,
+	OCCLUSION_QUERY = 1ull << 14,
+	RENDERER_MULTITHREADED = 1ull << 15,
+	SWAP_CHAIN = 1ull << 16,
+	TEXTURE_2D_ARRAY = 1ull << 17,
+	TEXTURE_3D = 1ull << 18,
+	TEXTURE_BLIT = 1ull << 19,
+	TEXTURE_COMPARE_RESERVED = 1ull << 20,
+	TEXTURE_COMPARE_LEQUAL = 1ull << 21,
+	TEXTURE_CUBE_ARRAY = 1ull << 22,
+	TEXTURE_DIRECT_ACCESS = 1ull << 23,
+	TEXTURE_READ_BACK = 1ull << 24,
+	VERTEX_ATTRIB_HALF = 1ull << 25,
+	VERTEX_ATTRIB_UINT10 = 1ull << 26,
+	VERTEX_ID = 1ull << 27,
+};
 
 enum class ResetFlag
 {
@@ -69,17 +100,7 @@ enum class ResetFlag
 	HIDPI = 1ull << 8,
 	DEPTH_CLAMP = 1ull << 9,
 	SUSPEND = 1ull << 10,
-};
-
-enum class DebugFlag
-{
-	NONE = 0,
-	WIREFRAME = 1ull << 0,
-	IFH = 1ull << 1,
-	STATS = 1ull << 2,
-	TEXT = 1ull << 3,
-	PROFILER = 1ull << 4,
-};
+};		 
 
 enum class BufferFlag
 {
@@ -513,84 +534,46 @@ enum class SamplerCompare
 	ALWAYS,
 };
 
-enum class CommandType : XE::uint8
+struct XE_API CapsInfo
 {
-	RENDERER_INIT,
-	RENDERER_SHUTDOWN_BEGIN,
-	CREATE_VERTEX_LAYOUT,
-	CREATE_INDEX_BUFFER,
-	CREATE_VERTEX_BUFFER,
-	CREATE_DYNAMIC_INDEX_BUFFER,
-	UPDATE_DYNAMIC_INDEX_BUFFER,
-	CREATE_DYNAMIC_VERTEX_BUFFER,
-	UPDATE_DYNAMIC_VERTEX_BUFFER,
-	CREATE_SHADER,
-	CREATE_PROGRAM,
-	CREATE_TEXTURE,
-	UPDATE_TEXTURE,
-	RESIZE_TEXTURE,
-	CREATE_FRAME_BUFFER,
-	CREATE_UNIFORM,
-	UPDATE_VIEW_NAME,
-	INVALIDATE_OCCLUSION_QUERY,
-	SET_NAME,
-	END,
-	RENDERER_SHUTDOWN_END,
-	DESTROY_VERTEX_LAYOUT,
-	DESTROY_INDEX_BUFFER,
-	DESTROY_VERTEX_BUFFER,
-	DESTROY_DYNAMIC_INDEX_BUFFER,
-	DESTROY_DYNAMIC_VERTEX_BUFFER,
-	DESTROY_SHADER,
-	DESTROY_PROGRAM,
-	DESTROY_TEXTURE,
-	DESTROY_FRAMEBUFFER,
-	DESTROY_UNIFORM,
-	READ_TEXTURE,
-	REQUEST_SCREEN_SHOT,
-};
+	RendererContextType ContextType = RendererContextType::NOOP;
 
-struct XE_API Caps
-{
-	RendererContextType contextType = RendererContextType::NOOP;
+	XE::Flags<CapsFlag> Supported;
 
-	uint64_t supported = 0;
-
-	PCIType vendorId = PCIType::NONE;
-	uint16_t deviceId = 0;
+	PCIType VendorId = PCIType::NONE;
+	uint16_t DeviceId = 0;
 	bool     homogeneousDepth = false;
 	bool     originBottomLeft = false;
 	uint8_t  numGPUs = 0;
 
 	struct
 	{
-		PCIType vendorId = PCIType::NONE;
-		uint16_t deviceId = 0;
+		PCIType VendorId = PCIType::NONE;
+		uint16_t DeviceId = 0;
 	} gpu[4];
 
-	uint32_t maxDrawCalls = GFX_MAX_DRAW_CALLS;
-	uint32_t maxBlits = GFX_MAX_BLITITEMS;
-	uint32_t maxTextureSize = 0;
-	uint32_t maxTextureLayers = 1;
-	uint32_t maxViews = GFX_MAX_VIEW;
-	uint32_t maxFrameBuffers = GFX_MAX_FRAME_BUFFERS;
-	uint32_t maxFBAttachments = GFX_MAX_ATTACHMENTS;
-	uint32_t maxPrograms = GFX_MAX_PROGRAMS;
-	uint32_t maxShaders = GFX_MAX_SHADERS;
-	uint32_t maxTextures = GFX_MAX_TEXTURES;
-	uint32_t maxTextureSamplers = GFX_MAX_SAMPLERS;
-	uint32_t maxComputeBindings = 0;
-	uint32_t maxVertexLayouts = GFX_MAX_LAYOUTS;
-	uint32_t maxVertexStreams = 1;
-	uint32_t maxIndexBuffers = GFX_MAX_INDEX_BUFFERS;
-	uint32_t maxVertexBuffers = GFX_MAX_VERTEX_BUFFERS;
-	uint32_t maxDynamicIndexBuffers = GFX_MAX_DYNAMIC_INDEX_BUFFERS;
-	uint32_t maxDynamicVertexBuffers = GFX_MAX_DYNAMIC_VERTEX_BUFFERS;
-	uint32_t maxUniforms = GFX_MAX_UNIFORMS;
-	uint32_t maxOcclusionQueries = GFX_MAX_OCCLUSION;
-	uint32_t maxEncoders = 1;
-	uint32_t transientVbSize = 0;
-	uint32_t transientIbSize = 0;
+	uint32_t MaxDrawCalls = GFX_MAX_DRAW_CALLS;
+	uint32_t MaxBlits = GFX_MAX_BLITITEMS;
+	uint32_t MaxTextureSize = 0;
+	uint32_t MaxTextureLayers = 1;
+	uint32_t MaxViews = GFX_MAX_VIEW;
+	uint32_t MaxFrameBuffers = GFX_MAX_FRAME_BUFFERS;
+	uint32_t MaxFBAttachments = GFX_MAX_ATTACHMENTS;
+	uint32_t MaxPrograms = GFX_MAX_PROGRAMS;
+	uint32_t MaxShaders = GFX_MAX_SHADERS;
+	uint32_t MaxTextures = GFX_MAX_TEXTURES;
+	uint32_t MaxTextureSamplers = GFX_MAX_SAMPLERS;
+	uint32_t MaxComputeBindings = 0;
+	uint32_t MaxVertexLayouts = GFX_MAX_LAYOUTS;
+	uint32_t MaxVertexStreams = 1;
+	uint32_t MaxIndexBuffers = GFX_MAX_INDEX_BUFFERS;
+	uint32_t MaxVertexBuffers = GFX_MAX_VERTEX_BUFFERS;
+	uint32_t MaxDynamicIndexBuffers = GFX_MAX_DYNAMIC_INDEX_BUFFERS;
+	uint32_t MaxDynamicVertexBuffers = GFX_MAX_DYNAMIC_VERTEX_BUFFERS;
+	uint32_t MaxUniforms = GFX_MAX_UNIFORMS;
+	uint32_t MaxOcclusionQueries = GFX_MAX_OCCLUSION;
+	uint32_t TransientVbSize = 0;
+	uint32_t TransientIbSize = 0;
 
 	uint16_t formats[( XE::uint64 )TextureFormat::COUNT];
 };

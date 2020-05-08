@@ -18,6 +18,12 @@ template< typename T > class Flags
 	static_assert( std::is_enum_v<T> );
 
 public:
+	Flags()
+		:_Value( 0 )
+	{
+
+	}
+
 	Flags( T val )
 		:_Value( reinterpret_cast< XE::int64 >( val ) )
 	{
