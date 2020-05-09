@@ -534,8 +534,9 @@ enum class SamplerCompare
 	ALWAYS,
 };
 
-struct XE_API CapsInfo
+class XE_API CapsInfo
 {
+public:
 	RendererContextType ContextType = RendererContextType::NOOP;
 
 	XE::Flags<CapsFlag> Supported;
@@ -578,69 +579,6 @@ struct XE_API CapsInfo
 	uint16_t formats[( XE::uint64 )TextureFormat::COUNT];
 };
 
-class XE_API TransientIndexBuffer
-{
-public:
-	uint8_t * data = nullptr;
-	uint32_t size = 0;
-	uint32_t startIndex = 0;
-	IndexBufferHandle handle;
-};
-
-class XE_API TransientVertexBuffer
-{
-public:
-	uint8_t * data = nullptr;
-	uint32_t size = 0;
-	uint32_t startVertex = 0;
-	uint16_t stride = 0;
-	VertexBufferHandle handle;
-	VertexLayoutHandle layoutHandle;
-};
-
-class XE_API InstanceDataBuffer
-{
-public:
-	uint8_t * data = nullptr;
-	uint32_t size = 0;
-	uint32_t offset = 0;
-	uint32_t num = 0;
-	uint16_t stride = 0;
-	VertexBufferHandle handle;
-};
-
-class XE_API TextureInfo
-{
-public:
-	TextureFormat format = TextureFormat::COUNT;
-	uint32_t storageSize = 0;
-	uint16_t width = 0;
-	uint16_t height = 0;
-	uint16_t depth = 0;
-	uint16_t numLayers = 0;
-	uint8_t numMips = 0;
-	uint8_t bitsPerPixel = 0;
-	bool cubeMap = false;
-};
-
-class XE_API UniformInfo
-{
-public:
-	std::string name;
-	UniformType type = UniformType::COUNT;
-	uint16_t num = 0;
-};
-
-class XE_API Attachment
-{
-public:
-	Access access = Access::COUNT;
-	TextureHandle handle;
-	uint16_t mip = 0;
-	uint16_t layer = 0;
-	bool auto_gen_mips = false;
-};
-
 class XE_API InitInfo
 {
 public:
@@ -666,13 +604,30 @@ public:
 	uint32_t transientIbSize = 0;
 };
 
+class XE_API UniformInfo
+{
+public:
+	std::string name;
+	UniformType type = UniformType::COUNT;
+	uint16_t num = 0;
+};
+
+class XE_API Attachment
+{
+public:
+	Access access = Access::COUNT;
+	TextureHandle handle;
+	uint16_t mip = 0;
+	uint16_t layer = 0;
+	bool auto_gen_mips = false;
+};
+
 class XE_API VertexLayout
 {
 public:
 	Attribute Attr;
 	AttributeType Type;
 };
-
 
 END_XE_NAMESPACE
 

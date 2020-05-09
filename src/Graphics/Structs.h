@@ -50,6 +50,48 @@ enum class CommandType : XE::uint8
 	REQUEST_SCREEN_SHOT,
 };
 
+class TextureInfo
+{
+public:
+	TextureFormat format = TextureFormat::COUNT;
+	uint32_t storageSize = 0;
+	uint16_t width = 0;
+	uint16_t height = 0;
+	uint16_t depth = 0;
+	uint16_t numLayers = 0;
+	uint8_t numMips = 0;
+	uint8_t bitsPerPixel = 0;
+	bool cubeMap = false;
+};
+
+class InstanceDataBuffer
+{
+public:
+	XE::memory_view data;
+	uint32_t offset = 0;
+	uint32_t num = 0;
+	uint16_t stride = 0;
+	VertexBufferHandle handle;
+};
+
+class TransientIndexBuffer
+{
+public:
+	XE::memory_view data;
+	uint32_t startIndex = 0;
+	IndexBufferHandle handle;
+};
+
+class TransientVertexBuffer
+{
+public:
+	XE::memory_view data;
+	uint32_t startVertex = 0;
+	uint16_t stride = 0;
+	VertexBufferHandle handle;
+	VertexLayoutHandle layoutHandle;
+};
+
 class View
 {
 public:
@@ -115,7 +157,7 @@ public:
 	XE::uint8 UniformIdx;
 
 	XE::IndexBufferHandle IndexBuffer;
-	XE::VertexBufferHandle InstanceDataBuffer;
+	XE::VertexBufferHandle VertexDataBuffer;
 	XE::IndirectBufferHandle IndirectBuffer;
 	XE::OcclusionQueryHandle OcclusionQuery;
 };
@@ -208,6 +250,8 @@ public:
 	std::array<XE::uint64, GFX_MAX_DRAW_CALLS> RenderBlitKeys = {};
 
 	XE::Buffer PostCmd;
+
+	XE::Array<XE::uint8> _TransientBuffer;
 };
 
 END_XE_NAMESPACE

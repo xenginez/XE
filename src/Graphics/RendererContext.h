@@ -32,7 +32,7 @@ public:
 	void Reset( XE::uint32 width, XE::uint32 height, XE::Flags<XE::ResetFlag> flags, XE::TextureFormat format );
 
 public:
-	XE::Encoder * Begin( bool forthread );
+	XE::Encoder * Begin();
 
 	void End( XE::Encoder * val );
 
@@ -56,9 +56,9 @@ public:
 
 	void Destory( VertexLayoutHandle handle );
 
-	VertexBufferHandle CreateVertexBuffer( const XE::String & name, XE::memory_view mem, const VertexLayout & layout, XE::Flags< XE::BufferFlag > flags );
+	VertexBufferHandle CreateVertexBuffer( const XE::String & name, XE::memory_view mem, VertexLayoutHandle layout, XE::Flags< XE::BufferFlag > flags );
 
-	TransientVertexBufferHandle CreateTransientVertexBuffer( XE::memory_view mem, const VertexLayout & layout, XE::Flags< XE::BufferFlag > flags );
+	TransientVertexBufferHandle CreateTransientVertexBuffer( XE::memory_view mem, VertexLayoutHandle layout, XE::Flags< XE::BufferFlag > flags );
 
 	void Destory( VertexBufferHandle handle );
 
@@ -70,9 +70,9 @@ public:
 
 	void Destory( DynamicIndexBufferHandle handle );
 
-	DynamicVertexBufferHandle CreateDynamicVertexBuffer( XE::uint64 size, const VertexLayout & layout, XE::Flags< XE::BufferFlag > flags );
+	DynamicVertexBufferHandle CreateDynamicVertexBuffer( XE::uint64 size, VertexLayoutHandle layout, XE::Flags< XE::BufferFlag > flags );
 
-	DynamicVertexBufferHandle CreateDynamicVertexBuffer( XE::memory_view mem, const VertexLayout & layout, XE::Flags< XE::BufferFlag > flags );
+	DynamicVertexBufferHandle CreateDynamicVertexBuffer( XE::memory_view mem, VertexLayoutHandle layout, XE::Flags< XE::BufferFlag > flags );
 
 	void Update( DynamicVertexBufferHandle handle, XE::uint64 start, XE::memory_view mem );
 
@@ -93,11 +93,6 @@ public:
 	ProgramHandle CreateProgram( ShaderHandle cs, bool des_shader);
 
 	void Destory( ProgramHandle handle );
-
-	TextureHandle CreateTexture( const XE::String & name, XE::memory_view mem, XE::Flags< XE::TextureFlag > flags,
-								 SamplerWrap U, SamplerWrap V, SamplerWrap W,
-								 SamplerMode MIN, SamplerMode MAG, SamplerMode MIP,
-								 uint8 skip , std::optional< TextureInfo > info);
 
 	TextureHandle CreateTexture2D( const XE::String & name, XE::uint32 width, XE::uint32 height, bool hasmips, XE::uint16 layers, TextureFormat format,
 								   XE::Flags< XE::TextureFlag > flags,

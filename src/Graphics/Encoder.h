@@ -70,8 +70,6 @@ public:
 
 	void SetInstanceDataBuffer( DynamicVertexBufferHandle handle, XE::uint32 first, XE::uint32 num );
 
-	void SetInstanceDataBuffer( const XE::Array<InstanceDataBuffer> & buffers, XE::uint32 first, XE::uint32 num );
-
 	void SetInstanceCount( XE::uint32 num );
 
 	void SetTexture( XE::uint8 stage, UniformHandle sampler, TextureHandle handle,

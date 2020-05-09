@@ -38,7 +38,7 @@ public:
 	void Reset( XE::uint32 width, XE::uint32 height, XE::Flags<XE::ResetFlag> flags = XE::ResetFlag::NONE, XE::TextureFormat format = XE::TextureFormat::COUNT );
 
 public:
-	XE::Encoder * Begin( bool forthread = false );
+	XE::Encoder * Begin();
 
 	void End( XE::Encoder * val );
 
@@ -58,9 +58,9 @@ public:
 
 	void Destory( VertexLayoutHandle handle );
 
-	VertexBufferHandle CreateVertexBuffer( const XE::String & name, XE::memory_view mem, const VertexLayout & layout, XE::Flags< XE::BufferFlag > flags = XE::BufferFlag::NONE );
+	VertexBufferHandle CreateVertexBuffer( const XE::String & name, XE::memory_view mem, VertexLayoutHandle layout, XE::Flags< XE::BufferFlag > flags = XE::BufferFlag::NONE );
 
-	TransientVertexBufferHandle CreateTransientVertexBuffer( XE::memory_view mem, const VertexLayout & layout, XE::Flags< XE::BufferFlag > flags = XE::BufferFlag::NONE );
+	TransientVertexBufferHandle CreateTransientVertexBuffer( XE::memory_view mem, VertexLayoutHandle layout, XE::Flags< XE::BufferFlag > flags = XE::BufferFlag::NONE );
 
 	void Destory( VertexBufferHandle handle );
 
@@ -72,9 +72,9 @@ public:
 
 	void Destory( DynamicIndexBufferHandle handle );
 
-	DynamicVertexBufferHandle CreateDynamicVertexBuffer( XE::uint64 size, const VertexLayout & layout, XE::Flags< XE::BufferFlag > flags = XE::BufferFlag::NONE );
+	DynamicVertexBufferHandle CreateDynamicVertexBuffer( XE::uint64 size, VertexLayoutHandle layout, XE::Flags< XE::BufferFlag > flags = XE::BufferFlag::NONE );
 
-	DynamicVertexBufferHandle CreateDynamicVertexBuffer( XE::memory_view mem, const VertexLayout & layout, XE::Flags< XE::BufferFlag > flags = XE::BufferFlag::NONE );
+	DynamicVertexBufferHandle CreateDynamicVertexBuffer( XE::memory_view mem, VertexLayoutHandle layout, XE::Flags< XE::BufferFlag > flags = XE::BufferFlag::NONE );
 
 	void Update( DynamicVertexBufferHandle handle, XE::uint64 start, XE::memory_view mem );
 
@@ -95,11 +95,6 @@ public:
 	ProgramHandle CreateProgram( ShaderHandle cs, bool des_shader = false );
 
 	void Destory( ProgramHandle handle );
-
-	TextureHandle CreateTexture( const XE::String & name, XE::memory_view mem, XE::Flags< XE::TextureFlag > flags,
-								 SamplerWrap U, SamplerWrap V, SamplerWrap W,
-								 SamplerMode MIN, SamplerMode MAG, SamplerMode MIP,
-								 uint8 skip = 0, std::optional< TextureInfo > info = std::nullopt );
 
 	TextureHandle CreateTexture2D( const XE::String & name, XE::uint32 width, XE::uint32 height, bool hasmips, XE::uint16 layers, TextureFormat format,
 								   XE::Flags< XE::TextureFlag > flags,

@@ -60,7 +60,7 @@ void XE::RendererContext::Reset( XE::uint32 width, XE::uint32 height, XE::Flags<
 
 }
 
-XE::Encoder * XE::RendererContext::Begin( bool forthread )
+XE::Encoder * XE::RendererContext::Begin()
 {
 	thread_local Encoder encoder;
 
