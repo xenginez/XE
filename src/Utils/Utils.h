@@ -28,6 +28,7 @@
 
 
 #define DECL_HANDLE( _DLL_EXPORT, NAME ) class NAME; using NAME##Handle = XE::Handle< NAME >; DECL_META_CLASS( _DLL_EXPORT, NAME##Handle );
+#define DECL_HANDLE_ALLOCATOR( _DLL_EXPORT, NAME ) using NAME##HandleAlloctor = XE::HandleAlloctor< NAME >; DECL_META_CLASS( _DLL_EXPORT, NAME##HandleAlloctor );
 
 #define DECL_GROUP( _DLL_EXPORT, INDEX, NAME ) \
 template<> class _DLL_EXPORT XE::OrderGroup< INDEX > \

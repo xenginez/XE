@@ -1,31 +1,11 @@
 #include "ThreadService.h"
 
-#include <tbb/concurrent_priority_queue.h>
+#include <tbb/concurrent_queue.h>
 
 USING_XE
 
 BEG_META( ThreadService )
 END_META()
-
-struct XEPTask
-{
-	XE::uint32 ExecCount = 0;
-	std::promise<XE::uint32> Promise;
-	ThreadPriority Pri = XE::ThreadPriority::NORM;
-	IThreadService::TaskType Task = nullptr;
-};
-
-template<> struct std::less<XEPTask>
-{
-	typedef XEPTask first_argument_type;
-	typedef XEPTask second_argument_type;
-	typedef bool result_type;
-
-	constexpr bool operator()( const first_argument_type& _Left, const second_argument_type& _Right ) const
-	{
-		return ( _Left.Pri < _Right.Pri );
-	}
-};
 
 struct XEPThread
 {
@@ -35,7 +15,7 @@ struct XEPThread
 
 	virtual void Handler() = 0;
 
-	virtual void PushTask( XEPTask && val ) = 0;
+	virtual void PushTask( std::function<void()> && val ) = 0;
 
 	virtual XE::uint64 QueueSize() = 0;
 
@@ -55,34 +35,27 @@ struct XEPMainThread : public XEPThread
 
 	void Handler() override
 	{
-		tbb::concurrent_priority_queue<XEPTask> * Tasks = _CurrentTasks == 0 ? &_FrontTasks : &_BackTasks;
+		tbb::concurrent_queue< std::function<void()> > * Tasks = _CurrentTasks == 0 ? &_FrontTasks : &_BackTasks;
 		_CurrentTasks = ( _CurrentTasks + 1 ) % 2;
 
-		XEPTask task;
+		std::function<void()>  task;
 		while( Tasks->try_pop( task ) )
 		{
-			if( task.Task )
+			if( task )
 			{
-				bool ret = task.Task();
-
-				task.Promise.set_value( ++task.ExecCount );
-
-				if( ret )
-				{
-					PushTask( std::move( task ) );
-				}
+				task();
 			}
 		}
 	}
 
-	void PushTask( XEPTask && val ) override
+	void PushTask( std::function<void()> && val ) override
 	{
 		_CurrentTasks == 0 ? _FrontTasks.push( std::move( val ) ) : _BackTasks.push( std::move( val ) );
 	}
 
 	XE::uint64 QueueSize() override
 	{
-		return _CurrentTasks == 0 ? _FrontTasks.size() : _BackTasks.size();
+		return _CurrentTasks == 0 ? _FrontTasks.unsafe_size() : _BackTasks.unsafe_size();
 	}
 
 	void Notify() override
@@ -97,8 +70,8 @@ struct XEPMainThread : public XEPThread
 
 	thread_id _ID;
 	std::atomic<XE::uint64> _CurrentTasks;
-	tbb::concurrent_priority_queue<XEPTask> _FrontTasks;
-	tbb::concurrent_priority_queue<XEPTask> _BackTasks;
+	tbb::concurrent_queue< std::function<void()> > _FrontTasks;
+	tbb::concurrent_queue< std::function<void()> > _BackTasks;
 };
 
 struct XEPSpecialThread : public XEPThread
@@ -139,32 +112,25 @@ struct XEPSpecialThread : public XEPThread
 				return;
 			}
 
-			XEPTask task;
+			std::function<void()>  task;
 			while( _Tasks.try_pop( task ) )
 			{
-				if( task.Task )
+				if( task )
 				{
-					bool ret = task.Task();
-
-					task.Promise.set_value( ++task.ExecCount );
-
-					if( ret )
-					{
-						PushTask( std::move( task ) );
-					}
+					task();
 				}
 			}
 		}
 	}
 
-	virtual void PushTask( XEPTask && val ) override
+	virtual void PushTask( std::function<void()> && val ) override
 	{
 		_Tasks.push( std::move( val ) );
 	}
 
 	virtual XE::uint64 QueueSize() override
 	{
-		return _Tasks.size();
+		return _Tasks.unsafe_size();
 	}
 
 	virtual void Notify() override
@@ -181,7 +147,7 @@ struct XEPSpecialThread : public XEPThread
 	std::mutex _Lock;
 	std::thread _Thread;
 	std::condition_variable _Variable;
-	tbb::concurrent_priority_queue<XEPTask> _Tasks;
+	tbb::concurrent_queue< std::function<void()> > _Tasks;
 };
 
 struct XEPWorkThread : public XEPThread
@@ -227,33 +193,26 @@ struct XEPWorkThread : public XEPThread
 				return;
 			}
 
-			XEPTask task;
+			std::function<void()>  task;
 			while( _Tasks.try_pop( task ) )
 			{
-				if( task.Task )
+				if( task )
 				{
-					bool ret = task.Task();
-
-					task.Promise.set_value( ++task.ExecCount );
-
-					if( ret )
-					{
-						PushTask( std::move( task ) );
-					}
+					task();
 				}
 			}
 
 		}
 	}
 
-	virtual void PushTask( XEPTask && val ) override
+	virtual void PushTask( std::function<void()> && val ) override
 	{
 		_Tasks.push( std::move( val ) );
 	}
 
 	virtual XE::uint64 QueueSize() override
 	{
-		return _Tasks.size();
+		return _Tasks.unsafe_size();
 	}
 
 	virtual void Notify() override
@@ -278,7 +237,7 @@ struct XEPWorkThread : public XEPThread
 	std::mutex _Lock;
 	Array<std::thread> _Threads;
 	std::condition_variable _Variable;
-	tbb::concurrent_priority_queue<XEPTask> _Tasks;
+	tbb::concurrent_queue< std::function<void()> > _Tasks;
 };
 
 struct ThreadService::Private
@@ -346,17 +305,8 @@ XE::ThreadType XE::ThreadService::GetCurrentThreadType() const
 	return XE::ThreadType::UNKNOWN;
 }
 
-std::future<XE::uint32> XE::ThreadService::PostTask( TaskType task, ThreadType type, ThreadPriority pri /*= ThreadPriority::NORM*/ )
+void XE::ThreadService::_PostTask( std::function<void()> && task, ThreadType type )
 {
-	XEPTask tk;
-
-	tk.Pri = pri;
-	tk.Task = task;
-
-	std::future<XE::uint32> future = tk.Promise.get_future();
-
-	_p->_Threads[( XE::uint64 )type]->PushTask( std::move( tk ) );
+	_p->_Threads[( XE::uint64 )type]->PushTask( std::move( task ) );
 	_p->_Threads[( XE::uint64 )type]->Notify();
-
-	return std::move( future );
 }

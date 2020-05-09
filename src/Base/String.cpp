@@ -251,9 +251,14 @@ String::operator const char * ( ) const
 	return ToCString();
 }
 
-String::operator const std::string & ( ) const
+String::operator std::string ( ) const
 {
-	return ToStdString();
+	return _View.data();
+}
+
+String::operator const std::string_view & ( ) const
+{
+	return _View;
 }
 
 const char * String::ToCString() const

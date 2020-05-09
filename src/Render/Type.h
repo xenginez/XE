@@ -13,7 +13,10 @@
 
 BEG_XE_NAMESPACE
 
-DECL_PTR( SkyBox );
+DECL_PTR( Light );
+DECL_PTR( Camera );
+DECL_PTR( Renderable );
+DECL_PTR( Skeleton );
 
 END_XE_NAMESPACE
 

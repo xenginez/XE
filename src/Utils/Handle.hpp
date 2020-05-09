@@ -36,14 +36,13 @@ public:
 	{
 	}
 
-	Handle( const Handle & val )
-		:_value( val._value )
+	Handle( XE::uint64 val )
+		:_value( val )
 	{
 	}
 
-private:
-	Handle( XE::uint64 val )
-		:_value( val )
+	Handle( const Handle & val )
+		:_value( val._value )
 	{
 	}
 

@@ -182,17 +182,17 @@ END_META()
 
 void CreateNodes( ik_node_t * parent, SkeletonPtr skeleton, ik_solver_t * solver )
 {
-	const auto & children = skeleton->GetBoneJointChildren( parent->guid );
-	for( auto child : children )
-	{
-		struct ik_node_t * node = solver->node->create( child );
-		Vec3 position; Quat rotation; Vec3 scale;
-		Mathf::TRS( skeleton->GetBoneJointTransform( child ), position, rotation, scale );
-		node->position = ik.vec3.vec3( position.x, position.y, position.z );
-		node->rotation = ik.quat.quat( rotation.x, rotation.y, rotation.z, rotation.w );
-		solver->node->add_child( parent, node );
-		CreateNodes( node, skeleton, solver );
-	}
+// 	const auto & children = skeleton->GetBoneJointChildren( parent->guid );
+// 	for( auto child : children )
+// 	{
+// 		struct ik_node_t * node = solver->node->create( child );
+// 		Vec3 position; Quat rotation; Vec3 scale;
+// 		Mathf::TRS( skeleton->GetBoneJointTransform( child ), position, rotation, scale );
+// 		node->position = ik.vec3.vec3( position.x, position.y, position.z );
+// 		node->rotation = ik.quat.quat( rotation.x, rotation.y, rotation.z, rotation.w );
+// 		solver->node->add_child( parent, node );
+// 		CreateNodes( node, skeleton, solver );
+// 	}
 };
 
 XE::AnimationIKSolver::AnimationIKSolver()
@@ -248,7 +248,7 @@ void AnimationIKSolver::Startup()
 
 	ik_node_t * root = solver->node->create( 0 );
 	Vec3 position; Quat rotation; Vec3 scale;
-	Mathf::TRS( _Skeleton->GetBoneJointTransform( 0 ), position, rotation, scale );
+//	Mathf::TRS( _Skeleton->GetBoneJointTransform( 0 ), position, rotation, scale );
 	root->position = ik.vec3.vec3( position.x, position.y, position.z );
 	root->rotation = ik.quat.quat( rotation.x, rotation.y, rotation.z, rotation.w );
 	CreateNodes( root, _Skeleton, solver );

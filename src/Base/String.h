@@ -100,7 +100,9 @@ public:
 
 	operator const char *( ) const;
 
-	operator const std::string&( ) const;
+	operator std::string ( ) const;
+
+	operator const std::string_view &( ) const;
 
 public:
 	const char * ToCString() const;

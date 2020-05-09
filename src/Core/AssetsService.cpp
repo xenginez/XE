@@ -123,11 +123,11 @@ void XE::AssetsService::AsyncLoad( const String & val )
 		else
 		{
 			SetAssetStatus( PathToMD5( val ), nullptr, AssetStatus::LOADING );
-			GetFramework()->GetThreadService()->PostTask( [this, val]()
+			GetFramework()->GetThreadService()->PostTask( ThreadType::IO, [this, val]()
 														  {
 															  AsyncLoad( val );
 															  return false;
-														  }, ThreadType::IO );
+														  } );
 		}
 	}
 }

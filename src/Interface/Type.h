@@ -782,14 +782,6 @@ enum class ThreadType
 };
 DECL_META_ENUM( XE_API, ThreadType );
 
-enum class ThreadPriority
-{
-	MAX = 0,
-	NORM = 1,
-	MIN = 2,
-};
-DECL_META_ENUM( XE_API, ThreadPriority );
-
 using WindowEventPair = Pair<WindowHandle, XE::WindowEvent>;
 
 END_XE_NAMESPACE
