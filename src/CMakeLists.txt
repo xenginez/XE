@@ -36,8 +36,8 @@ target_link_libraries(XE
 		fmod${XE_FMOD_POSTFIX}
 		fmodstudio${XE_FMOD_POSTFIX}
 		imgui
-		zlib
-		Zipper-static
+		zlib${XE_POSTFIX}
+		Zipper-static${XE_POSTFIX}
 		)
 
 FILE(GLOB LIBRARY_FILES ../depend/bin/${XE_PLATFORM_PATH}/${XE_CONFIG}/*.*)
