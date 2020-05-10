@@ -101,35 +101,21 @@ XE::ObjectPtr XE::AssetsService::Load( const String & val )
 	return obj;
 }
 
-void XE::AssetsService::AsyncLoad( const String & val )
+std::future< ObjectPtr > XE::AssetsService::AsyncLoad( const String & val )
 {
 	auto obj = GetAsset( val );
 
 	if( obj == nullptr )
 	{
-		if( GetFramework()->GetThreadService()->GetCurrentThreadType() == ThreadType::IO )
-		{
-			SetAssetStatus( PathToMD5( val ), nullptr, AssetStatus::LOADING );
-			auto asset = LoadAsset( val );
-			if( asset )
-			{
-				SetAssetStatus( PathToMD5( val ), asset, AssetStatus::READY );
-			}
-			else
-			{
-				SetAssetStatus( PathToMD5( val ), asset, AssetStatus::FAILED );
-			}
-		}
-		else
-		{
-			SetAssetStatus( PathToMD5( val ), nullptr, AssetStatus::LOADING );
-			GetFramework()->GetThreadService()->PostTask( ThreadType::IO, [this, val]()
-														  {
-															  AsyncLoad( val );
-															  return false;
-														  } );
-		}
+		SetAssetStatus( PathToMD5( val ), nullptr, AssetStatus::LOADING );
+		
+		return GetFramework()->GetThreadService()->PostTask( ThreadType::IO, std::bind( &AssetsService::Load, this, val ) );
 	}
+
+	std::promise< XE::ObjectPtr > promise;
+	promise.set_value( obj );
+
+	return promise.get_future();
 }
 
 XE::ObjectPtr XE::AssetsService::GetAsset( const String & val ) const
@@ -142,17 +128,6 @@ XE::ObjectPtr XE::AssetsService::GetAsset( const String & val ) const
 	}
 
 	return nullptr;
-}
-
-XE::AssetStatus XE::AssetsService::GetAssetStatus( const String & val ) const
-{
-	AssetMap::accessor it;
-	if( _p->_Assets.find( it, PathToMD5( val ) ) )
-	{
-		return std::get < 0 >( it->second );
-	}
-
-	return AssetStatus::UNDEFINED;
 }
 
 XE::ObjectPtr XE::AssetsService::LoadAsset( const XE::String & val )

@@ -13,7 +13,6 @@
 #include "MD5.h"
 #include "CRC32.h"
 #include "Event.h"
-#include "Asset.h"
 #include "Layer.h"
 #include "Order.h"
 #include "BASE64.h"
@@ -24,7 +23,6 @@
 #include "Platform.h"
 #include "Handle.hpp"
 #include "Sigslot.hpp"
-#include "AssetInstance.hpp"
 
 
 #define DECL_HANDLE( _DLL_EXPORT, NAME ) class NAME; using NAME##Handle = XE::Handle< NAME >; DECL_META_CLASS( _DLL_EXPORT, NAME##Handle );

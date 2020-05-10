@@ -69,6 +69,12 @@ Scene
 Utils)
 foreach(INC_DIR ${INC_DIRS})
 
+	add_custom_command(TARGET XE
+					POST_BUILD
+					COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_CURRENT_SOURCE_DIR}/../target/include/${INC_DIR}"
+					COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_CURRENT_SOURCE_DIR}/../target/include/${INC_DIR}"
+					)
+
 	FILE(GLOB INC_FILES ${INC_DIR}/*.h ${INC_DIR}/*.hpp ${INC_DIR}/*.inc)
 	foreach (INC_FILE ${INC_FILES})
 		add_custom_command(TARGET XE
@@ -76,6 +82,7 @@ foreach(INC_DIR ${INC_DIRS})
 				COMMAND ${CMAKE_COMMAND} -E copy ${INC_FILE} "${CMAKE_CURRENT_SOURCE_DIR}/../target/include/${INC_DIR}"
 				)
 	endforeach (INC_FILE)
-	message("copy include " ${INC_DIR})
+
+	message("copy include: " ${INC_DIR})
 
 endforeach (INC_DIR)

@@ -40,12 +40,10 @@ public:
 public:
 	ObjectPtr Load( const String & val ) override;
 
-	void AsyncLoad( const String & val ) override;
+	std::future< ObjectPtr > AsyncLoad( const String & val ) override;
 
 public:
-	ObjectPtr GetAsset( const String & val ) const override;
-
-	AssetStatus GetAssetStatus( const String & val ) const override;
+	ObjectPtr GetAsset( const String & val ) const;
 
 public:
 	void ResetMD5Cache();

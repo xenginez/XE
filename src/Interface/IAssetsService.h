@@ -25,12 +25,7 @@ public:
 public:
 	virtual ObjectPtr Load( const String & val ) = 0;
 
-	virtual void AsyncLoad( const String & val ) = 0;
-
-public:
-	virtual ObjectPtr GetAsset( const String & val ) const = 0;
-
-	virtual AssetStatus GetAssetStatus( const String & val ) const = 0;
+	virtual std::future< ObjectPtr > AsyncLoad( const String & val ) = 0;
 
 };
 

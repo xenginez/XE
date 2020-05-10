@@ -1,5 +1,8 @@
 #include "ActionNode.h"
 
+#include <Interface/IFramework.h>
+#include <Interface/IAssetsService.h>
+
 #include "BehaviorTree.h"
 
 USING_XE
@@ -18,7 +21,7 @@ XE::ActionNode::~ActionNode()
 }
 
 BEG_META( SubNode )
-type->Property( "SubAI", &SubNode::_SubAI );
+type->Property( "SubAI", &SubNode::_SubAIPath );
 type->Property( "ConnectKeys", &SubNode::_ConnectKeys );
 END_META()
 
@@ -34,6 +37,8 @@ XE::SubNode::~SubNode()
 
 void XE::SubNode::OnStartup()
 {
+	_SubAI = DP_CAST<XE::AIModule>( XE::IFramework::GetCurrentFramework()->GetAssetsService()->Load( _SubAIPath ) );
+
 	for( const auto & keys : _ConnectKeys )
 	{
 		_SubAI->SetKey( keys.second, GetBehaviorTree()->GetKey( keys.first ) );

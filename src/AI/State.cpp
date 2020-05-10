@@ -1,5 +1,8 @@
 #include "State.h"
 
+#include <Interface/IFramework.h>
+#include <Interface/IAssetsService.h>
+
 #include "Condition.h"
 #include "StateMachine.h"
 
@@ -88,7 +91,7 @@ void XE::State::OnClearup()
 }
 
 BEG_META( SubState )
-type->Property( "SubAI", &SubState::_SubAI );
+type->Property( "SubAI", &SubState::_SubAIPath );
 type->Property( "ConnectKeys", &SubState::_ConnectKeys );
 END_META()
 
@@ -104,6 +107,8 @@ XE::SubState::~SubState()
 
 void XE::SubState::OnStartup()
 {
+	_SubAI = DP_CAST<XE::AIModule>( XE::IFramework::GetCurrentFramework()->GetAssetsService()->Load( _SubAIPath ) );
+
 	for( const auto & keys : _ConnectKeys )
 	{
 		_SubAI->SetKey( keys.second, GetStateMachine()->GetKey( keys.first ) );
