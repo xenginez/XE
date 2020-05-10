@@ -29,16 +29,16 @@ public:
 	}
 
 public:
-	static const std::string & Register( const std::string & val )
+	const std::string & Register( const std::string & val )
 	{
 		tbb::concurrent_unordered_set<std::string>::const_iterator it = Instance()->_Strings.find( val );
 
-		if( it != Instance()->_Strings.end() )
+		if( it != _Strings.end() )
 		{
 			return ( *it );
 		}
 
-		return ( *Instance()->_Strings.insert( val ).first );
+		return ( *( _Strings.insert( val ).first ) );
 	}
 
 private:
@@ -46,13 +46,13 @@ private:
 };
 
 String::String()
-	:_View( ConstStringPool::Register( "" ) )
+	:_View( ConstStringPool::Instance()->Register( "" ) )
 {
 
 }
 
 String::String( const char * val )
-	: _View( ConstStringPool::Register( val ) )
+	: _View( ConstStringPool::Instance()->Register( val ) )
 {
 
 }
@@ -64,7 +64,7 @@ String::String( const String & val )
 }
 
 String::String( const std::string & val )
-	: _View( ConstStringPool::Register( val ) )
+	: _View( ConstStringPool::Instance()->Register( val ) )
 {
 
 }
@@ -246,17 +246,22 @@ char String::operator[]( XE::uint64 val ) const
 	return _View[val];
 }
 
-String::operator const char * ( ) const
-{
-	return ToCString();
-}
-
-String::operator std::string ( ) const
+String::operator const char * () const
 {
 	return _View.data();
 }
 
-String::operator const std::string_view & ( ) const
+String::operator std::string ( ) const
+{
+	return ConstStringPool::Instance()->Register( _View.data() );
+}
+
+String::operator const std::string & () const
+{
+	return ConstStringPool::Instance()->Register( _View.data() );
+}
+
+String::operator const std::string_view & () const
 {
 	return _View;
 }
@@ -268,7 +273,7 @@ const char * String::ToCString() const
 
 String & String::FromCString( const char * val )
 {
-	_View = ConstStringPool::Register( val );
+	_View = ConstStringPool::Instance()->Register( val );
 
 	return *this;
 }
@@ -280,7 +285,7 @@ std::string String::ToStdString() const
 
 String & String::FromStdString( const std::string & val )
 {
-	_View = ConstStringPool::Register( val );
+	_View = ConstStringPool::Instance()->Register( val );
 	return *this;
 }
 

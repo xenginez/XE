@@ -95,69 +95,72 @@ void XE::RenderService::Clearup()
 
 void XE::RenderService::RegisterLight( const LightPtr & val )
 {
-	auto it = std::find( _p->_Lights.begin(), _p->_Lights.end(), val );
-	if( it != _p->_Lights.end() )
-	{
-		_p->_Lights.push_back( val );
-	}
+// 	auto it = std::find( _p->_Lights.begin(), _p->_Lights.end(), val );
+// 	if( it != _p->_Lights.end() )
+// 	{
+// 		_p->_Lights.push_back( val );
+// 	}
 }
 
 void XE::RenderService::UnregisterLight( const LightPtr & val )
 {
-	auto it = std::find( _p->_Lights.begin(), _p->_Lights.end(), val );
-	if( it != _p->_Lights.end() )
-	{
-		_p->_Lights.erase( it );
-	}
+// 	auto it = std::find( _p->_Lights.begin(), _p->_Lights.end(), val );
+// 	if( it != _p->_Lights.end() )
+// 	{
+// 		_p->_Lights.erase( it );
+// 	}
 }
 
 void XE::RenderService::RegisterCamera( const CameraPtr & val )
 {
-	auto it = std::find( _p->_Cameras.begin(), _p->_Cameras.end(), val );
-	if( it != _p->_Cameras.end() )
-	{
-		_p->_Cameras.push_back( val );
-	}
+// 	auto it = std::find( _p->_Cameras.begin(), _p->_Cameras.end(), val );
+// 	if( it != _p->_Cameras.end() )
+// 	{
+// 		_p->_Cameras.push_back( val );
+// 	}
 }
 
 void XE::RenderService::UnregisterCamera( const CameraPtr & val )
 {
-	auto it = std::find( _p->_Cameras.begin(), _p->_Cameras.end(), val );
-	if( it != _p->_Cameras.end() )
-	{
-		_p->_Cameras.erase( it );
-	}
+// 	auto it = std::find( _p->_Cameras.begin(), _p->_Cameras.end(), val );
+// 	if( it != _p->_Cameras.end() )
+// 	{
+// 		_p->_Cameras.erase( it );
+// 	}
 }
 
 void XE::RenderService::RegisterRenderable( const RenderablePtr & val )
 {
-	auto it = std::find( _p->_Renderables.begin(), _p->_Renderables.end(), val );
-	if( it != _p->_Renderables.end() )
-	{
-		_p->_Renderables.push_back( val );
-	}
+// 	auto it = std::find( _p->_Renderables.begin(), _p->_Renderables.end(), val );
+// 	if( it != _p->_Renderables.end() )
+// 	{
+// 		_p->_Renderables.push_back( val );
+// 	}
 }
 
 void XE::RenderService::UnregisterRenderable( const RenderablePtr & val )
 {
-	auto it = std::find( _p->_Renderables.begin(), _p->_Renderables.end(), val );
-	if( it != _p->_Renderables.end() )
-	{
-		_p->_Renderables.erase( it );
-	}
+// 	auto it = std::find( _p->_Renderables.begin(), _p->_Renderables.end(), val );
+// 	if( it != _p->_Renderables.end() )
+// 	{
+// 		_p->_Renderables.erase( it );
+// 	}
 }
 
 const XE::Array<XE::LightPtr> & XE::RenderService::GetLights() const
 {
-	return _p->_Lights;
+	return {};
+	//return _p->_Lights;
 }
 
 const XE::Array<XE::CameraPtr> & XE::RenderService::GetCameras() const
 {
-	return _p->_Cameras;
+	return {};
+	//return _p->_Cameras;
 }
 
 const XE::Array<XE::RenderablePtr> & XE::RenderService::GetRenderables() const
 {
-	return _p->_Renderables;
+	return {};
+	//return _p->_Renderables;
 }

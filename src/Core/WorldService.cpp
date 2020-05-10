@@ -62,7 +62,7 @@ void XE::WorldService::Clearup()
 
 void WorldService::LoadWorld( const XE::String & val )
 {
-	GetFramework()->GetServiceT<XE::IThreadService>()->PostTask( [this, val]()
+	GetFramework()->GetServiceT<XE::IThreadService>()->PostTask( XE::ThreadType::GAME, [this, val]()
 																 {
 																	 if( _p->_World )
 																	 {
@@ -76,9 +76,7 @@ void WorldService::LoadWorld( const XE::String & val )
 																	 _p->_World->Startup();
 
 																	 return false;
-																 }, XE::ThreadType::GAME, XE::ThreadPriority::MAX );
-
-
+																 } );
 }
 
 XE::String WorldService::GetWorldName() const

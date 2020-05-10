@@ -98,11 +98,13 @@ public:
 
 	char operator[]( XE::uint64 val ) const;
 
-	operator const char *( ) const;
+	operator const char *() const;
 
 	operator std::string ( ) const;
 
-	operator const std::string_view &( ) const;
+	operator const std::string & ( ) const;
+
+	operator const std::string_view &() const;
 
 public:
 	const char * ToCString() const;

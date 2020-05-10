@@ -744,9 +744,3 @@ type->Value( "NAVIGATION", ThreadType::NAVIGATION );
 type->Value( "WORKS", ThreadType::WORKS );
 type->Value( "WORKS", ThreadType::UNKNOWN );
 END_META()
-
-BEG_META( ThreadPriority )
-type->Value( "MAX", ThreadPriority::MAX );
-type->Value( "NORM", ThreadPriority::NORM );
-type->Value( "MIN", ThreadPriority::MIN );
-END_META()

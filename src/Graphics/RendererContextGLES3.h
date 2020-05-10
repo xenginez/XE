@@ -9,11 +9,11 @@
 #ifndef RENDERERCONTEXTGLES3_H__249AD269_9E1C_4E09_B408_2500405B6C28
 #define RENDERERCONTEXTGLES3_H__249AD269_9E1C_4E09_B408_2500405B6C28
 
-#if PLATFORM_OS & (OS_ANDROID)
-
 #include "RendererContext.h"
 
 BEG_XE_NAMESPACE
+
+#if PLATFORM_OS & (OS_ANDROID)
 
 class RendererContextGLES3 : public XE::RendererContext
 {
@@ -31,17 +31,10 @@ private:
 
 };
 
-END_XE_NAMESPACE
-
-XE::RendererContext * CreateRendererContextGLES3()
-{
-	return new XE::RendererContextGLES3();
-}
-#else
-XE::RendererContext * CreateRendererContextGLES3()
-{
-	return nullptr;
-}
 #endif
+
+XE::RendererContext * CreateRendererContextGLES3();
+
+END_XE_NAMESPACE
 
 #endif // RENDERERCONTEXTGLES3_H__249AD269_9E1C_4E09_B408_2500405B6C28

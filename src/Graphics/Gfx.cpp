@@ -1,8 +1,5 @@
 #include "Gfx.h"
 
-#include "Encoder.h"
-#include "Structs.h"
-#include "RendererContext.h"
 #include "RendererContextGLES2.h"
 #include "RendererContextGLES3.h"
 #include "RendererContextMetal.h"
@@ -76,28 +73,28 @@ void XE::Gfx::Init( const XE::InitInfo & val )
 	switch( type )
 	{
 	case XE::RendererContextType::METAL:
-		_p->_Context = CreateRendererContextMetal();
+		_p->_Context = XE::CreateRendererContextMetal();
 		break;
 	case XE::RendererContextType::VULKAN:
-		_p->_Context = CreateRendererContextVulkan();
+		_p->_Context = XE::CreateRendererContextVulkan();
 		break;
 	case XE::RendererContextType::GLES2:
-		_p->_Context = CreateRendererContextGLES2();
+		_p->_Context = XE::CreateRendererContextGLES2();
 		break;
 	case XE::RendererContextType::GLES3:
-		_p->_Context = CreateRendererContextGLES3();
+		_p->_Context = XE::CreateRendererContextGLES3();
 		break;
 	case XE::RendererContextType::OPENGL:
-		_p->_Context = CreateRendererContextOpenGL();
+		_p->_Context = XE::CreateRendererContextOpenGL();
 		break;
 	case XE::RendererContextType::DIRECT3D11:
-		_p->_Context = CreateRendererContextDirectX11();
+		_p->_Context = XE::CreateRendererContextDirectX11();
 		break;
 	case XE::RendererContextType::DIRECT3D12:
-		_p->_Context = CreateRendererContextDirectX12();
+		_p->_Context = XE::CreateRendererContextDirectX12();
 		break;
 	case XE::RendererContextType::SOFTWARE:
-		_p->_Context = CreateRendererContextSoftware();
+		_p->_Context = XE::CreateRendererContextSoftware();
 		break;
 	default:
 		break;

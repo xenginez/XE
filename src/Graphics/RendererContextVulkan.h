@@ -9,11 +9,11 @@
 #ifndef RENDERERCONTEXTVULKAN_H__9B474D4E_3242_4EE9_87DC_ABE7A51DAE85
 #define RENDERERCONTEXTVULKAN_H__9B474D4E_3242_4EE9_87DC_ABE7A51DAE85
 
-#if PLATFORM_OS & OS_WINDOWS
-
 #include "RendererContext.h"
 
 BEG_XE_NAMESPACE
+
+#if PLATFORM_OS & (OS_WINDOWS | OS_ANDROID | OS_LINUX)
 
 class RendererContextVulkan : public XE::RendererContext
 {
@@ -31,17 +31,10 @@ private:
 
 };
 
-END_XE_NAMESPACE
-
-XE::RendererContext * CreateRendererContextVulkan()
-{
-	return new XE::RendererContextVulkan();
-}
-#else
-XE::RendererContext * CreateRendererContextVulkan()
-{
-	return nullptr;
-}
 #endif
+
+XE::RendererContext * CreateRendererContextVulkan();
+
+END_XE_NAMESPACE
 
 #endif // RENDERERCONTEXTVULKAN_H__9B474D4E_3242_4EE9_87DC_ABE7A51DAE85

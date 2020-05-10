@@ -9,11 +9,11 @@
 #ifndef RENDERERCONTEXTOPENGL_H__685CAE87_13C6_4256_B001_DA575B559590
 #define RENDERERCONTEXTOPENGL_H__685CAE87_13C6_4256_B001_DA575B559590
 
-#if PLATFORM_OS & (OS_WINDOWS | OS_LINUX | OS_MAC)
-
 #include "RendererContext.h"
 
 BEG_XE_NAMESPACE
+
+#if PLATFORM_OS & (OS_WINDOWS | OS_LINUX | OS_MAC)
 
 class RendererContextOpenGL : public XE::RendererContext
 {
@@ -31,17 +31,10 @@ private:
 
 };
 
-END_XE_NAMESPACE
-
-XE::RendererContext * CreateRendererContextOpenGL()
-{
-	return new XE::RendererContextOpenGL();
-}
-#else
-XE::RendererContext * CreateRendererContextOpenGL()
-{
-	return nullptr;
-}
 #endif
+
+XE::RendererContext * CreateRendererContextOpenGL();
+
+END_XE_NAMESPACE
 
 #endif // RENDERERCONTEXTOPENGL_H__685CAE87_13C6_4256_B001_DA575B559590

@@ -271,6 +271,11 @@ namespace std
 
 		return false;
 	}
+
+	template< typename T > inline bool is_ready( std::future< T > & _Future )
+	{
+		return _Future.valid() && _Future.wait_for( std::chrono::seconds( 0 ) ) == std::future_status::ready;
+	}
 };
 
 BEG_XE_NAMESPACE

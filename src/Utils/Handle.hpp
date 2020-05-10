@@ -15,6 +15,7 @@ BEG_XE_NAMESPACE
 
 template< typename T > class HandleAlloctor;
 template< typename T, XE::uint64 _Max > class FreeHandleAlloctor;
+template< typename T, XE::uint64 _Max > class ConcurrentHandleAlloctor;
 
 template< typename T > class Handle
 {
@@ -241,7 +242,7 @@ template< typename T > struct VariantCast<HandleAlloctor<T>>
 
 template< typename T > struct VariantCast<HandleAlloctor<T> *>
 {
-	static Handle<T> * Cast( const Variant * val )
+	static HandleAlloctor<T> * Cast( const Variant * val )
 	{
 		if( ( val->GetFlag() == Variant::Flag::HANDLE ) && val->GetType() == TypeID< HandleAlloctor<T> >::Get() )
 		{

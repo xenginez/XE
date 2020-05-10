@@ -56,12 +56,23 @@ public:
 public:
 	template< typename T > void read( T & val )
 	{
-		read( &val, sizeof( T ) );
+		read( ( char * )&val, sizeof( T ) );
 	}
 
 	template< typename T > void wirte( const T & val )
 	{
-		wirte( &val, sizeof( T ) );
+		wirte( ( const char * )&val, sizeof( T ) );
+	}
+
+public:
+	template< typename T > void read( T * val )
+	{
+		read( ( char * )val, sizeof( T ) );
+	}
+
+	template< typename T > void wirte( const T * val )
+	{
+		wirte( ( const char * )val, sizeof( T ) );
 	}
 
 public:

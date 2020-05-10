@@ -25,11 +25,9 @@ public:
 public:
 	virtual ThreadType GetCurrentThreadType() const = 0;
 
-	template <typename T>
-	struct BinaryPredicateType
-	{
-		using type = std::function<T()>;
-	};
+protected:
+	virtual void _PostTask( std::function<void()> && task, ThreadType type ) = 0;
+
 public:
 	template< typename T, typename ... Args >
 	std::future<typename std::result_of<T( Args... )>::type> PostTask( ThreadType type, T && t, Args &&... args )
@@ -58,20 +56,12 @@ public:
 		return std::move( _task->get_future() );
 	}
 
-protected:
-	virtual void _PostTask( std::function<void()> && task, ThreadType type ) = 0;
-
 private:
-	template< typename T > static bool IsReady( std::shared_future< T > & future )
-	{
-		return future.valid() && future.wait_for( std::chrono::seconds( 0 ) ) == std::future_status::ready;
-	}
-
     template< typename F, typename T > void _PostTask( const std::shared_future < F > & future, T && task, ThreadType type )
     {
 		PostTask( [this, future, _task, type]()
 				  {
-					  if( IsReady( future ) )
+					  if( std::is_ready( future ) )
 					  {
 						  ( *_task )( );
 					  }

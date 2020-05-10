@@ -13,9 +13,9 @@
 
 BEG_XE_NAMESPACE
 
-class XE_API SkyBox : public XE::Renderable
+class XE_API SkyBox
 {
-	OBJECT( SkyBox, Renderable )
+	OBJECT( SkyBox )
 
 public:
 	SkyBox();

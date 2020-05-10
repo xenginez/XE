@@ -21,11 +21,8 @@ private:
 
 };
 
-END_XE_NAMESPACE
+XE::RendererContext * CreateRendererContextSoftware();
 
-XE::RendererContext * CreateRendererContextSoftware()
-{
-	return new XE::RendererContextSoftware();
-}
+END_XE_NAMESPACE
 
 #endif // RENDERERCONTEXTSOFTWARE_H__3145856F_D79A_440A_90B3_558891CD1D3A

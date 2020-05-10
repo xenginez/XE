@@ -5,7 +5,7 @@
 USING_XE
 
 BEG_META( BehaviorTree )
-type->Property( "Handles", &BehaviorTree::_Handles, IMetaProperty::NoDesign );
+type->Property( "HandleAlloc", &BehaviorTree::_HandleAlloc, IMetaProperty::NoDesign );
 type->Property( "Root", &BehaviorTree::_Root, IMetaProperty::NoDesign );
 type->Property( "Nodes", &BehaviorTree::_Nodes, IMetaProperty::NoDesign );
 END_META()
@@ -99,7 +99,7 @@ NodeHandle BehaviorTree::AddNode( const IMetaClassPtr & val )
 		{
 			node->SetName( val->GetName() );
 			node->SetBehaviorTree( XE_THIS( BehaviorTree ) );
-			node->SetHandle( _Handles.Alloc() );
+			node->SetHandle( _HandleAlloc.Alloc() );
 
 			_Nodes.insert( { node->GetHandle(), node } );
 

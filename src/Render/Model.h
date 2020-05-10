@@ -13,34 +13,14 @@
 
 BEG_XE_NAMESPACE
 
-class XE_API Model : public Renderable
+class XE_API Model
 {
-	OBJECT( Model, Renderable )
+	OBJECT( Model )
 
 public:
 	Model();
 
 	virtual ~Model();
-
-protected:
-	void OnStartup() override;
-
-	void OnRender() override;
-
-	void OnClearup() override;
-
-public:
-	MeshPtr GetMesh() const;
-
-	void SetMesh( const MeshPtr & val );
-
-	RenderMaterialPtr GetRenderMaterial() const;
-
-	void SetRenderMaterial( const RenderMaterialPtr & val );
-
-private:
-	MeshPtr _Mesh;
-	RenderMaterialPtr _Material;
 };
 
 END_XE_NAMESPACE
