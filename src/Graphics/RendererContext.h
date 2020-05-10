@@ -26,6 +26,8 @@ public:
 public:
 	virtual void Init( const InitInfo & val );
 
+	virtual void Render( XE::Frame * frame ) = 0;
+
 	virtual void Shutdown();
 	
 public:

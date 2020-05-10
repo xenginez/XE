@@ -13,11 +13,13 @@
 
 BEG_XE_NAMESPACE
 
+template< typename T > struct BufferReadable;
+
 class XE_API Buffer
 {
 public:
-	static constexpr XE::uint64 beg = 0;
-	static constexpr XE::uint64 end = std::numeric_limits<XE::uint64>::max();
+	static constexpr XE::uint64 BEG = 0;
+	static constexpr XE::uint64 END = std::numeric_limits<XE::uint64>::max();
 
 public:
 	Buffer();
@@ -37,52 +39,74 @@ public:
 	Buffer & operator=( const Buffer & _Right );
 
 public:
-	XE::uint64 pos() const;
+	XE::uint64 ReadPos() const;
 
-	void seek( XE::uint64 val );
+	XE::uint64 WirtePos() const;
 
-	void resize( XE::uint64 val );
+	void Seek( XE::uint64 val );
 
-public:
-	void read( std::string & val );
-
-	void wirte( const std::string & val );
+	void Resize( XE::uint64 val );
 
 public:
-	void read( char * ptr, XE::uint64 size );
+	void Read( char * ptr, XE::uint64 size );
 
-	void wirte( const char * ptr, XE::uint64 size );
+	void Wirte( const char * ptr, XE::uint64 size );
 
 public:
-	template< typename T > void read( T & val )
+	template< typename T > void Read( T & val )
 	{
-		read( ( char * )&val, sizeof( T ) );
+		BufferReadable<T>::Read( *this, val );
 	}
 
-	template< typename T > void wirte( const T & val )
+	template< typename T > void Wirte( const T & val )
 	{
-		wirte( ( const char * )&val, sizeof( T ) );
+		BufferWirteable<T>::Wirte( *this, val );
 	}
 
 public:
-	template< typename T > void read( T * val )
-	{
-		read( ( char * )val, sizeof( T ) );
-	}
-
-	template< typename T > void wirte( const T * val )
-	{
-		wirte( ( const char * )val, sizeof( T ) );
-	}
+	void Reset();
 
 public:
-	XE::memory_view view() const;
+	XE::memory_view View() const;
 
 private:
-	XE::uint64 _pos; 
-	XE::Array<char> _data;
+	XE::uint64 _ReadPos;
+	XE::uint64 _WirtePos;
+	XE::Array<char> _Data;
 };
 DECL_META_CLASS( XE_API, Buffer );
+
+template< typename T > struct BufferReadable
+{
+	static void Read( Buffer & buf, T & val )
+	{
+		buf.Read( ( char * )&val, sizeof( T ) );
+	}
+};
+
+template< typename T > struct BufferWirteable
+{
+	static void Wirte( Buffer & buf, const T & val )
+	{
+		buf.Wirte( ( const char * )&val, sizeof( T ) );
+	}
+};
+
+template< typename T > struct BufferReadable< T * >
+{
+	static void Read( Buffer & buf, T * val )
+	{
+		buf.Read( ( char * )val, sizeof( T ) );
+	}
+};
+
+template< typename T > struct BufferWirteable< T * >
+{
+	static void Wirte( Buffer & buf, const T * val )
+	{
+		buf.Wirte( ( const char * )val, sizeof( T ) );
+	}
+};
 
 END_XE_NAMESPACE
 
@@ -92,14 +116,14 @@ public:
 	static void Serialize( Archive & arc, XE::Buffer * val )
 	{
 		std::string code;
-		auto view = val->view();
+		auto view = val->View();
 		BASE64::Encode( (const char * )view.data(), view.size(), &code );
 
 		auto nvp = XE::Archive::NVP( "data", code );
 		arc & nvp;
 
-		val->resize( BASE64::DecodedLength( code ) );
-		view = val->view();
+		val->Resize( BASE64::DecodedLength( code ) );
+		view = val->View();
 		BASE64::Decode( code, (char * )view.data(), view.size() );
 	}
 };

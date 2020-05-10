@@ -17,6 +17,11 @@ void XE::RendererContextVulkan::Init( const XE::InitInfo & val )
 
 }
 
+void XE::RendererContextVulkan::Render( XE::Frame * frame )
+{
+
+}
+
 void XE::RendererContextVulkan::Shutdown()
 {
 

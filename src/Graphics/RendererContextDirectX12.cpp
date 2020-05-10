@@ -17,6 +17,11 @@ void XE::RendererContextDirectX12::Init( const InitInfo & val )
 
 }
 
+void XE::RendererContextDirectX12::Render( XE::Frame * frame )
+{
+
+}
+
 void XE::RendererContextDirectX12::Shutdown()
 {
 

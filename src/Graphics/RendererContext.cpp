@@ -92,7 +92,8 @@ void XE::RendererContext::Frame( bool capture )
 void XE::RendererContext::Render()
 {
 	std::unique_lock<std::mutex> lock( _p->_FrameMutex );
-	// TODO: render anytings
+	
+	Render( _p->_RenderFrame );
 }
 
 const XE::CapsInfo & XE::RendererContext::GetCaps() const
@@ -107,6 +108,8 @@ const XE::InitInfo & XE::RendererContext::GetInitInfo() const
 
 XE::IndexBufferHandle XE::RendererContext::CreateIndexBuffer( const XE::String & name, XE::memory_view mem, XE::Flags< XE::BufferFlag > flags )
 {
+	auto handle = _p->_IndexBufferHandleAlloc.Alloc();
+
 	return {};
 }
 

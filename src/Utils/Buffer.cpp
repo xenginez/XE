@@ -5,23 +5,22 @@ USING_XE
 IMPLEMENT_META( Buffer )
 
 Buffer::Buffer()
-	:_pos( 0 )
+	:_ReadPos( 0 ), _WirtePos( 0 )
 {
-
 }
 
 Buffer::Buffer( Buffer && _Right )
-: _pos( _Right._pos ), _data( std::move( _Right._data ) )
+	: _ReadPos( _Right._ReadPos ), _WirtePos( _Right._WirtePos ), _Data( std::move( _Right._Data ) )
 {
 }
 
 Buffer::Buffer( const Buffer & _Right )
-	:_pos( _Right._data.size() ), _data( _Right._data )
+	: _ReadPos( _Right._ReadPos ), _WirtePos( _Right._WirtePos ), _Data( _Right._Data )
 {
 }
 
 Buffer::Buffer( XE::memory_view _Right )
-	:_pos( _Right.size() ), _data( _Right.data(), _Right.data() + _Right.size() )
+	: _ReadPos( 0 ), _WirtePos( _Right.size() ), _Data( _Right.data(), _Right.data() + _Right.size() )
 {
 
 }
@@ -35,8 +34,9 @@ Buffer & Buffer::operator=( Buffer && _Right )
 {
 	if( this != std::addressof( _Right ) )
 	{
-		_data = std::move( _Right._data );
-		_pos = _data.size();
+		_Data = std::move( _Right._Data );
+		_ReadPos = _Right._ReadPos;
+		_WirtePos = _Right._WirtePos;
 	}
 
 	return *this;
@@ -46,68 +46,77 @@ Buffer & Buffer::operator=( const Buffer & _Right )
 {
 	if( this != std::addressof( _Right ) )
 	{
-		_data = _Right._data;
-		_pos = _data.size();
+		_Data = _Right._Data;
+		_ReadPos = _Right._ReadPos;
+		_WirtePos = _Right._WirtePos;
 	}
 
 	return *this;
 }
 
-XE::uint64 XE::Buffer::pos() const
+XE::uint64 XE::Buffer::ReadPos() const
 {
-	return _pos;
+	return _ReadPos;
 }
 
-void XE::Buffer::seek( XE::uint64 val )
+XE::uint64 XE::Buffer::WirtePos() const
 {
-	if( val > _data.size() )
+	return _WirtePos;
+}
+
+void XE::Buffer::Seek( XE::uint64 val )
+{
+	if( val > _Data.size() )
 	{
-		_pos = _data.size();
+		_ReadPos = _Data.size();
 	}
 	else
 	{
-		_pos = val;
+		_ReadPos = val;
 	}
 }
 
-void XE::Buffer::resize( XE::uint64 val )
+void XE::Buffer::Resize( XE::uint64 val )
 {
-	if( _data.size() < val )
+	if( val > _Data.size() )
 	{
-		_data.resize( val );
-		_pos = val;
+		_Data.resize( val );
+	}
+	else
+	{
+		_WirtePos = val;
 	}
 }
 
-void XE::Buffer::read( std::string & val )
+void XE::Buffer::Read( char * ptr, XE::uint64 size )
 {
-	XE::uint64 size = 0;
-
-	read( size );
-	val.resize( size );
-
-	read( val.data(), size );
+	std::memcpy( ptr, _Data.data() + _ReadPos, size );
+	_ReadPos += size;
 }
 
-void XE::Buffer::wirte( const std::string & val )
+void XE::Buffer::Wirte( const char * ptr, XE::uint64 size )
 {
-	wirte( val.size() );
-	wirte( val.c_str(), val.size() );
+	if( ( _Data.size() - _WirtePos ) >= size )
+	{
+		std::memcpy( _Data.data() + _WirtePos, ptr, size );
+	}
+	else
+	{
+		_Data.insert( _Data.end(), ptr, ptr + size );
+	}
+
+	_WirtePos += size;
 }
 
-void XE::Buffer::read( char * ptr, XE::uint64 size )
+void XE::Buffer::Reset()
 {
-	std::memcpy( &( *( _data.begin() + _pos ) ), ptr, size );
-	_pos += size;
+	_Data.clear();
+
+	_ReadPos = 0;
+	_WirtePos = 0;
 }
 
-void XE::Buffer::wirte( const char * ptr, XE::uint64 size )
+XE::memory_view Buffer::View() const
 {
-	_data.insert( _data.begin() + _pos, ptr, ptr + size );
-	_pos += size;
-}
-
-XE::memory_view Buffer::view() const
-{
-	return XE::memory_view( _data.data(), _data.size() );
+	return XE::memory_view( _Data.data(), _Data.size() );
 }

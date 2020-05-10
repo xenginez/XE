@@ -17,6 +17,11 @@ void XE::RendererContextGLES2::Init( const InitInfo & val )
 
 }
 
+void XE::RendererContextGLES2::Render( XE::Frame * frame )
+{
+
+}
+
 void XE::RendererContextGLES2::Shutdown()
 {
 

@@ -17,6 +17,11 @@ void XE::RendererContextMetal::Init( const InitInfo & val )
 
 }
 
+void RendererContextMetal::Render( XE::Frame * frame )
+{
+
+}
+
 void XE::RendererContextMetal::Shutdown()
 {
 

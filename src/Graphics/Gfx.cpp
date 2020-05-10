@@ -145,6 +145,11 @@ void XE::Gfx::Frame( bool capture /*= false */ )
 	_p->_Context->Frame( capture );
 }
 
+void XE::Gfx::Render()
+{
+	_p->_Context->Render();
+}
+
 void XE::Gfx::DebugTextPrint( XE::uint32 x, XE::uint32 y, const XE::Color & color, const std::string & text )
 {
 	XE_ASSERT( _p->_Context != nullptr );

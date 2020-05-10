@@ -44,4 +44,42 @@ DLL_VAR_WEAK extern const XE::Handle<XE::Event> NAME = XE::Order::RegisterOrder<
 
 DECL_GROUP( XE_API, 1, Event );
 
+BEG_XE_NAMESPACE
+
+template<> struct BufferReadable< std::string >
+{
+	static void Read( Buffer & buf, std::string & val )
+	{
+		std::string::size_type size = 0;
+
+		buf.Read( size );
+
+		val.resize( size );
+
+		buf.Read( ( char * )val.data(), size );
+	}
+};
+
+template<> struct BufferWirteable< std::string >
+{
+	static void Wirte( Buffer & buf, const std::string & val )
+	{
+		buf.Wirte( val.size() );
+
+		buf.Wirte( val.c_str(), val.size() );
+	}
+};
+
+template<> struct BufferWirteable< XE::memory_view >
+{
+	static void Wirte( Buffer & buf, const XE::memory_view & val )
+	{
+		buf.Wirte( val.size() );
+
+		buf.Wirte( ( const char * )val.data(), val.size() );
+	}
+};
+
+END_XE_NAMESPACE
+
 #endif // UTILS_H__836D437C_196C_4DE7_8062_D8A3F6CEC7D3

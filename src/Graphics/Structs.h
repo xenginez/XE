@@ -234,6 +234,7 @@ public:
 
 public:
 	XE::Buffer PrevCmd;
+	std::mutex PrevCmdMutex;
 
 	XE::uint64 RenderOcclusionSize = 0;
 	std::array<XE::int32, GFX_MAX_OCCLUSION> Occlusion = {};
@@ -250,8 +251,10 @@ public:
 	std::array<XE::uint64, GFX_MAX_DRAW_CALLS> RenderBlitKeys = {};
 
 	XE::Buffer PostCmd;
+	std::mutex PostCmdMutex;
 
-	XE::Array<XE::uint8> _TransientBuffer;
+	XE::Buffer TransientBuffer;
+	std::mutex TransientBufferMutex;
 };
 
 END_XE_NAMESPACE

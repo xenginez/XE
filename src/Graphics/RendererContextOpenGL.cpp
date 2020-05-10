@@ -17,6 +17,11 @@ void XE::RendererContextOpenGL::Init( const InitInfo & val )
 
 }
 
+void XE::RendererContextOpenGL::Render( XE::Frame * frame )
+{
+
+}
+
 void XE::RendererContextOpenGL::Shutdown()
 {
 

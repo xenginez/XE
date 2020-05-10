@@ -23,9 +23,11 @@ public:
 	~RendererContextDirectX11() override;
 
 public:
-	void Init( const InitInfo & val );
+	void Init( const InitInfo & val ) override;
 
-	void Shutdown();
+    void Render( XE::Frame * frame ) override;
+
+	void Shutdown() override;
 
 private:
 

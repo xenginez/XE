@@ -44,6 +44,8 @@ public:
 
 	void Frame( bool capture = false );
 
+	void Render();
+
 public:
 	void DebugTextPrint( XE::uint32 x, XE::uint32 y, const XE::Color & color, const std::string & text );
 

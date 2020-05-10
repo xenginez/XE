@@ -25,6 +25,8 @@ public:
 public:
 	void Init( const InitInfo & val ) override;
 
+	void Render( XE::Frame * frame ) override;
+
 	void Shutdown() override;
 
 private:
