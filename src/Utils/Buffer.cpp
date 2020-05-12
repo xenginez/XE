@@ -110,8 +110,6 @@ void XE::Buffer::Wirte( const char * ptr, XE::uint64 size )
 
 void XE::Buffer::Reset()
 {
-	_Data.clear();
-
 	_ReadPos = 0;
 	_WirtePos = 0;
 }

@@ -68,16 +68,6 @@ template<> struct BufferWirteable< std::string >
 	}
 };
 
-template<> struct BufferWirteable< XE::memory_view >
-{
-	static void Wirte( Buffer & buf, const XE::memory_view & val )
-	{
-		buf.Wirte( val.size() );
-
-		buf.Wirte( ( const char * )val.data(), val.size() );
-	}
-};
-
 END_XE_NAMESPACE
 
 #endif // UTILS_H__836D437C_196C_4DE7_8062_D8A3F6CEC7D3

@@ -14,7 +14,7 @@
 BEG_XE_NAMESPACE
 
 template< typename T > class HandleAlloctor;
-template< typename T, XE::uint64 _Max > class FreeHandleAlloctor;
+template< typename T, XE::uint64 _Max > class QueueHandleAlloctor;
 template< typename T, XE::uint64 _Max > class ConcurrentHandleAlloctor;
 
 template< typename T > class Handle
@@ -182,7 +182,7 @@ public:
 	}
 };
 
-template< typename T > class HandleAlloctor
+template< typename T > class HandleAlloctor< Handle< T > >
 {
 public:
 	HandleAlloctor()
@@ -215,58 +215,7 @@ private:
 	XE::uint64 _Value;
 };
 
-template< typename T > struct VariantCreate<HandleAlloctor<T>>
-{
-	static void Create( Variant * var, const HandleAlloctor<T> & val )
-	{
-		using type = typename TypeTraits<HandleAlloctor<T>>::raw_t;
-
-		var->_Type = TypeID<type>::Get();
-		var->_Data.u64 = val.GetValue();
-		var->_Flag = Variant::Flag::HANDLE;
-	}
-};
-
-template< typename T > struct VariantCast<HandleAlloctor<T>>
-{
-	static HandleAlloctor<T> Cast( const Variant * val )
-	{
-		if( ( val->GetFlag() == Variant::Flag::HANDLE ) && val->GetType() == TypeID< HandleAlloctor<T> >::Get() )
-		{
-			return val->_Data.u64;
-		}
-
-		throw VariantException( *val, "cast fail" );
-	}
-};
-
-template< typename T > struct VariantCast<HandleAlloctor<T> *>
-{
-	static HandleAlloctor<T> * Cast( const Variant * val )
-	{
-		if( ( val->GetFlag() == Variant::Flag::HANDLE ) && val->GetType() == TypeID< HandleAlloctor<T> >::Get() )
-		{
-			return ( HandleAlloctor<T> * ) & ( val->_Data.u64 );
-		}
-
-		throw VariantException( *val, "cast fail" );
-	}
-};
-
-template< typename T > struct Serializable< HandleAlloctor< T > >
-{
-public:
-	static void Serialize( Archive & arc, HandleAlloctor< T > * val )
-	{
-		XE::uint64 value = val->GetValue();
-		auto nvp = XE::Archive::NVP( "@value", value );
-		arc & nvp;
-
-		*val = HandleAlloctor< T >( nvp.Value );
-	}
-};
-
-template< typename T, XE::uint64 _Max > class QueueHandleAlloctor
+template< typename T, XE::uint64 _Max > class QueueHandleAlloctor< Handle< T >, _Max >
 {
 public:
 	QueueHandleAlloctor()
@@ -306,7 +255,7 @@ private:
 	std::priority_queue<XE::uint64, XE::Array<XE::uint64>> _Queue;
 };
 
-template< typename T, XE::uint64 _Max > class ConcurrentHandleAlloctor
+template< typename T, XE::uint64 _Max > class ConcurrentHandleAlloctor< Handle< T >, _Max >
 {
 public:
 	ConcurrentHandleAlloctor()
@@ -371,6 +320,57 @@ private:
 	std::atomic<XE::uint64> _Pos;
 	std::array<XE::uint64, _Max> _Dense;
 	std::array<XE::uint64, _Max> _Sparse;
+};
+
+template< typename T > struct VariantCreate<HandleAlloctor<T>>
+{
+	static void Create( Variant * var, const HandleAlloctor<T> & val )
+	{
+		using type = typename TypeTraits<HandleAlloctor<T>>::raw_t;
+
+		var->_Type = TypeID<type>::Get();
+		var->_Data.u64 = val.GetValue();
+		var->_Flag = Variant::Flag::HANDLE;
+	}
+};
+
+template< typename T > struct VariantCast<HandleAlloctor<T>>
+{
+	static HandleAlloctor<T> Cast( const Variant * val )
+	{
+		if( ( val->GetFlag() == Variant::Flag::HANDLE ) && val->GetType() == TypeID< HandleAlloctor<T> >::Get() )
+		{
+			return val->_Data.u64;
+		}
+
+		throw VariantException( *val, "cast fail" );
+	}
+};
+
+template< typename T > struct VariantCast<HandleAlloctor<T> *>
+{
+	static HandleAlloctor<T> * Cast( const Variant * val )
+	{
+		if( ( val->GetFlag() == Variant::Flag::HANDLE ) && val->GetType() == TypeID< HandleAlloctor<T> >::Get() )
+		{
+			return ( HandleAlloctor<T> * ) & ( val->_Data.u64 );
+		}
+
+		throw VariantException( *val, "cast fail" );
+	}
+};
+
+template< typename T > struct Serializable< HandleAlloctor< T > >
+{
+public:
+	static void Serialize( Archive & arc, HandleAlloctor< T > * val )
+	{
+		XE::uint64 value = val->GetValue();
+		auto nvp = XE::Archive::NVP( "@value", value );
+		arc & nvp;
+
+		*val = HandleAlloctor< T >( nvp.Value );
+	}
 };
 
 END_XE_NAMESPACE

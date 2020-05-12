@@ -210,6 +210,9 @@ public:
 	void RequestScreenShot( FrameBufferHandle handle, const std::filesystem::path & path );
 
 private:
+	XE::memory_view CopyToFrame( XE::memory_view mem ) const;
+
+private:
 	Private * _p;
 };
 

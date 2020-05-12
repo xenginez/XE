@@ -24,6 +24,8 @@ enum class CommandType : XE::uint8
 	UPDATE_DYNAMIC_INDEX_BUFFER,
 	CREATE_DYNAMIC_VERTEX_BUFFER,
 	UPDATE_DYNAMIC_VERTEX_BUFFER,
+	CREATE_TRANSIENT_INDEX_BUFFER,
+	CREATE_TRANSIENT_VERTEX_BUFFER,
 	CREATE_SHADER,
 	CREATE_PROGRAM,
 	CREATE_TEXTURE,
@@ -236,19 +238,25 @@ public:
 	XE::Buffer PrevCmd;
 	std::mutex PrevCmdMutex;
 
-	XE::uint64 RenderOcclusionSize = 0;
+	std::atomic<XE::uint64> RenderOcclusionSize = 0;
 	std::array<XE::int32, GFX_MAX_OCCLUSION> Occlusion = {};
 
-	XE::uint64 RenderBindSize = 0;
+	std::atomic<XE::uint64> RenderBindSize = 0;
 	std::array<RenderBind, GFX_MAX_DRAW_CALLS> RenderBinds = {};
 
-	XE::uint64 RenderItemSize = 0;
+	std::atomic<XE::uint64> RenderItemSize = 0;
 	std::array<RenderItem, GFX_MAX_DRAW_CALLS> RenderItems = {};
 	std::array<XE::uint64, GFX_MAX_DRAW_CALLS> RenderItemKeys = {};
 
-	XE::uint64 RenderBlitSize = 0;
+	std::atomic<XE::uint64> RenderBlitSize = 0;
 	std::array<RenderBlit, GFX_MAX_DRAW_CALLS> RenderBlits = {};
 	std::array<XE::uint64, GFX_MAX_DRAW_CALLS> RenderBlitKeys = {};
+
+	std::array<TransientIndexBuffer, GFX_MAX_INDEX_BUFFERS> TransientIndexBufferView;
+	XE::ConcurrentHandleAlloctor<XE::TransientIndexBufferHandle, GFX_MAX_INDEX_BUFFERS>  TransientIndexBufferHandleAlloc;
+
+	std::array<TransientVertexBuffer, GFX_MAX_VERTEX_BUFFERS> TransientVertexBufferView;
+	XE::ConcurrentHandleAlloctor<XE::TransientVertexBufferHandle, GFX_MAX_VERTEX_BUFFERS> TransientVertexBufferHandleAlloc;
 
 	XE::Buffer PostCmd;
 	std::mutex PostCmdMutex;

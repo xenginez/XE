@@ -10,4 +10,6 @@ void XE::Frame::Reset()
 	PrevCmd.Reset();
 	PostCmd.Reset();
 	TransientBuffer.Reset();
+	TransientIndexBufferHandleAlloc.Reset();
+	TransientVertexBufferHandleAlloc.Reset();
 }

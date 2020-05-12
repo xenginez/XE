@@ -364,6 +364,13 @@ enum class ViewMode
 	Count
 };
 
+enum class TextureType
+{
+	TEXTURE_2D,
+	TEXTURE_3D,
+	TEXTURE_CUBE,
+};
+
 enum class TextureFormat
 {
 	BC1,          //!< DXT1 R5G6B5A1
