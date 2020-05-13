@@ -26,8 +26,6 @@ private:
 	~Encoder();
 
 public:
-	void SetMarker( const std::string & marker );
-
 	void SetState( XE::Flags<XE::StateFlag> flags = XE::StateFlag::DEFAULT );
 
 	void SetCondition( OcclusionQueryHandle handle, bool visible );
@@ -36,77 +34,46 @@ public:
 
 	void SetScissor( const XE::Rect & scissor );
 
-	void SetTransform( const XE::Mat4 & transform );
+	void SetTransform( XE::basic_memory_view<XE::Mat4> transform );
 
 	void SetUniform( UniformHandle handle, const XE::Variant & value );
 
-	void SetIndexBuffer( IndexBufferHandle handle );
-
 	void SetIndexBuffer( IndexBufferHandle handle, XE::uint32 first, XE::uint32 num );
-
-	void SetIndexBuffer( DynamicIndexBufferHandle handle );
 
 	void SetIndexBuffer( DynamicIndexBufferHandle handle, XE::uint32 first, XE::uint32 num );
 
-	void SetIndexBuffer( TransientIndexBufferHandle handle );
-
 	void SetIndexBuffer( TransientIndexBufferHandle handle, XE::uint32 first, XE::uint32 num );
-
-	void SetVertexBuffer( XE::uint8 steam, VertexBufferHandle handle );
 
 	void SetVertexBuffer( XE::uint8 steam, VertexBufferHandle handle, XE::uint32 first, XE::uint32 num, VertexLayoutHandle layout = VertexLayoutHandle::Invalid );
 
-	void SetVertexBuffer( XE::uint8 steam, DynamicVertexBufferHandle handle );
-
 	void SetVertexBuffer( XE::uint8 steam, DynamicVertexBufferHandle handle, XE::uint32 first, XE::uint32 num, VertexLayoutHandle layout = VertexLayoutHandle::Invalid );
 
-	void SetVertexBuffer( XE::uint8 steam, TransientVertexBufferHandle handle );
-
 	void SetVertexBuffer( XE::uint8 steam, TransientVertexBufferHandle handle, XE::uint32 first, XE::uint32 num, VertexLayoutHandle layout = VertexLayoutHandle::Invalid );
-
-	void SetVertexCount( XE::uint32 num );
 
 	void SetInstanceDataBuffer( VertexBufferHandle handle, XE::uint32 first, XE::uint32 num );
 
 	void SetInstanceDataBuffer( DynamicVertexBufferHandle handle, XE::uint32 first, XE::uint32 num );
 
-	void SetInstanceCount( XE::uint32 num );
-
-	void SetTexture( XE::uint8 stage, UniformHandle sampler, TextureHandle handle,
-					 SamplerWrap U, SamplerWrap V, SamplerWrap W,
-					 SamplerMode MIN, SamplerMode MAG, SamplerMode MIP );
-
-public:
-	void Touch( ViewHandle handle );
-
-	void Submit( ViewHandle handle, ProgramHandle program, XE::uint32 depth = 0, bool preserve_state = false );
-
-	void Submit( ViewHandle handle, ProgramHandle program, OcclusionQueryHandle query, XE::uint32 depth = 0, bool preserve_state = false );
-
-	void Submit( ViewHandle handle, ProgramHandle program, IndirectBufferHandle indirect, XE::uint32 depth = 0, bool preserve_state = false );
+	void SetTexture( XE::uint8 stage, UniformHandle sampler, TextureHandle handle, bool sampler_shared = false);
 
 	void SetBuffer( XE::uint8 stage, IndexBufferHandle handle, Access access );
 
-	void SetBuffer( XE::uint8 stage, DynamicIndexBufferHandle handle, Access access );
-
 	void SetBuffer( XE::uint8 stage, VertexBufferHandle handle, Access access );
 
-	void SetBuffer( XE::uint8 stage, DynamicVertexBufferHandle handle, Access access );
+	void SetImage( XE::uint8 stage, TextureHandle handle, XE::uint8 mip, Access access, TextureFormat format = TextureFormat::COUNT );
 
-	void SetBuffer( XE::uint8 stage, IndirectBufferHandle handle, Access access );
+public:
+	void Discard();
 
-	void SetImage( XE::uint8 stage, IndirectBufferHandle handle, XE::uint8 mip, Access access, TextureFormat format = TextureFormat::COUNT );
+	void Touch( ViewHandle handle );
+
+	void Submit( ViewHandle handle, ProgramHandle program, OcclusionQueryHandle query, XE::uint32 depth = 0, bool preserve_state = false );
+
+	void Submit( ViewHandle handle, ProgramHandle program, IndirectBufferHandle indirect, XE::uint32 first, XE::uint32 num, XE::uint32 depth = 0, bool preserve_state = false );
 
 	void Dispatch( ViewHandle handle, ProgramHandle program, XE::uint32 numX = 1, XE::uint32 numY = 1, XE::uint32 numZ = 1 );
 
 	void Dispatch( ViewHandle handle, ProgramHandle program, IndirectBufferHandle indirect, XE::uint32 first, XE::uint32 num );
-
-	void Discard();
-
-	void Blit( ViewHandle handle,
-			   TextureHandle dst, XE::uint32 dst_x, XE::uint32 dst_y,
-			   TextureHandle src, XE::uint32 src_x, XE::uint32 src_y,
-			   XE::uint32 width, XE::uint32 height );
 
 	void Blit( ViewHandle handle,
 			   TextureHandle dst, XE::uint8 dst_mip, XE::uint32 dst_x, XE::uint32 dst_y, XE::uint32 dst_z,

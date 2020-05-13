@@ -253,6 +253,13 @@ void XE::Gfx::Destory( OcclusionQueryHandle handle )
 	_p->_Context->Destory( handle );
 }
 
+void XE::Gfx::Destory( ViewHandle handle )
+{
+	XE_ASSERT( _p->_Context != nullptr );
+
+	_p->_Context->Destory( handle );
+}
+
 XE::VertexLayoutHandle XE::Gfx::CreateVertexLayout( const XE::Array<VertexLayout> & layouts )
 {
 	XE_ASSERT( _p->_Context != nullptr );
@@ -491,6 +498,13 @@ std::optional<XE::uint32> XE::Gfx::GetOcclusionQueryValue( OcclusionQueryHandle 
 	return _p->_Context->GetOcclusionQueryValue( handle );
 }
 
+XE::ViewHandle XE::Gfx::CreateView()
+{
+	XE_ASSERT( _p->_Context != nullptr );
+
+	return _p->_Context->CreateView();
+}
+
 void XE::Gfx::SetViewName( ViewHandle handle, const XE::String & name )
 {
 	XE_ASSERT( _p->_Context != nullptr );
@@ -533,18 +547,11 @@ void XE::Gfx::SetViewFrameBuffer( ViewHandle handle, FrameBufferHandle frame )
 	_p->_Context->SetViewFrameBuffer( handle, frame );
 }
 
-void XE::Gfx::SetViewTransform( ViewHandle handle, const XE::Mat4 & transform )
+void XE::Gfx::SetViewTransform( ViewHandle handle, const XE::Mat4 & view, const XE::Mat4 & proj )
 {
 	XE_ASSERT( _p->_Context != nullptr );
 
-	_p->_Context->SetViewTransform( handle, transform );
-}
-
-void XE::Gfx::SetViewOrder( ViewHandle handle, const XE::Array<ViewHandle> & remap )
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	_p->_Context->SetViewOrder( handle, remap );
+	_p->_Context->SetViewTransform( handle, view, proj );
 }
 
 void XE::Gfx::ResetView( ViewHandle handle )

@@ -13,6 +13,14 @@
 
 BEG_XE_NAMESPACE
 
+enum class ClearFlag
+{
+	NONE = 0,
+	COLOR = 1,
+	DEPTH = 2,
+	STENCIL = 4,
+};
+
 enum class CommandType : XE::uint8
 {
 	RENDERER_INIT,
@@ -50,6 +58,23 @@ enum class CommandType : XE::uint8
 	DESTROY_UNIFORM,
 	READ_TEXTURE,
 	REQUEST_SCREEN_SHOT,
+};
+
+class SortKey
+{
+	union
+	{
+		struct
+		{
+			XE::uint8 view;
+			XE::uint8 seq;
+			XE::uint8 depth;
+			XE::uint8 trans;
+			XE::uint8 program;
+		};
+
+		XE::uint64 key;
+	};
 };
 
 class TextureInfo
@@ -97,11 +122,13 @@ public:
 class View
 {
 public:
-	XE::Color Color;
-	XE::float32 Depth = 0.0f;
-	XE::uint8 Stencil;
-	XE::Rect Rect;
-	XE::Rect Scissor;
+	XE::String Name;
+	XE::Color ClearColor;
+	XE::float32 ClearDepth = 0.0f;
+	XE::uint8 ClearStencil = 1;
+	XE::Flags<ClearFlag> Flag = ClearFlag::NONE;
+	XE::Rect ViewRect;
+	XE::Rect ViewScissor;
 	XE::Mat4 ViewMat;
 	XE::Mat4 ProjMat;
 	ViewMode Mode = XE::ViewMode::Default;
@@ -121,12 +148,24 @@ public:
 		COUNT
 	};
 
-	BindType Type;
-	XE::uint32 SamplerFlags;
-	XE::uint16 Index;
-	XE::TextureFormat Format;
-	XE::Access Access;
-	XE::uint8 Mip;
+	struct Binding
+	{
+		Binding(){}
+
+		XE::uint32 SamplerFlags;
+		union
+		{
+			TextureHandle Texture;
+			IndexBufferHandle Index;
+			VertexBufferHandle Vertex;
+		};
+		BindType Type;
+		XE::TextureFormat Format;
+		XE::Access Access;
+		XE::uint8 Mip;
+	};
+	
+	std::array<Binding, GFX_MAX_SAMPLERS> Binds;
 };
 
 class RenderDraw
@@ -134,12 +173,14 @@ class RenderDraw
 public:
 	struct
 	{
-		VertexBufferHandle buffer_handle;
-		VertexLayoutHandle layout_handle;
-	} Vertexs[GFX_MAX_VERTEXS];
+		XE::uint32 StartVertices;
+		XE::uint32 NumVertices;
+		VertexLayoutHandle LayoutHandle;
+		VertexBufferHandle VertexBuffer;
+		DynamicVertexBufferHandle DynamicVertexBuffer;
+		TransientVertexBufferHandle TransientVertexBuffer;
+	} Vertices[GFX_MAX_VERTEXS];
 
-	XE::Flags<XE::StateFlag> StateFlags = XE::StateFlag::NONE;
-	XE::Flags <XE::StencilFlag> StencilFlags = XE::StencilFlag::NONE;
 	XE::Color Rgba;
 	XE::uint32 UniformBegin;
 	XE::uint32 UniformEnd;
@@ -149,19 +190,27 @@ public:
 	XE::uint32 NumVertices;
 	XE::uint32 InstanceDataOffset;
 	XE::uint32 NumInstances;
-	XE::uint16 InstanceDataStride;
 	XE::uint16 StartIndirect;
 	XE::uint16 NumIndirect;
 	XE::uint16 NumMatrices;
-	XE::uint16 Scissor;
+	XE::Rect Scissor;
 	XE::uint8 SubmitFlags;
 	XE::uint8 StreamMask;
 	XE::uint8 UniformIdx;
 
 	XE::IndexBufferHandle IndexBuffer;
-	XE::VertexBufferHandle VertexDataBuffer;
+	XE::DynamicIndexBufferHandle DynamicIndexBuffer;
+	XE::TransientIndexBufferHandle TransientIndexBuffer;
+
+	XE::VertexBufferHandle InstanceDataBuffer;
+	XE::DynamicVertexBufferHandle DynamicInstanceDataBuffer;
+
 	XE::IndirectBufferHandle IndirectBuffer;
 	XE::OcclusionQueryHandle OcclusionQuery;
+
+	XE::Flags<XE::StateFlag> StateFlags = XE::StateFlag::NONE;
+	XE::Flags <XE::StencilFlag> FrontStencilFlags = XE::StencilFlag::NONE;
+	XE::Flags <XE::StencilFlag> BackStencilFlags = XE::StencilFlag::NONE;
 };
 
 class RenderBlit
@@ -240,6 +289,9 @@ public:
 
 	std::atomic<XE::uint64> RenderOcclusionSize = 0;
 	std::array<XE::int32, GFX_MAX_OCCLUSION> Occlusion = {};
+
+	std::atomic<XE::uint64> TransformsSize = 0;
+	std::array<XE::Mat4, GFX_MAX_TRANSFORM> Transforms = {};
 
 	std::atomic<XE::uint64> RenderBindSize = 0;
 	std::array<RenderBind, GFX_MAX_DRAW_CALLS> RenderBinds = {};

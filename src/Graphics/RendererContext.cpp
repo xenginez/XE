@@ -13,7 +13,7 @@ struct XE::RendererContext::Private
 	XE::CapsInfo _Caps;
 	XE::InitInfo _Init;
 
-	std::array<View, GFX_MAX_VIEW> Views = {};
+	std::array<View, GFX_MAX_VIEW> _Views = {};
 
 	XE::ConcurrentHandleAlloctor<XE::ViewHandle, GFX_MAX_VIEW> _ViewHandleAlloc;
 	XE::ConcurrentHandleAlloctor<XE::ShaderHandle, GFX_MAX_SHADERS> _ShaderHandleAlloc;
@@ -764,47 +764,60 @@ XE::ViewHandle XE::RendererContext::CreateView()
 
 void XE::RendererContext::SetViewName( ViewHandle handle, const XE::String & name )
 {
-
+	_p->_Views[handle].Name = name;
 }
 
 void XE::RendererContext::SetViewRect( ViewHandle handle, const XE::Rect & rect )
 {
-
+	_p->_Views[handle].ViewRect = rect;
 }
 
 void XE::RendererContext::SetViewScissor( ViewHandle handle, const XE::Rect & scissor )
 {
-
+	_p->_Views[handle].ViewScissor = scissor;
 }
 
 void XE::RendererContext::SetViewClear( ViewHandle handle, std::optional<XE::Color> color, std::optional<XE::float32> depth, std::optional<XE::uint8> stencil )
 {
+	// TODO: 
+	if (color != std::nullopt)
+	{
+		_p->_Views[handle].ClearColor = *color;
+		_p->_Views[handle].Flag |= ClearFlag::COLOR;
+	}
 
+	if (depth != std::nullopt)
+	{
+		_p->_Views[handle].ClearColor = *depth;
+		_p->_Views[handle].Flag |= ClearFlag::DEPTH;
+	}
+
+	if (stencil != std::nullopt)
+	{
+		_p->_Views[handle].ClearStencil = *stencil;
+		_p->_Views[handle].Flag |= ClearFlag::STENCIL;
+	}
 }
 
 void XE::RendererContext::SetViewMode( ViewHandle handle, XE::ViewMode mode )
 {
-
+	_p->_Views[handle].Mode = mode;
 }
 
 void XE::RendererContext::SetViewFrameBuffer( ViewHandle handle, FrameBufferHandle frame )
 {
-
+	_p->_Views[handle].Handle = frame;
 }
 
-void XE::RendererContext::SetViewTransform( ViewHandle handle, const XE::Mat4 & transform )
+void XE::RendererContext::SetViewTransform( ViewHandle handle, const XE::Mat4 & view, const XE::Mat4 & proj )
 {
-
-}
-
-void XE::RendererContext::SetViewOrder( ViewHandle handle, const XE::Array<ViewHandle> & remap )
-{
-
+	_p->_Views[handle].ViewMat = view;
+	_p->_Views[handle].ProjMat = proj;
 }
 
 void XE::RendererContext::ResetView( ViewHandle handle )
 {
-
+	_p->_Views[handle] = {};
 }
 
 void XE::RendererContext::DebugTextPrint( XE::uint32 x, XE::uint32 y, const XE::Color & color, const std::string & text )

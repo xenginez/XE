@@ -197,9 +197,7 @@ public:
 
 	void SetViewFrameBuffer( ViewHandle handle, FrameBufferHandle frame );
 
-	void SetViewTransform( ViewHandle handle, const XE::Mat4 & transform );
-
-	void SetViewOrder( ViewHandle handle, const XE::Array<ViewHandle> & remap );
+	void SetViewTransform( ViewHandle handle, const XE::Mat4 & view, const XE::Mat4 & proj );
 
 	void ResetView( ViewHandle handle );
 	

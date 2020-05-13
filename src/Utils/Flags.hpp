@@ -25,7 +25,7 @@ public:
 	}
 
 	Flags( T val )
-		:_Value( reinterpret_cast< XE::int64 >( val ) )
+		:_Value( static_cast< XE::int64 >( val ) )
 	{
 
 	}
@@ -39,7 +39,7 @@ public:
 public:
 	Flags operator |( T val ) const
 	{
-		_Value |= reinterpret_cast< XE::int64 >( val );
+		_Value |= static_cast< XE::int64 >( val );
 
 		return *this;
 	}
@@ -53,7 +53,7 @@ public:
 
 	Flags operator &( T val ) const
 	{
-		_Value &= reinterpret_cast< XE::int64 >( val );
+		_Value &= static_cast< XE::int64 >( val );
 
 		return *this;
 	}
@@ -68,7 +68,7 @@ public:
 public:
 	Flags & operator =( T val )
 	{
-		_Value = reinterpret_cast< XE::int64 >( val );
+		_Value = static_cast< XE::int64 >( val );
 
 		return *this;
 	}
@@ -82,7 +82,7 @@ public:
 
 	Flags & operator |=( T val )
 	{
-		_Value |= reinterpret_cast< XE::int64 >( val );
+		_Value |= static_cast< XE::int64 >( val );
 
 		return *this;
 	}
@@ -96,7 +96,7 @@ public:
 
 	Flags & operator &=( T val )
 	{
-		_Value &= reinterpret_cast< XE::int64 >( val );
+		_Value &= static_cast< XE::int64 >( val );
 
 		return *this;
 	}
@@ -111,7 +111,7 @@ public:
 public:
 	bool operator ||( T val ) const
 	{
-		return ( _Value | reinterpret_cast< XE::int64 >( val ) ) != 0;
+		return ( _Value | static_cast< XE::int64 >( val ) ) != 0;
 	}
 
 	bool operator ||( const Flags & val ) const
@@ -121,7 +121,7 @@ public:
 
 	bool operator &&( T val ) const
 	{
-		return ( _Value & reinterpret_cast< XE::int64 >( val ) ) != 0;
+		return ( _Value & static_cast< XE::int64 >( val ) ) != 0;
 	}
 
 	bool operator &&( const Flags & val ) const
@@ -131,7 +131,7 @@ public:
 
 	bool operator ==( T val ) const
 	{
-		return _Value == reinterpret_cast< XE::int64 >( val );
+		return _Value == static_cast< XE::int64 >( val );
 	}
 
 	bool operator ==( const Flags & val ) const
@@ -141,7 +141,7 @@ public:
 
 	bool operator !=( T val ) const
 	{
-		return _Value != reinterpret_cast< XE::int64 >( val );
+		return _Value != static_cast< XE::int64 >( val );
 	}
 
 	bool operator !=( const Flags & val ) const
@@ -153,7 +153,7 @@ private:
 	XE::int64 _Value;
 };
 
-template< typename T > XE::Flags< T > MakeFlags( T arg0)
+template< typename T > XE::Flags< T > MakeFlags( T arg0 )
 {
 	XE::Flags< T > flags( arg0 );
 

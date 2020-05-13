@@ -47,6 +47,7 @@ static constexpr XE::uint32 GFX_MAX_FRAME_BUFFERS = 128;
 static constexpr XE::uint32 GFX_MAX_ATTACHMENTS = 8;
 static constexpr XE::uint32 GFX_MAX_UNIFORMS = 512;
 static constexpr XE::uint32 GFX_MAX_OCCLUSION = 256;
+static constexpr XE::uint32 GFX_MAX_TRANSFORM = 256;
 static constexpr XE::uint32 GFX_MAX_VERTEXS = 4;
 static constexpr XE::uint32 GFX_MAX_DRAW_CALLS = 65535;
 static constexpr XE::uint32 GFX_MAX_BLITITEMS = 1024;
@@ -102,33 +103,6 @@ enum class ResetFlag
 	SUSPEND = 1ull << 10,
 };		 
 
-enum class BufferFlag
-{
-	NONE,
-	COMPUTE_READ = 1ull << 0,
-	COMPUTE_WRITE = 1ull << 1,
-	DRAW_INDIRECT = 1ull << 2,
-	ALLOW_RESIZE = 1ull << 3,
-	INDEX32 = 1ull << 4,
-	COMPUTE_READ_WRITE = COMPUTE_READ | COMPUTE_WRITE,
-};
-
-enum class TextureFlag
-{
-	NONE = 0,
-	MSAA_SAMPLE = 1ull << 0,
-	RT = 1ull << 1,
-	COMPUTE_WRITE = 1ull << 2,
-	SRGB = 1ull << 3,
-	BLIT_DST = 1ull << 4,
-	READ_BACK = 1ull << 5,
-	RT_MSAA_X2 = 1ull << 6,
-	RT_MSAA_X4 = 1ull << 7,
-	RT_MSAA_X8 = 1ull << 8,
-	RT_MSAA_X16 = 1ull << 9,
-	RT_WRITE_ONLY = 1ull << 10,
-};
-
 enum class StateFlag : XE::uint64
 {
 	WRITE_R = 0,
@@ -176,6 +150,33 @@ enum class StateFlag : XE::uint64
 	BLEND_INDEPENDENT = 1ull << 40,
 	BLEND_ALPHA_TO_COVERAGE = 1ull << 41,
 	DEFAULT = WIRTE_RGB | WRITE_A | WRITE_Z | DEPTH_TEST_LESS | CULL_CW | MSAA,
+};
+
+enum class BufferFlag
+{
+	NONE,
+	COMPUTE_READ = 1ull << 0,
+	COMPUTE_WRITE = 1ull << 1,
+	DRAW_INDIRECT = 1ull << 2,
+	ALLOW_RESIZE = 1ull << 3,
+	INDEX32 = 1ull << 4,
+	COMPUTE_READ_WRITE = COMPUTE_READ | COMPUTE_WRITE,
+};
+
+enum class TextureFlag
+{
+	NONE = 0,
+	MSAA_SAMPLE = 1ull << 0,
+	RT = 1ull << 1,
+	COMPUTE_WRITE = 1ull << 2,
+	SRGB = 1ull << 3,
+	BLIT_DST = 1ull << 4,
+	READ_BACK = 1ull << 5,
+	RT_MSAA_X2 = 1ull << 6,
+	RT_MSAA_X4 = 1ull << 7,
+	RT_MSAA_X8 = 1ull << 8,
+	RT_MSAA_X16 = 1ull << 9,
+	RT_WRITE_ONLY = 1ull << 10,
 };
 
 enum class StencilFlag : XE::uint32
