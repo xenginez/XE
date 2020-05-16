@@ -46,8 +46,6 @@ public:
 
 	virtual IAssetsServicePtr GetAssetsService() const = 0;
 
-	virtual ILoggerServicePtr GetLoggerService() const = 0;
-
 	virtual IRenderServicePtr GetRenderService() const = 0;
 
 	virtual IPhysicsServicePtr GetPhysicsService() const = 0;

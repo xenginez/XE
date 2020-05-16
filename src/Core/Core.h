@@ -17,7 +17,6 @@
 #include "WorldService.h"
 #include "AssetsService.h"
 #include "CoreFramework.h"
-#include "LoggerService.h"
 #include "RenderService.h"
 #include "ThreadService.h"
 #include "PhysicsService.h"

@@ -13,7 +13,6 @@
 
 BEG_XE_NAMESPACE
 
-DECL_PTR( Logger );
 DECL_PTR( IService );
 DECL_PTR( ProfilerFrame );
 DECL_PTR( IEventService );
@@ -26,7 +25,6 @@ DECL_PTR( IAssetsService );
 DECL_PTR( IConfigService );
 DECL_PTR( IRenderService );
 DECL_PTR( IThreadService );
-DECL_PTR( ILoggerService );
 DECL_PTR( IPhysicsService );
 DECL_PTR( IProfilerService );
 DECL_PTR( INavigationService );
@@ -740,35 +738,6 @@ enum class Operation
 	GREATER_EQUAL,
 };
 DECL_META_ENUM( XE_API, Operation );
-
-enum class LoggerLevel
-{
-	Error,
-	Warning,
-	Message,
-	Level0,
-	Level1,
-	Level2,
-	Level3,
-	Level4,
-	Level5,
-	Level6,
-	Level7,
-	Level8,
-	Level9,
-	Level10,
-	Level11,
-	Level12,
-	Level13,
-	Level14,
-	Level15,
-	Level16,
-	Level17,
-	Level18,
-	Level19,
-	Level20,
-};
-DECL_META_ENUM( XE_API, LoggerLevel );
 
 enum class ThreadType
 {

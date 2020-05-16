@@ -127,6 +127,13 @@ enum class WindowEvent
 };
 DECL_META_ENUM( XE_API, WindowEvent );
 
+enum class LoggerLevel
+{
+	Error,
+	Warning,
+	Message,
+};
+
 END_XE_NAMESPACE
 
 #endif // __TYPE_H__FF3D8A9E_5172_4F88_873F_0CAF1E5289F6

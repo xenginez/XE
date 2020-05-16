@@ -22,7 +22,6 @@ DECL_PTR( AssetsService );
 DECL_PTR( ConfigService );
 DECL_PTR( RenderService );
 DECL_PTR( ThreadService );
-DECL_PTR( LoggerService );
 DECL_PTR( PhysicsService );
 DECL_PTR( NavigationService );
 DECL_PTR( LocalizationService );

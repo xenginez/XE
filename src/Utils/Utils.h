@@ -15,6 +15,7 @@
 #include "Event.h"
 #include "Layer.h"
 #include "Order.h"
+#include "Logger.h"
 #include "BASE64.h"
 #include "Buffer.h"
 #include "Object.h"
@@ -24,6 +25,9 @@
 #include "Handle.hpp"
 #include "Sigslot.hpp"
 
+
+#define XE_LOG(LEVEL, FMT, ...) \
+XE::Logger::Instance()->Log( LEVEL, XE::StringUtils::Format(FMT, __VA_ARGS__) );
 
 #define DECL_HANDLE( _DLL_EXPORT, NAME ) class NAME; using NAME##Handle = XE::Handle< NAME >; DECL_META_CLASS( _DLL_EXPORT, NAME##Handle );using NAME##HandleAllocator = XE::HandleAllocator< XE::Handle< NAME > >; DECL_META_CLASS( _DLL_EXPORT, NAME##HandleAllocator );
 

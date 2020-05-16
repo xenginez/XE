@@ -2,6 +2,13 @@
 
 USING_XE
 
+BEG_META( AssetStatus )
+type->Value( "UNDEFINED", AssetStatus::UNDEFINED );
+type->Value( "LOADING", AssetStatus::LOADING );
+type->Value( "READY", AssetStatus::READY );
+type->Value( "FAILED", AssetStatus::FAILED );
+END_META()
+
 BEG_META( Language )
 type->Value( "ENGLISH", Language::ENGLISH );
 type->Value( "CHINESESIMPLIFIED", Language::CHINESESIMPLIFIED );

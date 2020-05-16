@@ -701,40 +701,6 @@ type->Value( "LESS_EQUAL", Operation::LESS_EQUAL );
 type->Value( "GREATER_EQUAL", Operation::GREATER_EQUAL );
 END_META()
 
-BEG_META( LoggerLevel )
-type->Value( "Error", LoggerLevel::Error );
-type->Value( "Warning", LoggerLevel::Warning );
-type->Value( "Message", LoggerLevel::Message );
-type->Value( "Level0", LoggerLevel::Level0 );
-type->Value( "Level1", LoggerLevel::Level1 );
-type->Value( "Level2", LoggerLevel::Level2 );
-type->Value( "Level3", LoggerLevel::Level3 );
-type->Value( "Level4", LoggerLevel::Level4 );
-type->Value( "Level5", LoggerLevel::Level5 );
-type->Value( "Level6", LoggerLevel::Level6 );
-type->Value( "Level7", LoggerLevel::Level7 );
-type->Value( "Level8", LoggerLevel::Level8 );
-type->Value( "Level9", LoggerLevel::Level9 );
-type->Value( "Level10", LoggerLevel::Level10 );
-type->Value( "Level11", LoggerLevel::Level11 );
-type->Value( "Level12", LoggerLevel::Level12 );
-type->Value( "Level13", LoggerLevel::Level13 );
-type->Value( "Level14", LoggerLevel::Level14 );
-type->Value( "Level15", LoggerLevel::Level15 );
-type->Value( "Level16", LoggerLevel::Level16 );
-type->Value( "Level17", LoggerLevel::Level17 );
-type->Value( "Level18", LoggerLevel::Level18 );
-type->Value( "Level19", LoggerLevel::Level19 );
-type->Value( "Level20", LoggerLevel::Level20 );
-END_META()
-
-BEG_META( AssetStatus )
-type->Value( "UNDEFINED", AssetStatus::UNDEFINED );
-type->Value( "LOADING", AssetStatus::LOADING );
-type->Value( "READY", AssetStatus::READY );
-type->Value( "FAILED", AssetStatus::FAILED );
-END_META()
-
 BEG_META( ThreadType )
 type->Value( "IO", ThreadType::IO );
 type->Value( "GAME", ThreadType::GAME );

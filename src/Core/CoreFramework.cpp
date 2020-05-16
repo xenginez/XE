@@ -5,7 +5,6 @@
 #include "AudioService.h"
 #include "InputService.h"
 #include "WorldService.h"
-#include "LoggerService.h"
 #include "ThreadService.h"
 #include "RenderService.h"
 #include "AssetsService.h"
@@ -127,11 +126,6 @@ XE::IThreadServicePtr XE::CoreFramework::GetThreadService() const
 XE::IAssetsServicePtr XE::CoreFramework::GetAssetsService() const
 {
 	return GetServiceT<IAssetsService>();
-}
-
-XE::ILoggerServicePtr XE::CoreFramework::GetLoggerService() const
-{
-	return GetServiceT<ILoggerService>();
 }
 
 XE::IRenderServicePtr XE::CoreFramework::GetRenderService() const

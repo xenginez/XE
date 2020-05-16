@@ -43,8 +43,6 @@ public:
 
 	IAssetsServicePtr GetAssetsService() const override;
 
-	ILoggerServicePtr GetLoggerService() const override;
-
 	IRenderServicePtr GetRenderService() const override;
 
 	IPhysicsServicePtr GetPhysicsService() const override;
