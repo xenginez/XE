@@ -13,15 +13,15 @@
 
 BEG_XE_NAMESPACE
 
-template< typename T > class HandleAlloctor;
-template< typename T, XE::uint64 _Max > class QueueHandleAlloctor;
-template< typename T, XE::uint64 _Max > class ConcurrentHandleAlloctor;
+template< typename T > class HandleAllocator;
+template< typename T, XE::uint64 _Max > class QueueHandleAllocator;
+template< typename T, XE::uint64 _Max > class ConcurrentHandleAllocator;
 
 template< typename T > class Handle
 {
 	template< typename T > friend struct Serializable;
 
-	template< typename T > friend class HandleAlloctor;
+	template< typename T > friend class HandleAllocator;
 
 	template< typename T, XE::uint64 _Max > friend class FreeHandleAlloctor;
 
@@ -182,16 +182,14 @@ public:
 	}
 };
 
-template< typename T > class HandleAlloctor< Handle< T > >
+template< typename T > class HandleAllocator< Handle< T > >
 {
 public:
-	HandleAlloctor()
+	HandleAllocator()
 		:_Value( 0 )
-	{
+	{ }
 
-	}
-
-	HandleAlloctor( XE::uint64 val )
+	HandleAllocator( XE::uint64 val )
 		:_Value( val )
 	{ }
 
@@ -215,10 +213,10 @@ private:
 	XE::uint64 _Value;
 };
 
-template< typename T, XE::uint64 _Max > class QueueHandleAlloctor< Handle< T >, _Max >
+template< typename T, XE::uint64 _Max > class QueueHandleAllocator< Handle< T >, _Max >
 {
 public:
-	QueueHandleAlloctor()
+	QueueHandleAllocator()
 	{
 		Reset();
 	}
@@ -255,10 +253,10 @@ private:
 	std::priority_queue<XE::uint64, XE::Array<XE::uint64>> _Queue;
 };
 
-template< typename T, XE::uint64 _Max > class ConcurrentHandleAlloctor< Handle< T >, _Max >
+template< typename T, XE::uint64 _Max > class ConcurrentHandleAllocator< Handle< T >, _Max >
 {
 public:
-	ConcurrentHandleAlloctor()
+	ConcurrentHandleAllocator()
 	{
 		Reset();
 	}
@@ -322,11 +320,11 @@ private:
 	std::array<XE::uint64, _Max> _Sparse;
 };
 
-template< typename T > struct VariantCreate<HandleAlloctor<T>>
+template< typename T > struct VariantCreate<HandleAllocator<T>>
 {
-	static void Create( Variant * var, const HandleAlloctor<T> & val )
+	static void Create( Variant * var, const HandleAllocator<T> & val )
 	{
-		using type = typename TypeTraits<HandleAlloctor<T>>::raw_t;
+		using type = typename TypeTraits<HandleAllocator<T>>::raw_t;
 
 		var->_Type = TypeID<type>::Get();
 		var->_Data.u64 = val.GetValue();
@@ -334,11 +332,11 @@ template< typename T > struct VariantCreate<HandleAlloctor<T>>
 	}
 };
 
-template< typename T > struct VariantCast<HandleAlloctor<T>>
+template< typename T > struct VariantCast<HandleAllocator<T>>
 {
-	static HandleAlloctor<T> Cast( const Variant * val )
+	static HandleAllocator<T> Cast( const Variant * val )
 	{
-		if( ( val->GetFlag() == Variant::Flag::HANDLE ) && val->GetType() == TypeID< HandleAlloctor<T> >::Get() )
+		if( ( val->GetFlag() == Variant::Flag::HANDLE ) && val->GetType() == TypeID< HandleAllocator<T> >::Get() )
 		{
 			return val->_Data.u64;
 		}
@@ -347,29 +345,29 @@ template< typename T > struct VariantCast<HandleAlloctor<T>>
 	}
 };
 
-template< typename T > struct VariantCast<HandleAlloctor<T> *>
+template< typename T > struct VariantCast<HandleAllocator<T> *>
 {
-	static HandleAlloctor<T> * Cast( const Variant * val )
+	static HandleAllocator<T> * Cast( const Variant * val )
 	{
-		if( ( val->GetFlag() == Variant::Flag::HANDLE ) && val->GetType() == TypeID< HandleAlloctor<T> >::Get() )
+		if( ( val->GetFlag() == Variant::Flag::HANDLE ) && val->GetType() == TypeID< HandleAllocator<T> >::Get() )
 		{
-			return ( HandleAlloctor<T> * ) & ( val->_Data.u64 );
+			return ( HandleAllocator<T> * ) & ( val->_Data.u64 );
 		}
 
 		throw VariantException( *val, "cast fail" );
 	}
 };
 
-template< typename T > struct Serializable< HandleAlloctor< T > >
+template< typename T > struct Serializable< HandleAllocator< T > >
 {
 public:
-	static void Serialize( Archive & arc, HandleAlloctor< T > * val )
+	static void Serialize( Archive & arc, HandleAllocator< T > * val )
 	{
 		XE::uint64 value = val->GetValue();
 		auto nvp = XE::Archive::NVP( "@value", value );
 		arc & nvp;
 
-		*val = HandleAlloctor< T >( nvp.Value );
+		*val = HandleAllocator< T >( nvp.Value );
 	}
 };
 

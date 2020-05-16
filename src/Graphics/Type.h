@@ -52,8 +52,6 @@ static constexpr XE::uint32 GFX_MAX_VERTEXS = 4;
 static constexpr XE::uint32 GFX_MAX_DRAW_CALLS = 65535;
 static constexpr XE::uint32 GFX_MAX_BLITITEMS = 1024;
 static constexpr XE::uint32 GFX_MAX_PROGRAMS = 512;
-static constexpr XE::uint32 GFX_MAX_SAMPLERS = 16;
-static constexpr XE::uint32 GFX_MAX_LAYOUTS = 64;
 
 enum class CapsFlag
 {
@@ -542,6 +540,16 @@ enum class SamplerCompare
 	ALWAYS,
 };
 
+enum class RenderGroup : XE::uint8
+{
+	BACKGROUND,			// this render group is rendered before any others.
+	GEOMETRY,			// opaque geometry uses this group.
+	ALPHATEST,			// alpha tested geometry uses this group.
+	GEOMETRYLAST,		// last render group that is considered "opaque".
+	OVERLAY,			// this render group is meant for overlay effects.
+	HUD,				// this render group is user interface.
+};
+
 class XE_API CapsInfo
 {
 public:
@@ -571,9 +579,9 @@ public:
 	uint32_t MaxPrograms = GFX_MAX_PROGRAMS;
 	uint32_t MaxShaders = GFX_MAX_SHADERS;
 	uint32_t MaxTextures = GFX_MAX_TEXTURES;
-	uint32_t MaxTextureSamplers = GFX_MAX_SAMPLERS;
+	uint32_t MaxTextureSamplers = GFX_MAX_TEXTURE_SAMPLERS;
 	uint32_t MaxComputeBindings = 0;
-	uint32_t MaxVertexLayouts = GFX_MAX_LAYOUTS;
+	uint32_t MaxVertexLayouts = GFX_MAX_VERTEX_LAYOUTS;
 	uint32_t MaxVertexStreams = 1;
 	uint32_t MaxIndexBuffers = GFX_MAX_INDEX_BUFFERS;
 	uint32_t MaxVertexBuffers = GFX_MAX_VERTEX_BUFFERS;

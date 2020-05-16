@@ -37,8 +37,6 @@ public:
 public:
 	void LoadWorld( const XE::String & val ) override;
 
-	XE::String GetWorldName() const override;
-
 protected:
 	XE::WorldPtr GetCurrentWorld() const override;
 

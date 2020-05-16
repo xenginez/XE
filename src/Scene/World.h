@@ -73,10 +73,10 @@ public:
 
 private:
 	String _Name;
-	static XE::uint64 _HandleTable;
 	OCTree<GameObjectPtr> _StaticTree;
 	OCTree<GameObjectPtr> _DynmicTree;
-	Array< GameObjectPtr > _AllGameObjects;
+	Array< GameObjectPtr > _GameObjects;
+	XE::GameObjectHandleAllocator _HandleTable;
 };
 
 END_XE_NAMESPACE

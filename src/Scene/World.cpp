@@ -2,13 +2,15 @@
 
 #include "GameObject.h"
 
-USING_XE
+#include <Interface/IFramework.h>
+#include <Interface/IThreadService.h>
 
-XE::uint64 XE::World::_HandleTable = 0;
+USING_XE
 
 BEG_META( World )
 type->Property( "Name", &World::_Name );
-type->Property( "GameObjects", &World::_AllGameObjects );
+type->Property( "GameObjects", &World::_GameObjects );
+type->Property( "HandleTable", &World::_HandleTable, XE::IMetaProperty::NoDesign );
 END_META()
 
 XE::World::World()
@@ -33,31 +35,36 @@ void XE::World::SetName( const String & val )
 
 bool XE::World::AddGameObject( const GameObjectPtr & val )
 {
-	auto it = std::find( _AllGameObjects.begin(), _AllGameObjects.end(), val );
-
-	if( it != _AllGameObjects.end() )
+	auto it = std::find( _GameObjects.begin(), _GameObjects.end(), val );
+	if( it != _GameObjects.end() )
 	{
 		return false;
 	}
 
-	val->_Handle = _HandleTable++;
+	val->_Handle = _HandleTable.Alloc();
 
-	val->Startup();
+	XE::IFramework::GetCurrentFramework()->GetThreadService()->PostTask( ThreadType::GAME, [ val ]()
+		{
+			val->Startup();
+		} );
 
-	_AllGameObjects.push_back( val );
+	_GameObjects.push_back( val );
 
 	return true;
 }
 
 bool World::RemoveGameObject( const GameObjectPtr & val )
 {
-	auto it = std::find( _AllGameObjects.begin(), _AllGameObjects.end(), val );
+	auto it = std::find( _GameObjects.begin(), _GameObjects.end(), val );
 
-	if( it != _AllGameObjects.end() )
+	if( it != _GameObjects.end() )
 	{
-		_AllGameObjects.erase( it );
+		_GameObjects.erase( it );
 
-		val->Clearup();
+		XE::IFramework::GetCurrentFramework()->GetThreadService()->PostTask( ThreadType::GAME, [ val ]()
+			{
+				val->Clearup();
+			} );
 
 		return true;
 	}
@@ -67,7 +74,7 @@ bool World::RemoveGameObject( const GameObjectPtr & val )
 
 XE::GameObjectPtr XE::World::FindGameObject( const String & val ) const
 {
-	for( const auto & obj : _AllGameObjects )
+	for( const auto & obj : _GameObjects )
 	{
 		if( obj->GetName() == val )
 		{
@@ -80,7 +87,7 @@ XE::GameObjectPtr XE::World::FindGameObject( const String & val ) const
 
 XE::GameObjectPtr XE::World::FindGameObject( GameObjectHandle val ) const
 {
-	for( const auto & obj : _AllGameObjects )
+	for( const auto & obj : _GameObjects )
 	{
 		if( obj->GetHandle() == val )
 		{
@@ -93,7 +100,7 @@ XE::GameObjectPtr XE::World::FindGameObject( GameObjectHandle val ) const
 
 const XE::Array< GameObjectPtr > & XE::World::GetGameObjects() const
 {
-	return _AllGameObjects;
+	return _GameObjects;
 }
 
 XE::GameObjectPtr XE::World::Intersect( const Array<GameObjectPtr> exclude, const Ray & val ) const
@@ -245,7 +252,7 @@ void XE::World::Startup()
 	Array<GameObjectPtr> static_objs;
 	Array<GameObjectPtr> dynmic_objs;
 
-	for( auto obj : _AllGameObjects )
+	for( auto obj : _GameObjects )
 	{
 		obj->Startup();
 
@@ -267,25 +274,18 @@ void XE::World::Update( XE::float32 dt )
 {
 	Array<GameObjectPtr> dynmic_objs;
 
-	for( XE::uint64 i = 0; i < _AllGameObjects.size(); ++i )
+	for( XE::uint64 i = 0; i < _GameObjects.size(); ++i )
 	{
-		if( _AllGameObjects[i] )
+		if( _GameObjects[i] )
 		{
-			if( _AllGameObjects[i]->GetDestroy() == false )
+			if( _GameObjects[i]->GetEnabled() )
 			{
-				if( _AllGameObjects[i]->GetEnabled() )
+				_GameObjects[i]->Update( dt );
+
+				if( _GameObjects[i]->GetType() == GameObjectType::DYNAMIC )
 				{
-					_AllGameObjects[i]->Update( dt );
-					if( _AllGameObjects[i]->GetType() == GameObjectType::DYNAMIC )
-					{
-						dynmic_objs.push_back( _AllGameObjects[i] );
-					}
+					dynmic_objs.push_back( _GameObjects[i] );
 				}
-			}
-			else
-			{
-				_AllGameObjects[i]->Clearup();
-				_AllGameObjects[i] = nullptr;
 			}
 		}
 	}
@@ -295,10 +295,10 @@ void XE::World::Update( XE::float32 dt )
 
 void XE::World::Clearup()
 {
-	for( auto obj : _AllGameObjects )
+	for( auto obj : _GameObjects )
 	{
 		obj->Clearup();
 	}
 
-	_AllGameObjects.clear();
+	_GameObjects.clear();
 }

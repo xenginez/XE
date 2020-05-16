@@ -30,9 +30,7 @@ public:
 
 	SceneComponentPtr GetParent() const;
 
-	Array< SceneComponentPtr > GetChildren() const;
-
-	void AttachToParent( SceneComponentPtr val );
+	const Array< SceneComponentPtr > & GetChildren() const;
 
 public:
 	template< typename T > XE::SharedPtr<T> GetRootT()
@@ -40,7 +38,7 @@ public:
 		return DP_CAST<T>( GetRoot() );
 	}
 
-	template< typename T > XE::SharedPtr<T> GetParentT()
+	template< typename T > XE::SharedPtr<T> GetParentT() const
 	{
 		return DP_CAST<T>( GetParent() );
 	}
@@ -153,19 +151,19 @@ protected:
 private:
 	bool _Dirty;
 
-	Vec3 _WorldScale;
-	Vec3 _WorldPosition;
-	Quat _WorldRotation;
-	Vec3 _RelativeScale;
-	Vec3 _RelativePosition;
-	Quat _RelativeRotation;
+	XE::Vec3 _WorldScale;
+	XE::Vec3 _WorldPosition;
+	XE::Quat _WorldRotation;
+	XE::Vec3 _RelativeScale;
+	XE::Vec3 _RelativePosition;
+	XE::Quat _RelativeRotation;
 
-	Mat4 _WorldTransform;
-	Mat4 _RelativeTransform;
+	XE::Mat4 _WorldTransform;
+	XE::Mat4 _RelativeTransform;
 
-	AABB _BoundingBox;
-	ComponentHandle _ParentHandle;
-	Array< ComponentHandle > _ChildrenHandle;
+	XE::AABB _BoundingBox;
+	XE::SceneComponentWPtr _Parent;
+	XE::Array< SceneComponentPtr > _Children;
 };
 
 END_XE_NAMESPACE

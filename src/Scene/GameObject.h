@@ -83,10 +83,6 @@ public:
 
 	void SetEnabled( bool val );
 
-	bool GetDestroy() const;
-
-	void SetDestroy( bool val );
-
 	GameObjectType GetType() const;
 
 	void SetType( GameObjectType val );
@@ -96,45 +92,40 @@ public:
 	void SetName( const String & val );
 
 public:
-	ComponentPtr AddComponent( IMetaClassPtr val );
+	SceneComponentPtr AddSceneComponent( IMetaClassPtr val, const SceneComponentPtr& parent );
 
-	ComponentPtr FindComponent( const String& val ) const;
+	BehaviorComponentPtr AddBehaviorComponent( IMetaClassPtr val );
 
-	ComponentPtr FindComponent( IMetaClassPtr val ) const;
+	bool RemoveSceneComponent( const XE::SceneComponentPtr & val );
 
-	ComponentPtr FindComponent( ComponentHandle val ) const;
+	bool RemoveBehaviorComponet( const BehaviorComponentPtr & val );
 
-	const XE::Array< ComponentPtr >& GetComponents() const;
+public:
+	BehaviorComponentPtr FindBehaviorComponent( const String& val ) const;
 
-	bool RemoveComponet( const ComponentPtr & val );
+	BehaviorComponentPtr FindBehaviorComponent( IMetaClassPtr val ) const;
+
+	BehaviorComponentPtr FindBehaviorComponent( ComponentHandle val ) const;
+
+	template< typename T > XE::SharedPtr<T> FindBehaviorComponentT() const
+	{
+		return SP_CAST<T>( FindBehaviorComponent( ClassID<T>::Get() ) );
+	}
+
+	template< typename T > XE::SharedPtr<T> FindBehaviorComponentT( const String& val ) const
+	{
+		return DP_CAST<T>( FindBehaviorComponent( val ) );
+	}
+
+	template< typename T > XE::SharedPtr<T> FindBehaviorComponentT( ComponentHandle val ) const
+	{
+		return DP_CAST<T>( FindBehaviorComponent( val ) );
+	}
 
 public:
 	SceneComponentPtr GetRootSceneComponent() const;
 
-	XE::Array<SceneComponentPtr> GetSceneComponets() const;
-
-	XE::Array<BehaviorComponentPtr> GetBehaviorComponents() const;
-
-public:
-	template< typename T > XE::SharedPtr<T> AddComponentT()
-	{
-		return SP_CAST<T>( AddComponent( ClassID<T>::Get() ) );
-	}
-
-	template< typename T > XE::SharedPtr<T> FindComponentT() const
-	{
-		return SP_CAST<T>( FindComponent( ClassID<T>::Get() ) );
-	}
-
-	template< typename T > XE::SharedPtr<T> FindComponentT( const String& val ) const
-	{
-		return DP_CAST<T>( FindComponent( val ) );
-	}
-
-	template< typename T > XE::SharedPtr<T> FindComponentT( ComponentHandle val ) const
-	{
-		return DP_CAST<T>( FindComponent( val ) );
-	}
+	const XE::Array<BehaviorComponentPtr>& GetBehaviorComponents() const;
 
 public:
 	void ProcessEvent( EventPtr & val ) override;
@@ -147,16 +138,12 @@ protected:
 	void Clearup();
 
 private:
-	void RemoveSceneComponent( const XE::SceneComponentPtr & val );
-
-private:
 	String _Name;
 	bool _Enabled;
-	bool _Destroy;
 	GameObjectType _Type;
 	GameObjectHandle _Handle;
-	XE::Array< ComponentPtr > _Components;
 	SceneComponentPtr _RootSceneComponent;
+	XE::ComponentHandleAllocator _HandleTable;
 	XE::Array< BehaviorComponentPtr > _BehaviorComponents;
 };
 

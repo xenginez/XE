@@ -60,21 +60,77 @@ enum class CommandType : XE::uint8
 	REQUEST_SCREEN_SHOT,
 };
 
+// SortKey FORMAT
+// 64bit:
+//   00000000     000000         00      000000000000000000000000 000000000000000000000000
+//		|           |            |                  |                        |
+//  view(2^8)  group(2^6)  transparent(2^2)  program(2^24)              depth(2^24)
+
 class SortKey
 {
-	union
-	{
-		struct
-		{
-			XE::uint8 view;
-			XE::uint8 seq;
-			XE::uint8 depth;
-			XE::uint8 trans;
-			XE::uint8 program;
-		};
+public:
+	static constexpr XE::uint64 VIEW_LEFT_SHIFT = ( 64 - 8 );
+	static constexpr XE::uint64 GROUP_LEFT_SHIFT = ( VIEW_LEFT_SHIFT - 6 );
+	static constexpr XE::uint64 TRANSPARENT_LEFT_SHIFT = ( GROUP_LEFT_SHIFT - 2 );
+	static constexpr XE::uint64 PROGRAM_LEFT_SHIFT = ( TRANSPARENT_LEFT_SHIFT - 24 );
+	static constexpr XE::uint64 DEPTH_LEFT_SHIFT = 0;
 
-		XE::uint64 key;
-	};
+	static constexpr XE::uint64 MAX_VIEW = 255;
+	static constexpr XE::uint64 MAX_GROUP = 63;
+	static constexpr XE::uint64 MAX_TRANSPARENT = 3;
+	static constexpr XE::uint64 MAX_PROGRAM = 16777215;
+	static constexpr XE::uint64 MAX_DEPTH = 16777215;
+
+public:
+	SortKey();
+
+	SortKey( XE::uint64 val );
+
+	SortKey( const SortKey & val );
+
+public:
+	bool operator <( const SortKey& val ) const;
+
+	bool operator >( const SortKey& val ) const;
+
+	bool operator <=( const SortKey& val ) const;
+
+	bool operator >=( const SortKey& val ) const;
+
+	bool operator ==( const SortKey& val ) const;
+
+	bool operator !=( const SortKey& val ) const;
+
+public:
+	XE::uint8 GetView() const;
+
+	void SetView( XE::uint8 val );
+
+	XE::uint8 GetGroup() const;
+
+	void SetGroup( XE::uint8 val );
+
+	XE::uint8 GetTransparent() const;
+
+	void SetTransparent( XE::uint8 val );
+
+	XE::uint32 GetProgram() const;
+
+	void SetProgram( XE::uint32 val );
+
+	XE::uint32 GetDepth() const;
+
+	void SetDepth( XE::uint32 val );
+
+	XE::uint64 GetKey() const;
+
+	void SetKey( XE::uint64 val );
+
+public:
+	XE::uint64 SwapProgramDepth() const;
+
+private:
+	XE::uint64 _Key;
 };
 
 class TextureInfo
@@ -165,7 +221,7 @@ public:
 		XE::uint8 Mip;
 	};
 	
-	std::array<Binding, GFX_MAX_SAMPLERS> Binds;
+	std::array<Binding, GFX_MAX_TEXTURE_SAMPLERS> Binds;
 };
 
 class RenderDraw
@@ -287,28 +343,28 @@ public:
 	XE::Buffer PrevCmd;
 	std::mutex PrevCmdMutex;
 
-	std::atomic<XE::uint64> RenderOcclusionSize = 0;
-	std::array<XE::int32, GFX_MAX_OCCLUSION> Occlusion = {};
-
 	std::atomic<XE::uint64> TransformsSize = 0;
 	std::array<XE::Mat4, GFX_MAX_TRANSFORM> Transforms = {};
+
+	std::atomic<XE::uint64> RenderOcclusionSize = 0;
+	std::array<XE::int32, GFX_MAX_OCCLUSION> Occlusions = {};
 
 	std::atomic<XE::uint64> RenderBindSize = 0;
 	std::array<RenderBind, GFX_MAX_DRAW_CALLS> RenderBinds = {};
 
 	std::atomic<XE::uint64> RenderItemSize = 0;
 	std::array<RenderItem, GFX_MAX_DRAW_CALLS> RenderItems = {};
-	std::array<XE::uint64, GFX_MAX_DRAW_CALLS> RenderItemKeys = {};
+	std::array<SortKey, GFX_MAX_DRAW_CALLS> RenderItemKeys = {};
 
 	std::atomic<XE::uint64> RenderBlitSize = 0;
 	std::array<RenderBlit, GFX_MAX_DRAW_CALLS> RenderBlits = {};
-	std::array<XE::uint64, GFX_MAX_DRAW_CALLS> RenderBlitKeys = {};
+	std::array<SortKey, GFX_MAX_DRAW_CALLS> RenderBlitKeys = {};
 
 	std::array<TransientIndexBuffer, GFX_MAX_INDEX_BUFFERS> TransientIndexBufferView;
-	XE::ConcurrentHandleAlloctor<XE::TransientIndexBufferHandle, GFX_MAX_INDEX_BUFFERS>  TransientIndexBufferHandleAlloc;
+	XE::ConcurrentHandleAllocator<XE::TransientIndexBufferHandle, GFX_MAX_INDEX_BUFFERS>  TransientIndexBufferHandleAlloc;
 
 	std::array<TransientVertexBuffer, GFX_MAX_VERTEX_BUFFERS> TransientVertexBufferView;
-	XE::ConcurrentHandleAlloctor<XE::TransientVertexBufferHandle, GFX_MAX_VERTEX_BUFFERS> TransientVertexBufferHandleAlloc;
+	XE::ConcurrentHandleAllocator<XE::TransientVertexBufferHandle, GFX_MAX_VERTEX_BUFFERS> TransientVertexBufferHandleAlloc;
 
 	XE::Buffer PostCmd;
 	std::mutex PostCmdMutex;

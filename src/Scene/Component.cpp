@@ -11,7 +11,7 @@ type->Property( "Enabled", &Component::_Enabled );
 END_META()
 
 XE::Component::Component()
-	:_Update( false ), _Enabled( true ), _Destroy( false ), _Name( GetMetaClass()->GetName() )
+	:_Update( false ), _Enabled( true ), _Name( GetMetaClass()->GetName() )
 {
 
 }
@@ -49,16 +49,6 @@ bool XE::Component::GetEnabled() const
 void XE::Component::SetEnabled( bool val )
 {
 	_Enabled = val;
-}
-
-bool XE::Component::GetDestroy() const
-{
-	return _Destroy;
-}
-
-void XE::Component::SetDestroy( bool val )
-{
-	_Destroy = val;
 }
 
 const XE::String & XE::Component::GetName() const

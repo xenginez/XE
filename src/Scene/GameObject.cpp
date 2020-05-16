@@ -4,21 +4,24 @@
 #include "SceneComponent.h"
 #include "BehaviorComponent.h"
 
+#include <Interface/IFramework.h>
+#include <Interface/IThreadService.h>
+
 USING_XE
 
 BEG_META( GameObject )
 type->Property( "Name", &GameObject::_Name );
-type->Property( "Handle", &GameObject::_Handle, IMetaProperty::NoDesign | IMetaProperty::NoClone );
-type->Property( "Enabled", &GameObject::_Enabled );
-type->Property( "Components", &GameObject::_Components, IMetaProperty::NoDesign );
+type->Property( "Handle", &GameObject::_Handle, IMetaProperty::NoDesign );
+type->Property( "Enabled", &GameObject::GetEnabled, &GameObject::SetEnabled );
+type->Property( "RootSceneComponent", &GameObject::_RootSceneComponent, IMetaProperty::NoDesign );
+type->Property( "BehaviorComponents", &GameObject::_BehaviorComponents, IMetaProperty::NoDesign );
 END_META()
 
 XE::GameObject::GameObject()
-	:_Enabled( true ), _Destroy( false ), _Type( GameObjectType::STATIC )
+	:_Enabled( true ), _Type( GameObjectType::STATIC )
 {
 	_RootSceneComponent = XE::MakeShared<XE::SceneComponent>();
 	_RootSceneComponent->SetName( "Root" );
-	_Components.push_back( _RootSceneComponent );
 }
 
 XE::GameObject::~GameObject()
@@ -43,17 +46,17 @@ bool XE::GameObject::GetEnabled() const
 
 void XE::GameObject::SetEnabled( bool val )
 {
-	_Enabled = val;
-}
+	if (_Enabled != val)
+	{
+		_Enabled = val;
 
-bool XE::GameObject::GetDestroy() const
-{
-	return _Destroy;
-}
+		_RootSceneComponent->SetEnabled( val );
 
-void XE::GameObject::SetDestroy( bool val )
-{
-	_Destroy = val;
+		for( auto & coms : _BehaviorComponents )
+		{
+			coms->SetEnabled( val );
+		}
+	}
 }
 
 XE::GameObjectType XE::GameObject::GetType() const
@@ -76,28 +79,60 @@ void XE::GameObject::SetName( const XE::String & val )
 	_Name = val;
 }
 
-XE::ComponentPtr XE::GameObject::AddComponent( IMetaClassPtr val )
+XE::SceneComponentPtr XE::GameObject::AddSceneComponent( IMetaClassPtr val, const SceneComponentPtr & parent )
 {
-	XE::ComponentPtr comp = val->ConstructPtr().Value< XE::ComponentPtr >();
-	if ( comp )
+	if( val->CanConvert( SceneComponent::GetMetaClassStatic() ) )
 	{
-		comp->_GameObject = XE_THIS( GameObject );
-		comp->_Handle = _Components.size();
-		_Components.push_back( comp );
+		auto comp = val->ConstructPtr().Value< XE::SceneComponentPtr >();
 
-		comp->Startup();
-
-		if( auto beh = DP_CAST<XE::BehaviorComponent>( comp ) )
+		if( comp )
 		{
-			_BehaviorComponents.push_back( beh );
+			comp->_GameObject = XE_THIS( GameObject );
+			comp->_Handle = _HandleTable.Alloc();
+
+			comp->_Parent = parent;
+			parent->_Children.push_back( comp );
+
+			XE::IFramework::GetCurrentFramework()->GetThreadService()->PostTask( ThreadType::GAME, [ comp ]()
+				{
+					comp->Startup();
+				} );
 		}
+
+		return comp;
 	}
-	return comp;
+
+	return nullptr;
 }
 
-XE::ComponentPtr XE::GameObject::FindComponent( const String& val ) const
+XE::BehaviorComponentPtr XE::GameObject::AddBehaviorComponent( IMetaClassPtr val )
 {
-	for ( auto comp : _Components )
+	if( val->CanConvert( BehaviorComponent::GetMetaClassStatic() ) )
+	{
+		auto comp = val->ConstructPtr().Value< XE::BehaviorComponentPtr >();
+
+		if( comp )
+		{
+			comp->_GameObject = XE_THIS( GameObject );
+			comp->_Handle = _HandleTable.Alloc();
+
+			XE::IFramework::GetCurrentFramework()->GetThreadService()->PostTask( ThreadType::GAME, [comp]()
+				{
+					comp->Startup();
+				} );
+
+			_BehaviorComponents.push_back( comp );
+		}
+
+		return comp;
+	}
+
+	return nullptr;
+}
+
+XE::BehaviorComponentPtr XE::GameObject::FindBehaviorComponent( const String& val ) const
+{
+	for ( auto comp : _BehaviorComponents )
 	{
 		if ( comp->GetName() == val )
 		{
@@ -108,11 +143,11 @@ XE::ComponentPtr XE::GameObject::FindComponent( const String& val ) const
 	return nullptr;
 }
 
-XE::ComponentPtr XE::GameObject::FindComponent( IMetaClassPtr val ) const
+XE::BehaviorComponentPtr XE::GameObject::FindBehaviorComponent( IMetaClassPtr val ) const
 {
-	for ( auto comp : _Components )
+	for( auto comp : _BehaviorComponents )
 	{
-		if ( comp->GetMetaClass()->CanConvert( val ) )
+		if( comp->GetMetaClass()->CanConvert( val ) )
 		{
 			return comp;
 		}
@@ -121,24 +156,51 @@ XE::ComponentPtr XE::GameObject::FindComponent( IMetaClassPtr val ) const
 	return nullptr;
 }
 
-XE::ComponentPtr XE::GameObject::FindComponent( ComponentHandle val ) const
+XE::BehaviorComponentPtr XE::GameObject::FindBehaviorComponent( ComponentHandle val ) const
 {
-	XE_ASSERT( val.GetValue() < _Components.size() );
-
-	return _Components[val.GetValue()];
-}
-
-const XE::Array< ComponentPtr >& XE::GameObject::GetComponents() const
-{
-	return _Components;
-}
-
-bool GameObject::RemoveComponet( const ComponentPtr & val )
-{
-	auto it = std::find( _Components.begin(), _Components.end(), val );
-	if( it != _Components.end() )
+	for( auto comp : _BehaviorComponents )
 	{
-		val->SetDestroy( true );
+		if( comp->GetHandle() == val )
+		{
+			return comp;
+		}
+	}
+
+	return nullptr;
+}
+
+bool XE::GameObject::RemoveSceneComponent( const XE::SceneComponentPtr & val )
+{
+	if( auto parent = val->GetParent() )
+	{
+		auto it = std::find( parent->_Children.begin(), parent->_Children.end(), val );
+		if( it != parent->_Children.end() )
+		{
+			parent->_Children.erase( it );
+
+			XE::IFramework::GetCurrentFramework()->GetThreadService()->PostTask( ThreadType::GAME, [ val ]()
+				{
+					val->Clearup();
+				} );
+
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool GameObject::RemoveBehaviorComponet( const BehaviorComponentPtr & val )
+{
+	auto it = std::find( _BehaviorComponents.begin(), _BehaviorComponents.end(), val );
+	if( it != _BehaviorComponents.end() )
+	{
+		_BehaviorComponents.erase( it );
+
+		XE::IFramework::GetCurrentFramework()->GetThreadService()->PostTask( ThreadType::GAME, [ val ]()
+			{
+				val->Clearup();
+			} );
 
 		return true;
 	}
@@ -151,26 +213,7 @@ XE::SceneComponentPtr XE::GameObject::GetRootSceneComponent() const
 	return _RootSceneComponent;
 }
 
-XE::Array<SceneComponentPtr> GameObject::GetSceneComponets() const
-{
-	XE::Array<SceneComponentPtr> ret;
-
-	if( GetRootSceneComponent() )
-	{
-		ret.push_back( GetRootSceneComponent() );
-
-		for( XE::uint64 i = 0;; )
-		{
-			auto children = ret[i]->GetChildren();
-
-			ret.insert( ret.end(), children.begin(), children.end() );
-		}
-	}
-
-	return ret;
-}
-
-XE::Array<BehaviorComponentPtr> GameObject::GetBehaviorComponents() const
+const XE::Array<BehaviorComponentPtr> & GameObject::GetBehaviorComponents() const
 {
 	return _BehaviorComponents;
 }
@@ -287,7 +330,14 @@ void XE::GameObject::SetRelativeTransform( const Mat4 & val )
 
 void XE::GameObject::ProcessEvent( EventPtr & val )
 {
-	for( auto & comp : _Components )
+	_RootSceneComponent->ProcessEvent( val );
+
+	if( val->accept )
+	{
+		return;
+	}
+
+	for( auto & comp : _BehaviorComponents )
 	{
 		comp->ProcessEvent( val );
 
@@ -300,9 +350,11 @@ void XE::GameObject::ProcessEvent( EventPtr & val )
 
 void XE::GameObject::Startup()
 {
-	_RootSceneComponent = SP_CAST<XE::SceneComponent>( _Components[0] );
+	_RootSceneComponent->_GameObject = XE_THIS( GameObject );
 
-	for( auto it : _Components )
+	_RootSceneComponent->Startup();
+
+	for( auto it : _BehaviorComponents )
 	{
 		it->_GameObject = XE_THIS( GameObject );
 
@@ -312,30 +364,6 @@ void XE::GameObject::Startup()
 
 void XE::GameObject::Update( XE::float32 dt )
 {
-	for( XE::uint64 i = 0; i < _Components.size(); i++ )
-	{
-		if( _Components[i] )
-		{
-			if( _Components[i]->GetDestroy() == true )
-			{
-				if( auto beh = DP_CAST<XE::BehaviorComponent>( _Components[i] ) )
-				{
-					_BehaviorComponents.erase( std::find( _BehaviorComponents.begin(), _BehaviorComponents.end(), beh ) );
-
-					_Components[i]->Clearup();
-
-					_Components[i] = nullptr;
-				}
-				else if( auto scene = DP_CAST<XE::SceneComponent>( _Components[i] ) )
-				{
-					RemoveSceneComponent( scene );
-
-					scene->Clearup();
-				}
-			}
-		}
-	}
-
 	if( _Enabled == false )
 	{
 		return;
@@ -363,25 +391,8 @@ void XE::GameObject::Clearup()
 
 	for( auto it : _BehaviorComponents )
 	{
-		if( it )
-		{
-			it->Clearup();
-		}
+		it->Clearup();
 	}
 
 	_BehaviorComponents.clear();
-
-	_Components.clear();
-}
-
-void GameObject::RemoveSceneComponent( const XE::SceneComponentPtr & val )
-{
-	const auto & children = val->GetChildren();
-
-	for( const auto & child : children )
-	{
-		RemoveSceneComponent( child );
-	}
-
-	_Components[val->GetHandle().GetValue()] = nullptr;
 }

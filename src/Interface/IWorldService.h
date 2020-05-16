@@ -25,8 +25,6 @@ public:
 public:
 	virtual void LoadWorld( const XE::String & val ) = 0;
 
-	virtual XE::String GetWorldName() const = 0;
-
 public:
 	bool AddGameObject( const GameObjectPtr & val );
 

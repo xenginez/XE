@@ -24,16 +24,16 @@ public:
 		std::swap( End, val.End );
 	}
 
-	Page( const Page & val )
-		:Size( val.Size )
-	{
-		XE::uint64 count = ( val.End - val.Beg ) / val.Size;
-		XE::uint64 bit_count = count / 32 + 1;
-		Bit = static_cast< XE::uint8 * >( Alloc::Allocate( val.End - val.Bit ) );
-		Beg = Bit + bit_count;
-		End = Bit + Size * count + bit_count;
-		std::memset( Bit, 0, Size * count + bit_count );
-	}
+// 	Page( const Page & val )
+// 		:Size( val.Size )
+// 	{
+// 		XE::uint64 count = ( val.End - val.Beg ) / val.Size;
+// 		XE::uint64 bit_count = count / 32 + 1;
+// 		Bit = static_cast< XE::uint8 * >( Alloc::Allocate( val.End - val.Bit ) );
+// 		Beg = Bit + bit_count;
+// 		End = Bit + Size * count + bit_count;
+// 		std::memset( Bit, 0, Size * count + bit_count );
+// 	}
 
 	Page( XE::uint64 size, XE::uint64 count )
 		:Size( size )
@@ -57,30 +57,30 @@ public:
 	XE::uint8 * Allocate()
 	{
 		XE::uint64 count = ( ( End - Beg ) / Size ) / 32 + 1;
-		std::atomic<XE::uint32> * bp = reinterpret_cast< std::atomic<XE::uint32> * >( Bit );
+		auto bp = reinterpret_cast< std::atomic<XE::uint32> * >( Bit );
 
-		for( int i = 0; i < count; ++i )
+		for( XE::uint32 i = 0; i < count; ++i )
 		{
 			XE::uint32 value = bp[i].load();
-			if( value != 0XFFFFFFFF )
+			while( value != 0xFFFFFFFF )
 			{
-				XE::uint32 index = GetFirstBitZero( value );
+				XE::uint64 index = GetFirstBitZero( value );
 				if( bp[i].compare_exchange_weak( value, value | ( 1 << index ) ) )
 				{
-					SetBit( i * 32 + index, true );
-					return Beg + ( i * 32 + index ) * Size;
+					SetBit( i * 32ull + index, true );
+					return Beg + ( i * 32ull + index ) * Size;
 				}
 				index = GetFirstBitZero( value );
 				if( bp[i].compare_exchange_weak( value, value | ( 1 << index ) ) )
 				{
-					SetBit( i * 32 + index, true );
-					return Beg + ( i * 32 + index ) * Size;
+					SetBit( i * 32ull + index, true );
+					return Beg + ( i * 32ull + index ) * Size;
 				}
 				index = GetFirstBitZero( value );
 				if( bp[i].compare_exchange_weak( value, value | ( 1 << index ) ) )
 				{
-					SetBit( i * 32 + index, true );
-					return Beg + ( i * 32 + index ) * Size;
+					SetBit( i * 32ull + index, true );
+					return Beg + ( i * 32ull + index ) * Size;
 				}
 			}
 		}
@@ -152,11 +152,11 @@ public:
 	Block( XE::uint64 size )
 		:Size( size )
 	{
-		Pages.emplace_back( std::move( Page( size, KBYTE( 4 ) / size ) ) );
+		NewPage();
 	}
 
-	Block( Block && val )
-		:Size( val.Size ), Pages( val.Pages )
+	Block( Block&& val )
+		:Size( val.Size ), Pages( std::move( val.Pages ) )
 	{
 
 	}
@@ -174,7 +174,9 @@ public:
 			}
 		}
 
-		return Pages.emplace_back( std::move( Page( Size, KBYTE( 4 ) / Size ) ) ).Allocate();
+		NewPage();
+
+		return Allocate();
 	}
 
 	void Deallocate( void * p )
@@ -204,7 +206,16 @@ public:
 	}
 
 private:
+	void NewPage()
+	{
+		std::unique_lock<std::mutex> lock( Mutex );
+
+		Pages.emplace_front( std::move( Page( Size, KBYTE( 4 ) / Size ) ) );
+	}
+
+private:
 	XE::uint64 Size;
+	std::mutex Mutex;
 	std::list<Page, XE::Allocator<Page>> Pages;
 };
 

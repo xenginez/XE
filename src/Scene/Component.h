@@ -38,10 +38,6 @@ public:
 
 	void SetEnabled( bool val );
 
-	bool GetDestroy() const;
-
-	void SetDestroy( bool val );
-
 	const String & GetName() const;
 
 	void SetName( const String & val );
@@ -64,7 +60,6 @@ public:
 	String _Name;
 	bool _Update;
 	bool _Enabled;
-	bool _Destroy;
 	ComponentHandle _Handle;
 	GameObjectWPtr _GameObject;
 };

@@ -15,17 +15,17 @@ struct XE::RendererContext::Private
 
 	std::array<View, GFX_MAX_VIEW> _Views = {};
 
-	XE::ConcurrentHandleAlloctor<XE::ViewHandle, GFX_MAX_VIEW> _ViewHandleAlloc;
-	XE::ConcurrentHandleAlloctor<XE::ShaderHandle, GFX_MAX_SHADERS> _ShaderHandleAlloc;
-	XE::ConcurrentHandleAlloctor<XE::ProgramHandle, GFX_MAX_PROGRAMS> _ProgramHandleAlloc;
-	XE::ConcurrentHandleAlloctor<XE::TextureHandle, GFX_MAX_TEXTURES> _TextureHandleAlloc;
-	XE::ConcurrentHandleAlloctor<XE::UniformHandle, GFX_MAX_UNIFORMS> _UniformHandleAlloc;
-	XE::ConcurrentHandleAlloctor<XE::FrameBufferHandle, GFX_MAX_FRAME_BUFFERS> _FrameBufferHandleAlloc;
-	XE::ConcurrentHandleAlloctor<XE::IndexBufferHandle, GFX_MAX_INDEX_BUFFERS>  _IndexBufferHandleAlloc;
-	XE::ConcurrentHandleAlloctor<XE::VertexBufferHandle, GFX_MAX_VERTEX_BUFFERS> _VertexBufferHandleAlloc;
-	XE::ConcurrentHandleAlloctor<XE::VertexLayoutHandle, GFX_MAX_VERTEX_LAYOUTS> _VertexLayoutHandleAlloc;
-	XE::ConcurrentHandleAlloctor<XE::DynamicIndexBufferHandle, GFX_MAX_INDEX_BUFFERS>  _DynamicIndexBufferHandleAlloc;
-	XE::ConcurrentHandleAlloctor<XE::DynamicVertexBufferHandle, GFX_MAX_VERTEX_BUFFERS> _DynamicVertexBufferHandleAlloc;
+	XE::ConcurrentHandleAllocator<XE::ViewHandle, GFX_MAX_VIEW> _ViewHandleAlloc;
+	XE::ConcurrentHandleAllocator<XE::ShaderHandle, GFX_MAX_SHADERS> _ShaderHandleAlloc;
+	XE::ConcurrentHandleAllocator<XE::ProgramHandle, GFX_MAX_PROGRAMS> _ProgramHandleAlloc;
+	XE::ConcurrentHandleAllocator<XE::TextureHandle, GFX_MAX_TEXTURES> _TextureHandleAlloc;
+	XE::ConcurrentHandleAllocator<XE::UniformHandle, GFX_MAX_UNIFORMS> _UniformHandleAlloc;
+	XE::ConcurrentHandleAllocator<XE::FrameBufferHandle, GFX_MAX_FRAME_BUFFERS> _FrameBufferHandleAlloc;
+	XE::ConcurrentHandleAllocator<XE::IndexBufferHandle, GFX_MAX_INDEX_BUFFERS>  _IndexBufferHandleAlloc;
+	XE::ConcurrentHandleAllocator<XE::VertexBufferHandle, GFX_MAX_VERTEX_BUFFERS> _VertexBufferHandleAlloc;
+	XE::ConcurrentHandleAllocator<XE::VertexLayoutHandle, GFX_MAX_VERTEX_LAYOUTS> _VertexLayoutHandleAlloc;
+	XE::ConcurrentHandleAllocator<XE::DynamicIndexBufferHandle, GFX_MAX_INDEX_BUFFERS>  _DynamicIndexBufferHandleAlloc;
+	XE::ConcurrentHandleAllocator<XE::DynamicVertexBufferHandle, GFX_MAX_VERTEX_BUFFERS> _DynamicVertexBufferHandleAlloc;
 };
 
 XE::RendererContext::RendererContext()

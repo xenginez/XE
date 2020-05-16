@@ -46,18 +46,12 @@ bool XE::WorldService::Startup()
 
 void XE::WorldService::Update()
 {
-	if( _p->_World )
-	{
-		_p->_World->Update( GetFramework()->GetServiceT<XE::ITimerService>()->GetDeltaTime() );
-	}
+	_p->_World->Update( GetFramework()->GetServiceT<XE::ITimerService>()->GetDeltaTime() );
 }
 
 void XE::WorldService::Clearup()
 {
-	if( _p->_World )
-	{
-		_p->_World->Clearup();
-	}
+	_p->_World->Clearup();
 }
 
 void WorldService::LoadWorld( const XE::String & val )
@@ -77,11 +71,6 @@ void WorldService::LoadWorld( const XE::String & val )
 
 																	 return false;
 																 } );
-}
-
-XE::String WorldService::GetWorldName() const
-{
-	return _p->_World ? _p->_World->GetName() : "";
 }
 
 XE::WorldPtr WorldService::GetCurrentWorld() const
