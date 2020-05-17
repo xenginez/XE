@@ -733,7 +733,7 @@ XE::UniformHandle XE::RendererContext::CreateUniform( const XE::String & name, U
 	return handle;
 }
 
-const XE::UniformInfo & XE::RendererContext::GetUniformInfo( UniformHandle handle )
+const XE::Uniform & XE::RendererContext::GetUniformInfo( UniformHandle handle )
 {
 	// TODO: 
 	return {};

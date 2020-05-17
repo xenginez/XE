@@ -470,7 +470,7 @@ XE::UniformHandle XE::Gfx::CreateUniform( const XE::String & name, UniformType t
 	return _p->_Context->CreateUniform( name, type, num );
 }
 
-const XE::UniformInfo & XE::Gfx::GetUniformInfo( UniformHandle handle )
+const XE::Uniform & XE::Gfx::GetUniformInfo( UniformHandle handle )
 {
 	XE_ASSERT( _p->_Context != nullptr );
 

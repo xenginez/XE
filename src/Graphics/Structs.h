@@ -62,22 +62,19 @@ enum class CommandType : XE::uint8
 
 // SortKey FORMAT
 // 64bit:
-//   00000000     000000         00      000000000000000000000000 000000000000000000000000
-//		|           |            |                  |                        |
-//  view(2^8)  group(2^6)  transparent(2^2)  program(2^24)              depth(2^24)
-
+//   00000000    00000000  000000000000000000000000 000000000000000000000000
+//		|           |                 |                        |
+//  view(2^8)  group(2^8)       program(2^24)              depth(2^24)
 class SortKey
 {
 public:
 	static constexpr XE::uint64 VIEW_LEFT_SHIFT = ( 64 - 8 );
-	static constexpr XE::uint64 GROUP_LEFT_SHIFT = ( VIEW_LEFT_SHIFT - 6 );
-	static constexpr XE::uint64 TRANSPARENT_LEFT_SHIFT = ( GROUP_LEFT_SHIFT - 2 );
-	static constexpr XE::uint64 PROGRAM_LEFT_SHIFT = ( TRANSPARENT_LEFT_SHIFT - 24 );
+	static constexpr XE::uint64 GROUP_LEFT_SHIFT = ( VIEW_LEFT_SHIFT - 8 );
+	static constexpr XE::uint64 PROGRAM_LEFT_SHIFT = ( GROUP_LEFT_SHIFT - 24 );
 	static constexpr XE::uint64 DEPTH_LEFT_SHIFT = 0;
 
 	static constexpr XE::uint64 MAX_VIEW = 255;
-	static constexpr XE::uint64 MAX_GROUP = 63;
-	static constexpr XE::uint64 MAX_TRANSPARENT = 3;
+	static constexpr XE::uint64 MAX_GROUP = 255;
 	static constexpr XE::uint64 MAX_PROGRAM = 16777215;
 	static constexpr XE::uint64 MAX_DEPTH = 16777215;
 
@@ -110,10 +107,6 @@ public:
 
 	void SetGroup( XE::uint8 val );
 
-	XE::uint8 GetTransparent() const;
-
-	void SetTransparent( XE::uint8 val );
-
 	XE::uint32 GetProgram() const;
 
 	void SetProgram( XE::uint32 val );
@@ -126,17 +119,13 @@ public:
 
 	void SetKey( XE::uint64 val );
 
-public:
-	XE::uint64 SwapProgramDepth() const;
-
 private:
 	XE::uint64 _Key;
 };
 
-class TextureInfo
+class Texture
 {
 public:
-	TextureFormat format = TextureFormat::COUNT;
 	uint32_t storageSize = 0;
 	uint16_t width = 0;
 	uint16_t height = 0;
@@ -145,6 +134,42 @@ public:
 	uint8_t numMips = 0;
 	uint8_t bitsPerPixel = 0;
 	bool cubeMap = false;
+	TextureFormat format = TextureFormat::COUNT;
+};
+
+class IndexBuffer
+{
+public:
+	enum HandleType
+	{
+		INDEX,
+		DYNAMIC,
+		TRANSIENT,
+	};
+
+public:
+	HandleType Type;
+	XE::uint64 Handle;
+	XE::uint32 StartIndex;
+	XE::uint32 NumIndices;
+};
+
+class VertexBuffer
+{
+public:
+	enum HandleType
+	{
+		VERTEX,
+		DYNAMIC,
+		TRANSIENT,
+	};
+
+public:
+	HandleType Type;
+	XE::uint64 Handle;
+	XE::uint32 StartVertex;
+	XE::uint32 NumVertices;
+	VertexLayoutHandle LayoutHandle;
 };
 
 class InstanceDataBuffer
@@ -206,15 +231,8 @@ public:
 
 	struct Binding
 	{
-		Binding(){}
-
 		XE::uint32 SamplerFlags;
-		union
-		{
-			TextureHandle Texture;
-			IndexBufferHandle Index;
-			VertexBufferHandle Vertex;
-		};
+		XE::uint64 Handle;
 		BindType Type;
 		XE::TextureFormat Format;
 		XE::Access Access;
@@ -227,41 +245,32 @@ public:
 class RenderDraw
 {
 public:
-	struct
-	{
-		XE::uint32 StartVertices;
-		XE::uint32 NumVertices;
-		VertexLayoutHandle LayoutHandle;
-		VertexBufferHandle VertexBuffer;
-		DynamicVertexBufferHandle DynamicVertexBuffer;
-		TransientVertexBufferHandle TransientVertexBuffer;
-	} Vertices[GFX_MAX_VERTEXS];
+	IndexBuffer Indices;
+	VertexBuffer Vertices[GFX_MAX_VERTEXS];
 
 	XE::Color Rgba;
+
 	XE::uint32 UniformBegin;
 	XE::uint32 UniformEnd;
+
 	XE::uint32 StartMatrix;
-	XE::uint32 StartIndex;
-	XE::uint32 NumIndices;
-	XE::uint32 NumVertices;
+	XE::uint16 NumMatrices;
+
 	XE::uint32 InstanceDataOffset;
 	XE::uint32 NumInstances;
+
 	XE::uint16 StartIndirect;
 	XE::uint16 NumIndirect;
-	XE::uint16 NumMatrices;
+
 	XE::Rect Scissor;
 	XE::uint8 SubmitFlags;
 	XE::uint8 StreamMask;
-	XE::uint8 UniformIdx;
-
-	XE::IndexBufferHandle IndexBuffer;
-	XE::DynamicIndexBufferHandle DynamicIndexBuffer;
-	XE::TransientIndexBufferHandle TransientIndexBuffer;
 
 	XE::VertexBufferHandle InstanceDataBuffer;
 	XE::DynamicVertexBufferHandle DynamicInstanceDataBuffer;
 
 	XE::IndirectBufferHandle IndirectBuffer;
+
 	XE::OcclusionQueryHandle OcclusionQuery;
 
 	XE::Flags<XE::StateFlag> StateFlags = XE::StateFlag::NONE;
@@ -292,17 +301,18 @@ class RenderCompute
 public:
 	XE::uint32 UniformBegin = 0;
 	XE::uint32 UniformEnd = 0;
+
 	XE::uint32 StartMatrix = 0;
-	XE::IndirectBufferHandle IndirectBuffer;
+	XE::uint16 NumMatrices = 0;
+
+	XE::uint16 StartIndirect = 0;
+	XE::uint16 NumIndirect = 0;
 
 	XE::uint32 NumX = 0;
 	XE::uint32 NumY = 0;
 	XE::uint32 NumZ = 0;
-	XE::uint16 StartIndirect = 0;
-	XE::uint16 NumIndirect = 0;
-	XE::uint16 NumMatrices = 0;
-	XE::uint8  SubmitFlags = 0;
-	XE::uint8  UniformIdx = 0;
+
+	XE::IndirectBufferHandle IndirectBuffer;
 };
 
 class RenderItem
@@ -310,20 +320,18 @@ class RenderItem
 public:
 	enum class ItemType
 	{
-		RENDERDRAW,
-		RENDERCOMPUTE,
+		DRAW,
+		COMPUTE,
 	};
 
 public:
-	RenderItem()
-	{
+	RenderItem();
 
-	}
+	RenderItem( RenderItem && val );
 
-	~RenderItem()
-	{
+	RenderItem & operator=( RenderItem && val );
 
-	}
+	~RenderItem();
 
 public:
 	ItemType Type;
@@ -349,16 +357,14 @@ public:
 	std::atomic<XE::uint64> RenderOcclusionSize = 0;
 	std::array<XE::int32, GFX_MAX_OCCLUSION> Occlusions = {};
 
-	std::atomic<XE::uint64> RenderBindSize = 0;
-	std::array<RenderBind, GFX_MAX_DRAW_CALLS> RenderBinds = {};
-
 	std::atomic<XE::uint64> RenderItemSize = 0;
 	std::array<RenderItem, GFX_MAX_DRAW_CALLS> RenderItems = {};
-	std::array<SortKey, GFX_MAX_DRAW_CALLS> RenderItemKeys = {};
+	std::array<RenderBind, GFX_MAX_DRAW_CALLS> RenderBinds = {};
+	std::array<XE::uint64, GFX_MAX_DRAW_CALLS> RenderItemKeys = {};
 
 	std::atomic<XE::uint64> RenderBlitSize = 0;
 	std::array<RenderBlit, GFX_MAX_DRAW_CALLS> RenderBlits = {};
-	std::array<SortKey, GFX_MAX_DRAW_CALLS> RenderBlitKeys = {};
+	std::array<XE::uint64, GFX_MAX_DRAW_CALLS> RenderBlitKeys = {};
 
 	std::array<TransientIndexBuffer, GFX_MAX_INDEX_BUFFERS> TransientIndexBufferView;
 	XE::ConcurrentHandleAllocator<XE::TransientIndexBufferHandle, GFX_MAX_INDEX_BUFFERS>  TransientIndexBufferHandleAlloc;
@@ -368,6 +374,9 @@ public:
 
 	XE::Buffer PostCmd;
 	std::mutex PostCmdMutex;
+
+	XE::Buffer UniformBuffer;
+	std::mutex UniformBufferMutex;
 
 	XE::Buffer TransientBuffer;
 	std::mutex TransientBufferMutex;

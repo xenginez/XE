@@ -35,23 +35,23 @@ DECL_HANDLE( XE_API, TransientIndexBuffer );
 DECL_HANDLE( XE_API, TransientVertexBuffer );
 
 static constexpr XE::uint32 GFX_MAX_VIEW = 256;
-static constexpr XE::uint32 GFX_MAX_VERTEX_LAYOUTS = 64;
-static constexpr XE::uint32 GFX_MAX_INDEX_BUFFERS = 4096;
-static constexpr XE::uint32 GFX_MAX_VERTEX_BUFFERS = 4096;
-static constexpr XE::uint32 GFX_MAX_DYNAMIC_INDEX_BUFFERS = 4096;
-static constexpr XE::uint32 GFX_MAX_DYNAMIC_VERTEX_BUFFERS = 4096;
+static constexpr XE::uint32 GFX_MAX_VERTEXS = 4;
 static constexpr XE::uint32 GFX_MAX_SHADERS = 512;
-static constexpr XE::uint32 GFX_MAX_TEXTURES = 4096;
-static constexpr XE::uint32 GFX_MAX_TEXTURE_SAMPLERS = 16;
-static constexpr XE::uint32 GFX_MAX_FRAME_BUFFERS = 128;
-static constexpr XE::uint32 GFX_MAX_ATTACHMENTS = 8;
 static constexpr XE::uint32 GFX_MAX_UNIFORMS = 512;
+static constexpr XE::uint32 GFX_MAX_PROGRAMS = 512;
+static constexpr XE::uint32 GFX_MAX_TEXTURES = 4096;
 static constexpr XE::uint32 GFX_MAX_OCCLUSION = 256;
 static constexpr XE::uint32 GFX_MAX_TRANSFORM = 256;
-static constexpr XE::uint32 GFX_MAX_VERTEXS = 4;
-static constexpr XE::uint32 GFX_MAX_DRAW_CALLS = 65535;
 static constexpr XE::uint32 GFX_MAX_BLITITEMS = 1024;
-static constexpr XE::uint32 GFX_MAX_PROGRAMS = 512;
+static constexpr XE::uint32 GFX_MAX_DRAW_CALLS = 65535;
+static constexpr XE::uint32 GFX_MAX_ATTACHMENTS = 8;
+static constexpr XE::uint32 GFX_MAX_FRAME_BUFFERS = 128;
+static constexpr XE::uint32 GFX_MAX_INDEX_BUFFERS = 4096;
+static constexpr XE::uint32 GFX_MAX_VERTEX_BUFFERS = 4096;
+static constexpr XE::uint32 GFX_MAX_VERTEX_LAYOUTS = 64;
+static constexpr XE::uint32 GFX_MAX_TEXTURE_SAMPLERS = 16;
+static constexpr XE::uint32 GFX_MAX_DYNAMIC_INDEX_BUFFERS = 4096;
+static constexpr XE::uint32 GFX_MAX_DYNAMIC_VERTEX_BUFFERS = 4096;
 
 enum class CapsFlag
 {
@@ -147,6 +147,8 @@ enum class StateFlag : XE::uint64
 	NONE = 1ull << 39,
 	BLEND_INDEPENDENT = 1ull << 40,
 	BLEND_ALPHA_TO_COVERAGE = 1ull << 41,
+	INTERNAL_SCISSOR = 1ull << 42,
+	INTERNAL_OCCLUSION_QUERY = 1ull << 43,
 	DEFAULT = WIRTE_RGB | WRITE_A | WRITE_Z | DEPTH_TEST_LESS | CULL_CW | MSAA,
 };
 
@@ -546,6 +548,7 @@ enum class RenderGroup : XE::uint8
 	GEOMETRY,			// opaque geometry uses this group.
 	ALPHATEST,			// alpha tested geometry uses this group.
 	GEOMETRYLAST,		// last render group that is considered "opaque".
+	TRANSPARENT,
 	OVERLAY,			// this render group is meant for overlay effects.
 	HUD,				// this render group is user interface.
 };
@@ -620,7 +623,7 @@ public:
 	uint32_t transientIbSize = 0;
 };
 
-class XE_API UniformInfo
+class XE_API Uniform
 {
 public:
 	std::string name;

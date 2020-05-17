@@ -2,6 +2,8 @@
 
 #if PLATFORM_OS & (OS_WINDOWS | OS_XBOXONE)
 
+#include <d3d12.h>
+
 XE::RendererContextDirectX12::RendererContextDirectX12()
 {
 

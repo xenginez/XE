@@ -167,7 +167,7 @@ public:
 
 	UniformHandle CreateUniform( const XE::String & name, UniformType type, XE::uint16 num = 1 );
 
-	const UniformInfo & GetUniformInfo( UniformHandle handle );
+	const Uniform & GetUniformInfo( UniformHandle handle );
 
 	void Destory( UniformHandle handle );
 

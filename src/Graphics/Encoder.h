@@ -36,7 +36,7 @@ public:
 
 	void SetTransform( XE::basic_memory_view<XE::Mat4> transform );
 
-	void SetUniform( UniformHandle handle, const XE::Variant & value );
+	void SetUniform( UniformHandle handle, XE::memory_view mem );
 
 	void SetIndexBuffer( IndexBufferHandle handle, XE::uint32 first, XE::uint32 num );
 
@@ -44,11 +44,11 @@ public:
 
 	void SetIndexBuffer( TransientIndexBufferHandle handle, XE::uint32 first, XE::uint32 num );
 
-	void SetVertexBuffer( XE::uint8 steam, VertexBufferHandle handle, XE::uint32 first, XE::uint32 num, VertexLayoutHandle layout = VertexLayoutHandle::Invalid );
+	void SetVertexBuffer( XE::uint8 stream, VertexBufferHandle handle, XE::uint32 first, XE::uint32 num, VertexLayoutHandle layout = VertexLayoutHandle::Invalid );
 
-	void SetVertexBuffer( XE::uint8 steam, DynamicVertexBufferHandle handle, XE::uint32 first, XE::uint32 num, VertexLayoutHandle layout = VertexLayoutHandle::Invalid );
+	void SetVertexBuffer( XE::uint8 stream, DynamicVertexBufferHandle handle, XE::uint32 first, XE::uint32 num, VertexLayoutHandle layout = VertexLayoutHandle::Invalid );
 
-	void SetVertexBuffer( XE::uint8 steam, TransientVertexBufferHandle handle, XE::uint32 first, XE::uint32 num, VertexLayoutHandle layout = VertexLayoutHandle::Invalid );
+	void SetVertexBuffer( XE::uint8 stream, TransientVertexBufferHandle handle, XE::uint32 first, XE::uint32 num, VertexLayoutHandle layout = VertexLayoutHandle::Invalid );
 
 	void SetInstanceDataBuffer( VertexBufferHandle handle, XE::uint32 first, XE::uint32 num );
 
@@ -65,11 +65,9 @@ public:
 public:
 	void Discard();
 
-	void Touch( ViewHandle handle );
+	void Submit( ViewHandle handle, RenderGroup group, ProgramHandle program, OcclusionQueryHandle query = OcclusionQueryHandle::Invalid, XE::uint32 depth = 0 );
 
-	void Submit( ViewHandle handle, ProgramHandle program, OcclusionQueryHandle query, XE::uint32 depth = 0, bool preserve_state = false );
-
-	void Submit( ViewHandle handle, ProgramHandle program, IndirectBufferHandle indirect, XE::uint32 first, XE::uint32 num, XE::uint32 depth = 0, bool preserve_state = false );
+	void Submit( ViewHandle handle, RenderGroup group, ProgramHandle program, IndirectBufferHandle indirect, XE::uint32 first, XE::uint32 num, XE::uint32 depth = 0 );
 
 	void Dispatch( ViewHandle handle, ProgramHandle program, XE::uint32 numX = 1, XE::uint32 numY = 1, XE::uint32 numZ = 1 );
 

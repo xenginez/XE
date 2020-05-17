@@ -1,19 +1,5 @@
 #include "Structs.h"
 
-void XE::Frame::Reset()
-{
-	RenderBindSize = 0;
-	RenderItemSize = 0;
-	RenderBlitSize = 0;
-	RenderOcclusionSize = 0;
-
-	PrevCmd.Reset();
-	PostCmd.Reset();
-	TransientBuffer.Reset();
-	TransientIndexBufferHandleAlloc.Reset();
-	TransientVertexBufferHandleAlloc.Reset();
-}
-
 XE::SortKey::SortKey()
 	:_Key( 0 )
 {
@@ -21,43 +7,43 @@ XE::SortKey::SortKey()
 }
 
 XE::SortKey::SortKey( XE::uint64 val )
-	:_Key( val )
+	: _Key( val )
 {
 
 }
 
-XE::SortKey::SortKey( const SortKey& val )
+XE::SortKey::SortKey( const SortKey & val )
 	: _Key( val._Key )
 {
-	
+
 }
 
-bool XE::SortKey::operator<( const SortKey& val ) const
+bool XE::SortKey::operator<( const SortKey & val ) const
 {
 	return _Key < val._Key;
 }
 
-bool XE::SortKey::operator>( const SortKey& val ) const
+bool XE::SortKey::operator>( const SortKey & val ) const
 {
 	return _Key > val._Key;
 }
 
-bool XE::SortKey::operator<=( const SortKey& val ) const
+bool XE::SortKey::operator<=( const SortKey & val ) const
 {
 	return _Key <= val._Key;
 }
 
-bool XE::SortKey::operator>=( const SortKey& val ) const
+bool XE::SortKey::operator>=( const SortKey & val ) const
 {
 	return _Key >= val._Key;
 }
 
-bool XE::SortKey::operator==( const SortKey& val ) const
+bool XE::SortKey::operator==( const SortKey & val ) const
 {
 	return _Key == val._Key;
 }
 
-bool XE::SortKey::operator!=( const SortKey& val ) const
+bool XE::SortKey::operator!=( const SortKey & val ) const
 {
 	return _Key != val._Key;
 }
@@ -84,18 +70,6 @@ void XE::SortKey::SetGroup( XE::uint8 val )
 	val = std::min<XE::uint8>( val, MAX_GROUP );
 
 	_Key |= ( std::uint64_t( val ) ) << GROUP_LEFT_SHIFT;
-}
-
-XE::uint8 XE::SortKey::GetTransparent() const
-{
-	return ( _Key & ( MAX_TRANSPARENT << TRANSPARENT_LEFT_SHIFT ) ) >> TRANSPARENT_LEFT_SHIFT;
-}
-
-void XE::SortKey::SetTransparent( XE::uint8 val )
-{
-	val = std::min<XE::uint8>( val, MAX_TRANSPARENT );
-
-	_Key |= ( std::uint64_t( val ) ) << TRANSPARENT_LEFT_SHIFT;
 }
 
 XE::uint32 XE::SortKey::GetProgram() const
@@ -132,12 +106,55 @@ void XE::SortKey::SetKey( XE::uint64 val )
 	_Key = val;
 }
 
-XE::uint64 XE::SortKey::SwapProgramDepth() const
+void XE::Frame::Reset()
 {
-	return
-		XE::uint64( GetView() << VIEW_LEFT_SHIFT ) |
-		XE::uint64( GetGroup() << GROUP_LEFT_SHIFT ) |
-		XE::uint64( GetTransparent() << TRANSPARENT_LEFT_SHIFT ) |
-		XE::uint64( GetDepth() << ( TRANSPARENT_LEFT_SHIFT - DEPTH_LEFT_SHIFT ) ) |
-		XE::uint64( GetProgram() );
+	RenderItemSize = 0;
+	RenderBlitSize = 0;
+	RenderOcclusionSize = 0;
+
+	PrevCmd.Reset();
+	PostCmd.Reset();
+	TransientBuffer.Reset();
+	TransientIndexBufferHandleAlloc.Reset();
+	TransientVertexBufferHandleAlloc.Reset();
+}
+
+XE::RenderItem::RenderItem()
+{
+
+}
+
+XE::RenderItem::RenderItem( RenderItem && val )
+{
+	Type = val.Type;
+
+	if( Type == ItemType::DRAW )
+	{
+		Draw = std::move( val.Draw );
+	}
+	else
+	{
+		Compute = std::move( val.Compute );
+	}
+}
+
+XE::RenderItem::~RenderItem()
+{
+
+}
+
+XE::RenderItem & XE::RenderItem::operator=( RenderItem && val )
+{
+	Type = val.Type;
+
+	if( Type == ItemType::DRAW )
+	{
+		Draw = std::move( val.Draw );
+	}
+	else
+	{
+		Compute = std::move( val.Compute );
+	}
+
+	return *this;
 }
