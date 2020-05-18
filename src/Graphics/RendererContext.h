@@ -24,12 +24,21 @@ public:
 	virtual ~RendererContext();
 
 public:
-	virtual void Init( const InitInfo & val );
+	void Init( const InitInfo & val );
 
-	virtual void Render( XE::Frame * frame ) = 0;
+	void Frame( bool capture );
 
-	virtual void Shutdown();
-	
+	void Render();
+
+	void Shutdown();
+
+protected:
+	virtual void OnStartup() = 0;
+
+	virtual void OnRender( XE::Frame* val ) = 0;
+
+	virtual void OnClearup() = 0;
+
 public:
 	void Reset( XE::uint32 width, XE::uint32 height, XE::Flags<XE::ResetFlag> flags, XE::TextureFormat format );
 
@@ -38,14 +47,10 @@ public:
 
 	void End( XE::Encoder * val );
 
-	void Frame( bool capture  );
-
-	void Render();
-
 public:
 	const XE::CapsInfo & GetCaps() const;
 
-	const XE::InitInfo & GetInitInfo() const;
+	const XE::InitInfo & GetInit() const;
 
 public:
 	IndexBufferHandle CreateIndexBuffer( const XE::String & name, XE::memory_view mem, XE::Flags< XE::BufferFlag > flags );
@@ -171,8 +176,6 @@ public:
 
 	OcclusionQueryHandle CreateOcclusionQuery();
 
-	OcclusionQueryResult GetOcclusionQueryResult( OcclusionQueryHandle handle );
-
 	std::optional<XE::uint32> GetOcclusionQueryValue( OcclusionQueryHandle handle );
 
 	void Destory( OcclusionQueryHandle handle );
@@ -206,6 +209,9 @@ public:
 
 public:
 	void RequestScreenShot( FrameBufferHandle handle, const std::filesystem::path & path );
+
+protected:
+	void ResizeTexture( TextureHandle handle, XE::uint32 layers, XE::uint32 mips, XE::uint32 width, XE::uint32 height );
 
 private:
 	XE::memory_view CopyToFrame( XE::memory_view mem ) const;

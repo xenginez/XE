@@ -12,17 +12,17 @@ XE::RendererContextMetal::~RendererContextMetal()
 
 }
 
-void XE::RendererContextMetal::Init( const InitInfo & val )
+void XE::RendererContextMetal::OnStartup()
 {
 
 }
 
-void RendererContextMetal::Render( XE::Frame * frame )
+void XE::RendererContextMetal::OnRender( XE::Frame* val )
 {
 
 }
 
-void XE::RendererContextMetal::Shutdown()
+void XE::RendererContextMetal::OnClearup()
 {
 
 }

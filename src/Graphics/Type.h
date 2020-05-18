@@ -50,6 +50,8 @@ static constexpr XE::uint32 GFX_MAX_INDEX_BUFFERS = 4096;
 static constexpr XE::uint32 GFX_MAX_VERTEX_BUFFERS = 4096;
 static constexpr XE::uint32 GFX_MAX_VERTEX_LAYOUTS = 64;
 static constexpr XE::uint32 GFX_MAX_TEXTURE_SAMPLERS = 16;
+static constexpr XE::uint32 GFX_MAX_DRAW_INDIRECT_STRIDE = 32;
+static constexpr XE::uint32 GFX_MAX_DRAW_INDIRECT_BUFFERS = 1024;
 static constexpr XE::uint32 GFX_MAX_DYNAMIC_INDEX_BUFFERS = 4096;
 static constexpr XE::uint32 GFX_MAX_DYNAMIC_VERTEX_BUFFERS = 4096;
 
@@ -315,15 +317,6 @@ enum class BackbufferRatio
 	DOUBLE,    //!< Double size of backbuffer.
 
 	COUNT
-};
-
-enum class OcclusionQueryResult
-{
-	INVISIBLE, //!< Query failed test.
-	VISIBLE,   //!< Query passed test.
-	NORESULT,  //!< Query result is not available yet.
-
-	Count
 };
 
 enum class Topology
@@ -614,21 +607,13 @@ public:
 	TextureFormat format = TextureFormat::COUNT;
 	uint32_t width = 0;
 	uint32_t height = 0;
-	uint32_t reset = 0;
+	XE::Flags<ResetFlag> reset;
 	uint8_t  numBackBuffers = 0;
 	uint8_t  maxFrameLatency = 0;
 
 	uint16_t maxEncoders = 0;
 	uint32_t transientVbSize = 0;
 	uint32_t transientIbSize = 0;
-};
-
-class XE_API Uniform
-{
-public:
-	std::string name;
-	UniformType type = UniformType::COUNT;
-	uint16_t num = 0;
 };
 
 class XE_API Attachment

@@ -470,25 +470,11 @@ XE::UniformHandle XE::Gfx::CreateUniform( const XE::String & name, UniformType t
 	return _p->_Context->CreateUniform( name, type, num );
 }
 
-const XE::Uniform & XE::Gfx::GetUniformInfo( UniformHandle handle )
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	return _p->_Context->GetUniformInfo( handle );
-}
-
 XE::OcclusionQueryHandle XE::Gfx::CreateOcclusionQuery()
 {
 	XE_ASSERT( _p->_Context != nullptr );
 
 	return _p->_Context->CreateOcclusionQuery();
-}
-
-XE::OcclusionQueryResult XE::Gfx::GetOcclusionQueryResult( OcclusionQueryHandle handle )
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	return _p->_Context->GetOcclusionQueryResult( handle );
 }
 
 std::optional<XE::uint32> XE::Gfx::GetOcclusionQueryValue( OcclusionQueryHandle handle )

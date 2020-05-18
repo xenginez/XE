@@ -12,17 +12,17 @@ XE::RendererContextOpenGL::~RendererContextOpenGL()
 
 }
 
-void XE::RendererContextOpenGL::Init( const InitInfo & val )
+void XE::RendererContextOpenGL::OnStartup()
 {
 
 }
 
-void XE::RendererContextOpenGL::Render( XE::Frame * frame )
+void XE::RendererContextOpenGL::OnRender( XE::Frame* val )
 {
 
 }
 
-void XE::RendererContextOpenGL::Shutdown()
+void XE::RendererContextOpenGL::OnClearup()
 {
 
 }

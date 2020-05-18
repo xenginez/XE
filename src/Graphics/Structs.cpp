@@ -158,3 +158,13 @@ XE::RenderItem & XE::RenderItem::operator=( RenderItem && val )
 
 	return *this;
 }
+
+XE::uint32 XE::RefCount::Inc()
+{
+	return ++Count;
+}
+
+XE::uint32 XE::RefCount::Dec()
+{
+	return --Count;
+}

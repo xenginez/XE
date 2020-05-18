@@ -14,20 +14,21 @@ XE::RendererContextDirectX12::~RendererContextDirectX12()
 
 }
 
-void XE::RendererContextDirectX12::Init( const InitInfo & val )
+void XE::RendererContextDirectX12::OnStartup()
 {
 
 }
 
-void XE::RendererContextDirectX12::Render( XE::Frame * frame )
+void XE::RendererContextDirectX12::OnRender( XE::Frame* val )
 {
 
 }
 
-void XE::RendererContextDirectX12::Shutdown()
+void XE::RendererContextDirectX12::OnClearup()
 {
 
 }
+
 
 XE::RendererContext * XE::CreateRendererContextDirectX12()
 {

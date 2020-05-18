@@ -167,13 +167,9 @@ public:
 
 	UniformHandle CreateUniform( const XE::String & name, UniformType type, XE::uint16 num = 1 );
 
-	const Uniform & GetUniformInfo( UniformHandle handle );
-
 	void Destory( UniformHandle handle );
 
 	OcclusionQueryHandle CreateOcclusionQuery();
-
-	OcclusionQueryResult GetOcclusionQueryResult( OcclusionQueryHandle handle );
 
 	std::optional<XE::uint32> GetOcclusionQueryValue( OcclusionQueryHandle handle );
 

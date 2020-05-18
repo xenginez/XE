@@ -12,17 +12,17 @@ XE::RendererContextGLES3::~RendererContextGLES3()
 
 }
 
-void XE::RendererContextGLES3::Init( const InitInfo & val )
+void XE::RendererContextGLES3::OnStartup()
 {
 
 }
 
-void XE::RendererContextGLES3::Render( XE::Frame * frame )
+void XE::RendererContextGLES3::OnRender( XE::Frame* val )
 {
 
 }
 
-void XE::RendererContextGLES3::Shutdown()
+void XE::RendererContextGLES3::OnClearup()
 {
 
 }

@@ -12,17 +12,17 @@ XE::RendererContextVulkan::~RendererContextVulkan()
 
 }
 
-void XE::RendererContextVulkan::Init( const XE::InitInfo & val )
+void XE::RendererContextVulkan::OnStartup()
 {
 
 }
 
-void XE::RendererContextVulkan::Render( XE::Frame * frame )
+void XE::RendererContextVulkan::OnRender( XE::Frame* val )
 {
 
 }
 
-void XE::RendererContextVulkan::Shutdown()
+void XE::RendererContextVulkan::OnClearup()
 {
 
 }

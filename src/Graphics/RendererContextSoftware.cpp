@@ -10,17 +10,17 @@ XE::RendererContextSoftware::~RendererContextSoftware()
 
 }
 
-void XE::RendererContextSoftware::Init( const InitInfo & val )
+void XE::RendererContextSoftware::OnStartup()
 {
 
 }
 
-void XE::RendererContextSoftware::Render( XE::Frame * frame )
+void XE::RendererContextSoftware::OnRender( XE::Frame* val )
 {
 
 }
 
-void XE::RendererContextSoftware::Shutdown()
+void XE::RendererContextSoftware::OnClearup()
 {
 
 }

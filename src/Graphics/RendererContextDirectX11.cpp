@@ -12,17 +12,17 @@ XE::RendererContextDirectX11::~RendererContextDirectX11()
 
 }
 
-void XE::RendererContextDirectX11::Init( const InitInfo & val )
+void XE::RendererContextDirectX11::OnStartup()
 {
 
 }
 
-void XE::RendererContextDirectX11::Render( XE::Frame * frame )
+void XE::RendererContextDirectX11::OnRender( XE::Frame* val )
 {
 
 }
 
-void XE::RendererContextDirectX11::Shutdown()
+void XE::RendererContextDirectX11::OnClearup()
 {
 
 }

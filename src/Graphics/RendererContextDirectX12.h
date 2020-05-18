@@ -22,12 +22,12 @@ public:
 
 	~RendererContextDirectX12() override;
 
-public:
-	void Init( const InitInfo & val ) override;
+protected:
+	void OnStartup() override;
 
-	void Render( XE::Frame * frame ) override;
+	void OnRender( XE::Frame* val ) override;
 
-	void Shutdown() override;
+	void OnClearup() override;
 
 private:
 

@@ -21,19 +21,20 @@ struct XE::Encoder::Private
 	XE::Map<UniformHandle, XE::memory_view> _Uniforms;
 };
 
-void XE::Encoder::SetFrame( Frame * val )
-{
-	_p->_Frame = val;
-}
-
 XE::Encoder::Encoder()
+	:_p( new Private )
 {
 
 }
 
 XE::Encoder::~Encoder()
 {
+	delete _p;
+}
 
+void XE::Encoder::SetFrame( Frame* val )
+{
+	_p->_Frame = val;
 }
 
 void XE::Encoder::SetState( XE::Flags<XE::StateFlag> flags /*= XE::StateFlag::DEFAULT */ )
@@ -301,5 +302,28 @@ void XE::Encoder::Dispatch( ViewHandle handle, ProgramHandle program, IndirectBu
 
 void XE::Encoder::Blit( ViewHandle handle, TextureHandle dst, XE::uint8 dst_mip, XE::uint32 dst_x, XE::uint32 dst_y, XE::uint32 dst_z, TextureHandle src, XE::uint8 src_mip, XE::uint32 src_x, XE::uint32 src_y, XE::uint32 src_z, XE::uint32 width, XE::uint32 height, XE::uint32 depth )
 {
+	XE::uint32 index = _p->_Frame->RenderBlitSize++;
+	auto & b = _p->_Frame->RenderBlits[index];
 
+	b.Src = src;
+	b.SrcX = src_x;
+	b.SrcY = src_y;
+	b.SrcZ = src_z;
+	b.SrcMip = src_mip;
+
+	b.Dst = dst;
+	b.DstX = dst_x;
+	b.DstY = dst_y;
+	b.DstZ = dst_z;
+	b.DstMip = dst_mip;
+
+	b.Width = width;
+	b.Height = height;
+	b.Depth = depth;
+
+	b.Handle = handle;
+
+	XE::uint32 key = XE::uint32( handle.GetValue() << 24 ) | index;
+
+	_p->_Frame->RenderBlitKeys[index] = key;
 }

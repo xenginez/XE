@@ -13,13 +13,20 @@ struct XE::RendererContext::Private
 	XE::CapsInfo _Caps;
 	XE::InitInfo _Init;
 
-	std::array<View, GFX_MAX_VIEW> _Views = {};
+	std::array<View, GFX_MAX_VIEW> _Views;
+	std::array<Shader, GFX_MAX_SHADERS> _Shaders;
+	std::array<Texture, GFX_MAX_TEXTURES> _Textures;
+	std::array<Uniform, GFX_MAX_UNIFORMS> _Uniforms;
+	std::array<Program, GFX_MAX_PROGRAMS> _Programs;
+	std::array<FrameBuffer, GFX_MAX_FRAME_BUFFERS> _FrameBuffers;
+	std::array<std::optional<XE::uint32>, GFX_MAX_OCCLUSION> _Occlusions;
 
 	XE::ConcurrentHandleAllocator<XE::ViewHandle, GFX_MAX_VIEW> _ViewHandleAlloc;
 	XE::ConcurrentHandleAllocator<XE::ShaderHandle, GFX_MAX_SHADERS> _ShaderHandleAlloc;
 	XE::ConcurrentHandleAllocator<XE::ProgramHandle, GFX_MAX_PROGRAMS> _ProgramHandleAlloc;
 	XE::ConcurrentHandleAllocator<XE::TextureHandle, GFX_MAX_TEXTURES> _TextureHandleAlloc;
 	XE::ConcurrentHandleAllocator<XE::UniformHandle, GFX_MAX_UNIFORMS> _UniformHandleAlloc;
+	XE::ConcurrentHandleAllocator<XE::OcclusionQueryHandle, GFX_MAX_OCCLUSION> _OcclusionHandleAlloc;
 	XE::ConcurrentHandleAllocator<XE::FrameBufferHandle, GFX_MAX_FRAME_BUFFERS> _FrameBufferHandleAlloc;
 	XE::ConcurrentHandleAllocator<XE::IndexBufferHandle, GFX_MAX_INDEX_BUFFERS>  _IndexBufferHandleAlloc;
 	XE::ConcurrentHandleAllocator<XE::VertexBufferHandle, GFX_MAX_VERTEX_BUFFERS> _VertexBufferHandleAlloc;
@@ -50,16 +57,52 @@ void XE::RendererContext::Init( const InitInfo & val )
 
 	_p->_SubmitFrame = &_p->_Frames[0];
 	_p->_RenderFrame = &_p->_Frames[1];
+
+	OnStartup();
+}
+
+void XE::RendererContext::Frame( bool capture )
+{
+	{
+		std::unique_lock<std::mutex> lock( _p->_FrameMutex );
+
+		std::swap( _p->_SubmitFrame, _p->_RenderFrame );
+	}
+
+	_p->_SubmitFrame->Reset();
+}
+
+void XE::RendererContext::Render()
+{
+	std::unique_lock<std::mutex> lock( _p->_FrameMutex );
+
+	OnRender( _p->_RenderFrame );
 }
 
 void XE::RendererContext::Shutdown()
 {
-
+	OnClearup();
 }
 
 void XE::RendererContext::Reset( XE::uint32 width, XE::uint32 height, XE::Flags<XE::ResetFlag> flags, XE::TextureFormat format )
 {
+	_p->_Init.format = format;
+	_p->_Init.width = width;
+	_p->_Init.height = height;
+	_p->_Init.reset = flags;
 
+	for( auto & view : _p->_Views )
+	{
+		view.Handle = FrameBufferHandle::Invalid;
+	}
+
+	for( XE::uint64 i = 0; i < GFX_MAX_TEXTURES; ++i )
+	{
+		if( _p->_Textures[i].Count != 0 )
+		{
+			ResizeTexture( i, _p->_Textures[i].NumLayers, _p->_Textures[i].NumMips, _p->_Init.width, _p->_Init.height );
+		}
+	}
 }
 
 XE::Encoder * XE::RendererContext::Begin()
@@ -80,123 +123,14 @@ void XE::RendererContext::End( XE::Encoder * val )
 	val->SetFrame( nullptr );
 }
 
-void XE::RendererContext::Frame( bool capture )
-{
-	{
-		std::unique_lock<std::mutex> lock( _p->_FrameMutex );
-
-		std::swap( _p->_SubmitFrame, _p->_RenderFrame );
-	}
-
-	_p->_SubmitFrame->Reset();
-}
-
-void XE::RendererContext::Render()
-{
-	std::unique_lock<std::mutex> lock( _p->_FrameMutex );
-	
-	Render( _p->_RenderFrame );
-}
-
 const XE::CapsInfo & XE::RendererContext::GetCaps() const
 {
 	return _p->_Caps;
 }
 
-const XE::InitInfo & XE::RendererContext::GetInitInfo() const
+const XE::InitInfo & XE::RendererContext::GetInit() const
 {
 	return _p->_Init;
-}
-
-void XE::RendererContext::Destory( IndexBufferHandle handle )
-{
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
-	_p->_SubmitFrame->PostCmd.Wirte( CommandType::DESTROY_INDEX_BUFFER );
-	_p->_SubmitFrame->PostCmd.Wirte( handle );
-}
-
-void XE::RendererContext::Destory( VertexLayoutHandle handle )
-{
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
-	_p->_SubmitFrame->PostCmd.Wirte( CommandType::DESTROY_VERTEX_LAYOUT );
-	_p->_SubmitFrame->PostCmd.Wirte( handle );
-}
-
-void XE::RendererContext::Destory( VertexBufferHandle handle )
-{
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
-	_p->_SubmitFrame->PostCmd.Wirte( CommandType::DESTROY_VERTEX_BUFFER );
-	_p->_SubmitFrame->PostCmd.Wirte( handle );
-}
-
-void XE::RendererContext::Destory( DynamicIndexBufferHandle handle )
-{
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
-	_p->_SubmitFrame->PostCmd.Wirte( CommandType::DESTROY_DYNAMIC_INDEX_BUFFER );
-	_p->_SubmitFrame->PostCmd.Wirte( handle );
-}
-
-void XE::RendererContext::Destory( DynamicVertexBufferHandle handle )
-{
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
-	_p->_SubmitFrame->PostCmd.Wirte( CommandType::DESTROY_DYNAMIC_VERTEX_BUFFER );
-	_p->_SubmitFrame->PostCmd.Wirte( handle );
-}
-
-void XE::RendererContext::Destory( IndirectBufferHandle handle )
-{
-	// TODO: 
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
-	_p->_SubmitFrame->PostCmd.Wirte( CommandType::DESTROY_INDEX_BUFFER );
-	_p->_SubmitFrame->PostCmd.Wirte( handle );
-}
-
-void XE::RendererContext::Destory( ShaderHandle handle )
-{
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
-	_p->_SubmitFrame->PostCmd.Wirte( CommandType::DESTROY_SHADER );
-	_p->_SubmitFrame->PostCmd.Wirte( handle );
-}
-
-void XE::RendererContext::Destory( ProgramHandle handle )
-{
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
-	_p->_SubmitFrame->PostCmd.Wirte( CommandType::DESTROY_PROGRAM );
-	_p->_SubmitFrame->PostCmd.Wirte( handle );
-}
-
-void XE::RendererContext::Destory( TextureHandle handle )
-{
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
-	_p->_SubmitFrame->PostCmd.Wirte( CommandType::DESTROY_TEXTURE );
-	_p->_SubmitFrame->PostCmd.Wirte( handle );
-}
-
-void XE::RendererContext::Destory( FrameBufferHandle handle )
-{
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
-	_p->_SubmitFrame->PostCmd.Wirte( CommandType::DESTROY_FRAMEBUFFER );
-	_p->_SubmitFrame->PostCmd.Wirte( handle );
-}
-
-void XE::RendererContext::Destory( UniformHandle handle )
-{
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
-	_p->_SubmitFrame->PostCmd.Wirte( CommandType::DESTROY_UNIFORM );
-	_p->_SubmitFrame->PostCmd.Wirte( handle );
-}
-
-void XE::RendererContext::Destory( OcclusionQueryHandle handle )
-{
-	// TODO: 
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
-	_p->_SubmitFrame->PostCmd.Wirte( CommandType::DESTROY_INDEX_BUFFER );
-	_p->_SubmitFrame->PostCmd.Wirte( handle );
-}
-
-void XE::RendererContext::Destory( ViewHandle handle )
-{
-	_p->_ViewHandleAlloc.Free( handle );
 }
 
 XE::IndexBufferHandle XE::RendererContext::CreateIndexBuffer( const XE::String & name, XE::memory_view mem, XE::Flags< XE::BufferFlag > flags )
@@ -224,8 +158,15 @@ XE::TransientIndexBufferHandle XE::RendererContext::CreateTransientIndexBuffer( 
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
 	_p->_SubmitFrame->PrevCmd.Wirte( mem );
 	_p->_SubmitFrame->PrevCmd.Wirte( flags );
-	 
+
 	return handle;
+}
+
+void XE::RendererContext::Destory( IndexBufferHandle handle )
+{
+	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
+	_p->_SubmitFrame->PostCmd.Wirte( CommandType::DESTROY_INDEX_BUFFER );
+	_p->_SubmitFrame->PostCmd.Wirte( handle );
 }
 
 XE::VertexLayoutHandle XE::RendererContext::CreateVertexLayout( const XE::Array<VertexLayout> & layouts )
@@ -240,6 +181,13 @@ XE::VertexLayoutHandle XE::RendererContext::CreateVertexLayout( const XE::Array<
 	_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( view ) );
 
 	return handle;
+}
+
+void XE::RendererContext::Destory( VertexLayoutHandle handle )
+{
+	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
+	_p->_SubmitFrame->PostCmd.Wirte( CommandType::DESTROY_VERTEX_LAYOUT );
+	_p->_SubmitFrame->PostCmd.Wirte( handle );
 }
 
 XE::VertexBufferHandle XE::RendererContext::CreateVertexBuffer( const XE::String & name, XE::memory_view mem, VertexLayoutHandle layout, XE::Flags< XE::BufferFlag > flags )
@@ -271,6 +219,13 @@ XE::TransientVertexBufferHandle XE::RendererContext::CreateTransientVertexBuffer
 	_p->_SubmitFrame->PrevCmd.Wirte( flags );
 
 	return handle;
+}
+
+void XE::RendererContext::Destory( VertexBufferHandle handle )
+{
+	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
+	_p->_SubmitFrame->PostCmd.Wirte( CommandType::DESTROY_VERTEX_BUFFER );
+	_p->_SubmitFrame->PostCmd.Wirte( handle );
 }
 
 XE::DynamicIndexBufferHandle XE::RendererContext::CreateDynamicIndexBuffer( XE::uint64 size, XE::Flags< XE::BufferFlag > flags )
@@ -311,14 +266,11 @@ void XE::RendererContext::Update( DynamicIndexBufferHandle handle, XE::uint64 st
 	_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( mem ) );
 }
 
-void XE::RendererContext::Update( DynamicVertexBufferHandle handle, XE::uint64 start, XE::memory_view mem )
+void XE::RendererContext::Destory( DynamicIndexBufferHandle handle )
 {
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
-
-	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::UPDATE_DYNAMIC_VERTEX_BUFFER );
-	_p->_SubmitFrame->PrevCmd.Wirte( handle );
-	_p->_SubmitFrame->PrevCmd.Wirte( start );
-	_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( mem ) );
+	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
+	_p->_SubmitFrame->PostCmd.Wirte( CommandType::DESTROY_DYNAMIC_INDEX_BUFFER );
+	_p->_SubmitFrame->PostCmd.Wirte( handle );
 }
 
 XE::DynamicVertexBufferHandle XE::RendererContext::CreateDynamicVertexBuffer( XE::uint64 size, VertexLayoutHandle layout, XE::Flags< XE::BufferFlag > flags )
@@ -351,10 +303,46 @@ XE::DynamicVertexBufferHandle XE::RendererContext::CreateDynamicVertexBuffer( XE
 	return handle;
 }
 
+void XE::RendererContext::Update( DynamicVertexBufferHandle handle, XE::uint64 start, XE::memory_view mem )
+{
+	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
+
+	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::UPDATE_DYNAMIC_VERTEX_BUFFER );
+	_p->_SubmitFrame->PrevCmd.Wirte( handle );
+	_p->_SubmitFrame->PrevCmd.Wirte( start );
+	_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( mem ) );
+}
+
+void XE::RendererContext::Destory( DynamicVertexBufferHandle handle )
+{
+	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
+	_p->_SubmitFrame->PostCmd.Wirte( CommandType::DESTROY_DYNAMIC_VERTEX_BUFFER );
+	_p->_SubmitFrame->PostCmd.Wirte( handle );
+}
+
 XE::IndirectBufferHandle XE::RendererContext::CreateIndirectBuffer( XE::uint64 num )
 {
-	// TODO: 
-	return {};
+	IndirectBufferHandle handle = _p->_VertexBufferHandleAlloc.Alloc().GetValue();
+
+
+	uint32_t size = num * GFX_MAX_DRAW_INDIRECT_STRIDE;
+	uint16_t flags = GFX_MAX_DRAW_INDIRECT_BUFFERS;
+
+	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
+
+	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_DYNAMIC_VERTEX_BUFFER );
+	_p->_SubmitFrame->PrevCmd.Wirte( handle );
+	_p->_SubmitFrame->PrevCmd.Wirte( size );
+	_p->_SubmitFrame->PrevCmd.Wirte( flags );
+
+	return handle;
+}
+
+void XE::RendererContext::Destory( IndirectBufferHandle handle )
+{
+	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
+	_p->_SubmitFrame->PostCmd.Wirte( CommandType::DESTROY_DYNAMIC_VERTEX_BUFFER );
+	_p->_SubmitFrame->PostCmd.Wirte( handle );
 }
 
 XE::ShaderHandle XE::RendererContext::CreateShader( const XE::String & name, XE::memory_view mem )
@@ -371,10 +359,16 @@ XE::ShaderHandle XE::RendererContext::CreateShader( const XE::String & name, XE:
 	return handle;
 }
 
+void XE::RendererContext::Destory( ShaderHandle handle )
+{
+	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
+	_p->_SubmitFrame->PostCmd.Wirte( CommandType::DESTROY_SHADER );
+	_p->_SubmitFrame->PostCmd.Wirte( handle );
+}
+
 XE::Array<XE::UniformHandle> XE::RendererContext::GetShaderUniforms( ShaderHandle handle )
 {
-	// TODO: 
-	return {};
+	return _p->_Shaders[handle].Uniforms;
 }
 
 XE::ProgramHandle XE::RendererContext::CreateProgram( ShaderHandle vs, ShaderHandle fs, bool des_shader )
@@ -382,6 +376,9 @@ XE::ProgramHandle XE::RendererContext::CreateProgram( ShaderHandle vs, ShaderHan
 	auto handle = _p->_ProgramHandleAlloc.Alloc();
 
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
+
+	_p->_Programs[handle].VS = vs;
+	_p->_Programs[handle].FS = fs;
 
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_PROGRAM );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
@@ -403,6 +400,8 @@ XE::ProgramHandle XE::RendererContext::CreateProgram( ShaderHandle cs, bool des_
 
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
 
+	_p->_Programs[handle].CS = cs;
+
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_PROGRAM );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
 	_p->_SubmitFrame->PrevCmd.Wirte( cs );
@@ -415,11 +414,29 @@ XE::ProgramHandle XE::RendererContext::CreateProgram( ShaderHandle cs, bool des_
 	return handle;
 }
 
+void XE::RendererContext::Destory( ProgramHandle handle )
+{
+	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
+	_p->_SubmitFrame->PostCmd.Wirte( CommandType::DESTROY_PROGRAM );
+	_p->_SubmitFrame->PostCmd.Wirte( handle );
+}
+
 XE::TextureHandle XE::RendererContext::CreateTexture2D( const XE::String & name, XE::uint32 width, XE::uint32 height, bool hasmips, XE::uint16 layers, TextureFormat format, XE::Flags< XE::TextureFlag > flags, SamplerWrap U, SamplerWrap V, SamplerWrap W, SamplerMode MIN, SamplerMode MAG, SamplerMode MIP, std::optional< XE::memory_view > mem )
 {
 	auto handle = _p->_TextureHandleAlloc.Alloc();
 
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
+
+	_p->_Textures[handle].Name = name;
+	_p->_Textures[handle].StorageSize = 0;
+	_p->_Textures[handle].Width = width;
+	_p->_Textures[handle].Height = height;
+	_p->_Textures[handle].Depth = 0;
+	_p->_Textures[handle].NumLayers = std::max<XE::uint16>( layers, 1 );
+	_p->_Textures[handle].NumMips = hasmips ? 1 + uint32_t( std::log2( float( std::max( width, height ) ) ) ) : 0;
+	_p->_Textures[handle].BitsPerPixel = 0;
+	_p->_Textures[handle].CubeMap = false;
+	_p->_Textures[handle].Format = format;
 
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_TEXTURE );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
@@ -453,13 +470,57 @@ XE::TextureHandle XE::RendererContext::CreateTexture2D( const XE::String & name,
 {
 	auto handle = _p->_TextureHandleAlloc.Alloc();
 
+	XE::uint32 width = _p->_Init.width;
+	XE::uint32 height = _p->_Init.height;
+
+	switch( ratio )
+	{
+	case BackbufferRatio::HALF:
+		width /= 2;
+		height /= 2;
+		break;
+	case BackbufferRatio::QUARTER:
+		width /= 4;
+		height /= 4;
+		break;
+	case BackbufferRatio::EIGHTH:
+		width /= 8;
+		height /= 8;
+		break;
+	case BackbufferRatio::SIXTEENTH:
+		width /= 16;
+		height /= 16;
+		break;
+	case BackbufferRatio::DOUBLE:
+		width *= 2;
+		height *= 2;
+		break;
+	default:
+		break;
+	}
+
+	width = std::max<XE::uint32>( 1, width );
+	height = std::max<XE::uint32>( 1, height );
+
+	_p->_Textures[handle].Name = name;
+	_p->_Textures[handle].StorageSize = 0;
+	_p->_Textures[handle].Width = width;
+	_p->_Textures[handle].Height = height;
+	_p->_Textures[handle].Depth = 0;
+	_p->_Textures[handle].NumLayers = std::max<XE::uint16>( layers, 1 );
+	_p->_Textures[handle].NumMips = hasmips ? 1 + uint32_t( std::log2( float( std::max( width, height ) ) ) ) : 0;
+	_p->_Textures[handle].BitsPerPixel = 0;
+	_p->_Textures[handle].CubeMap = false;
+	_p->_Textures[handle].Format = format;
+
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
 
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_TEXTURE );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
 	_p->_SubmitFrame->PrevCmd.Wirte( TextureType::TEXTURE_2D );
 	_p->_SubmitFrame->PrevCmd.Wirte( name );
-	_p->_SubmitFrame->PrevCmd.Wirte( ratio );
+	_p->_SubmitFrame->PrevCmd.Wirte( width );
+	_p->_SubmitFrame->PrevCmd.Wirte( height );
 	_p->_SubmitFrame->PrevCmd.Wirte( hasmips );
 	_p->_SubmitFrame->PrevCmd.Wirte( layers );
 	_p->_SubmitFrame->PrevCmd.Wirte( format );
@@ -470,6 +531,7 @@ XE::TextureHandle XE::RendererContext::CreateTexture2D( const XE::String & name,
 	_p->_SubmitFrame->PrevCmd.Wirte( MIN );
 	_p->_SubmitFrame->PrevCmd.Wirte( MAG );
 	_p->_SubmitFrame->PrevCmd.Wirte( MIP );
+	_p->_SubmitFrame->PrevCmd.Wirte( XE::memory_view() );
 
 	return handle;
 }
@@ -477,6 +539,20 @@ XE::TextureHandle XE::RendererContext::CreateTexture2D( const XE::String & name,
 XE::TextureHandle XE::RendererContext::CreateTexture3D( const XE::String & name, XE::uint32 width, XE::uint32 height, XE::uint32 depth, bool hasmips, TextureFormat format, XE::Flags< XE::TextureFlag > flags, SamplerWrap U, SamplerWrap V, SamplerWrap W, SamplerMode MIN, SamplerMode MAG, SamplerMode MIP, std::optional< XE::memory_view > mem )
 {
 	auto handle = _p->_TextureHandleAlloc.Alloc();
+
+	width = std::max<XE::uint32>( 1, width );
+	height = std::max<XE::uint32>( 1, height );
+
+	_p->_Textures[handle].Name = name;
+	_p->_Textures[handle].StorageSize = 0;
+	_p->_Textures[handle].Width = width;
+	_p->_Textures[handle].Height = height;
+	_p->_Textures[handle].Depth = depth;
+	_p->_Textures[handle].NumLayers = 1;
+	_p->_Textures[handle].NumMips = hasmips ? 1 + uint32_t( std::log2( float( std::max( width, std::max( height, depth ) ) ) ) ) : 0;
+	_p->_Textures[handle].BitsPerPixel = 0;
+	_p->_Textures[handle].CubeMap = false;
+	_p->_Textures[handle].Format = format;
 
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
 
@@ -511,6 +587,17 @@ XE::TextureHandle XE::RendererContext::CreateTexture3D( const XE::String & name,
 XE::TextureHandle XE::RendererContext::CreateTextureCube( const XE::String & name, XE::uint32 size, bool hasmips, XE::uint16 layers, TextureFormat format, XE::Flags< XE::TextureFlag > flags, SamplerWrap U, SamplerWrap V, SamplerWrap W, SamplerMode MIN, SamplerMode MAG, SamplerMode MIP, std::optional< XE::memory_view > mem )
 {
 	auto handle = _p->_TextureHandleAlloc.Alloc();
+
+	_p->_Textures[handle].Name = name;
+	_p->_Textures[handle].StorageSize = 0;
+	_p->_Textures[handle].Width = size;
+	_p->_Textures[handle].Height = size;
+	_p->_Textures[handle].Depth = 0;
+	_p->_Textures[handle].NumLayers = std::max<XE::uint16>( layers, 1 );
+	_p->_Textures[handle].NumMips = hasmips ? 1 + uint32_t( std::log2( float( std::max( size, size ) ) ) ) : 0;
+	_p->_Textures[handle].BitsPerPixel = 0;
+	_p->_Textures[handle].CubeMap = true;
+	_p->_Textures[handle].Format = format;
 
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
 
@@ -606,6 +693,13 @@ XE::uint8 * XE::RendererContext::GetDirectAccess( TextureHandle handle )
 	return {};
 }
 
+void XE::RendererContext::Destory( TextureHandle handle )
+{
+	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
+	_p->_SubmitFrame->PostCmd.Wirte( CommandType::DESTROY_TEXTURE );
+	_p->_SubmitFrame->PostCmd.Wirte( handle );
+}
+
 XE::FrameBufferHandle XE::RendererContext::CreateFrameBuffer( const XE::String & name, XE::uint32 width, XE::uint32 height, TextureFormat format, SamplerWrap U, SamplerWrap V, SamplerWrap W, SamplerMode MIN, SamplerMode MAG, SamplerMode MIP )
 {
 	auto handle = _p->_FrameBufferHandleAlloc.Alloc();
@@ -660,7 +754,7 @@ XE::FrameBufferHandle XE::RendererContext::CreateFrameBuffer( const XE::String &
 	_p->_SubmitFrame->PrevCmd.Wirte( name );
 	_p->_SubmitFrame->PrevCmd.Wirte( handles );
 
-	if (des_texture)
+	if( des_texture )
 	{
 		for( auto tex : handles )
 		{
@@ -714,8 +808,19 @@ XE::FrameBufferHandle XE::RendererContext::CreateFrameBuffer( const XE::String &
 
 XE::TextureHandle XE::RendererContext::GetTexture( FrameBufferHandle handle, XE::uint8 attachment )
 {
-	// TODO: 
-	return {};
+	if( _p->_FrameBuffers[handle].Window )
+	{
+		return TextureHandle::Invalid;
+	}
+
+	return _p->_FrameBuffers[handle].Textures[attachment];
+}
+
+void XE::RendererContext::Destory( FrameBufferHandle handle )
+{
+	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
+	_p->_SubmitFrame->PostCmd.Wirte( CommandType::DESTROY_FRAMEBUFFER );
+	_p->_SubmitFrame->PostCmd.Wirte( handle );
 }
 
 XE::UniformHandle XE::RendererContext::CreateUniform( const XE::String & name, UniformType type, XE::uint16 num )
@@ -735,26 +840,43 @@ XE::UniformHandle XE::RendererContext::CreateUniform( const XE::String & name, U
 
 const XE::Uniform & XE::RendererContext::GetUniformInfo( UniformHandle handle )
 {
-	// TODO: 
-	return {};
+	return _p->_Uniforms[handle];
+}
+
+void XE::RendererContext::Destory( UniformHandle handle )
+{
+	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
+	_p->_SubmitFrame->PostCmd.Wirte( CommandType::DESTROY_UNIFORM );
+	_p->_SubmitFrame->PostCmd.Wirte( handle );
 }
 
 XE::OcclusionQueryHandle XE::RendererContext::CreateOcclusionQuery()
 {
-	// TODO: 
-	return {};
-}
+	auto handle = _p->_OcclusionHandleAlloc.Alloc();
 
-XE::OcclusionQueryResult XE::RendererContext::GetOcclusionQueryResult( OcclusionQueryHandle handle )
-{
-	// TODO: 
-	return {};
+	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
+
+	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_OCCLUSION_QUERY );
+	_p->_SubmitFrame->PrevCmd.Wirte( handle );
+
+	return handle;
 }
 
 std::optional<XE::uint32> XE::RendererContext::GetOcclusionQueryValue( OcclusionQueryHandle handle )
 {
-	// TODO: 
-	return {};
+	if( _p->_Occlusions[handle] == 0 )
+	{
+		return std::nullopt;
+	}
+
+	return _p->_Occlusions[handle];
+}
+
+void XE::RendererContext::Destory( OcclusionQueryHandle handle )
+{
+	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
+	_p->_SubmitFrame->PostCmd.Wirte( CommandType::DESTROY_OCCLUSION_QUERY );
+	_p->_SubmitFrame->PostCmd.Wirte( handle );
 }
 
 XE::ViewHandle XE::RendererContext::CreateView()
@@ -779,7 +901,6 @@ void XE::RendererContext::SetViewScissor( ViewHandle handle, const XE::Rect & sc
 
 void XE::RendererContext::SetViewClear( ViewHandle handle, std::optional<XE::Color> color, std::optional<XE::float32> depth, std::optional<XE::uint8> stencil )
 {
-	// TODO: 
 	if (color != std::nullopt)
 	{
 		_p->_Views[handle].ClearColor = *color;
@@ -820,6 +941,11 @@ void XE::RendererContext::ResetView( ViewHandle handle )
 	_p->_Views[handle] = {};
 }
 
+void XE::RendererContext::Destory( ViewHandle handle )
+{
+	_p->_ViewHandleAlloc.Free( handle );
+}
+
 void XE::RendererContext::DebugTextPrint( XE::uint32 x, XE::uint32 y, const XE::Color & color, const std::string & text )
 {
 
@@ -827,7 +953,11 @@ void XE::RendererContext::DebugTextPrint( XE::uint32 x, XE::uint32 y, const XE::
 
 void XE::RendererContext::RequestScreenShot( FrameBufferHandle handle, const std::filesystem::path & path )
 {
+	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
 
+	_p->_SubmitFrame->PostCmd.Wirte( CommandType::REQUEST_SCREEN_SHOT );
+	_p->_SubmitFrame->PostCmd.Wirte( handle );
+	_p->_SubmitFrame->PostCmd.Wirte( path.u8string() );
 }
 
 XE::memory_view XE::RendererContext::CopyToFrame( XE::memory_view mem ) const
@@ -838,4 +968,9 @@ XE::memory_view XE::RendererContext::CopyToFrame( XE::memory_view mem ) const
 	_p->_SubmitFrame->TransientBuffer.Wirte( mem );
 
 	return XE::memory_view( ( const char * )pos, mem.size() );
+}
+
+void XE::RendererContext::ResizeTexture( TextureHandle handle, XE::uint32 layers, XE::uint32 mips, XE::uint32 width, XE::uint32 height )
+{
+
 }

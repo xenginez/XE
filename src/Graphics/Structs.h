@@ -42,7 +42,7 @@ enum class CommandType : XE::uint8
 	CREATE_FRAME_BUFFER,
 	CREATE_UNIFORM,
 	UPDATE_VIEW_NAME,
-	INVALIDATE_OCCLUSION_QUERY,
+	CREATE_OCCLUSION_QUERY,
 	SET_NAME,
 	END,
 	RENDERER_SHUTDOWN_END,
@@ -57,6 +57,7 @@ enum class CommandType : XE::uint8
 	DESTROY_FRAMEBUFFER,
 	DESTROY_UNIFORM,
 	READ_TEXTURE,
+	DESTROY_OCCLUSION_QUERY,
 	REQUEST_SCREEN_SHOT,
 };
 
@@ -123,19 +124,69 @@ private:
 	XE::uint64 _Key;
 };
 
-class Texture
+
+class RefCount
 {
 public:
-	uint32_t storageSize = 0;
-	uint16_t width = 0;
-	uint16_t height = 0;
-	uint16_t depth = 0;
-	uint16_t numLayers = 0;
-	uint8_t numMips = 0;
-	uint8_t bitsPerPixel = 0;
-	bool cubeMap = false;
-	TextureFormat format = TextureFormat::COUNT;
+	virtual ~RefCount() = default;
+
+public:
+	XE::uint32 Inc();
+
+	XE::uint32 Dec();
+
+public:
+	std::atomic_uint32_t Count = 0;
 };
+
+class Shader : public RefCount
+{
+public:
+	XE::String Name;
+	XE::uint32 HashIn;
+	XE::uint32 HashOut;
+	XE::Array< UniformHandle > Uniforms;
+};
+
+class Texture : public RefCount
+{
+public:
+	XE::String Name;
+	XE::uint32 StorageSize = 0;
+	XE::uint16 Width = 0;
+	XE::uint16 Height = 0;
+	XE::uint16 Depth = 0;
+	XE::uint16 NumLayers = 0;
+	XE::uint8 NumMips = 0;
+	XE::uint8 BitsPerPixel = 0;
+	bool CubeMap = false;
+	TextureFormat Format = TextureFormat::COUNT;
+};
+
+class Uniform : public RefCount
+{
+public:
+	XE::String Name;
+	XE::uint16 Num = 0;
+	UniformType Type = UniformType::COUNT;
+};
+
+class Program : public RefCount
+{
+public:
+	ShaderHandle VS;
+	ShaderHandle FS;
+	ShaderHandle CS;
+};
+
+class FrameBuffer : public RefCount
+{
+public:
+	XE::String Name;
+	WindowHandle Window;
+	TextureHandle Textures[GFX_MAX_ATTACHMENTS];
+};
+
 
 class IndexBuffer
 {
@@ -199,6 +250,7 @@ public:
 	VertexBufferHandle handle;
 	VertexLayoutHandle layoutHandle;
 };
+
 
 class View
 {
@@ -292,6 +344,7 @@ public:
 	XE::uint32 Depth = 0;
 	XE::uint32 SrcMip = 0;
 	XE::uint32 DstMip = 0;
+	ViewHandle Handle;
 	TextureHandle Src;
 	TextureHandle Dst;
 };
@@ -362,9 +415,9 @@ public:
 	std::array<RenderBind, GFX_MAX_DRAW_CALLS> RenderBinds = {};
 	std::array<XE::uint64, GFX_MAX_DRAW_CALLS> RenderItemKeys = {};
 
-	std::atomic<XE::uint64> RenderBlitSize = 0;
+	std::atomic<XE::uint32> RenderBlitSize = 0;
 	std::array<RenderBlit, GFX_MAX_DRAW_CALLS> RenderBlits = {};
-	std::array<XE::uint64, GFX_MAX_DRAW_CALLS> RenderBlitKeys = {};
+	std::array<XE::uint32, GFX_MAX_DRAW_CALLS> RenderBlitKeys = {};
 
 	std::array<TransientIndexBuffer, GFX_MAX_INDEX_BUFFERS> TransientIndexBufferView;
 	XE::ConcurrentHandleAllocator<XE::TransientIndexBufferHandle, GFX_MAX_INDEX_BUFFERS>  TransientIndexBufferHandleAlloc;
