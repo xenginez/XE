@@ -36,33 +36,32 @@ public:
 
 	}
 
+private:
+	Flags( XE::int64 val )
+		:_Value( val )
+	{
+
+	}
+
 public:
 	Flags operator |( T val ) const
 	{
-		_Value |= static_cast< XE::int64 >( val );
-
-		return *this;
+		return _Value | static_cast< XE::int64 >( val );
 	}
 
 	Flags operator |( const Flags & val ) const
 	{
-		_Value |= val._Value;
-
-		return *this;
+		return _Value | val._Value;
 	}
 
 	Flags operator &( T val ) const
 	{
-		_Value &= static_cast< XE::int64 >( val );
-
-		return *this;
+		return _Value & static_cast< XE::int64 >( val );
 	}
 
 	Flags operator &( const Flags & val ) const
 	{
-		_Value &= val._Value;
-
-		return *this;
+		return _Value & val._Value;
 	}
 
 public:

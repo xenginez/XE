@@ -10,6 +10,7 @@
 #define RENDERERCONTEXT_H__759BB776_4331_4BA8_AAB0_8AA62934A3A5
 
 #include "Type.h"
+#include "Structs.h"
 
 BEG_XE_NAMESPACE
 
@@ -48,9 +49,9 @@ public:
 	void End( XE::Encoder * val );
 
 public:
-	const XE::CapsInfo & GetCaps() const;
+	XE::CapsInfo & GetCaps();
 
-	const XE::InitInfo & GetInit() const;
+	XE::InitInfo & GetInit();
 
 public:
 	IndexBufferHandle CreateIndexBuffer( const XE::String & name, XE::memory_view mem, XE::Flags< XE::BufferFlag > flags );

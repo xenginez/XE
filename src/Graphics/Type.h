@@ -55,7 +55,7 @@ static constexpr XE::uint32 GFX_MAX_DRAW_INDIRECT_BUFFERS = 1024;
 static constexpr XE::uint32 GFX_MAX_DYNAMIC_INDEX_BUFFERS = 4096;
 static constexpr XE::uint32 GFX_MAX_DYNAMIC_VERTEX_BUFFERS = 4096;
 
-enum class CapsFlag
+enum class CapsFlag : XE::uint64
 {
 	ALPHA_TO_COVERAGE = 1ull << 0,
 	BLEND_INDEPENDENT = 1ull << 1,
@@ -85,6 +85,21 @@ enum class CapsFlag
 	VERTEX_ATTRIB_HALF = 1ull << 25,
 	VERTEX_ATTRIB_UINT10 = 1ull << 26,
 	VERTEX_ID = 1ull << 27,
+	FORMAT_TEXTURE_2D = 1ull << 28,
+	FORMAT_TEXTURE_2D_SRGB = 1ull << 29,
+	FORMAT_TEXTURE_2D_EMULATED = 1ull << 30,
+	FORMAT_TEXTURE_3D = 1ull << 31,
+	FORMAT_TEXTURE_3D_SRGB = 1ull << 32,
+	FORMAT_TEXTURE_3D_EMULATED = 1ull << 33,
+	FORMAT_TEXTURE_CUBE = 1ull << 34,
+	FORMAT_TEXTURE_CUBE_SRGB = 1ull << 35,
+	FORMAT_TEXTURE_CUBE_EMULAT = 1ull << 36,
+	FORMAT_TEXTURE_VERTEX = 1ull << 37,
+	FORMAT_TEXTURE_IMAGE = 1ull << 38,
+	FORMAT_TEXTURE_FRAMEBUFFER = 1ull << 39,
+	FORMAT_TEXTURE_FRAMEBUFFER_MSAA = 1ull << 40,
+	FORMAT_TEXTURE_MSAA = 1ull << 41,
+	FORMAT_TEXTURE_MIP_AUTOGEN = 1ull << 42,
 };
 
 enum class ResetFlag
@@ -587,8 +602,6 @@ public:
 	uint32_t MaxOcclusionQueries = GFX_MAX_OCCLUSION;
 	uint32_t TransientVbSize = 0;
 	uint32_t TransientIbSize = 0;
-
-	uint16_t formats[( XE::uint64 )TextureFormat::COUNT];
 };
 
 class XE_API InitInfo

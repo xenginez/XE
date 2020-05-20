@@ -123,12 +123,12 @@ void XE::RendererContext::End( XE::Encoder * val )
 	val->SetFrame( nullptr );
 }
 
-const XE::CapsInfo & XE::RendererContext::GetCaps() const
+XE::CapsInfo & XE::RendererContext::GetCaps()
 {
 	return _p->_Caps;
 }
 
-const XE::InitInfo & XE::RendererContext::GetInit() const
+XE::InitInfo & XE::RendererContext::GetInit()
 {
 	return _p->_Init;
 }

@@ -17,6 +17,11 @@ BEG_XE_NAMESPACE
 
 class RendererContextDirectX11 : public XE::RendererContext
 {
+private:
+    struct Private;
+
+    using Super = XE::RendererContext;
+
 public:
 	RendererContextDirectX11();
 
@@ -30,7 +35,59 @@ protected:
 	void OnClearup() override;
 
 private:
+	void RenderItems( XE::Frame * val );
 
+	void RenderBlits( XE::Frame * val );
+
+	void ExecCommand( XE::Buffer & buffer );
+
+private:
+	void Blit( const RenderBlit & blit );
+
+	void Compute( const RenderCompute & compute, const RenderBind & bind );
+
+	void DrawCall( const RenderDraw & draw, const RenderBind & bind );
+
+private:
+	void EXEC_RENDERER_INIT();
+	void EXEC_RENDERER_SHUTDOWN_BEGIN();
+	void EXEC_CREATE_VERTEX_LAYOUT();
+	void EXEC_CREATE_INDEX_BUFFER();
+	void EXEC_CREATE_VERTEX_BUFFER();
+	void EXEC_CREATE_DYNAMIC_INDEX_BUFFER();
+	void EXEC_UPDATE_DYNAMIC_INDEX_BUFFER();
+	void EXEC_CREATE_DYNAMIC_VERTEX_BUFFER();
+	void EXEC_UPDATE_DYNAMIC_VERTEX_BUFFER();
+	void EXEC_CREATE_TRANSIENT_INDEX_BUFFER();
+	void EXEC_CREATE_TRANSIENT_VERTEX_BUFFER();
+	void EXEC_CREATE_SHADER();
+	void EXEC_CREATE_PROGRAM();
+	void EXEC_CREATE_TEXTURE();
+	void EXEC_UPDATE_TEXTURE();
+	void EXEC_RESIZE_TEXTURE();
+	void EXEC_CREATE_FRAME_BUFFER();
+	void EXEC_CREATE_UNIFORM();
+	void EXEC_UPDATE_VIEW_NAME();
+	void EXEC_CREATE_OCCLUSION_QUERY();
+	void EXEC_SET_NAME();
+	void EXEC_END();
+	void EXEC_RENDERER_SHUTDOWN_END();
+	void EXEC_DESTROY_VERTEX_LAYOUT();
+	void EXEC_DESTROY_INDEX_BUFFER();
+	void EXEC_DESTROY_VERTEX_BUFFER();
+	void EXEC_DESTROY_DYNAMIC_INDEX_BUFFER();
+	void EXEC_DESTROY_DYNAMIC_VERTEX_BUFFER();
+	void EXEC_DESTROY_SHADER();
+	void EXEC_DESTROY_PROGRAM();
+	void EXEC_DESTROY_TEXTURE();
+	void EXEC_DESTROY_FRAMEBUFFER();
+	void EXEC_DESTROY_UNIFORM();
+	void EXEC_READ_TEXTURE();
+	void EXEC_DESTROY_OCCLUSION_QUERY();
+	void EXEC_REQUEST_SCREEN_SHOT();
+
+private:
+    Private * _p;
 };
 
 #endif
