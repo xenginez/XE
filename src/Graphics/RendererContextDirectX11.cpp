@@ -1,9 +1,14 @@
 #include "RendererContextDirectX11.h"
 #if PLATFORM_OS & (OS_WINDOWS)
 
-#include <d3d11_3.h>
+#include <d3d11_4.h>
 #include <dxgi1_6.h>
 #include <d3dcommon.h>
+
+#pragma comment( lib, "dxgi.lib" )
+#pragma comment( lib, "d3d11.lib" )
+#pragma comment( lib, "dxguid.lib" )
+#pragma comment( lib, "d3dcompiler.lib" )
 
 struct ShaderD3D11{};
 struct ProgramD3D11{};
@@ -43,37 +48,36 @@ static constexpr XE::uint64 G_ColorSpaceString_Size = 21;
 
 static const GUID s_dxgiDeviceIIDs[] =
 {
-	IID_IDXGIDevice3,
-	IID_IDXGIDevice2,
-	IID_IDXGIDevice1,
+	__uuidof( IDXGIDevice4 ),
+	__uuidof( IDXGIDevice3 ),
+	__uuidof( IDXGIDevice2 ),
+	__uuidof( IDXGIDevice1 ),
 };
-static constexpr XE::uint64 s_dxgiDeviceIIDs_Size = 3;
+static constexpr XE::uint64 s_dxgiDeviceIIDs_Size = 4;
 
 static const GUID s_d3dDeviceIIDs[] =
 {
-	IID_ID3D11Device3,
-	IID_ID3D11Device2,
-	IID_ID3D11Device1,
+	__uuidof( ID3D11Device5 ),
+	__uuidof( ID3D11Device4 ),
+	__uuidof( ID3D11Device3 ),
+	__uuidof( ID3D11Device2 ),
+	__uuidof( ID3D11Device1 ),
 };
-static constexpr XE::uint64 s_d3dDeviceIIDs_Size = 3;
+static constexpr XE::uint64 s_d3dDeviceIIDs_Size = 5;
 
 struct XE::RendererContextDirectX11::Private
 {
-	XE::LibraryHandle _DXGI;
-	XE::LibraryHandle _DXGID;
-	XE::LibraryHandle _D3D11;
-
 	D3D_FEATURE_LEVEL _FeatureLevel;
 
 	IDXGIOutput * _Output;
-	IDXGIFactory5 * _Factory;
-	IDXGIAdapter3 * _Adapter;
+	IDXGIFactory6 * _Factory;
+	IDXGIAdapter4 * _Adapter;
 	D3D_DRIVER_TYPE   _DriverType;
 	DXGI_ADAPTER_DESC _AdapterDesc;
 
 	XE::uint32 _DeviceInterfaceVersion;
 
-	IDXGISwapChain3 * _SwapChain;
+	IDXGISwapChain4 * _SwapChain;
 	ID3D11Texture2D * _MsaaRt;
 
 	ID3D11Device * _Device;
@@ -117,20 +121,7 @@ void XE::RendererContextDirectX11::OnStartup()
 {
 	HRESULT hr = S_OK;
 
-	_p->_DXGI = XE::Library::Open( "dxgi.dll" );
-	XE_ASSERT( _p->_DXGI );
-
-	_p->_DXGID = XE::Library::Open( "dxgidebug.dll" );
-	XE_ASSERT( _p->_DXGID );
-
-	_p->_CreateDXGIFactory = XE::Library::SymbolT<PFN_CREATE_DXGI_FACTORY>( _p->_DXGI, "CreateDXGIFactory1" );
-	if( _p->_CreateDXGIFactory )
-	{
-		_p->_CreateDXGIFactory = XE::Library::SymbolT<PFN_CREATE_DXGI_FACTORY>( _p->_DXGI, "CreateDXGIFactory" );
-	}
-	XE_ASSERT( _p->_CreateDXGIFactory );
-
-	hr = CreateDXGIFactory( IID_IDXGIFactory, (void **)&_p->_Factory );
+	hr = CreateDXGIFactory( __uuidof( IDXGIFactory ), (void **)&_p->_Factory );
 
 	if( FAILED( hr ) )
 	{
@@ -138,8 +129,7 @@ void XE::RendererContextDirectX11::OnStartup()
 		return;
 	}
 
-
-	IDXGIAdapter3 * adapter;
+	IDXGIAdapter4 * adapter;
 	for( uint32_t i = 0; DXGI_ERROR_NOT_FOUND != _p->_Factory->EnumAdapters( i, reinterpret_cast<IDXGIAdapter **>( &adapter ) ) && i < 4; ++i )
 	{
 		{
@@ -167,7 +157,7 @@ void XE::RendererContextDirectX11::OnStartup()
 					{
 						_p->_Adapter = adapter;
 						_p->_Adapter->AddRef();
-						_p->_DriverType = D3D_DRIVER_TYPE_UNKNOWN;
+						_p->_DriverType = D3D_DRIVER_TYPE::D3D_DRIVER_TYPE_UNKNOWN;
 					}
 				}
 			}
@@ -197,7 +187,7 @@ void XE::RendererContextDirectX11::OnStartup()
 				XE_LOG( XE::LoggerLevel::Message, "\t\t             Rotation: %1", outputDesc.Rotation );
 
 				IDXGIOutput6 * output6;
-				hr = output->QueryInterface( IID_IDXGIOutput6, (void **)&output6 );
+				hr = output->QueryInterface( __uuidof( IDXGIOutput6 ), (void **)&output6 );
 				if( SUCCEEDED( hr ) )
 				{
 					DXGI_OUTPUT_DESC1 desc;
@@ -218,7 +208,6 @@ void XE::RendererContextDirectX11::OnStartup()
 						hdr10 |= DXGI_COLOR_SPACE_RGB_FULL_G2084_NONE_P2020 == desc.ColorSpace;
 					}
 
-					// BK - warn only because RenderDoc might be present.
 					output6->Release();
 				}
 
@@ -260,13 +249,10 @@ void XE::RendererContextDirectX11::OnStartup()
 
 	D3D_FEATURE_LEVEL featureLevel[] =
 	{
-		D3D_FEATURE_LEVEL_12_1,
-		D3D_FEATURE_LEVEL_12_0,
 		D3D_FEATURE_LEVEL_11_1,
 		D3D_FEATURE_LEVEL_11_0,
-		D3D_FEATURE_LEVEL_10_1,
-		D3D_FEATURE_LEVEL_10_0,
 	};
+	static constexpr XE::uint32 featureLevel_Size = 2;
 
 	for( ;;)
 	{
@@ -275,14 +261,14 @@ void XE::RendererContextDirectX11::OnStartup()
 			( GetInit().debug ? D3D11_CREATE_DEVICE_DEBUG : 0 );
 		
 		hr = E_FAIL;
-		for( uint32_t ii = 0; ii < 6 && FAILED( hr ); ++ii )
+		for( uint32_t ii = 0; ii < featureLevel_Size && FAILED( hr ); ++ii )
 		{
 			hr = D3D11CreateDevice( _p->_Adapter,
 				_p->_DriverType
 				, NULL
 				, flags
 				, &featureLevel[ii]
-				, 6 - ii
+				, featureLevel_Size - ii
 				, D3D11_SDK_VERSION
 				, &_p->_Device
 				, &_p->_FeatureLevel
@@ -297,7 +283,6 @@ void XE::RendererContextDirectX11::OnStartup()
 
 		if( FAILED( hr ) && D3D_DRIVER_TYPE_WARP != _p->_DriverType )
 		{
-			// Try with WARP
 			_p->_DriverType = D3D_DRIVER_TYPE_WARP;
 			continue;
 		}
@@ -327,7 +312,7 @@ void XE::RendererContextDirectX11::OnStartup()
 			XE_LOG( LoggerLevel::Message, "Adapter GetDesc failed %1.", hr );
 		}
 
-		XE_ASSERT( _p->_Adapter->GetParent( IID_IDXGIFactory2, (void **)&_p->_Factory ) );
+		XE_ASSERT( _p->_Adapter->GetParent( __uuidof( IDXGIFactory2 ), (void **)&_p->_Factory ) );
 
 		dxgiDevice->Release();
 	}
@@ -349,7 +334,7 @@ void XE::RendererContextDirectX11::OnStartup()
 
 		{ // RenderDoc
 // 			IDXGIDevice * renderdoc;
-// 			hr = _p->_Device->QueryInterface( IID_IDXGIDeviceRenderDoc, (void **)&renderdoc );
+// 			hr = _p->_Device->QueryInterface( __uuidof( IDXGIDeviceRenderDoc ), (void **)&renderdoc );
 // 			if( SUCCEEDED( hr ) )
 // 			{
 // 				setGraphicsDebuggerPresent( true );
@@ -365,7 +350,7 @@ void XE::RendererContextDirectX11::OnStartup()
 
 		if( GetInit().debug )
 		{
-			hr = _p->_Device->QueryInterface( IID_ID3D11InfoQueue, (void **)&_p->_InfoQueue );
+			hr = _p->_Device->QueryInterface( __uuidof( ID3D11InfoQueue ), (void **)&_p->_InfoQueue );
 
 			if( SUCCEEDED( hr ) )
 			{
@@ -466,7 +451,25 @@ void XE::RendererContextDirectX11::OnRender( XE::Frame* val )
 
 void XE::RendererContextDirectX11::OnClearup()
 {
+	_p->_CaptureTexture->Release();
+	_p->_CaptureResolve->Release();
 
+	_p->_BackBufferColor->Release();
+	_p->_BackBufferDepthStencil->Release();
+	_p->_CurrentColor->Release();
+	_p->_CurrentDepthStencil->Release();
+
+	_p->_Device->Release();
+	_p->_DeviceCtx->Release();
+	_p->_Annotation->Release();
+	_p->_InfoQueue->Release();
+
+	_p->_SwapChain->Release();
+	_p->_MsaaRt->Release();
+
+	_p->_Output->Release();
+	_p->_Factory->Release();
+	_p->_Adapter->Release();
 }
 
 void XE::RendererContextDirectX11::RenderItems( XE::Frame * val )
@@ -487,7 +490,7 @@ void XE::RendererContextDirectX11::RenderItems( XE::Frame * val )
 		auto & item = val->RenderItems[items[i]];
 		if( item.Type == RenderItem::ItemType::DRAW )
 		{
-			DrawCall( item.Draw, val->RenderBinds[items[i]] );
+			Draw( item.Draw, val->RenderBinds[items[i]] );
 		}
 		else
 		{
@@ -648,12 +651,192 @@ void XE::RendererContextDirectX11::Blit( const RenderBlit & blit )
 
 }
 
+void XE::RendererContextDirectX11::Draw( const RenderDraw & draw, const RenderBind & bind )
+{
+
+}
+
 void XE::RendererContextDirectX11::Compute( const RenderCompute & compute, const RenderBind & bind )
 {
 
 }
 
-void XE::RendererContextDirectX11::DrawCall( const RenderDraw & draw, const RenderBind & bind )
+void XE::RendererContextDirectX11::EXEC_RENDERER_INIT()
+{
+
+}
+
+void XE::RendererContextDirectX11::EXEC_RENDERER_SHUTDOWN_BEGIN()
+{
+
+}
+
+void XE::RendererContextDirectX11::EXEC_CREATE_VERTEX_LAYOUT()
+{
+
+}
+
+void XE::RendererContextDirectX11::EXEC_CREATE_INDEX_BUFFER()
+{
+
+}
+
+void XE::RendererContextDirectX11::EXEC_CREATE_VERTEX_BUFFER()
+{
+
+}
+
+void XE::RendererContextDirectX11::EXEC_CREATE_DYNAMIC_INDEX_BUFFER()
+{
+
+}
+
+void XE::RendererContextDirectX11::EXEC_UPDATE_DYNAMIC_INDEX_BUFFER()
+{
+
+}
+
+void XE::RendererContextDirectX11::EXEC_CREATE_DYNAMIC_VERTEX_BUFFER()
+{
+
+}
+
+void XE::RendererContextDirectX11::EXEC_UPDATE_DYNAMIC_VERTEX_BUFFER()
+{
+
+}
+
+void XE::RendererContextDirectX11::EXEC_CREATE_TRANSIENT_INDEX_BUFFER()
+{
+
+}
+
+void XE::RendererContextDirectX11::EXEC_CREATE_TRANSIENT_VERTEX_BUFFER()
+{
+
+}
+
+void XE::RendererContextDirectX11::EXEC_CREATE_SHADER()
+{
+
+}
+
+void XE::RendererContextDirectX11::EXEC_CREATE_PROGRAM()
+{
+
+}
+
+void XE::RendererContextDirectX11::EXEC_CREATE_TEXTURE()
+{
+
+}
+
+void XE::RendererContextDirectX11::EXEC_UPDATE_TEXTURE()
+{
+
+}
+
+void XE::RendererContextDirectX11::EXEC_RESIZE_TEXTURE()
+{
+
+}
+
+void XE::RendererContextDirectX11::EXEC_CREATE_FRAME_BUFFER()
+{
+
+}
+
+void XE::RendererContextDirectX11::EXEC_CREATE_UNIFORM()
+{
+
+}
+
+void XE::RendererContextDirectX11::EXEC_UPDATE_VIEW_NAME()
+{
+
+}
+
+void XE::RendererContextDirectX11::EXEC_CREATE_OCCLUSION_QUERY()
+{
+
+}
+
+void XE::RendererContextDirectX11::EXEC_SET_NAME()
+{
+
+}
+
+void XE::RendererContextDirectX11::EXEC_END()
+{
+
+}
+
+void XE::RendererContextDirectX11::EXEC_RENDERER_SHUTDOWN_END()
+{
+
+}
+
+void XE::RendererContextDirectX11::EXEC_DESTROY_VERTEX_LAYOUT()
+{
+
+}
+
+void XE::RendererContextDirectX11::EXEC_DESTROY_INDEX_BUFFER()
+{
+
+}
+
+void XE::RendererContextDirectX11::EXEC_DESTROY_VERTEX_BUFFER()
+{
+
+}
+
+void XE::RendererContextDirectX11::EXEC_DESTROY_DYNAMIC_INDEX_BUFFER()
+{
+
+}
+
+void XE::RendererContextDirectX11::EXEC_DESTROY_DYNAMIC_VERTEX_BUFFER()
+{
+
+}
+
+void XE::RendererContextDirectX11::EXEC_DESTROY_SHADER()
+{
+
+}
+
+void XE::RendererContextDirectX11::EXEC_DESTROY_PROGRAM()
+{
+
+}
+
+void XE::RendererContextDirectX11::EXEC_DESTROY_TEXTURE()
+{
+
+}
+
+void XE::RendererContextDirectX11::EXEC_DESTROY_FRAMEBUFFER()
+{
+
+}
+
+void XE::RendererContextDirectX11::EXEC_DESTROY_UNIFORM()
+{
+
+}
+
+void XE::RendererContextDirectX11::EXEC_READ_TEXTURE()
+{
+
+}
+
+void XE::RendererContextDirectX11::EXEC_DESTROY_OCCLUSION_QUERY()
+{
+
+}
+
+void XE::RendererContextDirectX11::EXEC_REQUEST_SCREEN_SHOT()
 {
 
 }

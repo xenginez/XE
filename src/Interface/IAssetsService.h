@@ -25,7 +25,7 @@ public:
 public:
 	virtual ObjectPtr Load( const String & val ) = 0;
 
-	virtual std::future< ObjectPtr > AsyncLoad( const String & val ) = 0;
+	virtual std::shared_future< ObjectPtr > AsyncLoad( const String & val ) = 0;
 
 };
 

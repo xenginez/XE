@@ -29,49 +29,83 @@ protected:
 	virtual void _PostTask( std::function<void()> && task, ThreadType type ) = 0;
 
 public:
-	template< typename T, typename ... Args >
-	std::future<typename std::result_of<T( Args... )>::type> PostTask( ThreadType type, T && t, Args &&... args )
+	template< typename T > std::shared_future< typename std::invoke_result_t< T > > PostTask( ThreadType type, T && func )
 	{
-		using return_type = typename std::result_of<T( Args... )>::type;
+		using result_type = std::invoke_result_t< T >;
 
-		auto _task = XE::MakeShared< std::packaged_task< return_type() > >( std::bind(std::forward<T>(t), std::forward<Args>(args)...) );
+		auto task = std::make_shared< std::packaged_task< result_type( void ) > >( std::bind( std::forward< T >( func ) ) );
 
-		_PostTask( [_task]()
-				   {
-					   ( *_task )( );
-				   }, type );
+		auto f = task->get_future().share();
 
-		return std::move( _task->get_future() );
+		_PostTask( type, task );
+
+		return f;
 	}
 
-	template< typename F, typename T, typename ... Args >
-	std::future<typename std::result_of<T( Args... )>::type> PostTask( const std::shared_future < F > & future, ThreadType type, T && t, Args &&... args )
+	template< typename F, typename T > std::shared_future< typename std::invoke_result_t< T, F > > PostTask( ThreadType type, const std::shared_future< F > & future, T && func )
 	{
-		using return_type = typename std::result_of<T( Args... )>::type;
+		using result_type = std::invoke_result_t< T, F >;
 
-		auto _task = XE::MakeShared< std::packaged_task< return_type() > >( std::bind( std::forward<T>( t ), std::forward<Args>( args )... ) );
+		auto task = std::make_shared< std::packaged_task< result_type( F ) > >( std::bind( std::forward< T >( func ), std::placeholders::_1 ) );
 
-		_PostTask( future, std::forward( _task ), type );
+		auto f = task->get_future().share();
 
-		return std::move( _task->get_future() );
+		_PostTask( type, task, future );
+
+		return f;
+	}
+
+	template< typename T > std::shared_future< typename std::invoke_result_t< T > > PostTask( ThreadType type, const std::shared_future< void > & future, T && func )
+	{
+		using result_type = std::invoke_result_t< T >;
+
+		auto task = std::make_shared< std::packaged_task< result_type( void ) > >( std::bind( std::forward< T >( func ) ) );
+
+		auto f = task->get_future().share();
+
+		_PostTask( type, task, future );
+
+		return f;
 	}
 
 private:
-    template< typename F, typename T > void _PostTask( const std::shared_future < F > & future, T && task, ThreadType type )
-    {
-		PostTask( [this, future, _task, type]()
-				  {
-					  if( std::is_ready( future ) )
-					  {
-						  ( *_task )( );
-					  }
-					  else
-					  {
-						  _PostTask( future, std::forward( _task ), type, pri );
-					  }
+	template< typename T > void _PostTask( ThreadType type, const std::shared_ptr< std::packaged_task< T > > & task )
+	{
+		_PostTask( [ task ]()
+				   {
+					   ( *task )( );
+				   }, type );
+	}
 
-				  }, type );
-    }
+	template< typename T > void _PostTask( ThreadType type, const std::shared_ptr< std::packaged_task< T > > & task, const std::shared_future< void > & future )
+	{
+		_PostTask( [ this, task, future ]()
+				   {
+					   if( std::is_ready( future ) )
+					   {
+						   ( *task )( );
+					   }
+					   else
+					   {
+						   _PostTask( task, future );
+					   }
+				   }, type );
+	}
+
+	template< typename T, typename F > void _PostTask( ThreadType type, const std::shared_ptr< std::packaged_task< T > > & task, const std::shared_future< F > & future )
+	{
+		_PostTask( [ this, task, future ]()
+				   {
+					   if( std::is_ready( future ) )
+					   {
+						   ( *task )( future.get() );
+					   }
+					   else
+					   {
+						   _PostTask( task, future );
+					   }
+				   }, type );
+	}
 
 };
 

@@ -101,7 +101,7 @@ XE::ObjectPtr XE::AssetsService::Load( const String & val )
 	return obj;
 }
 
-std::future< ObjectPtr > XE::AssetsService::AsyncLoad( const String & val )
+std::shared_future< ObjectPtr > XE::AssetsService::AsyncLoad( const String & val )
 {
 	auto obj = GetAsset( val );
 

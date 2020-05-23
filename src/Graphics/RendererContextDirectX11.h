@@ -44,9 +44,9 @@ private:
 private:
 	void Blit( const RenderBlit & blit );
 
-	void Compute( const RenderCompute & compute, const RenderBind & bind );
+	void Draw( const RenderDraw & draw, const RenderBind & bind );
 
-	void DrawCall( const RenderDraw & draw, const RenderBind & bind );
+	void Compute( const RenderCompute & compute, const RenderBind & bind );
 
 private:
 	void EXEC_RENDERER_INIT();
