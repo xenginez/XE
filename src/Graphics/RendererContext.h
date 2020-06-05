@@ -34,11 +34,7 @@ public:
 	void Shutdown();
 
 protected:
-	virtual void OnStartup() = 0;
-
 	virtual void OnRender( XE::Frame* val ) = 0;
-
-	virtual void OnClearup() = 0;
 
 public:
 	void Reset( XE::uint32 width, XE::uint32 height, XE::Flags<XE::ResetFlag> flags, XE::TextureFormat format );

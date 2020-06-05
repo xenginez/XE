@@ -10,17 +10,7 @@ XE::RendererContextSoftware::~RendererContextSoftware()
 
 }
 
-void XE::RendererContextSoftware::OnStartup()
-{
-
-}
-
 void XE::RendererContextSoftware::OnRender( XE::Frame* val )
-{
-
-}
-
-void XE::RendererContextSoftware::OnClearup()
 {
 
 }

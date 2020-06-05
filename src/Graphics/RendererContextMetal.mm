@@ -12,17 +12,7 @@ XE::RendererContextMetal::~RendererContextMetal()
 
 }
 
-void XE::RendererContextMetal::OnStartup()
-{
-
-}
-
 void XE::RendererContextMetal::OnRender( XE::Frame* val )
-{
-
-}
-
-void XE::RendererContextMetal::OnClearup()
 {
 
 }

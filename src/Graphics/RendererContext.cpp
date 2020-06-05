@@ -58,7 +58,7 @@ void XE::RendererContext::Init( const InitInfo & val )
 	_p->_SubmitFrame = &_p->_Frames[0];
 	_p->_RenderFrame = &_p->_Frames[1];
 
-	OnStartup();
+	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::RENDERER_INIT );
 }
 
 void XE::RendererContext::Frame( bool capture )
@@ -81,7 +81,8 @@ void XE::RendererContext::Render()
 
 void XE::RendererContext::Shutdown()
 {
-	OnClearup();
+	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::RENDERER_SHUTDOWN_BEGIN );
+	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::RENDERER_SHUTDOWN_END );
 }
 
 void XE::RendererContext::Reset( XE::uint32 width, XE::uint32 height, XE::Flags<XE::ResetFlag> flags, XE::TextureFormat format )

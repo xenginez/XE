@@ -12,17 +12,7 @@ XE::RendererContextOpenGL::~RendererContextOpenGL()
 
 }
 
-void XE::RendererContextOpenGL::OnStartup()
-{
-
-}
-
 void XE::RendererContextOpenGL::OnRender( XE::Frame* val )
-{
-
-}
-
-void XE::RendererContextOpenGL::OnClearup()
 {
 
 }

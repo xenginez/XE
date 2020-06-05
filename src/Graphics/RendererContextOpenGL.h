@@ -23,11 +23,7 @@ public:
 	~RendererContextOpenGL() override;
 
 protected:
-	void OnStartup() override;
-
 	void OnRender( XE::Frame* val ) override;
-
-	void OnClearup() override;
 
 private:
 
