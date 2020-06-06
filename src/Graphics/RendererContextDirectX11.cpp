@@ -10,15 +10,13 @@
 #pragma comment( lib, "dxguid.lib" )
 #pragma comment( lib, "d3dcompiler.lib" )
 
-struct ShaderD3D11{};
-struct ProgramD3D11{};
-struct TextureD3D11{};
-struct VertexLayout{};
-struct FrameBufferD3D11{};
-struct IndexBufferD3D11{};
-struct VertexBufferD3D11{};
-
-typedef HRESULT( WINAPI * PFN_CREATE_DXGI_FACTORY )( REFIID _riid, void ** _factory );
+struct ShaderD3D11 {};
+struct ProgramD3D11 {};
+struct TextureD3D11 {};
+struct FrameBufferD3D11 {};
+struct IndexBufferD3D11 {};
+struct VertexBufferD3D11 {};
+struct VertexLayoutD3D11 {};
 
 static const char * G_ColorSpaceString[] =
 {
@@ -46,16 +44,16 @@ static const char * G_ColorSpaceString[] =
 };
 static constexpr XE::uint64 G_ColorSpaceString_Size = 21;
 
-static const GUID s_dxgiDeviceIIDs[] =
+static const GUID G_DXGIDeviceIIDs[] =
 {
 	__uuidof( IDXGIDevice4 ),
 	__uuidof( IDXGIDevice3 ),
 	__uuidof( IDXGIDevice2 ),
 	__uuidof( IDXGIDevice1 ),
 };
-static constexpr XE::uint64 s_dxgiDeviceIIDs_Size = 4;
+static constexpr XE::uint64 G_DXGIDeviceIIDs_Size = 4;
 
-static const GUID s_d3dDeviceIIDs[] =
+static const GUID G_D3DDeviceIIDs[] =
 {
 	__uuidof( ID3D11Device5 ),
 	__uuidof( ID3D11Device4 ),
@@ -63,47 +61,44 @@ static const GUID s_d3dDeviceIIDs[] =
 	__uuidof( ID3D11Device2 ),
 	__uuidof( ID3D11Device1 ),
 };
-static constexpr XE::uint64 s_d3dDeviceIIDs_Size = 5;
+static constexpr XE::uint64 G_D3DDeviceIIDs_Size = 5;
 
 struct XE::RendererContextDirectX11::Private
 {
 	D3D_FEATURE_LEVEL _FeatureLevel;
 
-	IDXGIOutput * _Output;
-	IDXGIFactory6 * _Factory;
-	IDXGIAdapter4 * _Adapter;
+	IDXGIOutput * _Output = nullptr;
+	IDXGIFactory6 * _Factory = nullptr;
+	IDXGIAdapter4 * _Adapter = nullptr;
 	D3D_DRIVER_TYPE   _DriverType;
 	DXGI_ADAPTER_DESC _AdapterDesc;
 
-	XE::uint32 _DeviceInterfaceVersion;
+	XE::uint32 _DeviceInterfaceVersion = 0;
 
-	IDXGISwapChain4 * _SwapChain;
-	ID3D11Texture2D * _MsaaRt;
+	IDXGISwapChain4 * _SwapChain = nullptr;
+	ID3D11Texture2D * _MsaaRt = nullptr;
 
-	ID3D11Device * _Device;
-	ID3D11DeviceContext * _DeviceCtx;
-	ID3DUserDefinedAnnotation * _Annotation;
-	ID3D11InfoQueue * _InfoQueue;
+	ID3D11Device * _Device = nullptr;
+	ID3D11DeviceContext * _DeviceCtx = nullptr;
+	ID3DUserDefinedAnnotation * _Annotation = nullptr;
+	ID3D11InfoQueue * _InfoQueue = nullptr;
 
-	ID3D11RenderTargetView * _BackBufferColor;
-	ID3D11DepthStencilView * _BackBufferDepthStencil;
-	ID3D11RenderTargetView * _CurrentColor;
-	ID3D11DepthStencilView * _CurrentDepthStencil;
+	ID3D11RenderTargetView * _BackBufferColor = nullptr;
+	ID3D11DepthStencilView * _BackBufferDepthStencil = nullptr;
+	ID3D11RenderTargetView * _CurrentColor = nullptr;
+	ID3D11DepthStencilView * _CurrentDepthStencil = nullptr;
 
-	ID3D11Texture2D * _CaptureTexture;
-	ID3D11Texture2D * _CaptureResolve;
+	ID3D11Texture2D * _CaptureTexture = nullptr;
+	ID3D11Texture2D * _CaptureResolve = nullptr;
 
 
 	ShaderD3D11 _Shaders[GFX_MAX_SHADERS];
 	ProgramD3D11 _Programs[GFX_MAX_PROGRAMS];
 	TextureD3D11 _Textures[GFX_MAX_TEXTURES];
-	VertexLayout _VertexLayouts[GFX_MAX_VERTEX_LAYOUTS];
 	FrameBufferD3D11 _FrameBuffers[GFX_MAX_FRAME_BUFFERS];
 	IndexBufferD3D11 _IndexBuffers[GFX_MAX_INDEX_BUFFERS];
 	VertexBufferD3D11 _VertexBuffers[GFX_MAX_VERTEX_BUFFERS];
-
-
-	PFN_CREATE_DXGI_FACTORY  _CreateDXGIFactory = nullptr;
+	VertexLayoutD3D11 _VertexLayouts[GFX_MAX_VERTEX_LAYOUTS];
 };
 
 XE::RendererContextDirectX11::RendererContextDirectX11()
@@ -117,7 +112,7 @@ XE::RendererContextDirectX11::~RendererContextDirectX11()
 	delete _p;
 }
 
-void XE::RendererContextDirectX11::OnRender( XE::Frame* val )
+void XE::RendererContextDirectX11::OnRender( XE::Frame * val )
 {
     ExecCommand( val->PrevCmd );
 
@@ -191,8 +186,8 @@ void XE::RendererContextDirectX11::ExecCommand( XE::Buffer & buffer )
 		case XE::CommandType::RENDERER_INIT:
 			EXEC_RENDERER_INIT();
 			break;
-		case XE::CommandType::RENDERER_SHUTDOWN_BEGIN:
-			EXEC_RENDERER_SHUTDOWN_BEGIN();
+		case XE::CommandType::RENDERER_SHUTDOWN:
+			EXEC_RENDERER_SHUTDOWN();
 			break;
 		case XE::CommandType::CREATE_VERTEX_LAYOUT:
 			EXEC_CREATE_VERTEX_LAYOUT();
@@ -242,20 +237,11 @@ void XE::RendererContextDirectX11::ExecCommand( XE::Buffer & buffer )
 		case XE::CommandType::CREATE_UNIFORM:
 			EXEC_CREATE_UNIFORM();
 			break;
-		case XE::CommandType::UPDATE_VIEW_NAME:
-			EXEC_UPDATE_VIEW_NAME();
-			break;
 		case XE::CommandType::CREATE_OCCLUSION_QUERY:
 			EXEC_CREATE_OCCLUSION_QUERY();
 			break;
-		case XE::CommandType::SET_NAME:
-			EXEC_SET_NAME();
-			break;
 		case XE::CommandType::END:
 			EXEC_END();
-			break;
-		case XE::CommandType::RENDERER_SHUTDOWN_END:
-			EXEC_RENDERER_SHUTDOWN_END();
 			break;
 		case XE::CommandType::DESTROY_VERTEX_LAYOUT:
 			EXEC_DESTROY_VERTEX_LAYOUT();
@@ -325,8 +311,8 @@ void XE::RendererContextDirectX11::EXEC_RENDERER_INIT()
 
 	if( FAILED( hr ) )
 	{
-		XE_LOG( XE::LoggerLevel::Error, "Init error: Unable to create DXGI factory." );
-		return;
+		XE_LOG( XE::LoggerLevel::Error, "init error: unable to create DXGI factory." );
+		XE_ASSERT( false && "init error: unable to create DXGI factory." );
 	}
 
 	IDXGIAdapter4 * adapter;
@@ -341,6 +327,7 @@ void XE::RendererContextDirectX11::EXEC_RENDERER_INIT()
 
 				char description[128];
 				wcstombs( description, desc.Description, 128 );
+
 				XE_LOG( XE::LoggerLevel::Message, "\tDescription: %s", description );
 				XE_LOG( XE::LoggerLevel::Message, "\tVendorId: %1, DeviceId: %2, SubSysId: %3, Revision: %4", desc.VendorId, desc.DeviceId, desc.SubSysId, desc.Revision );
 				XE_LOG( XE::LoggerLevel::Message, "\tMemory: %1 (video), %2 (system), %3 (shared)", desc.DedicatedVideoMemory, desc.DedicatedSystemMemory, desc.SharedSystemMemory );
@@ -351,9 +338,9 @@ void XE::RendererContextDirectX11::EXEC_RENDERER_INIT()
 
 				if( _p->_Adapter == nullptr )
 				{
-					if( ( PCIType::NONE != GetCaps().VendorId || 0 != GetCaps().DeviceId )
-						&& ( PCIType::NONE != GetCaps().VendorId || ( PCIType )desc.VendorId == GetCaps().VendorId )
-						&& ( 0 != GetCaps().DeviceId || desc.DeviceId == GetCaps().DeviceId ) )
+					if( ( PCIType::NONE != GetCaps().VendorId || 0 != GetCaps().DeviceId ) &&
+						( PCIType::NONE != GetCaps().VendorId || ( PCIType )desc.VendorId == GetCaps().VendorId ) &&
+						( 0 != GetCaps().DeviceId || desc.DeviceId == GetCaps().DeviceId ) )
 					{
 						_p->_Adapter = adapter;
 						_p->_Adapter->AddRef();
@@ -429,6 +416,7 @@ void XE::RendererContextDirectX11::EXEC_RENDERER_INIT()
 		if( FAILED( hr ) )
 		{
 			XE_LOG( XE::LoggerLevel::Warning, "EnumAdapters GetDesc failed %1.", hr );
+			XE_ASSERT( false && "EnumAdapters GetDesc failed" );
 		}
 		_p->_DriverType = D3D_DRIVER_TYPE_UNKNOWN;
 	}
@@ -438,6 +426,7 @@ void XE::RendererContextDirectX11::EXEC_RENDERER_INIT()
 	if( FAILED( hr ) )
 	{
 		XE_LOG( XE::LoggerLevel::Warning, "Adapter GetDesc failed %1.", hr );
+		XE_ASSERT( false && "Adapter GetDesc failed" );
 	}
 
 	_p->_Adapter->EnumOutputs( 0, &_p->_Output );
@@ -493,17 +482,18 @@ void XE::RendererContextDirectX11::EXEC_RENDERER_INIT()
 	if( FAILED( hr ) )
 	{
 		XE_LOG( LoggerLevel::Error, "Init error: Unable to create Direct3D11 device." );
+		XE_ASSERT( false && "Init error: Unable to create Direct3D11 device." );
 	}
 
 	{
 		IDXGIDevice * dxgiDevice = NULL;
-		for( uint32_t ii = 0; ii < s_dxgiDeviceIIDs_Size && FAILED( hr ); ++ii )
+		for( uint32_t ii = 0; ii < G_DXGIDeviceIIDs_Size && FAILED( hr ); ++ii )
 		{
-			hr = _p->_Device->QueryInterface( s_dxgiDeviceIIDs[ii], ( void ** )&dxgiDevice );
-			XE_LOG( LoggerLevel::Message, "DXGI device 11.%1, hr %2", 3 - 1 - ii, hr );
+			hr = _p->_Device->QueryInterface( G_DXGIDeviceIIDs[ii], ( void ** )&dxgiDevice );
+			XE_LOG( LoggerLevel::Message, "DXGI device 11.%1, hr %2", 4 - 1 - ii, hr );
 		}
 
-		XE_ASSERT( dxgiDevice->GetAdapter( reinterpret_cast< IDXGIAdapter ** >( &_p->_Adapter ) ) );
+		XE_ASSERT( FAILED( dxgiDevice->GetAdapter( reinterpret_cast< IDXGIAdapter ** >( &_p->_Adapter ) ) ) );
 
 		std::memset( &_p->_AdapterDesc, 0, sizeof( _p->_AdapterDesc ) );
 		hr = _p->_Adapter->GetDesc( &_p->_AdapterDesc );
@@ -512,7 +502,7 @@ void XE::RendererContextDirectX11::EXEC_RENDERER_INIT()
 			XE_LOG( LoggerLevel::Message, "Adapter GetDesc failed %1.", hr );
 		}
 
-		XE_ASSERT( _p->_Adapter->GetParent( __uuidof( IDXGIFactory2 ), ( void ** )&_p->_Factory ) );
+		XE_ASSERT( FAILED( _p->_Adapter->GetParent( __uuidof( IDXGIFactory2 ), ( void ** ) &_p->_Factory ) ) );
 
 		dxgiDevice->Release();
 	}
@@ -520,14 +510,14 @@ void XE::RendererContextDirectX11::EXEC_RENDERER_INIT()
 
 	{
 		_p->_DeviceInterfaceVersion = 0;
-		for( uint32_t ii = 0; ii < s_d3dDeviceIIDs_Size; ++ii )
+		for( uint32_t ii = 0; ii < G_D3DDeviceIIDs_Size; ++ii )
 		{
 			ID3D11Device * device;
-			hr = _p->_Device->QueryInterface( s_d3dDeviceIIDs[ii], ( void ** )&device );
+			hr = _p->_Device->QueryInterface( G_D3DDeviceIIDs[ii], ( void ** )&device );
 			if( SUCCEEDED( hr ) )
 			{
 				device->Release(); // BK - ignore ref count.
-				_p->_DeviceInterfaceVersion = s_d3dDeviceIIDs_Size - ii;
+				_p->_DeviceInterfaceVersion = G_D3DDeviceIIDs_Size - ii;
 				break;
 			}
 		}
@@ -638,7 +628,7 @@ void XE::RendererContextDirectX11::EXEC_RENDERER_INIT()
 	}
 }
 
-void XE::RendererContextDirectX11::EXEC_RENDERER_SHUTDOWN_BEGIN()
+void XE::RendererContextDirectX11::EXEC_RENDERER_SHUTDOWN()
 {
 	_p->_CaptureTexture->Release();
 	_p->_CaptureResolve->Release();
@@ -741,27 +731,12 @@ void XE::RendererContextDirectX11::EXEC_CREATE_UNIFORM()
 
 }
 
-void XE::RendererContextDirectX11::EXEC_UPDATE_VIEW_NAME()
-{
-
-}
-
 void XE::RendererContextDirectX11::EXEC_CREATE_OCCLUSION_QUERY()
 {
 
 }
 
-void XE::RendererContextDirectX11::EXEC_SET_NAME()
-{
-
-}
-
 void XE::RendererContextDirectX11::EXEC_END()
-{
-
-}
-
-void XE::RendererContextDirectX11::EXEC_RENDERER_SHUTDOWN_END()
 {
 
 }

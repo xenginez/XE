@@ -81,8 +81,7 @@ void XE::RendererContext::Render()
 
 void XE::RendererContext::Shutdown()
 {
-	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::RENDERER_SHUTDOWN_BEGIN );
-	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::RENDERER_SHUTDOWN_END );
+	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::RENDERER_SHUTDOWN );
 }
 
 void XE::RendererContext::Reset( XE::uint32 width, XE::uint32 height, XE::Flags<XE::ResetFlag> flags, XE::TextureFormat format )
