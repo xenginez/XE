@@ -15,7 +15,10 @@ BEG_XE_NAMESPACE
 
 template< typename T > class Flags
 {
-	static_assert( std::is_enum_v<T> );
+	static_assert( std::is_enum_v<T> && ( XE::uint64 )( T::NONE ) == 0 );
+
+public:
+	static const XE::Flags< T > NONE;
 
 public:
 	Flags()
@@ -25,7 +28,7 @@ public:
 	}
 
 	Flags( T val )
-		:_Value( static_cast< XE::int64 >( val ) )
+		:_Value( static_cast< XE::uint64 >( val ) )
 	{
 
 	}
@@ -37,7 +40,7 @@ public:
 	}
 
 private:
-	Flags( XE::int64 val )
+	Flags( XE::uint64 val )
 		:_Value( val )
 	{
 
@@ -46,7 +49,7 @@ private:
 public:
 	Flags operator |( T val ) const
 	{
-		return _Value | static_cast< XE::int64 >( val );
+		return _Value | static_cast< XE::uint64 >( val );
 	}
 
 	Flags operator |( const Flags & val ) const
@@ -56,7 +59,7 @@ public:
 
 	Flags operator &( T val ) const
 	{
-		return _Value & static_cast< XE::int64 >( val );
+		return _Value & static_cast< XE::uint64 >( val );
 	}
 
 	Flags operator &( const Flags & val ) const
@@ -64,10 +67,30 @@ public:
 		return _Value & val._Value;
 	}
 
+	Flags operator << ( T val ) const
+	{
+		return _Value << XE::uint64( val );
+	}
+
+	Flags operator << ( const Flags & val ) const
+	{
+		return _Value << val._Value;
+	}
+
+	Flags operator >> ( T val ) const
+	{
+		return _Value >> XE::uint64( val );
+	}
+
+	Flags operator >> ( const Flags & val ) const
+	{
+		return _Value >> val._Value;
+	}
+
 public:
 	Flags & operator =( T val )
 	{
-		_Value = static_cast< XE::int64 >( val );
+		_Value = static_cast< XE::uint64 >( val );
 
 		return *this;
 	}
@@ -81,7 +104,7 @@ public:
 
 	Flags & operator |=( T val )
 	{
-		_Value |= static_cast< XE::int64 >( val );
+		_Value |= static_cast< XE::uint64 >( val );
 
 		return *this;
 	}
@@ -95,7 +118,7 @@ public:
 
 	Flags & operator &=( T val )
 	{
-		_Value &= static_cast< XE::int64 >( val );
+		_Value &= static_cast< XE::uint64 >( val );
 
 		return *this;
 	}
@@ -110,7 +133,7 @@ public:
 public:
 	bool operator ||( T val ) const
 	{
-		return ( _Value | static_cast< XE::int64 >( val ) ) != 0;
+		return ( _Value | static_cast< XE::uint64 >( val ) ) != 0;
 	}
 
 	bool operator ||( const Flags & val ) const
@@ -120,7 +143,7 @@ public:
 
 	bool operator &&( T val ) const
 	{
-		return ( _Value & static_cast< XE::int64 >( val ) ) != 0;
+		return ( _Value & static_cast< XE::uint64 >( val ) ) != 0;
 	}
 
 	bool operator &&( const Flags & val ) const
@@ -130,7 +153,7 @@ public:
 
 	bool operator ==( T val ) const
 	{
-		return _Value == static_cast< XE::int64 >( val );
+		return _Value == static_cast< XE::uint64 >( val );
 	}
 
 	bool operator ==( const Flags & val ) const
@@ -140,7 +163,7 @@ public:
 
 	bool operator !=( T val ) const
 	{
-		return _Value != static_cast< XE::int64 >( val );
+		return _Value != static_cast< XE::uint64 >( val );
 	}
 
 	bool operator !=( const Flags & val ) const
@@ -148,9 +171,16 @@ public:
 		return _Value != val._Value;
 	}
 
+public:
+	XE::uint64 GetValue() const
+	{
+		return _Value;
+	}
+
 private:
-	XE::int64 _Value;
+	XE::uint64 _Value;
 };
+template< typename T > const XE::Flags< T > Flags< T >::NONE = {};
 
 template< typename T > XE::Flags< T > MakeFlags( T arg0 )
 {
@@ -223,5 +253,25 @@ template< typename T > XE::Flags< T > MakeFlags( T arg0, T arg1, T arg2, T arg3,
 }
 
 END_XE_NAMESPACE
+
+template< typename T > bool operator ||( T left, XE::Flags< T > right )
+{
+	return XE::MakeFlags( left ) || right;
+}
+
+template< typename T > bool operator &&( T left, XE::Flags< T > right )
+{
+	return XE::MakeFlags( left ) && right;
+}
+
+template< typename T > bool operator ==( T left, XE::Flags< T > right )
+{
+	return XE::MakeFlags( left ) == right;
+}
+
+template< typename T > bool operator !=( T left, XE::Flags< T > right )
+{
+	return XE::MakeFlags( left ) != right;
+}
 
 #endif // FLAGS_HPP__C8E5511D_71B9_46C1_A4BF_35B5E8ADBDF3

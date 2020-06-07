@@ -10,6 +10,255 @@
 #pragma comment( lib, "dxguid.lib" )
 #pragma comment( lib, "d3dcompiler.lib" )
 
+#define XE_CHECK( __X ) \
+if( FAILED( __X ) ) \
+{ \
+	XE_ASSERT( false && #__X ); \
+}
+
+
+enum class BufferFlag
+{
+	NONE = 0x0000,
+
+	COMPUTE_FORMAT_8X1 = 0x0001,
+	COMPUTE_FORMAT_8X2 = 0x0002,
+	COMPUTE_FORMAT_8X4 = 0x0003,
+	COMPUTE_FORMAT_16X1 = 0x0004,
+	COMPUTE_FORMAT_16X2 = 0x0005,
+	COMPUTE_FORMAT_16X4 = 0x0006,
+	COMPUTE_FORMAT_32X1 = 0x0007,
+	COMPUTE_FORMAT_32X2 = 0x0008,
+	COMPUTE_FORMAT_32X4 = 0x0009,
+	COMPUTE_FORMAT_MASK = 0x000f,
+	COMPUTE_FORMAT_SHIFT = 0,
+
+	COMPUTE_TYPE_INT = 0x0010, //!< Type `int`.
+	COMPUTE_TYPE_UINT = 0x0020, //!< Type `uint`.
+	COMPUTE_TYPE_FLOAT = 0x0030, //!< Type `float`.
+	COMPUTE_TYPE_MASK = 0x0030,
+	COMPUTE_TYPE_SHIFT = 4,
+
+	COMPUTE_READ = 0x0100, //!< Buffer will be read by shader.
+	COMPUTE_WRITE = 0x0200, //!< Buffer will be used for writing.
+	DRAW_INDIRECT = 0x0400, //!< Buffer will be used for storing draw indirect commands.
+	ALLOW_RESIZE = 0x0800, //!< Allow dynamic index/vertex buffer resize during update.
+	INDEX32 = 0x1000, //!< Index buffer contains 32-bit indices.
+
+};
+
+struct UavFormat
+{
+	DXGI_FORMAT format[3];
+	uint32_t    stride;
+};
+static const UavFormat G_UAVFormat[] =
+{
+	{ { DXGI_FORMAT_UNKNOWN,           DXGI_FORMAT_UNKNOWN,            DXGI_FORMAT_UNKNOWN            },  0 }, // ignored
+	{ { DXGI_FORMAT_R8_SINT,           DXGI_FORMAT_R8_UINT,            DXGI_FORMAT_UNKNOWN            },  1 }, // BGFX_BUFFER_COMPUTE_FORMAT_8X1
+	{ { DXGI_FORMAT_R8G8_SINT,         DXGI_FORMAT_R8G8_UINT,          DXGI_FORMAT_UNKNOWN            },  2 }, // BGFX_BUFFER_COMPUTE_FORMAT_8X2
+	{ { DXGI_FORMAT_R8G8B8A8_SINT,     DXGI_FORMAT_R8G8B8A8_UINT,      DXGI_FORMAT_UNKNOWN            },  4 }, // BGFX_BUFFER_COMPUTE_FORMAT_8X4
+	{ { DXGI_FORMAT_R16_SINT,          DXGI_FORMAT_R16_UINT,           DXGI_FORMAT_R16_FLOAT          },  2 }, // BGFX_BUFFER_COMPUTE_FORMAT_16X1
+	{ { DXGI_FORMAT_R16G16_SINT,       DXGI_FORMAT_R16G16_UINT,        DXGI_FORMAT_R16G16_FLOAT       },  4 }, // BGFX_BUFFER_COMPUTE_FORMAT_16X2
+	{ { DXGI_FORMAT_R16G16B16A16_SINT, DXGI_FORMAT_R16G16B16A16_UINT,  DXGI_FORMAT_R16G16B16A16_FLOAT },  8 }, // BGFX_BUFFER_COMPUTE_FORMAT_16X4
+	{ { DXGI_FORMAT_R32_SINT,          DXGI_FORMAT_R32_UINT,           DXGI_FORMAT_R32_FLOAT          },  4 }, // BGFX_BUFFER_COMPUTE_FORMAT_32X1
+	{ { DXGI_FORMAT_R32G32_SINT,       DXGI_FORMAT_R32G32_UINT,        DXGI_FORMAT_R32G32_FLOAT       },  8 }, // BGFX_BUFFER_COMPUTE_FORMAT_32X2
+	{ { DXGI_FORMAT_R32G32B32A32_SINT, DXGI_FORMAT_R32G32B32A32_UINT,  DXGI_FORMAT_R32G32B32A32_FLOAT }, 16 }, // BGFX_BUFFER_COMPUTE_FORMAT_32X4
+};
+
+struct BufferD3D11
+{
+public:
+	void create( ID3D11Device * device, XE::memory_view data, XE::Flags<BufferFlag> flags, bool vertex = false )
+	{
+		_size = data.size();
+		_flags = flags;
+
+		const bool needUav = BufferFlag::NONE != ( _flags & XE::MakeFlags( BufferFlag::COMPUTE_WRITE, BufferFlag::DRAW_INDIRECT ) );
+		const bool needSrv = BufferFlag::NONE != ( _flags & BufferFlag::COMPUTE_READ );
+		const bool drawIndirect = BufferFlag::NONE != ( _flags & BufferFlag::DRAW_INDIRECT );
+		_dynamic = ( data.empty() && !needUav );
+
+
+		D3D11_BUFFER_DESC desc;
+		desc.ByteWidth = _size;
+		desc.BindFlags = ( vertex ? D3D11_BIND_VERTEX_BUFFER : D3D11_BIND_INDEX_BUFFER ) |
+			( needUav ? D3D11_BIND_UNORDERED_ACCESS : 0 ) |
+			( needSrv ? D3D11_BIND_SHADER_RESOURCE : 0 );
+
+		desc.MiscFlags = ( drawIndirect ? D3D11_RESOURCE_MISC_DRAWINDIRECT_ARGS : 0 );
+
+		desc.StructureByteStride = 0;
+
+		DXGI_FORMAT format;
+		uint32_t    stride;
+
+		if( drawIndirect )
+		{
+			format = DXGI_FORMAT_R32G32B32A32_UINT;
+			stride = 16;
+		}
+		else
+		{
+			auto uavFormat = _flags & BufferFlag::COMPUTE_FORMAT_MASK;
+			if( uavFormat == BufferFlag::NONE )
+			{
+				if( vertex )
+				{
+					format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+					stride = 16;
+				}
+				else
+				{
+					if( ( _flags & BufferFlag::INDEX32 ) == BufferFlag::NONE )
+					{
+						format = DXGI_FORMAT_R16_UINT;
+						stride = 2;
+					}
+					else
+					{
+						format = DXGI_FORMAT_R32_UINT;
+						stride = 4;
+					}
+				}
+			}
+			else
+			{
+				const XE::uint64 uavType = XE::Mathf::satsub<XE::uint64>( ( ( _flags & BufferFlag::COMPUTE_TYPE_MASK ) >> BufferFlag::COMPUTE_TYPE_SHIFT ).GetValue(), 1 );
+				format = G_UAVFormat[uavFormat.GetValue()].format[uavType];
+				stride = G_UAVFormat[uavFormat.GetValue()].stride;
+			}
+		}
+
+
+		D3D11_SUBRESOURCE_DATA srd;
+		srd.pSysMem = data.data();
+		srd.SysMemPitch = 0;
+		srd.SysMemSlicePitch = 0;
+
+		if( needUav )
+		{
+			desc.Usage = D3D11_USAGE_DEFAULT;
+			desc.CPUAccessFlags = 0;
+			desc.StructureByteStride = stride;
+
+			XE_CHECK( device->CreateBuffer( &desc, NULL == data.data() ? NULL : &srd, &_ptr ) );
+
+			D3D11_UNORDERED_ACCESS_VIEW_DESC uavd;
+			uavd.Format = format;
+			uavd.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
+			uavd.Buffer.FirstElement = 0;
+			uavd.Buffer.NumElements = _size / stride;
+			uavd.Buffer.Flags = 0;
+			XE_CHECK( device->CreateUnorderedAccessView( _ptr, &uavd, &_uav ) );
+		}
+		else if( _dynamic )
+		{
+			desc.Usage = D3D11_USAGE_DYNAMIC;
+			desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+			XE_CHECK( device->CreateBuffer( &desc, NULL, &_ptr ) );
+		}
+		else
+		{
+			desc.Usage = D3D11_USAGE_IMMUTABLE;
+			desc.CPUAccessFlags = 0;
+
+			XE_CHECK( device->CreateBuffer( &desc, &srd, &_ptr ) );
+		}
+
+		if( needSrv )
+		{
+			D3D11_SHADER_RESOURCE_VIEW_DESC srvd;
+			srvd.Format = format;
+			srvd.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
+			srvd.Buffer.FirstElement = 0;
+			srvd.Buffer.NumElements = _size / stride;
+			XE_CHECK( device->CreateShaderResourceView( _ptr, &srvd, &_srv ) );
+		}
+	}
+
+	void update( ID3D11Device * device, ID3D11DeviceContext * deviceCtx, XE::uint32 offset, XE::memory_view data, bool discard = false )
+	{
+		XE_ASSERT( _dynamic );
+
+		if( discard )
+		{
+			D3D11_MAPPED_SUBRESOURCE mapped;
+			XE_CHECK( deviceCtx->Map( _ptr, 0, D3D11_MAP_WRITE_DISCARD, 0, &mapped ) );
+			std::memcpy( ( XE::uint8 * ) mapped.pData + offset, data.data(), data.size() );
+			deviceCtx->Unmap( _ptr, 0 );
+		}
+		else
+		{
+			D3D11_BUFFER_DESC desc;
+			desc.ByteWidth = _size;
+			desc.Usage = D3D11_USAGE_STAGING;
+			desc.BindFlags = 0;
+			desc.MiscFlags = 0;
+			desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+			desc.StructureByteStride = 0;
+
+			D3D11_SUBRESOURCE_DATA srd;
+			srd.pSysMem = data.data();
+			srd.SysMemPitch = 0;
+			srd.SysMemSlicePitch = 0;
+
+			D3D11_BOX srcBox;
+			srcBox.left = 0;
+			srcBox.top = 0;
+			srcBox.front = 0;
+			srcBox.right = _size;
+			srcBox.bottom = 1;
+			srcBox.back = 1;
+
+			ID3D11Buffer * ptr;
+			XE_CHECK( device->CreateBuffer( &desc, &srd, &ptr ) );
+
+			deviceCtx->CopySubresourceRegion( _ptr
+											  , 0
+											  , offset
+											  , 0
+											  , 0
+											  , ptr
+											  , 0
+											  , &srcBox
+			);
+
+			ptr->Release();
+		}
+	}
+
+	void destroy()
+	{
+		if( _ptr )
+		{
+			_ptr->Release();
+		}
+
+		if( _srv )
+		{
+			_srv->Release();
+		}
+
+		if( _uav )
+		{
+			_uav->Release();
+		}
+
+		_size = 0;
+		_dynamic = false;
+		_flags = BufferFlag::NONE;
+	}
+
+public:
+	XE::uint32 _size = 0;
+	bool _dynamic = false;
+	ID3D11Buffer * _ptr = nullptr;
+	ID3D11ShaderResourceView * _srv = nullptr;
+	ID3D11UnorderedAccessView * _uav = nullptr;
+	XE::Flags<BufferFlag> _flags = BufferFlag::NONE;
+};
 struct ShaderD3D11 {};
 struct ProgramD3D11 {};
 struct TextureD3D11 {};
@@ -62,6 +311,7 @@ static const GUID G_D3DDeviceIIDs[] =
 	__uuidof( ID3D11Device1 ),
 };
 static constexpr XE::uint64 G_D3DDeviceIIDs_Size = 5;
+
 
 struct XE::RendererContextDirectX11::Private
 {
@@ -307,13 +557,7 @@ void XE::RendererContextDirectX11::EXEC_RENDERER_INIT()
 {
 	HRESULT hr = S_OK;
 
-	hr = CreateDXGIFactory( __uuidof( IDXGIFactory ), ( void ** )&_p->_Factory );
-
-	if( FAILED( hr ) )
-	{
-		XE_LOG( XE::LoggerLevel::Error, "init error: unable to create DXGI factory." );
-		XE_ASSERT( false && "init error: unable to create DXGI factory." );
-	}
+	XE_CHECK( CreateDXGIFactory( __uuidof( IDXGIFactory ), ( void ** ) &_p->_Factory ) );
 
 	IDXGIAdapter4 * adapter;
 	for( uint32_t i = 0; DXGI_ERROR_NOT_FOUND != _p->_Factory->EnumAdapters( i, reinterpret_cast< IDXGIAdapter ** >( &adapter ) ) && i < 4; ++i )
@@ -412,23 +656,13 @@ void XE::RendererContextDirectX11::EXEC_RENDERER_INIT()
 
 	if( _p->_Adapter == nullptr )
 	{
-		hr = _p->_Factory->EnumAdapters( 0, reinterpret_cast< IDXGIAdapter ** >( &_p->_Adapter ) );
-		if( FAILED( hr ) )
-		{
-			XE_LOG( XE::LoggerLevel::Warning, "EnumAdapters GetDesc failed %1.", hr );
-			XE_ASSERT( false && "EnumAdapters GetDesc failed" );
-		}
+		XE_CHECK( _p->_Factory->EnumAdapters( 0, reinterpret_cast< IDXGIAdapter ** >( &_p->_Adapter ) ) );
+
 		_p->_DriverType = D3D_DRIVER_TYPE_UNKNOWN;
 	}
 
 	std::memset( &_p->_AdapterDesc, 0, sizeof( _p->_AdapterDesc ) );
-	hr = _p->_Adapter->GetDesc( &_p->_AdapterDesc );
-	if( FAILED( hr ) )
-	{
-		XE_LOG( XE::LoggerLevel::Warning, "Adapter GetDesc failed %1.", hr );
-		XE_ASSERT( false && "Adapter GetDesc failed" );
-	}
-
+	XE_CHECK( _p->_Adapter->GetDesc( &_p->_AdapterDesc ) );
 	_p->_Adapter->EnumOutputs( 0, &_p->_Output );
 
 	GetCaps().VendorId = _p->_AdapterDesc.VendorId == 0 ? PCIType::SOFTWARE : ( PCIType )_p->_AdapterDesc.VendorId;
@@ -493,7 +727,7 @@ void XE::RendererContextDirectX11::EXEC_RENDERER_INIT()
 			XE_LOG( LoggerLevel::Message, "DXGI device 11.%1, hr %2", 4 - 1 - ii, hr );
 		}
 
-		XE_ASSERT( FAILED( dxgiDevice->GetAdapter( reinterpret_cast< IDXGIAdapter ** >( &_p->_Adapter ) ) ) );
+		XE_CHECK( dxgiDevice->GetAdapter( reinterpret_cast< IDXGIAdapter ** >( &_p->_Adapter ) ) );
 
 		std::memset( &_p->_AdapterDesc, 0, sizeof( _p->_AdapterDesc ) );
 		hr = _p->_Adapter->GetDesc( &_p->_AdapterDesc );
@@ -502,7 +736,7 @@ void XE::RendererContextDirectX11::EXEC_RENDERER_INIT()
 			XE_LOG( LoggerLevel::Message, "Adapter GetDesc failed %1.", hr );
 		}
 
-		XE_ASSERT( FAILED( _p->_Adapter->GetParent( __uuidof( IDXGIFactory2 ), ( void ** ) &_p->_Factory ) ) );
+		XE_CHECK( _p->_Adapter->GetParent( __uuidof( IDXGIFactory2 ), ( void ** ) &_p->_Factory ) );
 
 		dxgiDevice->Release();
 	}

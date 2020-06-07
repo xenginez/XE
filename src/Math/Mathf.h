@@ -756,6 +756,15 @@ public:
 	static constexpr XE::real Infinity = std::numeric_limits<XE::real>::infinity();
 
 public:
+	template< typename T >
+	static XE_INLINE T satsub( T a, T b )
+	{
+		auto sub = a - b;
+		auto le = -( sub <= a );
+		return sub & le;
+	}
+
+public:
 	static XE_INLINE XE::real MM2CM( XE::real mm )
 	{
 		return mm / 10.0f;
