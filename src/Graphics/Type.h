@@ -57,6 +57,7 @@ static constexpr XE::uint32 GFX_MAX_DYNAMIC_VERTEX_BUFFERS = 4096;
 
 enum class CapsFlag : XE::uint64
 {
+	NONE = 0,
 	ALPHA_TO_COVERAGE = 1ull << 0,
 	BLEND_INDEPENDENT = 1ull << 1,
 	COMPUTE = 1ull << 2,
@@ -102,7 +103,7 @@ enum class CapsFlag : XE::uint64
 	FORMAT_TEXTURE_MIP_AUTOGEN = 1ull << 42,
 };
 
-enum class ResetFlag
+enum class ResetFlag : XE::uint64
 {
 	NONE = 0,
 	FULLSCREEN = 1ull << 0,
@@ -120,48 +121,48 @@ enum class ResetFlag
 
 enum class StateFlag : XE::uint64
 {
-	WRITE_R = 0,
-	WRITE_G = 1ull << 0,
-	WRITE_B = 1ull << 1,
-	WRITE_A = 1ull << 2,
-	WRITE_Z = 1ull << 3,
+	NONE = 0,
+	WRITE_R = 1ull << 0,
+	WRITE_G = 1ull << 1,
+	WRITE_B = 1ull << 2,
+	WRITE_A = 1ull << 3,
+	WRITE_Z = 1ull << 4,
 	WIRTE_RGB = WRITE_R | WRITE_G | WRITE_B,
-	DEPTH_TEST_LESS = 1ull << 4,
-	DEPTH_TEST_LEQUAL = 1ull << 5,
-	DEPTH_TEST_EQUAL = 1ull << 6,
-	DEPTH_TEST_GEQUAL = 1ull << 7,
-	DEPTH_TEST_GREATER = 1ull << 8,
-	DEPTH_TEST_NOTEQUAL = 1ull << 9,
-	DEPTH_TEST_NEVER = 1ull << 10,
-	DEPTH_TEST_ALWAYS = 1ull << 11,
-	BLEND_ZERO = 1ull << 12,
-	BLEND_ONE = 1ull << 13,
-	BLEND_SRC_COLOR = 1ull << 14,
-	BLEND_INV_SRC_COLOR = 1ull << 15,
-	BLEND_SRC_ALPHA = 1ull << 16,
-	BLEND_INV_SRC_ALPHA = 1ull << 17,
-	BLEND_DST_ALPHA = 1ull << 18,
-	BLEND_INV_DST_ALPHA = 1ull << 19,
-	BLEND_DST_COLOR = 1ull << 20,
-	BLEND_INV_DST_COLOR = 1ull << 21,
-	BLEND_SRC_ALPHA_SAT = 1ull << 22,
-	BLEND_FACTOR = 1ull << 23,
-	BLEND_INV_FACTOR = 1ull << 24,
-	BLEND_EQUATION_ADD = 1ull << 25,
-	BLEND_EQUATION_SUB = 1ull << 26,
-	BLEND_EQUATION_REVSUB = 1ull << 27,
-	BLEND_EQUATION_MIN = 1ull << 28,
-	BLEND_EQUATION_MAX = 1ull << 29,
-	CULL_CW = 1ull << 30,
-	CULL_CCW = 1ull << 31,
-	PT_TRISTRIP = 1ull << 32,
-	PT_LINES = 1ull << 33,
-	PT_LINESTRIP = 1ull << 34,
-	PT_POINTS = 1ull << 35,
-	MSAA = 1ull << 36,
-	LINEAA = 1ull << 37,
-	CONSERVATIVE_RASTER = 1ull << 38,
-	NONE = 1ull << 39,
+	DEPTH_TEST_LESS = 1ull << 5,
+	DEPTH_TEST_LEQUAL = 1ull << 6,
+	DEPTH_TEST_EQUAL = 1ull << 7,
+	DEPTH_TEST_GEQUAL = 1ull << 8,
+	DEPTH_TEST_GREATER = 1ull << 9,
+	DEPTH_TEST_NOTEQUAL = 1ull << 10,
+	DEPTH_TEST_NEVER = 1ull << 11,
+	DEPTH_TEST_ALWAYS = 1ull << 12,
+	BLEND_ZERO = 1ull << 13,
+	BLEND_ONE = 1ull << 14,
+	BLEND_SRC_COLOR = 1ull << 15,
+	BLEND_INV_SRC_COLOR = 1ull << 16,
+	BLEND_SRC_ALPHA = 1ull << 17,
+	BLEND_INV_SRC_ALPHA = 1ull << 18,
+	BLEND_DST_ALPHA = 1ull << 19,
+	BLEND_INV_DST_ALPHA = 1ull << 20,
+	BLEND_DST_COLOR = 1ull << 21,
+	BLEND_INV_DST_COLOR = 1ull << 22,
+	BLEND_SRC_ALPHA_SAT = 1ull << 23,
+	BLEND_FACTOR = 1ull << 24,
+	BLEND_INV_FACTOR = 1ull << 25,
+	BLEND_EQUATION_ADD = 1ull << 26,
+	BLEND_EQUATION_SUB = 1ull << 27,
+	BLEND_EQUATION_REVSUB = 1ull << 28,
+	BLEND_EQUATION_MIN = 1ull << 29,
+	BLEND_EQUATION_MAX = 1ull << 30,
+	CULL_CW = 1ull << 31,
+	CULL_CCW = 1ull << 32,
+	PT_TRISTRIP = 1ull << 33,
+	PT_LINES = 1ull << 34,
+	PT_LINESTRIP = 1ull << 35,
+	PT_POINTS = 1ull << 36,
+	MSAA = 1ull << 37,
+	LINEAA = 1ull << 38,
+	CONSERVATIVE_RASTER = 1ull << 39,
 	BLEND_INDEPENDENT = 1ull << 40,
 	BLEND_ALPHA_TO_COVERAGE = 1ull << 41,
 	INTERNAL_SCISSOR = 1ull << 42,
@@ -169,9 +170,9 @@ enum class StateFlag : XE::uint64
 	DEFAULT = WIRTE_RGB | WRITE_A | WRITE_Z | DEPTH_TEST_LESS | CULL_CW | MSAA,
 };
 
-enum class BufferFlag
+enum class BufferFlag : XE::uint64
 {
-	NONE,
+	NONE = 0,
 	COMPUTE_READ = 1ull << 0,
 	COMPUTE_WRITE = 1ull << 1,
 	DRAW_INDIRECT = 1ull << 2,
@@ -180,7 +181,7 @@ enum class BufferFlag
 	COMPUTE_READ_WRITE = COMPUTE_READ | COMPUTE_WRITE,
 };
 
-enum class TextureFlag
+enum class TextureFlag : XE::uint64
 {
 	NONE = 0,
 	MSAA_SAMPLE = 1ull << 0,
@@ -196,7 +197,7 @@ enum class TextureFlag
 	RT_WRITE_ONLY = 1ull << 10,
 };
 
-enum class StencilFlag : XE::uint32
+enum class StencilFlag : XE::uint64
 {
 	NONE = 0,
 	TEST_LESS = 1ull << 0,

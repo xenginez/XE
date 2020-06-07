@@ -17,7 +17,7 @@ if( FAILED( __X ) ) \
 }
 
 
-enum class BufferFlag
+enum class D3D11BufferFlag
 {
 	NONE = 0x0000,
 
@@ -69,14 +69,14 @@ static const UavFormat G_UAVFormat[] =
 struct BufferD3D11
 {
 public:
-	void create( ID3D11Device * device, XE::memory_view data, XE::Flags<BufferFlag> flags, bool vertex = false )
+	void create( ID3D11Device * device, XE::memory_view data, XE::Flags<D3D11BufferFlag> flags, bool vertex = false )
 	{
 		_size = data.size();
 		_flags = flags;
 
-		const bool needUav = BufferFlag::NONE != ( _flags & XE::MakeFlags( BufferFlag::COMPUTE_WRITE, BufferFlag::DRAW_INDIRECT ) );
-		const bool needSrv = BufferFlag::NONE != ( _flags & BufferFlag::COMPUTE_READ );
-		const bool drawIndirect = BufferFlag::NONE != ( _flags & BufferFlag::DRAW_INDIRECT );
+		const bool needUav = D3D11BufferFlag::NONE != ( _flags & XE::MakeFlags( D3D11BufferFlag::COMPUTE_WRITE, D3D11BufferFlag::DRAW_INDIRECT ) );
+		const bool needSrv = D3D11BufferFlag::NONE != ( _flags & D3D11BufferFlag::COMPUTE_READ );
+		const bool drawIndirect = D3D11BufferFlag::NONE != ( _flags & D3D11BufferFlag::DRAW_INDIRECT );
 		_dynamic = ( data.empty() && !needUav );
 
 
@@ -100,8 +100,8 @@ public:
 		}
 		else
 		{
-			auto uavFormat = _flags & BufferFlag::COMPUTE_FORMAT_MASK;
-			if( uavFormat == BufferFlag::NONE )
+			auto uavFormat = _flags & D3D11BufferFlag::COMPUTE_FORMAT_MASK;
+			if( uavFormat == D3D11BufferFlag::NONE )
 			{
 				if( vertex )
 				{
@@ -110,7 +110,7 @@ public:
 				}
 				else
 				{
-					if( ( _flags & BufferFlag::INDEX32 ) == BufferFlag::NONE )
+					if( ( _flags & D3D11BufferFlag::INDEX32 ) == D3D11BufferFlag::NONE )
 					{
 						format = DXGI_FORMAT_R16_UINT;
 						stride = 2;
@@ -124,7 +124,7 @@ public:
 			}
 			else
 			{
-				const XE::uint64 uavType = XE::Mathf::satsub<XE::uint64>( ( ( _flags & BufferFlag::COMPUTE_TYPE_MASK ) >> BufferFlag::COMPUTE_TYPE_SHIFT ).GetValue(), 1 );
+				const XE::uint64 uavType = XE::Mathf::satsub<XE::uint64>( ( ( _flags & D3D11BufferFlag::COMPUTE_TYPE_MASK ) >> D3D11BufferFlag::COMPUTE_TYPE_SHIFT ).GetValue(), 1 );
 				format = G_UAVFormat[uavFormat.GetValue()].format[uavType];
 				stride = G_UAVFormat[uavFormat.GetValue()].stride;
 			}
@@ -248,7 +248,7 @@ public:
 
 		_size = 0;
 		_dynamic = false;
-		_flags = BufferFlag::NONE;
+		_flags = D3D11BufferFlag::NONE;
 	}
 
 public:
@@ -257,14 +257,39 @@ public:
 	ID3D11Buffer * _ptr = nullptr;
 	ID3D11ShaderResourceView * _srv = nullptr;
 	ID3D11UnorderedAccessView * _uav = nullptr;
-	XE::Flags<BufferFlag> _flags = BufferFlag::NONE;
+	XE::Flags<D3D11BufferFlag> _flags = D3D11BufferFlag::NONE;
 };
-struct ShaderD3D11 {};
+struct ShaderD3D11
+{
+	union
+	{
+		ID3D11ComputeShader * _ComputeShader;
+		ID3D11PixelShader * _PixelShader;
+		ID3D11VertexShader * _VertexShader;
+		ID3D11DeviceChild * _Ptr;
+	};
+
+
+};
 struct ProgramD3D11 {};
 struct TextureD3D11 {};
-struct FrameBufferD3D11 {};
-struct IndexBufferD3D11 {};
-struct VertexBufferD3D11 {};
+struct FrameBufferD3D11
+{};
+struct IndexBufferD3D11 : public BufferD3D11
+{};
+struct VertexBufferD3D11 : public BufferD3D11
+{
+public:
+	void create( ID3D11Device * device, XE::memory_view data, XE::VertexLayoutHandle layoutHandle, XE::Flags<D3D11BufferFlag> flags, uint16_t stride )
+	{
+		_layoutHandle = layoutHandle;
+
+		BufferD3D11::create( device, data, flags );
+	}
+
+public:
+	XE::VertexLayoutHandle _layoutHandle;
+};
 struct VertexLayoutD3D11 {};
 
 static const char * G_ColorSpaceString[] =
