@@ -1,5 +1,8 @@
 #include "Object.h"
 
+#include <Interface/IFramework.h>
+#include <Interface/ILocalizationService.h>
+
 USING_XE
 
 BEG_META( Object )
@@ -18,6 +21,11 @@ XE::Object::~Object()
 void XE::Object::AssetLoad()
 {
 
+}
+
+const XE::String & XE::Object::tr( const String & val ) const
+{
+	return XE::IFramework::GetCurrentFramework()->GetLocalizationService()->LocalizedString( GetMetaClass()->GetFullName() + "." + val, val );
 }
 
 void Object::ProcessEvent( EventPtr & val )

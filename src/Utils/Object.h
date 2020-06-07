@@ -25,6 +25,8 @@ public:
 public:
 	virtual void AssetLoad();
 
+    const String & tr( const String & val ) const;
+
 public:
 	virtual void ProcessEvent( EventPtr & val );
 };

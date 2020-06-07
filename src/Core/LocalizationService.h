@@ -40,7 +40,7 @@ public:
 	void SetCurrentLanguage( Language val ) override;
 
 public:
-	String LocalizedString( const String& val ) const override;
+	const String & LocalizedString( const String & key, const String& val ) const override;
 
 private:
 	void UpdateLocalized();

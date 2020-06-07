@@ -64,9 +64,9 @@ void XE::LocalizationService::SetCurrentLanguage( Language val )
 	UpdateLocalized();
 }
 
-XE::String XE::LocalizationService::LocalizedString( const String& val ) const
+const XE::String & XE::LocalizationService::LocalizedString( const String & key, const String& val ) const
 {
-	auto it = _p->_Maps.find( val );
+	auto it = _p->_Maps.find( key );
 
 	if ( it != _p->_Maps.end() && it->second != "" )
 	{
