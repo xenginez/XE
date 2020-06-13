@@ -38,6 +38,7 @@
 /out
 /.idea
 /build
+/depend
 /target
 /cmake-build-debug
 /CMakeSettings.json
