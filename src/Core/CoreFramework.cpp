@@ -70,9 +70,6 @@ XE::CoreFramework::CoreFramework()
 XE::CoreFramework::~CoreFramework()
 {
 	delete _p;
-
-	Reflection::Clear();
-	ObjectAlloc::Clear();
 }
 
 int XE::CoreFramework::Exec( std::function<void()> val )
@@ -273,8 +270,6 @@ void XE::CoreFramework::Update()
 	{
 		_p->_SysEventLoop();
 	}
-
-	FrameAlloc::Reset();
 
 	for( auto & service : _p->_Services )
 	{

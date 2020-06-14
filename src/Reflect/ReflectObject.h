@@ -16,7 +16,7 @@
 
 BEG_XE_NAMESPACE
 
-class XE_API ReflectObject : public XE::GCObject
+class XE_API ReflectObject : public std::enable_shared_from_this< ReflectObject >
 {
 	template< typename T > friend struct MetaDataCollector;
 
@@ -28,7 +28,7 @@ public:
 public:
 	ReflectObject();
 
-	~ReflectObject() override;
+	virtual ~ReflectObject();
 
 public:
 	Variant GetProperty( const String & name );

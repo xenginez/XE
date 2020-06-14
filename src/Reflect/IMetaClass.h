@@ -61,8 +61,6 @@ public:
 	IMetaOperatorPtr FindOperator( const String& Name, const IMetaInfoPtr& Type = nullptr ) const;
 
 public:
-	virtual Variant Construct( void * ptr = nullptr ) const = 0;
-
 	virtual Variant ConstructPtr( XE::SharedPtr<void> ptr = nullptr ) const = 0;
 
 	virtual Variant Clone( const Variant & val ) const = 0;

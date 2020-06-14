@@ -98,8 +98,6 @@ struct XEPSpecialThread : public XEPThread
 	{
 		while( !_Exit )
 		{
-			FrameAlloc::Reset();
-
 			if( QueueSize() == 0 )
 			{
 				std::unique_lock<std::mutex> Lock( _Lock );
@@ -179,8 +177,6 @@ struct XEPWorkThread : public XEPThread
 	{
 		while( !_Exit )
 		{
-			FrameAlloc::Reset();
-
 			if( QueueSize() == 0 )
 			{
 				std::unique_lock<std::mutex> Lock( _Lock );

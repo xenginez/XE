@@ -1,6 +1,6 @@
 #include "PhysicsService.h"
 
-#include <physx/PxPhysicsAPI.h>
+//#include <physx/PxPhysicsAPI.h>
 
 USING_XE
 
@@ -9,9 +9,9 @@ END_META()
 
 struct XE::PhysicsService::Private
 {
-	physx::PxScene * _Scene = nullptr;
-	physx::PxPhysics * _Physicis = nullptr;
-	physx::PxFoundation * _Foundation = nullptr;
+// 	physx::PxScene * _Scene = nullptr;
+// 	physx::PxPhysics * _Physicis = nullptr;
+// 	physx::PxFoundation * _Foundation = nullptr;
 };
 
 XE::PhysicsService::PhysicsService()

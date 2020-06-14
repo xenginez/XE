@@ -28,30 +28,13 @@ public:
 	}
 
 public:
-	virtual Variant Construct( void * ptr ) const override
-	{
-		if constexpr ( !std::is_abstract_v<ClassType> )
-		{
-			if( ptr == nullptr )
-			{
-				ptr = XE::Alloc::Allocate( GetSize() );
-			}
-
-			return new ( ptr ) ClassType();
-		}
-		else
-		{
-			throw MetaException( shared_from_this(), "is abstract type!" );
-		}
-	}
-
 	virtual Variant ConstructPtr( XE::SharedPtr<void> ptr ) const override
 	{
 		if constexpr ( !std::is_abstract_v<ClassType> )
 		{
 			if( ptr != nullptr )
 			{
-				Construct( ptr.get() );
+				new ( ptr.get() ) ClassType();
 
 				return SP_CAST<ClassType>( ptr );
 			}
@@ -66,7 +49,7 @@ public:
 
 	virtual Variant Clone( const Variant & val ) const override
 	{
-		auto ret = Construct( nullptr );
+		auto ret = ConstructPtr( nullptr );
 
 		VisitProperty( [&]( IMetaPropertyPtr prop )
 					   {
@@ -194,14 +177,14 @@ public:
 	}
 
 public:
-	virtual Variant Construct( void * ptr ) const override
-	{
-		return (ClassType )0;
-	}
-
 	virtual Variant ConstructPtr( XE::SharedPtr<void> ptr ) const override
 	{
-		return (ClassType )0;
+		if( ptr != nullptr )
+		{
+			return SP_CAST<ClassType>( ptr );
+		}
+
+		return XE::MakeShared<ClassType>();
 	}
 
 	virtual Variant Clone( const Variant & val ) const override

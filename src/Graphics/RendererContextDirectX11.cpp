@@ -401,7 +401,8 @@ void XE::RendererContextDirectX11::OnRender( XE::Frame * val )
 void XE::RendererContextDirectX11::RenderItems( XE::Frame * val )
 {
 	XE::uint64 size = val->RenderItemSize;
-	XE::FArray<XE::uint64> items( size );
+	XE::Array<XE::uint64> items( XE::MemoryResource::GetStackMemoryResource() );
+	items.resize( size );
 	for( XE::uint64 i = 0; i < size; ++i )
 	{
 		items[i] = i;
@@ -428,7 +429,8 @@ void XE::RendererContextDirectX11::RenderItems( XE::Frame * val )
 void XE::RendererContextDirectX11::RenderBlits( XE::Frame * val )
 {
 	XE::uint64 size = val->RenderBlitSize;
-	XE::FArray<XE::uint64> items( size );
+	XE::Array<XE::uint64> items( XE::MemoryResource::GetStackMemoryResource() );
+	items.resize( size );
 	for( XE::uint64 i = 0; i < size; ++i )
 	{
 		items[i] = i;

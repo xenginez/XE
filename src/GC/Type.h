@@ -13,9 +13,34 @@
 
 BEG_XE_NAMESPACE
 
-template< typename _Ty > class Allocator;
-template< typename _Ty > class FrameAllocator;
-template< typename _Ty > class ObjectAllocator;
+template< typename T >
+using List = std::pmr::list<T>;
+template< typename T >
+using Deque = std::pmr::deque<T>;
+template< typename T >
+using Stack = std::stack<T>;
+template< typename T >
+using Queue = std::queue<T>;
+template< typename T >
+using Array = std::pmr::vector<T>;
+template< typename K, typename V >
+using Pair = std::pair<K, V>;
+template< typename T >
+using Set = std::pmr::set<T>;
+template< typename K, typename V >
+using Map = std::pmr::map<K, V>;
+template< typename T >
+using MultiSet = std::pmr::multiset<T>;
+template< typename K, typename V >
+using MultiMap = std::pmr::multimap<K, V>;
+template< typename T >
+using UnorderedSet = std::pmr::unordered_set<T>;
+template< typename K, typename V >
+using UnorderedMap = std::pmr::unordered_map<K, V>;
+template< typename T >
+using UnorderedMultiSet = std::pmr::unordered_multiset<T>;
+template< typename K, typename V >
+using UnorderedMultiMap = std::pmr::unordered_multimap<K, V>;
 
 END_XE_NAMESPACE
 

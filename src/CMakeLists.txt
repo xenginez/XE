@@ -6,37 +6,15 @@ add_library(XE SHARED ${SOURCE_FILES})
 target_compile_definitions(XE PRIVATE -DXE_EXPORT)
 
 target_link_libraries(XE
-		tbb${XE_TBB_POSTFIX}
-		tbbmalloc${XE_TBB_POSTFIX}
-		tbbmalloc_proxy${XE_TBB_POSTFIX}
 		DebugUtils
-		DetourCrowd
-		Recast
 		Detour
+		DetourCrowd
 		DetourTileCache
-		sqlite3
 		ik
-		astc-codec
-		astc
-		edtaa3
-		etc1
-		etc2
-		iqa
-		nvtt
-		pvrtc
-		squish
-		PhysX${XE_PHYSX_POSTFIX}
-		PhysXCharacterKinematic_static_64
-		PhysXCommon${XE_PHYSX_POSTFIX}
-		PhysXCooking${XE_PHYSX_POSTFIX}
-		PhysXExtensions_static_64
-		PhysXFoundation${XE_PHYSX_POSTFIX}
-		PhysXPvdSDK_static_64
-		PhysXVehicle_static_64
-		fmod${XE_FMOD_POSTFIX}
-		fmodstudio${XE_FMOD_POSTFIX}
-		imgui
-		zlib${XE_POSTFIX}
+		Recast
+		tbb
+		tbbmalloc
+		tbbmalloc_proxy
 		Zipper-static${XE_POSTFIX}
 		)
 

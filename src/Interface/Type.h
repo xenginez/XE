@@ -31,10 +31,6 @@ DECL_PTR( INavigationService );
 DECL_PTR( ILocalizationService );
 class IFramework; typedef IFramework * IFrameworkPtr;
 
-DECL_ALLOCATOR_POLL( Event );
-DECL_ALLOCATOR_POLL( Logger );
-DECL_ALLOCATOR_POLL( ProfilerFrame );
-
 enum class KeyCode
 {
 	None,

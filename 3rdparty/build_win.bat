@@ -18,7 +18,7 @@ if %NMAKE%==() (
 ) 
 
 :FOUND_NMAKE
-::git submodule update --init --recursive
+git submodule update --init --recursive
 
 call %NMAKE%
 set RD3_PATH=%cd%
