@@ -18,7 +18,7 @@ if %NMAKE%==() (
 ) 
 
 :FOUND_NMAKE
-git submodule update --init --recursive
+::git submodule update --init --recursive
 
 call %NMAKE%
 set RD3_PATH=%cd%
@@ -70,10 +70,12 @@ xcopy %cd%\install\lib\*.* %RD3_PATH%\..\depend\lib\win\release\ /s /e /y
 xcopy %cd%\install\bin\*.* %RD3_PATH%\..\depend\bin\win\release\ /s /e /y
 xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\ /s /e /y
 
+
 :BUILD_STB
 echo "copy stb head file to depend"
 cd %RD3_PATH%
 xcopy %cd%\stb\*.h %RD3_PATH%\..\depend\include\stb\ /s /e /y
+
 
 :BUILD_RAPIDJSON
 echo "copy rapidjson head file to depend"
@@ -119,7 +121,6 @@ xcopy %cd%\imgui\imstb_textedit.h %RD3_PATH%\..\src\GUI\ /y
 xcopy %cd%\imgui\imstb_truetype.h %RD3_PATH%\..\src\GUI\ /y
 
 
-
 :BUILD_ZLIB
 echo "build zlib debug"
 cd %RD3_PATH%
@@ -162,6 +163,33 @@ cmake -DLIBZ_INCLUDE_DIR=%RD3_PATH%\..\depend\include\zlib\ -DLIBZ_LIBRARY=%RD3_
 nmake
 nmake install
 echo "copy zipper release file to depend"
+xcopy %cd%\install\lib\*.* %RD3_PATH%\..\depend\lib\win\release\ /s /e /y
+xcopy %cd%\install\bin\*.* %RD3_PATH%\..\depend\bin\win\release\ /s /e /y
+xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\ /s /e /y
+
+
+:BUILD_PHYSX
+echo "build phyxs debug"
+cd %RD3_PATH%
+set PHYSX_ROOT_PATH=%RD3_PATH%\PhysX\physx\
+set PATH=%PATH%;%PHYSX_ROOT_PATH%;%PHYSX_ROOT_PATH%\source\compiler\cmake
+mkdir .\PhysX\physx\compiler\public\build\debug
+cd .\PhysX\physx\compiler\public\build\debug
+cmake -DTARGET_BUILD_PLATFORM=windows -DPX_OUTPUT_ARCH=x86 --no-warn-unused-cli -DPHYSX_ROOT_DIR=%PHYSX_ROOT_PATH% -DPM_VSWHERE_PATH=%PHYSX_ROOT_PATH%/../externals/VsWhere -DCMAKEMODULES_PATH=%PHYSX_ROOT_PATH%/../externals/CMakeModules -DPXSHARED_PATH=%PHYSX_ROOT_PATH%/../pxshared -DPM_TARGA_PATH=%PHYSX_ROOT_PATH%/../externals/targa -DPM_PATHS=%PHYSX_ROOT_PATH%/../externals/CMakeModules;%PHYSX_ROOT_PATH%/../externals/targa -DCMAKE_PREFIX_PATH=%RD3_PATH%/PhysX/physx/../externals/CMakeModules;%RD3_PATH%/PhysX/physx/../externals/targa -DPHYSX_ROOT_DIR=%RD3_PATH%/PhysX/physx -DPX_OUTPUT_LIB_DIR=%RD3_PATH%/PhysX/physx -DPX_OUTPUT_BIN_DIR=%RD3_PATH%/PhysX/physx -DPX_BUILDSNIPPETS=TRUE -DPX_BUILDPUBLICSAMPLES=TRUE -DPX_GENERATE_STATIC_LIBRARIES=FALSE -DNV_USE_STATIC_WINCRT=TRUE -DNV_USE_DEBUG_WINCRT=TRUE -DPX_FLOAT_POINT_PRECISE_MATH=FALSE -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=.\install\ ..\..\ -G "NMake Makefiles" 
+nmake
+nmake install
+pause
+echo "copy phyxs debug file to depend"
+xcopy %cd%\install\lib\*.* %RD3_PATH%\..\depend\lib\win\debug\ /s /e /y
+xcopy %cd%\install\bin\*.* %RD3_PATH%\..\depend\bin\win\debug\ /s /e /y
+echo "build phyxs release"
+cd %RD3_PATH%
+mkdir .\PhysX\physx\compiler\public\build\release
+cd .\PhysX\physx\compiler\public\build\release
+cmake -DCMAKE_INSTALL_PREFIX=.\install\ ..\..\ -G "NMake Makefiles" 
+nmake
+nmake install
+echo "copy phyxs release file to depend"
 xcopy %cd%\install\lib\*.* %RD3_PATH%\..\depend\lib\win\release\ /s /e /y
 xcopy %cd%\install\bin\*.* %RD3_PATH%\..\depend\bin\win\release\ /s /e /y
 xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\ /s /e /y
