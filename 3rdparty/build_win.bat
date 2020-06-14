@@ -70,29 +70,6 @@ xcopy %cd%\install\lib\*.* %RD3_PATH%\..\depend\lib\win\release\ /s /e /y
 xcopy %cd%\install\bin\*.* %RD3_PATH%\..\depend\bin\win\release\ /s /e /y
 xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\ /s /e /y
 
-:BUILD_ZIPPER
-echo "build zipper debug"
-cd %RD3_PATH%
-mkdir .\zipper\build\debug
-cd .\zipper\build\debug
-cmake -DTBB_BUILD_STATIC=OFF -DTBB_BUILD_TESTS=OFF -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=.\install\ ..\..\ -G "NMake Makefiles" 
-nmake
-nmake install
-echo "copy zipper debug file to depend"
-xcopy %cd%\install\lib\*.* %RD3_PATH%\..\depend\lib\win\debug\ /s /e /y
-xcopy %cd%\install\bin\*.* %RD3_PATH%\..\depend\bin\win\debug\ /s /e /y
-echo "build zipper release"
-cd %RD3_PATH%
-mkdir .\zipper\build\release
-cd .\zipper\build\release
-cmake -DTBB_BUILD_STATIC=OFF -DTBB_BUILD_TESTS=OFF -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=.\install\ ..\..\ -G "NMake Makefiles" 
-nmake
-nmake install
-echo "copy zipper release file to depend"
-xcopy %cd%\install\lib\*.* %RD3_PATH%\..\depend\lib\win\release\ /s /e /y
-xcopy %cd%\install\bin\*.* %RD3_PATH%\..\depend\bin\win\release\ /s /e /y
-xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\ /s /e /y
-
 :BUILD_STB
 echo "copy stb head file to depend"
 cd %RD3_PATH%
@@ -140,6 +117,55 @@ xcopy %cd%\imgui\imconfig.h %RD3_PATH%\..\src\GUI\ /y
 xcopy %cd%\imgui\imstb_rectpack.h %RD3_PATH%\..\src\GUI\ /y
 xcopy %cd%\imgui\imstb_textedit.h %RD3_PATH%\..\src\GUI\ /y
 xcopy %cd%\imgui\imstb_truetype.h %RD3_PATH%\..\src\GUI\ /y
+
+
+
+:BUILD_ZLIB
+echo "build zlib debug"
+cd %RD3_PATH%
+mkdir .\zlib\build\debug
+cd .\zlib\build\debug
+cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=.\install\ -DINSTALL_BIN_DIR=.\install\bin\ -DINSTALL_INC_DIR=.\install\include\zlib\ -DINSTALL_LIB_DIR=.\install\lib\ -DINSTALL_MAN_DIR=.\install\man\ -DINSTALL_PKGCONFIG_DIR=.\install\pkgconfig\ ..\..\ -G "NMake Makefiles"
+nmake
+nmake install
+echo "copy zlib debug file to depend"
+xcopy %cd%\install\lib\*.* %RD3_PATH%\..\depend\lib\win\debug\ /s /e /y
+xcopy %cd%\install\bin\*.* %RD3_PATH%\..\depend\bin\win\debug\ /s /e /y
+echo "build zlib release"
+cd %RD3_PATH%
+mkdir .\zlib\build\release
+cd .\zlib\build\release
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=.\install\ -DINSTALL_BIN_DIR=.\install\bin\ -DINSTALL_INC_DIR=.\install\include\zlib\ -DINSTALL_LIB_DIR=.\install\lib\ -DINSTALL_MAN_DIR=.\install\man\ -DINSTALL_PKGCONFIG_DIR=.\install\pkgconfig\ ..\..\ -G "NMake Makefiles"
+nmake
+nmake install
+echo "copy zlib release file to depend"
+xcopy %cd%\install\lib\*.* %RD3_PATH%\..\depend\lib\win\release\ /s /e /y
+xcopy %cd%\install\bin\*.* %RD3_PATH%\..\depend\bin\win\release\ /s /e /y
+xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\ /s /e /y
+
+:BUILD_ZIPPER
+echo "build zipper debug"
+cd %RD3_PATH%
+mkdir .\zipper\build\debug
+cd .\zipper\build\debug
+cmake -DLIBZ_INCLUDE_DIR=%RD3_PATH%\..\depend\include\zlib\ -DLIBZ_LIBRARY=%RD3_PATH%\..\depend\lib\win\debug\zlibstaticd.lib -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=.\install\ ..\..\ -G "NMake Makefiles" 
+nmake
+nmake install
+echo "copy zipper debug file to depend"
+xcopy %cd%\install\lib\*.* %RD3_PATH%\..\depend\lib\win\debug\ /s /e /y
+xcopy %cd%\install\bin\*.* %RD3_PATH%\..\depend\bin\win\debug\ /s /e /y
+echo "build zipper release"
+cd %RD3_PATH%
+mkdir .\zipper\build\release
+cd .\zipper\build\release
+cmake -DLIBZ_INCLUDE_DIR=%RD3_PATH%\..\depend\include\zlib\ -DLIBZ_LIBRARY=%RD3_PATH%\..\depend\lib\win\release\zlibstatic.lib -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=.\install\ ..\..\ -G "NMake Makefiles" 
+nmake
+nmake install
+echo "copy zipper release file to depend"
+xcopy %cd%\install\lib\*.* %RD3_PATH%\..\depend\lib\win\release\ /s /e /y
+xcopy %cd%\install\bin\*.* %RD3_PATH%\..\depend\bin\win\release\ /s /e /y
+xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\ /s /e /y
+
 
 :EXIT
 pause
