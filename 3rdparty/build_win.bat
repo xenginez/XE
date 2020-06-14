@@ -18,10 +18,10 @@ if %NMAKE%==() (
 ) 
 
 :FOUND_NMAKE
+git submodule update --init --recursive
+
 call %NMAKE%
 set RD3_PATH=%cd%
-
-goto :BUILD_RECASTNAVIGATION
 
 :BUILD_IK
 echo "build ik debug"
@@ -127,6 +127,19 @@ xcopy %cd%\install\lib\*.* %RD3_PATH%\..\depend\lib\win\release\ /s /e /y
 xcopy %cd%\install\bin\*.* %RD3_PATH%\..\depend\bin\win\release\ /s /e /y
 xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\ /s /e /y
 
+:BUILD_IMGUI
+echo "copy imgui head file to depend"
+cd %RD3_PATH%
+xcopy %cd%\imgui\imgui.cpp %RD3_PATH%\..\src\GUI\ /y
+xcopy %cd%\imgui\imgui.h %RD3_PATH%\..\src\GUI\ /y
+xcopy %cd%\imgui\imgui_demo.cpp %RD3_PATH%\..\src\GUI\ /y
+xcopy %cd%\imgui\imgui_draw.cpp %RD3_PATH%\..\src\GUI\ /y
+xcopy %cd%\imgui\imgui_widgets.cpp %RD3_PATH%\..\src\GUI\ /y
+xcopy %cd%\imgui\imgui_internal.h %RD3_PATH%\..\src\GUI\ /y
+xcopy %cd%\imgui\imconfig.h %RD3_PATH%\..\src\GUI\ /y
+xcopy %cd%\imgui\imstb_rectpack.h %RD3_PATH%\..\src\GUI\ /y
+xcopy %cd%\imgui\imstb_textedit.h %RD3_PATH%\..\src\GUI\ /y
+xcopy %cd%\imgui\imstb_truetype.h %RD3_PATH%\..\src\GUI\ /y
 
 :EXIT
 pause
