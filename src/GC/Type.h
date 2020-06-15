@@ -13,6 +13,9 @@
 
 BEG_XE_NAMESPACE
 
+class PageCache;
+class CentralCache;
+
 template< typename T >
 using List = std::pmr::list<T>;
 template< typename T >

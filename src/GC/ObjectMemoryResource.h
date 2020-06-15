@@ -7,6 +7,9 @@ BEG_XE_NAMESPACE
 
 class ObjectMemoryResource : public std::pmr::memory_resource
 {
+private:
+	struct Private;
+
 public:
 	ObjectMemoryResource();
 
@@ -19,6 +22,8 @@ private:
 
 	bool do_is_equal( const std::pmr::memory_resource & _That ) const noexcept override;
 
+private:
+	Private * _p;
 };
 
 END_XE_NAMESPACE
