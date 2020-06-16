@@ -19,12 +19,11 @@ if %MSBUILD%==() (
 ) 
 
 :FOUND_MSBUILD
-echo "update git submodule"
-git submodule update --init --recursive
-
 call %%MSBUILD%%
 set RD3_PATH=%cd%
 
+echo "update git submodule"
+git submodule update --init --recursive
 
 :BUILD_IK
 cd %RD3_PATH%
@@ -127,7 +126,7 @@ msbuild.exe ".\INSTALL.vcxproj"  /m /nr:true ^
 echo "copy recastnavigation release file to depend"
 xcopy %cd%\install\lib\*.* %RD3_PATH%\..\depend\lib\win\release\ /s /e /y
 xcopy %cd%\install\bin\*.* %RD3_PATH%\..\depend\bin\win\release\ /s /e /y
-xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\ /s /e /y
+xcopy %cd%\install\include\recastnavigation\*.* %RD3_PATH%\..\depend\include\ /s /e /y
 del %cd%\install\ /f /s /q
 
 
@@ -219,9 +218,10 @@ msbuild.exe "%cd%\PhysX\physx\compiler\vc16win64\INSTALL.vcxproj"  /m /nr:true ^
     /p:UseSubFolderForOutputDirDuringMultiPlatformBuild=false
 
 echo "copy phyxs debug file to depend"
-xcopy %cd%\install\lib\vc16win64\*.* %RD3_PATH%\..\depend\lib\win\debug\ /s /e /y
-xcopy %cd%\install\bin\vc16win64\*.* %RD3_PATH%\..\depend\bin\win\debug\ /s /e /y
-del %cd%\install\ /f /s /q
+xcopy %cd%\PhysX\physx\install\vc16win64\PhysX\bin\win.x86_64.vc142.md\debug\*.dll %RD3_PATH%\..\depend\bin\win\debug\ /s /e /y
+xcopy %cd%\PhysX\physx\install\vc16win64\PhysX\bin\win.x86_64.vc142.md\debug\*.pdb %RD3_PATH%\..\depend\bin\win\debug\ /s /e /y
+xcopy %cd%\PhysX\physx\install\vc16win64\PhysX\bin\win.x86_64.vc142.md\debug\*.lib %RD3_PATH%\..\depend\lib\win\debug\ /s /e /y
+del %cd%\PhysX\physx\install\ /f /s /q
 
 echo "build phyxs release"
 cd %RD3_PATH%
@@ -232,10 +232,11 @@ msbuild.exe "%cd%\PhysX\physx\compiler\vc16win64\INSTALL.vcxproj"  /m /nr:true ^
     /p:UseSubFolderForOutputDirDuringMultiPlatformBuild=false
 
 echo "copy phyxs release file to depend"
-xcopy %cd%\install\lib\*.* %RD3_PATH%\..\depend\lib\win\release\ /s /e /y
-xcopy %cd%\install\bin\*.* %RD3_PATH%\..\depend\bin\win\release\ /s /e /y
-xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\ /s /e /y
-del %cd%\install\ /f /s /q
+xcopy %cd%\PhysX\physx\install\vc16win64\PhysX\bin\win.x86_64.vc142.md\release\*.dll %RD3_PATH%\..\depend\bin\win\release\ /s /e /y
+xcopy %cd%\PhysX\physx\install\vc16win64\PhysX\bin\win.x86_64.vc142.md\release\*.pdb %RD3_PATH%\..\depend\bin\win\release\ /s /e /y
+xcopy %cd%\PhysX\physx\install\vc16win64\PhysX\bin\win.x86_64.vc142.md\release\*.lib %RD3_PATH%\..\depend\lib\win\release\ /s /e /y
+xcopy %cd%\PhysX\physx\install\vc16win64\PhysX\include\*.* %RD3_PATH%\..\depend\include\PhysX\ /s /e /y
+del %cd%\PhysX\physx\install\ /f /s /q
 
 
 :EXIT
