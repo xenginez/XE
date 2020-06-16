@@ -11,11 +11,21 @@ target_link_libraries(XE
 		DetourCrowd
 		DetourTileCache
 		ik
+		PhysXCharacterKinematic_static_64
+		PhysXCommon_64
+		PhysXCooking_64
+		PhysXExtensions_static_64
+		PhysXFoundation_64
+		PhysXPvdSDK_static_64
+		PhysXTask_static_64
+		PhysXVehicle_static_64
+		PhysX_64
 		Recast
 		tbb
 		tbbmalloc
 		tbbmalloc_proxy
 		Zipper-static${XE_POSTFIX}
+		zlibstatic${XE_POSTFIX}
 		)
 
 FILE(GLOB LIBRARY_FILES ../depend/bin/${XE_PLATFORM_PATH}/${XE_CONFIG}/*.*)

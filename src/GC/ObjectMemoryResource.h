@@ -11,9 +11,9 @@ private:
 	struct Private;
 
 public:
-	ObjectMemoryResource();
+	ObjectMemoryResource() = default;
 
-	~ObjectMemoryResource() noexcept override;
+	~ObjectMemoryResource() noexcept override = default;
 
 private:
 	void * do_allocate( size_t _Bytes, size_t _Align ) override;
