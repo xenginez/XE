@@ -61,7 +61,7 @@ echo "build tbb debug"
 cd %RD3_PATH%
 mkdir .\tbb\build
 cd .\tbb\build
-cmake -DTBB_BUILD_STATIC=OFF -DTBB_BUILD_TESTS=OFF -DCMAKE_INSTALL_PREFIX=.\install\ .. -G "Visual Studio 16 2019" 
+cmake -DTBB_BUILD_STATIC=OFF -DTBB_BUILD_TESTS=OFF -DCMAKE_DEBUG_POSTFIX=_debug -DCMAKE_INSTALL_PREFIX=.\install\ .. -G "Visual Studio 16 2019" 
 msbuild.exe ".\INSTALL.vcxproj"  /m /nr:true ^
     /p:Configuration=Debug ^
     /p:Platform=x64 ^
@@ -126,7 +126,7 @@ msbuild.exe ".\INSTALL.vcxproj"  /m /nr:true ^
 echo "copy recastnavigation release file to depend"
 xcopy %cd%\install\lib\*.* %RD3_PATH%\..\depend\lib\win\release\ /s /e /y
 xcopy %cd%\install\bin\*.* %RD3_PATH%\..\depend\bin\win\release\ /s /e /y
-xcopy %cd%\install\include\recastnavigation\*.* %RD3_PATH%\..\depend\include\ /s /e /y
+xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\recastnavigation\ /s /e /y
 del %cd%\install\ /f /s /q
 
 
