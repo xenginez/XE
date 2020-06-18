@@ -16,7 +16,6 @@
 #include "Mat3.h"
 #include "Mat4.h"
 #include "Rect.h"
-#include "SIMD.h"
 
 #include "Ray.h"
 #include "OBB.h"

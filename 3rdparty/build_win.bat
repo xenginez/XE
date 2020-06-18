@@ -206,6 +206,22 @@ xcopy %cd%\install\bin\*.* %RD3_PATH%\..\depend\bin\win\release\ /s /e /y
 xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\ /s /e /y
 del %cd%\install\ /f /s /q
 
+:BUILD_LIBSIMDPP
+echo "build libsimdpp debug"
+cd %RD3_PATH%
+mkdir .\libsimdpp\build
+cd .\libsimdpp\build
+cmake -DCMAKE_INSTALL_PREFIX=.\install\ .. -G "Visual Studio 16 2019" 
+msbuild.exe ".\INSTALL.vcxproj"  /m /nr:true ^
+    /p:Configuration=Debug ^
+    /p:Platform=x64 ^
+    /p:AppxBundlePlatforms=x64 ^
+    /p:UseSubFolderForOutputDirDuringMultiPlatformBuild=false
+
+echo "copy zipper debug file to depend"
+xcopy %cd%\install\include\libsimdpp-2.1\*.* %RD3_PATH%\..\depend\include\ /s /e /y
+del %cd%\install\ /f /s /q
+
 
 :BUILD_PHYSX
 echo "build phyxs debug"

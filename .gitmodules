@@ -25,3 +25,6 @@
 [submodule "3rdparty/zlib"]
 	path = 3rdparty/zlib
 	url = https://github.com/madler/zlib.git
+[submodule "3rdparty/libsimdpp"]
+	path = 3rdparty/libsimdpp
+	url = https://github.com/p12tic/libsimdpp.git

@@ -9,6 +9,8 @@
 #ifndef __MATHF_H__289359AA_D9DE_4269_B0BE_BAAA6E15461B
 #define __MATHF_H__289359AA_D9DE_4269_B0BE_BAAA6E15461B
 
+#include <simdpp/simd.h>
+
 #include "Vec2.h"
 #include "Vec3.h"
 #include "Vec4.h"
@@ -16,7 +18,6 @@
 #include "Mat3.h"
 #include "Mat4.h"
 #include "Rect.h"
-#include "SIMD.h"
 #include "float16.h"
 
 BEG_XE_NAMESPACE
