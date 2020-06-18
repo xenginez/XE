@@ -1,8 +1,8 @@
 #include "Constraint.h"
 
-USING_XE
 
-BEG_META( Constraint )
+
+BEG_META( XE::Constraint )
 END_META()
 
 XE::Constraint::Constraint()

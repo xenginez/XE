@@ -1,11 +1,11 @@
 #include "TimerService.h"
 
-USING_XE
 
-BEG_META( TimerService )
+
+BEG_META( XE::TimerService )
 END_META()
 
-struct TimerService::Private
+struct XE::TimerService::Private
 {
 	bool _IsPause = false;
 	XE::uint64 _FrameCount = 0;

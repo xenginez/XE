@@ -1,8 +1,8 @@
 #include "SkeletonAnimation.h"
 
-USING_XE
 
-BEG_META( SkeletonAnimationKey )
+
+BEG_META( XE::SkeletonAnimationKey )
 type->Property( "Time", &SkeletonAnimationKey::GetTime, &SkeletonAnimationKey::SetTime );
 type->Property( "Position", &SkeletonAnimationKey::GetPosition, &SkeletonAnimationKey::SetPosition );
 type->Property( "Rotation", &SkeletonAnimationKey::GetRotation, &SkeletonAnimationKey::SetRotation );
@@ -50,17 +50,17 @@ void XE::SkeletonAnimationKey::SetRotation( const XE::Quat & val )
 	_Rotation = val;
 }
 
-const XE::Vec3 & SkeletonAnimationKey::GetScale() const
+const XE::Vec3 & XE::SkeletonAnimationKey::GetScale() const
 {
 	return _Scale;
 }
 
-void SkeletonAnimationKey::SetScale( const XE::Vec3 & val )
+void XE::SkeletonAnimationKey::SetScale( const XE::Vec3 & val )
 {
 	_Scale = val;
 }
 
-BEG_META( SkeletonAnimationTrack )
+BEG_META( XE::SkeletonAnimationTrack )
 type->Property( "MaxTime", &SkeletonAnimationTrack::GetMaxTime, &SkeletonAnimationTrack::SetMaxTime );
 type->Property( "SkeletonAnimationKeys", &SkeletonAnimationTrack::GetSkeletonAnimationKeys, &SkeletonAnimationTrack::SetSkeletonAnimationKeys );
 END_META()
@@ -86,17 +86,17 @@ void XE::SkeletonAnimationTrack::SetMaxTime( XE::float32 val )
 	_MaxTime = val;
 }
 
-const XE::Array< SkeletonAnimationKey > & XE::SkeletonAnimationTrack::GetSkeletonAnimationKeys() const
+const XE::Array< XE::SkeletonAnimationKey > & XE::SkeletonAnimationTrack::GetSkeletonAnimationKeys() const
 {
 	return _Keys;
 }
 
-void XE::SkeletonAnimationTrack::SetSkeletonAnimationKeys( const XE::Array< SkeletonAnimationKey > & val )
+void XE::SkeletonAnimationTrack::SetSkeletonAnimationKeys( const XE::Array< XE::SkeletonAnimationKey > & val )
 {
 	_Keys = val;
 }
 
-BEG_META( SkeletonAnimation )
+BEG_META( XE::SkeletonAnimation )
 type->Property( "Name", &SkeletonAnimation::GetName, &SkeletonAnimation::SetName );
 type->Property( "MaxTime", &SkeletonAnimation::GetMaxTime, &SkeletonAnimation::SetMaxTime );
 type->Property( "Skeleton", &SkeletonAnimation::GetSkeleton, &SkeletonAnimation::SetSkeleton );
@@ -149,12 +149,12 @@ const XE::Array< XE::SkeletonAnimationTrack > & XE::SkeletonAnimation::GetSkelet
 	return _Tracks;
 }
 
-void XE::SkeletonAnimation::SetSkeletonAnimationTracks( const XE::Array< SkeletonAnimationTrack > & val )
+void XE::SkeletonAnimation::SetSkeletonAnimationTracks( const XE::Array< XE::SkeletonAnimationTrack > & val )
 {
 	_Tracks = val;
 }
 
-bool SkeletonAnimation::Sample( XE::uint32 bone, XE::float32 time, XE::Vec3 & position, XE::Quat & rotation, XE::Vec3 & scale ) const
+bool XE::SkeletonAnimation::Sample( XE::uint32 bone, XE::float32 time, XE::Vec3 & position, XE::Quat & rotation, XE::Vec3 & scale ) const
 {
 	const auto & tracks_iter = _Tracks[bone];
 

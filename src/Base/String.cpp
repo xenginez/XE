@@ -4,7 +4,7 @@
 
 #include <tbb/concurrent_unordered_set.h>
 
-USING_XE
+
 
 class ConstStringPool : public XE::Singleton<ConstStringPool>
 {
@@ -45,251 +45,251 @@ private:
 	tbb::concurrent_unordered_set<std::string> _Strings;
 };
 
-String::String()
+XE::String::String()
 	:_View( ConstStringPool::Instance()->Register( "" ) )
 {
 
 }
 
-String::String( const char * val )
+XE::String::String( const char * val )
 	: _View( ConstStringPool::Instance()->Register( val ) )
 {
 
 }
 
-String::String( const String & val )
+XE::String::String( const String & val )
 	: _View( val._View )
 {
 
 }
 
-String::String( const std::string & val )
+XE::String::String( const std::string & val )
 	: _View( ConstStringPool::Instance()->Register( val ) )
 {
 
 }
 
-String::~String()
+XE::String::~String()
 {
 
 }
 
-String & String::operator=( const String & val )
+XE::String & XE::String::operator=( const XE::String & val )
 {
 	_View = val._View;
 
 	return *this;
 }
 
-String String::operator+( const std::string & val ) const
+XE::String XE::String::operator+( const std::string & val ) const
 {
 	return ToStdString() + val;
 }
 
-String String::operator+( const String & val ) const
+XE::String XE::String::operator+( const XE::String & val ) const
 {
 	return ToStdString() + val.ToStdString();
 }
 
-String String::operator+( const char * val ) const
+XE::String XE::String::operator+( const char * val ) const
 {
 	return ToStdString() + val;
 }
 
-String String::operator+( XE::float64 val ) const
+XE::String XE::String::operator+( XE::float64 val ) const
 {
 	return ToStdString() + std::to_string( val );
 }
 
-String String::operator+( XE::float32 val ) const
+XE::String XE::String::operator+( XE::float32 val ) const
 {
 	return ToStdString() + std::to_string( val );
 }
 
-String String::operator+( XE::uint64 val ) const
+XE::String XE::String::operator+( XE::uint64 val ) const
 {
 	return ToStdString() + std::to_string( val );
 }
 
-String String::operator+( XE::uint32 val ) const
+XE::String XE::String::operator+( XE::uint32 val ) const
 {
 	return ToStdString() + std::to_string( val );
 }
 
-String String::operator+( XE::uint16 val ) const
+XE::String XE::String::operator+( XE::uint16 val ) const
 {
 	return ToStdString() + std::to_string( val );
 }
 
-String String::operator+( XE::uint8 val ) const
+XE::String XE::String::operator+( XE::uint8 val ) const
 {
 	return ToStdString() + std::to_string( val );
 }
 
-String String::operator+( XE::int64 val ) const
+XE::String XE::String::operator+( XE::int64 val ) const
 {
 	return ToStdString() + std::to_string( val );
 }
 
-String String::operator+( XE::int32 val ) const
+XE::String XE::String::operator+( XE::int32 val ) const
 {
 	return ToStdString() + std::to_string( val );
 }
 
-String String::operator+( XE::int16 val ) const
+XE::String XE::String::operator+( XE::int16 val ) const
 {
 	return ToStdString() + std::to_string( val );
 }
 
-String String::operator+( XE::int8 val ) const
+XE::String XE::String::operator+( XE::int8 val ) const
 {
 	return ToStdString() + std::to_string( val );
 }
 
-String String::operator+( bool val ) const
+XE::String XE::String::operator+( bool val ) const
 {
 	return ToStdString() + std::to_string( val );
 }
 
-bool String::operator!=( const char * val ) const
+bool XE::String::operator!=( const char * val ) const
 {
 	return *this != String( val );
 }
 
-bool String::operator!=( const String & val ) const
+bool XE::String::operator!=( const XE::String & val ) const
 {
 	return _View != val._View;
 }
 
-bool String::operator!=( const std::string & val ) const
+bool XE::String::operator!=( const std::string & val ) const
 {
 	return *this != String( val );
 }
 
-bool String::operator==( const char * val ) const
+bool XE::String::operator==( const char * val ) const
 {
 	return *this == String( val );
 }
 
-bool String::operator==( const String & val ) const
+bool XE::String::operator==( const XE::String & val ) const
 {
 	return _View == val._View;
 }
 
-bool String::operator==( const std::string & val ) const
+bool XE::String::operator==( const std::string & val ) const
 {
 	return *this == String( val );
 }
 
-bool String::operator>=( const char * val ) const
+bool XE::String::operator>=( const char * val ) const
 {
 	return *this >= String( val );
 }
 
-bool String::operator>=( const String & val ) const
+bool XE::String::operator>=( const XE::String & val ) const
 {
 	return _View >= val._View;
 }
 
-bool String::operator>=( const std::string & val ) const
+bool XE::String::operator>=( const std::string & val ) const
 {
 	return *this >= String( val );
 }
 
-bool String::operator<=( const char * val ) const
+bool XE::String::operator<=( const char * val ) const
 {
 	return *this <= String( val );
 }
 
-bool String::operator<=( const String & val ) const
+bool XE::String::operator<=( const XE::String & val ) const
 {
 	return _View <= val._View;
 }
 
-bool String::operator<=( const std::string & val ) const
+bool XE::String::operator<=( const std::string & val ) const
 {
 	return *this <= String( val );
 }
 
-bool String::operator>( const char * val ) const
+bool XE::String::operator>( const char * val ) const
 {
 	return *this > String( val );
 }
 
-bool String::operator>( const String & val ) const
+bool XE::String::operator>( const XE::String & val ) const
 {
 	return _View > val._View;
 }
 
-bool String::operator>( const std::string & val ) const
+bool XE::String::operator>( const std::string & val ) const
 {
 	return *this > String( val );
 }
 
-bool String::operator<( const char * val ) const
+bool XE::String::operator<( const char * val ) const
 {
 	return *this < String( val );
 }
 
-bool String::operator<( const String & val ) const
+bool XE::String::operator<( const XE::String & val ) const
 {
 	return _View < val._View;
 }
 
-bool String::operator<( const std::string & val ) const
+bool XE::String::operator<( const std::string & val ) const
 {
 	return *this < String( val );
 }
 
-char String::operator[]( XE::uint64 val ) const
+char XE::String::operator[]( XE::uint64 val ) const
 {
 	return _View[val];
 }
 
-String::operator const char * () const
+XE::String::operator const char * () const
 {
 	return _View.data();
 }
 
-String::operator std::string ( ) const
+XE::String::operator std::string ( ) const
 {
 	return ConstStringPool::Instance()->Register( _View.data() );
 }
 
-String::operator const std::string & () const
+XE::String::operator const std::string & () const
 {
 	return ConstStringPool::Instance()->Register( _View.data() );
 }
 
-String::operator const std::string_view & () const
+XE::String::operator const std::string_view & () const
 {
 	return _View;
 }
 
-const char * String::ToCString() const
+const char * XE::String::ToCString() const
 {
 	return _View.data();
 }
 
-String & String::FromCString( const char * val )
+XE::String & XE::String::FromCString( const char * val )
 {
 	_View = ConstStringPool::Instance()->Register( val );
 
 	return *this;
 }
 
-std::string String::ToStdString() const
+std::string XE::String::ToStdString() const
 {
 	return _View.data();
 }
 
-String & String::FromStdString( const std::string & val )
+XE::String & XE::String::FromStdString( const std::string & val )
 {
 	_View = ConstStringPool::Instance()->Register( val );
 	return *this;
 }
 
-void String::Clear()
+void XE::String::Clear()
 {
 	_View = nullptr;
 }
@@ -299,7 +299,7 @@ bool XE::String::Empty() const
 	return _View.empty();
 }
 
-XE::uint64 String::Size() const
+XE::uint64 XE::String::Size() const
 {
 	return _View.size();
 }
@@ -309,19 +309,19 @@ XE::uint64 XE::String::Count() const
 	return StringUtils::UTF8CharacterCount( ToStdString() );
 }
 
-XE::uint64 String::Find( const String & val ) const
+XE::uint64 XE::String::Find( const XE::String & val ) const
 {
 	return _View.find( val._View );
 }
 
-bool String::Contains( const String & val ) const
+bool XE::String::Contains( const XE::String & val ) const
 {
 	return _View.find( val._View ) != npos;
 }
 
-String String::SubString( XE::uint64 offset /*= 0*/, XE::uint64 count /*= npos */ ) const
+XE::String XE::String::SubString( XE::uint64 offset /*= 0*/, XE::uint64 count /*= npos */ ) const
 {
-	String str;
+	XE::String str;
 
 	str._View = _View.substr( offset, count );
 
@@ -329,67 +329,67 @@ String String::SubString( XE::uint64 offset /*= 0*/, XE::uint64 count /*= npos *
 }
 
 
-String operator+( bool val1, const String & val2 )
+XE::String operator+( bool val1, const XE::String & val2 )
 {
 	return std::to_string( val1 ) + val2.ToStdString();
 }
 
-String operator+( XE::int8 val1, const String & val2 )
+XE::String operator+( XE::int8 val1, const XE::String & val2 )
 {
 	return std::to_string( val1 ) + val2.ToStdString();
 }
 
-String operator+( XE::int16 val1, const String & val2 )
+XE::String operator+( XE::int16 val1, const XE::String & val2 )
 {
 	return std::to_string( val1 ) + val2.ToStdString();
 }
 
-String operator+( XE::int32 val1, const String & val2 )
+XE::String operator+( XE::int32 val1, const XE::String & val2 )
 {
 	return std::to_string( val1 ) + val2.ToStdString();
 }
 
-String operator+( XE::int64 val1, const String & val2 )
+XE::String operator+( XE::int64 val1, const XE::String & val2 )
 {
 	return std::to_string( val1 ) + val2.ToStdString();
 }
 
-String operator+( XE::uint8 val1, const String & val2 )
+XE::String operator+( XE::uint8 val1, const XE::String & val2 )
 {
 	return std::to_string( val1 ) + val2.ToStdString();
 }
 
-String operator+( XE::uint16 val1, const String & val2 )
+XE::String operator+( XE::uint16 val1, const XE::String & val2 )
 {
 	return std::to_string( val1 ) + val2.ToStdString();
 }
 
-String operator+( XE::uint32 val1, const String & val2 )
+XE::String operator+( XE::uint32 val1, const XE::String & val2 )
 {
 	return std::to_string( val1 ) + val2.ToStdString();
 }
 
-String operator+( XE::uint64 val1, const String & val2 )
+XE::String operator+( XE::uint64 val1, const XE::String & val2 )
 {
 	return std::to_string( val1 ) + val2.ToStdString();
 }
 
-String operator+( XE::float32 val1, const String & val2 )
+XE::String operator+( XE::float32 val1, const XE::String & val2 )
 {
 	return std::to_string( val1 ) + val2.ToStdString();
 }
 
-String operator+( XE::float64 val1, const String & val2 )
+XE::String operator+( XE::float64 val1, const XE::String & val2 )
 {
 	return std::to_string( val1 ) + val2.ToStdString();
 }
 
-String operator+( const char * val1, const String & val2 )
+XE::String operator+( const char * val1, const XE::String & val2 )
 {
-	return String( val1 ) + val2;
+	return XE::String( val1 ) + val2;
 }
 
-String operator+( const std::string & val1, const String & val2 )
+XE::String operator+( const std::string & val1, const XE::String & val2 )
 {
-	return String( val1 ) + val2;
+	return XE::String( val1 ) + val2;
 }

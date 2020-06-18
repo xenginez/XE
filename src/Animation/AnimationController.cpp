@@ -2,9 +2,9 @@
 
 #include "Animator.h"
 
-USING_XE
 
-BEG_META( AnimationController )
+
+BEG_META( XE::AnimationController )
 type->Property( "Enable", &AnimationController::_Enable );
 type->Property( "Animators", &AnimationController::_Animators );
 type->Property( "Parameters", &AnimationController::_Parameters );
@@ -58,22 +58,22 @@ void XE::AnimationController::Clearup()
 	_AnimatorMaps.clear();
 }
 
-XE::ObjectPtr AnimationController::GetGameObject() const
+XE::ObjectPtr XE::AnimationController::GetGameObject() const
 {
 	return _GameObject;
 }
 
-void AnimationController::SetGameObject( XE::ObjectPtr & val )
+void XE::AnimationController::SetGameObject( XE::ObjectPtr & val )
 {
 	_GameObject = val;
 }
 
-XE::SkeletonPtr AnimationController::GetSkeleton() const
+XE::SkeletonPtr XE::AnimationController::GetSkeleton() const
 {
 	return _Skeleton;
 }
 
-void AnimationController::SetSkeleton( const XE::SkeletonPtr & val )
+void XE::AnimationController::SetSkeleton( const XE::SkeletonPtr & val )
 {
 	_Skeleton = val;
 }
@@ -126,47 +126,47 @@ void XE::AnimationController::SetEnable( const XE::String & layer, bool val )
 	}
 }
 
-bool AnimationController::GetParameterBool( const XE::String & val ) const
+bool XE::AnimationController::GetParameterBool( const XE::String & val ) const
 {
 	return GetParameter( val ).Value<bool>();
 }
 
-XE::int32 AnimationController::GetParameterInt( const XE::String & val ) const
+XE::int32 XE::AnimationController::GetParameterInt( const XE::String & val ) const
 {
 	return GetParameter( val ).Value<XE::int32>();
 }
 
-XE::float32 AnimationController::GetParameterFloat( const XE::String & val ) const
+XE::float32 XE::AnimationController::GetParameterFloat( const XE::String & val ) const
 {
 	return GetParameter( val ).Value<XE::float32>();
 }
 
-XE::String AnimationController::GetParameterString( const XE::String & val ) const
+XE::String XE::AnimationController::GetParameterString( const XE::String & val ) const
 {
 	return GetParameter( val ).Value<XE::String>();
 }
 
-void AnimationController::SetParameterBool( const XE::String & name, bool val )
+void XE::AnimationController::SetParameterBool( const XE::String & name, bool val )
 {
 	SetParameter( name, val );
 }
 
-void AnimationController::SetParameterInt( const XE::String & name, XE::int32 val )
+void XE::AnimationController::SetParameterInt( const XE::String & name, XE::int32 val )
 {
 	SetParameter( name, val );
 }
 
-void AnimationController::SetParameterFloat( const XE::String & name, XE::float32 val )
+void XE::AnimationController::SetParameterFloat( const XE::String & name, XE::float32 val )
 {
 	SetParameter( name, val );
 }
 
-void AnimationController::SetParameterString( const XE::String & name, XE::String val )
+void XE::AnimationController::SetParameterString( const XE::String & name, XE::String val )
 {
 	SetParameter( name, val );
 }
 
-XE::Variant AnimationController::GetParameter( const XE::String & val ) const
+XE::Variant XE::AnimationController::GetParameter( const XE::String & val ) const
 {
 	auto it = _Parameters.find( val );
 	if( it != _Parameters.end() )
@@ -177,7 +177,7 @@ XE::Variant AnimationController::GetParameter( const XE::String & val ) const
 	return Variant();
 }
 
-void AnimationController::SetParameter( const XE::String & name, const XE::Variant & val )
+void XE::AnimationController::SetParameter( const XE::String & name, const XE::Variant & val )
 {
 	_Parameters[name] = val;
 }

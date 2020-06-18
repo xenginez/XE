@@ -2,9 +2,9 @@
 
 #include "PhysicsMaterial.h"
 
-USING_XE
 
-BEG_META( Shape )
+
+BEG_META( XE::Shape )
 type->Property( "Material", &Shape::_Material );
 END_META()
 
@@ -18,7 +18,7 @@ XE::Shape::~Shape()
 
 }
 
-const PhysicsMaterialPtr & XE::Shape::GetMaterial() const
+const XE::PhysicsMaterialPtr & XE::Shape::GetMaterial() const
 {
 	return _Material;
 }
@@ -108,7 +108,7 @@ void XE::Shape::SetMinTorsionalPatchRadius( XE::real val )
 	_MinTorsionalPatchRadius = val;
 }
 
-BEG_META( BoxShape )
+BEG_META( XE::BoxShape )
 END_META()
 
 XE::BoxShape::BoxShape()
@@ -131,7 +131,7 @@ void XE::BoxShape::SetBox( const XE::AABB & val )
 	_Box = val;
 }
 
-BEG_META( SphereShape )
+BEG_META( XE::SphereShape )
 END_META()
 
 XE::SphereShape::SphereShape()
@@ -154,7 +154,7 @@ void XE::SphereShape::SetSphere( const XE::Sphere & val )
 	_Sphere = val;
 }
 
-BEG_META( CapsuleShape )
+BEG_META( XE::CapsuleShape )
 END_META()
 
 XE::CapsuleShape::CapsuleShape()
@@ -177,7 +177,7 @@ void XE::CapsuleShape::SetCapsule( const XE::Capsule & val )
 	_Capsule = val;
 }
 
-BEG_META( PlaneShape )
+BEG_META( XE::PlaneShape )
 END_META()
 
 XE::PlaneShape::PlaneShape()
@@ -200,7 +200,7 @@ void XE::PlaneShape::SetPlane( const XE::Plane & val )
 	_Plane = val;
 }
 
-BEG_META( HeightFieldShape )
+BEG_META( XE::HeightFieldShape )
 END_META()
 
 XE::HeightFieldShape::HeightFieldShape()

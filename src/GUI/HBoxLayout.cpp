@@ -1,22 +1,18 @@
 #include "HBoxLayout.h"
 
-USING_XE
 
-BEG_META( HBoxLayout )
-END_META()
-
-HBoxLayout::HBoxLayout()
+XE::HBoxLayout::HBoxLayout()
 	:_OnGeometryChanged( std::bind( &HBoxLayout::OnGeometryChanged, this, std::placeholders::_1 ) )
 {
 	GeometryChanged.connect( _OnGeometryChanged );
 }
 
-HBoxLayout::~HBoxLayout()
+XE::HBoxLayout::~HBoxLayout()
 {
 
 }
 
-void HBoxLayout::OnGeometryChanged( const XE::Rect & val )
+void XE::HBoxLayout::OnGeometryChanged( const XE::Rect & val )
 {
 	if( ChildCount() == 0 )
 	{

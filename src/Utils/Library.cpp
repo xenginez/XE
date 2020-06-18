@@ -1,6 +1,6 @@
 #include "Library.h"
 
-USING_XE
+
 
 struct XE::Library::Private
 {

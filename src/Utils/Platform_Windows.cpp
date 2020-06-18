@@ -3,10 +3,10 @@
 
 #include <Windows.h>
 
-USING_XE
 
-IMPLEMENT_META( WindowHandle );
-IMPLEMENT_META( ProcessHandle );
+
+IMPLEMENT_META( XE::WindowHandle );
+IMPLEMENT_META( XE::ProcessHandle );
 
 
 XE::Language XE::Platform::GetDefaultLanguage()
@@ -162,7 +162,7 @@ XE::Language XE::Platform::GetDefaultLanguage()
 #ifdef CreateWindow
 #undef CreateWindow
 #endif
-WindowHandle XE::Platform::CreateWindow( const String & title, XE::uint32 x, XE::uint32 y, XE::uint32 w, XE::uint32 h )
+XE::WindowHandle XE::Platform::CreateWindow( const XE::String & title, XE::uint32 x, XE::uint32 y, XE::uint32 w, XE::uint32 h )
 {
 	HWND hwnd = ::CreateWindowExA( 0, "XE", title.ToCString(), WS_OVERLAPPEDWINDOW, x, y, w, h, nullptr, nullptr, GetModuleHandle( NULL ), nullptr );
 
@@ -175,17 +175,17 @@ WindowHandle XE::Platform::CreateWindow( const String & title, XE::uint32 x, XE:
 	return reinterpret_cast< XE::uint64 >( hwnd );
 }
 
-bool XE::Platform::DestroyWindow( WindowHandle handle )
+bool XE::Platform::DestroyWindow( XE::WindowHandle handle )
 {
 	return ::DestroyWindow( reinterpret_cast< HWND >( handle.GetValue() ) ) != 0;
 }
 
-bool Platform::GrabWindow( WindowHandle handle )
+bool XE::Platform::GrabWindow( XE::WindowHandle handle )
 {
 	return BringWindowToTop( reinterpret_cast< HWND >( handle.GetValue() ) ) != 0;
 }
 
-bool XE::Platform::ShowWindow( WindowHandle handle )
+bool XE::Platform::ShowWindow( XE::WindowHandle handle )
 {
 	SetWindowLong( reinterpret_cast< HWND >( handle.GetValue() ), GWL_STYLE, WS_OVERLAPPEDWINDOW );
 
@@ -193,25 +193,25 @@ bool XE::Platform::ShowWindow( WindowHandle handle )
 		::UpdateWindow( reinterpret_cast< HWND >( handle.GetValue() ) ) != 0;
 }
 
-bool XE::Platform::HideWindow( WindowHandle handle )
+bool XE::Platform::HideWindow( XE::WindowHandle handle )
 {
 	return ::ShowWindow( reinterpret_cast< HWND >( handle.GetValue() ), SW_HIDE ) != 0 &&
 		::UpdateWindow( reinterpret_cast< HWND >( handle.GetValue() ) ) != 0;
 }
 
-bool XE::Platform::MinimizeWindow( WindowHandle handle )
+bool XE::Platform::MinimizeWindow( XE::WindowHandle handle )
 {
 	return ::ShowWindow( reinterpret_cast< HWND >( handle.GetValue() ), SW_MINIMIZE ) != 0 &&
 		::UpdateWindow( reinterpret_cast< HWND >( handle.GetValue() ) ) != 0;
 }
 
-bool XE::Platform::MaximizeWindow( WindowHandle handle )
+bool XE::Platform::MaximizeWindow( XE::WindowHandle handle )
 {
 	return ::ShowWindow( reinterpret_cast< HWND >( handle.GetValue() ), SW_MAXIMIZE ) != 0 &&
 		::UpdateWindow( reinterpret_cast< HWND >( handle.GetValue() ) ) != 0;
 }
 
-bool XE::Platform::FullscreenWindow( WindowHandle handle )
+bool XE::Platform::FullscreenWindow( XE::WindowHandle handle )
 {
 	RECT desk_rect;
 	HWND desk_handle;
@@ -223,23 +223,23 @@ bool XE::Platform::FullscreenWindow( WindowHandle handle )
 		::UpdateWindow( reinterpret_cast< HWND >( handle.GetValue() ) ) != 0;
 }
 
-bool Platform::GetWindowFocus( WindowHandle handle )
+bool XE::Platform::GetWindowFocus( XE::WindowHandle handle )
 {
 	return GetFocus() == reinterpret_cast< HWND >( handle.GetValue() );
 }
 
-bool XE::Platform::SetWindowTitle( WindowHandle handle, const String & title )
+bool XE::Platform::SetWindowTitle( XE::WindowHandle handle, const XE::String & title )
 {
 	return SetWindowText( reinterpret_cast< HWND >( handle.GetValue() ), title.ToCString() );
 }
 
-bool XE::Platform::SetWindowRect( WindowHandle handle, XE::uint32 x, XE::uint32 y, XE::uint32 w, XE::uint32 h, bool topmost )
+bool XE::Platform::SetWindowRect( XE::WindowHandle handle, XE::uint32 x, XE::uint32 y, XE::uint32 w, XE::uint32 h, bool topmost )
 {
 	return ::SetWindowPos( reinterpret_cast< HWND >( handle.GetValue() ), topmost ? HWND_TOPMOST : HWND_NOTOPMOST, x, y, w, h, SWP_SHOWWINDOW ) != 0 &&
 		::UpdateWindow( reinterpret_cast< HWND >( handle.GetValue() ) ) != 0;
 }
 
-bool Platform::GetDesktopSize( XE::uint32 & w, XE::uint32 & h )
+bool XE::Platform::GetDesktopSize( XE::uint32 & w, XE::uint32 & h )
 {
 	RECT desk_rect;
 	HWND desk_handle = GetDesktopWindow();
@@ -279,7 +279,7 @@ XE::ProcessHandle XE::Platform::CreateProcess( const std::filesystem::path & app
 	return ProcessHandle::Invalid;
 }
 
-bool XE::Platform::DestroyProcess( ProcessHandle handle, XE::uint32 code )
+bool XE::Platform::DestroyProcess( XE::ProcessHandle handle, XE::uint32 code )
 {
 	if( handle != ProcessHandle::Invalid )
 	{

@@ -2,11 +2,11 @@
 
 #include "Object.h"
 
-USING_XE
 
-IMPLEMENT_META( EventHandle );
 
-BEG_META( Event )
+IMPLEMENT_META( XE::EventHandle );
+
+BEG_META( XE::Event )
 type->Property( "accept", &Event::accept, IMetaProperty::NoClone | IMetaProperty::NoDesign | IMetaProperty::NoSerialize );
 type->Property( "handle", &Event::handle, IMetaProperty::NoDesign | IMetaProperty::NoSerialize );
 type->Property( "parameter", &Event::parameter, IMetaProperty::NoDesign | IMetaProperty::NoSerialize );
@@ -18,7 +18,7 @@ XE::Event::Event()
 
 }
 
-Event::Event( EventHandle id, ObjectPtr sender, ObjectPtr recver, const Variant & parameter /*= Variant() */ )
+XE::Event::Event( XE::EventHandle id, XE::ObjectPtr sender, XE::ObjectPtr recver, const XE::Variant & parameter /*= Variant() */ )
 	: accept( false ), handle( id ), sender( sender ), recver( recver ), parameter( parameter )
 	
 {
@@ -34,7 +34,7 @@ XE::Event::Event( const Event & val )
 	parameter = val.parameter;
 }
 
-XE::Event & Event::operator=( const Event & val )
+XE::Event & XE::Event::operator=( const Event & val )
 {
 	accept = val.accept;
 	handle = val.handle;

@@ -1,8 +1,8 @@
 #include "RenderService.h"
 
-USING_XE
 
-BEG_META( RenderService )
+
+BEG_META( XE::RenderService )
 END_META()
 
 struct XE::RenderService::Private
@@ -26,11 +26,14 @@ void XE::RenderService::Prepare()
 // 	_p->_MainWindow = XE::MakeShared<RenderWindow>();
 // 
 // 
-// 	if( GetFramework()->GetBool( "Window/Fullscreen", false ) )
+// 	if( GetFramework()->GetBool( "Window/Fullscreen", false ) )
+
 // 	{
-// 		_p->_MainWindow->Fullscreen();
+// 		_p->_MainWindow->Fullscreen();
+
 // 	}
-// 	else
+// 	else
+
 // 	{
 // 		XE::float32 width = GetFramework()->GetFloat32( "Window/Width", 1024 );
 // 		XE::float32 height = GetFramework()->GetFloat32( "Window/Height", 768 );
@@ -41,8 +44,10 @@ void XE::RenderService::Prepare()
 // 
 // 		_p->_MainWindow->SetPosition( { desktop_w / 2 - width / 2, desktop_h / 2 - height / 2 } );
 // 
-// 		_p->_MainWindow->Show();
-// 	}
+// 		_p->_MainWindow->Show();
+
+// 	}
+
 }
 
 bool XE::RenderService::Startup()
@@ -93,7 +98,7 @@ void XE::RenderService::Clearup()
 // 	Gfx::ShutDown();
 }
 
-void XE::RenderService::RegisterLight( const LightPtr & val )
+void XE::RenderService::RegisterLight( const XE::LightPtr & val )
 {
 // 	auto it = std::find( _p->_Lights.begin(), _p->_Lights.end(), val );
 // 	if( it != _p->_Lights.end() )
@@ -102,7 +107,7 @@ void XE::RenderService::RegisterLight( const LightPtr & val )
 // 	}
 }
 
-void XE::RenderService::UnregisterLight( const LightPtr & val )
+void XE::RenderService::UnregisterLight( const XE::LightPtr & val )
 {
 // 	auto it = std::find( _p->_Lights.begin(), _p->_Lights.end(), val );
 // 	if( it != _p->_Lights.end() )
@@ -111,7 +116,7 @@ void XE::RenderService::UnregisterLight( const LightPtr & val )
 // 	}
 }
 
-void XE::RenderService::RegisterCamera( const CameraPtr & val )
+void XE::RenderService::RegisterCamera( const XE::CameraPtr & val )
 {
 // 	auto it = std::find( _p->_Cameras.begin(), _p->_Cameras.end(), val );
 // 	if( it != _p->_Cameras.end() )
@@ -120,7 +125,7 @@ void XE::RenderService::RegisterCamera( const CameraPtr & val )
 // 	}
 }
 
-void XE::RenderService::UnregisterCamera( const CameraPtr & val )
+void XE::RenderService::UnregisterCamera( const XE::CameraPtr & val )
 {
 // 	auto it = std::find( _p->_Cameras.begin(), _p->_Cameras.end(), val );
 // 	if( it != _p->_Cameras.end() )
@@ -129,7 +134,7 @@ void XE::RenderService::UnregisterCamera( const CameraPtr & val )
 // 	}
 }
 
-void XE::RenderService::RegisterRenderable( const RenderablePtr & val )
+void XE::RenderService::RegisterRenderable( const XE::RenderablePtr & val )
 {
 // 	auto it = std::find( _p->_Renderables.begin(), _p->_Renderables.end(), val );
 // 	if( it != _p->_Renderables.end() )
@@ -138,7 +143,7 @@ void XE::RenderService::RegisterRenderable( const RenderablePtr & val )
 // 	}
 }
 
-void XE::RenderService::UnregisterRenderable( const RenderablePtr & val )
+void XE::RenderService::UnregisterRenderable( const XE::RenderablePtr & val )
 {
 // 	auto it = std::find( _p->_Renderables.begin(), _p->_Renderables.end(), val );
 // 	if( it != _p->_Renderables.end() )

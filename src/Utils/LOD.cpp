@@ -1,8 +1,8 @@
 #include "LOD.h"
 
-USING_XE
 
-BEG_META(LOD)
+
+BEG_META( XE::LOD )
 		type->Property("LODs", &LOD::GetLODs, &LOD::SetLODs, IMetaProperty::NoDesign);
 END_META()
 
@@ -74,7 +74,7 @@ void XE::LOD::SetLODs( const Array < Pair < XE::float32, XE::float32>> &val )
 	_Lods = val;
 }
 
-XE::uint64 LOD::GetLODLimits( XE::float32 val ) const
+XE::uint64 XE::LOD::GetLODLimits( XE::float32 val ) const
 {
 	for( int i = 0; i < _Lods.size(); ++i )
 	{

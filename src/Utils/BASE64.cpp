@@ -1,8 +1,8 @@
 #include "BASE64.h"
 
-USING_XE
 
-BEG_META( BASE64 )
+
+BEG_META( XE::BASE64 )
 END_META()
 
 const char _base64_encode_table[65] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -33,7 +33,7 @@ unsigned char b64_lookup( unsigned char c )
 	return 255;
 }
 
-bool BASE64::Encode( const std::string & in, std::string * out )
+bool XE::BASE64::Encode( const std::string & in, std::string * out )
 {
 	int i = 0, j = 0;
 	size_t enc_len = 0;
@@ -84,7 +84,7 @@ bool BASE64::Encode( const std::string & in, std::string * out )
 	return ( enc_len == out->size() );
 }
 
-bool BASE64::Encode( const char * input, size_t input_length, std::string * out )
+bool XE::BASE64::Encode( const char * input, size_t input_length, std::string * out )
 {
 	int i = 0, j = 0;
 	size_t enc_len = 0;
@@ -134,7 +134,7 @@ bool BASE64::Encode( const char * input, size_t input_length, std::string * out 
 	return ( enc_len == out->size() );
 }
 
-bool BASE64::Encode( const char * input, size_t input_length, char * out, size_t out_length )
+bool XE::BASE64::Encode( const char * input, size_t input_length, char * out, size_t out_length )
 {
 	int i = 0, j = 0;
 	char * out_begin = out;
@@ -184,7 +184,7 @@ bool BASE64::Encode( const char * input, size_t input_length, char * out, size_t
 	return ( out == ( out_begin + encoded_length ) );
 }
 
-bool BASE64::Decode( const std::string & in, std::string * out )
+bool XE::BASE64::Decode( const std::string & in, std::string * out )
 {
 	int i = 0, j = 0;
 	size_t dec_len = 0;
@@ -245,7 +245,7 @@ bool BASE64::Decode( const std::string & in, std::string * out )
 	return ( dec_len == out->size() );
 }
 
-bool BASE64::Decode( const std::string & in, char * out, size_t out_length )
+bool XE::BASE64::Decode( const std::string & in, char * out, size_t out_length )
 {
 	int i = 0, j = 0;
 	char * out_begin = out;
@@ -308,7 +308,7 @@ bool BASE64::Decode( const std::string & in, char * out, size_t out_length )
 	return ( out == ( out_begin + decoded_length ) );
 }
 
-bool BASE64::Decode( const char * input, size_t input_length, char * out, size_t out_length )
+bool XE::BASE64::Decode( const char * input, size_t input_length, char * out, size_t out_length )
 {
 	int i = 0, j = 0;
 	char * out_begin = out;
@@ -368,7 +368,7 @@ bool BASE64::Decode( const char * input, size_t input_length, char * out, size_t
 	return ( out == ( out_begin + decoded_length ) );
 }
 
-int BASE64::DecodedLength( const char * in, size_t in_length )
+int XE::BASE64::DecodedLength( const char * in, size_t in_length )
 {
 	int numEq = 0;
 
@@ -378,7 +378,7 @@ int BASE64::DecodedLength( const char * in, size_t in_length )
 	return ( ( 6 * in_length ) / 8 ) - numEq;
 }
 
-int BASE64::DecodedLength( const std::string & in )
+int XE::BASE64::DecodedLength( const std::string & in )
 {
 	int numEq = 0;
 	int n = in.size();
@@ -391,17 +391,17 @@ int BASE64::DecodedLength( const std::string & in )
 	return ( ( 6 * n ) / 8 ) - numEq;
 }
 
-int BASE64::EncodedLength( size_t length )
+int XE::BASE64::EncodedLength( size_t length )
 {
 	return ( length + 2 - ( ( length + 2 ) % 3 ) ) / 3 * 4;
 }
 
-int BASE64::EncodedLength( const std::string & in )
+int XE::BASE64::EncodedLength( const std::string & in )
 {
 	return EncodedLength( in.length() );
 }
 
-void BASE64::StripPadding( std::string * in )
+void XE::BASE64::StripPadding( std::string * in )
 {
 	while( !in->empty() && *( in->rbegin() ) == '=' ) in->resize( in->size() - 1 );
 }

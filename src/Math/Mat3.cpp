@@ -2,9 +2,9 @@
 
 #include "Mathf.h"
 
-USING_XE
 
-BEG_META( Mat3 )
+
+BEG_META( XE::Mat3 )
 type->Property( "m00", &Mat3::m00 );
 type->Property( "m01", &Mat3::m01 );
 type->Property( "m02", &Mat3::m02 );
@@ -17,21 +17,21 @@ type->Property( "m22", &Mat3::m22 );
 END_META()
 
 
-const Mat3 Mat3::Zero = { 0, 0, 0, 0, 0, 0, 0, 0 ,0 };
-const Mat3 Mat3::Identity = { 1, 0, 0, 0, 1, 0, 0, 0, 1 };
+const XE::Mat3 XE::Mat3::Zero = { 0, 0, 0, 0, 0, 0, 0, 0 ,0 };
+const XE::Mat3 XE::Mat3::Identity = { 1, 0, 0, 0, 1, 0, 0, 0, 1 };
 
-Mat3::Mat3()
+XE::Mat3::Mat3()
 	:m00( 1 ), m01( 0 ), m02( 0 ), m10( 0 ), m11( 1 ), m12( 0 ), m20( 0 ), m21( 0 ), m22( 1 )
 {
 }
 
-Mat3::Mat3( XE::real m00, XE::real m01, XE::real m02, XE::real m10, XE::real m11, XE::real m12, XE::real m20, XE::real m21, XE::real m22 )
+XE::Mat3::Mat3( XE::real m00, XE::real m01, XE::real m02, XE::real m10, XE::real m11, XE::real m12, XE::real m20, XE::real m21, XE::real m22 )
 	:m00( m00 ), m01( m01 ), m02( m02 ), m10( m10 ), m11( m11 ), m12( m12 ), m20( m20 ), m21( m21 ), m22( m22 )
 {
 
 }
 
-Mat3::Mat3( const Quat& val )
+XE::Mat3::Mat3( const Quat& val )
 {
 	XE::real x = val.x * 2.0f;
 	XE::real y = val.y * 2.0f;

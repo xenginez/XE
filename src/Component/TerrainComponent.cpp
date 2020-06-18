@@ -1,8 +1,8 @@
 #include "TerrainComponent.h"
 
-USING_XE
 
-BEG_META( TerrainComponent )
+
+BEG_META( XE::TerrainComponent )
 END_META()
 
 XE::TerrainComponent::TerrainComponent()

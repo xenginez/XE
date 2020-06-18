@@ -1,6 +1,6 @@
 #include "Interpreter.h"
 
-USING_XE
+
 
 XE::Interpreter::Interpreter()
 {

@@ -1,8 +1,8 @@
 #include "NavigationService.h"
 
-USING_XE
 
-BEG_META( NavigationService )
+
+BEG_META( XE::NavigationService )
 END_META()
 
 XE::NavigationService::NavigationService()

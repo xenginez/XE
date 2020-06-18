@@ -2,9 +2,9 @@
 
 #if PLATFORM_OS & OS_ANDROID
 
-USING_XE
 
-XE::Language Platform::GetDefaultLanguage()
+
+XE::Language XE::Platform::GetDefaultLanguage()
 {
 	return Language::ENGLISH;
 }

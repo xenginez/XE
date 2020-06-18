@@ -1,8 +1,8 @@
 #include "IService.h"
 
-USING_XE
 
-BEG_META( IService )
+
+BEG_META( XE::IService )
 END_META()
 
 XE::IService::IService()
@@ -20,7 +20,7 @@ XE::IFrameworkPtr XE::IService::GetFramework() const
 	return _Framework;
 }
 
-void XE::IService::SetFramework( IFrameworkPtr val )
+void XE::IService::SetFramework( XE::IFrameworkPtr val )
 {
 	_Framework = val;
 }

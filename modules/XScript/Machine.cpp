@@ -1,6 +1,6 @@
 #include "Machine.h"
 
-USING_XE
+
 
 Machine::Machine()
 {

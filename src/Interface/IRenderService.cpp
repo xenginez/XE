@@ -1,8 +1,8 @@
 #include "IRenderService.h"
 
-USING_XE
 
-BEG_META( IRenderService )
+
+BEG_META( XE::IRenderService )
 END_META()
 
 XE::IRenderService::IRenderService()

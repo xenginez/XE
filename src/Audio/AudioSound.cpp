@@ -1,8 +1,8 @@
 #include "AudioSound.h"
 
-USING_XE
 
-BEG_META( AudioSound )
+
+BEG_META( XE::AudioSound )
 END_META()
 
 XE::AudioSound::AudioSound()

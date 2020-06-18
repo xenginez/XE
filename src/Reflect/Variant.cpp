@@ -2,7 +2,7 @@
 
 #include "CXXMetaClass.hpp"
 
-USING_XE
+
 
 class VariantSharedPool : public XE::Singleton<VariantSharedPool>
 {
@@ -96,7 +96,7 @@ public:
 
 private:
 	std::mutex _Lock;
-	Map<void *, Data> _Ptr;
+	XE::Map<void *, Data> _Ptr;
 };
 
 
@@ -198,7 +198,7 @@ XE::Variant::Variant( IMetaTypePtr meta, UnionData data, XE::Variant::Flag flag 
 	Lock();
 }
 
-Variant::Variant( IMetaTypePtr meta, XE::SharedPtr<void> data, XE::Variant::Flag flag )
+XE::Variant::Variant( XE::IMetaTypePtr meta, XE::SharedPtr<void> data, XE::Variant::Flag flag )
 	: _Type( meta ), _Flag( flag )
 {
 	_Data.sp = RegisterSharedPtr( data );
@@ -1012,7 +1012,7 @@ void * XE::Variant::ToPointer() const
 	return nullptr;
 }
 
-XE::Array<XE::Variant> Variant::ToArray() const
+XE::Array<XE::Variant> XE::Variant::ToArray() const
 {
 	if( GetFlag() == Flag::CONTAINER )
 	{

@@ -4,7 +4,7 @@
 #include "IMetaProperty.h"
 #include "IMetaOperator.h"
 
-USING_XE
+
 
 XE::IMetaClass::IMetaClass( const String & Name, XE::uint64 Size, bool IsAbs, bool IsSin, IMetaClassPtr Super, IMetaInfoPtr Owner, const String & ModuleName /*= "XE" */ )
 	:IMetaType( Name, MetaType::CLASS, Size, Owner, ModuleName ), _IsAbstract( IsAbs ), _IsSingleton( IsSin ), _Super( Super )

@@ -3,9 +3,9 @@
 #include "AnimationState.h"
 #include "AnimationTransition.h"
 
-USING_XE
 
-BEG_META( Animator )
+
+BEG_META( XE::Animator )
 type->Property( "Name", &Animator::_Name );
 type->Property( "Enable", &Animator::_Enable );
 type->Property( "States", &Animator::_States, IMetaProperty::NoDesign );

@@ -4,7 +4,7 @@
 #include <Windows.h>
 #endif
 
-USING_XE
+
 
 std::string XE::StringUtils::UTF16ToUTF8( const std::wstring & val )
 {

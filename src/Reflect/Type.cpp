@@ -1,10 +1,9 @@
 #include "Type.h"
 
 #include "IMetaInfo.h"
-
 #include "Reflection.h"
 
-USING_XE
+
 
 XE::MetaException::MetaException( IMetaInfoCPtr Meta, const String& Msg )
 	:_Meta( Meta ), _Msg( Msg )
@@ -25,14 +24,4 @@ char const* XE::MetaException::What() const
 XE::IMetaInfoCPtr XE::MetaException::GetMetaInfo() const
 {
 	return _Meta;
-}
-
-IMetaTypePtr XE_API XE::GetReclectionType( const String& val )
-{
-	if ( auto e = Reflection::FindEnum( val ) )
-	{
-		return SP_CAST<IMetaType>( e );
-	}
-
-	return SP_CAST<IMetaType>( Reflection::FindClass( val ) );
 }

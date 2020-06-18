@@ -1,6 +1,4 @@
 #include "Type.h"
 
-USING_XE
-
-BEG_META( ObstacleHandle )
+BEG_META( XE::ObstacleHandle )
 END_META()

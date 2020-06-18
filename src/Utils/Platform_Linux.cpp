@@ -1,9 +1,9 @@
 #include "Platform.h"
 #if PLATFORM_OS & OS_LINUX
 
-USING_XE
 
-XE::Language Platform::GetDefaultLanguage()
+
+XE::Language XE::Platform::GetDefaultLanguage()
 {
 	return Language::ENGLISH;
 }

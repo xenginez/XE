@@ -1,8 +1,8 @@
 #include "ILocalizationService.h"
 
-USING_XE
 
-BEG_META( ILocalizationService )
+
+BEG_META( XE::ILocalizationService )
 END_META()
 
 XE::ILocalizationService::ILocalizationService()

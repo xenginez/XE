@@ -1,36 +1,36 @@
 #include "Buffer.h"
 
-USING_XE
 
-IMPLEMENT_META( Buffer )
 
-Buffer::Buffer()
+IMPLEMENT_META( XE::Buffer )
+
+XE::Buffer::Buffer()
 	:_ReadPos( 0 ), _WirtePos( 0 )
 {
 }
 
-Buffer::Buffer( Buffer && _Right )
+XE::Buffer::Buffer( XE::Buffer && _Right )
 	: _ReadPos( _Right._ReadPos ), _WirtePos( _Right._WirtePos ), _Data( std::move( _Right._Data ) )
 {
 }
 
-Buffer::Buffer( const Buffer & _Right )
+XE::Buffer::Buffer( const XE::Buffer & _Right )
 	: _ReadPos( _Right._ReadPos ), _WirtePos( _Right._WirtePos ), _Data( _Right._Data )
 {
 }
 
-Buffer::Buffer( XE::memory_view _Right )
+XE::Buffer::Buffer( XE::memory_view _Right )
 	: _ReadPos( 0 ), _WirtePos( _Right.size() ), _Data( _Right.data(), _Right.data() + _Right.size() )
 {
 
 }
 
-Buffer::~Buffer()
+XE::Buffer::~Buffer()
 {
 
 }
 
-Buffer & Buffer::operator=( Buffer && _Right )
+XE::Buffer & XE::Buffer::operator=( Buffer && _Right )
 {
 	if( this != std::addressof( _Right ) )
 	{
@@ -42,7 +42,7 @@ Buffer & Buffer::operator=( Buffer && _Right )
 	return *this;
 }
 
-Buffer & Buffer::operator=( const Buffer & _Right )
+XE::Buffer & XE::Buffer::operator=( const Buffer & _Right )
 {
 	if( this != std::addressof( _Right ) )
 	{
@@ -114,7 +114,7 @@ void XE::Buffer::Reset()
 	_WirtePos = 0;
 }
 
-XE::memory_view Buffer::View() const
+XE::memory_view XE::Buffer::View() const
 {
 	return XE::memory_view( _Data.data(), _Data.size() );
 }

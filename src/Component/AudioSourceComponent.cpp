@@ -1,8 +1,8 @@
 #include "AudioSourceComponent.h"
 
-USING_XE
 
-BEG_META( AudioSourceComponent )
+
+BEG_META( XE::AudioSourceComponent )
 END_META()
 
 XE::AudioSourceComponent::AudioSourceComponent()

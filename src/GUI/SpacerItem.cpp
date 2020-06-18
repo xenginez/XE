@@ -1,54 +1,54 @@
 #include "SpacerItem.h"
 
-USING_XE
 
-BEG_META( SpacerItem )
+
+BEG_META( XE::SpacerItem )
 END_META()
 
-SpacerItem::SpacerItem()
+XE::SpacerItem::SpacerItem()
 	:_Orientation( Orientation::HORIZONTAL ), _SizePolicy( SizePolicy::EXPANDING )
 {
 
 }
 
-SpacerItem::~SpacerItem()
+XE::SpacerItem::~SpacerItem()
 {
 
 }
 
-SizePolicy SpacerItem::GetSizePolicy() const
+XE::SizePolicy XE::SpacerItem::GetSizePolicy() const
 {
 	return _SizePolicy;
 }
 
-void SpacerItem::SetSizePolicy( SizePolicy val )
+void XE::SpacerItem::SetSizePolicy( XE::SizePolicy val )
 {
 	_SizePolicy = val;
 }
 
-Orientation SpacerItem::GetOrientation() const
+XE::Orientation XE::SpacerItem::GetOrientation() const
 {
 	return _Orientation;
 }
 
-void SpacerItem::SetOrientation( Orientation val )
+void XE::SpacerItem::SetOrientation( XE::Orientation val )
 {
 	_Orientation = val;
 }
 
-const XE::Vec2 & SpacerItem::GetSizeHint() const
+const XE::Vec2 & XE::SpacerItem::GetSizeHint() const
 {
 	return _SizeHint;
 }
 
-void SpacerItem::SetSizeHint( const XE::Vec2 & val )
+void XE::SpacerItem::SetSizeHint( const XE::Vec2 & val )
 {
 	_SizeHint = val;
 }
 
-XE::Vec2 SpacerItem::SizeHint() const
+XE::Vec2 XE::SpacerItem::SizeHint() const
 {
-	if (_SizePolicy == SizePolicy::FIXED)
+	if (_SizePolicy == XE::SizePolicy::FIXED)
 	{
 		return _SizeHint;
 	}

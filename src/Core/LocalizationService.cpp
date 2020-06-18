@@ -1,14 +1,14 @@
 #include "LocalizationService.h"
 
-USING_XE
 
-BEG_META( LocalizationService )
+
+BEG_META( XE::LocalizationService )
 END_META()
 
-struct LocalizationService::Private
+struct XE::LocalizationService::Private
 {
-	Language _Language;
-	UnorderedMap<String, String> _Maps;
+	XE::Language _Language;
+	XE::UnorderedMap<XE::String, XE::String> _Maps;
 };
 
 XE::LocalizationService::LocalizationService()
@@ -55,7 +55,7 @@ XE::Language XE::LocalizationService::GetCurrentLanguage() const
 	return _p->_Language;
 }
 
-void XE::LocalizationService::SetCurrentLanguage( Language val )
+void XE::LocalizationService::SetCurrentLanguage( XE::Language val )
 {
 	_p->_Language = val;
 
@@ -64,7 +64,7 @@ void XE::LocalizationService::SetCurrentLanguage( Language val )
 	UpdateLocalized();
 }
 
-const XE::String & XE::LocalizationService::LocalizedString( const String & key, const String& val ) const
+const XE::String & XE::LocalizationService::LocalizedString( const XE::String & key, const XE::String& val ) const
 {
 	auto it = _p->_Maps.find( key );
 
@@ -81,7 +81,7 @@ void XE::LocalizationService::Prepare()
 
 }
 
-void LocalizationService::UpdateLocalized()
+void XE::LocalizationService::UpdateLocalized()
 {
 	std::string path = (GetFramework()->GetUserDataPath() / "language.csv").string();
 

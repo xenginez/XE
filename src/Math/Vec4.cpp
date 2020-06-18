@@ -2,9 +2,9 @@
 
 #include "Mathf.h"
 
-USING_XE
 
-BEG_META( Vec4 )
+
+BEG_META( XE::Vec4 )
 type->Property( "x", &Vec4::x );
 type->Property( "y", &Vec4::y );
 type->Property( "z", &Vec4::z );
@@ -12,9 +12,9 @@ type->Property( "w", &Vec4::w );
 END_META()
 
 
-const Vec4 Vec4::One = { 1, 1, 1, 1 };
-const Vec4 Vec4::Zero = { 0, 0, 0, 0 };
-const Vec4 Vec4::Infinity = { Mathf::Infinity , Mathf::Infinity, Mathf::Infinity, Mathf::Infinity };
+const XE::Vec4 XE::Vec4::One = { 1, 1, 1, 1 };
+const XE::Vec4 XE::Vec4::Zero = { 0, 0, 0, 0 };
+const XE::Vec4 XE::Vec4::Infinity = { XE::Mathf::Infinity , XE::Mathf::Infinity, XE::Mathf::Infinity, XE::Mathf::Infinity };
 
 
 XE::Vec4::Vec4()

@@ -1,8 +1,8 @@
 #include "Joint.h"
 
-USING_XE
 
-BEG_META( Joint )
+
+BEG_META( XE::Joint )
 END_META()
 
 XE::Joint::Joint()

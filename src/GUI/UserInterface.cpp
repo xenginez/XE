@@ -2,31 +2,31 @@
 
 #include "Widget.h"
 
-USING_XE
 
-BEG_META( UserInterface )
+
+BEG_META( XE::UserInterface )
 END_META()
 
-UserInterface::UserInterface()
+XE::UserInterface::UserInterface()
 {
 
 }
 
-UserInterface::~UserInterface()
+XE::UserInterface::~UserInterface()
 {
 
 }
 
-WidgetPtr UserInterface::GetWidget( WidgetHandle val ) const
+XE::WidgetPtr XE::UserInterface::GetWidget( XE::WidgetHandle val ) const
 {
 	return _Widgets.at( val.GetValue() );
 }
 
-WidgetHandle UserInterface::AddWidget( const IMetaClassPtr & val )
+XE::WidgetHandle XE::UserInterface::AddWidget( const XE::IMetaClassPtr & val )
 {
 	if (val )
 	{
-		if( auto widget = val->ConstructPtr().Value<WidgetPtr>() )
+		if( auto widget = val->ConstructPtr().Value<XE::WidgetPtr>() )
 		{
 			_Widgets.push_back( widget );
 
@@ -37,7 +37,7 @@ WidgetHandle UserInterface::AddWidget( const IMetaClassPtr & val )
 	return WidgetHandle::Invalid;
 }
 
-void UserInterface::RemoveWidget( WidgetHandle val )
+void XE::UserInterface::RemoveWidget( XE::WidgetHandle val )
 {
 	if( _Widgets.at( val.GetValue() ) != nullptr )
 	{

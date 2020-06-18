@@ -1,8 +1,8 @@
 #include "RigidDynamic.h"
 
-USING_XE
 
-BEG_META( RigidDynamic )
+
+BEG_META( XE::RigidDynamic )
 END_META()
 
 XE::RigidDynamic::RigidDynamic()

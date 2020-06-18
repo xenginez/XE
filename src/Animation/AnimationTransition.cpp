@@ -2,9 +2,9 @@
 
 #include "AnimationCondition.h"
 
-USING_XE
 
-BEG_META( AnimationTransition )
+
+BEG_META( XE::AnimationTransition )
 type->Property( "State", &AnimationTransition::_State );
 type->Property( "Conditions", &AnimationTransition::_Conditions );
 END_META()
@@ -43,12 +43,12 @@ void XE::AnimationTransition::SetNextState( XE::uint32 val )
 	_State = val;
 }
 
-AnimationControllerPtr XE::AnimationTransition::GetAnimationController() const
+XE::AnimationControllerPtr XE::AnimationTransition::GetAnimationController() const
 {
 	return _Controller.lock();
 }
 
-void XE::AnimationTransition::SetAnimationController( const AnimationControllerPtr & val )
+void XE::AnimationTransition::SetAnimationController( const XE::AnimationControllerPtr & val )
 {
 	_Controller = val;
 
@@ -58,12 +58,12 @@ void XE::AnimationTransition::SetAnimationController( const AnimationControllerP
 	}
 }
 
-const Array<AnimationConditionPtr> & AnimationTransition::GetAnimationConditions() const
+const XE::Array<XE::AnimationConditionPtr> & XE::AnimationTransition::GetAnimationConditions() const
 {
 	return _Conditions;
 }
 
-void AnimationTransition::SetAnimationConditions( const Array<AnimationConditionPtr> & val )
+void XE::AnimationTransition::SetAnimationConditions( const XE::Array<XE::AnimationConditionPtr> & val )
 {
 	_Conditions = val;
 }

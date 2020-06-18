@@ -2,17 +2,17 @@
 
 #include "Mathf.h"
 
-USING_XE
 
-BEG_META( Quat )
+
+BEG_META( XE::Quat )
 type->Property( "x", &Quat::x );
 type->Property( "y", &Quat::y );
 type->Property( "z", &Quat::z );
 type->Property( "w", &Quat::w );
 END_META()
 
-const Quat Quat::Zero = { 0, 0, 0, 0 };
-const Quat Quat::Identity = { 0, 0, 0, 1 };
+const XE::Quat XE::Quat::Zero = { 0, 0, 0, 0 };
+const XE::Quat XE::Quat::Identity = { 0, 0, 0, 1 };
 
 
 XE::Quat::Quat()

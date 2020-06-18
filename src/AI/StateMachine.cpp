@@ -3,9 +3,9 @@
 #include "State.h"
 #include "Condition.h"
 
-USING_XE
 
-BEG_META( StateMachine )
+
+BEG_META( XE::StateMachine )
 type->Property( "Root", &StateMachine::_Root );
 type->Property( "States", &StateMachine::_States );
 END_META()

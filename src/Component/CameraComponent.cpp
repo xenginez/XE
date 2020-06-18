@@ -1,8 +1,8 @@
 #include "CameraComponent.h"
 
-USING_XE
 
-BEG_META( CameraComponent )
+
+BEG_META( XE::CameraComponent )
 END_META()
 
 XE::CameraComponent::CameraComponent()

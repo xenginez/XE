@@ -1,6 +1,9 @@
 #include "DirectionalLightComponent.h"
 
-USING_XE
+
+BEG_META( XE::DirectionalLightComponent )
+END_META()
+
 
 XE::DirectionalLightComponent::DirectionalLightComponent()
 {

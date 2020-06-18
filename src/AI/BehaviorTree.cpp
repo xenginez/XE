@@ -2,9 +2,9 @@
 
 #include "Node.h"
 
-USING_XE
 
-BEG_META( BehaviorTree )
+
+BEG_META( XE::BehaviorTree )
 type->Property( "HandleAlloc", &BehaviorTree::_HandleAlloc, IMetaProperty::NoDesign );
 type->Property( "Root", &BehaviorTree::_Root, IMetaProperty::NoDesign );
 type->Property( "Nodes", &BehaviorTree::_Nodes, IMetaProperty::NoDesign );
@@ -69,12 +69,12 @@ void XE::BehaviorTree::Clearup()
 	}
 }
 
-NodeHandle XE::BehaviorTree::GetRoot() const
+XE::NodeHandle XE::BehaviorTree::GetRoot() const
 {
 	return _Root;
 }
 
-void BehaviorTree::SetRoot( NodeHandle val )
+void XE::BehaviorTree::SetRoot( XE::NodeHandle val )
 {
 	_Root = val;
 }
@@ -91,14 +91,14 @@ XE::NodePtr XE::BehaviorTree::GetNode( NodeHandle val ) const
 	return nullptr;
 }
 
-NodeHandle BehaviorTree::AddNode( const IMetaClassPtr & val )
+XE::NodeHandle XE::BehaviorTree::AddNode( const XE::IMetaClassPtr & val )
 {
 	if( val )
 	{
-		if( NodePtr node = val->ConstructPtr().Value<NodePtr>() )
+		if( XE::NodePtr node = val->ConstructPtr().Value<XE::NodePtr>() )
 		{
 			node->SetName( val->GetName() );
-			node->SetBehaviorTree( XE_THIS( BehaviorTree ) );
+			node->SetBehaviorTree( XE_THIS( XE::BehaviorTree ) );
 			node->SetHandle( _HandleAlloc.Alloc() );
 
 			_Nodes.insert( { node->GetHandle(), node } );
@@ -107,10 +107,10 @@ NodeHandle BehaviorTree::AddNode( const IMetaClassPtr & val )
 		}
 	}
 
-	return NodeHandle::Invalid;
+	return XE::NodeHandle::Invalid;
 }
 
-void BehaviorTree::RemoveNode( XE::NodeHandle val )
+void XE::BehaviorTree::RemoveNode( XE::NodeHandle val )
 {
 	auto it = _Nodes.find( val );
 	if( it != _Nodes.end() )
@@ -120,7 +120,7 @@ void BehaviorTree::RemoveNode( XE::NodeHandle val )
 	}
 }
 
-void BehaviorTree::SwapNodeHandle( XE::NodeHandle node1, XE::NodeHandle node2 )
+void XE::BehaviorTree::SwapNodeHandle( XE::NodeHandle node1, XE::NodeHandle node2 )
 {
 	_Nodes[node1]->SetHandle( node2 );
 	_Nodes[node2]->SetHandle( node1 );

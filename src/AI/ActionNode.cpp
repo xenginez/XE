@@ -5,9 +5,9 @@
 
 #include "BehaviorTree.h"
 
-USING_XE
 
-BEG_META( ActionNode )
+
+BEG_META( XE::ActionNode )
 END_META()
 
 XE::ActionNode::ActionNode()
@@ -20,7 +20,7 @@ XE::ActionNode::~ActionNode()
 
 }
 
-BEG_META( SubNode )
+BEG_META( XE::SubNode )
 type->Property( "SubAI", &SubNode::_SubAIPath );
 type->Property( "ConnectKeys", &SubNode::_ConnectKeys );
 END_META()

@@ -1,8 +1,8 @@
 #include "SkyBox.h"
 
-USING_XE
 
-BEG_META( SkyBox )
+
+BEG_META( XE::SkyBox )
 END_META()
 
 XE::SkyBox::SkyBox()

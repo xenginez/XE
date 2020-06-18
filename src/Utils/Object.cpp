@@ -3,9 +3,9 @@
 #include <Interface/IFramework.h>
 #include <Interface/ILocalizationService.h>
 
-USING_XE
 
-BEG_META( Object )
+
+BEG_META( XE::Object )
 END_META()
 
 XE::Object::Object()
@@ -28,7 +28,7 @@ const XE::String & XE::Object::tr( const String & val ) const
 	return XE::IFramework::GetCurrentFramework()->GetLocalizationService()->LocalizedString( GetMetaClass()->GetFullName() + "." + val, val );
 }
 
-void Object::ProcessEvent( EventPtr & val )
+void XE::Object::ProcessEvent( EventPtr & val )
 {
 
 }

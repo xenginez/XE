@@ -1,8 +1,8 @@
 #include "Capsule.h"
 
-USING_XE
 
-BEG_META( Capsule )
+
+BEG_META( XE::Capsule )
 type->Property( "radius", &Capsule::radius );
 type->Property( "height", &Capsule::height );
 END_META()

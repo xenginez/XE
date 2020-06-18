@@ -1,8 +1,8 @@
 #include "SkyComponent.h"
 
-USING_XE
 
-BEG_META( SkyComponent )
+
+BEG_META( XE::SkyComponent )
 END_META()
 
 XE::SkyComponent::SkyComponent()

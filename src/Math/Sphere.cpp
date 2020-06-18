@@ -5,9 +5,9 @@
 #include "AABB.h"
 #include "Plane.h"
 
-USING_XE
 
-BEG_META( Sphere )
+
+BEG_META( XE::Sphere )
 type->Property( "center", &Sphere::center );
 type->Property( "radius", &Sphere::radius );
 END_META()
@@ -32,7 +32,7 @@ XE::Sphere::Sphere( const Vec3&center, XE::real radius )
 
 }
 
-Sphere& XE::Sphere::operator=( const Sphere & val )
+XE::Sphere& XE::Sphere::operator=( const Sphere & val )
 {
 	center = val.center;
 	radius = val.radius;

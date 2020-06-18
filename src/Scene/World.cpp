@@ -5,9 +5,9 @@
 #include <Interface/IFramework.h>
 #include <Interface/IThreadService.h>
 
-USING_XE
 
-BEG_META( World )
+
+BEG_META( XE::World )
 type->Property( "Name", &World::_Name );
 type->Property( "GameObjects", &World::_GameObjects );
 type->Property( "HandleTable", &World::_HandleTable, XE::IMetaProperty::NoDesign );
@@ -53,7 +53,7 @@ bool XE::World::AddGameObject( const GameObjectPtr & val )
 	return true;
 }
 
-bool World::RemoveGameObject( const GameObjectPtr & val )
+bool XE::World::RemoveGameObject( const XE::GameObjectPtr & val )
 {
 	auto it = std::find( _GameObjects.begin(), _GameObjects.end(), val );
 
@@ -98,7 +98,7 @@ XE::GameObjectPtr XE::World::FindGameObject( GameObjectHandle val ) const
 	return nullptr;
 }
 
-const XE::Array< GameObjectPtr > & XE::World::GetGameObjects() const
+const XE::Array< XE::GameObjectPtr > & XE::World::GetGameObjects() const
 {
 	return _GameObjects;
 }

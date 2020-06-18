@@ -1,8 +1,8 @@
 #include "PhysicsMaterial.h"
 
-USING_XE
 
-BEG_META( PhysicsMaterial )
+
+BEG_META( XE::PhysicsMaterial )
 type->Property( "Flag", &PhysicsMaterial::_Flag );
 type->Property( "Restitution", &PhysicsMaterial::_Restitution );
 type->Property( "StaticFriction", &PhysicsMaterial::_StaticFriction );

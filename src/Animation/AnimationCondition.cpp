@@ -2,70 +2,70 @@
 
 #include "AnimationController.h"
 
-USING_XE
 
-BEG_META( AnimationCondition )
+
+BEG_META( XE::AnimationCondition )
 END_META()
 
-AnimationCondition::AnimationCondition()
+XE::AnimationCondition::AnimationCondition()
 {
 
 }
 
-AnimationCondition::~AnimationCondition()
+XE::AnimationCondition::~AnimationCondition()
 {
 
 }
 
-AnimationControllerPtr AnimationCondition::GetAnimationController() const
+XE::AnimationControllerPtr XE::AnimationCondition::GetAnimationController() const
 {
 	return _Controller.lock();
 }
 
-void AnimationCondition::SetAnimationController( const AnimationControllerPtr & val )
+void XE::AnimationCondition::SetAnimationController( const XE::AnimationControllerPtr & val )
 {
 	_Controller = val;
 }
 
-BEG_META( AnimationConditionBool )
+BEG_META( XE::AnimationConditionBool )
 type->Property( "KeyValue", &AnimationConditionBool::_KeyValue );
 type->Property( "DefValue", &AnimationConditionBool::_DefValue );
 END_META()
 
-AnimationConditionBool::AnimationConditionBool()
+XE::AnimationConditionBool::AnimationConditionBool()
 	:_DefValue( false )
 {
 
 }
 
-AnimationConditionBool::~AnimationConditionBool()
+XE::AnimationConditionBool::~AnimationConditionBool()
 {
 
 }
 
-bool AnimationConditionBool::Condition() const
+bool XE::AnimationConditionBool::Condition() const
 {
 	return GetAnimationController()->GetParameterBool( _KeyValue ) == _DefValue;
 }
 
-BEG_META( AnimationConditionInt )
+BEG_META( XE::AnimationConditionInt )
 type->Property( "KeyValue", &AnimationConditionInt::_KeyValue );
 type->Property( "Compare", &AnimationConditionInt::_Compare );
 type->Property( "DefValue", &AnimationConditionInt::_DefValue );
 END_META()
 
-AnimationConditionInt::AnimationConditionInt()
+XE::AnimationConditionInt::AnimationConditionInt()
 	:_DefValue( 0 )
 {
 
 }
 
-AnimationConditionInt::~AnimationConditionInt()
+XE::AnimationConditionInt::~AnimationConditionInt()
 {
 
 }
 
-bool AnimationConditionInt::Condition() const
+bool XE::AnimationConditionInt::Condition() const
 {
 	switch( _Compare )
 	{
@@ -86,24 +86,24 @@ bool AnimationConditionInt::Condition() const
 	return false;
 }
 
-BEG_META( AnimationConditionFloat )
+BEG_META( XE::AnimationConditionFloat )
 type->Property( "KeyValue", &AnimationConditionFloat::_KeyValue );
 type->Property( "Compare", &AnimationConditionFloat::_Compare );
 type->Property( "DefValue", &AnimationConditionFloat::_DefValue );
 END_META()
 
-AnimationConditionFloat::AnimationConditionFloat()
+XE::AnimationConditionFloat::AnimationConditionFloat()
 	:_DefValue( 0.0f )
 {
 
 }
 
-AnimationConditionFloat::~AnimationConditionFloat()
+XE::AnimationConditionFloat::~AnimationConditionFloat()
 {
 
 }
 
-bool AnimationConditionFloat::Condition() const
+bool XE::AnimationConditionFloat::Condition() const
 {
 	switch( _Compare )
 	{
@@ -124,22 +124,22 @@ bool AnimationConditionFloat::Condition() const
 	return false;
 }
 
-BEG_META( AnimationConditionString )
+BEG_META( XE::AnimationConditionString )
 type->Property( "KeyValue", &AnimationConditionString::_KeyValue );
 type->Property( "DefValue", &AnimationConditionString::_DefValue );
 END_META()
 
-AnimationConditionString::AnimationConditionString()
+XE::AnimationConditionString::AnimationConditionString()
 {
 
 }
 
-AnimationConditionString::~AnimationConditionString()
+XE::AnimationConditionString::~AnimationConditionString()
 {
 
 }
 
-bool AnimationConditionString::Condition() const
+bool XE::AnimationConditionString::Condition() const
 {
 	return GetAnimationController()->GetParameterString( _KeyValue ) == _DefValue;
 }

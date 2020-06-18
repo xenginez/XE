@@ -3,9 +3,9 @@
 #include "Shape.h"
 #include "Constraint.h"
 
-USING_XE
 
-BEG_META( RigidBody )
+
+BEG_META( XE::RigidBody )
 type->Property( "Shapes", &RigidBody::_Shapes );
 type->Property( "Constraints", &RigidBody::_Constraints );
 type->Property( "Mass", &RigidBody::_Mass );
@@ -53,7 +53,7 @@ void XE::RigidBody::SetHandle( RigidBodyHandle val )
 	_Handle = val;
 }
 
-const Array<ShapePtr> & XE::RigidBody::GetShapes() const
+const XE::Array<XE::ShapePtr> & XE::RigidBody::GetShapes() const
 {
 	return _Shapes;
 }
@@ -63,7 +63,7 @@ void XE::RigidBody::SetShapes( const Array<ShapePtr> & val )
 	_Shapes = val;
 }
 
-const Array<ConstraintPtr> & XE::RigidBody::GetConstraints() const
+const XE::Array<XE::ConstraintPtr> & XE::RigidBody::GetConstraints() const
 {
 	return _Constraints;
 }

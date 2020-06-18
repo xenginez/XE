@@ -4,14 +4,14 @@
 #include <tbb/concurrent_hash_map.h>
 #include <tbb/concurrent_priority_queue.h>
 
-USING_XE
 
-BEG_META( EventService )
+
+BEG_META( XE::EventService )
 END_META()
 
 struct XEPTimeEvent
 {
-	EventPtr _Event;
+	XE::EventPtr _Event;
 	XE::float32 _Duration;
 	XE::float32 _StartTime;
 };
@@ -29,7 +29,7 @@ template<> struct std::less<XEPTimeEvent>
 
 struct XEPFrameEvent
 {
-	EventPtr _Event;
+	XE::EventPtr _Event;
 	XE::uint64 _Frame;
 	XE::uint64 _StartFrame;
 };
@@ -46,7 +46,7 @@ template<> struct std::less<XEPFrameEvent>
 };
 
 
-struct EventService::Private
+struct XE::EventService::Private
 {
 	using ListenerMap = tbb::concurrent_hash_map<XE::EventHandle, tbb::concurrent_vector<IEventService::ListenerType>>;
 
@@ -90,7 +90,7 @@ void XE::EventService::Clearup()
 	_p->_FrameEvents.clear();
 }
 
-void XE::EventService::PostEvent( EventPtr val )
+void XE::EventService::PostEvent( XE::EventPtr val )
 {
 	Private::ListenerMap::accessor accessor;
 	if ( _p->_Listeners.find( accessor, val->handle ) )
@@ -119,7 +119,7 @@ void XE::EventService::PostEvent( EventPtr val )
 	}
 }
 
-void XE::EventService::PostEvent( XE::uint64 frame, EventPtr val )
+void XE::EventService::PostEvent( XE::uint64 frame, XE::EventPtr val )
 {
 	if( frame == 0 )
 	{
@@ -134,7 +134,7 @@ void XE::EventService::PostEvent( XE::uint64 frame, EventPtr val )
 	_p->_FrameEvents.push( std::move( evt ) );
 }
 
-void XE::EventService::PostEvent( XE::float32 dt, EventPtr val )
+void XE::EventService::PostEvent( XE::float32 dt, XE::EventPtr val )
 {
 	if( dt <= Mathf::Epsilon )
 	{

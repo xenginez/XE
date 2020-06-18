@@ -1,6 +1,6 @@
 #include "XSMetaClass.h"
 
-USING_XE
+
 
 XE::XSMetaClass::XSMetaClass( const String & Name, XE::uint64 Size, IMetaClassPtr Super, IMetaInfoPtr Owner, const String & ModuleName )
 	:IMetaClass( Name, Size, false, false, Super, Owner, ModuleName )

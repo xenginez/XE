@@ -1,8 +1,8 @@
 #include "LightComponent.h"
 
-USING_XE
 
-BEG_META( LightComponent )
+
+BEG_META( XE::LightComponent )
 END_META()
 
 XE::LightComponent::LightComponent()

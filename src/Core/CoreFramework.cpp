@@ -48,9 +48,9 @@ void nest_json( rapidjson::Value & parent, std::vector<std::string>::const_itera
 }
 
 
-USING_XE
 
-BEG_META( CoreFramework )
+
+BEG_META( XE::CoreFramework )
 END_META()
 
 struct XE::CoreFramework::Private
@@ -145,7 +145,7 @@ XE::ILocalizationServicePtr XE::CoreFramework::GetLocalizationService() const
 	return GetServiceT<ILocalizationService>();
 }
 
-XE::IServicePtr XE::CoreFramework::GetService( const IMetaClassPtr & val ) const
+XE::IServicePtr XE::CoreFramework::GetService( const XE::IMetaClassPtr & val ) const
 {
 	for( auto service : _p->_Services )
 	{
@@ -158,7 +158,7 @@ XE::IServicePtr XE::CoreFramework::GetService( const IMetaClassPtr & val ) const
 	return nullptr;
 }
 
-bool XE::CoreFramework::RegisterService( const IMetaClassPtr & val )
+bool XE::CoreFramework::RegisterService( const XE::IMetaClassPtr & val )
 {
 	if( GetService( val ) == nullptr )
 	{
@@ -183,7 +183,7 @@ bool XE::CoreFramework::RegisterService( const IMetaClassPtr & val )
 	return false;
 }
 
-void XE::CoreFramework::UnregisterService( const IMetaClassPtr & val )
+void XE::CoreFramework::UnregisterService( const XE::IMetaClassPtr & val )
 {
 	auto it = std::find_if( _p->_Services.begin(), _p->_Services.end(), [val]( const IServicePtr & srv )
 							{
@@ -334,7 +334,7 @@ void XE::CoreFramework::Save()
 	Save( path, _p->Values );
 }
 
-void XE::CoreFramework::Save( const std::filesystem::path & path, const Map < String, String > & values ) const
+void XE::CoreFramework::Save( const std::filesystem::path & path, const XE::Map < XE::String, XE::String > & values ) const
 {
 	rapidjson::Document doc;
 	auto & allocator = doc.GetAllocator();
@@ -376,7 +376,7 @@ void XE::CoreFramework::Reload()
 	Reload( path, _p->Values );
 }
 
-void XE::CoreFramework::Reload( const std::filesystem::path & path, Map < String, String > & values ) const
+void XE::CoreFramework::Reload( const std::filesystem::path & path, XE::Map < XE::String, XE::String > & values ) const
 {
 	std::ifstream ifs( path.string() );
 	if( ifs.is_open() )
@@ -415,7 +415,7 @@ void XE::CoreFramework::Reload( const std::filesystem::path & path, Map < String
 	ifs.close();
 }
 
-String XE::CoreFramework::GetValue( const String & key )
+XE::String XE::CoreFramework::GetValue( const XE::String & key )
 {
 	auto it = _p->Values.find( key );
 
@@ -431,7 +431,7 @@ String XE::CoreFramework::GetValue( const String & key )
 	return "";
 }
 
-void XE::CoreFramework::SetValue( const String & key, const String & val )
+void XE::CoreFramework::SetValue( const XE::String & key, const XE::String & val )
 {
 	_p->Values[key] = val;
 }

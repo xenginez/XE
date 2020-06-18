@@ -6,9 +6,9 @@
 #include "Condition.h"
 #include "StateMachine.h"
 
-USING_XE
 
-BEG_META( State )
+
+BEG_META( XE::State )
 type->Property( "Handle", &State::_Handle, IMetaProperty::NoDesign );
 type->Property( "Conditions", &State::_Conditions );
 END_META()
@@ -45,7 +45,7 @@ void XE::State::RemoveConditions( const XE::ConditionPtr & val )
 	}
 }
 
-const XE::Array< ConditionPtr > & XE::State::GetConditions() const
+const XE::Array< XE::ConditionPtr > & XE::State::GetConditions() const
 {
 	return _Conditions;
 }
@@ -90,7 +90,7 @@ void XE::State::OnClearup()
 
 }
 
-BEG_META( SubState )
+BEG_META( XE::SubState )
 type->Property( "SubAI", &SubState::_SubAIPath );
 type->Property( "ConnectKeys", &SubState::_ConnectKeys );
 END_META()

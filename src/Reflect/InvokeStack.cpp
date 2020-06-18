@@ -1,6 +1,6 @@
 #include "InvokeStack.h"
 
-USING_XE
+
 
 XE::InvokeStack::InvokeStack()
 {

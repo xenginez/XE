@@ -1,6 +1,6 @@
 #include "IMetaInfo.h"
 
-USING_XE
+
 
 XE::IMetaInfo::IMetaInfo( const String & Name, MetaType Type, IMetaInfoPtr Owner, const String & ModuleName /*= "XE" */ )
 	:_Type( Type ), _Name( Name ), _FullName( Name ), _Owner( Owner ), _ModuleName( ModuleName )

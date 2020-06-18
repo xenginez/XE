@@ -1,8 +1,8 @@
 #include "IInputService.h"
 
-USING_XE
 
-BEG_META( IInputControl )
+
+BEG_META( XE::IInputControl )
 END_META()
 
 XE::IInputControl::IInputControl()
@@ -20,7 +20,7 @@ void XE::IInputControl::SetValue( const String& code, const Variant& val )
 	_InputService->SetValue( code, val );
 }
 
-BEG_META( IInputService )
+BEG_META( XE::IInputService )
 END_META()
 
 XE::IInputService::IInputService()

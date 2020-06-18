@@ -2,9 +2,9 @@
 
 #include "Mathf.h"
 
-USING_XE
 
-BEG_META( Rect )
+
+BEG_META( XE::Rect )
 END_META()
 
 const XE::Rect XE::Rect::Zero = { 0, 0, 0, 0 };
@@ -33,7 +33,7 @@ XE::Rect::Rect( XE::real x, XE::real y, XE::real w, XE::real h )
 
 }
 
-Rect& XE::Rect::operator=( const Rect& val )
+XE::Rect& XE::Rect::operator=( const Rect& val )
 {
 	x = val.x;
 	y = val.y;
@@ -52,22 +52,22 @@ bool XE::Rect::operator!=( const Rect& val ) const
 	return x != val.x || y != val.y || width != val.width || height != val.height;
 }
 
-Vec2 XE::Rect::GetMin() const
+XE::Vec2 XE::Rect::GetMin() const
 {
 	return { x, y };
 }
 
-Vec2 XE::Rect::GetMax() const
+XE::Vec2 XE::Rect::GetMax() const
 {
 	return{ x + width, y + height };
 }
 
-Vec2 XE::Rect::GetSize() const
+XE::Vec2 XE::Rect::GetSize() const
 {
 	return { width, height };
 }
 
-Vec2 XE::Rect::GetCenter() const
+XE::Vec2 XE::Rect::GetCenter() const
 {
 	return { x + width * 0.5f, y + height * 0.5f };
 }

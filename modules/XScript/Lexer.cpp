@@ -11,7 +11,7 @@ constexpr XE::int32 STATUS_SPE = 7;
 constexpr XE::int32 STATUS_IDF = 8;
 constexpr XE::int32 STATUS_END = 9;
 
-USING_XE
+
 
 XE::Lexer::Lexer( const std::string & val )
 	:_Src( val ), _CurToken( 0 ), _State( 0 )

@@ -308,7 +308,6 @@
 
 #define BEG_XE_NAMESPACE namespace XE {
 #define END_XE_NAMESPACE };
-#define USING_XE using namespace XE;
 
 /////////////////////////////////////////////////////////////////////////////////////////
 

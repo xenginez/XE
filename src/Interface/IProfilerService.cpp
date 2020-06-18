@@ -1,8 +1,8 @@
 #include "IProfilerService.h"
 
-USING_XE
 
-BEG_META( IProfilerService )
+
+BEG_META( XE::IProfilerService )
 END_META()
 
 XE::ProfilerTrack::ProfilerTrack( ProfilerItem* val )

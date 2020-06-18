@@ -2,9 +2,9 @@
 
 #include <ik/ik.h>
 
-USING_XE
 
-BEG_META( AnimationIKEffector )
+
+BEG_META( XE::AnimationIKEffector )
 type->Property( "WeightNlerp", &AnimationIKEffector::GetWeightNlerp, &AnimationIKEffector::SetWeightNlerp );
 type->Property( "InheritParentRotation", &AnimationIKEffector::GetInheritParentRotation, &AnimationIKEffector::SetInheritParentRotation );
 type->Property( "ChainLength", &AnimationIKEffector::GetChainLength, &AnimationIKEffector::SetChainLength );
@@ -25,97 +25,97 @@ XE::AnimationIKEffector::~AnimationIKEffector()
 
 }
 
-bool AnimationIKEffector::GetWeightNlerp() const
+bool XE::AnimationIKEffector::GetWeightNlerp() const
 {
 	return _WeightNlerp;
 }
 
-void AnimationIKEffector::SetWeightNlerp( bool val )
+void XE::AnimationIKEffector::SetWeightNlerp( bool val )
 {
 	_WeightNlerp = val;
 }
 
-bool AnimationIKEffector::GetInheritParentRotation() const
+bool XE::AnimationIKEffector::GetInheritParentRotation() const
 {
 	return _InheritParentRotation;
 }
 
-void AnimationIKEffector::SetInheritParentRotation( bool val )
+void XE::AnimationIKEffector::SetInheritParentRotation( bool val )
 {
 	_InheritParentRotation = val;
 }
 
-const XE::Vec3 & AnimationIKEffector::GetTargetPosition() const
+const XE::Vec3 & XE::AnimationIKEffector::GetTargetPosition() const
 {
 	return _TargetPosition;
 }
 
-void AnimationIKEffector::SetTargetPosition( const XE::Vec3 & val )
+void XE::AnimationIKEffector::SetTargetPosition( const XE::Vec3 & val )
 {
 	_TargetPosition = val;
 }
 
-const XE::Quat & AnimationIKEffector::GetTargetRotation() const
+const XE::Quat & XE::AnimationIKEffector::GetTargetRotation() const
 {
 	return _TargetRotation;
 }
 
-void AnimationIKEffector::SetTargetRotation( const XE::Quat & val )
+void XE::AnimationIKEffector::SetTargetRotation( const XE::Quat & val )
 {
 	_TargetRotation = val;
 }
 
-XE::uint32 AnimationIKEffector::GetChainLength() const
+XE::uint32 XE::AnimationIKEffector::GetChainLength() const
 {
 	return _ChainLength;
 }
 
-void AnimationIKEffector::SetChainLength( XE::uint32 val )
+void XE::AnimationIKEffector::SetChainLength( XE::uint32 val )
 {
 	_ChainLength = val;
 }
 
-XE::float32 AnimationIKEffector::GetWeight() const
+XE::float32 XE::AnimationIKEffector::GetWeight() const
 {
 	return _Weight;
 }
 
-void AnimationIKEffector::SetWeight( XE::float32 val )
+void XE::AnimationIKEffector::SetWeight( XE::float32 val )
 {
 	_Weight = val;
 }
 
-XE::float32 AnimationIKEffector::GetRotationWeight() const
+XE::float32 XE::AnimationIKEffector::GetRotationWeight() const
 {
 	return _RotationWeight;
 }
 
-void AnimationIKEffector::SetRotationWeight( XE::float32 val )
+void XE::AnimationIKEffector::SetRotationWeight( XE::float32 val )
 {
 	_RotationWeight = val;
 }
 
-XE::float32 AnimationIKEffector::GetRotationDecay() const
+XE::float32 XE::AnimationIKEffector::GetRotationDecay() const
 {
 	return _RotationDecay;
 }
 
-void AnimationIKEffector::SetRotationDecay( XE::float32 val )
+void XE::AnimationIKEffector::SetRotationDecay( XE::float32 val )
 {
 	_RotationDecay = val;
 }
 
-XE::uint32 AnimationIKEffector::GetBoneJoint() const
+XE::uint32 XE::AnimationIKEffector::GetBoneJoint() const
 {
 	return _BoneJoint;
 }
 
-void AnimationIKEffector::SetBoneJoint( XE::uint32 val )
+void XE::AnimationIKEffector::SetBoneJoint( XE::uint32 val )
 {
 	_BoneJoint = val;
 }
 
-BEG_META( AnimationIKConstraint )
+BEG_META( XE::AnimationIKConstraint )
 type->Property( "Stiffness", &AnimationIKConstraint::GetStiffness, &AnimationIKConstraint::SetStiffness );
 type->Property( "Stretchiness", &AnimationIKConstraint::GetStretchiness, &AnimationIKConstraint::SetStretchiness );
 type->Property( "LengthConstraints", &AnimationIKConstraint::GetLengthConstraints, &AnimationIKConstraint::SetLengthConstraints );
@@ -132,38 +132,38 @@ XE::AnimationIKConstraint::~AnimationIKConstraint()
 
 }
 
-XE::float32 AnimationIKConstraint::GetStiffness() const
+XE::float32 XE::AnimationIKConstraint::GetStiffness() const
 {
 	return _Stiffness;
 }
 
-void AnimationIKConstraint::SetStiffness( XE::float32 val )
+void XE::AnimationIKConstraint::SetStiffness( XE::float32 val )
 {
 	_Stiffness = Mathf::Clamp( val, 0.0f, 1.0f );
 }
 
-XE::float32 AnimationIKConstraint::GetStretchiness() const
+XE::float32 XE::AnimationIKConstraint::GetStretchiness() const
 {
 	return _Stretchiness;
 }
 
-void AnimationIKConstraint::SetStretchiness( XE::float32 val )
+void XE::AnimationIKConstraint::SetStretchiness( XE::float32 val )
 {
 	_Stretchiness = val;
 }
 
-const XE::Vec2 & AnimationIKConstraint::GetLengthConstraints() const
+const XE::Vec2 & XE::AnimationIKConstraint::GetLengthConstraints() const
 {
 	return _LengthConstraints;
 }
 
-void AnimationIKConstraint::SetLengthConstraints( const XE::Vec2 & val )
+void XE::AnimationIKConstraint::SetLengthConstraints( const XE::Vec2 & val )
 {
 	_LengthConstraints = val;
 }
 
 
-BEG_META( AnimationIKSolver )
+BEG_META( XE::AnimationIKSolver )
 type->Property( "EffectorList", &AnimationIKSolver::_EffectorList );
 type->Property( "ConstraintList", &AnimationIKSolver::_ConstraintList );
 type->Property( "SolverTreeValid", &AnimationIKSolver::_SolverTreeValid );
@@ -180,7 +180,7 @@ type->Property( "MaxIterations", &AnimationIKSolver::_MaxIterations );
 type->Property( "Tolerance", &AnimationIKSolver::_Tolerance );
 END_META()
 
-void CreateNodes( ik_node_t * parent, SkeletonPtr skeleton, ik_solver_t * solver )
+void CreateNodes( ik_node_t * parent, XE::SkeletonPtr skeleton, ik_solver_t * solver )
 {
 // 	const auto & children = skeleton->GetBoneJointChildren( parent->guid );
 // 	for( auto child : children )
@@ -210,7 +210,7 @@ XE::AnimationIKSolver::~AnimationIKSolver()
 
 }
 
-void AnimationIKSolver::Startup()
+void XE::AnimationIKSolver::Startup()
 {
 	ik_solver_t * solver = nullptr;
 
@@ -264,23 +264,23 @@ void AnimationIKSolver::Startup()
 	_Handle = ( XE::uint64 )( solver );
 }
 
-void AnimationIKSolver::Update( XE::float32 val )
+void XE::AnimationIKSolver::Update( XE::float32 val )
 {
 
 }
 
-void AnimationIKSolver::Clearup()
+void XE::AnimationIKSolver::Clearup()
 {
 	ik.solver.destroy( (ik_solver_t * )_Handle.GetValue() );
 	_Handle = AnimationIKSolverHandle::Invalid;
 }
 
-const SkeletonPtr & AnimationIKSolver::GetSkeleton() const
+const XE::SkeletonPtr & XE::AnimationIKSolver::GetSkeleton() const
 {
 	return _Skeleton;
 }
 
-void AnimationIKSolver::SetSkeletion( const SkeletonPtr & val )
+void XE::AnimationIKSolver::SetSkeletion( const SkeletonPtr & val )
 {
 	_Skeleton = val;
 }
@@ -380,22 +380,22 @@ XE::float32 XE::AnimationIKSolver::GetTolerance() const
 	return _Tolerance;
 }
 
-const Array<AnimationIKEffector> & AnimationIKSolver::GetIKEffectors() const
+const XE::Array<XE::AnimationIKEffector> & XE::AnimationIKSolver::GetIKEffectors() const
 {
 	return _EffectorList;
 }
 
-void AnimationIKSolver::SetIKRffectors( const Array<AnimationIKEffector> & val )
+void XE::AnimationIKSolver::SetIKRffectors( const XE::Array<XE::AnimationIKEffector> & val )
 {
 	_EffectorList = val;
 }
 
-const Array<AnimationIKConstraint> & AnimationIKSolver::GetIKConstraints() const
+const XE::Array<XE::AnimationIKConstraint> & XE::AnimationIKSolver::GetIKConstraints() const
 {
 	return _ConstraintList;
 }
 
-void AnimationIKSolver::SetIKConstraints( const Array<AnimationIKConstraint> & val )
+void XE::AnimationIKSolver::SetIKConstraints( const XE::Array<XE::AnimationIKConstraint> & val )
 {
 	_ConstraintList = val;
 }

@@ -9,15 +9,15 @@
 #include <rapidjson/istreamwrapper.h>
 #include <rapidjson/ostreamwrapper.h>
 
-USING_XE
 
-Archive::Archive( ArchiveType val )
+
+XE::Archive::Archive( ArchiveType val )
 	:_Type( val )
 {
 
 }
 
-ArchiveType Archive::GetType() const
+XE::ArchiveType XE::Archive::GetType() const
 {
 	return _Type;
 }

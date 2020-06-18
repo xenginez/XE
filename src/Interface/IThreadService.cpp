@@ -1,8 +1,8 @@
 #include "IThreadService.h"
 
-USING_XE
 
-BEG_META( IThreadService )
+
+BEG_META( XE::IThreadService )
 END_META()
 
 XE::IThreadService::IThreadService()

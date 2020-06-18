@@ -2,7 +2,7 @@
 
 #include <tbb/concurrent_queue.h>
 
-USING_XE
+
 
 namespace std
 {

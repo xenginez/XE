@@ -5,9 +5,9 @@
 #include "Plane.h"
 #include "Sphere.h"
 
-USING_XE
 
-BEG_META( AABB )
+
+BEG_META( XE::AABB )
 type->Property( "min", &AABB::min );
 type->Property( "max", &AABB::max );
 END_META()

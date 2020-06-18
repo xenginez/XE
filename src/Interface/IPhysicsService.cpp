@@ -1,8 +1,8 @@
 #include "IPhysicsService.h"
 
-USING_XE
 
-BEG_META( IPhysicsService )
+
+BEG_META( XE::IPhysicsService )
 END_META()
 
 XE::IPhysicsService::IPhysicsService()

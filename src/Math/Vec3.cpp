@@ -2,23 +2,23 @@
 
 #include "Mathf.h"
 
-USING_XE
 
-BEG_META( Vec3 )
+
+BEG_META( XE::Vec3 )
 type->Property( "x", &Vec3::x );
 type->Property( "y", &Vec3::y );
 type->Property( "z", &Vec3::z );
 END_META()
 
-const Vec3 Vec3::One = { 1, 1, 1 };
-const Vec3 Vec3::Zero = { 0, 0, 0 };
-const Vec3 Vec3::Forward = { 0, 0, 1 };
-const Vec3 Vec3::Backward = { 0, 0, -1 };
-const Vec3 Vec3::Left = { -1, 0, 0 };
-const Vec3 Vec3::Right = { 1, 0, 0 };
-const Vec3 Vec3::Up = { 0, 1, 0 };
-const Vec3 Vec3::Down = { 0, -1, 0 };
-const Vec3 Vec3::Infinity = { Mathf::Infinity , Mathf::Infinity, Mathf::Infinity };
+const XE::Vec3 XE::Vec3::One = { 1, 1, 1 };
+const XE::Vec3 XE::Vec3::Zero = { 0, 0, 0 };
+const XE::Vec3 XE::Vec3::Forward = { 0, 0, 1 };
+const XE::Vec3 XE::Vec3::Backward = { 0, 0, -1 };
+const XE::Vec3 XE::Vec3::Left = { -1, 0, 0 };
+const XE::Vec3 XE::Vec3::Right = { 1, 0, 0 };
+const XE::Vec3 XE::Vec3::Up = { 0, 1, 0 };
+const XE::Vec3 XE::Vec3::Down = { 0, -1, 0 };
+const XE::Vec3 XE::Vec3::Infinity = { XE::Mathf::Infinity , XE::Mathf::Infinity, XE::Mathf::Infinity };
 
 XE::Vec3::Vec3()
 	:x( 0 ), y( 0 ), z( 0 )

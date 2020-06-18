@@ -1,17 +1,17 @@
 #include "ProfilerService.h"
 
-USING_XE
 
-BEG_META(ProfilerService)
+
+BEG_META( XE::ProfilerService )
 END_META()
 
 struct XE::ProfilerService::Private
 {
-	using FramePair = Pair< ProfilerFramePtr, Stack<ProfilerItem*> >;
+	using FramePair = Pair< ProfilerFramePtr, Stack<ProfilerItem *> >;
 
 	std::mutex Lock;
-	UnorderedMap< std::thread::id, FramePair > Frames;
-	UnorderedMap< std::thread::id, Array<IProfilerService::ListenerType> > Callbacks;
+	XE::UnorderedMap< std::thread::id, FramePair > Frames;
+	XE::UnorderedMap< std::thread::id, XE::Array<XE::IProfilerService::ListenerType> > Callbacks;
 };
 
 
@@ -56,10 +56,10 @@ void XE::ProfilerService::BeginFrame()
 	XE_ASSERT( it == _p->Frames.end() );
 
 	ProfilerFramePtr frame = MakeShared<ProfilerFrame>();
-	
+
 	frame->tid = id;
 
-	_p->Frames[id] = std::make_pair( frame, Stack<ProfilerItem*>() );
+	_p->Frames[id] = std::make_pair( frame, Stack<ProfilerItem *>() );
 }
 
 void XE::ProfilerService::EndFrame()
@@ -73,7 +73,7 @@ void XE::ProfilerService::EndFrame()
 	auto rit = _p->Callbacks.find( id );
 	if( rit != _p->Callbacks.end() )
 	{
-		for( auto& func : rit->second )
+		for( auto & func : rit->second )
 		{
 			if( func )
 			{
@@ -85,7 +85,7 @@ void XE::ProfilerService::EndFrame()
 	_p->Frames.erase( it );
 }
 
-XE::uint64 XE::ProfilerService::RegisterListener( const ListenerType& val )
+XE::uint64 XE::ProfilerService::RegisterListener( const ListenerType & val )
 {
 	auto id = std::this_thread::get_id();
 
@@ -109,7 +109,7 @@ bool XE::ProfilerService::UnregisterListener( XE::uint64 val )
 	return true;
 }
 
-XE::ProfilerItem* XE::ProfilerService::AcquireTrack( const String& val )
+XE::ProfilerItem * XE::ProfilerService::AcquireTrack( const XE::String & val )
 {
 	auto id = std::this_thread::get_id();
 
@@ -117,7 +117,7 @@ XE::ProfilerItem* XE::ProfilerService::AcquireTrack( const String& val )
 
 	XE_ASSERT( it != _p->Frames.end() );
 
-	ProfilerItem* item = nullptr;
+	ProfilerItem * item = nullptr;
 	if( it->second.second.empty() )
 	{
 		item = &( it->second.first->Children.emplace_back( ProfilerItem() ) );
@@ -134,7 +134,7 @@ XE::ProfilerItem* XE::ProfilerService::AcquireTrack( const String& val )
 	return item;
 }
 
-void XE::ProfilerService::ReleaseTrack( ProfilerItem* val )
+void XE::ProfilerService::ReleaseTrack( XE::ProfilerItem * val )
 {
 	val->StopTime = std::chrono::system_clock::now();
 

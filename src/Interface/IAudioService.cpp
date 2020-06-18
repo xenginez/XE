@@ -1,8 +1,8 @@
 #include "IAudioService.h"
 
-USING_XE
 
-BEG_META( IAudioService )
+
+BEG_META( XE::IAudioService )
 END_META()
 
 XE::IAudioService::IAudioService()

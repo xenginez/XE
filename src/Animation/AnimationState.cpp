@@ -3,9 +3,9 @@
 #include "AnimationTrigger.h"
 #include "AnimationController.h"
 
-USING_XE
 
-BEG_META( AnimationState )
+
+BEG_META( XE::AnimationState )
 type->Property( "Looped", &AnimationState::_Looped );
 type->Property( "WaitOut", &AnimationState::_WaitOut );
 type->Property( "MaxTime", &AnimationState::_MaxTime );
@@ -81,47 +81,47 @@ void XE::AnimationState::Clearup()
 	_Playing = false;
 }
 
-void AnimationState::OnEntry()
+void XE::AnimationState::OnEntry()
 {
 
 }
 
-void AnimationState::OnUpdate( XE::float32 val )
+void XE::AnimationState::OnUpdate( XE::float32 val )
 {
 
 }
 
-void AnimationState::OnExit()
+void XE::AnimationState::OnExit()
 {
 
 }
 
-bool AnimationState::GetLooped() const
+bool XE::AnimationState::GetLooped() const
 {
 	return _Looped;
 }
 
-void AnimationState::SetLooped( bool val )
+void XE::AnimationState::SetLooped( bool val )
 {
 	_Looped = val;
 }
 
-bool AnimationState::GetPlaying() const
+bool XE::AnimationState::GetPlaying() const
 {
 	return _Playing;
 }
 
-void AnimationState::SetPlaying( bool val )
+void XE::AnimationState::SetPlaying( bool val )
 {
 	_Playing = val;
 }
 
-bool AnimationState::GetWaitOut() const
+bool XE::AnimationState::GetWaitOut() const
 {
 	return _WaitOut;
 }
 
-void AnimationState::SetWaitOut( bool val )
+void XE::AnimationState::SetWaitOut( bool val )
 {
 	_WaitOut = val;
 }
@@ -131,17 +131,17 @@ const XE::Array<XE::uint32> & XE::AnimationState::GetTransitions() const
 	return _Transitions;
 }
 
-void XE::AnimationState::SetTransitions( const Array<XE::uint32> & val )
+void XE::AnimationState::SetTransitions( const XE::Array<XE::uint32> & val )
 {
 	_Transitions = val;
 }
 
-const XE::Array<AnimationTriggerPtr> & AnimationState::GetTriggers() const
+const XE::Array<XE::AnimationTriggerPtr> & XE::AnimationState::GetTriggers() const
 {
 	return _Triggers;
 }
 
-void AnimationState::SetTriggers( const XE::Array<AnimationTriggerPtr> & val )
+void XE::AnimationState::SetTriggers( const XE::Array<XE::AnimationTriggerPtr> & val )
 {
 	_Triggers = val;
 }
@@ -157,15 +157,15 @@ void XE::AnimationState::SetAnimationController( const XE::AnimationControllerPt
 }
 
 
-BEG_META( AnimationStateAny )
+BEG_META( XE::AnimationStateAny )
 END_META()
 
-AnimationStateAny::AnimationStateAny()
+XE::AnimationStateAny::AnimationStateAny()
 {
 
 }
 
-AnimationStateAny::~AnimationStateAny()
+XE::AnimationStateAny::~AnimationStateAny()
 {
 
 }

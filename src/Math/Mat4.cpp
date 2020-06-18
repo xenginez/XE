@@ -2,9 +2,9 @@
 
 #include "Mathf.h"
 
-USING_XE
 
-BEG_META( Mat4 )
+
+BEG_META( XE::Mat4 )
 type->Property( "m00", &Mat4::m00 );
 type->Property( "m01", &Mat4::m01 );
 type->Property( "m02", &Mat4::m02 );
@@ -23,11 +23,11 @@ type->Property( "m32", &Mat4::m32 );
 type->Property( "m33", &Mat4::m33 );
 END_META()
 
-const Mat4 Mat4::Zero = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+const XE::Mat4 XE::Mat4::Zero = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-const Mat4 Mat4::Identity = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
+const XE::Mat4 XE::Mat4::Identity = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
 
-Mat4::Mat4()
+XE::Mat4::Mat4()
 	: m00( 0.0f ), m01( 0.0f ), m02( 0.0f ), m03( 0.0f )
 	, m10( 0.0f ), m11( 0.0f ), m12( 0.0f ), m13( 0.0f )
 	, m20( 0.0f ), m21( 0.0f ), m22( 0.0f ), m23( 0.0f )
@@ -35,7 +35,7 @@ Mat4::Mat4()
 {
 }
 
-Mat4::Mat4( XE::real m00, XE::real m01, XE::real m02, XE::real m03, XE::real m10, XE::real m11, XE::real m12, XE::real m13, XE::real m20, XE::real m21, XE::real m22, XE::real m23, XE::real m30, XE::real m31, XE::real m32, XE::real m33 )
+XE::Mat4::Mat4( XE::real m00, XE::real m01, XE::real m02, XE::real m03, XE::real m10, XE::real m11, XE::real m12, XE::real m13, XE::real m20, XE::real m21, XE::real m22, XE::real m23, XE::real m30, XE::real m31, XE::real m32, XE::real m33 )
 	:m00( m00 ), m01( m01 ), m02( m02 ), m03( m03 )
 	, m10( m10 ), m11( m11 ), m12( m12 ), m13( m13 )
 	, m20( m20 ), m21( m21 ), m22( m22 ), m23( m23 )
@@ -44,7 +44,7 @@ Mat4::Mat4( XE::real m00, XE::real m01, XE::real m02, XE::real m03, XE::real m10
 
 }
 
-Mat4::Mat4( const Mat3& val )
+XE::Mat4::Mat4( const Mat3& val )
 	:m00( val.m00 ), m01( val.m01 ), m02( val.m02 ), m03( 0 )
 	, m10( val.m10 ), m11( val.m11 ), m12( val.m12 ), m13( 0 )
 	, m20( val.m20 ), m21( val.m21 ), m22( val.m22 ), m23( 0 )
@@ -53,7 +53,7 @@ Mat4::Mat4( const Mat3& val )
 
 }
 
-Mat4::Mat4( const Mat4& val )
+XE::Mat4::Mat4( const Mat4& val )
 	:m00( val.m00 ), m01( val.m01 ), m02( val.m02 ), m03( val.m03 )
 	, m10( val.m10 ), m11( val.m11 ), m12( val.m12 ), m13( val.m13 )
 	, m20( val.m20 ), m21( val.m21 ), m22( val.m22 ), m23( val.m23 )
@@ -62,7 +62,7 @@ Mat4::Mat4( const Mat4& val )
 
 }
 
-Mat4& Mat4::operator=( const Mat3& val )
+XE::Mat4& XE::Mat4::operator=( const Mat3& val )
 {
 	m00 = val.m00; m01 = val.m01; m02 = val.m02; m03 = 0;
 	m10 = val.m10; m11 = val.m11; m12 = val.m12; m13 = 0;
@@ -72,7 +72,7 @@ Mat4& Mat4::operator=( const Mat3& val )
 	return *this;
 }
 
-Mat4& Mat4::operator=( const Mat4& val )
+XE::Mat4& XE::Mat4::operator=( const Mat4& val )
 {
 	m00 = val.m00; m01 = val.m01; m02 = val.m02; m03 = val.m03;
 	m10 = val.m10; m11 = val.m11; m12 = val.m12; m13 = val.m13;

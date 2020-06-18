@@ -1,8 +1,8 @@
 #include "Model.h"
 
-USING_XE
 
-BEG_META( Model )
+
+BEG_META( XE::Model )
 END_META()
 
 XE::Model::Model()

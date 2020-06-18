@@ -2,11 +2,11 @@
 
 #include "BehaviorTree.h"
 
-USING_XE
 
-BEG_META( Node )
-type->Property( "Parent", &Node::_Parent, IMetaProperty::NoDesign );
-type->Property( "Handle", &Node::_Handle, IMetaProperty::NoDesign );
+
+BEG_META( XE::Node )
+type->Property( "Parent", &XE::Node::_Parent, XE::IMetaProperty::NoDesign );
+type->Property( "Handle", &XE::Node::_Handle, XE::IMetaProperty::NoDesign );
 END_META()
 
 XE::Node::Node()
@@ -25,17 +25,17 @@ XE::NodeHandle XE::Node::GetHandle() const
 	return _Handle;
 }
 
-void Node::SetHandle( XE::NodeHandle val )
+void XE::Node::SetHandle( XE::NodeHandle val )
 {
 	_Handle = val;
 }
 
-NodeHandle Node::GetParent() const
+XE::NodeHandle XE::Node::GetParent() const
 {
 	return _Parent;
 }
 
-void Node::SetParent( NodeHandle val )
+void XE::Node::SetParent( XE::NodeHandle val )
 {
 	_Parent = val;
 }
@@ -90,12 +90,12 @@ void XE::Node::OnClearup()
 	SetStatus( NodeStatus::Finish );
 }
 
-void Node::OnRemove()
+void XE::Node::OnRemove()
 {
 
 }
 
-void Node::OnResetHandle()
+void XE::Node::OnResetHandle()
 {
 
 }

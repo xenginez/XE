@@ -1,8 +1,8 @@
 #include "CRC32.h"
 
-USING_XE
 
-BEG_META( CRC32 )
+
+BEG_META( XE::CRC32 )
 END_META()
 
 
@@ -52,7 +52,7 @@ static unsigned int crc32_table[] = {
    0xb40bbe37, 0xc30c8ea1, 0x5a05df1b, 0x2d02ef8d
 };
 
-XE::uint32 CRC32::GetCRC32( XE::uint32 salt, const XE::uint8 * src, XE::uint64 size )
+XE::uint32 XE::CRC32::GetCRC32( XE::uint32 salt, const XE::uint8 * src, XE::uint64 size )
 {
 	salt ^= ~0;
 

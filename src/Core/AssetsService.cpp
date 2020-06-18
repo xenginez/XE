@@ -3,15 +3,15 @@
 #include <zipper/unzipper.h>
 #include <tbb/concurrent_hash_map.h>
 
-USING_XE
 
-BEG_META( AssetsService )
+
+BEG_META( XE::AssetsService )
 END_META()
 
-using AssetTuple = std::tuple < AssetStatus, ObjectPtr, XE::float32 >;
-using AssetMap = tbb::concurrent_hash_map < MD5, AssetTuple, MD5HashCompare >;
+using AssetTuple = std::tuple < XE::AssetStatus, XE::ObjectPtr, XE::float32 >;
+using AssetMap = tbb::concurrent_hash_map < XE::MD5, AssetTuple, MD5HashCompare >;
 
-struct AssetsService::Private
+struct XE::AssetsService::Private
 {
 	AssetMap _Assets;
 	XE::float32 _Timer;
@@ -80,7 +80,7 @@ void XE::AssetsService::Clearup()
 	_p->_MD5Index.clear();
 }
 
-XE::ObjectPtr XE::AssetsService::Load( const String & val )
+XE::ObjectPtr XE::AssetsService::Load( const XE::String & val )
 {
 	auto obj = GetAsset( val );
 
@@ -101,7 +101,7 @@ XE::ObjectPtr XE::AssetsService::Load( const String & val )
 	return obj;
 }
 
-std::shared_future< ObjectPtr > XE::AssetsService::AsyncLoad( const String & val )
+std::shared_future< XE::ObjectPtr > XE::AssetsService::AsyncLoad( const XE::String & val )
 {
 	auto obj = GetAsset( val );
 
@@ -118,7 +118,7 @@ std::shared_future< ObjectPtr > XE::AssetsService::AsyncLoad( const String & val
 	return promise.get_future();
 }
 
-XE::ObjectPtr XE::AssetsService::GetAsset( const String & val ) const
+XE::ObjectPtr XE::AssetsService::GetAsset( const XE::String & val ) const
 {
 	AssetMap::accessor it;
 	if( _p->_Assets.find( it, PathToMD5( val ) ) )
@@ -191,7 +191,7 @@ void XE::AssetsService::ResetMD5Cache()
 	}
 }
 
-XE::MD5 AssetsService::PathToMD5( const XE::String & val ) const
+XE::MD5 XE::AssetsService::PathToMD5( const XE::String & val ) const
 {
 	XE::MD5 md5;
 
@@ -205,7 +205,7 @@ XE::MD5 AssetsService::PathToMD5( const XE::String & val ) const
 	return md5;
 }
 
-void XE::AssetsService::SetAssetStatus( const XE::MD5 & md5, const XE::ObjectPtr & asset, AssetStatus status )
+void XE::AssetsService::SetAssetStatus( const XE::MD5 & md5, const XE::ObjectPtr & asset, XE::AssetStatus status )
 {
 	AssetMap::accessor it;
 	if( _p->_Assets.find( it, md5 ) )

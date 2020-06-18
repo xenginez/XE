@@ -2,9 +2,9 @@
 
 #include "Mathf.h"
 
-USING_XE
 
-BEG_META( Vec2 )
+
+BEG_META( XE::Vec2 )
 type->Property( "x", &Vec2::x );
 type->Property( "y", &Vec2::y );
 END_META()

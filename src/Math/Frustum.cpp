@@ -1,8 +1,8 @@
 #include "Frustum.h"
 
-USING_XE
 
-BEG_META( Frustum )
+
+BEG_META( XE::Frustum )
 type->Property( "top", &Frustum::top );
 type->Property( "bottom", &Frustum::bottom );
 type->Property( "left", &Frustum::left );

@@ -1,6 +1,6 @@
 #include "XSMetaEnum.h"
 
-USING_XE
+
 
 XE::XSMetaEnum::XSMetaEnum( const String & Name, IMetaInfoPtr Owner, const String & ModuleName )
 	:IMetaEnum( Name, sizeof( XE::int64 ), Owner, ModuleName )

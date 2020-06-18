@@ -2,9 +2,9 @@
 
 #include "BehaviorTree.h"
 
-USING_XE
 
-BEG_META( ConditionNode )
+
+BEG_META( XE::ConditionNode )
 type->Property( "Child", &ConditionNode::_Child );
 type->Property( "MultiJudgment", &ConditionNode::_MultiJudgment );
 END_META()
@@ -25,7 +25,7 @@ XE::NodeHandle XE::ConditionNode::GetChild() const
 	return _Child;
 }
 
-XE::NodeHandle XE::ConditionNode::AddChild( const IMetaClassPtr & val )
+XE::NodeHandle XE::ConditionNode::AddChild( const XE::IMetaClassPtr & val )
 {
 	_Child = GetBehaviorTree()->AddNode( val );
 	GetBehaviorTree()->GetNode( _Child )->SetParent( GetHandle() );
@@ -76,7 +76,7 @@ void XE::ConditionNode::OnClearup()
 {
 	Super::OnClearup();
 
-	if( GetBehaviorTree()->GetNode( GetChild() )->GetStatus() != NodeStatus::Finish )
+	if( GetBehaviorTree()->GetNode( GetChild() )->GetStatus() != XE::NodeStatus::Finish )
 	{
 		GetBehaviorTree()->GetNode( GetChild() )->Clearup();
 	}

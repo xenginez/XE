@@ -1,6 +1,7 @@
 #include "BehaviorComponent.h"
 
-USING_XE
+BEG_META( XE::BehaviorComponent )
+END_META()
 
 XE::BehaviorComponent::BehaviorComponent()
 {

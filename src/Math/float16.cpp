@@ -1,8 +1,8 @@
 #include "float16.h"
 
-USING_XE
 
-BEG_META(float16)
+
+BEG_META( XE::float16 )
 END_META()
 
 const XE::float16 XE::float16::Nan = std::numeric_limits < XE::float32 >::quiet_NaN();

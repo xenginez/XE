@@ -2,9 +2,9 @@
 
 #include "BehaviorTree.h"
 
-USING_XE
 
-BEG_META( CompositeNode )
+
+BEG_META( XE::CompositeNode )
 type->Property( "Children", &CompositeNode::_Children );
 END_META()
 
@@ -18,7 +18,7 @@ XE::CompositeNode::~CompositeNode()
 
 }
 
-const XE::Array<NodeHandle> & XE::CompositeNode::GetChildren() const
+const XE::Array<XE::NodeHandle> & XE::CompositeNode::GetChildren() const
 {
 	return _Children;
 }
@@ -56,15 +56,15 @@ void XE::CompositeNode::OnRemove()
 	}
 }
 
-XE::NodeHandle CompositeNode::AddChild( const IMetaClassPtr & val )
+XE::NodeHandle XE::CompositeNode::AddChild( const XE::IMetaClassPtr & val )
 {
-	NodeHandle handle = GetBehaviorTree()->AddNode( val );
+	XE::NodeHandle handle = GetBehaviorTree()->AddNode( val );
 	GetBehaviorTree()->GetNode( handle )->SetParent( GetHandle() );
 	_Children.push_back( handle );
 	return handle;
 }
 
-void CompositeNode::RemoveChild( NodeHandle val )
+void XE::CompositeNode::RemoveChild( XE::NodeHandle val )
 {
 	auto it = std::find( _Children.begin(), _Children.end(), val );
 
@@ -76,7 +76,7 @@ void CompositeNode::RemoveChild( NodeHandle val )
 	}
 }
 
-void CompositeNode::OnResetHandle()
+void XE::CompositeNode::OnResetHandle()
 {
 	for( const auto & handle : _Children )
 	{
@@ -84,7 +84,7 @@ void CompositeNode::OnResetHandle()
 	}
 }
 
-BEG_META( SequenceNode )
+BEG_META( XE::SequenceNode )
 END_META()
 
 XE::SequenceNode::SequenceNode()
@@ -113,16 +113,16 @@ void XE::SequenceNode::OnUpdate( XE::float32 dt )
 
 	if( NodePtr node = GetBehaviorTree()->GetNode( GetChildren()[_Current] ) )
 	{
-		if ( node->GetStatus() == NodeStatus::None )
+		if ( node->GetStatus() == XE::NodeStatus::None )
 		{
 			node->Startup();
 		}
 
-		if ( node->GetStatus() == NodeStatus::Running )
+		if ( node->GetStatus() == XE::NodeStatus::Running )
 		{
 			node->Update( dt );
 		}
-		else if ( node->GetStatus() == NodeStatus::Success || node->GetStatus() == NodeStatus::Failure )
+		else if ( node->GetStatus() == XE::NodeStatus::Success || node->GetStatus() == XE::NodeStatus::Failure )
 		{
 			node->Clearup();
 			_Current++;
@@ -131,11 +131,11 @@ void XE::SequenceNode::OnUpdate( XE::float32 dt )
 
 	if ( _Current == children.size() )
 	{
-		SetStatus( NodeStatus::Success );
+		SetStatus( XE::NodeStatus::Success );
 	}
 }
 
-BEG_META( SelectorNode )
+BEG_META( XE::SelectorNode )
 END_META()
 
 XE::SelectorNode::SelectorNode()
@@ -164,36 +164,36 @@ void XE::SelectorNode::OnUpdate( XE::float32 dt )
 
 	if( NodePtr node = GetBehaviorTree()->GetNode( GetChildren()[_Current] ) )
 	{
-		if ( node->GetStatus() == NodeStatus::None )
+		if ( node->GetStatus() == XE::NodeStatus::None )
 		{
 			node->Startup();
 		}
 
-		if ( node->GetStatus() == NodeStatus::Running )
+		if ( node->GetStatus() == XE::NodeStatus::Running )
 		{
 			node->Update( dt );
 		}
 
-		if ( node->GetStatus() == NodeStatus::Failure )
+		if ( node->GetStatus() == XE::NodeStatus::Failure )
 		{
 			node->Clearup();
 			_Current++;
 		}
-		else if ( node->GetStatus() == NodeStatus::Success )
+		else if ( node->GetStatus() == XE::NodeStatus::Success )
 		{
 			node->Clearup();
-			SetStatus( NodeStatus::Success );
+			SetStatus( XE::NodeStatus::Success );
 			return;
 		}
 	}
 
 	if ( _Current == children.size() )
 	{
-		SetStatus( NodeStatus::Failure );
+		SetStatus( XE::NodeStatus::Failure );
 	}
 }
 
-BEG_META( ParallelNode )
+BEG_META( XE::ParallelNode )
 END_META()
 
 XE::ParallelNode::ParallelNode()
@@ -218,22 +218,22 @@ void XE::ParallelNode::OnUpdate( XE::float32 dt )
 	{
 		NodePtr node = GetBehaviorTree()->GetNode( handle );
 
-		if ( node->GetStatus() == NodeStatus::None )
+		if ( node->GetStatus() == XE::NodeStatus::None )
 		{
 			node->Startup();
 		}
 
-		if ( node->GetStatus() == NodeStatus::Running )
+		if ( node->GetStatus() == XE::NodeStatus::Running )
 		{
 			node->Update( dt );
 		}
 
-		if ( node->GetStatus() == NodeStatus::Success || node->GetStatus() == NodeStatus::Failure )
+		if ( node->GetStatus() == XE::NodeStatus::Success || node->GetStatus() == XE::NodeStatus::Failure )
 		{
 			node->Clearup();
 		}
 
-		if ( node->GetStatus() != NodeStatus::Finish )
+		if ( node->GetStatus() != XE::NodeStatus::Finish )
 		{
 			IsFinish = false;
 		}
@@ -241,6 +241,6 @@ void XE::ParallelNode::OnUpdate( XE::float32 dt )
 
 	if ( IsFinish )
 	{
-		SetStatus( NodeStatus::Success );
+		SetStatus( XE::NodeStatus::Success );
 	}
 }

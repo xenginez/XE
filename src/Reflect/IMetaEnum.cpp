@@ -1,6 +1,6 @@
 #include "IMetaEnum.h"
 
-USING_XE
+
 
 XE::IMetaEnum::IMetaEnum( const String & Name, XE::uint64 Size, IMetaInfoPtr Owner, const String & ModuleName /*= "XE" */ )
 	:IMetaType( Name, MetaType::ENUM, Size, Owner, ModuleName )

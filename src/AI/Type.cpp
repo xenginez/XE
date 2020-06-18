@@ -1,19 +1,19 @@
 #include "Type.h"
 
-USING_XE
 
-BEG_META( NodeStatus )
-type->Value( "None", NodeStatus::None );
-type->Value( "Running", NodeStatus::Running );
-type->Value( "Success", NodeStatus::Success );
-type->Value( "Failure", NodeStatus::Failure );
-type->Value( "Finish", NodeStatus::Finish );
+
+BEG_META( XE::NodeStatus )
+type->Value( "None", XE::NodeStatus::None );
+type->Value( "Running", XE::NodeStatus::Running );
+type->Value( "Success", XE::NodeStatus::Success );
+type->Value( "Failure", XE::NodeStatus::Failure );
+type->Value( "Finish", XE::NodeStatus::Finish );
 END_META()
 
-BEG_META( ConditionStatus )
-type->Value( "Once", ConditionStatus::Once );
-type->Value( "Always", ConditionStatus::Always );
+BEG_META( XE::ConditionStatus )
+type->Value( "Once", XE::ConditionStatus::Once );
+type->Value( "Always", XE::ConditionStatus::Always );
 END_META()
 
-IMPLEMENT_META( NodeHandle )
-IMPLEMENT_META( StateHandle )
+IMPLEMENT_META( XE::NodeHandle )
+IMPLEMENT_META( XE::StateHandle )

@@ -1,8 +1,8 @@
 #include "Key.h"
 
-USING_XE
 
-BEG_META( Key )
+
+BEG_META( XE::Key )
 type->Property( "Key", &Key::_Key );
 END_META()
 
@@ -11,7 +11,7 @@ XE::Key::Key()
 
 }
 
-XE::Key::Key( const Key & val )
+XE::Key::Key( const XE::Key & val )
 	:_Key( val._Key )
 {
 
@@ -38,32 +38,32 @@ void XE::Key::SetKey( const XE::String & val )
 	_Key = val;
 }
 
-bool XE::Key::operator<( const Key & val ) const
+bool XE::Key::operator<( const XE::Key & val ) const
 {
 	return _Key < val._Key;
 }
 
-bool XE::Key::operator>( const Key & val ) const
+bool XE::Key::operator>( const XE::Key & val ) const
 {
 	return _Key > val._Key;
 }
 
-bool XE::Key::operator<=( const Key & val ) const
+bool XE::Key::operator<=( const XE::Key & val ) const
 {
 	return _Key <= val._Key;
 }
 
-bool XE::Key::operator>=( const Key & val ) const
+bool XE::Key::operator>=( const XE::Key & val ) const
 {
 	return _Key >= val._Key;
 }
 
-bool XE::Key::operator==( const Key & val ) const
+bool XE::Key::operator==( const XE::Key & val ) const
 {
 	return _Key == val._Key;
 }
 
-bool XE::Key::operator!=( const Key & val ) const
+bool XE::Key::operator!=( const XE::Key & val ) const
 {
 	return _Key != val._Key;
 }

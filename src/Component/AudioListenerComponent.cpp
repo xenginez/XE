@@ -1,8 +1,8 @@
 #include "AudioListenerComponent.h"
 
-USING_XE
 
-BEG_META( AudioListenerComponent )
+
+BEG_META( XE::AudioListenerComponent )
 END_META()
 
 XE::AudioListenerComponent::AudioListenerComponent()

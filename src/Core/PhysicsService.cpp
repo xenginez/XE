@@ -2,9 +2,9 @@
 
 //#include <physx/PxPhysicsAPI.h>
 
-USING_XE
 
-BEG_META( PhysicsService )
+
+BEG_META( XE::PhysicsService )
 END_META()
 
 struct XE::PhysicsService::Private

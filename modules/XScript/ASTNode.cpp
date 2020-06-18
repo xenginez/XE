@@ -2,7 +2,7 @@
 
 #include "Codegen.h"
 
-USING_XE
+
 
 ExprUnaryNode::UnaryType ExprUnaryNode::TokenTypeToUnaryType( TokenType val )
 {

@@ -1,8 +1,8 @@
 #include "ParticleComponent.h"
 
-USING_XE
 
-BEG_META( ParticleComponent )
+
+BEG_META( XE::ParticleComponent )
 END_META()
 
 XE::ParticleComponent::ParticleComponent()

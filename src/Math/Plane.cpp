@@ -5,9 +5,9 @@
 #include "AABB.h"
 #include "Sphere.h"
 
-USING_XE
 
-BEG_META( Plane )
+
+BEG_META( XE::Plane )
 type->Property( "normal", &Plane::normal );
 type->Property( "distance", &Plane::distance );
 END_META()

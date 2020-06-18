@@ -1,6 +1,6 @@
 #include "XSMetaProperty.h"
 
-USING_XE
+
 
 XE::XSMetaProperty::XSMetaProperty( const String & Name, XE::uint8 Flag, IMetaInfoPtr Value, IMetaClassPtr Owner, const String & ModuleName )
 	:IMetaProperty( Name, Flag, false, false, true, false, false, false, Value, Owner, ModuleName )

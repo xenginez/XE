@@ -1,8 +1,8 @@
 #include "BillboardComponent.h"
 
-USING_XE
 
-BEG_META( BillboardComponent )
+
+BEG_META( XE::BillboardComponent )
 END_META()
 
 XE::BillboardComponent::BillboardComponent()

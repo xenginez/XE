@@ -4,12 +4,12 @@
 
 #import <Cocoa/Cocoa.h>
 
-USING_XE
 
-IMPLEMENT_META( WindowHandle );
+
+IMPLEMENT_META( XE::WindowHandle );
 IMPLEMENT_META( ProcessHandle );
 
-Language Platform::GetDefaultLanguage()
+Language XE::Platform::GetDefaultLanguage()
 {
 	NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
 	
@@ -157,7 +157,7 @@ Language Platform::GetDefaultLanguage()
 	return Language::ENGLISH;
 }
 
-WindowHandle Platform::CreateWindow( const String & title, XE::uint32 x, XE::uint32 y, XE::uint32 w, XE::uint32 h )
+XE::WindowHandle XE::Platform::CreateWindow( const XE::String & title, XE::uint32 x, XE::uint32 y, XE::uint32 w, XE::uint32 h )
 {
 	NSRect frame = NSMakeRect(x, y, w, h);
 	
@@ -172,7 +172,7 @@ WindowHandle Platform::CreateWindow( const String & title, XE::uint32 x, XE::uin
 	return reinterpret_cast<XE::uint64>(window);
 }
 
-bool Platform::DestroyWindow( WindowHandle handle )
+bool XE::Platform::DestroyWindow( XE::WindowHandle handle )
 {
 	NSWindow * window = reinterpret_cast<NSWindow*>( handle.GetValue() );
 	
@@ -183,7 +183,7 @@ bool Platform::DestroyWindow( WindowHandle handle )
 	return true;
 }
 
-bool Platform::GrabWindow( WindowHandle handle )
+bool XE::Platform::GrabWindow( XE::WindowHandle handle )
 {
 	NSWindow * window = reinterpret_cast<NSWindow*>( handle.GetValue() );
 	
@@ -194,7 +194,7 @@ bool Platform::GrabWindow( WindowHandle handle )
 	return true;
 }
 
-bool Platform::ShowWindow( WindowHandle handle )
+bool XE::Platform::ShowWindow( XE::WindowHandle handle )
 {
 	NSWindow * window = reinterpret_cast<NSWindow*>( handle.GetValue() );
 	
@@ -203,7 +203,7 @@ bool Platform::ShowWindow( WindowHandle handle )
 	return true;
 }
 
-bool Platform::HideWindow( WindowHandle handle )
+bool XE::Platform::HideWindow( XE::WindowHandle handle )
 {
 	NSWindow * window = reinterpret_cast<NSWindow*>( handle.GetValue() );
 	
@@ -212,7 +212,7 @@ bool Platform::HideWindow( WindowHandle handle )
 	return true;
 }
 
-bool Platform::MinimizeWindow( WindowHandle handle )
+bool XE::Platform::MinimizeWindow( XE::WindowHandle handle )
 {
 	NSWindow * window = reinterpret_cast<NSWindow*>( handle.GetValue() );
 	
@@ -226,7 +226,7 @@ bool Platform::MinimizeWindow( WindowHandle handle )
 	return false;
 }
 
-bool Platform::MaximizeWindow( WindowHandle handle )
+bool XE::Platform::MaximizeWindow( XE::WindowHandle handle )
 {
 	NSWindow * window = reinterpret_cast<NSWindow*>( handle.GetValue() );
 	
@@ -240,7 +240,7 @@ bool Platform::MaximizeWindow( WindowHandle handle )
 	return false;
 }
 
-bool Platform::FullscreenWindow( WindowHandle handle )
+bool XE::Platform::FullscreenWindow( XE::WindowHandle handle )
 {
 	NSWindow * window = reinterpret_cast<NSWindow*>( handle.GetValue() );
 	
@@ -252,14 +252,14 @@ bool Platform::FullscreenWindow( WindowHandle handle )
 	return true;
 }
 
-bool Platform::GetWindowFocus( WindowHandle handle )
+bool XE::Platform::GetWindowFocus( XE::WindowHandle handle )
 {
 	NSWindow * window = reinterpret_cast<NSWindow*>( handle.GetValue() );
 	
 	return [window isKeyWindow];
 }
 
-bool Platform::SetWindowTitle( WindowHandle handle, const String & title )
+bool XE::Platform::SetWindowTitle( XE::WindowHandle handle, const XE::String & title )
 {
 	NSWindow * window = reinterpret_cast<NSWindow*>( handle.GetValue() );
 	
@@ -270,7 +270,7 @@ bool Platform::SetWindowTitle( WindowHandle handle, const String & title )
 	return true;
 }
 
-bool Platform::SetWindowRect( WindowHandle handle, XE::uint32 x, XE::uint32 y, XE::uint32 w, XE::uint32 h, bool topmost )
+bool XE::Platform::SetWindowRect( XE::WindowHandle handle, XE::uint32 x, XE::uint32 y, XE::uint32 w, XE::uint32 h, bool topmost )
 {
 	NSWindow * window = reinterpret_cast<NSWindow*>( handle.GetValue() );
 	
@@ -287,17 +287,17 @@ bool Platform::SetWindowRect( WindowHandle handle, XE::uint32 x, XE::uint32 y, X
 	return true;
 }
 
-bool Platform::ShowMouse()
+bool XE::Platform::ShowMouse()
 {
 	return true;
 }
 
-bool Platform::HideMouse()
+bool XE::Platform::HideMouse()
 {
 	return true;
 }
 
-ProcessHandle Platform::CreateProcess( const std::filesystem::path & app, const std::string & cmd, bool inherit, XE::uint32 flag )
+XE::ProcessHandle XE::Platform::CreateProcess( const std::filesystem::path & app, const std::string & cmd, bool inherit, XE::uint32 flag )
 {
 	NSTask *task;
 	task = [[NSTask alloc] init];
@@ -321,7 +321,7 @@ ProcessHandle Platform::CreateProcess( const std::filesystem::path & app, const 
 	return reinterpret_cast<XE::uint64>(task);
 }
 
-bool Platform::DestroyProcess( ProcessHandle handle, XE::uint32 code )
+bool XE::Platform::DestroyProcess( XE::ProcessHandle handle, XE::uint32 code )
 {
 	NSTask *task = reinterpret_cast<NSTask*>(handle.GetValue());
 	

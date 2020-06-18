@@ -21,9 +21,9 @@ target_link_libraries(XE
 		PhysXVehicle_static_64
 		PhysX_64
 		Recast
-		tbb
-		tbbmalloc
-		tbbmalloc_proxy
+		tbb${XE_TBB_POSTFIX}
+		tbbmalloc${XE_TBB_POSTFIX}
+		tbbmalloc_proxy${XE_TBB_POSTFIX}
 		Zipper-static${XE_POSTFIX}
 		zlibstatic${XE_POSTFIX}
 		)

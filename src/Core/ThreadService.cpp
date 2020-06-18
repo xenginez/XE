@@ -2,9 +2,9 @@
 
 #include <tbb/concurrent_queue.h>
 
-USING_XE
 
-BEG_META( ThreadService )
+
+BEG_META( XE::ThreadService )
 END_META()
 
 struct XEPThread
@@ -21,7 +21,7 @@ struct XEPThread
 
 	virtual void Notify() = 0;
 
-	virtual bool HasThreadID( const thread_id & val ) = 0;
+	virtual bool HasThreadID( const XE::thread_id & val ) = 0;
 
 };
 
@@ -63,12 +63,12 @@ struct XEPMainThread : public XEPThread
 
 	}
 
-	bool HasThreadID( const thread_id & val )  override
+	bool HasThreadID( const XE::thread_id & val )  override
 	{
 		return _ID == val;
 	}
 
-	thread_id _ID;
+	XE::thread_id _ID;
 	std::atomic<XE::uint64> _CurrentTasks;
 	tbb::concurrent_queue< std::function<void()> > _FrontTasks;
 	tbb::concurrent_queue< std::function<void()> > _BackTasks;
@@ -136,7 +136,7 @@ struct XEPSpecialThread : public XEPThread
 		_Variable.notify_one();
 	}
 
-	bool HasThreadID( const thread_id & val )  override
+	bool HasThreadID( const XE::thread_id & val )  override
 	{
 		return _Thread.get_id() == val;
 	}
@@ -216,7 +216,7 @@ struct XEPWorkThread : public XEPThread
 		_Variable.notify_one();
 	}
 
-	bool HasThreadID( const thread_id & val )  override
+	bool HasThreadID( const XE::thread_id & val )  override
 	{
 		for( const auto & it : _Threads )
 		{
@@ -231,14 +231,14 @@ struct XEPWorkThread : public XEPThread
 
 	bool _Exit = false;
 	std::mutex _Lock;
-	Array<std::thread> _Threads;
+	XE::Array<std::thread> _Threads;
 	std::condition_variable _Variable;
 	tbb::concurrent_queue< std::function<void()> > _Tasks;
 };
 
-struct ThreadService::Private
+struct XE::ThreadService::Private
 {
-	Array<XEPThread *> _Threads;
+	XE::Array<XEPThread *> _Threads;
 };
 
 XE::ThreadService::ThreadService()
@@ -259,21 +259,21 @@ void XE::ThreadService::Prepare()
 
 bool XE::ThreadService::Startup()
 {
-	_p->_Threads.resize( EnumID<ThreadType>::Get()->GetEnumCount() );
+	_p->_Threads.resize( EnumID<XE::ThreadType>::Get()->GetEnumCount() );
 
-	_p->_Threads[( XE::uint64 )ThreadType::IO] = new XEPSpecialThread();
-	_p->_Threads[( XE::uint64 )ThreadType::GAME] = new XEPMainThread();
-	_p->_Threads[( XE::uint64 )ThreadType::RENDER] = new XEPSpecialThread();
-	_p->_Threads[( XE::uint64 )ThreadType::PHYSICS] = new XEPSpecialThread();
-	_p->_Threads[( XE::uint64 )ThreadType::NAVIGATION] = new XEPSpecialThread();
-	_p->_Threads[( XE::uint64 )ThreadType::WORKS] = new XEPWorkThread();
+	_p->_Threads[( XE::uint64 )XE::ThreadType::IO] = new XEPSpecialThread();
+	_p->_Threads[( XE::uint64 )XE::ThreadType::GAME] = new XEPMainThread();
+	_p->_Threads[( XE::uint64 )XE::ThreadType::RENDER] = new XEPSpecialThread();
+	_p->_Threads[( XE::uint64 )XE::ThreadType::PHYSICS] = new XEPSpecialThread();
+	_p->_Threads[( XE::uint64 )XE::ThreadType::NAVIGATION] = new XEPSpecialThread();
+	_p->_Threads[( XE::uint64 )XE::ThreadType::WORKS] = new XEPWorkThread();
 
 	return true;
 }
 
 void XE::ThreadService::Update()
 {
-	_p->_Threads[( XE::uint64 )ThreadType::GAME]->Handler();
+	_p->_Threads[( XE::uint64 )XE::ThreadType::GAME]->Handler();
 }
 
 void XE::ThreadService::Clearup()
@@ -301,7 +301,7 @@ XE::ThreadType XE::ThreadService::GetCurrentThreadType() const
 	return XE::ThreadType::UNKNOWN;
 }
 
-void XE::ThreadService::_PostTask( std::function<void()> && task, ThreadType type )
+void XE::ThreadService::_PostTask( std::function<void()> && task, XE::ThreadType type )
 {
 	_p->_Threads[( XE::uint64 )type]->PushTask( std::move( task ) );
 	_p->_Threads[( XE::uint64 )type]->Notify();

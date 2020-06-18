@@ -1,8 +1,8 @@
 #include "Condition.h"
 
-USING_XE
 
-BEG_META( Condition )
+
+BEG_META( XE::Condition )
 type->Property( "NextState", &Condition::_NextState );
 END_META()
 
@@ -27,7 +27,7 @@ const XE::AIModulePtr & XE::Condition::GetAIModule() const
 	return _AIModule;
 }
 
-void XE::Condition::SetAIModule( const AIModulePtr & val )
+void XE::Condition::SetAIModule( const XE::AIModulePtr & val )
 {
 	_AIModule = val;
 }

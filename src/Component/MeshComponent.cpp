@@ -1,8 +1,8 @@
 #include "MeshComponent.h"
 
-USING_XE
 
-BEG_META( MeshComponent )
+
+BEG_META( XE::MeshComponent )
 END_META()
 
 XE::MeshComponent::MeshComponent()

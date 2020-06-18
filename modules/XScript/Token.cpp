@@ -1,6 +1,6 @@
 #include "Token.h"
 
-USING_XE
+
 
 XE::Token::Token()
 	: Type( TokenType::UNKNOWN ), Value( 0 )

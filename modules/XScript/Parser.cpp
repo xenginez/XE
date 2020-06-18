@@ -1,6 +1,6 @@
 #include "Parser.h"
 
-USING_XE
+
 
 Parser::Parser( const std::string & src )
 	:_Lex( src ), _Path( std::filesystem::current_path() )

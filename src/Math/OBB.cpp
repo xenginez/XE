@@ -2,9 +2,9 @@
 
 #include "AABB.h"
 
-USING_XE
 
-BEG_META( OBB );
+
+BEG_META( XE::OBB );
 type->Property( "center", &OBB::center );
 type->Property( "extent", &OBB::extent );
 type->Property( "rotation", &OBB::rotation );

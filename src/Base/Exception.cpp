@@ -1,6 +1,6 @@
 #include "Exception.h"
 
-USING_XE
+
 
 XE::Exception::Exception()
 {

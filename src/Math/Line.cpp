@@ -2,9 +2,9 @@
 
 #include "Mathf.h"
 
-USING_XE
 
-BEG_META( Line )
+
+BEG_META( XE::Line )
 type->Property( "start", &Line::start );
 type->Property( "end", &Line::end );
 END_META()

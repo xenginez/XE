@@ -5,9 +5,8 @@
 #include <Interface/IFramework.h>
 #include <Interface/IThreadService.h>
 
-USING_XE
 
-BEG_META( SceneComponent )
+BEG_META( XE::SceneComponent )
 type->Property( "Children", &SceneComponent::_Children, IMetaProperty::NoDesign );
 type->Property( "WorldTransform", &SceneComponent::_WorldTransform, IMetaProperty::NoDesign );
 type->Property( "RelativeTransform", &SceneComponent::_RelativeTransform, IMetaProperty::NoDesign );
@@ -177,7 +176,7 @@ void XE::SceneComponent::Clearup()
 	Super::Clearup();
 }
 
-const AABB & XE::SceneComponent::GetBoundingBox()
+const XE::AABB & XE::SceneComponent::GetBoundingBox()
 {
 	if( _Dirty )
 	{

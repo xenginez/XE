@@ -1,6 +1,9 @@
 #include "PointLightComponent.h"
 
-USING_XE
+
+BEG_META( XE::PointLightComponent )
+END_META()
+
 
 XE::PointLightComponent::PointLightComponent()
 {

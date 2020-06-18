@@ -2,7 +2,7 @@
 
 #include "IMetaClass.h"
 
-USING_XE
+
 
 XE::IMetaProperty::IMetaProperty( const String & Name, XE::uint8 Flag, bool IsStatic, bool IsConst, bool IsObject, bool IsPointer, bool IsSharedPtr, bool IsReference, IMetaInfoPtr Value, IMetaClassPtr Owner, const String & ModuleName /*= "XE" */ )
 	:IMetaInfo( Name, MetaType::PROPERTY, SP_CAST<IMetaInfo>( Owner ), ModuleName ), _Flag( Flag ), _IsStatic( IsStatic ), _IsConst( IsConst ), _IsObject( IsObject ), _IsPointer( IsPointer ), _IsSharedPtr( IsSharedPtr ), _IsReference( IsReference ), _Value( Value )

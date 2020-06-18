@@ -1,8 +1,8 @@
 #include "DecalComponent.h"
 
-USING_XE
 
-BEG_META( DecalComponent )
+
+BEG_META( XE::DecalComponent )
 END_META()
 
 XE::DecalComponent::DecalComponent()

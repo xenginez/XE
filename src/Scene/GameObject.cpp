@@ -7,9 +7,9 @@
 #include <Interface/IFramework.h>
 #include <Interface/IThreadService.h>
 
-USING_XE
 
-BEG_META( GameObject )
+
+BEG_META( XE::GameObject )
 type->Property( "Name", &GameObject::_Name );
 type->Property( "Handle", &GameObject::_Handle, IMetaProperty::NoDesign );
 type->Property( "Enabled", &GameObject::GetEnabled, &GameObject::SetEnabled );
@@ -190,7 +190,7 @@ bool XE::GameObject::RemoveSceneComponent( const XE::SceneComponentPtr & val )
 	return false;
 }
 
-bool GameObject::RemoveBehaviorComponet( const BehaviorComponentPtr & val )
+bool XE::GameObject::RemoveBehaviorComponet( const XE::BehaviorComponentPtr & val )
 {
 	auto it = std::find( _BehaviorComponents.begin(), _BehaviorComponents.end(), val );
 	if( it != _BehaviorComponents.end() )
@@ -213,7 +213,7 @@ XE::SceneComponentPtr XE::GameObject::GetRootSceneComponent() const
 	return _RootSceneComponent;
 }
 
-const XE::Array<BehaviorComponentPtr> & GameObject::GetBehaviorComponents() const
+const XE::Array<XE::BehaviorComponentPtr> & XE::GameObject::GetBehaviorComponents() const
 {
 	return _BehaviorComponents;
 }
@@ -308,7 +308,7 @@ void XE::GameObject::SetRelativeRotation( const Quat & val )
 	_RootSceneComponent->SetRelativeRotation( val );
 }
 
-const Mat4 & XE::GameObject::GetWorldTransform() const
+const XE::Mat4 & XE::GameObject::GetWorldTransform() const
 {
 	return _RootSceneComponent->GetWorldTransform();
 }
@@ -318,7 +318,7 @@ void XE::GameObject::SetWorldTransform( const Mat4 & val )
 	_RootSceneComponent->SetWorldTransform( val );
 }
 
-const Mat4 & XE::GameObject::GetRelativeTransform() const
+const XE::Mat4 & XE::GameObject::GetRelativeTransform() const
 {
 	return _RootSceneComponent->GetRelativeTransform();
 }

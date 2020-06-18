@@ -5,19 +5,19 @@
 #include "Plane.h"
 #include "Sphere.h"
 
-USING_XE
 
-BEG_META( Ray )
+
+BEG_META( XE::Ray )
 type->Property( "origin", &Ray::origin );
 type->Property( "direction", &Ray::direction );
 END_META()
 
 
-Ray::Ray()
+XE::Ray::Ray()
 {
 }
 
-Ray::Ray( const Vec3& origin, const Vec3& direction )
+XE::Ray::Ray( const XE::Vec3& origin, const XE::Vec3& direction )
 	:origin( origin ), direction( direction )
 {
 

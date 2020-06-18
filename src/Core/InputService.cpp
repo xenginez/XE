@@ -1,8 +1,8 @@
 #include "InputService.h"
 
-USING_XE
 
-BEG_META( InputService )
+
+BEG_META( XE::InputService )
 END_META()
 
 class XEPAction
@@ -10,9 +10,9 @@ class XEPAction
 	OBJECT( XEPAction )
 
 public:
-	KeyCode Code = KeyCode::None;
-	Operation Operator = XE::Operation::EQUAL;
-	Variant Operand;
+	XE::KeyCode Code = XE::KeyCode::None;
+	XE::Operation Operator = XE::Operation::EQUAL;
+	XE::Variant Operand;
 };
 BEG_META( XEPAction )
 type->Property( "Code", &XEPAction::Code );
@@ -25,8 +25,8 @@ class XEPInputAction
 	OBJECT( XEPInputAction )
 
 public:
-	String Name;
-	Array<XEPAction> Keys;
+	XE::String Name;
+	XE::Array<XEPAction> Keys;
 };
 BEG_META( XEPInputAction )
 type->Property( "Name", &XEPInputAction::Name );
@@ -34,11 +34,11 @@ type->Property( "Keys", &XEPInputAction::Keys );
 END_META()
 
 
-struct InputService::Private
+struct XE::InputService::Private
 {
-	Array<IInputControlPtr> _Controls;
-	Map<String, XEPInputAction> _Actions;
-	UnorderedMap<String, Variant> _ValueMaps;
+	XE::Array<XE::IInputControlPtr> _Controls;
+	XE::Map<XE::String, XEPInputAction> _Actions;
+	XE::UnorderedMap<XE::String, XE::Variant> _ValueMaps;
 };
 
 XE::InputService::InputService()
@@ -92,37 +92,37 @@ void XE::InputService::Clearup()
 	_p->_Controls.clear();
 }
 
-XE::int32 XE::InputService::GetPov( const String& val ) const
+XE::int32 XE::InputService::GetPov( const XE::String& val ) const
 {
 	return GetValue( val ).Value<XE::int32>();
 }
 
-XE::int32 XE::InputService::GetPov( KeyCode val ) const
+XE::int32 XE::InputService::GetPov( XE::KeyCode val ) const
 {
 	return GetValue( val ).Value<XE::int32>();
 }
 
-XE::float32 XE::InputService::GetAxis( const String& val ) const
+XE::float32 XE::InputService::GetAxis( const XE::String& val ) const
 {
 	return GetValue( val ).Value<XE::float32>();
 }
 
-XE::float32 XE::InputService::GetAxis( KeyCode val ) const
+XE::float32 XE::InputService::GetAxis( XE::KeyCode val ) const
 {
 	return GetValue( val ).Value<XE::float32>();
 }
 
-XE::int32 XE::InputService::GetButton( const String& val ) const
+XE::int32 XE::InputService::GetButton( const XE::String& val ) const
 {
 	return GetValue( val ).Value<XE::int32>();
 }
 
-XE::int32 XE::InputService::GetButton( KeyCode val ) const
+XE::int32 XE::InputService::GetButton( XE::KeyCode val ) const
 {
 	return GetValue( val ).Value<XE::int32>();
 }
 
-XE::Variant XE::InputService::GetValue( const String& val ) const
+XE::Variant XE::InputService::GetValue( const XE::String& val ) const
 {
 	{
 		auto it = _p->_ValueMaps.find( val );
@@ -185,7 +185,7 @@ XE::Variant XE::InputService::GetValue( const String& val ) const
 	return nullptr;
 }
 
-XE::Variant XE::InputService::GetValue( KeyCode val ) const
+XE::Variant XE::InputService::GetValue( XE::KeyCode val ) const
 {
 	auto it = _p->_ValueMaps.find( GetKeycodeString( val ) );
 
@@ -197,12 +197,12 @@ XE::Variant XE::InputService::GetValue( KeyCode val ) const
 	return nullptr;
 }
 
-void XE::InputService::SetValue( const String& code, const Variant& val )
+void XE::InputService::SetValue( const XE::String& code, const XE::Variant& val )
 {
 	_p->_ValueMaps[code] = val;
 }
 
-XE::String XE::InputService::GetKeycodeString( KeyCode val ) const
+XE::String XE::InputService::GetKeycodeString( XE::KeyCode val ) const
 {
 	return EnumID<KeyCode>::Get()->FindName( ( XE::int64 )val );
 }
@@ -212,7 +212,7 @@ void XE::InputService::Prepare()
 
 }
 
-bool XE::InputService::CallEQUAL( const Variant& a, const Variant& b ) const
+bool XE::InputService::CallEQUAL( const XE::Variant& a, const XE::Variant& b ) const
 {
 	return( 
 		( a.GetType() == TypeID<bool>::Get() && a.Value<bool>() == b.Value<bool>() ) ||
@@ -224,7 +224,7 @@ bool XE::InputService::CallEQUAL( const Variant& a, const Variant& b ) const
 		( a.GetType() == TypeID<XE::float64>::Get() && a.Value<XE::float64>() == b.Value<XE::float64>() ) );
 }
 
-bool XE::InputService::CallNOT_EQUAL( const Variant& a, const Variant& b ) const
+bool XE::InputService::CallNOT_EQUAL( const XE::Variant& a, const XE::Variant& b ) const
 {
 	return(
 		( a.GetType() == TypeID<bool>::Get() && a.Value<bool>() != b.Value<bool>() ) ||
@@ -236,7 +236,7 @@ bool XE::InputService::CallNOT_EQUAL( const Variant& a, const Variant& b ) const
 		( a.GetType() == TypeID<XE::float64>::Get() && a.Value<XE::float64>() != b.Value<XE::float64>() ) );
 }
 
-bool XE::InputService::CallLESS( const Variant& a, const Variant& b ) const
+bool XE::InputService::CallLESS( const XE::Variant& a, const XE::Variant& b ) const
 {
 	return(
 		( a.GetType() == TypeID<XE::int32>::Get() && a.Value<XE::int32>() < b.Value<XE::int32>() ) ||
@@ -247,7 +247,7 @@ bool XE::InputService::CallLESS( const Variant& a, const Variant& b ) const
 		( a.GetType() == TypeID<XE::float64>::Get() && a.Value<XE::float64>() < b.Value<XE::float64>() ) );
 }
 
-bool XE::InputService::CallGREATER( const Variant& a, const Variant& b ) const
+bool XE::InputService::CallGREATER( const XE::Variant& a, const XE::Variant& b ) const
 {
 	return(
 		( a.GetType() == TypeID<XE::int32>::Get() && a.Value<XE::int32>() > b.Value<XE::int32>() ) ||
@@ -258,7 +258,7 @@ bool XE::InputService::CallGREATER( const Variant& a, const Variant& b ) const
 		( a.GetType() == TypeID<XE::float64>::Get() && a.Value<XE::float64>() > b.Value<XE::float64>() ) );
 }
 
-bool XE::InputService::CallLESS_EQUAL( const Variant& a, const Variant& b ) const
+bool XE::InputService::CallLESS_EQUAL( const XE::Variant& a, const XE::Variant& b ) const
 {
 	return(
 		( a.GetType() == TypeID<XE::int32>::Get() && a.Value<XE::int32>() <= b.Value<XE::int32>() ) ||
@@ -269,7 +269,7 @@ bool XE::InputService::CallLESS_EQUAL( const Variant& a, const Variant& b ) cons
 		( a.GetType() == TypeID<XE::float64>::Get() && a.Value<XE::float64>() <= b.Value<XE::float64>() ) );
 }
 
-bool XE::InputService::CallGREATER_EQUAL( const Variant& a, const Variant& b ) const
+bool XE::InputService::CallGREATER_EQUAL( const XE::Variant& a, const XE::Variant& b ) const
 {
 	return(
 		( a.GetType() == TypeID<XE::int32>::Get() && a.Value<XE::int32>() >= b.Value<XE::int32>() ) ||

@@ -1,6 +1,6 @@
 #include "XSMetaMethod.h"
 
-USING_XE
+
 
 XE::XSMetaMethod::XSMetaMethod( const String & Name, IMetaInfoPtr Result, ParameterType && Parameter, IMetaClassPtr Owner, const String & ModuleName )
 	:IMetaMethod( Name, false, false, Result, std::move( Parameter ), Owner, ModuleName )

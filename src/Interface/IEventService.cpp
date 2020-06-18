@@ -2,9 +2,9 @@
 
 #include "Type.h"
 
-USING_XE
 
-BEG_META( IEventService )
+
+BEG_META( XE::IEventService )
 END_META()
 
 XE::IEventService::IEventService()

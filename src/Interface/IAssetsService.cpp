@@ -1,8 +1,8 @@
 #include "IAssetsService.h"
 
-USING_XE
 
-BEG_META(IAssetsService)
+
+BEG_META( XE::IAssetsService )
 END_META()
 
 XE::IAssetsService::IAssetsService()

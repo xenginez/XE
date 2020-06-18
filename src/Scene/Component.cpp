@@ -2,9 +2,9 @@
 
 #include "GameObject.h"
 
-USING_XE
 
-BEG_META( Component )
+
+BEG_META( XE::Component )
 type->Property( "Name", &Component::_Name );
 type->Property( "Handle", &Component::_Handle, IMetaProperty::NoDesign | IMetaProperty::NoClone );
 type->Property( "Enabled", &Component::_Enabled );

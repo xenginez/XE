@@ -2,9 +2,9 @@
 
 #include "Reflection.h"
 
-USING_XE
 
-template<> struct XE::MetaDataCollector< ReflectObject >
+
+template<> struct XE::MetaDataCollector< XE::ReflectObject >
 {
 	typedef ReflectObject ThisType;
 	MetaDataCollector()

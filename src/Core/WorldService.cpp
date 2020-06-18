@@ -1,14 +1,14 @@
 #include "WorldService.h"
 
-USING_XE
+
+
+BEG_META( XE::WorldService )
+END_META()
 
 struct XE::WorldService::Private
 {
 	XE::WorldPtr _World;
 };
-
-BEG_META( WorldService )
-END_META()
 
 XE::WorldService::WorldService()
 	:_p( new Private )
@@ -54,7 +54,7 @@ void XE::WorldService::Clearup()
 	_p->_World->Clearup();
 }
 
-void WorldService::LoadWorld( const XE::String & val )
+void XE::WorldService::LoadWorld( const XE::String & val )
 {
 	GetFramework()->GetServiceT<XE::IThreadService>()->PostTask( XE::ThreadType::GAME, [this, val]()
 																 {
@@ -73,7 +73,7 @@ void WorldService::LoadWorld( const XE::String & val )
 																 } );
 }
 
-XE::WorldPtr WorldService::GetCurrentWorld() const
+XE::WorldPtr XE::WorldService::GetCurrentWorld() const
 {
 	return _p->_World;
 }
