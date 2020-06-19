@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class XE_API Vec3
+class XE_API alignas( 16 ) Vec3
 {
 public:
 	static const Vec3 One;

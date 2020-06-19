@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class XE_API Sphere
+class XE_API alignas( 16 ) Sphere
 {
 public:
 	static const Sphere Zero;

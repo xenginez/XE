@@ -14,7 +14,7 @@
 
 BEG_XE_NAMESPACE
 
-class XE_API OBB
+class XE_API alignas( 16 ) OBB
 {
 public:
 	Vec3 center;

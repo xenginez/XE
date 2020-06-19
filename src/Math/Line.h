@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class XE_API Line
+class XE_API alignas( 16 ) Line
 {
 public:
 	union

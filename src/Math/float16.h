@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class XE_API float16
+class XE_API alignas( 2 ) float16
 {
 public:
 	static const XE::float16 Nan;

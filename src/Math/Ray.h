@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class XE_API Ray
+class XE_API alignas( 16 ) Ray
 {
 public:
 	Vec3 origin;

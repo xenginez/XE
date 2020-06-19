@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class XE_API Mat4
+class XE_API alignas( 16 ) Mat4
 {
 public:
 	static const Mat4 Zero;

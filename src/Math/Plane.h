@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class XE_API Plane
+class XE_API alignas( 16 ) Plane
 {
 public:
 	Vec3 normal;

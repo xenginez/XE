@@ -156,55 +156,27 @@ msbuild.exe ".\INSTALL.vcxproj"  /m /nr:true ^
     /p:Platform=x64 ^
     /p:AppxBundlePlatforms=x64 ^
     /p:UseSubFolderForOutputDirDuringMultiPlatformBuild=false
-
+cd %RD3_PATH%
 echo "copy zlib debug file to depend"
 xcopy %cd%\install\lib\*.* %RD3_PATH%\..\depend\lib\win\debug\ /s /e /y
 xcopy %cd%\install\bin\*.* %RD3_PATH%\..\depend\bin\win\debug\ /s /e /y
 del %cd%\install\ /f /s /q
+
 echo "build zlib release"
+cd %RD3_PATH%
+mkdir .\zlib\build
+cd .\zlib\build
 msbuild.exe ".\INSTALL.vcxproj"  /m /nr:true ^
     /p:Configuration=Release ^
     /p:Platform=x64 ^
     /p:AppxBundlePlatforms=x64 ^
     /p:UseSubFolderForOutputDirDuringMultiPlatformBuild=false
-
 echo "copy zlib release file to depend"
 xcopy %cd%\install\lib\*.* %RD3_PATH%\..\depend\lib\win\release\ /s /e /y
 xcopy %cd%\install\bin\*.* %RD3_PATH%\..\depend\bin\win\release\ /s /e /y
 xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\ /s /e /y
 del %cd%\install\ /f /s /q
 
-
-:BUILD_ZIPPER
-echo "build zipper debug"
-cd %RD3_PATH%
-mkdir .\zipper\build
-cd .\zipper\build
-cmake -DBUILD_SHARED_VERSION=OFF -DBUILD_TEST=OFF -DBUILD_TESTING=OFF -DLIBZ_INCLUDE_DIR=%RD3_PATH%\..\depend\include\zlib\ -DLIBZ_LIBRARY=%RD3_PATH%\..\depend\lib\win\debug\zlibstaticd.lib -DCMAKE_INSTALL_PREFIX=.\install\ .. -G "Visual Studio 16 2019" 
-msbuild.exe ".\INSTALL.vcxproj"  /m /nr:true ^
-    /p:Configuration=Debug ^
-    /p:Platform=x64 ^
-    /p:AppxBundlePlatforms=x64 ^
-    /p:UseSubFolderForOutputDirDuringMultiPlatformBuild=false
-
-echo "copy zipper debug file to depend"
-xcopy %cd%\install\lib\*.* %RD3_PATH%\..\depend\lib\win\debug\ /s /e /y
-xcopy %cd%\install\bin\*.* %RD3_PATH%\..\depend\bin\win\debug\ /s /e /y
-del %cd%\install\ /f /s /q
-
-echo "build zipper release"
-cmake -DBUILD_SHARED_VERSION=OFF -DBUILD_TEST=OFF -DBUILD_TESTING=OFF -DLIBZ_INCLUDE_DIR=%RD3_PATH%\..\depend\include\zlib\ -DLIBZ_LIBRARY=%RD3_PATH%\..\depend\lib\win\release\zlibstatic.lib -DCMAKE_INSTALL_PREFIX=.\install\ .. -G "Visual Studio 16 2019" 
-msbuild.exe ".\INSTALL.vcxproj"  /m /nr:true ^
-    /p:Configuration=Release ^
-    /p:Platform=x64 ^
-    /p:AppxBundlePlatforms=x64 ^
-    /p:UseSubFolderForOutputDirDuringMultiPlatformBuild=false
-
-echo "copy zipper release file to depend"
-xcopy %cd%\install\lib\*.* %RD3_PATH%\..\depend\lib\win\release\ /s /e /y
-xcopy %cd%\install\bin\*.* %RD3_PATH%\..\depend\bin\win\release\ /s /e /y
-xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\ /s /e /y
-del %cd%\install\ /f /s /q
 
 :BUILD_LIBSIMDPP
 echo "build libsimdpp debug"

@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class XE_API Quat
+class XE_API alignas( 16 ) Quat
 {
 public:
 	static const Quat Zero;

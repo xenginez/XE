@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class XE_API AABB
+class XE_API alignas( 16 ) AABB
 {
 public:
 	Vec3 min;

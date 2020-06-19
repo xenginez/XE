@@ -14,7 +14,7 @@
 
 BEG_XE_NAMESPACE
 
-class XE_API Frustum
+class XE_API alignas( 16 ) Frustum
 {
 public:
 	union

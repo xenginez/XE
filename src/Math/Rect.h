@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class XE_API Rect
+class XE_API alignas( 16 ) Rect
 {
 public:
 	static const Rect Zero;

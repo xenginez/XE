@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class XE_API Color
+class XE_API alignas( 16 ) Color
 {
 public:
 	static const Color White;

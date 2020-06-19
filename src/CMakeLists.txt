@@ -24,8 +24,7 @@ target_link_libraries(XE
 		tbb${XE_TBB_POSTFIX}
 		tbbmalloc${XE_TBB_POSTFIX}
 		tbbmalloc_proxy${XE_TBB_POSTFIX}
-		Zipper-static${XE_POSTFIX}
-		zlibstatic${XE_POSTFIX}
+		zlib${XE_POSTFIX}
 		)
 
 FILE(GLOB LIBRARY_FILES ../depend/bin/${XE_PLATFORM_PATH}/${XE_CONFIG}/*.*)

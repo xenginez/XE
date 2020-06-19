@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class XE_API Mat3
+class XE_API alignas( 16 ) Mat3
 {
 public:
 	static const Mat3 Zero;
