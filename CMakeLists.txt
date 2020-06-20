@@ -9,15 +9,15 @@ if (WIN32)
 endif ()
 
 if (CMAKE_SYSTEM_NAME MATCHES "Linux")
-	set(XE_PLATFORM_PATH linux)
+	set(XE_PLATFORM linux)
 elseif (CMAKE_SYSTEM_NAME MATCHES "Windows")
-	set(XE_PLATFORM_PATH win)
+	set(XE_PLATFORM win)
 elseif (CMAKE_SYSTEM_NAME MATCHES "IOS")
-	set(XE_PLATFORM_PATH ios)
+	set(XE_PLATFORM ios)
 elseif (CMAKE_SYSTEM_NAME MATCHES "Android")
-	set(XE_PLATFORM_PATH android)
+	set(XE_PLATFORM android)
 elseif (CMAKE_SYSTEM_NAME MATCHES "Darwin")
-	set(XE_PLATFORM_PATH mac)
+	set(XE_PLATFORM mac)
 else ()
 	message(FATAL_ERROR ${CMAKE_SYSTEM_NAME}" Other")
 endif ()
@@ -65,8 +65,8 @@ include_directories(
 )
 
 link_directories(
-		${CMAKE_CURRENT_SOURCE_DIR}/depend/bin/${XE_PLATFORM_PATH}/${XE_CONFIG}
-		${CMAKE_CURRENT_SOURCE_DIR}/depend/lib/${XE_PLATFORM_PATH}/${XE_CONFIG}
+		${CMAKE_CURRENT_SOURCE_DIR}/depend/bin/${XE_PLATFORM}/${XE_CONFIG}
+		${CMAKE_CURRENT_SOURCE_DIR}/depend/lib/${XE_PLATFORM}/${XE_CONFIG}
 		${CMAKE_CURRENT_SOURCE_DIR}/target/${XE_CONFIG}/bin
 )
 

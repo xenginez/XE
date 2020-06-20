@@ -1,6 +1,5 @@
 #include "AssetsService.h"
 
-#include <zipper/unzipper.h>
 #include <tbb/concurrent_hash_map.h>
 
 
@@ -150,11 +149,11 @@ XE::ObjectPtr XE::AssetsService::SearchAssetData( const XE::String & val ) const
 	{
 		auto path = XE::StringUtils::Format( "%1/assets_%2.data", GetFramework()->GetAssetsPath().string(), it->second );
 
-		zipper::Unzipper unzip( path );
+		XE::Unzipper unzip( path );
 
-		std::vector<unsigned char> data;
-		unzip.extractEntryToMemory( md5.To32String(), data );
-		XE::memory_view view = { (char *)data.data(), data.size() };
+		XE::memorystream mem_stream;
+		unzip.GetEntryData( md5.To32String(), mem_stream );
+		XE::memory_view view = mem_stream.view();
 
 		XE::ObjectPtr obj;
 

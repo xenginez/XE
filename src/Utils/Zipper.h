@@ -29,38 +29,61 @@ public:
 public:
     Zipper();
 
-	Zipper( std::iostream & buffer );
-
 	Zipper( const std::string & zipname, const std::string & password = "" );
 
     ~Zipper();
 
 public:
-	bool Add( std::istream & source, const std::string & name );
+	bool Add( std::istream & source, const std::string & name, const std::string & password = "" );
 
 public:
-    XE::Array< Entry > GetEntries() const;
-
-    bool ExtractEntiy( const std::string & name );
-
-	void GetEntryData( const Entry & entry, std::ostream & stream );
-
-	void GetEntryData( const std::string & entry_name, std::ostream & stream );
-
-public:
-    bool Open( std::iostream & buffer );
-
     bool Open( const std::string & zipname, const std::string & password = "" );
 
     bool IsOpen() const;
 
 public:
-    void Flush();
-
 	void Close();
 
 private:
     Private * _p;
+};
+
+class XE_API Unzipper
+{
+	struct Private;
+
+public:
+	struct Entry
+	{
+		std::string name;
+		XE::uint64 compressed_size = 0;
+		XE::uint64 uncompressed_size = 0;
+	};
+
+public:
+	Unzipper();
+
+	Unzipper( const std::string & zipname, const std::string & password = "" );
+
+	~Unzipper();
+
+public:
+	bool GetEntries( XE::Array< XE::Unzipper::Entry > & entries ) const;
+
+	bool ExtractEntiy( const std::string & name );
+
+	bool GetEntryData( const std::string & name, std::ostream & stream, const std::string & password = "" );
+
+public:
+	bool Open( const std::string & zipname, const std::string & password = "" );
+
+	bool IsOpen() const;
+
+public:
+	void Close();
+
+private:
+	Private * _p;
 };
 
 END_XE_NAMESPACE
