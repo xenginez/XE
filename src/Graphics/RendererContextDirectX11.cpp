@@ -603,14 +603,14 @@ void XE::RendererContextDirectX11::EXEC_RENDERER_INIT()
 				XE_LOG( XE::LoggerLevel::Message, "\tVendorId: %1, DeviceId: %2, SubSysId: %3, Revision: %4", desc.VendorId, desc.DeviceId, desc.SubSysId, desc.Revision );
 				XE_LOG( XE::LoggerLevel::Message, "\tMemory: %1 (video), %2 (system), %3 (shared)", desc.DedicatedVideoMemory, desc.DedicatedSystemMemory, desc.SharedSystemMemory );
 
-				GetCaps().gpu[i].VendorId = ( PCIType )desc.VendorId;
+				GetCaps().gpu[i].VendorId = ( PciIdFlags )desc.VendorId;
 				GetCaps().gpu[i].DeviceId = ( uint16_t )desc.DeviceId;
 				++GetCaps().numGPUs;
 
 				if( _p->_Adapter == nullptr )
 				{
-					if( ( PCIType::NONE != GetCaps().VendorId || 0 != GetCaps().DeviceId ) &&
-						( PCIType::NONE != GetCaps().VendorId || ( PCIType )desc.VendorId == GetCaps().VendorId ) &&
+					if( ( PciIdFlags::NONE != GetCaps().VendorId || 0 != GetCaps().DeviceId ) &&
+						( PciIdFlags::NONE != GetCaps().VendorId || ( PciIdFlags )desc.VendorId == GetCaps().VendorId ) &&
 						( 0 != GetCaps().DeviceId || desc.DeviceId == GetCaps().DeviceId ) )
 					{
 						_p->_Adapter = adapter;
@@ -675,7 +675,7 @@ void XE::RendererContextDirectX11::EXEC_RENDERER_INIT()
 
 		if( hdr10 )
 		{
-			GetCaps().Supported |= CapsFlag::HDR10;
+			GetCaps().Supported |= CapsFlags::HDR10;
 		}
 
 		adapter->Release();
@@ -692,7 +692,7 @@ void XE::RendererContextDirectX11::EXEC_RENDERER_INIT()
 	XE_CHECK( _p->_Adapter->GetDesc( &_p->_AdapterDesc ) );
 	_p->_Adapter->EnumOutputs( 0, &_p->_Output );
 
-	GetCaps().VendorId = _p->_AdapterDesc.VendorId == 0 ? PCIType::SOFTWARE : ( PCIType )_p->_AdapterDesc.VendorId;
+	GetCaps().VendorId = _p->_AdapterDesc.VendorId == 0 ? PciIdFlags::SOFTWARERASTERIZER : ( PciIdFlags )_p->_AdapterDesc.VendorId;
 	GetCaps().DeviceId = ( uint16_t )_p->_AdapterDesc.DeviceId;
 
 	/////////////////////////////////////////////////////////////////
@@ -838,47 +838,46 @@ void XE::RendererContextDirectX11::EXEC_RENDERER_INIT()
 
 		{
 			GetCaps().Supported = GetCaps().Supported
-				| CapsFlag::TEXTURE_3D
-				| CapsFlag::VERTEX_ATTRIB_HALF
-				| CapsFlag::VERTEX_ATTRIB_UINT10
-				| CapsFlag::VERTEX_ID
-				| CapsFlag::FRAGMENT_DEPTH
-				| CapsFlag::TEXTURE_DIRECT_ACCESS
-				| CapsFlag::SWAP_CHAIN
-				| CapsFlag::DRAW_INDIRECT
-				| CapsFlag::TEXTURE_BLIT
-				| CapsFlag::TEXTURE_READ_BACK
-				| CapsFlag::OCCLUSION_QUERY
-				| CapsFlag::ALPHA_TO_COVERAGE
-				| CapsFlag::CONSERVATIVE_RASTER
-				| CapsFlag::TEXTURE_2D_ARRAY
-				| CapsFlag::TEXTURE_CUBE_ARRAY
-				| CapsFlag::FRAMEBUFFER_RW;
+				| CapsFlags::TEXTURE3D
+				| CapsFlags::VERTEXATTRIBHALF
+				| CapsFlags::VERTEXATTRIBUINT10
+				| CapsFlags::VERTEXID
+				| CapsFlags::FRAGMENTDEPTH
+				| CapsFlags::TEXTUREDIRECTACCESS
+				| CapsFlags::SWAPCHAIN
+				| CapsFlags::DRAWINDIRECT
+				| CapsFlags::TEXTUREBLIT
+				| CapsFlags::TEXTUREREADBACK
+				| CapsFlags::OCCLUSIONQUERY
+				| CapsFlags::ALPHATOCOVERAGE
+				| CapsFlags::CONSERVATIVERASTER
+				| CapsFlags::TEXTURE2DARRAY
+				| CapsFlags::TEXTURECUBEARRAY
+				| CapsFlags::FRAMEBUFFERRW;
 
 			{
 				GetCaps().MaxComputeBindings = D3D11_PS_CS_UAV_REGISTER_COUNT;
-
-				//GetCaps().Supported |= CapsFlag::COMPARE_ALL;
 				GetCaps().MaxTextureSize = D3D11_REQ_TEXTURE2D_U_OR_V_DIMENSION;
 				GetCaps().MaxTextureLayers = D3D11_REQ_TEXTURE2D_ARRAY_AXIS_DIMENSION;
 				GetCaps().MaxFBAttachments = D3D11_SIMULTANEOUS_RENDER_TARGET_COUNT;
 				GetCaps().MaxVertexStreams = D3D11_IA_VERTEX_INPUT_RESOURCE_SLOT_COUNT;
-				GetCaps().Supported |= CapsFlag::INDEX32;
-				GetCaps().Supported |= CapsFlag::BLEND_INDEPENDENT;
-				GetCaps().Supported |= CapsFlag::COMPUTE;
-				GetCaps().Supported |= CapsFlag::INSTANCING;
+				GetCaps().Supported = GetCaps().Supported
+					| CapsFlags::INDEX32
+					| CapsFlags::BLENDINDEPENDENT
+					| CapsFlags::COMPUTE
+					| CapsFlags::INSTANCING;
 			}
 
-			GetCaps().Supported = GetCaps().Supported
-				| CapsFlag::FORMAT_TEXTURE_2D
-				| CapsFlag::FORMAT_TEXTURE_3D
-				| CapsFlag::FORMAT_TEXTURE_CUBE
-				| CapsFlag::FORMAT_TEXTURE_IMAGE
-				| CapsFlag::FORMAT_TEXTURE_VERTEX
-				| CapsFlag::FORMAT_TEXTURE_IMAGE
-				| CapsFlag::FORMAT_TEXTURE_FRAMEBUFFER
-				| CapsFlag::FORMAT_TEXTURE_FRAMEBUFFER_MSAA
-				| CapsFlag::FORMAT_TEXTURE_MSAA
+			GetCaps().SupportFormat = GetCaps().SupportFormat
+				| CapsFormatFlags::TEXTURE2D
+				| CapsFormatFlags::TEXTURE3D
+				| CapsFormatFlags::TEXTURECUBE
+				| CapsFormatFlags::TEXTUREIMAGE
+				| CapsFormatFlags::TEXTUREVERTEX
+				| CapsFormatFlags::TEXTUREIMAGE
+				| CapsFormatFlags::TEXTUREFRAMEBUFFER
+				| CapsFormatFlags::TEXTUREFRAMEBUFFERMSAA
+				| CapsFormatFlags::TEXTUREMSAA
 				;
 
 			if( GetInit().debug && _p->_InfoQueue != nullptr )

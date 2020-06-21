@@ -13,14 +13,6 @@
 
 BEG_XE_NAMESPACE
 
-enum class ClearFlag
-{
-	NONE = 0,
-	COLOR = 1,
-	DEPTH = 2,
-	STENCIL = 4,
-};
-
 enum class CommandType : XE::uint8
 {
 	RENDERER_INIT,
@@ -256,12 +248,12 @@ public:
 	XE::Color ClearColor;
 	XE::float32 ClearDepth = 0.0f;
 	XE::uint8 ClearStencil = 1;
-	XE::Flags<ClearFlag> Flag = ClearFlag::NONE;
+	XE::Flags<ClearFlags> Flag = ClearFlags::NONE;
 	XE::Rect ViewRect;
 	XE::Rect ViewScissor;
 	XE::Mat4 ViewMat;
 	XE::Mat4 ProjMat;
-	ViewMode Mode = XE::ViewMode::Default;
+	ViewMode Mode = XE::ViewMode::DEFAULT;
 	FrameBufferHandle Handle;
 };
 
@@ -322,9 +314,9 @@ public:
 
 	XE::OcclusionQueryHandle OcclusionQuery;
 
-	XE::Flags<XE::StateFlag> StateFlags = XE::StateFlag::NONE;
-	XE::Flags <XE::StencilFlag> FrontStencilFlags = XE::StencilFlag::NONE;
-	XE::Flags <XE::StencilFlag> BackStencilFlags = XE::StencilFlag::NONE;
+	XE::Flags<XE::StateFlags> StateFlags = XE::StateFlags::NONE;
+	XE::Flags <XE::StencilFlags> FrontStencilFlags = XE::StencilFlags::NONE;
+	XE::Flags <XE::StencilFlags> BackStencilFlags = XE::StencilFlags::NONE;
 };
 
 class RenderBlit

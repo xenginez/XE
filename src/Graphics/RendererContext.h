@@ -37,7 +37,7 @@ protected:
 	virtual void OnRender( XE::Frame* val ) = 0;
 
 public:
-	void Reset( XE::uint32 width, XE::uint32 height, XE::Flags<XE::ResetFlag> flags, XE::TextureFormat format );
+	void Reset( XE::uint32 width, XE::uint32 height, XE::Flags<XE::ResetFlags> flags, XE::TextureFormat format );
 
 public:
 	XE::Encoder * Begin();
@@ -50,9 +50,9 @@ public:
 	XE::InitInfo & GetInit();
 
 public:
-	IndexBufferHandle CreateIndexBuffer( const XE::String & name, XE::memory_view mem, XE::Flags< XE::BufferFlag > flags );
+	IndexBufferHandle CreateIndexBuffer( const XE::String & name, XE::memory_view mem, XE::Flags< XE::BufferFlags > flags );
 
-	TransientIndexBufferHandle CreateTransientIndexBuffer( XE::memory_view mem, XE::Flags< XE::BufferFlag > flags );
+	TransientIndexBufferHandle CreateTransientIndexBuffer( XE::memory_view mem, XE::Flags< XE::BufferFlags > flags );
 
 	void Destory( IndexBufferHandle handle );
 
@@ -60,23 +60,23 @@ public:
 
 	void Destory( VertexLayoutHandle handle );
 
-	VertexBufferHandle CreateVertexBuffer( const XE::String & name, XE::memory_view mem, VertexLayoutHandle layout, XE::Flags< XE::BufferFlag > flags );
+	VertexBufferHandle CreateVertexBuffer( const XE::String & name, XE::memory_view mem, VertexLayoutHandle layout, XE::Flags< XE::BufferFlags > flags );
 
-	TransientVertexBufferHandle CreateTransientVertexBuffer( XE::memory_view mem, VertexLayoutHandle layout, XE::Flags< XE::BufferFlag > flags );
+	TransientVertexBufferHandle CreateTransientVertexBuffer( XE::memory_view mem, VertexLayoutHandle layout, XE::Flags< XE::BufferFlags > flags );
 
 	void Destory( VertexBufferHandle handle );
 
-	DynamicIndexBufferHandle CreateDynamicIndexBuffer( XE::uint64 size, XE::Flags< XE::BufferFlag > flags);
+	DynamicIndexBufferHandle CreateDynamicIndexBuffer( XE::uint64 size, XE::Flags< XE::BufferFlags > flags);
 
-	DynamicIndexBufferHandle CreateDynamicIndexBuffer( XE::memory_view mem, XE::Flags< XE::BufferFlag > flags );
+	DynamicIndexBufferHandle CreateDynamicIndexBuffer( XE::memory_view mem, XE::Flags< XE::BufferFlags > flags );
 
 	void Update( DynamicIndexBufferHandle handle, XE::uint64 start, XE::memory_view mem );
 
 	void Destory( DynamicIndexBufferHandle handle );
 
-	DynamicVertexBufferHandle CreateDynamicVertexBuffer( XE::uint64 size, VertexLayoutHandle layout, XE::Flags< XE::BufferFlag > flags );
+	DynamicVertexBufferHandle CreateDynamicVertexBuffer( XE::uint64 size, VertexLayoutHandle layout, XE::Flags< XE::BufferFlags > flags );
 
-	DynamicVertexBufferHandle CreateDynamicVertexBuffer( XE::memory_view mem, VertexLayoutHandle layout, XE::Flags< XE::BufferFlag > flags );
+	DynamicVertexBufferHandle CreateDynamicVertexBuffer( XE::memory_view mem, VertexLayoutHandle layout, XE::Flags< XE::BufferFlags > flags );
 
 	void Update( DynamicVertexBufferHandle handle, XE::uint64 start, XE::memory_view mem );
 
@@ -99,24 +99,24 @@ public:
 	void Destory( ProgramHandle handle );
 
 	TextureHandle CreateTexture2D( const XE::String & name, XE::uint32 width, XE::uint32 height, bool hasmips, XE::uint16 layers, TextureFormat format,
-								   XE::Flags< XE::TextureFlag > flags,
+								   XE::Flags< XE::TextureFlags > flags,
 								   SamplerWrap U, SamplerWrap V, SamplerWrap W,
 								   SamplerMode MIN, SamplerMode MAG, SamplerMode MIP,
 								   std::optional< XE::memory_view > mem  );
 
 	TextureHandle CreateTexture2D( const XE::String & name, XE::BackbufferRatio ratio, bool hasmips, XE::uint16 layers, TextureFormat format,
-								   XE::Flags< XE::TextureFlag > flags,
+								   XE::Flags< XE::TextureFlags > flags,
 								   SamplerWrap U, SamplerWrap V, SamplerWrap W,
 								   SamplerMode MIN, SamplerMode MAG, SamplerMode MIP );
 
 	TextureHandle CreateTexture3D( const XE::String & name, XE::uint32 width, XE::uint32 height, XE::uint32 depth, bool hasmips, TextureFormat format,
-								   XE::Flags< XE::TextureFlag > flags,
+								   XE::Flags< XE::TextureFlags > flags,
 								   SamplerWrap U, SamplerWrap V, SamplerWrap W,
 								   SamplerMode MIN, SamplerMode MAG, SamplerMode MIP,
 								   std::optional< XE::memory_view > mem  );
 
 	TextureHandle CreateTextureCube( const XE::String & name, XE::uint32 size, bool hasmips, XE::uint16 layers, TextureFormat format,
-									 XE::Flags< XE::TextureFlag > flags,
+									 XE::Flags< XE::TextureFlags > flags,
 									 SamplerWrap U, SamplerWrap V, SamplerWrap W,
 									 SamplerMode MIN, SamplerMode MAG, SamplerMode MIP,
 									 std::optional< XE::memory_view > mem  );

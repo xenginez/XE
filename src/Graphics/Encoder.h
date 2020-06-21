@@ -26,11 +26,11 @@ private:
 	~Encoder();
 
 public:
-	void SetState( XE::Flags<XE::StateFlag> flags = XE::StateFlag::DEFAULT );
+	void SetState( XE::Flags<XE::StateFlags> flags = XE::StateFlags::DEFAULT );
 
 	void SetCondition( OcclusionQueryHandle handle, bool visible );
 
-	void SetStencil( XE::Flags<XE::StencilFlag> front, XE::Flags<XE::StencilFlag> back = XE::StencilFlag::NONE );
+	void SetStencil( XE::Flags<XE::StencilFlags> front, XE::Flags<XE::StencilFlags> back = XE::StencilFlags::NONE );
 
 	void SetScissor( const XE::Rect & scissor );
 

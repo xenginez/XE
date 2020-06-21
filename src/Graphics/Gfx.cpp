@@ -117,7 +117,7 @@ void XE::Gfx::Shutdown()
 	}
 }
 
-void XE::Gfx::Reset( XE::uint32 width, XE::uint32 height, XE::Flags<XE::ResetFlag> flags /*= XE::ResetFlag::NONE*/, XE::TextureFormat format /*= XE::TextureFormat::COUNT */ )
+void XE::Gfx::Reset( XE::uint32 width, XE::uint32 height, XE::Flags<XE::ResetFlags> flags /*= XE::ResetFlag::NONE*/, XE::TextureFormat format /*= XE::TextureFormat::COUNT */ )
 {
 	XE_ASSERT( _p->_Context != nullptr );
 
@@ -157,14 +157,14 @@ void XE::Gfx::DebugTextPrint( XE::uint32 x, XE::uint32 y, const XE::Color & colo
 	_p->_Context->DebugTextPrint( x, y, color, text );
 }
 
-XE::IndexBufferHandle XE::Gfx::CreateIndexBuffer( const XE::String & name, XE::memory_view mem, XE::Flags< XE::BufferFlag > flags /*= XE::BufferFlag::NONE */ )
+XE::IndexBufferHandle XE::Gfx::CreateIndexBuffer( const XE::String & name, XE::memory_view mem, XE::Flags< XE::BufferFlags > flags /*= XE::BufferFlag::NONE */ )
 {
 	XE_ASSERT( _p->_Context != nullptr );
 
 	return _p->_Context->CreateIndexBuffer( name, mem, flags );
 }
 
-XE::TransientIndexBufferHandle XE::Gfx::CreateTransientIndexBuffer( XE::memory_view mem, XE::Flags< XE::BufferFlag > flags /*= XE::BufferFlag::NONE */ )
+XE::TransientIndexBufferHandle XE::Gfx::CreateTransientIndexBuffer( XE::memory_view mem, XE::Flags< XE::BufferFlags > flags /*= XE::BufferFlag::NONE */ )
 {
 	XE_ASSERT( _p->_Context != nullptr );
 
@@ -267,28 +267,28 @@ XE::VertexLayoutHandle XE::Gfx::CreateVertexLayout( const XE::Array<VertexLayout
 	return _p->_Context->CreateVertexLayout( layouts );
 }
 
-XE::VertexBufferHandle XE::Gfx::CreateVertexBuffer( const XE::String & name, XE::memory_view mem, VertexLayoutHandle layout, XE::Flags< XE::BufferFlag > flags /*= XE::BufferFlag::NONE */ )
+XE::VertexBufferHandle XE::Gfx::CreateVertexBuffer( const XE::String & name, XE::memory_view mem, VertexLayoutHandle layout, XE::Flags< XE::BufferFlags > flags /*= XE::BufferFlag::NONE */ )
 {
 	XE_ASSERT( _p->_Context != nullptr );
 
 	return _p->_Context->CreateVertexBuffer( name, mem, layout, flags );
 }
 
-XE::TransientVertexBufferHandle XE::Gfx::CreateTransientVertexBuffer( XE::memory_view mem, VertexLayoutHandle layout, XE::Flags< XE::BufferFlag > flags /*= XE::BufferFlag::NONE */ )
+XE::TransientVertexBufferHandle XE::Gfx::CreateTransientVertexBuffer( XE::memory_view mem, VertexLayoutHandle layout, XE::Flags< XE::BufferFlags > flags /*= XE::BufferFlag::NONE */ )
 {
 	XE_ASSERT( _p->_Context != nullptr );
 
 	return _p->_Context->CreateTransientVertexBuffer( mem, layout, flags );
 }
 
-XE::DynamicIndexBufferHandle XE::Gfx::CreateDynamicIndexBuffer( XE::uint64 size, XE::Flags< XE::BufferFlag > flags /*= XE::BufferFlag::NONE */ )
+XE::DynamicIndexBufferHandle XE::Gfx::CreateDynamicIndexBuffer( XE::uint64 size, XE::Flags< XE::BufferFlags > flags /*= XE::BufferFlag::NONE */ )
 {
 	XE_ASSERT( _p->_Context != nullptr );
 
 	return _p->_Context->CreateDynamicIndexBuffer( size, flags );
 }
 
-XE::DynamicIndexBufferHandle XE::Gfx::CreateDynamicIndexBuffer( XE::memory_view mem, XE::Flags< XE::BufferFlag > flags /*= XE::BufferFlag::NONE */ )
+XE::DynamicIndexBufferHandle XE::Gfx::CreateDynamicIndexBuffer( XE::memory_view mem, XE::Flags< XE::BufferFlags > flags /*= XE::BufferFlag::NONE */ )
 {
 	XE_ASSERT( _p->_Context != nullptr );
 
@@ -309,14 +309,14 @@ void XE::Gfx::Update( DynamicVertexBufferHandle handle, XE::uint64 start, XE::me
 	_p->_Context->Update( handle, start, mem );
 }
 
-XE::DynamicVertexBufferHandle XE::Gfx::CreateDynamicVertexBuffer( XE::uint64 size, VertexLayoutHandle layout, XE::Flags< XE::BufferFlag > flags /*= XE::BufferFlag::NONE */ )
+XE::DynamicVertexBufferHandle XE::Gfx::CreateDynamicVertexBuffer( XE::uint64 size, VertexLayoutHandle layout, XE::Flags< XE::BufferFlags > flags /*= XE::BufferFlag::NONE */ )
 {
 	XE_ASSERT( _p->_Context != nullptr );
 
 	return _p->_Context->CreateDynamicVertexBuffer( size, layout, flags );
 }
 
-XE::DynamicVertexBufferHandle XE::Gfx::CreateDynamicVertexBuffer( XE::memory_view mem, VertexLayoutHandle layout, XE::Flags< XE::BufferFlag > flags /*= XE::BufferFlag::NONE */ )
+XE::DynamicVertexBufferHandle XE::Gfx::CreateDynamicVertexBuffer( XE::memory_view mem, VertexLayoutHandle layout, XE::Flags< XE::BufferFlags > flags /*= XE::BufferFlag::NONE */ )
 {
 	XE_ASSERT( _p->_Context != nullptr );
 
@@ -358,28 +358,28 @@ XE::ProgramHandle XE::Gfx::CreateProgram( ShaderHandle cs, bool des_shader /*= f
 	return _p->_Context->CreateProgram( cs, des_shader );
 }
 
-XE::TextureHandle XE::Gfx::CreateTexture2D( const XE::String & name, XE::uint32 width, XE::uint32 height, bool hasmips, XE::uint16 layers, TextureFormat format, XE::Flags< XE::TextureFlag > flags, SamplerWrap U, SamplerWrap V, SamplerWrap W, SamplerMode MIN, SamplerMode MAG, SamplerMode MIP, std::optional< XE::memory_view > mem /*= std::nullopt */ )
+XE::TextureHandle XE::Gfx::CreateTexture2D( const XE::String & name, XE::uint32 width, XE::uint32 height, bool hasmips, XE::uint16 layers, TextureFormat format, XE::Flags< XE::TextureFlags > flags, SamplerWrap U, SamplerWrap V, SamplerWrap W, SamplerMode MIN, SamplerMode MAG, SamplerMode MIP, std::optional< XE::memory_view > mem /*= std::nullopt */ )
 {
 	XE_ASSERT( _p->_Context != nullptr );
 
 	return _p->_Context->CreateTexture2D( name, width, height, hasmips, layers, format, flags, U, V, W, MIN, MAG, MIP, mem );
 }
 
-XE::TextureHandle XE::Gfx::CreateTexture2D( const XE::String & name, XE::BackbufferRatio ratio, bool hasmips, XE::uint16 layers, TextureFormat format, XE::Flags< XE::TextureFlag > flags, SamplerWrap U, SamplerWrap V, SamplerWrap W, SamplerMode MIN, SamplerMode MAG, SamplerMode MIP )
+XE::TextureHandle XE::Gfx::CreateTexture2D( const XE::String & name, XE::BackbufferRatio ratio, bool hasmips, XE::uint16 layers, TextureFormat format, XE::Flags< XE::TextureFlags > flags, SamplerWrap U, SamplerWrap V, SamplerWrap W, SamplerMode MIN, SamplerMode MAG, SamplerMode MIP )
 {
 	XE_ASSERT( _p->_Context != nullptr );
 
 	return _p->_Context->CreateTexture2D( name, ratio, hasmips, layers, format, flags, U, V, W, MIN, MAG, MIP );
 }
 
-XE::TextureHandle XE::Gfx::CreateTexture3D( const XE::String & name, XE::uint32 width, XE::uint32 height, XE::uint32 depth, bool hasmips, TextureFormat format, XE::Flags< XE::TextureFlag > flags, SamplerWrap U, SamplerWrap V, SamplerWrap W, SamplerMode MIN, SamplerMode MAG, SamplerMode MIP, std::optional< XE::memory_view > mem /*= std::nullopt */ )
+XE::TextureHandle XE::Gfx::CreateTexture3D( const XE::String & name, XE::uint32 width, XE::uint32 height, XE::uint32 depth, bool hasmips, TextureFormat format, XE::Flags< XE::TextureFlags > flags, SamplerWrap U, SamplerWrap V, SamplerWrap W, SamplerMode MIN, SamplerMode MAG, SamplerMode MIP, std::optional< XE::memory_view > mem /*= std::nullopt */ )
 {
 	XE_ASSERT( _p->_Context != nullptr );
 
 	return _p->_Context->CreateTexture3D( name, width, height, depth, hasmips, format, flags, U, V, W, MIN, MAG, MIP, mem );
 }
 
-XE::TextureHandle XE::Gfx::CreateTextureCube( const XE::String & name, XE::uint32 size, bool hasmips, XE::uint16 layers, TextureFormat format, XE::Flags< XE::TextureFlag > flags, SamplerWrap U, SamplerWrap V, SamplerWrap W, SamplerMode MIN, SamplerMode MAG, SamplerMode MIP, std::optional< XE::memory_view > mem /*= std::nullopt */ )
+XE::TextureHandle XE::Gfx::CreateTextureCube( const XE::String & name, XE::uint32 size, bool hasmips, XE::uint16 layers, TextureFormat format, XE::Flags< XE::TextureFlags > flags, SamplerWrap U, SamplerWrap V, SamplerWrap W, SamplerMode MIN, SamplerMode MAG, SamplerMode MIP, std::optional< XE::memory_view > mem /*= std::nullopt */ )
 {
 	XE_ASSERT( _p->_Context != nullptr );
 

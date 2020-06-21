@@ -37,7 +37,7 @@ void XE::Encoder::SetFrame( Frame* val )
 	_p->_Frame = val;
 }
 
-void XE::Encoder::SetState( XE::Flags<XE::StateFlag> flags /*= XE::StateFlag::DEFAULT */ )
+void XE::Encoder::SetState( XE::Flags<XE::StateFlags> flags /*= XE::StateFlag::DEFAULT */ )
 {
 	_p->_Draw.StateFlags = flags;
 }
@@ -47,7 +47,7 @@ void XE::Encoder::SetCondition( OcclusionQueryHandle handle, bool visible )
 	_p->_Draw.OcclusionQuery = handle;
 }
 
-void XE::Encoder::SetStencil( XE::Flags<XE::StencilFlag> front, XE::Flags<XE::StencilFlag> back /*= XE::StencilFlag::NONE */ )
+void XE::Encoder::SetStencil( XE::Flags<XE::StencilFlags> front, XE::Flags<XE::StencilFlags> back /*= XE::StencilFlag::NONE */ )
 {
 	_p->_Draw.FrontStencilFlags = front;
 	_p->_Draw.BackStencilFlags = back;
@@ -190,7 +190,7 @@ void XE::Encoder::Submit( ViewHandle handle, RenderGroup group, ProgramHandle pr
 
 	if( query )
 	{
-		_p->_Draw.StateFlags |= StateFlag::INTERNAL_OCCLUSION_QUERY;
+//		_p->_Draw.StateFlags |= StateFlags::INTERNAL_OCCLUSION_QUERY;
 		_p->_Draw.OcclusionQuery = query;
 	}
 	

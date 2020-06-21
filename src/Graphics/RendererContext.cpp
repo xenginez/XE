@@ -84,7 +84,7 @@ void XE::RendererContext::Shutdown()
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::RENDERER_SHUTDOWN );
 }
 
-void XE::RendererContext::Reset( XE::uint32 width, XE::uint32 height, XE::Flags<XE::ResetFlag> flags, XE::TextureFormat format )
+void XE::RendererContext::Reset( XE::uint32 width, XE::uint32 height, XE::Flags<XE::ResetFlags> flags, XE::TextureFormat format )
 {
 	_p->_Init.format = format;
 	_p->_Init.width = width;
@@ -133,7 +133,7 @@ XE::InitInfo & XE::RendererContext::GetInit()
 	return _p->_Init;
 }
 
-XE::IndexBufferHandle XE::RendererContext::CreateIndexBuffer( const XE::String & name, XE::memory_view mem, XE::Flags< XE::BufferFlag > flags )
+XE::IndexBufferHandle XE::RendererContext::CreateIndexBuffer( const XE::String & name, XE::memory_view mem, XE::Flags< XE::BufferFlags > flags )
 {
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
 
@@ -148,7 +148,7 @@ XE::IndexBufferHandle XE::RendererContext::CreateIndexBuffer( const XE::String &
 	return handle;
 }
 
-XE::TransientIndexBufferHandle XE::RendererContext::CreateTransientIndexBuffer( XE::memory_view mem, XE::Flags< XE::BufferFlag > flags )
+XE::TransientIndexBufferHandle XE::RendererContext::CreateTransientIndexBuffer( XE::memory_view mem, XE::Flags< XE::BufferFlags > flags )
 {
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
 
@@ -190,7 +190,7 @@ void XE::RendererContext::Destory( VertexLayoutHandle handle )
 	_p->_SubmitFrame->PostCmd.Wirte( handle );
 }
 
-XE::VertexBufferHandle XE::RendererContext::CreateVertexBuffer( const XE::String & name, XE::memory_view mem, VertexLayoutHandle layout, XE::Flags< XE::BufferFlag > flags )
+XE::VertexBufferHandle XE::RendererContext::CreateVertexBuffer( const XE::String & name, XE::memory_view mem, VertexLayoutHandle layout, XE::Flags< XE::BufferFlags > flags )
 {
 	auto handle = _p->_VertexBufferHandleAlloc.Alloc();
 
@@ -206,7 +206,7 @@ XE::VertexBufferHandle XE::RendererContext::CreateVertexBuffer( const XE::String
 	return handle;
 }
 
-XE::TransientVertexBufferHandle XE::RendererContext::CreateTransientVertexBuffer( XE::memory_view mem, VertexLayoutHandle layout, XE::Flags< XE::BufferFlag > flags )
+XE::TransientVertexBufferHandle XE::RendererContext::CreateTransientVertexBuffer( XE::memory_view mem, VertexLayoutHandle layout, XE::Flags< XE::BufferFlags > flags )
 {
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
 
@@ -228,7 +228,7 @@ void XE::RendererContext::Destory( VertexBufferHandle handle )
 	_p->_SubmitFrame->PostCmd.Wirte( handle );
 }
 
-XE::DynamicIndexBufferHandle XE::RendererContext::CreateDynamicIndexBuffer( XE::uint64 size, XE::Flags< XE::BufferFlag > flags )
+XE::DynamicIndexBufferHandle XE::RendererContext::CreateDynamicIndexBuffer( XE::uint64 size, XE::Flags< XE::BufferFlags > flags )
 {
 	auto handle = _p->_DynamicIndexBufferHandleAlloc.Alloc();
 
@@ -242,7 +242,7 @@ XE::DynamicIndexBufferHandle XE::RendererContext::CreateDynamicIndexBuffer( XE::
 	return handle;
 }
 
-XE::DynamicIndexBufferHandle XE::RendererContext::CreateDynamicIndexBuffer( XE::memory_view mem, XE::Flags< XE::BufferFlag > flags )
+XE::DynamicIndexBufferHandle XE::RendererContext::CreateDynamicIndexBuffer( XE::memory_view mem, XE::Flags< XE::BufferFlags > flags )
 {
 	auto handle = _p->_DynamicIndexBufferHandleAlloc.Alloc();
 
@@ -273,7 +273,7 @@ void XE::RendererContext::Destory( DynamicIndexBufferHandle handle )
 	_p->_SubmitFrame->PostCmd.Wirte( handle );
 }
 
-XE::DynamicVertexBufferHandle XE::RendererContext::CreateDynamicVertexBuffer( XE::uint64 size, VertexLayoutHandle layout, XE::Flags< XE::BufferFlag > flags )
+XE::DynamicVertexBufferHandle XE::RendererContext::CreateDynamicVertexBuffer( XE::uint64 size, VertexLayoutHandle layout, XE::Flags< XE::BufferFlags > flags )
 {
 	auto handle = _p->_DynamicVertexBufferHandleAlloc.Alloc();
 
@@ -288,7 +288,7 @@ XE::DynamicVertexBufferHandle XE::RendererContext::CreateDynamicVertexBuffer( XE
 	return handle;
 }
 
-XE::DynamicVertexBufferHandle XE::RendererContext::CreateDynamicVertexBuffer( XE::memory_view mem, VertexLayoutHandle layout, XE::Flags< XE::BufferFlag > flags )
+XE::DynamicVertexBufferHandle XE::RendererContext::CreateDynamicVertexBuffer( XE::memory_view mem, VertexLayoutHandle layout, XE::Flags< XE::BufferFlags > flags )
 {
 	auto handle = _p->_DynamicVertexBufferHandleAlloc.Alloc();
 
@@ -421,7 +421,7 @@ void XE::RendererContext::Destory( ProgramHandle handle )
 	_p->_SubmitFrame->PostCmd.Wirte( handle );
 }
 
-XE::TextureHandle XE::RendererContext::CreateTexture2D( const XE::String & name, XE::uint32 width, XE::uint32 height, bool hasmips, XE::uint16 layers, TextureFormat format, XE::Flags< XE::TextureFlag > flags, SamplerWrap U, SamplerWrap V, SamplerWrap W, SamplerMode MIN, SamplerMode MAG, SamplerMode MIP, std::optional< XE::memory_view > mem )
+XE::TextureHandle XE::RendererContext::CreateTexture2D( const XE::String & name, XE::uint32 width, XE::uint32 height, bool hasmips, XE::uint16 layers, TextureFormat format, XE::Flags< XE::TextureFlags > flags, SamplerWrap U, SamplerWrap V, SamplerWrap W, SamplerMode MIN, SamplerMode MAG, SamplerMode MIP, std::optional< XE::memory_view > mem )
 {
 	auto handle = _p->_TextureHandleAlloc.Alloc();
 
@@ -466,7 +466,7 @@ XE::TextureHandle XE::RendererContext::CreateTexture2D( const XE::String & name,
 	return handle;
 }
 
-XE::TextureHandle XE::RendererContext::CreateTexture2D( const XE::String & name, XE::BackbufferRatio ratio, bool hasmips, XE::uint16 layers, TextureFormat format, XE::Flags< XE::TextureFlag > flags, SamplerWrap U, SamplerWrap V, SamplerWrap W, SamplerMode MIN, SamplerMode MAG, SamplerMode MIP )
+XE::TextureHandle XE::RendererContext::CreateTexture2D( const XE::String & name, XE::BackbufferRatio ratio, bool hasmips, XE::uint16 layers, TextureFormat format, XE::Flags< XE::TextureFlags > flags, SamplerWrap U, SamplerWrap V, SamplerWrap W, SamplerMode MIN, SamplerMode MAG, SamplerMode MIP )
 {
 	auto handle = _p->_TextureHandleAlloc.Alloc();
 
@@ -536,7 +536,7 @@ XE::TextureHandle XE::RendererContext::CreateTexture2D( const XE::String & name,
 	return handle;
 }
 
-XE::TextureHandle XE::RendererContext::CreateTexture3D( const XE::String & name, XE::uint32 width, XE::uint32 height, XE::uint32 depth, bool hasmips, TextureFormat format, XE::Flags< XE::TextureFlag > flags, SamplerWrap U, SamplerWrap V, SamplerWrap W, SamplerMode MIN, SamplerMode MAG, SamplerMode MIP, std::optional< XE::memory_view > mem )
+XE::TextureHandle XE::RendererContext::CreateTexture3D( const XE::String & name, XE::uint32 width, XE::uint32 height, XE::uint32 depth, bool hasmips, TextureFormat format, XE::Flags< XE::TextureFlags > flags, SamplerWrap U, SamplerWrap V, SamplerWrap W, SamplerMode MIN, SamplerMode MAG, SamplerMode MIP, std::optional< XE::memory_view > mem )
 {
 	auto handle = _p->_TextureHandleAlloc.Alloc();
 
@@ -584,7 +584,7 @@ XE::TextureHandle XE::RendererContext::CreateTexture3D( const XE::String & name,
 	return handle;
 }
 
-XE::TextureHandle XE::RendererContext::CreateTextureCube( const XE::String & name, XE::uint32 size, bool hasmips, XE::uint16 layers, TextureFormat format, XE::Flags< XE::TextureFlag > flags, SamplerWrap U, SamplerWrap V, SamplerWrap W, SamplerMode MIN, SamplerMode MAG, SamplerMode MIP, std::optional< XE::memory_view > mem )
+XE::TextureHandle XE::RendererContext::CreateTextureCube( const XE::String & name, XE::uint32 size, bool hasmips, XE::uint16 layers, TextureFormat format, XE::Flags< XE::TextureFlags > flags, SamplerWrap U, SamplerWrap V, SamplerWrap W, SamplerMode MIN, SamplerMode MAG, SamplerMode MIP, std::optional< XE::memory_view > mem )
 {
 	auto handle = _p->_TextureHandleAlloc.Alloc();
 
@@ -904,19 +904,19 @@ void XE::RendererContext::SetViewClear( ViewHandle handle, std::optional<XE::Col
 	if (color != std::nullopt)
 	{
 		_p->_Views[handle].ClearColor = *color;
-		_p->_Views[handle].Flag |= ClearFlag::COLOR;
+		_p->_Views[handle].Flag |= ClearFlags::COLOR;
 	}
 
 	if (depth != std::nullopt)
 	{
 		_p->_Views[handle].ClearColor = *depth;
-		_p->_Views[handle].Flag |= ClearFlag::DEPTH;
+		_p->_Views[handle].Flag |= ClearFlags::DEPTH;
 	}
 
 	if (stencil != std::nullopt)
 	{
 		_p->_Views[handle].ClearStencil = *stencil;
-		_p->_Views[handle].Flag |= ClearFlag::STENCIL;
+		_p->_Views[handle].Flag |= ClearFlags::STENCIL;
 	}
 }
 
