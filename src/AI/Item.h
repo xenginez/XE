@@ -27,14 +27,8 @@ public:
 
 	void SetName( const XE::String & val );
 
-public:
-	const XE::Vec2 & GetPosition() const;
-
-	void SetPosition( const XE::Vec2 & val );
-
 private:
 	XE::String _Name;
-	XE::Vec2 _Position;
 };
 
 END_XE_NAMESPACE
