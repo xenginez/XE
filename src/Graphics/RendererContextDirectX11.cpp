@@ -5,6 +5,8 @@
 #include <dxgi1_6.h>
 #include <d3dcommon.h>
 
+#include "Structs.h"
+
 #pragma comment( lib, "dxgi.lib" )
 #pragma comment( lib, "d3d11.lib" )
 #pragma comment( lib, "dxguid.lib" )
@@ -16,37 +18,6 @@ if( FAILED( __X ) ) \
 	XE_ASSERT( false && #__X ); \
 }
 
-
-enum class D3D11BufferFlag
-{
-	NONE = 0x0000,
-
-	COMPUTE_FORMAT_8X1 = 0x0001,
-	COMPUTE_FORMAT_8X2 = 0x0002,
-	COMPUTE_FORMAT_8X4 = 0x0003,
-	COMPUTE_FORMAT_16X1 = 0x0004,
-	COMPUTE_FORMAT_16X2 = 0x0005,
-	COMPUTE_FORMAT_16X4 = 0x0006,
-	COMPUTE_FORMAT_32X1 = 0x0007,
-	COMPUTE_FORMAT_32X2 = 0x0008,
-	COMPUTE_FORMAT_32X4 = 0x0009,
-	COMPUTE_FORMAT_MASK = 0x000f,
-	COMPUTE_FORMAT_SHIFT = 0,
-
-	COMPUTE_TYPE_INT = 0x0010, //!< Type `int`.
-	COMPUTE_TYPE_UINT = 0x0020, //!< Type `uint`.
-	COMPUTE_TYPE_FLOAT = 0x0030, //!< Type `float`.
-	COMPUTE_TYPE_MASK = 0x0030,
-	COMPUTE_TYPE_SHIFT = 4,
-
-	COMPUTE_READ = 0x0100, //!< Buffer will be read by shader.
-	COMPUTE_WRITE = 0x0200, //!< Buffer will be used for writing.
-	DRAW_INDIRECT = 0x0400, //!< Buffer will be used for storing draw indirect commands.
-	ALLOW_RESIZE = 0x0800, //!< Allow dynamic index/vertex buffer resize during update.
-	INDEX32 = 0x1000, //!< Index buffer contains 32-bit indices.
-
-};
-
 struct UavFormat
 {
 	DXGI_FORMAT format[3];
@@ -54,29 +25,29 @@ struct UavFormat
 };
 static const UavFormat G_UAVFormat[] =
 {
-	{ { DXGI_FORMAT_UNKNOWN,           DXGI_FORMAT_UNKNOWN,            DXGI_FORMAT_UNKNOWN            },  0 }, // ignored
-	{ { DXGI_FORMAT_R8_SINT,           DXGI_FORMAT_R8_UINT,            DXGI_FORMAT_UNKNOWN            },  1 }, // BGFX_BUFFER_COMPUTE_FORMAT_8X1
-	{ { DXGI_FORMAT_R8G8_SINT,         DXGI_FORMAT_R8G8_UINT,          DXGI_FORMAT_UNKNOWN            },  2 }, // BGFX_BUFFER_COMPUTE_FORMAT_8X2
-	{ { DXGI_FORMAT_R8G8B8A8_SINT,     DXGI_FORMAT_R8G8B8A8_UINT,      DXGI_FORMAT_UNKNOWN            },  4 }, // BGFX_BUFFER_COMPUTE_FORMAT_8X4
-	{ { DXGI_FORMAT_R16_SINT,          DXGI_FORMAT_R16_UINT,           DXGI_FORMAT_R16_FLOAT          },  2 }, // BGFX_BUFFER_COMPUTE_FORMAT_16X1
-	{ { DXGI_FORMAT_R16G16_SINT,       DXGI_FORMAT_R16G16_UINT,        DXGI_FORMAT_R16G16_FLOAT       },  4 }, // BGFX_BUFFER_COMPUTE_FORMAT_16X2
-	{ { DXGI_FORMAT_R16G16B16A16_SINT, DXGI_FORMAT_R16G16B16A16_UINT,  DXGI_FORMAT_R16G16B16A16_FLOAT },  8 }, // BGFX_BUFFER_COMPUTE_FORMAT_16X4
-	{ { DXGI_FORMAT_R32_SINT,          DXGI_FORMAT_R32_UINT,           DXGI_FORMAT_R32_FLOAT          },  4 }, // BGFX_BUFFER_COMPUTE_FORMAT_32X1
-	{ { DXGI_FORMAT_R32G32_SINT,       DXGI_FORMAT_R32G32_UINT,        DXGI_FORMAT_R32G32_FLOAT       },  8 }, // BGFX_BUFFER_COMPUTE_FORMAT_32X2
-	{ { DXGI_FORMAT_R32G32B32A32_SINT, DXGI_FORMAT_R32G32B32A32_UINT,  DXGI_FORMAT_R32G32B32A32_FLOAT }, 16 }, // BGFX_BUFFER_COMPUTE_FORMAT_32X4
+	{ { DXGI_FORMAT_UNKNOWN,           DXGI_FORMAT_UNKNOWN,            DXGI_FORMAT_UNKNOWN            },  0 },
+	{ { DXGI_FORMAT_R8_SINT,           DXGI_FORMAT_R8_UINT,            DXGI_FORMAT_UNKNOWN            },  1 },
+	{ { DXGI_FORMAT_R8G8_SINT,         DXGI_FORMAT_R8G8_UINT,          DXGI_FORMAT_UNKNOWN            },  2 },
+	{ { DXGI_FORMAT_R8G8B8A8_SINT,     DXGI_FORMAT_R8G8B8A8_UINT,      DXGI_FORMAT_UNKNOWN            },  4 },
+	{ { DXGI_FORMAT_R16_SINT,          DXGI_FORMAT_R16_UINT,           DXGI_FORMAT_R16_FLOAT          },  2 },
+	{ { DXGI_FORMAT_R16G16_SINT,       DXGI_FORMAT_R16G16_UINT,        DXGI_FORMAT_R16G16_FLOAT       },  4 },
+	{ { DXGI_FORMAT_R16G16B16A16_SINT, DXGI_FORMAT_R16G16B16A16_UINT,  DXGI_FORMAT_R16G16B16A16_FLOAT },  8 },
+	{ { DXGI_FORMAT_R32_SINT,          DXGI_FORMAT_R32_UINT,           DXGI_FORMAT_R32_FLOAT          },  4 },
+	{ { DXGI_FORMAT_R32G32_SINT,       DXGI_FORMAT_R32G32_UINT,        DXGI_FORMAT_R32G32_FLOAT       },  8 },
+	{ { DXGI_FORMAT_R32G32B32A32_SINT, DXGI_FORMAT_R32G32B32A32_UINT,  DXGI_FORMAT_R32G32B32A32_FLOAT }, 16 },
 };
 
 struct BufferD3D11
 {
 public:
-	void create( ID3D11Device * device, XE::memory_view data, XE::Flags<D3D11BufferFlag> flags, bool vertex = false )
+	void create( ID3D11Device * device, XE::memory_view data, XE::Flags<XE::BufferFlags> flags, bool vertex = false )
 	{
 		_size = data.size();
 		_flags = flags;
 
-		const bool needUav = D3D11BufferFlag::NONE != ( _flags & XE::MakeFlags( D3D11BufferFlag::COMPUTE_WRITE, D3D11BufferFlag::DRAW_INDIRECT ) );
-		const bool needSrv = D3D11BufferFlag::NONE != ( _flags & D3D11BufferFlag::COMPUTE_READ );
-		const bool drawIndirect = D3D11BufferFlag::NONE != ( _flags & D3D11BufferFlag::DRAW_INDIRECT );
+		const bool needUav = XE::BufferFlags::NONE != ( _flags & XE::MakeFlags( XE::BufferFlags::COMPUTEWRITE, XE::BufferFlags::DRAWINDIRECT ) );
+		const bool needSrv = XE::BufferFlags::NONE != ( _flags & XE::BufferFlags::COMPUTEREAD );
+		const bool drawIndirect = XE::BufferFlags::NONE != ( _flags & XE::BufferFlags::DRAWINDIRECT );
 		_dynamic = ( data.empty() && !needUav );
 
 
@@ -100,8 +71,8 @@ public:
 		}
 		else
 		{
-			auto uavFormat = _flags & D3D11BufferFlag::COMPUTE_FORMAT_MASK;
-			if( uavFormat == D3D11BufferFlag::NONE )
+			auto uavFormat = _flags & XE::BufferFlags::COMPUTEFORMATMASK;
+			if( uavFormat == XE::BufferFlags::NONE )
 			{
 				if( vertex )
 				{
@@ -110,7 +81,7 @@ public:
 				}
 				else
 				{
-					if( ( _flags & D3D11BufferFlag::INDEX32 ) == D3D11BufferFlag::NONE )
+					if( ( _flags & XE::BufferFlags::INDEX32 ) == XE::BufferFlags::NONE )
 					{
 						format = DXGI_FORMAT_R16_UINT;
 						stride = 2;
@@ -124,7 +95,7 @@ public:
 			}
 			else
 			{
-				const XE::uint64 uavType = XE::Mathf::satsub<XE::uint64>( ( ( _flags & D3D11BufferFlag::COMPUTE_TYPE_MASK ) >> D3D11BufferFlag::COMPUTE_TYPE_SHIFT ).GetValue(), 1 );
+				const XE::uint64 uavType = XE::Mathf::satsub<XE::uint64>( ( ( _flags & XE::BufferFlags::COMPUTETYPEMASK ) >> XE::BufferFlags::COMPUTETYPESHIFT ).GetValue(), 1 );
 				format = G_UAVFormat[uavFormat.GetValue()].format[uavType];
 				stride = G_UAVFormat[uavFormat.GetValue()].stride;
 			}
@@ -248,7 +219,7 @@ public:
 
 		_size = 0;
 		_dynamic = false;
-		_flags = D3D11BufferFlag::NONE;
+		_flags = XE::BufferFlags::NONE;
 	}
 
 public:
@@ -257,7 +228,7 @@ public:
 	ID3D11Buffer * _ptr = nullptr;
 	ID3D11ShaderResourceView * _srv = nullptr;
 	ID3D11UnorderedAccessView * _uav = nullptr;
-	XE::Flags<D3D11BufferFlag> _flags = D3D11BufferFlag::NONE;
+	XE::Flags<XE::BufferFlags> _flags = XE::BufferFlags::NONE;
 };
 struct ShaderD3D11
 {
@@ -269,7 +240,10 @@ struct ShaderD3D11
 		ID3D11DeviceChild * _Ptr;
 	};
 
-
+	XE::memory_view _Code;
+	ID3D11Buffer * _Buffer;
+	XE::UniformBuffer * _Uniform;
+	std::array<XE::PredefinedUniform, ( XE::uint64 )XE::PredefinedUniform::Type::COUNT > _PredefinedUniform;
 };
 struct ProgramD3D11 {};
 struct TextureD3D11 {};
@@ -280,7 +254,7 @@ struct IndexBufferD3D11 : public BufferD3D11
 struct VertexBufferD3D11 : public BufferD3D11
 {
 public:
-	void create( ID3D11Device * device, XE::memory_view data, XE::VertexLayoutHandle layoutHandle, XE::Flags<D3D11BufferFlag> flags, uint16_t stride )
+	void create( ID3D11Device * device, XE::memory_view data, XE::VertexLayoutHandle layoutHandle, XE::Flags<XE::BufferFlags> flags, uint16_t stride )
 	{
 		_layoutHandle = layoutHandle;
 

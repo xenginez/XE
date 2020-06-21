@@ -6,8 +6,8 @@ XE::memory_view CopyToFrame( XE::Frame * frame, XE::memory_view mem )
 {
 	std::unique_lock<std::mutex> lock( frame->TransientBufferMutex );
 
-	auto pos = frame->TransientBuffer.WirtePos();
-	frame->TransientBuffer.Wirte( mem );
+	auto pos = frame->TransientBuffers.WirtePos();
+	frame->TransientBuffers.Wirte( mem );
 
 	return XE::memory_view( ( const char * )pos, mem.size() );
 }
@@ -197,14 +197,14 @@ void XE::Encoder::Submit( ViewHandle handle, RenderGroup group, ProgramHandle pr
 	{
 		std::unique_lock<std::mutex> lock( _p->_Frame->UniformBufferMutex );
 
-		_p->_Draw.UniformBegin = _p->_Frame->UniformBuffer.WirtePos();
+		_p->_Draw.UniformBegin = _p->_Frame->UniformBuffers.WirtePos();
 		for( const auto & it : _p->_Uniforms )
 		{
-			_p->_Frame->UniformBuffer.Wirte( it.first );
-			_p->_Frame->UniformBuffer.Wirte( it.second.size() );
-			_p->_Frame->UniformBuffer.Wirte( it.second.data(), it.second.size() );
+			_p->_Frame->UniformBuffers.Wirte( it.first );
+			_p->_Frame->UniformBuffers.Wirte( it.second.size() );
+			_p->_Frame->UniformBuffers.Wirte( it.second.data(), it.second.size() );
 		}
-		_p->_Draw.UniformEnd = _p->_Frame->UniformBuffer.WirtePos();
+		_p->_Draw.UniformEnd = _p->_Frame->UniformBuffers.WirtePos();
 	}
 	
 	XE::uint64 key = 0;
@@ -248,14 +248,14 @@ void XE::Encoder::Dispatch( ViewHandle handle, ProgramHandle program, XE::uint32
 	{
 		std::unique_lock<std::mutex> lock( _p->_Frame->UniformBufferMutex );
 
-		_p->_Compute.UniformBegin = _p->_Frame->UniformBuffer.WirtePos();
+		_p->_Compute.UniformBegin = _p->_Frame->UniformBuffers.WirtePos();
 		for( const auto & it : _p->_Uniforms )
 		{
-			_p->_Frame->UniformBuffer.Wirte( it.first );
-			_p->_Frame->UniformBuffer.Wirte( it.second.size() );
-			_p->_Frame->UniformBuffer.Wirte( it.second.data(), it.second.size() );
+			_p->_Frame->UniformBuffers.Wirte( it.first );
+			_p->_Frame->UniformBuffers.Wirte( it.second.size() );
+			_p->_Frame->UniformBuffers.Wirte( it.second.data(), it.second.size() );
 		}
-		_p->_Compute.UniformEnd = _p->_Frame->UniformBuffer.WirtePos();
+		_p->_Compute.UniformEnd = _p->_Frame->UniformBuffers.WirtePos();
 	}
 
 	_p->_Compute.StartMatrix = _p->_Draw.StartMatrix;

@@ -964,8 +964,8 @@ XE::memory_view XE::RendererContext::CopyToFrame( XE::memory_view mem ) const
 {
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->TransientBufferMutex );
 
-	auto pos = _p->_SubmitFrame->TransientBuffer.WirtePos();
-	_p->_SubmitFrame->TransientBuffer.Wirte( mem );
+	auto pos = _p->_SubmitFrame->TransientBuffers.WirtePos();
+	_p->_SubmitFrame->TransientBuffers.Wirte( mem );
 
 	return XE::memory_view( ( const char * )pos, mem.size() );
 }

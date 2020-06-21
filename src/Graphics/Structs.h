@@ -176,7 +176,6 @@ public:
 	TextureHandle Textures[GFX_MAX_ATTACHMENTS];
 };
 
-
 class IndexBuffer
 {
 public:
@@ -212,6 +211,11 @@ public:
 	VertexLayoutHandle LayoutHandle;
 };
 
+class UniformBuffer
+{
+
+};
+
 class InstanceDataBuffer
 {
 public:
@@ -240,6 +244,31 @@ public:
 	VertexLayoutHandle layoutHandle;
 };
 
+
+class PredefinedUniform
+{
+public:
+	enum Type
+	{
+		VIEWRECT,
+		VIEWTEXEL,
+		VIEW,
+		INVVIEW,
+		PROJ,
+		INVPROJ,
+		VIEWPROJ,
+		INVVIEWPROJ,
+		MODEL,
+		MODELVIEW,
+		MODELVIEWPROJ,
+		ALPHAREF,
+		COUNT
+	};
+
+	Type _Type;
+	uint32_t _Loc;
+	uint16_t _Count;
+};
 
 class View
 {
@@ -417,10 +446,10 @@ public:
 	XE::Buffer PostCmd;
 	std::mutex PostCmdMutex;
 
-	XE::Buffer UniformBuffer;
+	XE::Buffer UniformBuffers;
 	std::mutex UniformBufferMutex;
 
-	XE::Buffer TransientBuffer;
+	XE::Buffer TransientBuffers;
 	std::mutex TransientBufferMutex;
 };
 
