@@ -243,10 +243,40 @@ struct ShaderD3D11
 	XE::memory_view _Code;
 	ID3D11Buffer * _Buffer;
 	XE::UniformBuffer * _Uniform;
-	std::array<XE::PredefinedUniform, ( XE::uint64 )XE::PredefinedUniform::Type::COUNT > _PredefinedUniform;
+	XE::uint16 _NumPredefinedUniform;
+	std::array<XE::PredefinedUniform, XE::PredefinedUniform::Type::COUNT > _PredefinedUniform;
 };
-struct ProgramD3D11 {};
-struct TextureD3D11 {};
+struct ProgramD3D11
+{
+	void create( const ShaderD3D11 * _vsh, const ShaderD3D11 * _fsh )
+	{
+		XE_ASSERT( nullptr != _vsh->_Ptr && "vertex shader doesn't exist." );
+
+		VS = _vsh;
+		std::memcpy( PredefinedUniform, _vsh->_PredefinedUniform.data(), _vsh->_NumPredefinedUniform * sizeof( XE::PredefinedUniform ) );
+		_NumPredefinedUniform += _vsh->_NumPredefinedUniform;
+
+		if( nullptr != _fsh )
+		{
+			XE_ASSERT( nullptr != _fsh->_Ptr && "fragment shader doesn't exist." );
+
+			FS = _fsh;
+			std::memcpy( &PredefinedUniform[_NumPredefinedUniform], _fsh->_PredefinedUniform.data(), _fsh->_NumPredefinedUniform * sizeof( XE::PredefinedUniform ) );
+			_NumPredefinedUniform += _vsh->_NumPredefinedUniform;
+		}
+	}
+
+	void destroy()
+	{
+		VS = nullptr;
+		FS = nullptr;
+	}
+
+	const ShaderD3D11 * VS;
+	const ShaderD3D11 * FS;
+	XE::uint16 _NumPredefinedUniform;
+	XE::PredefinedUniform PredefinedUniform[XE::PredefinedUniform::Type::COUNT * 2];
+};
 struct FrameBufferD3D11
 {};
 struct IndexBufferD3D11 : public BufferD3D11
@@ -264,7 +294,67 @@ public:
 public:
 	XE::VertexLayoutHandle _layoutHandle;
 };
-struct VertexLayoutD3D11 {};
+struct IntelDirectAccessResourceDescriptor
+{
+	void * _Ptr;
+	XE::uint32 _Size;
+	XE::uint32 _Pitch;
+	XE::uint32 _XOffset;
+	XE::uint32 _YOffset;
+	XE::uint32 _TileFormat;
+};
+struct DirectAccessResourceD3D11
+{
+	void * createTexture2D( const D3D11_TEXTURE2D_DESC * _gpuDesc, const D3D11_SUBRESOURCE_DATA * _srd, ID3D11Texture2D ** _gpuTexture2d );
+	void * createTexture3D( const D3D11_TEXTURE3D_DESC * _gpuDesc, const D3D11_SUBRESOURCE_DATA * _srd, ID3D11Texture3D ** _gpuTexture3d );
+	void destroy();
+
+	union
+	{
+		ID3D11Resource * _Ptr;
+		ID3D11Texture2D * _Texture2d;
+		ID3D11Texture3D * _Texture3d;
+	};
+
+	IntelDirectAccessResourceDescriptor * m_descriptor;
+};
+struct TextureD3D11
+{
+	enum Enum
+	{
+		Texture2D,
+		Texture3D,
+		TextureCube,
+	};
+
+	union
+	{
+		ID3D11Resource * _Ptr;
+		ID3D11Texture2D * _Texture2d;
+		ID3D11Texture3D * _Texture3d;
+	};
+
+	DirectAccessResourceD3D11 m_dar;
+
+	union
+	{
+		ID3D11Resource * _RT;
+		ID3D11Texture2D * _RT2D;
+	};
+
+	ID3D11ShaderResourceView * _SRV;
+	ID3D11UnorderedAccessView * _UAV;
+	XE::uint64 _Flags;
+	XE::uint32 _Width;
+	XE::uint32 _Height;
+	XE::uint32 _Depth;
+	XE::uint32 _NumLayers;
+	XE::uint8  _Type;
+	XE::uint8  _RequestedFormat;
+	XE::uint8  _TextureFormat;
+	XE::uint8  _NumMips;
+};
+
 
 static const char * G_ColorSpaceString[] =
 {
@@ -347,7 +437,6 @@ struct XE::RendererContextDirectX11::Private
 	FrameBufferD3D11 _FrameBuffers[GFX_MAX_FRAME_BUFFERS];
 	IndexBufferD3D11 _IndexBuffers[GFX_MAX_INDEX_BUFFERS];
 	VertexBufferD3D11 _VertexBuffers[GFX_MAX_VERTEX_BUFFERS];
-	VertexLayoutD3D11 _VertexLayouts[GFX_MAX_VERTEX_LAYOUTS];
 };
 
 XE::RendererContextDirectX11::RendererContextDirectX11()

@@ -9,7 +9,7 @@
 #ifndef __MATHF_H__289359AA_D9DE_4269_B0BE_BAAA6E15461B
 #define __MATHF_H__289359AA_D9DE_4269_B0BE_BAAA6E15461B
 
-#include <simdpp/simd.h>
+//#include <simdpp/simd.h>
 
 #include "Vec2.h"
 #include "Vec3.h"
