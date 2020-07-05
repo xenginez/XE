@@ -54,79 +54,36 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 /// PLATFORM OS
 
-#define OS_WINDOWS		1ull << 1
-#define OS_WINDOWS_7	1ull << 2
-#define OS_WINDOWS_8	1ull << 3
-#define OS_WINDOWS_10	1ull << 4
-#define OS_MAC			1ull << 5
-#define OS_MAC_10_8		1ull << 6
-#define OS_MAC_10_9		1ull << 7
-#define OS_MAC_10_10	1ull << 8
-#define OS_MAC_10_11	1ull << 9
-#define OS_MAC_10_12	1ull << 10
-#define OS_MAC_10_13	1ull << 11
-#define OS_IOS			1ull << 12
-#define OS_IOS_8		1ull << 13
-#define OS_IOS_9		1ull << 14
-#define OS_IOS_10		1ull << 15
-#define OS_IOS_11		1ull << 16
-#define OS_IOS_12		1ull << 17
-#define OS_ANDROID		1ull << 18
-#define OS_XBOXONE		1ull << 19
-#define OS_LINUX		1ull << 20
-#define OS_PS4			1ull << 21
+#define OS_WINDOWS		1 << 1
+#define OS_MAC			1 << 2
+#define OS_IOS			1 << 3
+#define OS_ANDROID		1 << 4
+#define OS_LINUX		1 << 5
+#define OS_UNIX			1 << 6
+#define OS_PS4			1 << 7
+#define OS_XBOXONE		1 << 8
 
-#if defined(_WIN32)
-#	include <sdkddkver.h>
-#	if   WINVER >= 0x0A00 //win10
-#		define PLATFORM_OS (OS_WINDOWS | OS_WINDOWS_10)
-#	elif WINVER >= 0x0602 //win8
-#		define PLATFORM_OS (OS_WINDOWS | OS_WINDOWS_8)
-#	elif WINVER >= 0x0601 //win7
-#		define PLATFORM_OS (OS_WINDOWS | OS_WINDOWS_7)
-#	else
+#ifdef _WIN32
 #		define PLATFORM_OS OS_WINDOWS
-#	endif
-#elif defined(__APPLE__)
-#	if   __MAC_OS_X_VERSION_MAX_REQUIRED >= __MAC_10_13
-#		define PLATFORM_OS (OS_MAC | OS_MAC_10_13)
-#	elif __MAC_OS_X_VERSION_MAX_REQUIRED >= __MAC_10_12
-#		define PLATFORM_OS (OS_MAC | OS_MAC_10_12)
-#	elif __MAC_OS_X_VERSION_MAX_REQUIRED >= __MAC_10_11
-#		define PLATFORM_OS (OS_MAC | OS_MAC_10_11)
-#	elif __MAC_OS_X_VERSION_MAX_REQUIRED >= __MAC_10_10
-#		define PLATFORM_OS (OS_MAC | OS_MAC_10_10)
-#	elif __MAC_OS_X_VERSION_MAX_REQUIRED >= __MAC_10_9
-#		define PLATFORM_OS (OS_MAC | OS_MAC_10_9)
-#	elif __MAC_OS_X_VERSION_MAX_REQUIRED >= __MAC_10_8
-#		define PLATFORM_OS (OS_MAC | OS_MAC_10_8)
-#	else
-#		define PLATFORM_OS OS_MAC
-#	endif
-#elif defined(_IOS)
-#	if   __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_12_0
-#		define PLATFORM_OS (OS_IOS | OS_IOS_12)
-#	elif __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_11_0
-#		define PLATFORM_OS (OS_IOS | OS_IOS_11)
-#	elif __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
-#		define PLATFORM_OS (OS_IOS | OS_IOS_10)
-#	elif __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_9_0
-#		define PLATFORM_OS (OS_IOS | OS_IOS_9)
-#	elif __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
-#		define PLATFORM_OS (OS_IOS | OS_IOS_8)
-#	else
+#elif __APPLE__
+#include "TargetConditionals.h"
+#if TARGET_IPHONE_SIMULATOR
 #		define PLATFORM_OS OS_IOS
-#	endif
-#elif defined(__ANDROID__)
-#	define PLATFORM_OS OS_ANDROID
-#elif defined(_XBOX_ONE)
-#	define PLATFORM_OS OS_XBOXONE
-#elif defined(_LINUX)
-#	define PLATFORM_OS OS_LINUX
-#elif defined(__ORBIS__)
-#	define PLATFORM_OS OS_PS4
+#elif TARGET_OS_IPHONE
+#		define PLATFORM_OS OS_IOS
+#elif TARGET_OS_MAC
+#		define PLATFORM_OS OS_MAC
 #else
-#   error "unknown platform os !"
+#   error "unknown platform"
+#endif
+#elif __ANDROID__
+#		define PLATFORM_OS OS_ANDROID
+#elif __linux__
+#		define PLATFORM_OS OS_LINUX
+#elif __unix__
+#		define PLATFORM_OS OS_PS4
+#else
+#   error "unknown platform"
 #endif
 
 /////////////////////////////////////////////////////////////////////////////////////////
