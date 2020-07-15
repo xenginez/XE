@@ -21,7 +21,7 @@ if %MSBUILD%==() (
 :FOUND_MSBUILD
 call %%MSBUILD%%
 set RD3_PATH=%cd%
-
+goto :BUILD_OPENAL
 echo "update git submodule"
 git submodule update --init --recursive
 
@@ -156,7 +156,7 @@ msbuild.exe ".\INSTALL.vcxproj"  /m /nr:true ^
     /p:Platform=x64 ^
     /p:AppxBundlePlatforms=x64 ^
     /p:UseSubFolderForOutputDirDuringMultiPlatformBuild=false
-cd %RD3_PATH%
+    
 echo "copy zlib debug file to depend"
 xcopy %cd%\install\lib\*.* %RD3_PATH%\..\depend\lib\win\debug\ /s /e /y
 xcopy %cd%\install\bin\*.* %RD3_PATH%\..\depend\bin\win\debug\ /s /e /y
@@ -191,7 +191,7 @@ msbuild.exe ".\INSTALL.vcxproj"  /m /nr:true ^
     /p:UseSubFolderForOutputDirDuringMultiPlatformBuild=false
 
 echo "copy zipper debug file to depend"
-xcopy %cd%\install\include\libsimdpp-2.1\*.* %RD3_PATH%\..\depend\include\ /s /e /y
+xcopy %cd%\install\include\libsimdpp-2.1\*.* %RD3_PATH%\..\src\Math\libsimdpp\ /s /e /y
 del %cd%\install\ /f /s /q
 
 
@@ -226,6 +226,38 @@ xcopy %cd%\PhysX\physx\install\vc16win64\PhysX\bin\win.x86_64.vc142.md\release\*
 xcopy %cd%\PhysX\physx\install\vc16win64\PhysX\include\*.* %RD3_PATH%\..\depend\include\PhysX\ /s /e /y
 del %cd%\PhysX\physx\install\ /f /s /q
 
+
+:BUILD_OPENAL
+echo "build openal debug"
+cd %RD3_PATH%
+mkdir .\openal-soft\build
+cd .\openal-soft\build
+cmake -DALSOFT_INSTALL_EXAMPLES=OFF -DALSOFT_INSTALL_UTILS=OFF -DALSOFT_UPDATE_BUILD_VERSION=OFF -DALSOFT_UTILS=OFF -DCMAKE_INSTALL_PREFIX=.\install\ .. -G "Visual Studio 16 2019"
+msbuild.exe ".\INSTALL.vcxproj"  /m /nr:true ^
+    /p:Configuration=Debug ^
+    /p:Platform=x64 ^
+    /p:AppxBundlePlatforms=x64 ^
+    /p:UseSubFolderForOutputDirDuringMultiPlatformBuild=false
+
+echo "copy openal debug file to depend"
+xcopy %cd%\install\lib\*.* %RD3_PATH%\..\depend\lib\win\debug\ /s /e /y
+xcopy %cd%\install\bin\*.* %RD3_PATH%\..\depend\bin\win\debug\ /s /e /y
+del %cd%\install\ /f /s /q
+
+echo "build openal release"
+cd %RD3_PATH%
+mkdir .\openal-soft\build
+cd .\openal-soft\build
+msbuild.exe ".\INSTALL.vcxproj"  /m /nr:true ^
+    /p:Configuration=Release ^
+    /p:Platform=x64 ^
+    /p:AppxBundlePlatforms=x64 ^
+    /p:UseSubFolderForOutputDirDuringMultiPlatformBuild=false
+echo "copy openal release file to depend"
+xcopy %cd%\install\lib\*.* %RD3_PATH%\..\depend\lib\win\release\ /s /e /y
+xcopy %cd%\install\bin\*.* %RD3_PATH%\..\depend\bin\win\release\ /s /e /y
+xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\ /s /e /y
+del %cd%\install\ /f /s /q
 
 :EXIT
 pause

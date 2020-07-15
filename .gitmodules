@@ -25,3 +25,6 @@
 [submodule "3rdparty/libsimdpp"]
 	path = 3rdparty/libsimdpp
 	url = https://github.com/p12tic/libsimdpp.git
+[submodule "3rdparty/openal-soft"]
+	path = 3rdparty/openal-soft
+	url = https://github.com/kcat/openal-soft.git
