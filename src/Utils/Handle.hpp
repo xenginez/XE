@@ -14,8 +14,8 @@
 BEG_XE_NAMESPACE
 
 template< typename T > class HandleAllocator;
-template< typename T, XE::uint64 _Max > class QueueHandleAllocator;
-template< typename T, XE::uint64 _Max > class ConcurrentHandleAllocator;
+template< typename T, XE::uint64 _Max = std::numeric_limits<XE::uint64>::max() > class QueueHandleAllocator;
+template< typename T, XE::uint64 _Max = std::numeric_limits<XE::uint64>::max() > class ConcurrentHandleAllocator;
 
 template< typename T > class Handle
 {
@@ -131,7 +131,7 @@ private:
 	XE::uint64 _value;
 };
 
-template< typename T > struct VariantCreate<Handle<T>>
+template< typename T > struct VariantCreate< Handle< T > >
 {
 	static void Create( Variant * var, const Handle<T> & val )
 	{
@@ -143,7 +143,7 @@ template< typename T > struct VariantCreate<Handle<T>>
 	}
 };
 
-template< typename T > struct VariantCast<Handle<T>>
+template< typename T > struct VariantCast< Handle< T > >
 {
 	static Handle<T> Cast( const Variant * val )
 	{
@@ -156,7 +156,7 @@ template< typename T > struct VariantCast<Handle<T>>
 	}
 };
 
-template< typename T > struct VariantCast<Handle<T> *>
+template< typename T > struct VariantCast< Handle<T> * >
 {
 	static Handle<T> * Cast( const Variant * val )
 	{
@@ -320,11 +320,11 @@ private:
 	std::array<XE::uint64, _Max> _Sparse;
 };
 
-template< typename T > struct VariantCreate<HandleAllocator<T>>
+template< typename T > struct VariantCreate< HandleAllocator< T > >
 {
-	static void Create( Variant * var, const HandleAllocator<T> & val )
+	static void Create( Variant * var, const HandleAllocator< T > & val )
 	{
-		using type = typename TypeTraits<HandleAllocator<T>>::raw_t;
+		using type = typename TypeTraits< HandleAllocator< T > >::raw_t;
 
 		var->_Type = TypeID<type>::Get();
 		var->_Data.u64 = val.GetValue();
@@ -332,11 +332,11 @@ template< typename T > struct VariantCreate<HandleAllocator<T>>
 	}
 };
 
-template< typename T > struct VariantCast<HandleAllocator<T>>
+template< typename T > struct VariantCast< HandleAllocator< T > >
 {
-	static HandleAllocator<T> Cast( const Variant * val )
+	static HandleAllocator< T > Cast( const Variant * val )
 	{
-		if( ( val->GetFlag() == Variant::Flag::HANDLE ) && val->GetType() == TypeID< HandleAllocator<T> >::Get() )
+		if( ( val->GetFlag() == Variant::Flag::HANDLE ) && val->GetType() == TypeID< HandleAllocator< T > >::Get() )
 		{
 			return val->_Data.u64;
 		}
@@ -345,13 +345,13 @@ template< typename T > struct VariantCast<HandleAllocator<T>>
 	}
 };
 
-template< typename T > struct VariantCast<HandleAllocator<T> *>
+template< typename T > struct VariantCast< HandleAllocator< T > * >
 {
-	static HandleAllocator<T> * Cast( const Variant * val )
+	static HandleAllocator< T > * Cast( const Variant * val )
 	{
-		if( ( val->GetFlag() == Variant::Flag::HANDLE ) && val->GetType() == TypeID< HandleAllocator<T> >::Get() )
+		if( ( val->GetFlag() == Variant::Flag::HANDLE ) && val->GetType() == TypeID< HandleAllocator< T > >::Get() )
 		{
-			return ( HandleAllocator<T> * ) & ( val->_Data.u64 );
+			return ( HandleAllocator< T > * ) & ( val->_Data.u64 );
 		}
 
 		throw VariantException( *val, "cast fail" );
