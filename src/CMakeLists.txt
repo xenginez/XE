@@ -25,6 +25,7 @@ target_link_libraries(XE
 		tbbmalloc${XE_TBB_POSTFIX}
 		tbbmalloc_proxy${XE_TBB_POSTFIX}
 		zlib${XE_POSTFIX}
+		OpenAL32
 		)
 
 set(INC_DIRS 
