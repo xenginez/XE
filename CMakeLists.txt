@@ -19,19 +19,17 @@ elseif (CMAKE_SYSTEM_NAME MATCHES "Android")
 elseif (CMAKE_SYSTEM_NAME MATCHES "Darwin")
 	set(XE_PLATFORM mac)
 else ()
-	message(FATAL_ERROR ${CMAKE_SYSTEM_NAME}" Other")
+	message(FATAL_ERROR ${CMAKE_SYSTEM_NAME}"Other")
 endif ()
 
 if (CMAKE_BUILD_TYPE MATCHES "Debug")
 	set(XE_CONFIG debug)
 	set(XE_TBB_POSTFIX _debug)
-	set(XE_FMOD_POSTFIX L)
-	set(XE_POSTFIX d)
+	set(XE_ZLIB_POSTFIX d)
 else ()
 	set(XE_CONFIG release)
 	set(XE_TBB_POSTFIX)
-	set(XE_FMOD_POSTFIX)
-	set(XE_POSTFIX)
+	set(XE_ZLIB_POSTFIX)
 endif ()
 
 if(WIN32)
@@ -41,6 +39,7 @@ else()
 endif()
 
 option(USE_MATH "whether to use a high-precision float type" OFF)
+option(USE_SHARED_LIBS "whether to use a high-precision float type" ON)
 
 
 if (USE_MATH)
@@ -49,8 +48,10 @@ endif ()
 
 if (USE_SHARED_LIBS)
 	set(BUILD_SHARED_LIBS ON)
+	set(XE_LIB_TYPE SHARED)
 else ()
 	set(BUILD_SHARED_LIBS OFF)
+	set(XE_LIB_TYPE STATIC)
 endif ()
 
 
@@ -67,7 +68,6 @@ include_directories(
 link_directories(
 		${CMAKE_CURRENT_SOURCE_DIR}/depend/bin/${XE_PLATFORM}/${XE_CONFIG}
 		${CMAKE_CURRENT_SOURCE_DIR}/depend/lib/${XE_PLATFORM}/${XE_CONFIG}
-		${CMAKE_CURRENT_SOURCE_DIR}/target/${XE_CONFIG}/bin
 )
 
 

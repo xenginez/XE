@@ -177,6 +177,7 @@ xcopy %cd%\install\bin\*.* %RD3_PATH%\..\depend\bin\win\release\ /s /e /y
 xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\ /s /e /y
 del %cd%\install\ /f /s /q
 
+goto :BUILD_PHYSX
 
 :BUILD_LIBSIMDPP
 echo "build libsimdpp debug"

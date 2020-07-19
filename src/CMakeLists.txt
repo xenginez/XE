@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.13)
 
 FILE(GLOB_RECURSE SOURCE_FILES *.*)
-add_library(XE SHARED ${SOURCE_FILES})
+add_library(XE ${XE_LIB_TYPE} ${SOURCE_FILES})
 
 target_compile_definitions(XE PRIVATE -DXE_EXPORT)
 
@@ -24,7 +24,7 @@ target_link_libraries(XE
 		tbb${XE_TBB_POSTFIX}
 		tbbmalloc${XE_TBB_POSTFIX}
 		tbbmalloc_proxy${XE_TBB_POSTFIX}
-		zlib${XE_POSTFIX}
+		zlib${XE_ZLIB_POSTFIX}
 		OpenAL32
 		)
 

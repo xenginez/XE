@@ -42,6 +42,7 @@
 /depend
 /cmake-build-debug
 /CMakeSettings.json
+/src/Math/simdpp
 /src/GUI/imconfig.h
 /src/GUI/imgui.cpp
 /src/GUI/imgui.h
