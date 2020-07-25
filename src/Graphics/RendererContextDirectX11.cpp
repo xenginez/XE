@@ -232,6 +232,24 @@ public:
 };
 struct ShaderD3D11
 {
+	void create( ID3D11Device * device, XE::ShaderType type, XE::memory_view data )
+	{
+		switch( type )
+		{
+		case XE::ShaderType::VS:
+			XE_CHECK( device->CreateVertexShader( data.data(), data.size(), nullptr, &_VertexShader ) );
+			break;
+		case XE::ShaderType::FS:
+			XE_CHECK( device->CreatePixelShader( data.data(), data.size(), nullptr, &_PixelShader ) );
+			break;
+		case XE::ShaderType::CS:
+			XE_CHECK( device->CreateComputeShader( data.data(), data.size(), nullptr, &_ComputeShader ) );
+			break;
+		default:
+			break;
+		}
+	}
+
 	union
 	{
 		ID3D11ComputeShader * _ComputeShader;
@@ -284,7 +302,7 @@ struct IndexBufferD3D11 : public BufferD3D11
 struct VertexBufferD3D11 : public BufferD3D11
 {
 public:
-	void create( ID3D11Device * device, XE::memory_view data, XE::VertexLayoutHandle layoutHandle, XE::Flags<XE::BufferFlags> flags, uint16_t stride )
+	void create( ID3D11Device * device, XE::memory_view data, XE::VertexLayoutHandle layoutHandle, XE::Flags<XE::BufferFlags> flags )
 	{
 		_layoutHandle = layoutHandle;
 
@@ -643,7 +661,7 @@ void XE::RendererContextDirectX11::Compute( const RenderCompute & compute, const
 
 }
 
-void XE::RendererContextDirectX11::EXEC_RENDERER_INIT()
+void XE::RendererContextDirectX11::EXEC_RENDERER_INIT( XE::Buffer & buffer )
 {
 	HRESULT hr = S_OK;
 
@@ -951,7 +969,7 @@ void XE::RendererContextDirectX11::EXEC_RENDERER_INIT()
 	}
 }
 
-void XE::RendererContextDirectX11::EXEC_RENDERER_SHUTDOWN()
+void XE::RendererContextDirectX11::EXEC_RENDERER_SHUTDOWN( XE::Buffer & buffer )
 {
 	_p->_CaptureTexture->Release();
 	_p->_CaptureResolve->Release();
@@ -974,157 +992,243 @@ void XE::RendererContextDirectX11::EXEC_RENDERER_SHUTDOWN()
 	_p->_Adapter->Release();
 }
 
-void XE::RendererContextDirectX11::EXEC_CREATE_VERTEX_LAYOUT()
+void XE::RendererContextDirectX11::EXEC_CREATE_VERTEX_LAYOUT( XE::Buffer & buffer )
 {
 
 }
 
-void XE::RendererContextDirectX11::EXEC_CREATE_INDEX_BUFFER()
+void XE::RendererContextDirectX11::EXEC_CREATE_INDEX_BUFFER( XE::Buffer & buffer )
+{
+	XE::String name;
+	XE::memory_view mem;
+	XE::IndexBufferHandle handle;
+	XE::Flags< XE::BufferFlags > flags;
+
+	buffer.Read( handle );
+	buffer.Read( name );
+	buffer.Read( mem );
+	buffer.Read( flags );
+
+	_p->_IndexBuffers[handle].create( _p->_Device, mem, flags, false );
+}
+
+void XE::RendererContextDirectX11::EXEC_CREATE_VERTEX_BUFFER( XE::Buffer & buffer )
+{
+	XE::String name;
+	XE::memory_view mem;
+	XE::VertexBufferHandle handle;
+	XE::VertexLayoutHandle layout;
+	XE::Flags< XE::BufferFlags > flags;
+
+	buffer.Read( handle );
+	buffer.Read( name );
+	buffer.Read( mem );
+	buffer.Read( layout );
+	buffer.Read( flags );
+
+	_p->_VertexBuffers[handle].create( _p->_Device, mem, layout, flags );
+}
+
+void XE::RendererContextDirectX11::EXEC_CREATE_DYNAMIC_INDEX_BUFFER( XE::Buffer & buffer )
+{
+	XE::String name;
+	XE::memory_view mem;
+	XE::IndexBufferHandle handle;
+	XE::Flags< XE::BufferFlags > flags;
+
+	buffer.Read( handle );
+	buffer.Read( name );
+	buffer.Read( mem );
+	buffer.Read( flags );
+
+	_p->_IndexBuffers[handle].create( _p->_Device, mem, flags, false );
+}
+
+void XE::RendererContextDirectX11::EXEC_UPDATE_DYNAMIC_INDEX_BUFFER( XE::Buffer & buffer )
+{
+	XE::uint64 start;
+	XE::memory_view mem;
+	XE::DynamicIndexBufferHandle handle;
+
+	buffer.Read( handle );
+	buffer.Read( start );
+	buffer.Read( mem );
+
+	_p->_IndexBuffers[handle].update( _p->_Device, _p->_DeviceCtx, start, mem );
+}
+
+void XE::RendererContextDirectX11::EXEC_CREATE_DYNAMIC_VERTEX_BUFFER( XE::Buffer & buffer )
+{
+	XE::uint64 size;
+	XE::VertexLayoutHandle layout;
+	XE::Flags< XE::BufferFlags > flags;
+	XE::DynamicVertexBufferHandle handle;
+
+	buffer.Read( handle );
+	buffer.Read( size );
+	buffer.Read( layout );
+	buffer.Read( flags );
+
+	_p->_VertexBuffers[handle].create( _p->_Device, nullptr, layout, flags );
+}
+
+void XE::RendererContextDirectX11::EXEC_UPDATE_DYNAMIC_VERTEX_BUFFER( XE::Buffer & buffer )
+{
+	XE::uint64 start;
+	XE::memory_view mem;
+	XE::DynamicVertexBufferHandle handle;
+
+	buffer.Read( handle );
+	buffer.Read( start );
+	buffer.Read( mem );
+
+	_p->_VertexBuffers[handle].update( _p->_Device, _p->_DeviceCtx, start, mem );
+}
+
+void XE::RendererContextDirectX11::EXEC_CREATE_TRANSIENT_INDEX_BUFFER( XE::Buffer & buffer )
+{
+	XE::memory_view mem;
+	XE::Flags< XE::BufferFlags > flags;
+	XE::TransientIndexBufferHandle handle;
+
+	buffer.Read( handle );
+	buffer.Read( mem );
+	buffer.Read( flags );
+
+
+}
+
+void XE::RendererContextDirectX11::EXEC_CREATE_TRANSIENT_VERTEX_BUFFER( XE::Buffer & buffer )
+{
+	XE::memory_view mem;
+	XE::VertexLayoutHandle layout;
+	XE::Flags< XE::BufferFlags > flags;
+	XE::TransientIndexBufferHandle handle;
+
+	buffer.Read( handle );
+	buffer.Read( mem );
+	buffer.Read( flags );
+	buffer.Read( flags );
+
+
+}
+
+void XE::RendererContextDirectX11::EXEC_CREATE_SHADER( XE::Buffer & buffer )
+{
+	XE::String name;
+	XE::ShaderType type;
+	XE::memory_view mem;
+	XE::ShaderHandle handle;
+
+	buffer.Read( handle );
+	buffer.Read( name );
+	buffer.Read( type );
+	buffer.Read( mem );
+
+	_p->_Shaders[handle].create( _p->_Device, type, mem );
+}
+
+void XE::RendererContextDirectX11::EXEC_CREATE_PROGRAM( XE::Buffer & buffer )
 {
 
 }
 
-void XE::RendererContextDirectX11::EXEC_CREATE_VERTEX_BUFFER()
+void XE::RendererContextDirectX11::EXEC_CREATE_TEXTURE( XE::Buffer & buffer )
 {
 
 }
 
-void XE::RendererContextDirectX11::EXEC_CREATE_DYNAMIC_INDEX_BUFFER()
+void XE::RendererContextDirectX11::EXEC_UPDATE_TEXTURE( XE::Buffer & buffer )
 {
 
 }
 
-void XE::RendererContextDirectX11::EXEC_UPDATE_DYNAMIC_INDEX_BUFFER()
+void XE::RendererContextDirectX11::EXEC_RESIZE_TEXTURE( XE::Buffer & buffer )
 {
 
 }
 
-void XE::RendererContextDirectX11::EXEC_CREATE_DYNAMIC_VERTEX_BUFFER()
+void XE::RendererContextDirectX11::EXEC_CREATE_FRAME_BUFFER( XE::Buffer & buffer )
 {
 
 }
 
-void XE::RendererContextDirectX11::EXEC_UPDATE_DYNAMIC_VERTEX_BUFFER()
+void XE::RendererContextDirectX11::EXEC_CREATE_UNIFORM( XE::Buffer & buffer )
 {
 
 }
 
-void XE::RendererContextDirectX11::EXEC_CREATE_TRANSIENT_INDEX_BUFFER()
+void XE::RendererContextDirectX11::EXEC_CREATE_OCCLUSION_QUERY( XE::Buffer & buffer )
 {
 
 }
 
-void XE::RendererContextDirectX11::EXEC_CREATE_TRANSIENT_VERTEX_BUFFER()
+void XE::RendererContextDirectX11::EXEC_END( XE::Buffer & buffer )
 {
 
 }
 
-void XE::RendererContextDirectX11::EXEC_CREATE_SHADER()
+void XE::RendererContextDirectX11::EXEC_DESTROY_VERTEX_LAYOUT( XE::Buffer & buffer )
 {
 
 }
 
-void XE::RendererContextDirectX11::EXEC_CREATE_PROGRAM()
+void XE::RendererContextDirectX11::EXEC_DESTROY_INDEX_BUFFER( XE::Buffer & buffer )
 {
 
 }
 
-void XE::RendererContextDirectX11::EXEC_CREATE_TEXTURE()
+void XE::RendererContextDirectX11::EXEC_DESTROY_VERTEX_BUFFER( XE::Buffer & buffer )
 {
 
 }
 
-void XE::RendererContextDirectX11::EXEC_UPDATE_TEXTURE()
+void XE::RendererContextDirectX11::EXEC_DESTROY_DYNAMIC_INDEX_BUFFER( XE::Buffer & buffer )
 {
 
 }
 
-void XE::RendererContextDirectX11::EXEC_RESIZE_TEXTURE()
+void XE::RendererContextDirectX11::EXEC_DESTROY_DYNAMIC_VERTEX_BUFFER( XE::Buffer & buffer )
 {
 
 }
 
-void XE::RendererContextDirectX11::EXEC_CREATE_FRAME_BUFFER()
+void XE::RendererContextDirectX11::EXEC_DESTROY_SHADER( XE::Buffer & buffer )
 {
 
 }
 
-void XE::RendererContextDirectX11::EXEC_CREATE_UNIFORM()
+void XE::RendererContextDirectX11::EXEC_DESTROY_PROGRAM( XE::Buffer & buffer )
 {
 
 }
 
-void XE::RendererContextDirectX11::EXEC_CREATE_OCCLUSION_QUERY()
+void XE::RendererContextDirectX11::EXEC_DESTROY_TEXTURE( XE::Buffer & buffer )
 {
 
 }
 
-void XE::RendererContextDirectX11::EXEC_END()
+void XE::RendererContextDirectX11::EXEC_DESTROY_FRAMEBUFFER( XE::Buffer & buffer )
 {
 
 }
 
-void XE::RendererContextDirectX11::EXEC_DESTROY_VERTEX_LAYOUT()
+void XE::RendererContextDirectX11::EXEC_DESTROY_UNIFORM( XE::Buffer & buffer )
 {
 
 }
 
-void XE::RendererContextDirectX11::EXEC_DESTROY_INDEX_BUFFER()
+void XE::RendererContextDirectX11::EXEC_READ_TEXTURE( XE::Buffer & buffer )
 {
 
 }
 
-void XE::RendererContextDirectX11::EXEC_DESTROY_VERTEX_BUFFER()
+void XE::RendererContextDirectX11::EXEC_DESTROY_OCCLUSION_QUERY( XE::Buffer & buffer )
 {
 
 }
 
-void XE::RendererContextDirectX11::EXEC_DESTROY_DYNAMIC_INDEX_BUFFER()
-{
-
-}
-
-void XE::RendererContextDirectX11::EXEC_DESTROY_DYNAMIC_VERTEX_BUFFER()
-{
-
-}
-
-void XE::RendererContextDirectX11::EXEC_DESTROY_SHADER()
-{
-
-}
-
-void XE::RendererContextDirectX11::EXEC_DESTROY_PROGRAM()
-{
-
-}
-
-void XE::RendererContextDirectX11::EXEC_DESTROY_TEXTURE()
-{
-
-}
-
-void XE::RendererContextDirectX11::EXEC_DESTROY_FRAMEBUFFER()
-{
-
-}
-
-void XE::RendererContextDirectX11::EXEC_DESTROY_UNIFORM()
-{
-
-}
-
-void XE::RendererContextDirectX11::EXEC_READ_TEXTURE()
-{
-
-}
-
-void XE::RendererContextDirectX11::EXEC_DESTROY_OCCLUSION_QUERY()
-{
-
-}
-
-void XE::RendererContextDirectX11::EXEC_REQUEST_SCREEN_SHOT()
+void XE::RendererContextDirectX11::EXEC_REQUEST_SCREEN_SHOT( XE::Buffer & buffer )
 {
 
 }

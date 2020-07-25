@@ -73,8 +73,6 @@
 #		define PLATFORM_OS OS_IOS
 #elif TARGET_OS_MAC
 #		define PLATFORM_OS OS_MAC
-#else
-#   error "unknown platform"
 #endif
 #elif __ANDROID__
 #		define PLATFORM_OS OS_ANDROID

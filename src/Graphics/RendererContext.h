@@ -10,7 +10,7 @@
 #define RENDERERCONTEXT_H__759BB776_4331_4BA8_AAB0_8AA62934A3A5
 
 #include "Type.h"
-#include "Structs.h"
+#include "Private.h"
 
 BEG_XE_NAMESPACE
 
@@ -34,7 +34,7 @@ public:
 	void Shutdown();
 
 protected:
-	virtual void OnRender( XE::Frame* val ) = 0;
+	virtual void OnRender( XE::Frame * val ) = 0;
 
 public:
 	void Reset( XE::uint32 width, XE::uint32 height, XE::Flags<XE::ResetFlags> flags, XE::TextureFormat format );
@@ -66,7 +66,7 @@ public:
 
 	void Destory( VertexBufferHandle handle );
 
-	DynamicIndexBufferHandle CreateDynamicIndexBuffer( XE::uint64 size, XE::Flags< XE::BufferFlags > flags);
+	DynamicIndexBufferHandle CreateDynamicIndexBuffer( XE::uint64 size, XE::Flags< XE::BufferFlags > flags );
 
 	DynamicIndexBufferHandle CreateDynamicIndexBuffer( XE::memory_view mem, XE::Flags< XE::BufferFlags > flags );
 
@@ -86,7 +86,7 @@ public:
 
 	void Destory( IndirectBufferHandle handle );
 
-	ShaderHandle CreateShader( const XE::String & name, XE::memory_view mem );
+	ShaderHandle CreateShader( const XE::String & name, ShaderType type, XE::memory_view mem );
 
 	void Destory( ShaderHandle handle );
 
@@ -94,7 +94,7 @@ public:
 
 	ProgramHandle CreateProgram( ShaderHandle vs, ShaderHandle fs, bool des_shader );
 
-	ProgramHandle CreateProgram( ShaderHandle cs, bool des_shader);
+	ProgramHandle CreateProgram( ShaderHandle cs, bool des_shader );
 
 	void Destory( ProgramHandle handle );
 
@@ -102,7 +102,7 @@ public:
 								   XE::Flags< XE::TextureFlags > flags,
 								   SamplerWrap U, SamplerWrap V, SamplerWrap W,
 								   SamplerMode MIN, SamplerMode MAG, SamplerMode MIP,
-								   std::optional< XE::memory_view > mem  );
+								   std::optional< XE::memory_view > mem );
 
 	TextureHandle CreateTexture2D( const XE::String & name, XE::BackbufferRatio ratio, bool hasmips, XE::uint16 layers, TextureFormat format,
 								   XE::Flags< XE::TextureFlags > flags,
@@ -113,18 +113,18 @@ public:
 								   XE::Flags< XE::TextureFlags > flags,
 								   SamplerWrap U, SamplerWrap V, SamplerWrap W,
 								   SamplerMode MIN, SamplerMode MAG, SamplerMode MIP,
-								   std::optional< XE::memory_view > mem  );
+								   std::optional< XE::memory_view > mem );
 
 	TextureHandle CreateTextureCube( const XE::String & name, XE::uint32 size, bool hasmips, XE::uint16 layers, TextureFormat format,
 									 XE::Flags< XE::TextureFlags > flags,
 									 SamplerWrap U, SamplerWrap V, SamplerWrap W,
 									 SamplerMode MIN, SamplerMode MAG, SamplerMode MIP,
-									 std::optional< XE::memory_view > mem  );
+									 std::optional< XE::memory_view > mem );
 
 	void UpdateTexture2D( TextureHandle handle, XE::uint16 layer, XE::uint8 mip,
 						  XE::uint32 x, XE::uint32 y,
 						  XE::uint32 width, XE::uint32 height,
-						  XE::memory_view mem, XE::uint32 pitch  );
+						  XE::memory_view mem, XE::uint32 pitch );
 
 	void UpdateTexture3D( TextureHandle handle, XE::uint8 mip,
 						  XE::uint32 x, XE::uint32 y, XE::uint32 z,
@@ -136,7 +136,7 @@ public:
 							XE::uint32 width, XE::uint32 height, XE::uint32 depth,
 							XE::memory_view mem );
 
-	XE::uint32 ReadTexture( TextureHandle handle, XE::uint8 * data, XE::uint8 mip  );
+	XE::uint32 ReadTexture( TextureHandle handle, XE::uint8 * data, XE::uint8 mip );
 
 	XE::uint8 * GetDirectAccess( TextureHandle handle );
 
@@ -154,7 +154,7 @@ public:
 
 	FrameBufferHandle CreateFrameBuffer( const XE::String & name, const XE::Array< TextureHandle > handles, bool des_texture );
 
-	FrameBufferHandle CreateFrameBuffer( const XE::String & name, const XE::Array< Attachment > attachments, bool des_texture  );
+	FrameBufferHandle CreateFrameBuffer( const XE::String & name, const XE::Array< Attachment > attachments, bool des_texture );
 
 	FrameBufferHandle CreateFrameBuffer( const XE::String & name, WindowHandle window,
 										 XE::uint32 width, XE::uint32 height,
@@ -165,7 +165,7 @@ public:
 
 	void Destory( FrameBufferHandle handle );
 
-	UniformHandle CreateUniform( const XE::String & name, UniformType type, XE::uint16 num  );
+	UniformHandle CreateUniform( const XE::String & name, UniformType type, XE::uint16 num );
 
 	const Uniform & GetUniformInfo( UniformHandle handle );
 

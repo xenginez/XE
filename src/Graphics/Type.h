@@ -706,6 +706,13 @@ enum class SamplerCompare
 	ALWAYS,
 };
 
+enum class ShaderType
+{
+	VS,
+	FS,
+	CS,
+};
+
 enum class RenderGroup : XE::uint8
 {
 	BACKGROUND,			// this render group is rendered before any others.

@@ -330,11 +330,11 @@ XE::IndirectBufferHandle XE::Gfx::CreateIndirectBuffer( XE::uint64 num )
 	return _p->_Context->CreateIndirectBuffer( num );
 }
 
-XE::ShaderHandle XE::Gfx::CreateShader( const XE::String & name, XE::memory_view mem )
+XE::ShaderHandle XE::Gfx::CreateShader( const XE::String & name, ShaderType type, XE::memory_view mem )
 {
 	XE_ASSERT( _p->_Context != nullptr );
 
-	return _p->_Context->CreateShader( name, mem );
+	return _p->_Context->CreateShader( name, type, mem );
 }
 
 XE::Array<XE::UniformHandle> XE::Gfx::GetShaderUniforms( ShaderHandle handle )

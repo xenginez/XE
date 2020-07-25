@@ -1,4 +1,4 @@
-#include "Structs.h"
+#include "Private.h"
 
 XE::SortKey::SortKey()
 	:_Key( 0 )

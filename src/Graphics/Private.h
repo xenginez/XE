@@ -1,13 +1,13 @@
 /*!
- * \file	Structs.h
+ * \file	Private.h
  *
  * \author	ZhengYuanQing
- * \date	2020/04/07
+ * \date	2020/07/25
  * \email	zhengyuanqing.95@gmail.com
  *
  */
-#ifndef STRUCTS_H__F731AAF0_BE7D_47A2_BCEC_5E0622CFE54D
-#define STRUCTS_H__F731AAF0_BE7D_47A2_BCEC_5E0622CFE54D
+#ifndef PRIVATE_H__D0889097_46CE_4E49_B998_1260127343E7
+#define PRIVATE_H__D0889097_46CE_4E49_B998_1260127343E7
 
 #include "Type.h"
 
@@ -76,17 +76,17 @@ public:
 	SortKey( const SortKey & val );
 
 public:
-	bool operator <( const SortKey& val ) const;
+	bool operator <( const SortKey & val ) const;
 
-	bool operator >( const SortKey& val ) const;
+	bool operator >( const SortKey & val ) const;
 
-	bool operator <=( const SortKey& val ) const;
+	bool operator <=( const SortKey & val ) const;
 
-	bool operator >=( const SortKey& val ) const;
+	bool operator >=( const SortKey & val ) const;
 
-	bool operator ==( const SortKey& val ) const;
+	bool operator ==( const SortKey & val ) const;
 
-	bool operator !=( const SortKey& val ) const;
+	bool operator !=( const SortKey & val ) const;
 
 public:
 	XE::uint8 GetView() const;
@@ -308,7 +308,7 @@ public:
 		XE::Access Access;
 		XE::uint8 Mip;
 	};
-	
+
 	std::array<Binding, GFX_MAX_TEXTURE_SAMPLERS> Binds;
 };
 
@@ -455,4 +455,4 @@ public:
 
 END_XE_NAMESPACE
 
-#endif // STRUCTS_H__F731AAF0_BE7D_47A2_BCEC_5E0622CFE54D
+#endif // PRIVATE_H__D0889097_46CE_4E49_B998_1260127343E7

@@ -86,7 +86,7 @@ public:
 
 	void Destory( IndirectBufferHandle handle );
 
-	ShaderHandle CreateShader( const XE::String & name, XE::memory_view mem );
+	ShaderHandle CreateShader( const XE::String & name, ShaderType type, XE::memory_view mem );
 
 	void Destory( ShaderHandle handle );
 

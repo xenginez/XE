@@ -1,6 +1,5 @@
 #include "RendererContext.h"
 
-#include "Structs.h"
 #include "Encoder.h"
 
 struct XE::RendererContext::Private
@@ -345,7 +344,7 @@ void XE::RendererContext::Destory( IndirectBufferHandle handle )
 	_p->_SubmitFrame->PostCmd.Wirte( handle );
 }
 
-XE::ShaderHandle XE::RendererContext::CreateShader( const XE::String & name, XE::memory_view mem )
+XE::ShaderHandle XE::RendererContext::CreateShader( const XE::String & name, ShaderType type, XE::memory_view mem )
 {
 	auto handle = _p->_ShaderHandleAlloc.Alloc();
 
@@ -354,6 +353,7 @@ XE::ShaderHandle XE::RendererContext::CreateShader( const XE::String & name, XE:
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_SHADER );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
 	_p->_SubmitFrame->PrevCmd.Wirte( name );
+	_p->_SubmitFrame->PrevCmd.Wirte( type );
 	_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( mem ) );
 
 	return handle;
