@@ -421,7 +421,7 @@ void XE::RendererContext::Destory( ProgramHandle handle )
 	_p->_SubmitFrame->PostCmd.Wirte( handle );
 }
 
-XE::TextureHandle XE::RendererContext::CreateTexture2D( const XE::String & name, XE::uint32 width, XE::uint32 height, bool hasmips, XE::uint16 layers, TextureFormat format, XE::Flags< XE::TextureFlags > flags, SamplerWrap U, SamplerWrap V, SamplerWrap W, SamplerMode MIN, SamplerMode MAG, SamplerMode MIP, std::optional< XE::memory_view > mem )
+XE::TextureHandle XE::RendererContext::CreateTexture2D( const XE::String & name, XE::uint32 width, XE::uint32 height, bool hasmips, XE::uint16 layers, TextureFormat format, XE::Flags< XE::TextureFlags > flags, XE::Flags< XE::SamplerFlags > sampler, std::optional< XE::memory_view > mem )
 {
 	auto handle = _p->_TextureHandleAlloc.Alloc();
 
@@ -448,12 +448,7 @@ XE::TextureHandle XE::RendererContext::CreateTexture2D( const XE::String & name,
 	_p->_SubmitFrame->PrevCmd.Wirte( layers );
 	_p->_SubmitFrame->PrevCmd.Wirte( format );
 	_p->_SubmitFrame->PrevCmd.Wirte( flags );
-	_p->_SubmitFrame->PrevCmd.Wirte( U );
-	_p->_SubmitFrame->PrevCmd.Wirte( V );
-	_p->_SubmitFrame->PrevCmd.Wirte( W );
-	_p->_SubmitFrame->PrevCmd.Wirte( MIN );
-	_p->_SubmitFrame->PrevCmd.Wirte( MAG );
-	_p->_SubmitFrame->PrevCmd.Wirte( MIP );
+	_p->_SubmitFrame->PrevCmd.Wirte( sampler );
 	if( mem != std::nullopt )
 	{
 		_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( *mem ) );
@@ -466,7 +461,7 @@ XE::TextureHandle XE::RendererContext::CreateTexture2D( const XE::String & name,
 	return handle;
 }
 
-XE::TextureHandle XE::RendererContext::CreateTexture2D( const XE::String & name, XE::BackbufferRatio ratio, bool hasmips, XE::uint16 layers, TextureFormat format, XE::Flags< XE::TextureFlags > flags, SamplerWrap U, SamplerWrap V, SamplerWrap W, SamplerMode MIN, SamplerMode MAG, SamplerMode MIP )
+XE::TextureHandle XE::RendererContext::CreateTexture2D( const XE::String & name, XE::BackbufferRatio ratio, bool hasmips, XE::uint16 layers, TextureFormat format, XE::Flags< XE::TextureFlags > flags, XE::Flags< XE::SamplerFlags > sampler )
 {
 	auto handle = _p->_TextureHandleAlloc.Alloc();
 
@@ -525,18 +520,13 @@ XE::TextureHandle XE::RendererContext::CreateTexture2D( const XE::String & name,
 	_p->_SubmitFrame->PrevCmd.Wirte( layers );
 	_p->_SubmitFrame->PrevCmd.Wirte( format );
 	_p->_SubmitFrame->PrevCmd.Wirte( flags );
-	_p->_SubmitFrame->PrevCmd.Wirte( U );
-	_p->_SubmitFrame->PrevCmd.Wirte( V );
-	_p->_SubmitFrame->PrevCmd.Wirte( W );
-	_p->_SubmitFrame->PrevCmd.Wirte( MIN );
-	_p->_SubmitFrame->PrevCmd.Wirte( MAG );
-	_p->_SubmitFrame->PrevCmd.Wirte( MIP );
+	_p->_SubmitFrame->PrevCmd.Wirte( sampler );
 	_p->_SubmitFrame->PrevCmd.Wirte( XE::memory_view() );
 
 	return handle;
 }
 
-XE::TextureHandle XE::RendererContext::CreateTexture3D( const XE::String & name, XE::uint32 width, XE::uint32 height, XE::uint32 depth, bool hasmips, TextureFormat format, XE::Flags< XE::TextureFlags > flags, SamplerWrap U, SamplerWrap V, SamplerWrap W, SamplerMode MIN, SamplerMode MAG, SamplerMode MIP, std::optional< XE::memory_view > mem )
+XE::TextureHandle XE::RendererContext::CreateTexture3D( const XE::String & name, XE::uint32 width, XE::uint32 height, XE::uint32 depth, bool hasmips, TextureFormat format, XE::Flags< XE::TextureFlags > flags, XE::Flags< XE::SamplerFlags > sampler, std::optional< XE::memory_view > mem )
 {
 	auto handle = _p->_TextureHandleAlloc.Alloc();
 
@@ -566,12 +556,7 @@ XE::TextureHandle XE::RendererContext::CreateTexture3D( const XE::String & name,
 	_p->_SubmitFrame->PrevCmd.Wirte( hasmips );
 	_p->_SubmitFrame->PrevCmd.Wirte( format );
 	_p->_SubmitFrame->PrevCmd.Wirte( flags );
-	_p->_SubmitFrame->PrevCmd.Wirte( U );
-	_p->_SubmitFrame->PrevCmd.Wirte( V );
-	_p->_SubmitFrame->PrevCmd.Wirte( W );
-	_p->_SubmitFrame->PrevCmd.Wirte( MIN );
-	_p->_SubmitFrame->PrevCmd.Wirte( MAG );
-	_p->_SubmitFrame->PrevCmd.Wirte( MIP );
+	_p->_SubmitFrame->PrevCmd.Wirte( sampler );
 	if( mem != std::nullopt )
 	{
 		_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( *mem ) );
@@ -584,7 +569,7 @@ XE::TextureHandle XE::RendererContext::CreateTexture3D( const XE::String & name,
 	return handle;
 }
 
-XE::TextureHandle XE::RendererContext::CreateTextureCube( const XE::String & name, XE::uint32 size, bool hasmips, XE::uint16 layers, TextureFormat format, XE::Flags< XE::TextureFlags > flags, SamplerWrap U, SamplerWrap V, SamplerWrap W, SamplerMode MIN, SamplerMode MAG, SamplerMode MIP, std::optional< XE::memory_view > mem )
+XE::TextureHandle XE::RendererContext::CreateTextureCube( const XE::String & name, XE::uint32 size, bool hasmips, XE::uint16 layers, TextureFormat format, XE::Flags< XE::TextureFlags > flags, XE::Flags< XE::SamplerFlags > sampler, std::optional< XE::memory_view > mem )
 {
 	auto handle = _p->_TextureHandleAlloc.Alloc();
 
@@ -610,12 +595,7 @@ XE::TextureHandle XE::RendererContext::CreateTextureCube( const XE::String & nam
 	_p->_SubmitFrame->PrevCmd.Wirte( layers );
 	_p->_SubmitFrame->PrevCmd.Wirte( format );
 	_p->_SubmitFrame->PrevCmd.Wirte( flags );
-	_p->_SubmitFrame->PrevCmd.Wirte( U );
-	_p->_SubmitFrame->PrevCmd.Wirte( V );
-	_p->_SubmitFrame->PrevCmd.Wirte( W );
-	_p->_SubmitFrame->PrevCmd.Wirte( MIN );
-	_p->_SubmitFrame->PrevCmd.Wirte( MAG );
-	_p->_SubmitFrame->PrevCmd.Wirte( MIP );
+	_p->_SubmitFrame->PrevCmd.Wirte( sampler );
 	if( mem != std::nullopt )
 	{
 		_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( *mem ) );
@@ -651,7 +631,7 @@ void XE::RendererContext::UpdateTexture3D( TextureHandle handle, XE::uint8 mip, 
 
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::UPDATE_TEXTURE );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
-	_p->_SubmitFrame->PrevCmd.Wirte( TextureType::TEXTURE_2D );
+	_p->_SubmitFrame->PrevCmd.Wirte( TextureType::TEXTURE_3D );
 	_p->_SubmitFrame->PrevCmd.Wirte( mip );
 	_p->_SubmitFrame->PrevCmd.Wirte( x );
 	_p->_SubmitFrame->PrevCmd.Wirte( y );
@@ -700,7 +680,7 @@ void XE::RendererContext::Destory( TextureHandle handle )
 	_p->_SubmitFrame->PostCmd.Wirte( handle );
 }
 
-XE::FrameBufferHandle XE::RendererContext::CreateFrameBuffer( const XE::String & name, XE::uint32 width, XE::uint32 height, TextureFormat format, SamplerWrap U, SamplerWrap V, SamplerWrap W, SamplerMode MIN, SamplerMode MAG, SamplerMode MIP )
+XE::FrameBufferHandle XE::RendererContext::CreateFrameBuffer( const XE::String & name, XE::uint32 width, XE::uint32 height, TextureFormat format, XE::Flags< XE::SamplerFlags > sampler )
 {
 	auto handle = _p->_FrameBufferHandleAlloc.Alloc();
 
@@ -712,17 +692,12 @@ XE::FrameBufferHandle XE::RendererContext::CreateFrameBuffer( const XE::String &
 	_p->_SubmitFrame->PrevCmd.Wirte( width );
 	_p->_SubmitFrame->PrevCmd.Wirte( height );
 	_p->_SubmitFrame->PrevCmd.Wirte( format );
-	_p->_SubmitFrame->PrevCmd.Wirte( U );
-	_p->_SubmitFrame->PrevCmd.Wirte( V );
-	_p->_SubmitFrame->PrevCmd.Wirte( W );
-	_p->_SubmitFrame->PrevCmd.Wirte( MIN );
-	_p->_SubmitFrame->PrevCmd.Wirte( MAG );
-	_p->_SubmitFrame->PrevCmd.Wirte( MIP );
+	_p->_SubmitFrame->PrevCmd.Wirte( sampler );
 
 	return handle;
 }
 
-XE::FrameBufferHandle XE::RendererContext::CreateFrameBuffer( const XE::String & name, XE::BackbufferRatio ratio, TextureFormat format, SamplerWrap U, SamplerWrap V, SamplerWrap W, SamplerMode MIN, SamplerMode MAG, SamplerMode MIP )
+XE::FrameBufferHandle XE::RendererContext::CreateFrameBuffer( const XE::String & name, XE::BackbufferRatio ratio, TextureFormat format, XE::Flags< XE::SamplerFlags > sampler )
 {
 	auto handle = _p->_FrameBufferHandleAlloc.Alloc();
 
@@ -733,12 +708,7 @@ XE::FrameBufferHandle XE::RendererContext::CreateFrameBuffer( const XE::String &
 	_p->_SubmitFrame->PrevCmd.Wirte( name );
 	_p->_SubmitFrame->PrevCmd.Wirte( ratio );
 	_p->_SubmitFrame->PrevCmd.Wirte( format );
-	_p->_SubmitFrame->PrevCmd.Wirte( U );
-	_p->_SubmitFrame->PrevCmd.Wirte( V );
-	_p->_SubmitFrame->PrevCmd.Wirte( W );
-	_p->_SubmitFrame->PrevCmd.Wirte( MIN );
-	_p->_SubmitFrame->PrevCmd.Wirte( MAG );
-	_p->_SubmitFrame->PrevCmd.Wirte( MIP );
+	_p->_SubmitFrame->PrevCmd.Wirte( sampler );
 
 	return handle;
 }

@@ -5,8 +5,6 @@
 #include <dxgi1_6.h>
 #include <d3dcommon.h>
 
-#include "Structs.h"
-
 #pragma comment( lib, "dxgi.lib" )
 #pragma comment( lib, "d3d11.lib" )
 #pragma comment( lib, "dxguid.lib" )
@@ -542,103 +540,103 @@ void XE::RendererContextDirectX11::ExecCommand( XE::Buffer & buffer )
 		switch( type )
 		{
 		case XE::CommandType::RENDERER_INIT:
-			EXEC_RENDERER_INIT();
+			EXEC_RENDERER_INIT( buffer );
 			break;
 		case XE::CommandType::RENDERER_SHUTDOWN:
-			EXEC_RENDERER_SHUTDOWN();
+			EXEC_RENDERER_SHUTDOWN( buffer );
 			break;
 		case XE::CommandType::CREATE_VERTEX_LAYOUT:
-			EXEC_CREATE_VERTEX_LAYOUT();
+			EXEC_CREATE_VERTEX_LAYOUT( buffer );
 			break;
 		case XE::CommandType::CREATE_INDEX_BUFFER:
-			EXEC_CREATE_INDEX_BUFFER();
+			EXEC_CREATE_INDEX_BUFFER( buffer );
 			break;
 		case XE::CommandType::CREATE_VERTEX_BUFFER:
-			EXEC_CREATE_VERTEX_BUFFER();
+			EXEC_CREATE_VERTEX_BUFFER( buffer );
 			break;
 		case XE::CommandType::CREATE_DYNAMIC_INDEX_BUFFER:
-			EXEC_CREATE_DYNAMIC_INDEX_BUFFER();
+			EXEC_CREATE_DYNAMIC_INDEX_BUFFER( buffer );
 			break;
 		case XE::CommandType::UPDATE_DYNAMIC_INDEX_BUFFER:
-			EXEC_UPDATE_DYNAMIC_INDEX_BUFFER();
+			EXEC_UPDATE_DYNAMIC_INDEX_BUFFER( buffer );
 			break;
 		case XE::CommandType::CREATE_DYNAMIC_VERTEX_BUFFER:
-			EXEC_CREATE_DYNAMIC_VERTEX_BUFFER();
+			EXEC_CREATE_DYNAMIC_VERTEX_BUFFER( buffer );
 			break;
 		case XE::CommandType::UPDATE_DYNAMIC_VERTEX_BUFFER:
-			EXEC_UPDATE_DYNAMIC_VERTEX_BUFFER();
+			EXEC_UPDATE_DYNAMIC_VERTEX_BUFFER( buffer );
 			break;
 		case XE::CommandType::CREATE_TRANSIENT_INDEX_BUFFER:
-			EXEC_CREATE_TRANSIENT_INDEX_BUFFER();
+			EXEC_CREATE_TRANSIENT_INDEX_BUFFER( buffer );
 			break;
 		case XE::CommandType::CREATE_TRANSIENT_VERTEX_BUFFER:
-			EXEC_CREATE_TRANSIENT_VERTEX_BUFFER();
+			EXEC_CREATE_TRANSIENT_VERTEX_BUFFER( buffer );
 			break;
 		case XE::CommandType::CREATE_SHADER:
-			EXEC_CREATE_SHADER();
+			EXEC_CREATE_SHADER( buffer );
 			break;
 		case XE::CommandType::CREATE_PROGRAM:
-			EXEC_CREATE_PROGRAM();
+			EXEC_CREATE_PROGRAM( buffer );
 			break;
 		case XE::CommandType::CREATE_TEXTURE:
-			EXEC_CREATE_TEXTURE();
+			EXEC_CREATE_TEXTURE( buffer );
 			break;
 		case XE::CommandType::UPDATE_TEXTURE:
-			EXEC_UPDATE_TEXTURE();
+			EXEC_UPDATE_TEXTURE( buffer );
 			break;
 		case XE::CommandType::RESIZE_TEXTURE:
-			EXEC_RESIZE_TEXTURE();
+			EXEC_RESIZE_TEXTURE( buffer );
 			break;
 		case XE::CommandType::CREATE_FRAME_BUFFER:
-			EXEC_CREATE_FRAME_BUFFER();
+			EXEC_CREATE_FRAME_BUFFER( buffer );
 			break;
 		case XE::CommandType::CREATE_UNIFORM:
-			EXEC_CREATE_UNIFORM();
+			EXEC_CREATE_UNIFORM( buffer );
 			break;
 		case XE::CommandType::CREATE_OCCLUSION_QUERY:
-			EXEC_CREATE_OCCLUSION_QUERY();
+			EXEC_CREATE_OCCLUSION_QUERY( buffer );
 			break;
 		case XE::CommandType::END:
-			EXEC_END();
+			EXEC_END( buffer );
 			break;
 		case XE::CommandType::DESTROY_VERTEX_LAYOUT:
-			EXEC_DESTROY_VERTEX_LAYOUT();
+			EXEC_DESTROY_VERTEX_LAYOUT( buffer );
 			break;
 		case XE::CommandType::DESTROY_INDEX_BUFFER:
-			EXEC_DESTROY_INDEX_BUFFER();
+			EXEC_DESTROY_INDEX_BUFFER( buffer );
 			break;
 		case XE::CommandType::DESTROY_VERTEX_BUFFER:
-			EXEC_DESTROY_VERTEX_BUFFER();
+			EXEC_DESTROY_VERTEX_BUFFER( buffer );
 			break;
 		case XE::CommandType::DESTROY_DYNAMIC_INDEX_BUFFER:
-			EXEC_DESTROY_DYNAMIC_INDEX_BUFFER();
+			EXEC_DESTROY_DYNAMIC_INDEX_BUFFER( buffer );
 			break;
 		case XE::CommandType::DESTROY_DYNAMIC_VERTEX_BUFFER:
-			EXEC_DESTROY_DYNAMIC_VERTEX_BUFFER();
+			EXEC_DESTROY_DYNAMIC_VERTEX_BUFFER( buffer );
 			break;
 		case XE::CommandType::DESTROY_SHADER:
-			EXEC_DESTROY_SHADER();
+			EXEC_DESTROY_SHADER( buffer );
 			break;
 		case XE::CommandType::DESTROY_PROGRAM:
-			EXEC_DESTROY_PROGRAM();
+			EXEC_DESTROY_PROGRAM( buffer );
 			break;
 		case XE::CommandType::DESTROY_TEXTURE:
-			EXEC_DESTROY_TEXTURE();
+			EXEC_DESTROY_TEXTURE( buffer );
 			break;
 		case XE::CommandType::DESTROY_FRAMEBUFFER:
-			EXEC_DESTROY_FRAMEBUFFER();
+			EXEC_DESTROY_FRAMEBUFFER( buffer );
 			break;
 		case XE::CommandType::DESTROY_UNIFORM:
-			EXEC_DESTROY_UNIFORM();
+			EXEC_DESTROY_UNIFORM( buffer );
 			break;
 		case XE::CommandType::READ_TEXTURE:
-			EXEC_READ_TEXTURE();
+			EXEC_READ_TEXTURE( buffer );
 			break;
 		case XE::CommandType::DESTROY_OCCLUSION_QUERY:
-			EXEC_DESTROY_OCCLUSION_QUERY();
+			EXEC_DESTROY_OCCLUSION_QUERY( buffer );
 			break;
 		case XE::CommandType::REQUEST_SCREEN_SHOT:
-			EXEC_REQUEST_SCREEN_SHOT();
+			EXEC_REQUEST_SCREEN_SHOT( buffer );
 			break;
 		default:
 			break;
@@ -1130,37 +1128,223 @@ void XE::RendererContextDirectX11::EXEC_CREATE_SHADER( XE::Buffer & buffer )
 
 void XE::RendererContextDirectX11::EXEC_CREATE_PROGRAM( XE::Buffer & buffer )
 {
+	XE::ProgramHandle handle;
+	XE::ShaderHandle vs;
+	XE::ShaderHandle fs;
 
+	buffer.Read( handle );
+	buffer.Read( vs );
+	buffer.Read( fs );
+
+	_p->_Programs[handle].create( &_p->_Shaders[vs], &_p->_Shaders[fs] );
 }
 
 void XE::RendererContextDirectX11::EXEC_CREATE_TEXTURE( XE::Buffer & buffer )
 {
+	XE::TextureType type;
+	XE::TextureHandle handle;
 
+	buffer.Read( handle );
+	buffer.Read( type );
+
+	switch( type )
+	{
+	case XE::TextureType::TEXTURE_2D:
+	{
+		bool hasmips;
+		XE::String name;
+		XE::uint32 width;
+		XE::uint32 height;
+		XE::uint16 layers;
+		XE::memory_view mem;
+		XE::TextureFormat format;
+		XE::Flags< XE::TextureFlags > flags;
+		XE::Flags< XE::SamplerFlags > sampler;
+
+		buffer.Read( name );
+		buffer.Read( width );
+		buffer.Read( height );
+		buffer.Read( hasmips );
+		buffer.Read( layers );
+		buffer.Read( format );
+		buffer.Read( flags );
+		buffer.Read( sampler );
+		buffer.Read( mem );
+
+		_p->_Textures[handle];
+	}
+		break;
+	case XE::TextureType::TEXTURE_3D:
+	{
+		bool hasmips;
+		XE::String name;
+		XE::uint32 width;
+		XE::uint32 height;
+		XE::uint32 depth;
+		XE::memory_view mem;
+		XE::TextureFormat format;
+		XE::Flags< XE::TextureFlags > flags;
+		XE::Flags< XE::SamplerFlags > sampler;
+
+		buffer.Read( name );
+		buffer.Read( width );
+		buffer.Read( height );
+		buffer.Read( depth );
+		buffer.Read( hasmips );
+		buffer.Read( format );
+		buffer.Read( flags );
+		buffer.Read( sampler );
+		buffer.Read( mem );
+
+		_p->_Textures[handle];
+	}
+		break;
+	case XE::TextureType::TEXTURE_CUBE:
+	{
+		bool hasmips;
+		XE::String name;
+		XE::uint32 size;
+		XE::uint16 layers;
+		XE::memory_view mem;
+		XE::TextureFormat format;
+		XE::Flags< XE::TextureFlags > flags;
+		XE::Flags< XE::SamplerFlags > sampler;
+
+		buffer.Read( name );
+		buffer.Read( size );
+		buffer.Read( hasmips );
+		buffer.Read( layers );
+		buffer.Read( format );
+		buffer.Read( flags );
+		buffer.Read( sampler );
+
+		_p->_Textures[handle];
+	}
+		break;
+	default:
+		break;
+	}
 }
 
 void XE::RendererContextDirectX11::EXEC_UPDATE_TEXTURE( XE::Buffer & buffer )
 {
+	XE::TextureType type;
+	XE::TextureHandle handle;
 
+	buffer.Read( handle );
+	buffer.Read( type );
+
+	switch( type )
+	{
+	case XE::TextureType::TEXTURE_2D:
+	{
+		XE::uint16 layer;
+		XE::uint8 mip;
+		XE::uint32 x;
+		XE::uint32 y;
+		XE::uint32 width;
+		XE::uint32 height;
+		XE::memory_view mem;
+		XE::uint32 pitch;
+
+		buffer.Read( layer );
+		buffer.Read( mip );
+		buffer.Read( x );
+		buffer.Read( y );
+		buffer.Read( width );
+		buffer.Read( height );
+		buffer.Read( mem );
+		buffer.Read( pitch );
+
+		_p->_Textures[handle];
+	}
+		break;
+	case XE::TextureType::TEXTURE_3D:
+	{
+		XE::uint8 mip;
+		XE::uint32 x;
+		XE::uint32 y;
+		XE::uint32 z;
+		XE::uint32 width;
+		XE::uint32 height;
+		XE::uint32 depth;
+		XE::memory_view mem;
+
+		buffer.Read( mip );
+		buffer.Read( x );
+		buffer.Read( y );
+		buffer.Read( z );
+		buffer.Read( width );
+		buffer.Read( height );
+		buffer.Read( depth );
+		buffer.Read( mem );
+
+		_p->_Textures[handle];
+	}
+		break;
+	case XE::TextureType::TEXTURE_CUBE:
+	{
+		XE::uint16 layer;
+		XE::uint8 side;
+		XE::uint8 mip;
+		XE::uint32 x;
+		XE::uint32 y;
+		XE::uint32 z;
+		XE::uint32 width;
+		XE::uint32 height;
+		XE::uint32 depth;
+		XE::memory_view mem;
+
+		buffer.Read( layer );
+		buffer.Read( side );
+		buffer.Read( mip );
+		buffer.Read( x );
+		buffer.Read( y );
+		buffer.Read( z );
+		buffer.Read( width );
+		buffer.Read( height );
+		buffer.Read( depth );
+		buffer.Read( mem );
+
+		_p->_Textures[handle];
+	}
+		break;
+	default:
+		break;
+	}
 }
 
 void XE::RendererContextDirectX11::EXEC_RESIZE_TEXTURE( XE::Buffer & buffer )
 {
-
+	// TODO: 
 }
 
 void XE::RendererContextDirectX11::EXEC_CREATE_FRAME_BUFFER( XE::Buffer & buffer )
 {
-
 }
 
 void XE::RendererContextDirectX11::EXEC_CREATE_UNIFORM( XE::Buffer & buffer )
 {
+	XE::uint16 num;
+	XE::String name;
+	XE::UniformType type;
+	XE::UniformHandle handle;
+
+	buffer.Read( handle );
+	buffer.Read( name );
+	buffer.Read( type );
+	buffer.Read( num );
+
 
 }
 
 void XE::RendererContextDirectX11::EXEC_CREATE_OCCLUSION_QUERY( XE::Buffer & buffer )
 {
+	XE::OcclusionQueryHandle handle;
 
+	buffer.Read( handle );
+
+	
 }
 
 void XE::RendererContextDirectX11::EXEC_END( XE::Buffer & buffer )
@@ -1170,51 +1354,90 @@ void XE::RendererContextDirectX11::EXEC_END( XE::Buffer & buffer )
 
 void XE::RendererContextDirectX11::EXEC_DESTROY_VERTEX_LAYOUT( XE::Buffer & buffer )
 {
+	XE::VertexLayoutHandle handle;
+
+	buffer.Read( handle );
+
 
 }
 
 void XE::RendererContextDirectX11::EXEC_DESTROY_INDEX_BUFFER( XE::Buffer & buffer )
 {
+	XE::IndexBufferHandle handle;
 
+	buffer.Read( handle );
+
+	_p->_IndexBuffers[handle].destroy();
 }
 
 void XE::RendererContextDirectX11::EXEC_DESTROY_VERTEX_BUFFER( XE::Buffer & buffer )
 {
+	XE::VertexBufferHandle handle;
 
+	buffer.Read( handle );
+
+	_p->_VertexBuffers[handle].destroy();
 }
 
 void XE::RendererContextDirectX11::EXEC_DESTROY_DYNAMIC_INDEX_BUFFER( XE::Buffer & buffer )
 {
+	XE::DynamicIndexBufferHandle handle;
 
+	buffer.Read( handle );
+
+	_p->_IndexBuffers[handle].destroy();
 }
 
 void XE::RendererContextDirectX11::EXEC_DESTROY_DYNAMIC_VERTEX_BUFFER( XE::Buffer & buffer )
 {
+	XE::DynamicVertexBufferHandle handle;
 
+	buffer.Read( handle );
+
+	_p->_VertexBuffers[handle].destroy();
 }
 
 void XE::RendererContextDirectX11::EXEC_DESTROY_SHADER( XE::Buffer & buffer )
 {
+	XE::ShaderHandle handle;
 
+	buffer.Read( handle );
+
+	_p->_Shaders[handle];
 }
 
 void XE::RendererContextDirectX11::EXEC_DESTROY_PROGRAM( XE::Buffer & buffer )
 {
+	XE::ProgramHandle handle;
 
+	buffer.Read( handle );
+
+	_p->_Programs[handle].destroy();
 }
 
 void XE::RendererContextDirectX11::EXEC_DESTROY_TEXTURE( XE::Buffer & buffer )
 {
+	XE::TextureHandle handle;
 
+	buffer.Read( handle );
+
+	_p->_Textures[handle];
 }
 
 void XE::RendererContextDirectX11::EXEC_DESTROY_FRAMEBUFFER( XE::Buffer & buffer )
 {
+	XE::FrameBufferHandle handle;
 
+	buffer.Read( handle );
+
+	_p->_FrameBuffers[handle];
 }
 
 void XE::RendererContextDirectX11::EXEC_DESTROY_UNIFORM( XE::Buffer & buffer )
 {
+	XE::UniformHandle handle;
+
+	buffer.Read( handle );
 
 }
 
@@ -1225,11 +1448,19 @@ void XE::RendererContextDirectX11::EXEC_READ_TEXTURE( XE::Buffer & buffer )
 
 void XE::RendererContextDirectX11::EXEC_DESTROY_OCCLUSION_QUERY( XE::Buffer & buffer )
 {
+	XE::OcclusionQueryHandle handle;
 
+	buffer.Read( handle );
 }
 
 void XE::RendererContextDirectX11::EXEC_REQUEST_SCREEN_SHOT( XE::Buffer & buffer )
 {
+	XE::String path;
+	XE::FrameBufferHandle handle;
+
+	buffer.Read( handle );
+	buffer.Read( path );
+
 
 }
 

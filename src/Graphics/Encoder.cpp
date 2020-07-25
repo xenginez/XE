@@ -1,6 +1,6 @@
 #include "Encoder.h"
 
-#include "Structs.h"
+#include "Private.h"
 
 XE::memory_view CopyToFrame( XE::Frame * frame, XE::memory_view mem )
 {

@@ -358,32 +358,32 @@ XE::ProgramHandle XE::Gfx::CreateProgram( ShaderHandle cs, bool des_shader /*= f
 	return _p->_Context->CreateProgram( cs, des_shader );
 }
 
-XE::TextureHandle XE::Gfx::CreateTexture2D( const XE::String & name, XE::uint32 width, XE::uint32 height, bool hasmips, XE::uint16 layers, TextureFormat format, XE::Flags< XE::TextureFlags > flags, SamplerWrap U, SamplerWrap V, SamplerWrap W, SamplerMode MIN, SamplerMode MAG, SamplerMode MIP, std::optional< XE::memory_view > mem /*= std::nullopt */ )
+XE::TextureHandle XE::Gfx::CreateTexture2D( const XE::String & name, XE::uint32 width, XE::uint32 height, bool hasmips, XE::uint16 layers, TextureFormat format, XE::Flags< XE::TextureFlags > flags, XE::Flags< XE::SamplerFlags > samplers, std::optional< XE::memory_view > mem /*= std::nullopt */ )
 {
 	XE_ASSERT( _p->_Context != nullptr );
 
-	return _p->_Context->CreateTexture2D( name, width, height, hasmips, layers, format, flags, U, V, W, MIN, MAG, MIP, mem );
+	return _p->_Context->CreateTexture2D( name, width, height, hasmips, layers, format, flags, samplers, mem );
 }
 
-XE::TextureHandle XE::Gfx::CreateTexture2D( const XE::String & name, XE::BackbufferRatio ratio, bool hasmips, XE::uint16 layers, TextureFormat format, XE::Flags< XE::TextureFlags > flags, SamplerWrap U, SamplerWrap V, SamplerWrap W, SamplerMode MIN, SamplerMode MAG, SamplerMode MIP )
+XE::TextureHandle XE::Gfx::CreateTexture2D( const XE::String & name, XE::BackbufferRatio ratio, bool hasmips, XE::uint16 layers, TextureFormat format, XE::Flags< XE::TextureFlags > flags, XE::Flags< XE::SamplerFlags > samplers )
 {
 	XE_ASSERT( _p->_Context != nullptr );
 
-	return _p->_Context->CreateTexture2D( name, ratio, hasmips, layers, format, flags, U, V, W, MIN, MAG, MIP );
+	return _p->_Context->CreateTexture2D( name, ratio, hasmips, layers, format, flags, samplers );
 }
 
-XE::TextureHandle XE::Gfx::CreateTexture3D( const XE::String & name, XE::uint32 width, XE::uint32 height, XE::uint32 depth, bool hasmips, TextureFormat format, XE::Flags< XE::TextureFlags > flags, SamplerWrap U, SamplerWrap V, SamplerWrap W, SamplerMode MIN, SamplerMode MAG, SamplerMode MIP, std::optional< XE::memory_view > mem /*= std::nullopt */ )
+XE::TextureHandle XE::Gfx::CreateTexture3D( const XE::String & name, XE::uint32 width, XE::uint32 height, XE::uint32 depth, bool hasmips, TextureFormat format, XE::Flags< XE::TextureFlags > flags, XE::Flags< XE::SamplerFlags > samplers, std::optional< XE::memory_view > mem /*= std::nullopt */ )
 {
 	XE_ASSERT( _p->_Context != nullptr );
 
-	return _p->_Context->CreateTexture3D( name, width, height, depth, hasmips, format, flags, U, V, W, MIN, MAG, MIP, mem );
+	return _p->_Context->CreateTexture3D( name, width, height, depth, hasmips, format, flags, samplers, mem );
 }
 
-XE::TextureHandle XE::Gfx::CreateTextureCube( const XE::String & name, XE::uint32 size, bool hasmips, XE::uint16 layers, TextureFormat format, XE::Flags< XE::TextureFlags > flags, SamplerWrap U, SamplerWrap V, SamplerWrap W, SamplerMode MIN, SamplerMode MAG, SamplerMode MIP, std::optional< XE::memory_view > mem /*= std::nullopt */ )
+XE::TextureHandle XE::Gfx::CreateTextureCube( const XE::String & name, XE::uint32 size, bool hasmips, XE::uint16 layers, TextureFormat format, XE::Flags< XE::TextureFlags > flags, XE::Flags< XE::SamplerFlags > samplers, std::optional< XE::memory_view > mem /*= std::nullopt */ )
 {
 	XE_ASSERT( _p->_Context != nullptr );
 
-	return _p->_Context->CreateTextureCube( name, size, hasmips, layers, format, flags, U, V, W, MIN, MAG, MIP, mem );
+	return _p->_Context->CreateTextureCube( name, size, hasmips, layers, format, flags, samplers, mem );
 }
 
 void XE::Gfx::UpdateTexture2D( TextureHandle handle, XE::uint16 layer, XE::uint8 mip, XE::uint32 x, XE::uint32 y, XE::uint32 width, XE::uint32 height, XE::memory_view mem, XE::uint32 pitch /*= 0 */ )
@@ -421,18 +421,18 @@ XE::uint8 * XE::Gfx::GetDirectAccess( TextureHandle handle )
 	return _p->_Context->GetDirectAccess( handle );
 }
 
-XE::FrameBufferHandle XE::Gfx::CreateFrameBuffer( const XE::String & name, XE::uint32 width, XE::uint32 height, TextureFormat format, SamplerWrap U, SamplerWrap V, SamplerWrap W, SamplerMode MIN, SamplerMode MAG, SamplerMode MIP )
+XE::FrameBufferHandle XE::Gfx::CreateFrameBuffer( const XE::String & name, XE::uint32 width, XE::uint32 height, TextureFormat format, XE::Flags< XE::SamplerFlags > samplers )
 {
 	XE_ASSERT( _p->_Context != nullptr );
 
-	return _p->_Context->CreateFrameBuffer( name, width, height, format, U, V, W, MIN, MAG, MIP );
+	return _p->_Context->CreateFrameBuffer( name, width, height, format, samplers );
 }
 
-XE::FrameBufferHandle XE::Gfx::CreateFrameBuffer( const XE::String & name, XE::BackbufferRatio ratio, TextureFormat format, SamplerWrap U, SamplerWrap V, SamplerWrap W, SamplerMode MIN, SamplerMode MAG, SamplerMode MIP )
+XE::FrameBufferHandle XE::Gfx::CreateFrameBuffer( const XE::String & name, XE::BackbufferRatio ratio, TextureFormat format, XE::Flags< XE::SamplerFlags > samplers )
 {
 	XE_ASSERT( _p->_Context != nullptr );
 
-	return _p->_Context->CreateFrameBuffer(name, ratio, format, U, V, W, MIN, MAG, MIP );
+	return _p->_Context->CreateFrameBuffer(name, ratio, format, samplers );
 }
 
 XE::FrameBufferHandle XE::Gfx::CreateFrameBuffer( const XE::String & name, const XE::Array< TextureHandle > handles, bool des_texture /*= false */ )

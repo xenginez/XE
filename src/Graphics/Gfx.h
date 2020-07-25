@@ -100,25 +100,21 @@ public:
 
 	TextureHandle CreateTexture2D( const XE::String & name, XE::uint32 width, XE::uint32 height, bool hasmips, XE::uint16 layers, TextureFormat format,
 								   XE::Flags< XE::TextureFlags > flags,
-								   SamplerWrap U, SamplerWrap V, SamplerWrap W,
-								   SamplerMode MIN, SamplerMode MAG, SamplerMode MIP,
+								   XE::Flags< XE::SamplerFlags > samplers,
 								   std::optional< XE::memory_view > mem = std::nullopt );
 
 	TextureHandle CreateTexture2D( const XE::String & name, XE::BackbufferRatio ratio, bool hasmips, XE::uint16 layers, TextureFormat format,
 								   XE::Flags< XE::TextureFlags > flags,
-								   SamplerWrap U, SamplerWrap V, SamplerWrap W,
-								   SamplerMode MIN, SamplerMode MAG, SamplerMode MIP );
+								   XE::Flags< XE::SamplerFlags > samplers );
 
 	TextureHandle CreateTexture3D( const XE::String & name, XE::uint32 width, XE::uint32 height, XE::uint32 depth, bool hasmips, TextureFormat format,
 								   XE::Flags< XE::TextureFlags > flags,
-								   SamplerWrap U, SamplerWrap V, SamplerWrap W,
-								   SamplerMode MIN, SamplerMode MAG, SamplerMode MIP,
+								   XE::Flags< XE::SamplerFlags > samplers,
 								   std::optional< XE::memory_view > mem = std::nullopt );
 
 	TextureHandle CreateTextureCube( const XE::String & name, XE::uint32 size, bool hasmips, XE::uint16 layers, TextureFormat format,
-								   XE::Flags< XE::TextureFlags > flags,
-								   SamplerWrap U, SamplerWrap V, SamplerWrap W,
-								   SamplerMode MIN, SamplerMode MAG, SamplerMode MIP,
+									 XE::Flags< XE::TextureFlags > flags,
+									 XE::Flags< XE::SamplerFlags > samplers,
 								   std::optional< XE::memory_view > mem = std::nullopt );
 
 	void UpdateTexture2D( TextureHandle handle, XE::uint16 layer, XE::uint8 mip, 
@@ -144,13 +140,11 @@ public:
 
 	FrameBufferHandle CreateFrameBuffer( const XE::String & name, XE::uint32 width, XE::uint32 height,
 										 TextureFormat format,
-										 SamplerWrap U, SamplerWrap V, SamplerWrap W,
-										 SamplerMode MIN, SamplerMode MAG, SamplerMode MIP );
+										 XE::Flags< XE::SamplerFlags > samplers );
 
 	FrameBufferHandle CreateFrameBuffer( const XE::String & name, XE::BackbufferRatio ratio,
 										 TextureFormat format,
-										 SamplerWrap U, SamplerWrap V, SamplerWrap W,
-										 SamplerMode MIN, SamplerMode MAG, SamplerMode MIP );
+										 XE::Flags< XE::SamplerFlags > samplers );
 
 	FrameBufferHandle CreateFrameBuffer( const XE::String & name, const XE::Array< TextureHandle > handles, bool des_texture = false );
 
