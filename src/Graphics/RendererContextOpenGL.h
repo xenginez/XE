@@ -13,14 +13,12 @@
 
 BEG_XE_NAMESPACE
 
-#if PLATFORM_OS & (OS_WINDOWS | OS_LINUX | OS_MAC)
-
-class RendererContextOpenGL : public XE::RendererContext
+class RendererContextGL : public XE::RendererContext
 {
 public:
-	RendererContextOpenGL();
+	RendererContextGL();
 
-	~RendererContextOpenGL() override;
+	~RendererContextGL() override;
 
 protected:
 	void OnRender( XE::Frame* val ) override;
@@ -29,9 +27,7 @@ private:
 
 };
 
-#endif
-
-XE::RendererContext * CreateRendererContextOpenGL();
+XE::RendererContext * CreateRendererContextGL();
 
 END_XE_NAMESPACE
 

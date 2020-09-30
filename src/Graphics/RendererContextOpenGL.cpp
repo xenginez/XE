@@ -1,29 +1,21 @@
 #include "RendererContextOpenGL.h"
 
-#if PLATFORM_OS & (OS_WINDOWS | OS_LINUX | OS_MAC)
-
-XE::RendererContextOpenGL::RendererContextOpenGL()
+XE::RendererContextGL::RendererContextGL()
 {
 
 }
 
-XE::RendererContextOpenGL::~RendererContextOpenGL()
+XE::RendererContextGL::~RendererContextGL()
 {
 
 }
 
-void XE::RendererContextOpenGL::OnRender( XE::Frame* val )
+void XE::RendererContextGL::OnRender( XE::Frame* val )
 {
 
 }
 
-XE::RendererContext * XE::CreateRendererContextOpenGL()
+XE::RendererContext * XE::CreateRendererContextGL()
 {
-	return new XE::RendererContextOpenGL();
+	return new XE::RendererContextGL();
 }
-#else
-XE::RendererContext * XE::CreateRendererContextOpenGL()
-{
-	return nullptr;
-}
-#endif
