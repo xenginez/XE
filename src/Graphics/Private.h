@@ -219,7 +219,7 @@ class UniformBuffer
 class InstanceDataBuffer
 {
 public:
-	XE::memory_view data;
+	XE::MemoryView data;
 	uint32_t offset = 0;
 	uint32_t num = 0;
 	uint16_t stride = 0;
@@ -229,7 +229,7 @@ public:
 class TransientIndexBuffer
 {
 public:
-	XE::memory_view data;
+	XE::MemoryView data;
 	uint32_t startIndex = 0;
 	IndexBufferHandle handle;
 };
@@ -237,7 +237,7 @@ public:
 class TransientVertexBuffer
 {
 public:
-	XE::memory_view data;
+	XE::MemoryView data;
 	uint32_t startVertex = 0;
 	uint16_t stride = 0;
 	VertexBufferHandle handle;

@@ -2,14 +2,14 @@
 
 #include "Private.h"
 
-XE::memory_view CopyToFrame( XE::Frame * frame, XE::memory_view mem )
+XE::MemoryView CopyToFrame( XE::Frame * frame, XE::MemoryView mem )
 {
 	std::unique_lock<std::mutex> lock( frame->TransientBufferMutex );
 
 	auto pos = frame->TransientBuffers.WirtePos();
 	frame->TransientBuffers.Wirte( mem );
 
-	return XE::memory_view( ( const char * )pos, mem.size() );
+	return XE::MemoryView( ( const char * )pos, mem.size() );
 }
 
 struct XE::Encoder::Private
@@ -18,7 +18,7 @@ struct XE::Encoder::Private
 	XE::RenderBind _Bind;
 	XE::RenderDraw _Draw;
 	XE::RenderCompute _Compute;
-	XE::Map<UniformHandle, XE::memory_view> _Uniforms;
+	XE::Map<UniformHandle, XE::MemoryView> _Uniforms;
 };
 
 XE::Encoder::Encoder()
@@ -58,7 +58,7 @@ void XE::Encoder::SetScissor( const XE::Rect & scissor )
 	_p->_Draw.Scissor = scissor;
 }
 
-void XE::Encoder::SetTransform( XE::basic_memory_view<XE::Mat4> transform )
+void XE::Encoder::SetTransform( XE::BasicMemoryView<XE::Mat4> transform )
 {
 	XE::uint64 start = _p->_Frame->TransformsSize;
 
@@ -70,7 +70,7 @@ void XE::Encoder::SetTransform( XE::basic_memory_view<XE::Mat4> transform )
 	_p->_Draw.NumMatrices = transform.size();
 }
 
-void XE::Encoder::SetUniform( UniformHandle handle, XE::memory_view mem )
+void XE::Encoder::SetUniform( UniformHandle handle, XE::MemoryView mem )
 {
 	_p->_Uniforms[handle] = CopyToFrame( _p->_Frame, mem );
 }

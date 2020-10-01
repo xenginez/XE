@@ -238,15 +238,15 @@ void XE::JsonSaveArchive::Serialize( NameValue & val )
 
 struct XE::BinaryLoadArchive::Private
 {
-	Private( XE::memory_view & val )
+	Private( XE::MemoryView & val )
 		:Stream( val )
 	{
 	}
 
-	XE::imemorystream Stream;
+	XE::IMemoryStream Stream;
 };
 
-XE::BinaryLoadArchive::BinaryLoadArchive( XE::memory_view & val )
+XE::BinaryLoadArchive::BinaryLoadArchive( XE::MemoryView & val )
 	:Archive( ArchiveType::LOAD ), _p( new Private( val ) )
 {
 
@@ -355,7 +355,7 @@ void XE::BinaryLoadArchive::Serialize( NameValue & val )
 
 struct XE::BinarySaveArchive::Private
 {
-	XE::omemorystream Stream;
+	XE::OMemoryStream Stream;
 };
 
 XE::BinarySaveArchive::BinarySaveArchive()

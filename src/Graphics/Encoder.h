@@ -34,9 +34,9 @@ public:
 
 	void SetScissor( const XE::Rect & scissor );
 
-	void SetTransform( XE::basic_memory_view<XE::Mat4> transform );
+	void SetTransform( XE::BasicMemoryView<XE::Mat4> transform );
 
-	void SetUniform( UniformHandle handle, XE::memory_view mem );
+	void SetUniform( UniformHandle handle, XE::MemoryView mem );
 
 	void SetIndexBuffer( IndexBufferHandle handle, XE::uint32 first, XE::uint32 num );
 

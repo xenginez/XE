@@ -132,7 +132,7 @@ XE::InitInfo & XE::RendererContext::GetInit()
 	return _p->_Init;
 }
 
-XE::IndexBufferHandle XE::RendererContext::CreateIndexBuffer( const XE::String & name, XE::memory_view mem, XE::Flags< XE::BufferFlags > flags )
+XE::IndexBufferHandle XE::RendererContext::CreateIndexBuffer( const XE::String & name, XE::MemoryView mem, XE::Flags< XE::BufferFlags > flags )
 {
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
 
@@ -147,7 +147,7 @@ XE::IndexBufferHandle XE::RendererContext::CreateIndexBuffer( const XE::String &
 	return handle;
 }
 
-XE::TransientIndexBufferHandle XE::RendererContext::CreateTransientIndexBuffer( XE::memory_view mem, XE::Flags< XE::BufferFlags > flags )
+XE::TransientIndexBufferHandle XE::RendererContext::CreateTransientIndexBuffer( XE::MemoryView mem, XE::Flags< XE::BufferFlags > flags )
 {
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
 
@@ -172,7 +172,7 @@ XE::VertexLayoutHandle XE::RendererContext::CreateVertexLayout( const XE::Array<
 {
 	auto handle = _p->_VertexLayoutHandleAlloc.Alloc();
 
-	XE::memory_view view( ( const char * )layouts.data(), layouts.size() * sizeof( VertexLayout ) );
+	XE::MemoryView view( ( const char * )layouts.data(), layouts.size() * sizeof( VertexLayout ) );
 
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_VERTEX_LAYOUT );
@@ -189,7 +189,7 @@ void XE::RendererContext::Destory( VertexLayoutHandle handle )
 	_p->_SubmitFrame->PostCmd.Wirte( handle );
 }
 
-XE::VertexBufferHandle XE::RendererContext::CreateVertexBuffer( const XE::String & name, XE::memory_view mem, VertexLayoutHandle layout, XE::Flags< XE::BufferFlags > flags )
+XE::VertexBufferHandle XE::RendererContext::CreateVertexBuffer( const XE::String & name, XE::MemoryView mem, VertexLayoutHandle layout, XE::Flags< XE::BufferFlags > flags )
 {
 	auto handle = _p->_VertexBufferHandleAlloc.Alloc();
 
@@ -205,7 +205,7 @@ XE::VertexBufferHandle XE::RendererContext::CreateVertexBuffer( const XE::String
 	return handle;
 }
 
-XE::TransientVertexBufferHandle XE::RendererContext::CreateTransientVertexBuffer( XE::memory_view mem, VertexLayoutHandle layout, XE::Flags< XE::BufferFlags > flags )
+XE::TransientVertexBufferHandle XE::RendererContext::CreateTransientVertexBuffer( XE::MemoryView mem, VertexLayoutHandle layout, XE::Flags< XE::BufferFlags > flags )
 {
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
 
@@ -241,7 +241,7 @@ XE::DynamicIndexBufferHandle XE::RendererContext::CreateDynamicIndexBuffer( XE::
 	return handle;
 }
 
-XE::DynamicIndexBufferHandle XE::RendererContext::CreateDynamicIndexBuffer( XE::memory_view mem, XE::Flags< XE::BufferFlags > flags )
+XE::DynamicIndexBufferHandle XE::RendererContext::CreateDynamicIndexBuffer( XE::MemoryView mem, XE::Flags< XE::BufferFlags > flags )
 {
 	auto handle = _p->_DynamicIndexBufferHandleAlloc.Alloc();
 
@@ -255,7 +255,7 @@ XE::DynamicIndexBufferHandle XE::RendererContext::CreateDynamicIndexBuffer( XE::
 	return handle;
 }
 
-void XE::RendererContext::Update( DynamicIndexBufferHandle handle, XE::uint64 start, XE::memory_view mem )
+void XE::RendererContext::Update( DynamicIndexBufferHandle handle, XE::uint64 start, XE::MemoryView mem )
 {
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
 
@@ -287,7 +287,7 @@ XE::DynamicVertexBufferHandle XE::RendererContext::CreateDynamicVertexBuffer( XE
 	return handle;
 }
 
-XE::DynamicVertexBufferHandle XE::RendererContext::CreateDynamicVertexBuffer( XE::memory_view mem, VertexLayoutHandle layout, XE::Flags< XE::BufferFlags > flags )
+XE::DynamicVertexBufferHandle XE::RendererContext::CreateDynamicVertexBuffer( XE::MemoryView mem, VertexLayoutHandle layout, XE::Flags< XE::BufferFlags > flags )
 {
 	auto handle = _p->_DynamicVertexBufferHandleAlloc.Alloc();
 
@@ -302,7 +302,7 @@ XE::DynamicVertexBufferHandle XE::RendererContext::CreateDynamicVertexBuffer( XE
 	return handle;
 }
 
-void XE::RendererContext::Update( DynamicVertexBufferHandle handle, XE::uint64 start, XE::memory_view mem )
+void XE::RendererContext::Update( DynamicVertexBufferHandle handle, XE::uint64 start, XE::MemoryView mem )
 {
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
 
@@ -344,7 +344,7 @@ void XE::RendererContext::Destory( IndirectBufferHandle handle )
 	_p->_SubmitFrame->PostCmd.Wirte( handle );
 }
 
-XE::ShaderHandle XE::RendererContext::CreateShader( const XE::String & name, ShaderType type, XE::memory_view mem )
+XE::ShaderHandle XE::RendererContext::CreateShader( const XE::String & name, ShaderType type, XE::MemoryView mem )
 {
 	auto handle = _p->_ShaderHandleAlloc.Alloc();
 
@@ -421,7 +421,7 @@ void XE::RendererContext::Destory( ProgramHandle handle )
 	_p->_SubmitFrame->PostCmd.Wirte( handle );
 }
 
-XE::TextureHandle XE::RendererContext::CreateTexture2D( const XE::String & name, XE::uint32 width, XE::uint32 height, bool hasmips, XE::uint16 layers, TextureFormat format, XE::Flags< XE::TextureFlags > flags, XE::Flags< XE::SamplerFlags > sampler, std::optional< XE::memory_view > mem )
+XE::TextureHandle XE::RendererContext::CreateTexture2D( const XE::String & name, XE::uint32 width, XE::uint32 height, bool hasmips, XE::uint16 layers, TextureFormat format, XE::Flags< XE::TextureFlags > flags, XE::Flags< XE::SamplerFlags > sampler, std::optional< XE::MemoryView > mem )
 {
 	auto handle = _p->_TextureHandleAlloc.Alloc();
 
@@ -455,7 +455,7 @@ XE::TextureHandle XE::RendererContext::CreateTexture2D( const XE::String & name,
 	}
 	else
 	{
-		_p->_SubmitFrame->PrevCmd.Wirte( XE::memory_view() );
+		_p->_SubmitFrame->PrevCmd.Wirte( XE::MemoryView() );
 	}
 
 	return handle;
@@ -521,12 +521,12 @@ XE::TextureHandle XE::RendererContext::CreateTexture2D( const XE::String & name,
 	_p->_SubmitFrame->PrevCmd.Wirte( format );
 	_p->_SubmitFrame->PrevCmd.Wirte( flags );
 	_p->_SubmitFrame->PrevCmd.Wirte( sampler );
-	_p->_SubmitFrame->PrevCmd.Wirte( XE::memory_view() );
+	_p->_SubmitFrame->PrevCmd.Wirte( XE::MemoryView() );
 
 	return handle;
 }
 
-XE::TextureHandle XE::RendererContext::CreateTexture3D( const XE::String & name, XE::uint32 width, XE::uint32 height, XE::uint32 depth, bool hasmips, TextureFormat format, XE::Flags< XE::TextureFlags > flags, XE::Flags< XE::SamplerFlags > sampler, std::optional< XE::memory_view > mem )
+XE::TextureHandle XE::RendererContext::CreateTexture3D( const XE::String & name, XE::uint32 width, XE::uint32 height, XE::uint32 depth, bool hasmips, TextureFormat format, XE::Flags< XE::TextureFlags > flags, XE::Flags< XE::SamplerFlags > sampler, std::optional< XE::MemoryView > mem )
 {
 	auto handle = _p->_TextureHandleAlloc.Alloc();
 
@@ -563,13 +563,13 @@ XE::TextureHandle XE::RendererContext::CreateTexture3D( const XE::String & name,
 	}
 	else
 	{
-		_p->_SubmitFrame->PrevCmd.Wirte( XE::memory_view() );
+		_p->_SubmitFrame->PrevCmd.Wirte( XE::MemoryView() );
 	}
 
 	return handle;
 }
 
-XE::TextureHandle XE::RendererContext::CreateTextureCube( const XE::String & name, XE::uint32 size, bool hasmips, XE::uint16 layers, TextureFormat format, XE::Flags< XE::TextureFlags > flags, XE::Flags< XE::SamplerFlags > sampler, std::optional< XE::memory_view > mem )
+XE::TextureHandle XE::RendererContext::CreateTextureCube( const XE::String & name, XE::uint32 size, bool hasmips, XE::uint16 layers, TextureFormat format, XE::Flags< XE::TextureFlags > flags, XE::Flags< XE::SamplerFlags > sampler, std::optional< XE::MemoryView > mem )
 {
 	auto handle = _p->_TextureHandleAlloc.Alloc();
 
@@ -602,13 +602,13 @@ XE::TextureHandle XE::RendererContext::CreateTextureCube( const XE::String & nam
 	}
 	else
 	{
-		_p->_SubmitFrame->PrevCmd.Wirte( XE::memory_view() );
+		_p->_SubmitFrame->PrevCmd.Wirte( XE::MemoryView() );
 	}
 
 	return handle;
 }
 
-void XE::RendererContext::UpdateTexture2D( TextureHandle handle, XE::uint16 layer, XE::uint8 mip, XE::uint32 x, XE::uint32 y, XE::uint32 width, XE::uint32 height, XE::memory_view mem, XE::uint32 pitch )
+void XE::RendererContext::UpdateTexture2D( TextureHandle handle, XE::uint16 layer, XE::uint8 mip, XE::uint32 x, XE::uint32 y, XE::uint32 width, XE::uint32 height, XE::MemoryView mem, XE::uint32 pitch )
 {
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
 
@@ -625,7 +625,7 @@ void XE::RendererContext::UpdateTexture2D( TextureHandle handle, XE::uint16 laye
 	_p->_SubmitFrame->PrevCmd.Wirte( pitch );
 }
 
-void XE::RendererContext::UpdateTexture3D( TextureHandle handle, XE::uint8 mip, XE::uint32 x, XE::uint32 y, XE::uint32 z, XE::uint32 width, XE::uint32 height, XE::uint32 depth, XE::memory_view mem )
+void XE::RendererContext::UpdateTexture3D( TextureHandle handle, XE::uint8 mip, XE::uint32 x, XE::uint32 y, XE::uint32 z, XE::uint32 width, XE::uint32 height, XE::uint32 depth, XE::MemoryView mem )
 {
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
 
@@ -642,7 +642,7 @@ void XE::RendererContext::UpdateTexture3D( TextureHandle handle, XE::uint8 mip, 
 	_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( mem ) );
 }
 
-void XE::RendererContext::UpdateTextureCube( TextureHandle handle, XE::uint16 layer, XE::uint8 side, XE::uint8 mip, XE::uint32 x, XE::uint32 y, XE::uint32 z, XE::uint32 width, XE::uint32 height, XE::uint32 depth, XE::memory_view mem )
+void XE::RendererContext::UpdateTextureCube( TextureHandle handle, XE::uint16 layer, XE::uint8 side, XE::uint8 mip, XE::uint32 x, XE::uint32 y, XE::uint32 z, XE::uint32 width, XE::uint32 height, XE::uint32 depth, XE::MemoryView mem )
 {
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
 
@@ -739,7 +739,7 @@ XE::FrameBufferHandle XE::RendererContext::CreateFrameBuffer( const XE::String &
 {
 	auto handle = _p->_FrameBufferHandleAlloc.Alloc();
 
-	XE::memory_view view( ( const char * )attachments.data(), attachments.size() );
+	XE::MemoryView view( ( const char * )attachments.data(), attachments.size() );
 
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
 
@@ -930,14 +930,14 @@ void XE::RendererContext::RequestScreenShot( FrameBufferHandle handle, const std
 	_p->_SubmitFrame->PostCmd.Wirte( path.u8string() );
 }
 
-XE::memory_view XE::RendererContext::CopyToFrame( XE::memory_view mem ) const
+XE::MemoryView XE::RendererContext::CopyToFrame( XE::MemoryView mem ) const
 {
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->TransientBufferMutex );
 
 	auto pos = _p->_SubmitFrame->TransientBuffers.WirtePos();
 	_p->_SubmitFrame->TransientBuffers.Wirte( mem );
 
-	return XE::memory_view( ( const char * )pos, mem.size() );
+	return XE::MemoryView( ( const char * )pos, mem.size() );
 }
 
 void XE::RendererContext::ResizeTexture( TextureHandle handle, XE::uint32 layers, XE::uint32 mips, XE::uint32 width, XE::uint32 height )

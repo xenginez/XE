@@ -19,7 +19,7 @@ XE::Buffer::Buffer( const XE::Buffer & _Right )
 {
 }
 
-XE::Buffer::Buffer( XE::memory_view _Right )
+XE::Buffer::Buffer( XE::MemoryView _Right )
 	: _ReadPos( 0 ), _WirtePos( _Right.size() ), _Data( _Right.data(), _Right.data() + _Right.size() )
 {
 
@@ -114,7 +114,7 @@ void XE::Buffer::Reset()
 	_WirtePos = 0;
 }
 
-XE::memory_view XE::Buffer::View() const
+XE::MemoryView XE::Buffer::View() const
 {
-	return XE::memory_view( _Data.data(), _Data.size() );
+	return XE::MemoryView( _Data.data(), _Data.size() );
 }

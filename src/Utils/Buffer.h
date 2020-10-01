@@ -28,7 +28,7 @@ public:
 
 	Buffer( const Buffer & _Right );
 
-	Buffer( XE::memory_view _Right );
+	Buffer( XE::MemoryView _Right );
 
 public:
 	~Buffer();
@@ -67,7 +67,7 @@ public:
 	void Reset();
 
 public:
-	XE::memory_view View() const;
+	XE::MemoryView View() const;
 
 private:
 	XE::uint64 _ReadPos;

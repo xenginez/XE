@@ -145,7 +145,7 @@ class XE_API BinaryLoadArchive : public Archive
 	struct Private;
 
 public:
-	BinaryLoadArchive( XE::memory_view & val );
+	BinaryLoadArchive( XE::MemoryView & val );
 
 	~BinaryLoadArchive() override;
 

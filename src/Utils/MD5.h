@@ -20,14 +20,14 @@ public:
 
 	MD5( const MD5 & val );
 
-	MD5( XE::memory_view val );
+	MD5( XE::MemoryView val );
 
 	MD5( const std::string & val );
 
 public:
 	MD5 & operator =( const MD5 & val );
 
-	MD5 & operator =( XE::memory_view val );
+	MD5 & operator =( XE::MemoryView val );
 
 	MD5 & operator =( const std::string & val );
 
@@ -53,7 +53,7 @@ public:
 	static MD5 From32String( const std::string & val );
 
 private:
-	void Hash( XE::memory_view val );
+	void Hash( XE::MemoryView val );
 
 private:
 	char _Hash[33];

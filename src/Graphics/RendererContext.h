@@ -50,9 +50,9 @@ public:
 	XE::InitInfo & GetInit();
 
 public:
-	IndexBufferHandle CreateIndexBuffer( const XE::String & name, XE::memory_view mem, XE::Flags< XE::BufferFlags > flags );
+	IndexBufferHandle CreateIndexBuffer( const XE::String & name, XE::MemoryView mem, XE::Flags< XE::BufferFlags > flags );
 
-	TransientIndexBufferHandle CreateTransientIndexBuffer( XE::memory_view mem, XE::Flags< XE::BufferFlags > flags );
+	TransientIndexBufferHandle CreateTransientIndexBuffer( XE::MemoryView mem, XE::Flags< XE::BufferFlags > flags );
 
 	void Destory( IndexBufferHandle handle );
 
@@ -60,25 +60,25 @@ public:
 
 	void Destory( VertexLayoutHandle handle );
 
-	VertexBufferHandle CreateVertexBuffer( const XE::String & name, XE::memory_view mem, VertexLayoutHandle layout, XE::Flags< XE::BufferFlags > flags );
+	VertexBufferHandle CreateVertexBuffer( const XE::String & name, XE::MemoryView mem, VertexLayoutHandle layout, XE::Flags< XE::BufferFlags > flags );
 
-	TransientVertexBufferHandle CreateTransientVertexBuffer( XE::memory_view mem, VertexLayoutHandle layout, XE::Flags< XE::BufferFlags > flags );
+	TransientVertexBufferHandle CreateTransientVertexBuffer( XE::MemoryView mem, VertexLayoutHandle layout, XE::Flags< XE::BufferFlags > flags );
 
 	void Destory( VertexBufferHandle handle );
 
 	DynamicIndexBufferHandle CreateDynamicIndexBuffer( XE::uint64 size, XE::Flags< XE::BufferFlags > flags );
 
-	DynamicIndexBufferHandle CreateDynamicIndexBuffer( XE::memory_view mem, XE::Flags< XE::BufferFlags > flags );
+	DynamicIndexBufferHandle CreateDynamicIndexBuffer( XE::MemoryView mem, XE::Flags< XE::BufferFlags > flags );
 
-	void Update( DynamicIndexBufferHandle handle, XE::uint64 start, XE::memory_view mem );
+	void Update( DynamicIndexBufferHandle handle, XE::uint64 start, XE::MemoryView mem );
 
 	void Destory( DynamicIndexBufferHandle handle );
 
 	DynamicVertexBufferHandle CreateDynamicVertexBuffer( XE::uint64 size, VertexLayoutHandle layout, XE::Flags< XE::BufferFlags > flags );
 
-	DynamicVertexBufferHandle CreateDynamicVertexBuffer( XE::memory_view mem, VertexLayoutHandle layout, XE::Flags< XE::BufferFlags > flags );
+	DynamicVertexBufferHandle CreateDynamicVertexBuffer( XE::MemoryView mem, VertexLayoutHandle layout, XE::Flags< XE::BufferFlags > flags );
 
-	void Update( DynamicVertexBufferHandle handle, XE::uint64 start, XE::memory_view mem );
+	void Update( DynamicVertexBufferHandle handle, XE::uint64 start, XE::MemoryView mem );
 
 	void Destory( DynamicVertexBufferHandle handle );
 
@@ -86,7 +86,7 @@ public:
 
 	void Destory( IndirectBufferHandle handle );
 
-	ShaderHandle CreateShader( const XE::String & name, ShaderType type, XE::memory_view mem );
+	ShaderHandle CreateShader( const XE::String & name, ShaderType type, XE::MemoryView mem );
 
 	void Destory( ShaderHandle handle );
 
@@ -101,7 +101,7 @@ public:
 	TextureHandle CreateTexture2D( const XE::String & name, XE::uint32 width, XE::uint32 height, bool hasmips, XE::uint16 layers, TextureFormat format,
 								   XE::Flags< XE::TextureFlags > flags,
 								   XE::Flags< XE::SamplerFlags > sampler,
-								   std::optional< XE::memory_view > mem );
+								   std::optional< XE::MemoryView > mem );
 
 	TextureHandle CreateTexture2D( const XE::String & name, XE::BackbufferRatio ratio, bool hasmips, XE::uint16 layers, TextureFormat format,
 								   XE::Flags< XE::TextureFlags > flags,
@@ -110,27 +110,27 @@ public:
 	TextureHandle CreateTexture3D( const XE::String & name, XE::uint32 width, XE::uint32 height, XE::uint32 depth, bool hasmips, TextureFormat format,
 								   XE::Flags< XE::TextureFlags > flags,
 								   XE::Flags< XE::SamplerFlags > sampler,
-								   std::optional< XE::memory_view > mem );
+								   std::optional< XE::MemoryView > mem );
 
 	TextureHandle CreateTextureCube( const XE::String & name, XE::uint32 size, bool hasmips, XE::uint16 layers, TextureFormat format,
 									 XE::Flags< XE::TextureFlags > flags,
 									 XE::Flags< XE::SamplerFlags > sampler,
-									 std::optional< XE::memory_view > mem );
+									 std::optional< XE::MemoryView > mem );
 
 	void UpdateTexture2D( TextureHandle handle, XE::uint16 layer, XE::uint8 mip,
 						  XE::uint32 x, XE::uint32 y,
 						  XE::uint32 width, XE::uint32 height,
-						  XE::memory_view mem, XE::uint32 pitch );
+						  XE::MemoryView mem, XE::uint32 pitch );
 
 	void UpdateTexture3D( TextureHandle handle, XE::uint8 mip,
 						  XE::uint32 x, XE::uint32 y, XE::uint32 z,
 						  XE::uint32 width, XE::uint32 height, XE::uint32 depth,
-						  XE::memory_view mem );
+						  XE::MemoryView mem );
 
 	void UpdateTextureCube( TextureHandle handle, XE::uint16 layer, XE::uint8 side, XE::uint8 mip,
 							XE::uint32 x, XE::uint32 y, XE::uint32 z,
 							XE::uint32 width, XE::uint32 height, XE::uint32 depth,
-							XE::memory_view mem );
+							XE::MemoryView mem );
 
 	XE::uint32 ReadTexture( TextureHandle handle, XE::uint8 * data, XE::uint8 mip );
 
@@ -205,7 +205,7 @@ protected:
 	void ResizeTexture( TextureHandle handle, XE::uint32 layers, XE::uint32 mips, XE::uint32 width, XE::uint32 height );
 
 private:
-	XE::memory_view CopyToFrame( XE::memory_view mem ) const;
+	XE::MemoryView CopyToFrame( XE::MemoryView mem ) const;
 
 private:
 	Private * _p;

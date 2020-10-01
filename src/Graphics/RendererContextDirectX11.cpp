@@ -188,7 +188,7 @@ static const TextureFormatInfo G_D3D11TextureFormat[] =
 struct BufferD3D11
 {
 public:
-	void create( ID3D11Device * device, XE::memory_view data, XE::Flags<XE::BufferFlags> flags, bool vertex = false )
+	void create( ID3D11Device * device, XE::MemoryView data, XE::Flags<XE::BufferFlags> flags, bool vertex = false )
 	{
 		_size = data.size();
 		_flags = flags;
@@ -297,7 +297,7 @@ public:
 		}
 	}
 
-	void update( ID3D11Device * device, ID3D11DeviceContext * deviceCtx, XE::uint32 offset, XE::memory_view data, bool discard = false )
+	void update( ID3D11Device * device, ID3D11DeviceContext * deviceCtx, XE::uint32 offset, XE::MemoryView data, bool discard = false )
 	{
 		XE_ASSERT( _dynamic );
 
@@ -380,7 +380,7 @@ public:
 };
 struct ShaderD3D11
 {
-	void create( ID3D11Device * device, XE::ShaderType type, XE::memory_view data )
+	void create( ID3D11Device * device, XE::ShaderType type, XE::MemoryView data )
 	{
 		switch( type )
 		{
@@ -826,7 +826,7 @@ struct IndexBufferD3D11 : public BufferD3D11
 struct VertexBufferD3D11 : public BufferD3D11
 {
 public:
-	void create( ID3D11Device * device, XE::memory_view data, XE::VertexLayoutHandle layoutHandle, XE::Flags<XE::BufferFlags> flags )
+	void create( ID3D11Device * device, XE::MemoryView data, XE::VertexLayoutHandle layoutHandle, XE::Flags<XE::BufferFlags> flags )
 	{
 		_layoutHandle = layoutHandle;
 
@@ -1483,7 +1483,7 @@ void XE::RendererContextDirectX11::EXEC_CREATE_VERTEX_LAYOUT( XE::Buffer & buffe
 void XE::RendererContextDirectX11::EXEC_CREATE_INDEX_BUFFER( XE::Buffer & buffer )
 {
 	XE::String name;
-	XE::memory_view mem;
+	XE::MemoryView mem;
 	XE::IndexBufferHandle handle;
 	XE::Flags< XE::BufferFlags > flags;
 
@@ -1498,7 +1498,7 @@ void XE::RendererContextDirectX11::EXEC_CREATE_INDEX_BUFFER( XE::Buffer & buffer
 void XE::RendererContextDirectX11::EXEC_CREATE_VERTEX_BUFFER( XE::Buffer & buffer )
 {
 	XE::String name;
-	XE::memory_view mem;
+	XE::MemoryView mem;
 	XE::VertexBufferHandle handle;
 	XE::VertexLayoutHandle layout;
 	XE::Flags< XE::BufferFlags > flags;
@@ -1515,7 +1515,7 @@ void XE::RendererContextDirectX11::EXEC_CREATE_VERTEX_BUFFER( XE::Buffer & buffe
 void XE::RendererContextDirectX11::EXEC_CREATE_DYNAMIC_INDEX_BUFFER( XE::Buffer & buffer )
 {
 	XE::String name;
-	XE::memory_view mem;
+	XE::MemoryView mem;
 	XE::IndexBufferHandle handle;
 	XE::Flags< XE::BufferFlags > flags;
 
@@ -1530,7 +1530,7 @@ void XE::RendererContextDirectX11::EXEC_CREATE_DYNAMIC_INDEX_BUFFER( XE::Buffer 
 void XE::RendererContextDirectX11::EXEC_UPDATE_DYNAMIC_INDEX_BUFFER( XE::Buffer & buffer )
 {
 	XE::uint64 start;
-	XE::memory_view mem;
+	XE::MemoryView mem;
 	XE::DynamicIndexBufferHandle handle;
 
 	buffer.Read( handle );
@@ -1558,7 +1558,7 @@ void XE::RendererContextDirectX11::EXEC_CREATE_DYNAMIC_VERTEX_BUFFER( XE::Buffer
 void XE::RendererContextDirectX11::EXEC_UPDATE_DYNAMIC_VERTEX_BUFFER( XE::Buffer & buffer )
 {
 	XE::uint64 start;
-	XE::memory_view mem;
+	XE::MemoryView mem;
 	XE::DynamicVertexBufferHandle handle;
 
 	buffer.Read( handle );
@@ -1570,7 +1570,7 @@ void XE::RendererContextDirectX11::EXEC_UPDATE_DYNAMIC_VERTEX_BUFFER( XE::Buffer
 
 void XE::RendererContextDirectX11::EXEC_CREATE_TRANSIENT_INDEX_BUFFER( XE::Buffer & buffer )
 {
-	XE::memory_view mem;
+	XE::MemoryView mem;
 	XE::Flags< XE::BufferFlags > flags;
 	XE::TransientIndexBufferHandle handle;
 
@@ -1583,7 +1583,7 @@ void XE::RendererContextDirectX11::EXEC_CREATE_TRANSIENT_INDEX_BUFFER( XE::Buffe
 
 void XE::RendererContextDirectX11::EXEC_CREATE_TRANSIENT_VERTEX_BUFFER( XE::Buffer & buffer )
 {
-	XE::memory_view mem;
+	XE::MemoryView mem;
 	XE::VertexLayoutHandle layout;
 	XE::Flags< XE::BufferFlags > flags;
 	XE::TransientIndexBufferHandle handle;
@@ -1600,7 +1600,7 @@ void XE::RendererContextDirectX11::EXEC_CREATE_SHADER( XE::Buffer & buffer )
 {
 	XE::String name;
 	XE::ShaderType type;
-	XE::memory_view mem;
+	XE::MemoryView mem;
 	XE::ShaderHandle handle;
 
 	buffer.Read( handle );
@@ -1641,7 +1641,7 @@ void XE::RendererContextDirectX11::EXEC_CREATE_TEXTURE( XE::Buffer & buffer )
 		XE::uint32 width;
 		XE::uint32 height;
 		XE::uint16 layers;
-		XE::memory_view mem;
+		XE::MemoryView mem;
 		XE::TextureFormat format;
 		XE::Flags< XE::TextureFlags > flags;
 		XE::Flags< XE::SamplerFlags > sampler;
@@ -1666,7 +1666,7 @@ void XE::RendererContextDirectX11::EXEC_CREATE_TEXTURE( XE::Buffer & buffer )
 		XE::uint32 width;
 		XE::uint32 height;
 		XE::uint32 depth;
-		XE::memory_view mem;
+		XE::MemoryView mem;
 		XE::TextureFormat format;
 		XE::Flags< XE::TextureFlags > flags;
 		XE::Flags< XE::SamplerFlags > sampler;
@@ -1690,7 +1690,7 @@ void XE::RendererContextDirectX11::EXEC_CREATE_TEXTURE( XE::Buffer & buffer )
 		XE::String name;
 		XE::uint32 size;
 		XE::uint16 layers;
-		XE::memory_view mem;
+		XE::MemoryView mem;
 		XE::TextureFormat format;
 		XE::Flags< XE::TextureFlags > flags;
 		XE::Flags< XE::SamplerFlags > sampler;
@@ -1729,7 +1729,7 @@ void XE::RendererContextDirectX11::EXEC_UPDATE_TEXTURE( XE::Buffer & buffer )
 		XE::uint32 y;
 		XE::uint32 width;
 		XE::uint32 height;
-		XE::memory_view mem;
+		XE::MemoryView mem;
 		XE::uint32 pitch;
 
 		buffer.Read( layer );
@@ -1753,7 +1753,7 @@ void XE::RendererContextDirectX11::EXEC_UPDATE_TEXTURE( XE::Buffer & buffer )
 		XE::uint32 width;
 		XE::uint32 height;
 		XE::uint32 depth;
-		XE::memory_view mem;
+		XE::MemoryView mem;
 
 		buffer.Read( mip );
 		buffer.Read( x );
@@ -1778,7 +1778,7 @@ void XE::RendererContextDirectX11::EXEC_UPDATE_TEXTURE( XE::Buffer & buffer )
 		XE::uint32 width;
 		XE::uint32 height;
 		XE::uint32 depth;
-		XE::memory_view mem;
+		XE::MemoryView mem;
 
 		buffer.Read( layer );
 		buffer.Read( side );

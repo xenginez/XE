@@ -15,9 +15,9 @@ BEG_XE_NAMESPACE
 
 template< std::size_t ... _Size > class _multi_array_size;
 
-template< typename _Ty > class multi_iterator;
-template< typename _Ty > class multi_const_iterator;
-template< typename _Ty, typename ... _Size > class multi_array_view;
+template< typename _Ty > class MultiArrayIterator;
+template< typename _Ty > class MultiArrayConstIterator;
+template< typename _Ty, typename ... _Size > class MultiArrayView;
 
 
 template<> class _multi_array_size<>
@@ -47,7 +47,7 @@ template< std::size_t ... _Size > using _multi_array_size_t = typename _multi_ar
 template< std::size_t ... _Size > static constexpr std::size_t _multi_array_size_v = _multi_array_size< _Size... >::value;
 
 
-template< typename _Ty > class multi_const_iterator
+template< typename _Ty > class MultiArrayConstIterator
 {
 public:
 	using iterator_category = std::random_access_iterator_tag;
@@ -59,12 +59,12 @@ public:
 	using _Tptr = pointer;
 
 public:
-	multi_const_iterator() noexcept
+	MultiArrayConstIterator() noexcept
 		: _Ptr()
 	{
 	}
 
-	multi_const_iterator( _Tptr _Parg ) noexcept
+	MultiArrayConstIterator( _Tptr _Parg ) noexcept
 		: _Ptr( _Parg )
 	{
 
@@ -80,56 +80,56 @@ public:
 		return _Ptr;
 	}
 
-	multi_const_iterator & operator++()
+	MultiArrayConstIterator & operator++()
 	{
 		++_Ptr;
 		return *this;
 	}
 
-	multi_const_iterator operator++( int )
+	MultiArrayConstIterator operator++( int )
 	{
-		multi_const_iterator _Tmp = *this;
+		MultiArrayConstIterator _Tmp = *this;
 		++ * this;
 		return _Tmp;
 	}
 
-	multi_const_iterator & operator--()
+	MultiArrayConstIterator & operator--()
 	{
 		--_Ptr;
 		return *this;
 	}
 
-	multi_const_iterator operator--( int )
+	MultiArrayConstIterator operator--( int )
 	{
-		multi_const_iterator _Tmp = *this;
+		MultiArrayConstIterator _Tmp = *this;
 		-- * this;
 		return _Tmp;
 	}
 
-	multi_const_iterator & operator+=( const difference_type _Off )
+	MultiArrayConstIterator & operator+=( const difference_type _Off )
 	{
 		_Ptr += _Off;
 		return *this;
 	}
 
-	multi_const_iterator operator+( const difference_type _Off ) const
+	MultiArrayConstIterator operator+( const difference_type _Off ) const
 	{
-		multi_const_iterator _Tmp = *this;
+		MultiArrayConstIterator _Tmp = *this;
 		return _Tmp += _Off;
 	}
 
-	multi_const_iterator & operator-=( const difference_type _Off )
+	MultiArrayConstIterator & operator-=( const difference_type _Off )
 	{
 		return *this += -_Off;
 	}
 
-	multi_const_iterator operator-( const difference_type _Off ) const
+	MultiArrayConstIterator operator-( const difference_type _Off ) const
 	{
-		multi_const_iterator _Tmp = *this;
+		MultiArrayConstIterator _Tmp = *this;
 		return _Tmp -= _Off;
 	}
 
-	difference_type operator-( const multi_const_iterator & _Right ) const
+	difference_type operator-( const MultiArrayConstIterator & _Right ) const
 	{
 		return _Ptr - _Right._Ptr;
 	}
@@ -139,32 +139,32 @@ public:
 		return *( *this + _Off );
 	}
 
-	bool operator==( const multi_const_iterator & _Right ) const
+	bool operator==( const MultiArrayConstIterator & _Right ) const
 	{
 		return _Ptr == _Right._Ptr;
 	}
 
-	bool operator!=( const multi_const_iterator & _Right ) const
+	bool operator!=( const MultiArrayConstIterator & _Right ) const
 	{
 		return !( *this == _Right );
 	}
 
-	bool operator<( const multi_const_iterator & _Right ) const
+	bool operator<( const MultiArrayConstIterator & _Right ) const
 	{
 		return _Ptr < _Right._Ptr;
 	}
 
-	bool operator>( const multi_const_iterator & _Right ) const
+	bool operator>( const MultiArrayConstIterator & _Right ) const
 	{
 		return _Right < *this;
 	}
 
-	bool operator<=( const multi_const_iterator & _Right ) const
+	bool operator<=( const MultiArrayConstIterator & _Right ) const
 	{
 		return !( _Right < *this );
 	}
 
-	bool operator>=( const multi_const_iterator & _Right ) const
+	bool operator>=( const MultiArrayConstIterator & _Right ) const
 	{
 		return !( *this < _Right );
 	}
@@ -172,10 +172,10 @@ public:
 	_Tptr _Ptr;
 };
 
-template< typename _Ty > class multi_iterator : public multi_const_iterator< _Ty >
+template< typename _Ty > class MultiArrayIterator : public MultiArrayConstIterator< _Ty >
 {
 public:
-	using _Mybase = multi_const_iterator< _Ty >;
+	using _Mybase = MultiArrayConstIterator< _Ty >;
 
 	using iterator_category = std::random_access_iterator_tag;
 	using value_type = _Ty;
@@ -196,45 +196,45 @@ public:
 		return const_cast< pointer >( _Mybase::operator->() );
 	}
 
-	multi_iterator & operator++()
+	MultiArrayIterator & operator++()
 	{
 		_Mybase::operator++();
 		return *this;
 	}
 
-	multi_iterator operator++( int )
+	MultiArrayIterator operator++( int )
 	{
-		multi_iterator _Tmp = *this;
+		MultiArrayIterator _Tmp = *this;
 		_Mybase::operator++();
 		return _Tmp;
 	}
 
-	multi_iterator & operator--()
+	MultiArrayIterator & operator--()
 	{
 		_Mybase::operator--();
 		return *this;
 	}
 
-	multi_iterator operator--( int )
+	MultiArrayIterator operator--( int )
 	{
-		multi_iterator _Tmp = *this;
+		MultiArrayIterator _Tmp = *this;
 		_Mybase::operator--();
 		return _Tmp;
 	}
 
-	multi_iterator & operator+=( const difference_type _Off )
+	MultiArrayIterator & operator+=( const difference_type _Off )
 	{
 		_Mybase::operator+=( _Off );
 		return *this;
 	}
 
-	multi_iterator operator+( const difference_type _Off ) const
+	MultiArrayIterator operator+( const difference_type _Off ) const
 	{
-		multi_iterator _Tmp = *this;
+		MultiArrayIterator _Tmp = *this;
 		return _Tmp += _Off;
 	}
 
-	multi_iterator & operator-=( const difference_type _Off )
+	MultiArrayIterator & operator-=( const difference_type _Off )
 	{
 		_Mybase::operator-=( _Off );
 		return *this;
@@ -242,9 +242,9 @@ public:
 
 	using _Mybase::operator-;
 
-	multi_iterator operator-( const difference_type _Off ) const
+	MultiArrayIterator operator-( const difference_type _Off ) const
 	{
-		multi_iterator _Tmp = *this;
+		MultiArrayIterator _Tmp = *this;
 		return _Tmp -= _Off;
 	}
 
@@ -255,7 +255,7 @@ public:
 };
 
 
-template< typename _Ty, std::size_t _Sz, std::size_t ... _Size > class multi_array_view< _Ty, _multi_array_size< _Sz, _Size... > >
+template< typename _Ty, std::size_t _Sz, std::size_t ... _Size > class MultiArrayView< _Ty, _multi_array_size< _Sz, _Size... > >
 {
 public:
 	using value_type = _Ty;
@@ -266,8 +266,8 @@ public:
 	using reference = _Ty &;
 	using const_reference = const _Ty &;
 
-	using iterator = multi_iterator<_Ty>;
-	using const_iterator = multi_const_iterator<_Ty>;
+	using iterator = MultiArrayIterator<_Ty>;
+	using const_iterator = MultiArrayConstIterator<_Ty>;
 
 	using reverse_iterator = std::reverse_iterator<iterator>;
 	using const_reverse_iterator = std::reverse_iterator<const_iterator>;
@@ -436,7 +436,7 @@ private:
 	_Ty * _Elems;
 };
 
-template< typename _Ty, std::size_t _Sz > class multi_array_view< _Ty, _multi_array_size< _Sz > >
+template< typename _Ty, std::size_t _Sz > class MultiArrayView< _Ty, _multi_array_size< _Sz > >
 {
 public:
 	using value_type = _Ty;
@@ -447,8 +447,8 @@ public:
 	using reference = _Ty &;
 	using const_reference = const _Ty &;
 
-	using iterator = multi_iterator<_Ty>;
-	using const_iterator = multi_const_iterator<_Ty>;
+	using iterator = MultiArrayIterator<_Ty>;
+	using const_iterator = MultiArrayConstIterator<_Ty>;
 
 	using reverse_iterator = std::reverse_iterator<iterator>;
 	using const_reverse_iterator = std::reverse_iterator<const_iterator>;
@@ -616,7 +616,7 @@ private:
 };
 
 
-template< typename _Ty, std::size_t ... _Size > class multi_array
+template< typename _Ty, std::size_t ... _Size > class MultiArray
 {
 public:
 	using value_type = _Ty;
@@ -627,14 +627,14 @@ public:
 	using reference = _Ty &;
 	using const_reference = const _Ty &;
 
-	using iterator = multi_iterator<_Ty>;
-	using const_iterator = multi_const_iterator<_Ty>;
+	using iterator = MultiArrayIterator<_Ty>;
+	using const_iterator = MultiArrayConstIterator<_Ty>;
 
 	using reverse_iterator = std::reverse_iterator<iterator>;
 	using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
-	using view = multi_array_view<_Ty, typename _multi_array_size<_Size...>::type>;
-	using const_view = const multi_array_view<_Ty, typename _multi_array_size<_Size...>::type>;
+	using view = MultiArrayView<_Ty, typename _multi_array_size<_Size...>::type>;
+	using const_view = const MultiArrayView<_Ty, typename _multi_array_size<_Size...>::type>;
 
 public:
 	void fill( const _Ty & _Value )
@@ -642,7 +642,7 @@ public:
 		std::fill_n( _Elems, _multi_array_size_v< _Size... >, _Value );
 	}
 
-	void swap( multi_array & _Other ) noexcept
+	void swap( MultiArray & _Other ) noexcept
 	{
 		auto _First1 = _Elems;
 		auto _Last1 = _Elems + _multi_array_size_v< _Size... >;
@@ -801,7 +801,7 @@ private:
 	_Ty _Elems[_multi_array_size_v<_Size...>];
 };
 
-template< typename _Ty, std::size_t _Size > class multi_array< _Ty, _Size > : public std::array< _Ty, _Size >
+template< typename _Ty, std::size_t _Size > class MultiArray< _Ty, _Size > : public std::array< _Ty, _Size >
 {
 public:
 	using _MyBase = std::array< _Ty, _Size >;

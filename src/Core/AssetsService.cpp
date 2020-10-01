@@ -151,9 +151,9 @@ XE::ObjectPtr XE::AssetsService::SearchAssetData( const XE::String & val ) const
 
 		XE::Unzipper unzip( path );
 
-		XE::memorystream mem_stream;
+		XE::MemoryStream mem_stream;
 		unzip.GetEntryData( md5.To32String(), mem_stream );
-		XE::memory_view view = mem_stream.view();
+		XE::MemoryView view = mem_stream.view();
 
 		XE::ObjectPtr obj;
 

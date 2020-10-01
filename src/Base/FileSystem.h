@@ -2,7 +2,6 @@
 #define FILESYSTEM_H__373D1606_6495_43EC_8013_03DDF9BABFA0
 
 #include "Type.h"
-#include <filesystem>
 
 BEG_XE_NAMESPACE
 

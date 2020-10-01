@@ -206,14 +206,14 @@ XE::MD5::MD5( const MD5 & val )
 	_Hash[32] = 0;
 }
 
-XE::MD5::MD5( XE::memory_view val )
+XE::MD5::MD5( XE::MemoryView val )
 {
 	Hash( val );
 }
 
 XE::MD5::MD5( const std::string & val )
 {
-	XE::memory_view view( val.data(), val.size() );
+	XE::MemoryView view( val.data(), val.size() );
 
 	Hash( view );
 }
@@ -227,7 +227,7 @@ XE::MD5 & XE::MD5::operator=( const MD5 & val )
 	return *this;
 }
 
-XE::MD5 & XE::MD5::operator=( XE::memory_view val )
+XE::MD5 & XE::MD5::operator=( XE::MemoryView val )
 {
 	Hash( val );
 
@@ -236,7 +236,7 @@ XE::MD5 & XE::MD5::operator=( XE::memory_view val )
 
 XE::MD5 & XE::MD5::operator=( const std::string & val )
 {
-	XE::memory_view view( val.data(), val.size() );
+	XE::MemoryView view( val.data(), val.size() );
 
 	Hash( view );
 
@@ -292,7 +292,7 @@ XE::MD5 XE::MD5::From32String( const std::string & val )
 	return md5;
 }
 
-void XE::MD5::Hash( XE::memory_view val )
+void XE::MD5::Hash( XE::MemoryView val )
 {
 	MD5_CTX md5;
 
