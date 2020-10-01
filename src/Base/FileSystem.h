@@ -8,12 +8,7 @@ BEG_XE_NAMESPACE
 class XE_API FileSystem
 {
 public:
-	enum class Mode
-	{
-		READ,
-		WIRTE,
-		APPEND,
-	};
+	struct File;
 
 public:
 	struct Version
@@ -86,6 +81,32 @@ public:
 
 	static void SetSaneConfig( const std::string & orgName, const std::string & appName, const std::string & archiveExt, bool includeCdRoms, bool archivesFirst );
 
+public:
+	static File * open(  const std::string & filename, std::ios_base::openmode mode );
+
+	static XE::uint64 read( void * _Buffer, size_t _ElementSize, size_t _ElementCount, File * _File );
+
+	static XE::uint64 write( void const * _Buffer, size_t _ElementSize, size_t _ElementCount, File * _File );
+
+	static XE::int32 close( File * _File );
+
+	static void lock( File * _File );
+
+	static void unlock( File * _File );
+
+	static XE::int32 getc( File * _File );
+
+	static XE::int32 ungetc( XE::int32 ch, File * _File );
+
+	static XE::int32 seek( File * _File, XE::int64 _Offset, XE::int32 _Origin );
+
+	static XE::int32 getpos( File * _File, XE::int64 * _Position );
+
+	static XE::int32 setpos( File * _File, XE::int64 const * _Position );
+
+	static XE::int32 setvbuf( File * _File, char * _Buffer, int _Mode, size_t _Size );
+
+	static XE::int32 flush( File * _File );
 };
 
 END_XE_NAMESPACE

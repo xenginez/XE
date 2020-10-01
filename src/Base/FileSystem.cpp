@@ -1,6 +1,11 @@
 #include "FileSystem.h"
 #include <physfs/physfs.h>
 
+struct XE::FileSystem::File
+{
+
+};
+
 void XE::FileSystem::Init()
 {
 	PHYSFS_init( nullptr );
