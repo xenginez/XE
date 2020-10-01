@@ -1244,7 +1244,8 @@ XE::BasicIMemoryStream<_Elem, _Traits, _Alloc> & operator >>( XE::BasicIMemorySt
 template <class _Elem, class _Traits, class _Alloc>
 XE::BasicIMemoryStream<_Elem, _Traits, _Alloc> & operator >>( XE::BasicIMemoryStream<_Elem, _Traits, _Alloc> & _Left, std::string & _Right )
 {
-	XE::uint64 size;
+	std::string::size_type size;
+
 	_Left >> size;
 
 	_Right.resize( size );
@@ -1346,6 +1347,8 @@ XE::BasicOMemoryStream<_Elem, _Traits, _Alloc> & operator <<( XE::BasicOMemorySt
 template <class _Elem, class _Traits, class _Alloc>
 XE::BasicOMemoryStream<_Elem, _Traits, _Alloc> & operator <<( XE::BasicOMemoryStream<_Elem, _Traits, _Alloc> & _Left, const std::string & _Right )
 {
+	_Left << _Right.size();
+
 	_Left.write( reinterpret_cast< const _Elem * >( _Right.c_str() ), _Right.size() / sizeof( _Elem ) );
 
 	return _Left;
@@ -1443,7 +1446,8 @@ XE::BasicMemoryStream<_Elem, _Traits, _Alloc> & operator >>( XE::BasicMemoryStre
 template <class _Elem, class _Traits, class _Alloc>
 XE::BasicMemoryStream<_Elem, _Traits, _Alloc> & operator >>( XE::BasicMemoryStream<_Elem, _Traits, _Alloc> & _Left, std::string & _Right )
 {
-	XE::uint64 size;
+	std::string::size_type size;
+
 	_Left >> size;
 
 	_Right.resize( size );
@@ -1545,6 +1549,8 @@ XE::BasicMemoryStream<_Elem, _Traits, _Alloc> & operator <<( XE::BasicMemoryStre
 template <class _Elem, class _Traits, class _Alloc>
 XE::BasicMemoryStream<_Elem, _Traits, _Alloc> & operator <<( XE::BasicMemoryStream<_Elem, _Traits, _Alloc> & _Left, const std::string & _Right )
 {
+	_Left << _Right.size();
+
 	_Left.write( reinterpret_cast< const _Elem * >( _Right.c_str() ), _Right.size() / sizeof( _Elem ) );
 
 	return _Left;

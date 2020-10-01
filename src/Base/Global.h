@@ -38,8 +38,6 @@
 #include <unordered_map>
 #include <condition_variable>
 
-#include <xmmintrin.h>
-
 #include "Config.h"
 
 #endif // __GLOBAL_H__397ADE88_7898_4FDF_B98E_B1C39DB69FEA
