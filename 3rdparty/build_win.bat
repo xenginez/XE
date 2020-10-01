@@ -177,24 +177,6 @@ xcopy %cd%\install\bin\*.* %RD3_PATH%\..\depend\bin\win\release\ /s /e /y
 xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\ /s /e /y
 del %cd%\install\ /f /s /q
 
-goto :BUILD_PHYSX
-
-:BUILD_LIBSIMDPP
-echo "build libsimdpp debug"
-cd %RD3_PATH%
-mkdir .\libsimdpp\build
-cd .\libsimdpp\build
-cmake -DCMAKE_INSTALL_PREFIX=.\install\ .. -G "Visual Studio 16 2019" 
-msbuild.exe ".\INSTALL.vcxproj"  /m /nr:true ^
-    /p:Configuration=Debug ^
-    /p:Platform=x64 ^
-    /p:AppxBundlePlatforms=x64 ^
-    /p:UseSubFolderForOutputDirDuringMultiPlatformBuild=false
-
-echo "copy zipper debug file to depend"
-xcopy %cd%\install\include\libsimdpp-2.1\*.* %RD3_PATH%\..\src\Math\ /s /e /y
-del %cd%\install\ /f /s /q
-
 
 :BUILD_PHYSX
 echo "build phyxs debug"
@@ -241,8 +223,8 @@ msbuild.exe ".\INSTALL.vcxproj"  /m /nr:true ^
     /p:UseSubFolderForOutputDirDuringMultiPlatformBuild=false
 
 echo "copy openal debug file to depend"
-xcopy %cd%\install\lib\*.* %RD3_PATH%\..\depend\lib\win\debug\ /s /e /y
-xcopy %cd%\install\bin\*.* %RD3_PATH%\..\depend\bin\win\debug\ /s /e /y
+xcopy %cd%\install\lib\*.lib %RD3_PATH%\..\depend\lib\win\debug\ /s /e /y
+xcopy %cd%\install\bin\*.dll %RD3_PATH%\..\depend\bin\win\debug\ /s /e /y
 del %cd%\install\ /f /s /q
 
 echo "build openal release"
@@ -255,9 +237,42 @@ msbuild.exe ".\INSTALL.vcxproj"  /m /nr:true ^
     /p:AppxBundlePlatforms=x64 ^
     /p:UseSubFolderForOutputDirDuringMultiPlatformBuild=false
 echo "copy openal release file to depend"
-xcopy %cd%\install\lib\*.* %RD3_PATH%\..\depend\lib\win\release\ /s /e /y
-xcopy %cd%\install\bin\*.* %RD3_PATH%\..\depend\bin\win\release\ /s /e /y
+xcopy %cd%\install\lib\*.lib %RD3_PATH%\..\depend\lib\win\release\ /s /e /y
+xcopy %cd%\install\bin\*.dll %RD3_PATH%\..\depend\bin\win\release\ /s /e /y
 xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\ /s /e /y
+del %cd%\install\ /f /s /q
+
+
+:BUILD_PHYSFS
+echo "build physfs debug"
+cd %RD3_PATH%
+mkdir .\physfs\build
+cd .\physfs\build
+cmake -DCMAKE_INSTALL_PREFIX=.\install\ .. -G "Visual Studio 16 2019"
+msbuild.exe ".\INSTALL.vcxproj"  /m /nr:true ^
+    /p:Configuration=Debug ^
+    /p:Platform=x64 ^
+    /p:AppxBundlePlatforms=x64 ^
+    /p:UseSubFolderForOutputDirDuringMultiPlatformBuild=false
+
+echo "copy physfs debug file to depend"
+xcopy %cd%\install\lib\*.lib %RD3_PATH%\..\depend\lib\win\debug\ /s /e /y
+xcopy %cd%\install\bin\*.dll %RD3_PATH%\..\depend\bin\win\debug\ /s /e /y
+del %cd%\install\ /f /s /q
+
+echo "build physfs release"
+cd %RD3_PATH%
+mkdir .\physfs\build
+cd .\physfs\build
+msbuild.exe ".\INSTALL.vcxproj"  /m /nr:true ^
+    /p:Configuration=Release ^
+    /p:Platform=x64 ^
+    /p:AppxBundlePlatforms=x64 ^
+    /p:UseSubFolderForOutputDirDuringMultiPlatformBuild=false
+echo "copy physfs release file to depend"
+xcopy %cd%\install\lib\*.lib %RD3_PATH%\..\depend\lib\win\release\ /s /e /y
+xcopy %cd%\install\bin\*.dll %RD3_PATH%\..\depend\bin\win\release\ /s /e /y
+xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\physfs\ /s /e /y
 del %cd%\install\ /f /s /q
 
 :EXIT
