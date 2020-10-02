@@ -3,12 +3,12 @@
 
 
 Parser::Parser( const std::string & src )
-	:_Lex( src ), _Path( std::filesystem::current_path() )
+	:_Lex( src ), _Path( XE::FileSystem::current_path() )
 {
 
 }
 
-Parser::Parser( const std::filesystem::path & path, const std::string & src )
+Parser::Parser( const XE::FileSystem::path & path, const std::string & src )
 	: _Lex( src ), _Path( path )
 {
 

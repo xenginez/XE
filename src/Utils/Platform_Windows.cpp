@@ -266,7 +266,7 @@ bool XE::Platform::HideMouse()
 #ifdef CreateProcess
 #undef CreateProcess
 #endif
-XE::ProcessHandle XE::Platform::CreateProcess( const std::filesystem::path & app, const std::string & cmd, bool inherit, XE::uint32 flag )
+XE::ProcessHandle XE::Platform::CreateProcess( const XE::FileSystem::Path & app, const std::string & cmd, bool inherit, XE::uint32 flag )
 {
 	STARTUPINFO startup = {};
 	PROCESS_INFORMATION * info = new PROCESS_INFORMATION();

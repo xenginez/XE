@@ -194,7 +194,7 @@ public:
 	void Destory( ViewHandle handle );
 
 public:
-	void RequestScreenShot( FrameBufferHandle handle, const std::filesystem::path & path );
+	void RequestScreenShot( FrameBufferHandle handle, const XE::FileSystem::Path & path );
 
 private:
 	Private * _p;

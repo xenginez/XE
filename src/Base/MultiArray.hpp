@@ -272,17 +272,17 @@ public:
 	using reverse_iterator = std::reverse_iterator<iterator>;
 	using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
-	using view = multi_array_view<_Ty, _multi_array_size<_Size...>>;
-	using const_view = const multi_array_view<_Ty, _multi_array_size<_Size...>>;
+	using view = MultiArrayView<_Ty, _multi_array_size<_Size...>>;
+	using const_view = const MultiArrayView<_Ty, _multi_array_size<_Size...>>;
 
 public:
-	multi_array_view()
+	MultiArrayView()
 		:_Elems( nullptr )
 	{
 
 	}
 
-	multi_array_view( _Ty * Elems )
+	MultiArrayView( _Ty * Elems )
 		:_Elems( Elems )
 	{
 
@@ -429,7 +429,7 @@ public:
 private:
 	void _Xran() const
 	{
-		XE_ASSERT( false && "invalid multi_array_view<T, N...> subscript" );
+		XE_ASSERT( false && "invalid MultiArrayView<T, N...> subscript" );
 	}
 
 private:
@@ -454,13 +454,13 @@ public:
 	using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
 public:
-	multi_array_view()
+	MultiArrayView()
 		:_Elems( nullptr )
 	{
 
 	}
 
-	multi_array_view( _Ty * Elems )
+	MultiArrayView( _Ty * Elems )
 		:_Elems( Elems )
 	{
 
@@ -608,7 +608,7 @@ public:
 private:
 	void _Xran() const
 	{
-		XE_ASSERT( false && "invalid multi_array_view<T, N...> subscript" );
+		XE_ASSERT( false && "invalid MultiArrayView<T, N...> subscript" );
 	}
 
 private:

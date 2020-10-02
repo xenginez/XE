@@ -67,13 +67,13 @@ public:
 
 	virtual Language GetSystemLanguage() const = 0;
 
-	virtual std::filesystem::path GetModulePath() const = 0;
+	virtual XE::FileSystem::Path GetModulePath() const = 0;
 
-	virtual std::filesystem::path GetAssetsPath() const = 0;
+	virtual XE::FileSystem::Path GetAssetsPath() const = 0;
 
-	virtual std::filesystem::path GetUserDataPath() const = 0;
+	virtual XE::FileSystem::Path GetUserDataPath() const = 0;
 
-	virtual std::filesystem::path GetApplicationPath() const = 0;
+	virtual XE::FileSystem::Path GetApplicationPath() const = 0;
 
 public:
 	virtual void Save() = 0;

@@ -100,11 +100,6 @@ namespace std
 		return _Val;
 	}
 
-	inline std::string to_string( const std::filesystem::path & _Val )
-	{
-		return _Val.string();
-	}
-
 	inline std::string to_string( const std::chrono::system_clock::time_point & _Val )
 	{
 		std::ostringstream oss;
@@ -230,13 +225,6 @@ namespace std
 	inline bool from_string( const std::string & _Str, std::string & _Val )
 	{
 		_Val = _Str;
-
-		return true;
-	}
-
-	inline bool from_string( const std::string & _Str, std::filesystem::path & _Val )
-	{
-		_Val = std::filesystem::path( _Str );
 
 		return true;
 	}

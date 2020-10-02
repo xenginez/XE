@@ -5,6 +5,10 @@
 #include <dxgi1_6.h>
 #include <d3dcommon.h>
 
+#ifdef max
+#undef max
+#endif // max
+
 #pragma comment( lib, "dxgi.lib" )
 #pragma comment( lib, "d3d11.lib" )
 #pragma comment( lib, "dxguid.lib" )
@@ -482,7 +486,7 @@ struct FrameBufferD3D11
 
 		std::memcpy( _Attachment, attachment, num * sizeof( XE::Attachment ) );
 
-		postReset();
+		postReset(nullptr);
 	}
 
 	void create( IDXGIFactory * factory, ID3D11Device * device, uint16_t _denseIdx, XE::WindowHandle _nwh, uint32_t _width, uint32_t _height, XE::TextureFormat _format, XE::TextureFormat _depthFormat )
@@ -493,7 +497,7 @@ struct FrameBufferD3D11
 		scd.BufferDesc.Height = _height;
 		scd.BufferDesc.RefreshRate.Numerator = 1;
 		scd.BufferDesc.RefreshRate.Denominator = 60;
-		scd.BufferDesc.Format = G_D3D11TextureFormat[_format].m_fmt;
+		scd.BufferDesc.Format = G_D3D11TextureFormat[(int)_format].m_fmt;
 		scd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
 		scd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
 		scd.SampleDesc.Count = 1;
@@ -515,7 +519,7 @@ struct FrameBufferD3D11
 
 		DXGI_FORMAT fmtDsv = 
 			( _depthFormat > XE::TextureFormat::UNKNOWN_DEPTH && _depthFormat < XE::TextureFormat::COUNT ) ?
-			G_D3D11TextureFormat[_depthFormat].m_fmtDsv : DXGI_FORMAT_D24_UNORM_S8_UINT;
+			G_D3D11TextureFormat[( int ) _depthFormat].m_fmtDsv : DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 		D3D11_TEXTURE2D_DESC dsd;
 		dsd.Width = _width;
@@ -882,10 +886,10 @@ struct TextureD3D11
 	{
 		if( _TextureFormat > XE::TextureFormat::UNKNOWN_DEPTH && _TextureFormat < XE::TextureFormat::COUNT )
 		{
-			return G_D3D11TextureFormat[_TextureFormat].m_fmtSrv;
+			return G_D3D11TextureFormat[( int ) _TextureFormat].m_fmtSrv;
 		}
 
-		return 0 != ( _Flags & XE::TextureFlags::SRGB ).GetValue() ? G_D3D11TextureFormat[_TextureFormat].m_fmtSrgb : G_D3D11TextureFormat[_TextureFormat].m_fmt;
+		return 0 != ( _Flags & XE::TextureFlags::SRGB ).GetValue() ? G_D3D11TextureFormat[( int ) _TextureFormat].m_fmtSrgb : G_D3D11TextureFormat[( int ) _TextureFormat].m_fmt;
 	}
 
 

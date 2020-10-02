@@ -64,13 +64,13 @@ public:
 
 	Language GetSystemLanguage() const override;
 	
-	std::filesystem::path GetModulePath() const override;
+	XE::FileSystem::Path GetModulePath() const override;
 
-	std::filesystem::path GetAssetsPath() const override;
+	XE::FileSystem::Path GetAssetsPath() const override;
 
-	std::filesystem::path GetUserDataPath() const override;
+	XE::FileSystem::Path GetUserDataPath() const override;
 
-	std::filesystem::path GetApplicationPath() const override;
+	XE::FileSystem::Path GetApplicationPath() const override;
 
 protected:
 	virtual void Prepare();
@@ -92,9 +92,9 @@ public:
 	void Reload() override;
 
 protected:
-	void Save( const std::filesystem::path & path, const Map < String, String > & values ) const;
+	void Save( const XE::FileSystem::Path & path, const Map < String, String > & values ) const;
 
-	void Reload( const std::filesystem::path & path, Map < String, String > & values ) const;
+	void Reload( const XE::FileSystem::Path & path, Map < String, String > & values ) const;
 
 protected:
 	String GetValue( const String & key ) override;

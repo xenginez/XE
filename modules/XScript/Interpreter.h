@@ -23,7 +23,7 @@ public:
 public:
 	void LoadScript( const std::string & val );
 
-	void LoadScript( const std::filesystem::path & val );
+	void LoadScript( const XE::FileSystem::path & val );
 
 };
 

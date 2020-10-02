@@ -1,194 +1,146 @@
 #include "FileSystem.h"
-#include <physfs/physfs.h>
 
-struct XE::FileSystem::File
+XE::FileSystem::__std_ulong_and_error XE::FileSystem::__std_fs_get_full_path_name( const wchar_t * _Source, unsigned long _Target_size, wchar_t * _Target ) noexcept
 {
-
-};
-
-void XE::FileSystem::Init()
-{
-	PHYSFS_init( nullptr );
+	return {};
 }
 
-void XE::FileSystem::Deinit()
+XE::FileSystem::__std_win_error XE::FileSystem::__std_fs_open_handle( __std_fs_file_handle * _Handle, const wchar_t * _File_name, __std_access_rights _Desired_access, __std_fs_file_flags _Flags ) noexcept
 {
-	PHYSFS_deinit();
+	return {};
 }
 
-XE::FileSystem::Version XE::FileSystem::GetVersion()
+void XE::FileSystem::__std_fs_close_handle( __std_fs_file_handle _Handle ) noexcept
 {
-	XE::FileSystem::Version ret;
 
-	PHYSFS_Version ver;
-
-	PHYSFS_getLinkedVersion( &ver );
-
-	ret.major = ver.major;
-	ret.minor = ver.minor;
-	ret.patch = ver.patch;
-
-	return ret;
 }
 
-std::vector<XE::FileSystem::ArchiveInfo> XE::FileSystem::SupportedArchiveTypes()
+XE::FileSystem::__std_win_error XE::FileSystem::__std_fs_get_file_attributes_by_handle( __std_fs_file_handle _Handle, unsigned long * _File_attributes ) noexcept
 {
-	std::vector<XE::FileSystem::ArchiveInfo> ret;
-
-	auto types = PHYSFS_supportedArchiveTypes();
-
-	for (; *types != nullptr; ++types)
-	{
-		XE::FileSystem::ArchiveInfo info;
-
-		info.author = ( *types )->author;
-		info.description = ( *types )->description;
-		info.extension = ( *types )->extension;
-		info.supportsSymlinks = ( *types )->supportsSymlinks;
-		info.url = ( *types )->url;
-
-		ret.push_back( info );
-	}
-
-	return ret;
+	return {};
 }
 
-std::string XE::FileSystem::DirSeparator()
+XE::FileSystem::__std_ulong_and_error XE::FileSystem::__std_fs_get_final_path_name_by_handle( __std_fs_file_handle _Handle, wchar_t * _Target, unsigned long _Target_size, __std_fs_volume_name_kind _Flags ) noexcept
 {
-	return PHYSFS_getDirSeparator();
+	return {};
 }
 
-void XE::FileSystem::PermitSymbolicLinks( bool allow )
+XE::FileSystem::__std_fs_copy_file_result XE::FileSystem::__std_fs_copy_file( const wchar_t * _Source, const wchar_t * _Target, __std_fs_copy_options _Options ) noexcept
 {
-	PHYSFS_permitSymbolicLinks( allow );
+	return {};
 }
 
-std::string XE::FileSystem::GetBaseDir()
+XE::FileSystem::__std_win_error XE::FileSystem::__std_fs_directory_iterator_open( const wchar_t * _Path_spec, __std_fs_dir_handle * _Handle, __std_fs_find_data * _Results ) noexcept
 {
-	return PHYSFS_getBaseDir();
+	return {};
 }
 
-std::string XE::FileSystem::GetUserDir()
+void XE::FileSystem::__std_fs_directory_iterator_close( __std_fs_dir_handle _Handle ) noexcept
 {
-	return PHYSFS_getUserDir();
+
 }
 
-std::string XE::FileSystem::GetWriteDir()
+XE::FileSystem::__std_win_error XE::FileSystem::__std_fs_get_stats( const wchar_t * _Path, __std_fs_stats * _Stats, __std_fs_stats_flags _Flags, __std_fs_file_attr _Symlink_attribute_hint /*= __std_fs_file_attr::_Invalid */ ) noexcept
 {
-	return PHYSFS_getWriteDir();
+	return {};
 }
 
-std::vector<std::string> XE::FileSystem::GetCDRomDirs()
+XE::FileSystem::__std_win_error XE::FileSystem::__std_fs_directory_iterator_advance( __std_fs_dir_handle _Handle, __std_fs_find_data * _Results ) noexcept
 {
-	std::vector<std::string> dirs;
-	auto dirBegin = PHYSFS_getCdRomDirs();
-
-	for( char ** dir = dirBegin; *dirBegin != nullptr; dirBegin++ )
-	{
-		dirs.push_back( *dirBegin );
-	}
-
-	PHYSFS_freeList( dirBegin );
-	
-	return dirs;
+	return {};
 }
 
-void XE::FileSystem::RemoveFromSearchPath( const std::string & oldDir )
+XE::FileSystem::__std_code_page XE::FileSystem::__std_fs_code_page() noexcept
 {
-	PHYSFS_removeFromSearchPath( oldDir.c_str() );
+	return {};
 }
 
-std::vector<std::string> XE::FileSystem::GetSearchPath()
+XE::FileSystem::__std_fs_convert_result XE::FileSystem::__std_fs_convert_narrow_to_wide( __std_code_page _Code_page, const char * _Input_str, int _Input_len, wchar_t * _Output_str, int _Output_len ) noexcept
 {
-	std::vector<std::string> dirs;
-	auto dirBegin = PHYSFS_getSearchPath();
-
-	for( char ** dir = dirBegin; *dirBegin != nullptr; dirBegin++ )
-	{
-		dirs.push_back( *dirBegin );
-	}
-
-	PHYSFS_freeList( dirBegin );
-
-	return dirs;
+	return {};
 }
 
-void XE::FileSystem::MkDir( const std::string & dirName )
+XE::FileSystem::__std_fs_convert_result XE::FileSystem::__std_fs_convert_wide_to_narrow( __std_code_page _Code_page, const wchar_t * _Input_str, int _Input_len, char * _Output_str, int _Output_len ) noexcept
 {
-	PHYSFS_mkdir( dirName.c_str() );
+	return {};
 }
 
-void XE::FileSystem::DeleteFile( const std::string & filename )
+XE::FileSystem::__std_win_error XE::FileSystem::__std_fs_get_file_id( __std_fs_file_id * _Id, const wchar_t * _Path ) noexcept
 {
-	PHYSFS_delete( filename.c_str() );
+	return {};
 }
 
-std::string XE::FileSystem::GetRealDir( const std::string & filename )
+XE::FileSystem::__std_win_error XE::FileSystem::__std_fs_set_last_write_time( long long _Last_write_filetime, const wchar_t * _Path ) noexcept
 {
-	return PHYSFS_getRealDir( filename.c_str() );
+	return {};
 }
 
-std::vector<std::string> XE::FileSystem::EnumerateFiles( const std::string & directory )
+XE::FileSystem::__std_win_error XE::FileSystem::__std_fs_change_permissions( const wchar_t * _Path, bool _Follow_symlinks, bool _Readonly ) noexcept
 {
-	std::vector<std::string> dirs;
-	auto dirBegin = PHYSFS_enumerateFiles( directory.c_str() );
-
-	for( char ** dir = dirBegin; *dirBegin != nullptr; dirBegin++ )
-	{
-		dirs.push_back( *dirBegin );
-	}
-
-	PHYSFS_freeList( dirBegin );
-
-	return dirs;
+	return {};
 }
 
-bool XE::FileSystem::Exists( const std::string & filename )
+XE::FileSystem::__std_ulong_and_error XE::FileSystem::__std_fs_get_temp_path( wchar_t * _Target ) noexcept
 {
-	return PHYSFS_exists( filename.c_str() );
+	return {};
 }
 
-bool XE::FileSystem::IsDirectory( const std::string & filename )
+XE::FileSystem::__std_ulong_and_error XE::FileSystem::__std_fs_get_current_path( unsigned long _Target_size, wchar_t * _Target ) noexcept
 {
-	return PHYSFS_isDirectory( filename.c_str() );
+	return {};
 }
 
-bool XE::FileSystem::IsSymbolicLink( const std::string & filename )
+XE::FileSystem::__std_win_error XE::FileSystem::__std_fs_set_current_path( const wchar_t * _Target ) noexcept
 {
-	return PHYSFS_isSymbolicLink( filename.c_str() );
+	return {};
 }
 
-XE::int64 XE::FileSystem::GetLastModTime( const std::string & filename )
+XE::FileSystem::__std_win_error XE::FileSystem::__std_fs_create_directory_symbolic_link( const wchar_t * _Symlink_file_name, const wchar_t * _Target_file_name ) noexcept
 {
-	return PHYSFS_getLastModTime( filename.c_str() );
+	return {};
 }
 
-bool XE::FileSystem::IsInit()
+XE::FileSystem::__std_win_error XE::FileSystem::__std_fs_create_hard_link( const wchar_t * _File_name, const wchar_t * _Existing_file_name ) noexcept
 {
-	return PHYSFS_isInit();
+	return {};
 }
 
-bool XE::FileSystem::SymbolicLinksPermitted()
+XE::FileSystem::__std_win_error XE::FileSystem::__std_fs_create_symbolic_link( const wchar_t * _Symlink_file_name, const wchar_t * _Target_file_name ) noexcept
 {
-	return PHYSFS_symbolicLinksPermitted();
+	return {};
 }
 
-void XE::FileSystem::Mount( const std::string & newDir, const std::string & mountPoint, bool appendToPath )
+XE::FileSystem::__std_win_error XE::FileSystem::__std_fs_read_reparse_data_buffer( __std_fs_file_handle _Handle, void * _Buffer, unsigned long _Buffer_size ) noexcept
 {
-	PHYSFS_mount( newDir.c_str(), mountPoint.c_str(), appendToPath );
+	return {};
 }
 
-std::string XE::FileSystem::GetMountPoint( const std::string & dir )
+XE::FileSystem::__std_win_error XE::FileSystem::__std_fs_read_name_from_reparse_data_buffer( __std_fs_reparse_data_buffer * _Handle, wchar_t ** _Offset, unsigned short * _Length ) noexcept
 {
-	return PHYSFS_getMountPoint( dir.c_str() );
+	return {};
 }
 
-void XE::FileSystem::SetWriteDir( const std::string & newDir )
+XE::FileSystem::__std_fs_create_directory_result XE::FileSystem::__std_fs_create_directory( const wchar_t * _New_directory ) noexcept
 {
-	PHYSFS_setWriteDir( newDir.c_str() );
+	return {};
 }
 
-void XE::FileSystem::SetSaneConfig( const std::string & orgName, const std::string & appName, const std::string & archiveExt, bool includeCdRoms, bool archivesFirst )
+XE::FileSystem::__std_fs_remove_result XE::FileSystem::__std_fs_remove( const wchar_t * _Target ) noexcept
 {
-	PHYSFS_setSaneConfig( orgName.c_str(), appName.c_str(), archiveExt.c_str(), includeCdRoms, archivesFirst );
+	return {};
+}
+
+XE::FileSystem::__std_win_error XE::FileSystem::__std_fs_rename( const wchar_t * _Source, const wchar_t * _Target ) noexcept
+{
+	return {};
+}
+
+XE::FileSystem::__std_win_error XE::FileSystem::__std_fs_resize_file( const wchar_t * _Target, uintmax_t _New_size ) noexcept
+{
+	return {};
+}
+
+XE::FileSystem::__std_win_error XE::FileSystem::__std_fs_space( const wchar_t * _Target, uintmax_t * _Available, uintmax_t * _Total_bytes, uintmax_t * _Free_bytes ) noexcept
+{
+	return {};
 }

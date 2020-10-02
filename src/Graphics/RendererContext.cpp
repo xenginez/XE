@@ -921,7 +921,7 @@ void XE::RendererContext::DebugTextPrint( XE::uint32 x, XE::uint32 y, const XE::
 
 }
 
-void XE::RendererContext::RequestScreenShot( FrameBufferHandle handle, const std::filesystem::path & path )
+void XE::RendererContext::RequestScreenShot( FrameBufferHandle handle, const XE::FileSystem::Path & path )
 {
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
 

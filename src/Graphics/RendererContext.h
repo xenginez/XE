@@ -199,7 +199,7 @@ public:
 	void DebugTextPrint( XE::uint32 x, XE::uint32 y, const XE::Color & color, const std::string & text );
 
 public:
-	void RequestScreenShot( FrameBufferHandle handle, const std::filesystem::path & path );
+	void RequestScreenShot( FrameBufferHandle handle, const XE::FileSystem::Path & path );
 
 protected:
 	void ResizeTexture( TextureHandle handle, XE::uint32 layers, XE::uint32 mips, XE::uint32 width, XE::uint32 height );

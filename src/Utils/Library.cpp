@@ -4,7 +4,7 @@
 
 struct XE::Library::Private
 {
-	XE::Set<std::filesystem::path> _Env;
+	XE::Set<XE::FileSystem::Path> _Env;
 };
 
 XE::Library::Library()
@@ -18,7 +18,7 @@ XE::Library::~Library()
 	delete _p;
 }
 
-void XE::Library::RegisterEnvPath( const std::filesystem::path & path )
+void XE::Library::RegisterEnvPath( const XE::FileSystem::Path & path )
 {
 	Instance()->_p->_Env.insert( path );
 }

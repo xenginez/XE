@@ -1,7 +1,5 @@
 #include "Gfx.h"
 
-#include "RendererContextGLES2.h"
-#include "RendererContextGLES3.h"
 #include "RendererContextMetal.h"
 #include "RendererContextOpenGL.h"
 #include "RendererContextVulkan.h"
@@ -543,7 +541,7 @@ void XE::Gfx::ResetView( ViewHandle handle )
 	_p->_Context->ResetView( handle );
 }
 
-void XE::Gfx::RequestScreenShot( FrameBufferHandle handle, const std::filesystem::path & path )
+void XE::Gfx::RequestScreenShot( FrameBufferHandle handle, const XE::FileSystem::Path & path )
 {
 	XE_ASSERT( _p->_Context != nullptr );
 

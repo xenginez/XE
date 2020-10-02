@@ -2723,12 +2723,12 @@ typedef struct unz_file_info_s
 
 int unzStringFileNameCompare OF( ( const char * fileName1, const char * fileName2, int iCaseSensitivity ) );
 
-unzFile unzOpen OF( ( const char * path ) );
-unzFile unzOpen64 OF( ( const void * path ) );
+unzFile unzOpen OF( ( const char * Path ) );
+unzFile unzOpen64 OF( ( const void * Path ) );
 
-unzFile unzOpen2 OF( ( const char * path, zlib_filefunc_def * pzlib_filefunc_def ) );
+unzFile unzOpen2 OF( ( const char * Path, zlib_filefunc_def * pzlib_filefunc_def ) );
 
-unzFile unzOpen2_64 OF( ( const void * path, zlib_filefunc64_def * pzlib_filefunc_def ) );
+unzFile unzOpen2_64 OF( ( const void * Path, zlib_filefunc64_def * pzlib_filefunc_def ) );
 
 int unzClose OF( ( unzFile file ) );
 

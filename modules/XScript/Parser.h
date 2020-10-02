@@ -19,7 +19,7 @@ class Parser
 public:
 	Parser( const std::string & src );
 
-	Parser( const std::filesystem::path & path, const std::string & src );
+	Parser( const XE::FileSystem::path & path, const std::string & src );
 
 	~Parser();
 
@@ -99,7 +99,7 @@ private:
 
 private:
 	Lexer _Lex;
-	std::filesystem::path _Path;
+	XE::FileSystem::path _Path;
 };
 
 END_XE_NAMESPACE
