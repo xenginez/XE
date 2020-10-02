@@ -10,5 +10,7 @@
 #define AUDIO_H__368E33C7_D961_484C_8228_99AF2D16D6FF
 
 #include "AudioSound.h"
+#include "AudioSoundSource.h"
+#include "AudioSoundListener.h"
 
 #endif // AUDIO_H__368E33C7_D961_484C_8228_99AF2D16D6FF
