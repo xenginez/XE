@@ -26,7 +26,6 @@ target_link_libraries(XE
 		tbbmalloc_proxy${XE_TBB_POSTFIX}
 		zlib${XE_ZLIB_POSTFIX}
 		OpenAL32
-		physfs
 		)
 
 set(INC_DIRS 

@@ -242,38 +242,5 @@ xcopy %cd%\install\bin\*.dll %RD3_PATH%\..\depend\bin\win\release\ /s /e /y
 xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\ /s /e /y
 del %cd%\install\ /f /s /q
 
-
-:BUILD_PHYSFS
-echo "build physfs debug"
-cd %RD3_PATH%
-mkdir .\physfs\build
-cd .\physfs\build
-cmake -DCMAKE_INSTALL_PREFIX=.\install\ .. -G "Visual Studio 16 2019"
-msbuild.exe ".\INSTALL.vcxproj"  /m /nr:true ^
-    /p:Configuration=Debug ^
-    /p:Platform=x64 ^
-    /p:AppxBundlePlatforms=x64 ^
-    /p:UseSubFolderForOutputDirDuringMultiPlatformBuild=false
-
-echo "copy physfs debug file to depend"
-xcopy %cd%\install\lib\*.lib %RD3_PATH%\..\depend\lib\win\debug\ /s /e /y
-xcopy %cd%\install\bin\*.dll %RD3_PATH%\..\depend\bin\win\debug\ /s /e /y
-del %cd%\install\ /f /s /q
-
-echo "build physfs release"
-cd %RD3_PATH%
-mkdir .\physfs\build
-cd .\physfs\build
-msbuild.exe ".\INSTALL.vcxproj"  /m /nr:true ^
-    /p:Configuration=Release ^
-    /p:Platform=x64 ^
-    /p:AppxBundlePlatforms=x64 ^
-    /p:UseSubFolderForOutputDirDuringMultiPlatformBuild=false
-echo "copy physfs release file to depend"
-xcopy %cd%\install\lib\*.lib %RD3_PATH%\..\depend\lib\win\release\ /s /e /y
-xcopy %cd%\install\bin\*.dll %RD3_PATH%\..\depend\bin\win\release\ /s /e /y
-xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\physfs\ /s /e /y
-del %cd%\install\ /f /s /q
-
 :EXIT
 pause
