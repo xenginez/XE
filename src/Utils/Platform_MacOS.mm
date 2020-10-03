@@ -297,7 +297,7 @@ bool XE::Platform::HideMouse()
 	return true;
 }
 
-XE::ProcessHandle XE::Platform::CreateProcess( const XE::FileSystem::path & app, const std::string & cmd, bool inherit, XE::uint32 flag )
+XE::ProcessHandle XE::Platform::CreateProcess( const XE::FileSystem::Path & app, const std::string & cmd, bool inherit, XE::uint32 flag )
 {
 	NSTask *task;
 	task = [[NSTask alloc] init];

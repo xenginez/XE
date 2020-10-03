@@ -8,7 +8,7 @@ Parser::Parser( const std::string & src )
 
 }
 
-Parser::Parser( const XE::FileSystem::path & path, const std::string & src )
+Parser::Parser( const XE::FileSystem::Path & path, const std::string & src )
 	: _Lex( src ), _Path( path )
 {
 

@@ -17,7 +17,7 @@ void XE::Interpreter::LoadScript( const std::string & val )
 
 }
 
-void XE::Interpreter::LoadScript( const XE::FileSystem::path & val )
+void XE::Interpreter::LoadScript( const XE::FileSystem::Path & val )
 {
 
 }

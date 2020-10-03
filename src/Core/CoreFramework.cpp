@@ -302,8 +302,8 @@ void XE::CoreFramework::LoadModules()
 {
 	auto path = GetModulePath();
 
-	XE::FileSystem::directory_iterator end;
-	for( XE::FileSystem::directory_iterator iter( path ); iter != end; ++iter )
+	XE::FileSystem::DirectoryIterator end;
+	for( XE::FileSystem::DirectoryIterator iter( path ); iter != end; ++iter )
 	{
 		if( XE::FileSystem::is_directory( *iter ) )
 		{

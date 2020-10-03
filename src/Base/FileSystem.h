@@ -11,6 +11,34 @@
 
 #include "Type.h"
 
+#if PLATFORM_OS == OS_MAC || PLATFORM_OS == OS_PS4 || PLATFORM_OS == OS_UNIX || PLATFORM_OS == OS_LINUX || PLATFORM_OS == OS_XBOXONE || PLATFORM_OS == OS_WINDOWS
+
+#include <filesystem>
+
+BEG_XE_NAMESPACE
+
+namespace FileSystem
+{
+	using namespace std::filesystem;
+
+	using Path = std::filesystem::path;
+	using DirectoryEntry = std::filesystem::directory_entry;
+	using DirectoryIterator = std::filesystem::directory_iterator;
+	using RecursiveDirectoryIterator = std::filesystem::recursive_directory_iterator;
+	using DirectoryOptions = std::filesystem::directory_options;
+	using FileStatus = std::filesystem::file_status;
+	using FileType = std::filesystem::file_type;
+	using FilesystemError = std::filesystem::filesystem_error;
+	using PermOptions = std::filesystem::perm_options;
+	using Perms = std::filesystem::perms;
+}
+
+END_XE_NAMESPACE
+
+#else
+
+BEG_XE_NAMESPACE
+
 #define XE_BITMASK_OPS(_BITMASK)                                                                                      \
     static constexpr _BITMASK operator&(_BITMASK _Left, _BITMASK _Right) noexcept { /* return _Left & _Right */ \
         using _IntTy = _STD underlying_type_t<_BITMASK>;                                                            \
@@ -53,8 +81,6 @@
         _BITMASK _Left, _BITMASK _Elements) noexcept { /* return (_Left & _Elements) == _Elements */                \
         return (_Left & _Elements) == _Elements;                                                                    \
     }
-
-BEG_XE_NAMESPACE
 
 namespace FileSystem
 {
@@ -221,17 +247,7 @@ namespace FileSystem
 	{
 		_Delete = 0x00010000, 
 		_File_read_attributes = 0x0080, 
-		_File_write_attributes = 0x0100, 
-
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		_File_write_attributes = 0x0100,
 		_File_generic_write = 0x00120116,
 	};
 
@@ -5032,5 +5048,7 @@ namespace FileSystem
 };
 
 END_XE_NAMESPACE
+
+#endif
 
 #endif // FILESYSTEM_H__9E3E6B04_2D43_49AE_9FD4_08CEED267D20
