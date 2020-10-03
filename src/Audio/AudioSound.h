@@ -38,7 +38,7 @@ public:
 
     XE::uint32 GetFrameCount() const;
 
-    const XE::FileSystem::Path & GetSoundPath() const;
+    const XE::String & GetSoundPath() const;
 
 public:
     bool Seek( XE::uint32 val );
@@ -46,7 +46,7 @@ public:
     XE::Array<XE::uint8> GetOneFrame();
 
 private:
-    XE::FileSystem::Path _Path;
+    XE::String _Path;
     ma_decoder * _Decoder = nullptr;
 };
 
