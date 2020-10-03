@@ -27,8 +27,6 @@ public:
 public:
     void Play();
 
-	void Back();
-
     void Stop();
 
     void Resume();

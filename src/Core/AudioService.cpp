@@ -68,7 +68,13 @@ bool XE::AudioService::Startup()
 
 void XE::AudioService::Update()
 {
+	ALfloat orientation[6];
+	std::memcpy( orientation, GetListenerOrientation().d, sizeof( ALfloat ) * 3 );
+	std::memcpy( orientation + sizeof( ALfloat ) * 3, XE::Vec3::Up.d, sizeof( ALfloat ) * 3 );
 
+	alListenerfv( AL_ORIENTATION, orientation );
+	alListenerfv( AL_POSITION, GetListenerPosition().d );
+	alListenerfv( AL_VELOCITY, GetListenerVelocity().d );
 }
 
 void XE::AudioService::Clearup()
@@ -87,4 +93,20 @@ void XE::AudioService::Clearup()
 	{
 		XE_LOG( LoggerLevel::Error, "close openal device failed" );
 	}
+}
+
+void XE::AudioService::Resume()
+{
+	ALCcontext * context = alcGetCurrentContext();
+	ALCdevice * device = alcGetContextsDevice( context );
+
+	CHECK_ALC( alcProcessContext( context ) );
+}
+
+void XE::AudioService::Suspend()
+{
+	ALCcontext * context = alcGetCurrentContext();
+	ALCdevice * device = alcGetContextsDevice( context );
+
+	CHECK_ALC( alcSuspendContext( context ) );
 }

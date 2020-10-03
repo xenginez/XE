@@ -153,11 +153,6 @@ void XE::AudioSoundSource::Play()
 	CHECK_AL( alSourcePlay( _SourceID ) );
 }
 
-void XE::AudioSoundSource::Back()
-{
-	CHECK_AL( alSourceRewind( _SourceID ) );
-}
-
 void XE::AudioSoundSource::Stop()
 {
 	CHECK_AL( alSourceStop( _SourceID ) );

@@ -31,6 +31,11 @@ public:
 
 	void Clearup() override;
 
+public:
+	void Resume() override;
+
+	void Suspend() override;
+
 };
 
 END_XE_NAMESPACE
