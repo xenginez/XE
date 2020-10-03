@@ -4,7 +4,7 @@
 XE::HBoxLayout::HBoxLayout()
 	:_OnGeometryChanged( std::bind( &HBoxLayout::OnGeometryChanged, this, std::placeholders::_1 ) )
 {
-	GeometryChanged.connect( _OnGeometryChanged );
+	XE::Connect( &GeometryChanged, &_OnGeometryChanged );
 }
 
 XE::HBoxLayout::~HBoxLayout()

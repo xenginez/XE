@@ -256,17 +256,6 @@ void XE::AudioSoundSource::SetMaxDistance( XE::float32 val )
 	_Dirty = true;
 }
 
-const XE::String & XE::AudioSoundSource::GetSoundPath() const
-{
-	return _SoundPath;
-}
-
-void XE::AudioSoundSource::SetSoundPath( const XE::String & val )
-{
-	_SoundPath = val;
-}
-
-
 void XE::AudioSoundSource::SetAudioParam()
 {
 	CHECK_AL( alSourcef( _SourceID, AL_GAIN, _Gain ) );

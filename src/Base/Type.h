@@ -414,6 +414,14 @@ template< typename T > struct RawPointer
 	}
 };
 
+template< typename T > struct RawPointer<T &>
+{
+	static T * Get( T & val )
+	{
+		return &val;
+	}
+};
+
 template< typename T > struct RawPointer< std::weak_ptr<T> >
 {
 	static T * Get( std::weak_ptr<T> * val )

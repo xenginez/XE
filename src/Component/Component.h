@@ -26,7 +26,6 @@
 #include "PointLightComponent.h"
 #include "AudioSourceComponent.h"
 #include "ObstacleBoxComponent.h"
-#include "AudioListenerComponent.h"
 #include "ObstacleSphereComponent.h"
 #include "ObstacleCapsuleComponent.h"
 #include "DirectionalLightComponent.h"

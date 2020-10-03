@@ -9,7 +9,6 @@
 #ifndef UTILS_H__836D437C_196C_4DE7_8062_D8A3F6CEC7D3
 #define UTILS_H__836D437C_196C_4DE7_8062_D8A3F6CEC7D3
 
-#include "LOD.h"
 #include "MD5.h"
 #include "CRC32.h"
 #include "Event.h"
@@ -24,7 +23,7 @@
 #include "Library.h"
 #include "Platform.h"
 #include "Handle.hpp"
-#include "Sigslot.hpp"
+#include "Signals.hpp"
 
 
 #define XE_LOG(LEVEL, FMT, ...) \

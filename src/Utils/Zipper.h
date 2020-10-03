@@ -19,14 +19,6 @@ private:
     struct Private;
 
 public:
-    struct Entry
-    {
-		std::string name;
-		XE::uint64 compressed_size = 0;
-		XE::uint64 uncompressed_size = 0;
-    };
-
-public:
     Zipper();
 
 	Zipper( const std::string & zipname, const std::string & password = "" );
