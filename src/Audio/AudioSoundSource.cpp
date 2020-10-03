@@ -86,21 +86,21 @@ void XE::AudioSoundSource::Update( XE::float32 dt )
 			switch( _Sound->GetBits() )
 			{
 			case 8:
-				if( _Sound->GetChannel() == 1 )
+				if( _Sound->GetChannels() == 1 )
 				{
 					format = AL_FORMAT_MONO8;
 				}
-				else if( _Sound->GetChannel() == 2 )
+				else if( _Sound->GetChannels() == 2 )
 				{
 					format = AL_FORMAT_STEREO8;
 				}
 				break;
 			case 16:
-				if( _Sound->GetChannel() == 1 )
+				if( _Sound->GetChannels() == 1 )
 				{
 					format = AL_FORMAT_MONO16;
 				}
-				else if( _Sound->GetChannel() == 2 )
+				else if( _Sound->GetChannels() == 2 )
 				{
 					format = AL_FORMAT_STEREO16;
 				}

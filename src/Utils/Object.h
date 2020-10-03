@@ -25,6 +25,8 @@ public:
 public:
 	virtual void AssetLoad();
 
+	virtual void AssetUnload();
+
     const String & tr( const String & val ) const;
 
 public:

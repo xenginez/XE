@@ -11,6 +11,8 @@
 
 #include "Type.h"
 
+struct ma_decoder;
+
 BEG_XE_NAMESPACE
 
 class XE_API AudioSound : public XE::Object
@@ -25,24 +27,27 @@ public:
 public:
 	void AssetLoad() override;
 
+	void AssetUnload() override;
+
 public:
     XE::uint32 GetBits() const;
 
-    XE::uint32 GetChannel() const;
+    XE::uint32 GetChannels() const;
 
 	XE::uint32 GetSampleRate() const;
 
     XE::uint32 GetFrameCount() const;
 
-    const XE::String & GetSoundPath() const;
+    const XE::FileSystem::Path & GetSoundPath() const;
 
 public:
-    void Seek( XE::uint32 val );
+    bool Seek( XE::uint32 val );
 
     XE::Array<XE::uint8> GetOneFrame();
 
 private:
-    XE::String _Path;
+    XE::FileSystem::Path _Path;
+    ma_decoder * _Decoder = nullptr;
 };
 
 END_XE_NAMESPACE

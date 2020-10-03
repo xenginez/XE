@@ -23,6 +23,11 @@ void XE::Object::AssetLoad()
 
 }
 
+void XE::Object::AssetUnload()
+{
+
+}
+
 const XE::String & XE::Object::tr( const String & val ) const
 {
 	return XE::IFramework::GetCurrentFramework()->GetLocalizationService()->LocalizedString( GetMetaClass()->GetFullName() + "." + val, val );
