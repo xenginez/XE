@@ -18,7 +18,72 @@ class XE_API AudioSoundSource : public XE::Object
     OBJECT( AudioSoundSource, Object )
 
 public:
+	virtual void Startup();
 
+	virtual void Update( XE::float32 dt );
+
+	virtual void Clearup();
+
+public:
+    void Play();
+
+	void Back();
+
+    void Stop();
+
+    void Resume();
+
+	void Suspend();
+
+public:
+	bool GetLoop() const;
+
+    void SetLoop( bool val );
+
+	XE::float32  GetGain() const;
+
+	void SetGain( XE::float32 val );
+
+	XE::float32  GetPitch() const;
+
+	void SetPitch( XE::float32 val );
+
+	const XE::Vec3 & GetPosition() const;
+
+	void SetPosition( const XE::Vec3 & val );
+
+	const XE::Vec3 & GetVelocity() const;
+
+	void SetVelocity( const XE::Vec3 & val );
+
+	const XE::Vec3 & GetDirection() const;
+
+	void SetDirection( const XE::Vec3 & val );
+
+	XE::float32 GetMinDistacne() const;
+
+	void SetMinDistance( XE::float32 val );
+
+    XE::float32 GetMaxDistance() const;
+
+    void SetMaxDistance( XE::float32 val );
+
+private:
+	void SetAudioParam();
+
+private:
+    bool _Loop = false;
+    XE::float32 _Gain = 0.0f;
+    XE::float32 _Pitch = 1.0f;
+	XE::Vec3 _Position = {};
+	XE::Vec3 _Velocity = {};
+	XE::Vec3 _Direction = {};
+	XE::float32 _MinDistance = 1.0f;
+	XE::float32 _MaxDistance = 1000.0f;
+	bool _Dirty = false;
+private:
+    XE::uint32 _SourceID = 0;
+    XE::AudioSoundPtr _Sound;
 };
 
 END_XE_NAMESPACE

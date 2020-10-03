@@ -26,7 +26,11 @@ public:
 	~CoreFramework();
 
 public:
-	int Exec( std::function<void()> val = nullptr );
+	int Exec( int argc, char ** argv, std::function<void()> msgloop = nullptr );
+
+	int GetArgc() const;
+
+	char ** GetArgv() const;
 
 public:
 	ITimerServicePtr GetTimerService() const override;

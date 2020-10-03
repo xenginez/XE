@@ -22,6 +22,27 @@ public:
 
 	~AudioSound();
 
+public:
+	void AssetLoad() override;
+
+public:
+    XE::uint32 GetBits() const;
+
+    XE::uint32 GetChannel() const;
+
+	XE::uint32 GetSampleRate() const;
+
+    XE::uint32 GetFrameCount() const;
+
+    const XE::String & GetSoundPath() const;
+
+public:
+    void Seek( XE::uint32 val );
+
+    XE::Array<XE::uint8> GetOneFrame();
+
+private:
+    XE::String _Path;
 };
 
 END_XE_NAMESPACE

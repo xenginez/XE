@@ -55,6 +55,8 @@ END_META()
 
 struct XE::CoreFramework::Private
 {
+	int _Argc = 0;
+	char ** _Argv = nullptr;
 	std::atomic_bool _Exit = false;
 	Map < String, String > Values;
 	Array < IServicePtr > _Services;
@@ -72,9 +74,11 @@ XE::CoreFramework::~CoreFramework()
 	delete _p;
 }
 
-int XE::CoreFramework::Exec( std::function<void()> val )
+int XE::CoreFramework::Exec( int argc, char ** argv, std::function<void()> msgloop )
 {
-	_p->_SysEventLoop = val;
+	_p->_Argc = argc;
+	_p->_Argv = argv;
+	_p->_SysEventLoop = msgloop;
 
 	Prepare();
 
@@ -434,4 +438,14 @@ XE::String XE::CoreFramework::GetValue( const XE::String & key )
 void XE::CoreFramework::SetValue( const XE::String & key, const XE::String & val )
 {
 	_p->Values[key] = val;
+}
+
+int XE::CoreFramework::GetArgc() const
+{
+	return _p->_Argc;
+}
+
+char ** XE::CoreFramework::GetArgv() const
+{
+	return _p->_Argv;
 }
