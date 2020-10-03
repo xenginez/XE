@@ -20,7 +20,7 @@ class XE_API Logger : public XE::Singleton< Logger >
 public:
 	struct Private;
 
-	using ListenerType = std::function<void( const std::string & )>;
+	using ListenerType = std::function<void( const std::chrono::system_clock::time_point&, XE::LoggerLevel, const std::string & )>;
 
 private:
 	Logger();
