@@ -87,18 +87,6 @@ xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\ /s /e /y
 del %cd%\install\ /f /s /q
 
 
-:BUILD_STB
-echo "copy stb head file to depend"
-cd %RD3_PATH%
-xcopy %cd%\stb\*.h %RD3_PATH%\..\depend\include\stb\ /s /e /y
-
-
-:BUILD_RAPIDJSON
-echo "copy rapidjson head file to depend"
-cd %RD3_PATH%
-xcopy %cd%\rapidjson\include\*.* %RD3_PATH%\..\depend\include\ /s /e /y
-
-
 :BUILD_RECASTNAVIGATION
 echo "build recastnavigation debug"
 cd %RD3_PATH%
@@ -241,6 +229,24 @@ xcopy %cd%\install\lib\*.lib %RD3_PATH%\..\depend\lib\win\release\ /s /e /y
 xcopy %cd%\install\bin\*.dll %RD3_PATH%\..\depend\bin\win\release\ /s /e /y
 xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\ /s /e /y
 del %cd%\install\ /f /s /q
+
+:BUILD_STB
+echo "copy stb head file to depend"
+cd %RD3_PATH%
+xcopy %cd%\stb\*.h %RD3_PATH%\..\depend\include\stb\ /s /e /y
+
+
+:BUILD_RAPIDJSON
+echo "copy rapidjson head file to depend"
+cd %RD3_PATH%
+xcopy %cd%\rapidjson\include\*.* %RD3_PATH%\..\depend\include\ /s /e /y
+
+:BUILD_MINIAUDIO
+echo "copy miniaudio head file to depend"
+cd %RD3_PATH%
+xcopy %cd%\miniaudio\miniaudio.h %RD3_PATH%\..\depend\include\miniaudio\ /y
+xcopy %cd%\miniaudio\extras\stb_vorbis.c %RD3_PATH%\..\depend\include\miniaudio\ /y
+
 
 :EXIT
 pause
