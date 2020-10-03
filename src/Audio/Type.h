@@ -15,7 +15,6 @@ BEG_XE_NAMESPACE
 
 DECL_PTR( AudioSound );
 DECL_PTR( AudioSoundSource );
-DECL_PTR( AudioSoundListener );
 
 END_XE_NAMESPACE
 

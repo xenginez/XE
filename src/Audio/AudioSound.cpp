@@ -1,8 +1,8 @@
 #include "AudioSound.h"
 
 
-
-BEG_META( XE::AudioSound )
+BEG_META( AudioSound )
+type->Property( "Sound", &AudioSound::_Path );
 END_META()
 
 XE::AudioSound::AudioSound()

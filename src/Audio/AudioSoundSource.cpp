@@ -30,6 +30,7 @@
 }
 
 BEG_META( AudioSoundSource )
+type->Property( "Sound", &AudioSoundSource::_Sound );
 type->Property( "Loop", &AudioSoundSource::_Loop );
 type->Property( "Gain", &AudioSoundSource::_Gain );
 type->Property( "Pitch", &AudioSoundSource::_Pitch );
@@ -259,6 +260,17 @@ void XE::AudioSoundSource::SetMaxDistance( XE::float32 val )
 	_MaxDistance = val;
 	_Dirty = true;
 }
+
+const XE::String & XE::AudioSoundSource::GetSoundPath() const
+{
+	return _SoundPath;
+}
+
+void XE::AudioSoundSource::SetSoundPath( const XE::String & val )
+{
+	_SoundPath = val;
+}
+
 
 void XE::AudioSoundSource::SetAudioParam()
 {

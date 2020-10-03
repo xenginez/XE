@@ -18,11 +18,11 @@ class XE_API AudioSoundSource : public XE::Object
     OBJECT( AudioSoundSource, Object )
 
 public:
-	virtual void Startup();
+	void Startup();
 
-	virtual void Update( XE::float32 dt );
+	void Update( XE::float32 dt );
 
-	virtual void Clearup();
+	void Clearup();
 
 public:
     void Play();
@@ -80,6 +80,7 @@ private:
 	XE::Vec3 _Direction = {};
 	XE::float32 _MinDistance = 1.0f;
 	XE::float32 _MaxDistance = 1000.0f;
+	XE::String _SoundPath;
 	bool _Dirty = false;
 private:
     XE::uint32 _SourceID = 0;
