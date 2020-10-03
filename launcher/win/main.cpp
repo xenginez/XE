@@ -44,5 +44,10 @@ int main( int argc, char ** argv )
 
 	XE::CoreFramework framework;
 
-	return framework.Exec( MessageLoop );
+	atexit( []()
+			{
+				XE::IFramework::GetCurrentFramework()->Exit();
+			} );
+
+	return framework.Exec( argc, argv, MessageLoop );
 }
