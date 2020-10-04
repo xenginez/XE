@@ -277,11 +277,13 @@ public:
 	static constexpr auto npos{ static_cast< size_type >( -1 ) };
 
 public:
-	constexpr BasicMemoryView() noexcept : _Mydata(), _Mysize( 0 )
+	constexpr BasicMemoryView() noexcept
+		: _Mydata( nullptr ), _Mysize( 0 )
 	{
 	}
 	
-	constexpr BasicMemoryView( std::nullptr_t ) noexcept : _Mydata(), _Mysize( 0 )
+	constexpr BasicMemoryView( std::nullptr_t ) noexcept
+		: _Mydata( nullptr ), _Mysize( 0 )
 	{
 	}
 
@@ -371,6 +373,11 @@ public:
 	}
 
 public:
+	constexpr operator bool() const noexcept
+	{
+		return _Mydata != nullptr;
+	}
+
 	constexpr const_reference operator[]( const size_type _Off ) const noexcept
 	{
 		XE_ASSERT( _Off < _Mysize && "basic_memory_view<char> subscript out of range" );
@@ -1050,12 +1057,12 @@ public:
 	using _Mysb          = BasicMemoryBuf<_Elem, _Traits, _Alloc>;
 	using _Myview         = BasicMemoryView<_Elem, _Traits>;
 
-	explicit BasicMemoryStream( std::ios_base::openmode _Mode = std::ios_base::in | std::ios_base::out )
+	BasicMemoryStream( std::ios_base::openmode _Mode = std::ios_base::in | std::ios_base::out )
 		: _Mybase( &_Stringbuffer ), _Stringbuffer( _Mode )
 	{
 	}
 
-	explicit BasicMemoryStream( const _Myview & _View, std::ios_base::openmode _Mode = std::ios_base::in | std::ios_base::out )
+	BasicMemoryStream( const _Myview & _View, std::ios_base::openmode _Mode = std::ios_base::in | std::ios_base::out )
 		: _Mybase( &_Stringbuffer ), _Stringbuffer( _View, _Mode )
 	{
 	}
@@ -1063,6 +1070,11 @@ public:
 	BasicMemoryStream( BasicMemoryStream && _Right ) : _Mybase( &_Stringbuffer )
 	{
 		_Assign_rv( std::move( _Right ) );
+	}
+
+	BasicMemoryStream( const BasicMemoryStream & _Right ) : _Mybase( &_Stringbuffer ), _Stringbuffer( _Right._Stringbuffer.view(), std::ios_base::in | std::ios_base::out )
+	{
+
 	}
 
 	BasicMemoryStream & operator=( BasicMemoryStream && _Right )
@@ -1089,7 +1101,6 @@ public:
 		}
 	}
 
-	BasicMemoryStream( const BasicMemoryStream & ) = delete;
 	BasicMemoryStream & operator=( const BasicMemoryStream & ) = delete;
 
 	virtual ~BasicMemoryStream() noexcept

@@ -83,8 +83,8 @@ protected:
 	virtual void OnClearup() override;
 
 private:
-	XE::String _SubAIPath;
 	XE::AIModulePtr _SubAI;
+	XE::FileSystem::Path _SubAIPath;
 	XE::Map<XE::Key, XE::Key> _ConnectKeys;
 };
 

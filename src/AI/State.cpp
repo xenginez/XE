@@ -107,7 +107,7 @@ XE::SubState::~SubState()
 
 void XE::SubState::OnStartup()
 {
-	_SubAI = DP_CAST<XE::AIModule>( XE::IFramework::GetCurrentFramework()->GetAssetsService()->Load( _SubAIPath ) );
+	_SubAI = DP_CAST<XE::AIModule>( XE::IFramework::GetCurrentFramework()->GetAssetsService()->LoadObject( _SubAIPath ) );
 
 	for( const auto & keys : _ConnectKeys )
 	{

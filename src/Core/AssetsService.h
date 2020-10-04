@@ -21,9 +21,6 @@ private:
 	struct Private;
 
 public:
-	static constexpr XE::float32 AssetCacheTime = 120.0f; // 2 minutes
-
-public:
 	AssetsService();
 
 	~AssetsService() override;
@@ -38,25 +35,14 @@ public:
 	void Clearup() override;
 
 public:
-	ObjectPtr Load( const String & val ) override;
+	XE::MemoryView Load( const XE::FileSystem::Path & path ) override;
 
-	std::shared_future< ObjectPtr > AsyncLoad( const String & val ) override;
-
-public:
-	ObjectPtr GetAsset( const String & val ) const;
+	void AsyncLoad( const XE::FileSystem::Path & path, const LoadFinishCallback & callback ) override;
 
 public:
-	void ResetMD5Cache();
+	XE::ObjectPtr LoadObject( const XE::FileSystem::Path & path ) override;
 
-protected:
-	virtual XE::ObjectPtr SearchAssetData( const XE::String & val ) const;
-
-private:
-	XE::ObjectPtr LoadAsset( const XE::String & val );
-
-	XE::MD5 PathToMD5( const XE::String & val ) const;
-
-	void SetAssetStatus( const XE::MD5 & md5, const XE::ObjectPtr & asset, AssetStatus status );
+	void AsyncLoadObject( const XE::FileSystem::Path & path, const LoadObjectFinishCallback & callback ) override;
 
 private:
 	Private * _p;

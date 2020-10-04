@@ -27,8 +27,6 @@ public:
 public:
 	void AssetLoad() override;
 
-	void AssetUnload() override;
-
 public:
     XE::uint32 GetBits() const;
 

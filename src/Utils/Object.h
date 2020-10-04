@@ -25,9 +25,7 @@ public:
 public:
 	virtual void AssetLoad();
 
-	virtual void AssetUnload();
-
-    const String & tr( const String & val ) const;
+    const String & Tr( const String & val ) const;
 
 public:
 	virtual void ProcessEvent( EventPtr & val );

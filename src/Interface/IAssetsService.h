@@ -18,14 +18,30 @@ class XE_API IAssetsService : public IService
 	OBJECT( IAssetsService, IService )
 
 public:
+	using LoadFinishCallback = std::function<void( XE::MemoryView )>;
+
+	using LoadObjectFinishCallback = std::function<void( XE::ObjectPtr )>;
+
+public:
 	IAssetsService();
 
 	~IAssetsService() override;
 
 public:
-	virtual ObjectPtr Load( const String & val ) = 0;
+    virtual XE::MemoryView Load( const XE::FileSystem::Path & path ) = 0;
 
-	virtual std::shared_future< ObjectPtr > AsyncLoad( const String & val ) = 0;
+    virtual void AsyncLoad( const XE::FileSystem::Path & path, const LoadFinishCallback & callback ) = 0;
+
+public:
+	virtual XE::ObjectPtr LoadObject( const XE::FileSystem::Path & path ) = 0;
+
+	virtual void AsyncLoadObject( const XE::FileSystem::Path & path, const LoadObjectFinishCallback & callback ) = 0;
+
+public:
+	template< typename T > T LoadObjectT( const XE::FileSystem::Path & path )
+	{
+		return DP_CAST<T::value_type>( LoadObject( path ) );
+	}
 
 };
 
