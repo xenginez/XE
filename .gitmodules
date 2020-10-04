@@ -31,3 +31,6 @@
 [submodule "3rdparty/sqlite3-cmake"]
 	path = 3rdparty/sqlite3-cmake
 	url = https://github.com/alex85k/sqlite3-cmake.git
+[submodule "3rdparty/sqlite_orm"]
+	path = 3rdparty/sqlite_orm
+	url = https://github.com/fnc12/sqlite_orm.git
