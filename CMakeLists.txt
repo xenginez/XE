@@ -63,6 +63,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${CMAKE_CURRENT_SOURCE_DIR}/target/re
 include_directories(
 		${CMAKE_CURRENT_SOURCE_DIR}/src
 		${CMAKE_CURRENT_SOURCE_DIR}/depend/include
+		${CMAKE_CURRENT_SOURCE_DIR}/depend/include/sqlite3
 )
 
 link_directories(
