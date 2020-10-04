@@ -169,6 +169,25 @@ del %cd%\install\ /f /s /q
 :BUILD_PHYSX
 echo "build phyxs debug"
 cd %RD3_PATH%
+
+(for /f "delims=" %%a in (%RD3_PATH%\PhysX\physx\source\foundation\include\PsAllocator.h) do (
+set "str=%%a"
+setlocal enabledelayedexpansion
+set "str=!str:typeinfo.h=typeinfo!"
+echo,!str!
+endlocal
+))>"setup.tmp"
+move /y "%RD3_PATH%\setup.tmp" "%RD3_PATH%\PhysX\physx\source\foundation\include\PsAllocator.h"
+
+(for /f "delims=" %%a in (%RD3_PATH%\PhysX\physx\buildtools\presets\public\vc16win64.xml) do (
+set "str=%%a"
+setlocal enabledelayedexpansion
+set "str=!str:True=False!"
+echo,!str!
+endlocal
+))>"setup.tmp"
+move /y "%RD3_PATH%\setup.tmp" "%RD3_PATH%\PhysX\physx\buildtools\presets\public\vc16win64.xml"
+
 call %cd%\PhysX\physx\generate_projects.bat vc16win64
 msbuild.exe "%cd%\PhysX\physx\compiler\vc16win64\INSTALL.vcxproj"  /m /nr:true ^
     /p:Configuration=Debug ^
