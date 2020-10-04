@@ -307,13 +307,6 @@ del %cd%\install\ /f /s /q
 
 
 
-
-
-:BUILD_sqlite_orm
-echo "copy sqlite_orm head file to depend"
-cd %RD3_PATH%
-xcopy %cd%\sqlite_orm\include\sqlite_orm\sqlite_orm.h %RD3_PATH%\..\depend\include\sqlite3\ /s /e /y
-
 :BUILD_STB
 echo "copy stb head file to depend"
 cd %RD3_PATH%
