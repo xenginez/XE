@@ -191,9 +191,7 @@ void XE::AssetsService::AsyncLoad( const XE::FileSystem::Path & path, const Load
 
 XE::ObjectPtr XE::AssetsService::LoadObject( const XE::FileSystem::Path & path )
 {
-	auto mem = Load( path );
-
-	if( mem.data() != nullptr )
+	if( auto mem = Load( path ) )
 	{
 		XE::BinaryLoadArchive load( mem );
 
