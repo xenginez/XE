@@ -23,7 +23,7 @@ public:
 public:
 	Variant Construct( void * ptr ) const override;
 
-	Variant ConstructPtr( std::shared_ptr<void> ptr ) const override;
+	Variant ConstructPtr( XE::SharedPtr<void> ptr ) const override;
 
 	void Destruct( Variant & val ) const override;
 

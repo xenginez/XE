@@ -69,7 +69,7 @@ public:
 	}
 
 private:
-	template< typename T > void _PostTask( ThreadType type, const std::shared_ptr< std::packaged_task< T > > & task )
+	template< typename T > void _PostTask( ThreadType type, const XE::SharedPtr< std::packaged_task< T > > & task )
 	{
 		_PostTask( [ task ]()
 				   {
@@ -77,7 +77,7 @@ private:
 				   }, type );
 	}
 
-	template< typename T > void _PostTask( ThreadType type, const std::shared_ptr< std::packaged_task< T > > & task, const std::shared_future< void > & future )
+	template< typename T > void _PostTask( ThreadType type, const XE::SharedPtr< std::packaged_task< T > > & task, const std::shared_future< void > & future )
 	{
 		_PostTask( [ this, task, future ]()
 				   {
@@ -92,7 +92,7 @@ private:
 				   }, type );
 	}
 
-	template< typename T, typename F > void _PostTask( ThreadType type, const std::shared_ptr< std::packaged_task< T > > & task, const std::shared_future< F > & future )
+	template< typename T, typename F > void _PostTask( ThreadType type, const XE::SharedPtr< std::packaged_task< T > > & task, const std::shared_future< F > & future )
 	{
 		_PostTask( [ this, task, future ]()
 				   {
