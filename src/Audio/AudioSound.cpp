@@ -52,7 +52,7 @@ void XE::AudioSound::AssetLoad()
 	ma_decoder_config config = ma_decoder_config_init( ma_format_s16, 2, 48000 );
 
 	_Decoder = new ma_decoder;
-	ma_result result = ma_decoder_init_file( _Path.ToCString(), &config, _Decoder );
+	ma_result result = ma_decoder_init_file( _Path.u8string().c_str(), &config, _Decoder );
 	if( result != MA_SUCCESS )
 	{
 		delete _Decoder;
@@ -106,7 +106,7 @@ XE::uint32 XE::AudioSound::GetFrameCount() const
 	return ma_decoder_get_length_in_pcm_frames( _Decoder );
 }
 
-const XE::String & XE::AudioSound::GetSoundPath() const
+const XE::FileSystem::Path & XE::AudioSound::GetSoundPath() const
 {
 	return _Path;
 }
