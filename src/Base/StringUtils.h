@@ -48,9 +48,9 @@ public:
 private:
 	template< typename T > static void _Format( std::string & fmt, XE::uint64 index, T && val )
 	{
-		std::regex regex( ( "%" + std::to_string( index ) ).c_str() );
+		std::regex regex( ( "%" + XE::ToString( index ) ).c_str() );
 
-		fmt = std::regex_replace( fmt, regex, std::to_string( val ) );
+		fmt = std::regex_replace( fmt, regex, XE::ToString( val ) );
 	}
 
 	template< typename T, typename ... ARGS > static void _Format( std::string & fmt, XE::uint64 index, T val, ARGS && ... args )

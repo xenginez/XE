@@ -11,28 +11,6 @@
 
 #include "Global.h"
 
-BEG_XE_NAMESPACE
-
-using int8 = char;
-using int16 = short;
-using int32 = int;
-using int64 = long long;
-using uint8 = unsigned char;
-using uint16 = unsigned short;
-using uint32 = unsigned int;
-using uint64 = unsigned long long;
-using float32 = float;
-using float64 = double;
-#ifndef XE_DOUBLE
-using real = float32;
-#else
-using real = float64;
-#endif
-using thread_id = std::thread::id;
-
-END_XE_NAMESPACE
-
-
 namespace std
 {
 	template<class _Ty> struct remove_pointer< weak_ptr<_Ty> >
@@ -73,193 +51,6 @@ namespace std
 
 	template< typename T > inline constexpr bool is_shared_ptr_v = is_shared_ptr<T>::value;
 
-	inline std::string to_string( bool _Val )
-	{
-		return _Val ? "true" : "false";
-	}
-
-	inline std::string to_string( char _Val )
-	{
-		std::string s;
-		s.push_back( _Val );
-		return s;
-	}
-
-	inline std::string to_string( char * _Val )
-	{
-		return _Val;
-	}
-
-	inline std::string to_string( const char * _Val )
-	{
-		return _Val;
-	}
-	
-	inline std::string to_string( const std::string& _Val )
-	{
-		return _Val;
-	}
-
-	inline std::string to_string( const std::chrono::system_clock::time_point & _Val )
-	{
-		std::ostringstream oss;
-
-		const time_t t = std::chrono::system_clock::to_time_t( _Val );
-
-		const char * put_time_format = "%Y-%m-%d %X";
-
-	#if PLATFORM_OS & OS_WINDOWS
-		std::tm tm;
-		gmtime_s( &tm, &t );
-		localtime_s( &tm, &t );
-		oss << std::put_time( &tm, put_time_format );
-	#else
-		oss << std::put_time( std::gmtime( &t ), put_time_format );
-	#endif
-
-		return oss.str();
-	}
-
-
-	inline bool from_string( const std::string & _Str, bool & _Val )
-	{
-		if( _Str == "true" || _Str == "false" )
-		{
-			_Val = _Str == "true";
-			return true;
-		}
-
-		return false;
-	}
-
-	inline bool from_string( const std::string & _Str, XE::int8 & _Val )
-	{
-		size_t size = 0;
-		
-		_Val = std::stol( _Str, &size );
-
-		return size > 0;
-	}
-
-	inline bool from_string( const std::string & _Str, XE::int16 & _Val )
-	{
-		size_t size = 0;
-
-		_Val = std::stol( _Str, &size );
-
-		return size > 0;
-	}
-
-	inline bool from_string( const std::string & _Str, XE::int32 & _Val )
-	{
-		size_t size = 0;
-
-		_Val = std::stol( _Str, &size );
-
-		return size > 0;
-	}
-
-	inline bool from_string( const std::string & _Str, XE::int64 & _Val )
-	{
-		size_t size = 0;
-
-		_Val = std::stol( _Str, &size );
-
-		return size > 0;
-	}
-
-	inline bool from_string( const std::string & _Str, XE::uint8 & _Val )
-	{
-		size_t size = 0;
-
-		_Val = std::stoul( _Str, &size );
-
-		return size > 0;
-	}
-
-	inline bool from_string( const std::string & _Str, XE::uint16 & _Val )
-	{
-		size_t size = 0;
-
-		_Val = std::stoul( _Str, &size );
-
-		return size > 0;
-	}
-
-	inline bool from_string( const std::string & _Str, XE::uint32 & _Val )
-	{
-		size_t size = 0;
-
-		_Val = std::stoul( _Str, &size );
-
-		return size > 0;
-	}
-
-	inline bool from_string( const std::string & _Str, XE::uint64 & _Val )
-	{
-		size_t size = 0;
-
-		_Val = std::stoul( _Str, &size );
-
-		return size > 0;
-	}
-
-	inline bool from_string( const std::string & _Str, XE::float32 & _Val )
-	{
-		size_t size = 0;
-
-		_Val = std::stof( _Str, &size );
-
-		return size > 0;
-	}
-
-	inline bool from_string( const std::string & _Str, XE::float64 & _Val )
-	{
-		size_t size = 0;
-
-		_Val = std::stod( _Str, &size );
-
-		return size > 0;
-	}
-
-	inline bool from_string( const std::string & _Str, std::string & _Val )
-	{
-		_Val = _Str;
-
-		return true;
-	}
-
-	inline bool from_string( const std::string & _Str, std::chrono::system_clock::time_point & _Val )
-	{
-		if( _Str.size() == 18 )
-		{
-			std::tm tm;
-
-			tm.tm_wday = 0;
-			tm.tm_yday = 0;
-			tm.tm_isdst = 0;
-
-			tm.tm_year = std::stoi( _Str.substr( 0, 4 ) ) - 1900;
-			tm.tm_mon = std::stoi( _Str.substr( 5, 2 ) ) - 1;
-			tm.tm_mday = std::stoi( _Str.substr( 8, 2 ) );
-			tm.tm_hour = std::stoi( _Str.substr( 11, 2 ) );
-			tm.tm_min = std::stoi( _Str.substr( 14, 2 ) );
-			tm.tm_sec = std::stoi( _Str.substr( 17, 2 ) );
-
-		#if PLATFORM_OS & OS_WINDOWS
-			const std::time_t t = _mkgmtime( &tm );
-		#else
-			const std::time_t t = timegm( &tm );
-		#endif
-
-			_Val = std::chrono::system_clock::from_time_t( t );
-
-			return true;
-		}
-
-		return false;
-	}
-
 	template< typename T > inline bool is_ready( std::future< T > & _Future )
 	{
 		return _Future.valid() && _Future.wait_for( std::chrono::seconds( 0 ) ) == std::future_status::ready;
@@ -267,6 +58,253 @@ namespace std
 };
 
 BEG_XE_NAMESPACE
+
+using int8 = char;
+using int16 = short;
+using int32 = int;
+using int64 = long long;
+using uint8 = unsigned char;
+using uint16 = unsigned short;
+using uint32 = unsigned int;
+using uint64 = unsigned long long;
+using float32 = float;
+using float64 = double;
+#ifndef XE_DOUBLE
+using real = float32;
+#else
+using real = float64;
+#endif
+using thread_id = std::thread::id;
+
+inline std::string ToString( bool _Val )
+{
+	return _Val ? "true" : "false";
+}
+
+inline std::string ToString( char _Val )
+{
+	return { 1, _Val };
+}
+
+inline std::string ToString( uint8 _Val )
+{
+	return std::to_string( ( int32 ) _Val );
+}
+
+inline std::string ToString( int16 _Val )
+{
+	return std::to_string( _Val );
+}
+
+inline std::string ToString( uint16 _Val )
+{
+	return std::to_string( _Val );
+}
+
+inline std::string ToString( int32 _Val )
+{
+	return std::to_string( _Val );
+}
+
+inline std::string ToString( uint32 _Val )
+{
+	return std::to_string( _Val );
+}
+
+inline std::string ToString( int64 _Val )
+{
+	return std::to_string( _Val );
+}
+
+inline std::string ToString( uint64 _Val )
+{
+	return std::to_string( _Val );
+}
+
+inline std::string ToString( float32 _Val )
+{
+	return std::to_string( _Val );
+}
+
+inline std::string ToString( float64 _Val )
+{
+	return std::to_string( _Val );
+}
+
+inline std::string ToString( char * _Val )
+{
+	return _Val;
+}
+
+inline std::string ToString( const char * _Val )
+{
+	return _Val;
+}
+
+inline std::string ToString( const std::string & _Val )
+{
+	return _Val;
+}
+
+inline std::string ToString( const std::chrono::system_clock::time_point & _Val )
+{
+	std::ostringstream oss;
+
+	const time_t t = std::chrono::system_clock::to_time_t( _Val );
+
+	const char * put_time_format = "%Y-%m-%d %X";
+
+#if PLATFORM_OS & OS_WINDOWS
+	std::tm tm;
+	gmtime_s( &tm, &t );
+	localtime_s( &tm, &t );
+	oss << std::put_time( &tm, put_time_format );
+#else
+	oss << std::put_time( std::gmtime( &t ), put_time_format );
+#endif
+
+	return oss.str();
+}
+
+
+inline bool FromString( const std::string & _Str, bool & _Val )
+{
+	if( _Str == "true" || _Str == "false" )
+	{
+		_Val = _Str == "true";
+		return true;
+	}
+
+	return false;
+}
+
+inline bool FromString( const std::string & _Str, XE::int8 & _Val )
+{
+	size_t size = 0;
+
+	_Val = std::stol( _Str, &size );
+
+	return size > 0;
+}
+
+inline bool FromString( const std::string & _Str, XE::int16 & _Val )
+{
+	size_t size = 0;
+
+	_Val = std::stol( _Str, &size );
+
+	return size > 0;
+}
+
+inline bool FromString( const std::string & _Str, XE::int32 & _Val )
+{
+	size_t size = 0;
+
+	_Val = std::stol( _Str, &size );
+
+	return size > 0;
+}
+
+inline bool FromString( const std::string & _Str, XE::int64 & _Val )
+{
+	size_t size = 0;
+
+	_Val = std::stol( _Str, &size );
+
+	return size > 0;
+}
+
+inline bool FromString( const std::string & _Str, XE::uint8 & _Val )
+{
+	size_t size = 0;
+
+	_Val = std::stoul( _Str, &size );
+
+	return size > 0;
+}
+
+inline bool FromString( const std::string & _Str, XE::uint16 & _Val )
+{
+	size_t size = 0;
+
+	_Val = std::stoul( _Str, &size );
+
+	return size > 0;
+}
+
+inline bool FromString( const std::string & _Str, XE::uint32 & _Val )
+{
+	size_t size = 0;
+
+	_Val = std::stoul( _Str, &size );
+
+	return size > 0;
+}
+
+inline bool FromString( const std::string & _Str, XE::uint64 & _Val )
+{
+	size_t size = 0;
+
+	_Val = std::stoul( _Str, &size );
+
+	return size > 0;
+}
+
+inline bool FromString( const std::string & _Str, XE::float32 & _Val )
+{
+	size_t size = 0;
+
+	_Val = std::stof( _Str, &size );
+
+	return size > 0;
+}
+
+inline bool FromString( const std::string & _Str, XE::float64 & _Val )
+{
+	size_t size = 0;
+
+	_Val = std::stod( _Str, &size );
+
+	return size > 0;
+}
+
+inline bool FromString( const std::string & _Str, std::string & _Val )
+{
+	_Val = _Str;
+
+	return true;
+}
+
+inline bool FromString( const std::string & _Str, std::chrono::system_clock::time_point & _Val )
+{
+	if( _Str.size() == 18 )
+	{
+		std::tm tm;
+
+		tm.tm_wday = 0;
+		tm.tm_yday = 0;
+		tm.tm_isdst = 0;
+
+		tm.tm_year = std::stoi( _Str.substr( 0, 4 ) ) - 1900;
+		tm.tm_mon = std::stoi( _Str.substr( 5, 2 ) ) - 1;
+		tm.tm_mday = std::stoi( _Str.substr( 8, 2 ) );
+		tm.tm_hour = std::stoi( _Str.substr( 11, 2 ) );
+		tm.tm_min = std::stoi( _Str.substr( 14, 2 ) );
+		tm.tm_sec = std::stoi( _Str.substr( 17, 2 ) );
+
+#if PLATFORM_OS & OS_WINDOWS
+		const std::time_t t = _mkgmtime( &tm );
+#else
+		const std::time_t t = timegm( &tm );
+#endif
+
+		_Val = std::chrono::system_clock::from_time_t( t );
+
+		return true;
+	}
+
+	return false;
+}
 
 template< typename T > struct TypeTraits
 {

@@ -45,7 +45,7 @@ XE::int8 XE::IFramework::GetInt8( const String & key, XE::int8 def )
 
 void XE::IFramework::SetInt8( const String & key, XE::int8 val )
 {
-	SetValue( key, std::to_string( val ) );
+	SetValue( key, XE::ToString( val ) );
 }
 
 XE::int16 XE::IFramework::GetInt16( const String & key, XE::int16 def )
@@ -57,7 +57,7 @@ XE::int16 XE::IFramework::GetInt16( const String & key, XE::int16 def )
 
 void XE::IFramework::SetInt16( const String & key, XE::int16 val )
 {
-	SetValue( key, std::to_string( val ) );
+	SetValue( key, XE::ToString( val ) );
 }
 
 XE::int32 XE::IFramework::GetInt32( const String & key, XE::int32 def )
@@ -69,7 +69,7 @@ XE::int32 XE::IFramework::GetInt32( const String & key, XE::int32 def )
 
 void XE::IFramework::SetInt32( const String & key, XE::int32 val )
 {
-	SetValue( key, std::to_string( val ) );
+	SetValue( key, XE::ToString( val ) );
 }
 
 XE::int64 XE::IFramework::GetInt64( const String & key, XE::int64 def )
@@ -81,7 +81,7 @@ XE::int64 XE::IFramework::GetInt64( const String & key, XE::int64 def )
 
 void XE::IFramework::SetInt64( const String & key, XE::int64 val )
 {
-	SetValue( key, std::to_string( val ) );
+	SetValue( key, XE::ToString( val ) );
 }
 
 XE::uint8 XE::IFramework::GetUInt8( const String & key, XE::uint8 def )
@@ -93,7 +93,7 @@ XE::uint8 XE::IFramework::GetUInt8( const String & key, XE::uint8 def )
 
 void XE::IFramework::SetUInt8( const String & key, XE::uint8 val )
 {
-	SetValue( key, std::to_string( val ) );
+	SetValue( key, XE::ToString( val ) );
 }
 
 XE::uint16 XE::IFramework::GetUInt16( const String & key, XE::uint16 def )
@@ -105,7 +105,7 @@ XE::uint16 XE::IFramework::GetUInt16( const String & key, XE::uint16 def )
 
 void XE::IFramework::SetUInt16( const String & key, XE::uint16 val )
 {
-	SetValue( key, std::to_string( val ) );
+	SetValue( key, XE::ToString( val ) );
 }
 
 XE::uint32 XE::IFramework::GetUInt32( const String & key, XE::uint32 def )
@@ -117,7 +117,7 @@ XE::uint32 XE::IFramework::GetUInt32( const String & key, XE::uint32 def )
 
 void XE::IFramework::SetUInt32( const String & key, XE::uint32 val )
 {
-	SetValue( key, std::to_string( val ) );
+	SetValue( key, XE::ToString( val ) );
 }
 
 XE::uint64 XE::IFramework::GetUInt64( const String & key, XE::uint64 def )
@@ -129,7 +129,7 @@ XE::uint64 XE::IFramework::GetUInt64( const String & key, XE::uint64 def )
 
 void XE::IFramework::SetUInt64( const String & key, XE::uint64 val )
 {
-	SetValue( key, std::to_string( val ) );
+	SetValue( key, XE::ToString( val ) );
 }
 
 XE::float32 XE::IFramework::GetFloat32( const String & key, XE::float32 def )
@@ -141,7 +141,7 @@ XE::float32 XE::IFramework::GetFloat32( const String & key, XE::float32 def )
 
 void XE::IFramework::SetFloat32( const String & key, XE::float32 val )
 {
-	SetValue( key, std::to_string( val ) );
+	SetValue( key, XE::ToString( val ) );
 }
 
 XE::float64 XE::IFramework::GetFloat64( const String & key, XE::float64 def )
@@ -153,7 +153,7 @@ XE::float64 XE::IFramework::GetFloat64( const String & key, XE::float64 def )
 
 void XE::IFramework::SetFloat64( const String & key, XE::float64 val )
 {
-	SetValue( key, std::to_string( val ) );
+	SetValue( key, XE::ToString( val ) );
 }
 
 XE::String XE::IFramework::GetString( const String & key, const String & def )

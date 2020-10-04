@@ -6,23 +6,22 @@
 #include <android/log.h>
 #endif
 
-namespace std
+BEG_XE_NAMESPACE
+inline std::string ToString( XE::LoggerLevel _Val )
 {
-	inline std::string to_string( XE::LoggerLevel _Val )
+	switch( _Val )
 	{
-		switch( _Val )
-		{
-		case XE::LoggerLevel::Error:
-			return "Error";
-		case XE::LoggerLevel::Warning:
-			return "Warning";
-		case XE::LoggerLevel::Message:
-			return "Message";
-		}
-
-		return "";
+	case XE::LoggerLevel::Error:
+		return "Error";
+	case XE::LoggerLevel::Warning:
+		return "Warning";
+	case XE::LoggerLevel::Message:
+		return "Message";
 	}
+
+	return "";
 }
+END_XE_NAMESPACE
 
 struct LoggerNode
 {

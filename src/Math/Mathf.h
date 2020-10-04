@@ -2168,148 +2168,144 @@ public:
 };
 DECL_META_CLASS( XE_API, Mathf );
 
-END_XE_NAMESPACE
 
-namespace std
+inline std::string ToString( const XE::Vec2 & _Val )
 {
-	inline std::string to_string( const XE::Vec2 & _Val )
-	{
-		return XE::StringUtils::Format( "%1, %2", _Val.x, _Val.y );
-	}
+	return XE::StringUtils::Format( "%1, %2", _Val.x, _Val.y );
+}
 
-	inline std::string to_string( const XE::Vec3 & _Val )
-	{
-		return XE::StringUtils::Format( "%1, %2, %3", _Val.x, _Val.y, _Val.z );
-	}
+inline std::string ToString( const XE::Vec3 & _Val )
+{
+	return XE::StringUtils::Format( "%1, %2, %3", _Val.x, _Val.y, _Val.z );
+}
 
-	inline std::string to_string( const XE::Vec4 & _Val )
-	{
-		return XE::StringUtils::Format( "%1, %2, %3, %4", _Val.x, _Val.y, _Val.z, _Val.w );
-	}
+inline std::string ToString( const XE::Vec4 & _Val )
+{
+	return XE::StringUtils::Format( "%1, %2, %3, %4", _Val.x, _Val.y, _Val.z, _Val.w );
+}
 
-	inline std::string to_string( const XE::Quat & _Val )
-	{
-		return XE::StringUtils::Format( "%1, %2, %3, %4", _Val.x, _Val.y, _Val.z, _Val.w );
-	}
+inline std::string ToString( const XE::Quat & _Val )
+{
+	return XE::StringUtils::Format( "%1, %2, %3, %4", _Val.x, _Val.y, _Val.z, _Val.w );
+}
 
-	inline std::string to_string( const XE::Mat3 & _Val )
-	{
-		return XE::StringUtils::Format( "%1, %2, %3, %4, %5, %6, %7, %8, %9",
-										_Val[0][0], _Val[0][1], _Val[0][2], _Val[1][0], _Val[1][1], _Val[1][2],
-										_Val[2][0], _Val[2][1], _Val[2][2] );
-	}
+inline std::string ToString( const XE::Mat3 & _Val )
+{
+	return XE::StringUtils::Format( "%1, %2, %3, %4, %5, %6, %7, %8, %9",
+									_Val[0][0], _Val[0][1], _Val[0][2], _Val[1][0], _Val[1][1], _Val[1][2],
+									_Val[2][0], _Val[2][1], _Val[2][2] );
+}
 
-	inline std::string to_string( const XE::Mat4 & _Val )
-	{
-		return XE::StringUtils::Format( "%1, %2, %3, %4, %5, %6, %7, %8, %9, %10, %11, %12, %13, %14, %15, %16",
-										_Val[0][0], _Val[0][1], _Val[0][2], _Val[0][3], _Val[1][0], _Val[1][1], _Val[1][2], _Val[1][3],
-										_Val[2][0], _Val[2][1], _Val[2][2], _Val[2][3], _Val[3][0], _Val[3][1], _Val[3][2], _Val[3][3] );
-	}
+inline std::string ToString( const XE::Mat4 & _Val )
+{
+	return XE::StringUtils::Format( "%1, %2, %3, %4, %5, %6, %7, %8, %9, %10, %11, %12, %13, %14, %15, %16",
+									_Val[0][0], _Val[0][1], _Val[0][2], _Val[0][3], _Val[1][0], _Val[1][1], _Val[1][2], _Val[1][3],
+									_Val[2][0], _Val[2][1], _Val[2][2], _Val[2][3], _Val[3][0], _Val[3][1], _Val[3][2], _Val[3][3] );
+}
 
-	inline std::string to_string( const XE::float16 & _Val )
-	{
-		return to_string( _Val.ToFloat32() );
-	}
+inline std::string ToString( const XE::float16 & _Val )
+{
+	return ToString( _Val.ToFloat32() );
+}
 
-	inline bool from_string( const std::string & _Str, XE::Vec2 & _Val )
-	{
-		auto list = XE::StringUtils::Split( _Str, ", " );
+inline bool FromString( const std::string & _Str, XE::Vec2 & _Val )
+{
+	auto list = XE::StringUtils::Split( _Str, ", " );
 
-		if( std::from_string( list[0], _Val.x ) )
+	if( XE::FromString( list[0], _Val.x ) )
+	{
+		if( XE::FromString( list[1], _Val.y ) )
 		{
-			if( std::from_string( list[1], _Val.y ) )
+			return true;
+		}
+	}
+
+	return false;
+}
+
+inline bool FromString( const std::string & _Str, XE::Vec3 & _Val )
+{
+	auto list = XE::StringUtils::Split( _Str, ", " );
+
+	if( XE::FromString( list[0], _Val.x ) )
+	{
+		if( XE::FromString( list[1], _Val.y ) )
+		{
+			if( XE::FromString( list[2], _Val.z ) )
 			{
 				return true;
 			}
 		}
-
-		return false;
 	}
 
-	inline bool from_string( const std::string & _Str, XE::Vec3 & _Val )
-	{
-		auto list = XE::StringUtils::Split( _Str, ", " );
+	return false;
+}
 
-		if( std::from_string( list[0], _Val.x ) )
+inline bool FromString( const std::string & _Str, XE::Vec4 & _Val )
+{
+	auto list = XE::StringUtils::Split( _Str, ", " );
+
+	if( XE::FromString( list[0], _Val.x ) )
+	{
+		if( XE::FromString( list[1], _Val.y ) )
 		{
-			if( std::from_string( list[1], _Val.y ) )
+			if( XE::FromString( list[2], _Val.z ) )
 			{
-				if( std::from_string( list[2], _Val.z ) )
+				if( XE::FromString( list[3], _Val.w ) )
 				{
 					return true;
 				}
 			}
 		}
-
-		return false;
 	}
 
-	inline bool from_string( const std::string & _Str, XE::Vec4 & _Val )
-	{
-		auto list = XE::StringUtils::Split( _Str, ", " );
+	return false;
+}
 
-		if( std::from_string( list[0], _Val.x ) )
+inline bool FromString( const std::string & _Str, XE::Quat & _Val )
+{
+	auto list = XE::StringUtils::Split( _Str, ", " );
+
+	if( XE::FromString( list[0], _Val.x ) )
+	{
+		if( XE::FromString( list[1], _Val.y ) )
 		{
-			if( std::from_string( list[1], _Val.y ) )
+			if( XE::FromString( list[2], _Val.z ) )
 			{
-				if( std::from_string( list[2], _Val.z ) )
+				if( XE::FromString( list[3], _Val.w ) )
 				{
-					if( std::from_string( list[3], _Val.w ) )
-					{
-						return true;
-					}
+					return true;
 				}
 			}
 		}
-
-		return false;
 	}
 
-	inline bool from_string( const std::string & _Str, XE::Quat & _Val )
+	return false;
+}
+
+inline bool FromString( const std::string & _Str, XE::Mat3 & _Val )
+{
+	auto list = XE::StringUtils::Split( _Str, ", " );
+
+	if( XE::FromString( list[0], _Val[0][0] ) )
 	{
-		auto list = XE::StringUtils::Split( _Str, ", " );
-
-		if( std::from_string( list[0], _Val.x ) )
+		if( XE::FromString( list[1], _Val[0][1] ) )
 		{
-			if( std::from_string( list[1], _Val.y ) )
+			if( XE::FromString( list[2], _Val[0][2] ) )
 			{
-				if( std::from_string( list[2], _Val.z ) )
+				if( XE::FromString( list[3], _Val[1][0] ) )
 				{
-					if( std::from_string( list[3], _Val.w ) )
+					if( XE::FromString( list[4], _Val[1][1] ) )
 					{
-						return true;
-					}
-				}
-			}
-		}
-
-		return false;
-	}
-
-	inline bool from_string( const std::string & _Str, XE::Mat3 & _Val )
-	{
-		auto list = XE::StringUtils::Split( _Str, ", " );
-
-		if( std::from_string( list[0], _Val[0][0] ) )
-		{
-			if( std::from_string( list[1], _Val[0][1] ) )
-			{
-				if( std::from_string( list[2], _Val[0][2] ) )
-				{
-					if( std::from_string( list[3], _Val[1][0] ) )
-					{
-						if( std::from_string( list[4], _Val[1][1] ) )
+						if( XE::FromString( list[5], _Val[1][2] ) )
 						{
-							if( std::from_string( list[5], _Val[1][2] ) )
+							if( XE::FromString( list[6], _Val[2][0] ) )
 							{
-								if( std::from_string( list[6], _Val[2][0] ) )
+								if( XE::FromString( list[7], _Val[2][1] ) )
 								{
-									if( std::from_string( list[7], _Val[2][1] ) )
+									if( XE::FromString( list[8], _Val[2][2] ) )
 									{
-										if( std::from_string( list[8], _Val[2][2] ) )
-										{
-											return true;
-										}
+										return true;
 									}
 								}
 							}
@@ -2318,48 +2314,48 @@ namespace std
 				}
 			}
 		}
-
-		return false;
 	}
 
-	inline bool from_string( const std::string & _Str, XE::Mat4 & _Val )
-	{
-		auto list = XE::StringUtils::Split( _Str, ", " );
+	return false;
+}
 
-		if( std::from_string( list[0], _Val[0][0] ) )
+inline bool FromString( const std::string & _Str, XE::Mat4 & _Val )
+{
+	auto list = XE::StringUtils::Split( _Str, ", " );
+
+	if( XE::FromString( list[0], _Val[0][0] ) )
+	{
+		if( XE::FromString( list[1], _Val[0][1] ) )
 		{
-			if( std::from_string( list[1], _Val[0][1] ) )
+			if( XE::FromString( list[2], _Val[0][2] ) )
 			{
-				if( std::from_string( list[2], _Val[0][2] ) )
+				if( XE::FromString( list[3], _Val[0][3] ) )
 				{
-					if( std::from_string( list[3], _Val[0][3] ) )
+					if( XE::FromString( list[4], _Val[1][0] ) )
 					{
-						if( std::from_string( list[4], _Val[1][0] ) )
+						if( XE::FromString( list[5], _Val[1][1] ) )
 						{
-							if( std::from_string( list[5], _Val[1][1] ) )
+							if( XE::FromString( list[6], _Val[1][2] ) )
 							{
-								if( std::from_string( list[6], _Val[1][2] ) )
+								if( XE::FromString( list[7], _Val[1][3] ) )
 								{
-									if( std::from_string( list[7], _Val[1][3] ) )
+									if( XE::FromString( list[8], _Val[2][0] ) )
 									{
-										if( std::from_string( list[8], _Val[2][0] ) )
+										if( XE::FromString( list[9], _Val[2][1] ) )
 										{
-											if( std::from_string( list[9], _Val[2][1] ) )
+											if( XE::FromString( list[10], _Val[2][2] ) )
 											{
-												if( std::from_string( list[10], _Val[2][2] ) )
+												if( XE::FromString( list[11], _Val[2][3] ) )
 												{
-													if( std::from_string( list[11], _Val[2][3] ) )
+													if( XE::FromString( list[12], _Val[3][0] ) )
 													{
-														if( std::from_string( list[12], _Val[3][0] ) )
+														if( XE::FromString( list[13], _Val[3][1] ) )
 														{
-															if( std::from_string( list[13], _Val[3][1] ) )
+															if( XE::FromString( list[14], _Val[3][2] ) )
 															{
-																if( std::from_string( list[14], _Val[3][2] ) )
+																if( XE::FromString( list[15], _Val[3][3] ) )
 																{
-																	if( std::from_string( list[15], _Val[3][3] ) )
-																	{
-																		return true;
-																	}
+																	return true;
 																}
 															}
 														}
@@ -2375,23 +2371,22 @@ namespace std
 				}
 			}
 		}
-
-		return false;
 	}
 
-	inline bool from_string( const std::string & _Str, XE::float16 & _Val )
+	return false;
+}
+
+inline bool FromString( const std::string & _Str, XE::float16 & _Val )
+{
+	XE::float32 f;
+
+	if( FromString( _Str, f ) )
 	{
-		XE::float32 f;
-
-		if( from_string( _Str, f ) )
-		{
-			_Val.FormFloat32( f );
-			return true;
-		}
-
-		return false;
+		_Val.FormFloat32( f );
+		return true;
 	}
 
+	return false;
 }
 
 template<> struct XE::Serializable< XE::Vec2 >
@@ -2399,11 +2394,11 @@ template<> struct XE::Serializable< XE::Vec2 >
 public:
 	static void Serialize( Archive & arc, XE::Vec2 * val )
 	{
-		std::string str = std::to_string( *val );
+		std::string str = XE::ToString( *val );
 		auto nvp = XE::Archive::NVP( "@value", str );
 		arc & nvp;
 
-		std::from_string( nvp.Value, *val );
+		XE::FromString( nvp.Value, *val );
 	}
 };
 
@@ -2412,11 +2407,11 @@ template<> struct XE::Serializable< XE::Vec3 >
 public:
 	static void Serialize( Archive & arc, XE::Vec3 * val )
 	{
-		std::string str = std::to_string( *val );
+		std::string str = XE::ToString( *val );
 		auto nvp = XE::Archive::NVP( "@value", str );
 		arc & nvp;
 
-		std::from_string( nvp.Value, *val );
+		XE::FromString( nvp.Value, *val );
 	}
 };
 
@@ -2425,11 +2420,11 @@ template<> struct XE::Serializable< XE::Vec4 >
 public:
 	static void Serialize( Archive & arc, XE::Vec4 * val )
 	{
-		std::string str = std::to_string( *val );
+		std::string str = XE::ToString( *val );
 		auto nvp = XE::Archive::NVP( "@value", str );
 		arc & nvp;
 
-		std::from_string( nvp.Value, *val );
+		XE::FromString( nvp.Value, *val );
 	}
 };
 
@@ -2438,11 +2433,11 @@ template<> struct XE::Serializable< XE::Quat >
 public:
 	static void Serialize( Archive & arc, XE::Quat * val )
 	{
-		std::string str = std::to_string( *val );
+		std::string str = XE::ToString( *val );
 		auto nvp = XE::Archive::NVP( "@value", str );
 		arc & nvp;
 
-		std::from_string( nvp.Value, *val );
+		XE::FromString( nvp.Value, *val );
 	}
 };
 
@@ -2451,11 +2446,11 @@ template<> struct XE::Serializable< XE::Mat3 >
 public:
 	static void Serialize( Archive & arc, XE::Mat3 * val )
 	{
-		std::string str = std::to_string( *val );
+		std::string str = XE::ToString( *val );
 		auto nvp = XE::Archive::NVP( "@value", str );
 		arc & nvp;
 
-		std::from_string( nvp.Value, *val );
+		XE::FromString( nvp.Value, *val );
 	}
 };
 
@@ -2464,11 +2459,11 @@ template<> struct XE::Serializable< XE::Mat4 >
 public:
 	static void Serialize( Archive & arc, XE::Mat4 * val )
 	{
-		std::string str = std::to_string( *val );
+		std::string str = XE::ToString( *val );
 		auto nvp = XE::Archive::NVP( "@value", str );
 		arc & nvp;
 
-		std::from_string( nvp.Value, *val );
+		XE::FromString( nvp.Value, *val );
 	}
 };
 
@@ -2484,5 +2479,7 @@ public:
 		val->FormFloat32( nvp.Value );
 	}
 };
+
+END_XE_NAMESPACE
 
 #endif // __MATHF_H__289359AA_D9DE_4269_B0BE_BAAA6E15461B

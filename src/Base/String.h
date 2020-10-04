@@ -136,15 +136,15 @@ private:
 	std::string_view _View;
 };
 
+inline std::string ToString( const XE::String & _Val )
+{
+	return _Val.ToStdString();
+}
+
 END_XE_NAMESPACE
 
 namespace std
 {
-	inline std::string to_string( const XE::String& _Val )
-	{
-		return _Val.ToStdString();
-	}
-
 	template<> struct equal_to<XE::String>
 	{
 		typedef XE::String first_argument_type;

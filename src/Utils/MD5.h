@@ -60,15 +60,15 @@ private:
 };
 DECL_META_CLASS( XE_API, MD5 );
 
+inline std::string ToString( const XE::MD5 & _Val )
+{
+	return _Val.To32String();
+}
+
 END_XE_NAMESPACE
 
 namespace std
 {
-	inline std::string to_string( const XE::MD5 & _Val )
-	{
-		return _Val.To32String();
-	}
-
 	template<> struct equal_to<XE::MD5>
 	{
 		typedef XE::MD5 first_argument_type;

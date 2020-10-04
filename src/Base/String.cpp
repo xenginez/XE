@@ -98,57 +98,57 @@ XE::String XE::String::operator+( const char * val ) const
 
 XE::String XE::String::operator+( XE::float64 val ) const
 {
-	return ToStdString() + std::to_string( val );
+	return ToStdString() + XE::ToString( val );
 }
 
 XE::String XE::String::operator+( XE::float32 val ) const
 {
-	return ToStdString() + std::to_string( val );
+	return ToStdString() + XE::ToString( val );
 }
 
 XE::String XE::String::operator+( XE::uint64 val ) const
 {
-	return ToStdString() + std::to_string( val );
+	return ToStdString() + XE::ToString( val );
 }
 
 XE::String XE::String::operator+( XE::uint32 val ) const
 {
-	return ToStdString() + std::to_string( val );
+	return ToStdString() + XE::ToString( val );
 }
 
 XE::String XE::String::operator+( XE::uint16 val ) const
 {
-	return ToStdString() + std::to_string( val );
+	return ToStdString() + XE::ToString( val );
 }
 
 XE::String XE::String::operator+( XE::uint8 val ) const
 {
-	return ToStdString() + std::to_string( val );
+	return ToStdString() + XE::ToString( val );
 }
 
 XE::String XE::String::operator+( XE::int64 val ) const
 {
-	return ToStdString() + std::to_string( val );
+	return ToStdString() + XE::ToString( val );
 }
 
 XE::String XE::String::operator+( XE::int32 val ) const
 {
-	return ToStdString() + std::to_string( val );
+	return ToStdString() + XE::ToString( val );
 }
 
 XE::String XE::String::operator+( XE::int16 val ) const
 {
-	return ToStdString() + std::to_string( val );
+	return ToStdString() + XE::ToString( val );
 }
 
 XE::String XE::String::operator+( XE::int8 val ) const
 {
-	return ToStdString() + std::to_string( val );
+	return ToStdString() + XE::ToString( val );
 }
 
 XE::String XE::String::operator+( bool val ) const
 {
-	return ToStdString() + std::to_string( val );
+	return ToStdString() + XE::ToString( val );
 }
 
 bool XE::String::operator!=( const char * val ) const
@@ -331,57 +331,57 @@ XE::String XE::String::SubString( XE::uint64 offset /*= 0*/, XE::uint64 count /*
 
 XE::String operator+( bool val1, const XE::String & val2 )
 {
-	return std::to_string( val1 ) + val2.ToStdString();
+	return XE::ToString( val1 ) + val2.ToStdString();
 }
 
 XE::String operator+( XE::int8 val1, const XE::String & val2 )
 {
-	return std::to_string( val1 ) + val2.ToStdString();
+	return XE::ToString( val1 ) + val2.ToStdString();
 }
 
 XE::String operator+( XE::int16 val1, const XE::String & val2 )
 {
-	return std::to_string( val1 ) + val2.ToStdString();
+	return XE::ToString( val1 ) + val2.ToStdString();
 }
 
 XE::String operator+( XE::int32 val1, const XE::String & val2 )
 {
-	return std::to_string( val1 ) + val2.ToStdString();
+	return XE::ToString( val1 ) + val2.ToStdString();
 }
 
 XE::String operator+( XE::int64 val1, const XE::String & val2 )
 {
-	return std::to_string( val1 ) + val2.ToStdString();
+	return XE::ToString( val1 ) + val2.ToStdString();
 }
 
 XE::String operator+( XE::uint8 val1, const XE::String & val2 )
 {
-	return std::to_string( val1 ) + val2.ToStdString();
+	return XE::ToString( val1 ) + val2.ToStdString();
 }
 
 XE::String operator+( XE::uint16 val1, const XE::String & val2 )
 {
-	return std::to_string( val1 ) + val2.ToStdString();
+	return XE::ToString( val1 ) + val2.ToStdString();
 }
 
 XE::String operator+( XE::uint32 val1, const XE::String & val2 )
 {
-	return std::to_string( val1 ) + val2.ToStdString();
+	return XE::ToString( val1 ) + val2.ToStdString();
 }
 
 XE::String operator+( XE::uint64 val1, const XE::String & val2 )
 {
-	return std::to_string( val1 ) + val2.ToStdString();
+	return XE::ToString( val1 ) + val2.ToStdString();
 }
 
 XE::String operator+( XE::float32 val1, const XE::String & val2 )
 {
-	return std::to_string( val1 ) + val2.ToStdString();
+	return XE::ToString( val1 ) + val2.ToStdString();
 }
 
 XE::String operator+( XE::float64 val1, const XE::String & val2 )
 {
-	return std::to_string( val1 ) + val2.ToStdString();
+	return XE::ToString( val1 ) + val2.ToStdString();
 }
 
 XE::String operator+( const char * val1, const XE::String & val2 )

@@ -256,7 +256,7 @@ template<> struct Serializable< VariantList >
 		auto it = val->begin();
 		for( int i = 0; i < size; ++i, ++it )
 		{
-			auto nvp = Archive::NVP( "@item_" + std::to_string( i ), *it );
+			auto nvp = Archive::NVP( "@item_" + XE::ToString( i ), *it );
 
 			arc & nvp;
 
@@ -276,7 +276,7 @@ template<> struct Serializable< VariantDeque >
 		auto it = val->begin();
 		for( int i = 0; i < size; ++i, ++it )
 		{
-			auto nvp = Archive::NVP( "@item_" + std::to_string( i ), *it );
+			auto nvp = Archive::NVP( "@item_" + XE::ToString( i ), *it );
 
 			arc & nvp;
 
@@ -303,7 +303,7 @@ template<> struct Serializable< VariantStack >
 		auto it = arr.begin();
 		for( int i = 0; i < size; ++i, ++it )
 		{
-			auto nvp = Archive::NVP( "@item_" + std::to_string( i ), *it );
+			auto nvp = Archive::NVP( "@item_" + XE::ToString( i ), *it );
 
 			arc & nvp;
 
@@ -335,7 +335,7 @@ template<> struct Serializable< VariantQueue >
 		auto it = arr.begin();
 		for( int i = 0; i < size; ++i, ++it )
 		{
-			auto nvp = Archive::NVP( "@item_" + std::to_string( i ), *it );
+			auto nvp = Archive::NVP( "@item_" + XE::ToString( i ), *it );
 
 			arc & nvp;
 
@@ -360,7 +360,7 @@ template<> struct Serializable< VariantArray >
 		auto it = val->begin();
 		for( int i = 0; i < size; ++i, ++it )
 		{
-			auto nvp = Archive::NVP( "@item_" + std::to_string( i ), *it );
+			auto nvp = Archive::NVP( "@item_" + XE::ToString( i ), *it );
 
 			arc & nvp;
 
@@ -399,7 +399,7 @@ template<> struct Serializable< VariantSet >
 		for( int i = 0; i < size; ++i, ++it )
 		{
 			XE::Variant value = *it;
-			auto nvp = Archive::NVP( "@item_" + std::to_string( i ), value );
+			auto nvp = Archive::NVP( "@item_" + XE::ToString( i ), value );
 
 			arc & nvp;
 
@@ -434,7 +434,7 @@ template<> struct Serializable< VariantMap >
 			pair.first = it->first;
 			pair.second = it->second;
 
-			auto nvp = Archive::NVP( "@item_" + std::to_string( i ), pair );
+			auto nvp = Archive::NVP( "@item_" + XE::ToString( i ), pair );
 
 			arc & nvp;
 
@@ -466,7 +466,7 @@ template<> struct Serializable< VariantMultiSet >
 		for( int i = 0; i < size; ++i, ++it )
 		{
 			XE::Variant value = *it;
-			auto nvp = Archive::NVP( "@item_" + std::to_string( i ), value );
+			auto nvp = Archive::NVP( "@item_" + XE::ToString( i ), value );
 
 			arc & nvp;
 
@@ -501,7 +501,7 @@ template<> struct Serializable< VariantMultiMap >
 			pair.first = it->first;
 			pair.second = it->second;
 
-			auto nvp = Archive::NVP( "@item_" + std::to_string( i ), pair );
+			auto nvp = Archive::NVP( "@item_" + XE::ToString( i ), pair );
 
 			arc & nvp;
 
@@ -533,7 +533,7 @@ template<> struct Serializable< VariantUnorderedSet >
 		for( int i = 0; i < size; ++i, ++it )
 		{
 			XE::Variant value = *it;
-			auto nvp = Archive::NVP( "@item_" + std::to_string( i ), value );
+			auto nvp = Archive::NVP( "@item_" + XE::ToString( i ), value );
 
 			arc & nvp;
 
@@ -568,7 +568,7 @@ template<> struct Serializable< VariantUnorderedMap >
 			pair.first = it->first;
 			pair.second = it->second;
 
-			auto nvp = Archive::NVP( "@item_" + std::to_string( i ), pair );
+			auto nvp = Archive::NVP( "@item_" + XE::ToString( i ), pair );
 
 			arc & nvp;
 
@@ -600,7 +600,7 @@ template<> struct Serializable< VariantUnorderedMultiSet >
 		for( int i = 0; i < size; ++i, ++it )
 		{
 			XE::Variant value = *it;
-			auto nvp = Archive::NVP( "@item_" + std::to_string( i ), value );
+			auto nvp = Archive::NVP( "@item_" + XE::ToString( i ), value );
 
 			arc & nvp;
 
@@ -635,7 +635,7 @@ template<> struct Serializable< VariantUnorderedMultiMap >
 			pair.first = it->first;
 			pair.second = it->second;
 
-			auto nvp = Archive::NVP( "@item_" + std::to_string( i ), pair );
+			auto nvp = Archive::NVP( "@item_" + XE::ToString( i ), pair );
 
 			arc & nvp;
 

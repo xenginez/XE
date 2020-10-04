@@ -12,10 +12,13 @@
 #include "Type.h"
 
 #if PLATFORM_OS == OS_MAC || PLATFORM_OS == OS_PS4 || PLATFORM_OS == OS_UNIX || PLATFORM_OS == OS_LINUX || PLATFORM_OS == OS_XBOXONE || PLATFORM_OS == OS_WINDOWS
-
 #include <filesystem>
+#endif
+
 
 BEG_XE_NAMESPACE
+
+#if PLATFORM_OS == OS_MAC || PLATFORM_OS == OS_PS4 || PLATFORM_OS == OS_UNIX || PLATFORM_OS == OS_LINUX || PLATFORM_OS == OS_XBOXONE || PLATFORM_OS == OS_WINDOWS
 
 namespace FileSystem
 {
@@ -33,11 +36,7 @@ namespace FileSystem
 	using Perms = std::filesystem::perms;
 }
 
-END_XE_NAMESPACE
-
 #else
-
-BEG_XE_NAMESPACE
 
 #define XE_BITMASK_OPS(_BITMASK)                                                                                      \
     static constexpr _BITMASK operator&(_BITMASK _Left, _BITMASK _Right) noexcept { /* return _Left & _Right */ \
@@ -5047,8 +5046,18 @@ namespace FileSystem
 	}
 };
 
-END_XE_NAMESPACE
-
 #endif
+
+inline std::string ToString( const XE::FileSystem::Path & _Val )
+{
+	return _Val.u8string();
+}
+
+inline bool FromString( const std::string & _Str, XE::FileSystem::Path & _Val )
+{
+	_Val = _Str;
+}
+
+END_XE_NAMESPACE
 
 #endif // FILESYSTEM_H__9E3E6B04_2D43_49AE_9FD4_08CEED267D20
