@@ -93,10 +93,10 @@ XE::SceneComponentPtr XE::GameObject::AddSceneComponent( IMetaClassPtr val, cons
 			comp->_Parent = parent;
 			parent->_Children.push_back( comp );
 
-			XE::IFramework::GetCurrentFramework()->GetThreadService()->PostTask( ThreadType::GAME, [ comp ]()
-				{
-					comp->Startup();
-				} );
+			( void ) XE::IFramework::GetCurrentFramework()->GetThreadService()->PostTask( ThreadType::GAME, [comp]()
+																						  {
+																							  comp->Startup();
+																						  } );
 		}
 
 		return comp;
@@ -116,10 +116,10 @@ XE::BehaviorComponentPtr XE::GameObject::AddBehaviorComponent( IMetaClassPtr val
 			comp->_GameObject = XE_THIS( GameObject );
 			comp->_Handle = _HandleTable.Alloc();
 
-			XE::IFramework::GetCurrentFramework()->GetThreadService()->PostTask( ThreadType::GAME, [comp]()
-				{
-					comp->Startup();
-				} );
+			( void ) XE::IFramework::GetCurrentFramework()->GetThreadService()->PostTask( ThreadType::GAME, [comp]()
+																						  {
+																							  comp->Startup();
+																						  } );
 
 			_BehaviorComponents.push_back( comp );
 		}
@@ -178,10 +178,10 @@ bool XE::GameObject::RemoveSceneComponent( const XE::SceneComponentPtr & val )
 		{
 			parent->_Children.erase( it );
 
-			XE::IFramework::GetCurrentFramework()->GetThreadService()->PostTask( ThreadType::GAME, [ val ]()
-				{
-					val->Clearup();
-				} );
+			( void ) XE::IFramework::GetCurrentFramework()->GetThreadService()->PostTask( ThreadType::GAME, [val]()
+																						  {
+																							  val->Clearup();
+																						  } );
 
 			return true;
 		}
@@ -197,10 +197,10 @@ bool XE::GameObject::RemoveBehaviorComponet( const XE::BehaviorComponentPtr & va
 	{
 		_BehaviorComponents.erase( it );
 
-		XE::IFramework::GetCurrentFramework()->GetThreadService()->PostTask( ThreadType::GAME, [ val ]()
-			{
-				val->Clearup();
-			} );
+		( void ) XE::IFramework::GetCurrentFramework()->GetThreadService()->PostTask( ThreadType::GAME, [val]()
+																					  {
+																						  val->Clearup();
+																					  } );
 
 		return true;
 	}

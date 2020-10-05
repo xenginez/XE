@@ -32,7 +32,7 @@ bool XE::WorldService::Startup()
 
 	if( path != "" )
 	{
-		_p->_World = DP_CAST<XE::World>( GetFramework()->GetServiceT<XE::IAssetsService>()->Load( path ) );
+		_p->_World = DP_CAST<XE::World>( GetFramework()->GetServiceT<XE::IAssetsService>()->LoadObject( path.ToStdString() ) );
 	}
 	else
 	{
@@ -56,21 +56,21 @@ void XE::WorldService::Clearup()
 
 void XE::WorldService::LoadWorld( const XE::String & val )
 {
-	GetFramework()->GetServiceT<XE::IThreadService>()->PostTask( XE::ThreadType::GAME, [this, val]()
-																 {
-																	 if( _p->_World )
-																	 {
-																		 _p->_World->Clearup();
+	( void ) GetFramework()->GetServiceT<XE::IThreadService>()->PostTask( XE::ThreadType::GAME, [this, val]()
+																		  {
+																			  if( _p->_World )
+																			  {
+																				  _p->_World->Clearup();
 
-																		 _p->_World = nullptr;
-																	 }
+																				  _p->_World = nullptr;
+																			  }
 
-																	 _p->_World = SP_CAST<XE::World>( GetFramework()->GetServiceT<XE::IAssetsService>()->Load( val ) );
+																			  _p->_World = DP_CAST<XE::World>( GetFramework()->GetServiceT<XE::IAssetsService>()->LoadObject( val.ToStdString() ) );
 
-																	 _p->_World->Startup();
+																			  _p->_World->Startup();
 
-																	 return false;
-																 } );
+																			  return false;
+																		  } );
 }
 
 XE::WorldPtr XE::WorldService::GetCurrentWorld() const

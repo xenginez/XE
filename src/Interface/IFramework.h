@@ -50,8 +50,6 @@ public:
 
 	virtual IPhysicsServicePtr GetPhysicsService() const = 0;
 
-	virtual IProfilerServicePtr GetProfilerService() const = 0;
-
 	virtual ILocalizationServicePtr GetLocalizationService() const = 0;
 
 	virtual IServicePtr GetService( const IMetaClassPtr & val ) const = 0;

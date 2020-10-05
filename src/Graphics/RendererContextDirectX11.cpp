@@ -1,5 +1,5 @@
 #include "RendererContextDirectX11.h"
-#if PLATFORM_OS & (OS_WINDOWS)
+#if 0//PLATFORM_OS & (OS_WINDOWS)
 
 #include <d3d11_4.h>
 #include <dxgi1_6.h>

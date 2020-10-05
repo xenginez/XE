@@ -43,10 +43,10 @@ bool XE::World::AddGameObject( const GameObjectPtr & val )
 
 	val->_Handle = _HandleTable.Alloc();
 
-	XE::IFramework::GetCurrentFramework()->GetThreadService()->PostTask( ThreadType::GAME, [ val ]()
-		{
-			val->Startup();
-		} );
+	( void ) XE::IFramework::GetCurrentFramework()->GetThreadService()->PostTask( ThreadType::GAME, [val]()
+																				  {
+																					  val->Startup();
+																				  } );
 
 	_GameObjects.push_back( val );
 
@@ -61,10 +61,10 @@ bool XE::World::RemoveGameObject( const XE::GameObjectPtr & val )
 	{
 		_GameObjects.erase( it );
 
-		XE::IFramework::GetCurrentFramework()->GetThreadService()->PostTask( ThreadType::GAME, [ val ]()
-			{
-				val->Clearup();
-			} );
+		( void ) XE::IFramework::GetCurrentFramework()->GetThreadService()->PostTask( ThreadType::GAME, [val]()
+																					  {
+																						  val->Clearup();
+																					  } );
 
 		return true;
 	}

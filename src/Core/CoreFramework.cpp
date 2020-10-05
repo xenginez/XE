@@ -9,7 +9,6 @@
 #include "RenderService.h"
 #include "AssetsService.h"
 #include "PhysicsService.h"
-#include "ProfilerService.h"
 #include "NavigationService.h"
 #include "LocalizationService.h"
 
@@ -137,11 +136,6 @@ XE::IRenderServicePtr XE::CoreFramework::GetRenderService() const
 XE::IPhysicsServicePtr XE::CoreFramework::GetPhysicsService() const
 {
 	return GetServiceT<IPhysicsService>();
-}
-
-XE::IProfilerServicePtr XE::CoreFramework::GetProfilerService() const
-{
-	return GetServiceT<IProfilerService>();
 }
 
 XE::ILocalizationServicePtr XE::CoreFramework::GetLocalizationService() const

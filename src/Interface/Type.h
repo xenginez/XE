@@ -26,7 +26,6 @@ DECL_PTR( IConfigService );
 DECL_PTR( IRenderService );
 DECL_PTR( IThreadService );
 DECL_PTR( IPhysicsService );
-DECL_PTR( IProfilerService );
 DECL_PTR( INavigationService );
 DECL_PTR( ILocalizationService );
 class IFramework; typedef IFramework * IFrameworkPtr;
