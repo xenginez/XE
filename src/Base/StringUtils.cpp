@@ -1,28 +1,28 @@
 #include "StringUtils.h"
 
+#include <codecvt>
+
 #if PLATFORM_OS & OS_WINDOWS
 #include <Windows.h>
 #endif
-
-
 
 std::string XE::StringUtils::UTF16ToUTF8( const std::wstring & val )
 {
 #if PLATFORM_OS & OS_WINDOWS
 	std::string s;
-	int len = WideCharToMultiByte( CP_UTF8, 0, val.c_str(), (int )val.length(), NULL, 0, NULL, NULL );
+	XE::int64 len = WideCharToMultiByte( CP_UTF8, 0, val.c_str(), ( int ) val.length(), NULL, 0, NULL, NULL );
 	if( len <= 0 )
 	{
 		return s;
 	}
 
-	char * buffer = new char[len + 1];
-	memset( buffer, 0, len + 1 );
-	WideCharToMultiByte( CP_UTF8, 0, val.c_str(), (int )val.length(), buffer, len, NULL, NULL );
+	char * buffer = ( char * )::malloc( ( len + 1 ) * sizeof( char ) );
+	memset( buffer, 0, (len + 1) * sizeof( char ) );
+	WideCharToMultiByte( CP_UTF8, 0, val.c_str(), ( int ) val.length(), buffer, len, NULL, NULL );
 	s = buffer;
 
-	delete[] buffer;
-	
+	::free( buffer );
+
 	return s;
 #else
 	return std::wstring_convert<std::codecvt_utf8<wchar_t> >().to_bytes( val );
@@ -33,18 +33,17 @@ std::wstring XE::StringUtils::UTF8ToUTF16( const std::string & val )
 {
 #if PLATFORM_OS & OS_WINDOWS
 	std::wstring s;
-	int len = MultiByteToWideChar( CP_UTF8, 0, val.c_str(), (int )val.length(), NULL, 0 );
+	XE::int64 len = MultiByteToWideChar( CP_UTF8, 0, val.c_str(), ( int ) val.length(), NULL, 0 );
 	if( len <= 0 )
 	{
 		return s;
 	}
 
-	wchar_t * buffer = new wchar_t[len + 1];
-	memset( buffer, 0, ( len + 1 ) * sizeof( WCHAR ) );
-	MultiByteToWideChar( CP_UTF8, 0, val.c_str(), (int )val.length(), buffer, len );
+	wchar_t * buffer = ( wchar_t * )::malloc( ( len + 1 ) * sizeof( wchar_t ) );
+	memset( buffer, 0, ( len + 1 ) * sizeof( wchar_t ) );
+	MultiByteToWideChar( CP_UTF8, 0, val.c_str(), ( int ) val.length(), buffer, len );
 	s = buffer;
-
-	delete[] buffer;
+	::free( buffer );
 
 	return s;
 #else
@@ -56,18 +55,17 @@ std::string XE::StringUtils::UTF16ToGBK( const std::wstring & val )
 {
 #if PLATFORM_OS & OS_WINDOWS
 	std::string s;
-	int len = WideCharToMultiByte( CP_ACP, 0, val.c_str(), (int )val.length(), NULL, 0, NULL, NULL );
+	int len = WideCharToMultiByte( CP_ACP, 0, val.c_str(), ( int ) val.length(), NULL, 0, NULL, NULL );
 	if( len <= 0 )
 	{
 		return s;
 	}
 
-	char * buffer = new char[len + 1];
-	memset( buffer, 0, len + 1 );
-	WideCharToMultiByte( CP_ACP, 0, val.c_str(), (int )val.length(), buffer, len, NULL, NULL );
+	char * buffer = ( char * )::malloc( ( len + 1 ) * sizeof( char ) );
+	memset( buffer, 0, ( len + 1 ) * sizeof( char ) );
+	WideCharToMultiByte( CP_ACP, 0, val.c_str(), ( int ) val.length(), buffer, len, NULL, NULL );
 	s = buffer;
-
-	delete[] buffer;
+	::free( buffer );
 
 	return s;
 #else
@@ -79,18 +77,17 @@ std::wstring XE::StringUtils::GBKToUTF16( const std::string & val )
 {
 #if PLATFORM_OS & OS_WINDOWS
 	std::wstring s;
-	int len = MultiByteToWideChar( CP_ACP, 0, val.c_str(), (int )val.length(), NULL, 0 );
+	int len = MultiByteToWideChar( CP_ACP, 0, val.c_str(), ( int ) val.length(), NULL, 0 );
 	if( len <= 0 )
 	{
 		return s;
 	}
 
-	LPWSTR buffer = new wchar_t[len + 1];
-	memset( buffer, 0, ( len + 1 ) * sizeof( WCHAR ) );
-	MultiByteToWideChar( CP_ACP, 0, val.c_str(), (int )val.length(), buffer, len );
+	wchar_t * buffer = ( wchar_t * )::malloc( ( len + 1 ) * sizeof( wchar_t ) );
+	memset( buffer, 0, ( len + 1 ) * sizeof( wchar_t ) );
+	MultiByteToWideChar( CP_ACP, 0, val.c_str(), ( int ) val.length(), buffer, len );
 	s = buffer;
-
-	delete[] buffer;
+	::free( buffer );
 
 	return s;
 #else
@@ -108,14 +105,10 @@ std::string XE::StringUtils::GBKToUTF8( const std::string & val )
 	return UTF16ToUTF8( GBKToUTF16( val ) );
 }
 
-std::vector<std::string> XE::StringUtils::Split( const std::string& src, const std::string& sep )
+std::vector<std::string> XE::StringUtils::Split( const std::string & src, const std::string & sep )
 {
 	std::regex re{ sep };
-
-	return std::vector<std::string> {
-		std::sregex_token_iterator( src.begin(), src.end(), re, -1 ),
-			std::sregex_token_iterator()
-	};
+	return { std::sregex_token_iterator( src.begin(), src.end(), re, -1 ), std::sregex_token_iterator() };
 }
 
 XE::uint64 XE::StringUtils::UTF8CharacterCount( const std::string & val )

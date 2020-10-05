@@ -291,7 +291,7 @@ XE::String & XE::String::FromStdString( const std::string & val )
 
 void XE::String::Clear()
 {
-	_View = nullptr;
+	_View = { nullptr, 0 };
 }
 
 bool XE::String::Empty() const

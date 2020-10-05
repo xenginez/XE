@@ -33,7 +33,7 @@ public:
 	static std::vector<std::string> Split( const std::string & src, const std::string & sep );
 
 public:
-	static const std::string & Format( const std::string & fmt )
+	static std::string Format( const std::string & fmt )
 	{
 		return fmt;
 	}
@@ -55,8 +55,8 @@ private:
 
 	template< typename T, typename ... ARGS > static void _Format( std::string & fmt, XE::uint64 index, T val, ARGS && ... args )
 	{
-		_Format( fmt, index, std::move( val ) );
-		_Format( fmt, ++index, std::move( args )... );
+		_Format( fmt, index, std::forward<T>( val ) );
+		_Format( fmt, ++index, std::forward<ARGS>( args )... );
 	}
 
 };
