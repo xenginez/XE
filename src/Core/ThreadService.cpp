@@ -21,7 +21,7 @@ struct XEPThread
 
 	virtual void Notify() = 0;
 
-	virtual bool HasThreadID( const XE::thread_id & val ) = 0;
+	virtual bool HasThreadID( const std::thread::id & val ) = 0;
 
 };
 
@@ -63,12 +63,12 @@ struct XEPMainThread : public XEPThread
 
 	}
 
-	bool HasThreadID( const XE::thread_id & val )  override
+	bool HasThreadID( const std::thread::id & val )  override
 	{
 		return _ID == val;
 	}
 
-	XE::thread_id _ID;
+	std::thread::id _ID;
 	std::atomic<XE::uint64> _CurrentTasks;
 	tbb::concurrent_queue< std::function<void()> > _FrontTasks;
 	tbb::concurrent_queue< std::function<void()> > _BackTasks;
@@ -136,7 +136,7 @@ struct XEPSpecialThread : public XEPThread
 		_Variable.notify_one();
 	}
 
-	bool HasThreadID( const XE::thread_id & val )  override
+	bool HasThreadID( const std::thread::id & val )  override
 	{
 		return _Thread.get_id() == val;
 	}
@@ -216,7 +216,7 @@ struct XEPWorkThread : public XEPThread
 		_Variable.notify_one();
 	}
 
-	bool HasThreadID( const XE::thread_id & val )  override
+	bool HasThreadID( const std::thread::id & val )  override
 	{
 		for( const auto & it : _Threads )
 		{
