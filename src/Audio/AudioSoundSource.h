@@ -11,6 +11,8 @@
 
 #include "Type.h"
 
+struct ma_decoder;
+
 BEG_XE_NAMESPACE
 
 class XE_API AudioSoundSource : public XE::Object
@@ -82,7 +84,8 @@ private:
 	bool _Dirty = false;
 private:
     XE::uint32 _SourceID = 0;
-    XE::AudioSoundPtr _Sound;
+	XE::FileSystem::Path _Sound;
+	ma_decoder * _Decoder = nullptr;
 };
 
 END_XE_NAMESPACE

@@ -1,8 +1,39 @@
 #include "AudioSoundSource.h"
 
+#define MA_NO_WASAPI
+#define MA_NO_DSOUND
+#define MA_NO_WINMM
+#define MA_NO_ALSA
+#define MA_NO_PULSEAUDIO
+#define MA_NO_JACK
+#define MA_NO_COREAUDIO
+#define MA_NO_SNDIO
+#define MA_NO_AUDIO4
+#define MA_NO_OSS
+#define MA_NO_AAUDIO
+#define MA_NO_OPENSL
+#define MA_NO_WEBAUDIO
+#define MA_NO_NULL
+#define MA_NO_ENCODING
+#define MA_NO_DEVICE_IO
+#define MA_NO_THREADING
+#define MA_NO_DEVICE_IO
+#define MA_NO_GENERATION
+#define MA_LOG_LEVEL MA_LOG_LEVEL_ERROR
+
+
+#define STB_VORBIS_HEADER_ONLY
+#include <miniaudio/stb_vorbis.c>
+
+#define MINIAUDIO_IMPLEMENTATION
+#include <miniaudio/miniaudio.h>
+
+#undef STB_VORBIS_HEADER_ONLY
+#include <miniaudio/stb_vorbis.c>
+
 #include <AL/al.h>
 
-#include "AudioSound.h"
+#define AUDIO_FARME_SIZE 640
 
 #define CHECK_AL( X ) \
 { \
@@ -43,6 +74,16 @@ END_META()
 
 void XE::AudioSoundSource::Startup()
 {
+	ma_decoder_config config = ma_decoder_config_init( ma_format_s16, 2, 48000 );
+
+	_Decoder = new ma_decoder;
+	ma_result result = ma_decoder_init_file( _Sound.u8string().c_str(), &config, _Decoder );
+	if( result != MA_SUCCESS )
+	{
+		delete _Decoder;
+		_Decoder = nullptr;
+	}
+
 	CHECK_AL( alGenSources( 1, &_SourceID ) );
 
 	CHECK_AL( alSourcef( _SourceID, AL_MIN_GAIN, 0.0f ) );
@@ -79,43 +120,21 @@ void XE::AudioSoundSource::Update( XE::float32 dt )
 
 	if( state == AL_PLAYING && numqueued <= 1 )
 	{
-		XE::Array<XE::uint8> buf = _Sound->GetOneFrame();
-		if( buf.size() != 0 )
+		XE::uint8 buf[AUDIO_FARME_SIZE] = {};
+
+		auto sz = ma_decoder_read_pcm_frames( _Decoder, buf, AUDIO_FARME_SIZE );
+
+		if( sz != 0 )
 		{
-			ALenum format = 0;
-			switch( _Sound->GetBits() )
-			{
-			case 8:
-				if( _Sound->GetChannels() == 1 )
-				{
-					format = AL_FORMAT_MONO8;
-				}
-				else if( _Sound->GetChannels() == 2 )
-				{
-					format = AL_FORMAT_STEREO8;
-				}
-				break;
-			case 16:
-				if( _Sound->GetChannels() == 1 )
-				{
-					format = AL_FORMAT_MONO16;
-				}
-				else if( _Sound->GetChannels() == 2 )
-				{
-					format = AL_FORMAT_STEREO16;
-				}
-				break;
-			default:
-				break;
-			}
 			ALuint bufferID = 0;
+			ALenum format = AL_FORMAT_STEREO16;
 			CHECK_AL( alGenBuffers( 1, &bufferID ) );
-			CHECK_AL( alBufferData( bufferID, format, buf.data(), buf.size(), _Sound->GetSampleRate() ) );
+			CHECK_AL( alBufferData( bufferID, format, buf, sz, _Decoder->outputSampleRate ) );
 			CHECK_AL( alSourceQueueBuffers( _SourceID, 1, &bufferID ) );
 		}
 		else if( GetLoop() )
 		{
-			_Sound->Seek( 0 );
+			ma_decoder_seek_to_pcm_frame( _Decoder, 0 );
 		}
 		else
 		{
@@ -126,6 +145,13 @@ void XE::AudioSoundSource::Update( XE::float32 dt )
 
 void XE::AudioSoundSource::Clearup()
 {
+	if( _Decoder )
+	{
+		ma_decoder_uninit( _Decoder );
+		delete _Decoder;
+		_Decoder = nullptr;
+	}
+
 	ALint numqueued = 0;
 	ALint numprocessed = 0;
 	CHECK_AL( alGetSourcei( _SourceID, AL_BUFFERS_QUEUED, &numqueued ) );

@@ -20,7 +20,6 @@
 #include "RenderService.h"
 #include "ThreadService.h"
 #include "PhysicsService.h"
-#include "ProfilerService.h"
 #include "NavigationService.h"
 #include "LocalizationService.h"
 

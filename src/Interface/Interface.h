@@ -20,7 +20,6 @@
 #include "IThreadService.h"
 #include "IAssetsService.h"
 #include "IPhysicsService.h"
-#include "IProfilerService.h"
 #include "INavigationService.h"
 #include "ILocalizationService.h"
 
