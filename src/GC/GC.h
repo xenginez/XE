@@ -9,14 +9,14 @@
 #ifndef GC_H__FA923875_63B1_4537_BFB7_E063B491B0B7
 #define GC_H__FA923875_63B1_4537_BFB7_E063B491B0B7
 
-#include "Allocator.hpp"
+#include "AllocatorProxy.hpp"
 #include "MemoryResource.h"
 
 BEG_XE_NAMESPACE
 
 template< typename Ty, typename ... Types > XE::SharedPtr<Ty> MakeShared( Types && ...args )
 {
-    return std::allocate_shared<Ty>( XE::Allocator<Ty>::GetAllocator(), std::forward<Types>( args )... );
+    return std::allocate_shared<Ty>( XE::AllocatorProxy<Ty>::GetAllocator(), std::forward<Types>( args )... );
 }
 
 END_XE_NAMESPACE
@@ -35,8 +35,8 @@ typedef TYPE * TYPE##RPtr
 #define XE_THIS(TYPE) std::static_pointer_cast<TYPE>( shared_from_this() )
 
 
-#define POOL_ALLOCATOR( TYPE ) \
-template<> class XE::Allocator<TYPE> \
+#define OBJECT_ALLOCATOR_PROXY( TYPE ) \
+template<> class XE::AllocatorProxy<TYPE> \
 { \
 public: \
 	static std::pmr::polymorphic_allocator< T > * GetAllocator() \
