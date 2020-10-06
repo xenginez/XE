@@ -18,6 +18,9 @@ class XE_API IThreadService : public IService
 	OBJECT( IThreadService, IService )
 
 public:
+	using TaskCallback = std::function<void()>;
+
+public:
 	IThreadService();
 
 	~IThreadService() override;
@@ -25,87 +28,8 @@ public:
 public:
 	virtual ThreadType GetCurrentThreadType() const = 0;
 
-protected:
-	virtual void _PostTask( std::function<void()> && task, ThreadType type ) = 0;
-
 public:
-	template< typename T > std::shared_future< typename std::invoke_result_t< T > > PostTask( ThreadType type, T && func )
-	{
-		using result_type = std::invoke_result_t< T >;
-
-		auto task = std::make_shared< std::packaged_task< result_type( void ) > >( std::bind( std::forward< T >( func ) ) );
-
-		auto f = task->get_future().share();
-
-		_PostTask( type, task );
-
-		return f;
-	}
-
-	template< typename F, typename T > std::shared_future< typename std::invoke_result_t< T, F > > PostTask( ThreadType type, const std::shared_future< F > & future, T && func )
-	{
-		using result_type = std::invoke_result_t< T, F >;
-
-		auto task = std::make_shared< std::packaged_task< result_type( F ) > >( std::bind( std::forward< T >( func ), std::placeholders::_1 ) );
-
-		auto f = task->get_future().share();
-
-		_PostTask( type, task, future );
-
-		return f;
-	}
-
-	template< typename T > std::shared_future< typename std::invoke_result_t< T > > PostTask( ThreadType type, const std::shared_future< void > & future, T && func )
-	{
-		using result_type = std::invoke_result_t< T >;
-
-		auto task = std::make_shared< std::packaged_task< result_type( void ) > >( std::bind( std::forward< T >( func ) ) );
-
-		auto f = task->get_future().share();
-
-		_PostTask( type, task, future );
-
-		return f;
-	}
-
-private:
-	template< typename T > void _PostTask( ThreadType type, const XE::SharedPtr< std::packaged_task< T > > & task )
-	{
-		_PostTask( [ task ]()
-				   {
-					   ( *task )( );
-				   }, type );
-	}
-
-	template< typename T > void _PostTask( ThreadType type, const XE::SharedPtr< std::packaged_task< T > > & task, const std::shared_future< void > & future )
-	{
-		_PostTask( [ this, task, future ]()
-				   {
-					   if( std::is_ready( future ) )
-					   {
-						   ( *task )( );
-					   }
-					   else
-					   {
-						   _PostTask( task, future );
-					   }
-				   }, type );
-	}
-
-	template< typename T, typename F > void _PostTask( ThreadType type, const XE::SharedPtr< std::packaged_task< T > > & task, const std::shared_future< F > & future )
-	{
-		_PostTask( [ this, task, future ]()
-				   {
-					   if( std::is_ready( future ) )
-					   {
-						   ( *task )( future.get() );
-					   }
-					   else
-					   {
-						   _PostTask( task, future );
-					   }
-				   }, type );
-	}
+	virtual void PostTask( ThreadType type, const TaskCallback & task ) = 0;
 
 };
 

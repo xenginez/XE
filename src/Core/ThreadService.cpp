@@ -15,9 +15,7 @@ struct XEPThread
 
 	virtual void Handler() = 0;
 
-	virtual void PushTask( std::function<void()> && val ) = 0;
-
-	virtual XE::uint64 QueueSize() = 0;
+	virtual void PushTask( const std::function<void()> & val ) = 0;
 
 	virtual void Notify() = 0;
 
@@ -48,14 +46,9 @@ struct XEPMainThread : public XEPThread
 		}
 	}
 
-	void PushTask( std::function<void()> && val ) override
+	void PushTask( const std::function<void()> & val ) override
 	{
-		_CurrentTasks == 0 ? _FrontTasks.push( std::move( val ) ) : _BackTasks.push( std::move( val ) );
-	}
-
-	XE::uint64 QueueSize() override
-	{
-		return _CurrentTasks == 0 ? _FrontTasks.unsafe_size() : _BackTasks.unsafe_size();
+		_CurrentTasks == 0 ? _FrontTasks.push( val ) : _BackTasks.push( val );
 	}
 
 	void Notify() override
@@ -98,7 +91,7 @@ struct XEPSpecialThread : public XEPThread
 	{
 		while( !_Exit )
 		{
-			if( QueueSize() == 0 )
+			if( _Tasks.empty() )
 			{
 				std::unique_lock<std::mutex> Lock( _Lock );
 
@@ -121,14 +114,9 @@ struct XEPSpecialThread : public XEPThread
 		}
 	}
 
-	virtual void PushTask( std::function<void()> && val ) override
+	virtual void PushTask( const std::function<void()> & val ) override
 	{
-		_Tasks.push( std::move( val ) );
-	}
-
-	virtual XE::uint64 QueueSize() override
-	{
-		return _Tasks.unsafe_size();
+		_Tasks.push( val );
 	}
 
 	virtual void Notify() override
@@ -177,7 +165,7 @@ struct XEPWorkThread : public XEPThread
 	{
 		while( !_Exit )
 		{
-			if( QueueSize() == 0 )
+			if( _Tasks.empty() )
 			{
 				std::unique_lock<std::mutex> Lock( _Lock );
 
@@ -201,14 +189,9 @@ struct XEPWorkThread : public XEPThread
 		}
 	}
 
-	virtual void PushTask( std::function<void()> && val ) override
+	virtual void PushTask( const std::function<void()> & val ) override
 	{
-		_Tasks.push( std::move( val ) );
-	}
-
-	virtual XE::uint64 QueueSize() override
-	{
-		return _Tasks.unsafe_size();
+		_Tasks.push( val );
 	}
 
 	virtual void Notify() override
@@ -300,9 +283,9 @@ XE::ThreadType XE::ThreadService::GetCurrentThreadType() const
 
 	return XE::ThreadType::UNKNOWN;
 }
-
-void XE::ThreadService::_PostTask( std::function<void()> && task, XE::ThreadType type )
+ 
+void XE::ThreadService::PostTask( ThreadType type, const TaskCallback & task )
 {
-	_p->_Threads[( XE::uint64 )type]->PushTask( std::move( task ) );
+	_p->_Threads[( XE::uint64 )type]->PushTask( task );
 	_p->_Threads[( XE::uint64 )type]->Notify();
 }

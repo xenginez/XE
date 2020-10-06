@@ -38,7 +38,7 @@ public:
 	ThreadType GetCurrentThreadType() const override;
 
 public:
-	void _PostTask( std::function<void()> && task, ThreadType type ) override;
+	void PostTask( ThreadType type, const TaskCallback & task ) override;
 
 private:
 	Private * _p;
