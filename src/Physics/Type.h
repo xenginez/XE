@@ -9,7 +9,7 @@
 #ifndef __TYPE_H__1C1C3DA4_0D11_418D_8EC6_B03DB2644537
 #define __TYPE_H__1C1C3DA4_0D11_418D_8EC6_B03DB2644537
 
-#include "Global.h"
+#include "Utils/Handle.hpp"
 
 BEG_XE_NAMESPACE
 
@@ -17,7 +17,6 @@ DECL_PTR( Shape );
 DECL_PTR( RigidBody );
 DECL_PTR( Constraint );
 DECL_PTR( PhysicsMaterial );
-
 
 DECL_HANDLE( XE_API, Shape );
 DECL_HANDLE( XE_API, RigidBody );

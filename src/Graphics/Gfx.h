@@ -9,6 +9,8 @@
 #ifndef GFX_H__03DAE83A_A925_4FCA_8E63_633C5869DEB0
 #define GFX_H__03DAE83A_A925_4FCA_8E63_633C5869DEB0
 
+#include <optional>
+
 #include "Type.h"
 
 BEG_XE_NAMESPACE

@@ -9,7 +9,7 @@
 #ifndef __CRC32_H__77E17FE6_6F43_4C9A_9985_D9E1478BD18B
 #define __CRC32_H__77E17FE6_6F43_4C9A_9985_D9E1478BD18B
 
-#include "Global.h"
+#include "Type.h"
 
 BEG_XE_NAMESPACE
 

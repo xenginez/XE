@@ -2,8 +2,6 @@
 
 #include <ik/ik.h>
 
-
-
 BEG_META( XE::AnimationIKEffector )
 type->Property( "WeightNlerp", &AnimationIKEffector::GetWeightNlerp, &AnimationIKEffector::SetWeightNlerp );
 type->Property( "InheritParentRotation", &AnimationIKEffector::GetInheritParentRotation, &AnimationIKEffector::SetInheritParentRotation );

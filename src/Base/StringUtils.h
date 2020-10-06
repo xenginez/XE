@@ -9,6 +9,9 @@
 #ifndef __STRINGUTILS_H__1EA13048_0A3D_4076_B97B_BC6DF4D9B40C
 #define __STRINGUTILS_H__1EA13048_0A3D_4076_B97B_BC6DF4D9B40C
 
+#include <regex>
+#include <vector>
+
 #include "Type.h"
 
 BEG_XE_NAMESPACE

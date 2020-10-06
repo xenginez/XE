@@ -9,6 +9,10 @@
 #ifndef WIDGET_H__481BAA7C_32B3_4B89_9156_D53C896040D7
 #define WIDGET_H__481BAA7C_32B3_4B89_9156_D53C896040D7
 
+#include "Math/Mathf.h"
+#include "Utils/Object.h"
+#include "Utils/Signals.hpp"
+
 #include "Type.h"
 
 BEG_XE_NAMESPACE

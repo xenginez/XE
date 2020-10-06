@@ -9,6 +9,9 @@
 #ifndef __GAMEOBJECT_H__ECCC67A6_5AD3_4306_8C14_915D53744BBA
 #define __GAMEOBJECT_H__ECCC67A6_5AD3_4306_8C14_915D53744BBA
 
+#include "Math/Math.h"
+#include "Utils/Object.h"
+
 #include "Type.h"
 
 BEG_XE_NAMESPACE

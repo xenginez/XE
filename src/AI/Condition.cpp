@@ -1,7 +1,5 @@
 #include "Condition.h"
 
-
-
 BEG_META( XE::Condition )
 type->Property( "NextState", &Condition::_NextState );
 END_META()

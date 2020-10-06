@@ -9,12 +9,12 @@
 #ifndef __PLATFORM_H__BDD7C650_EC23_41CF_A4EA_7CDBFE3B0135
 #define __PLATFORM_H__BDD7C650_EC23_41CF_A4EA_7CDBFE3B0135
 
-#include "Handle.hpp"
+#include "Utils/Handle.hpp"
 
 BEG_XE_NAMESPACE
 
-class Window; using WindowHandle = XE::Handle< XE::Window >; DECL_META_CLASS( XE_API, WindowHandle );
-class Process; using ProcessHandle = XE::Handle< XE::Process >; DECL_META_CLASS( XE_API, ProcessHandle );
+DECL_HANDLE( XE_API, Window );
+DECL_HANDLE( XE_API, Process );
 
 class XE_API Platform
 {

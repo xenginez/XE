@@ -18,6 +18,4 @@
 #include "Singleton.hpp"
 #include "MultiArray.hpp"
 
-#define SINGLETON( TYPE ) friend class XE::Singleton< TYPE >;
-
 #endif // BASE_H__89974031_381A_446E_A835_7C7B6E1FD961

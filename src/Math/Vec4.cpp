@@ -2,8 +2,6 @@
 
 #include "Mathf.h"
 
-
-
 BEG_META( XE::Vec4 )
 type->Property( "x", &Vec4::x );
 type->Property( "y", &Vec4::y );

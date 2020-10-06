@@ -2,8 +2,6 @@
 
 XE::IFrameworkPtr XE::IFramework::_CurrentFramework = nullptr;
 
-
-
 BEG_META( XE::IFramework )
 END_META()
 

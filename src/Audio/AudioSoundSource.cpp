@@ -33,6 +33,8 @@
 
 #include <AL/al.h>
 
+#include "Utils/Logger.h"
+
 #define AUDIO_FARME_SIZE 640
 
 #define CHECK_AL( X ) \

@@ -1,7 +1,5 @@
 #include "Widget.h"
 
-
-
 BEG_META( XE::Widget )
 END_META()
 

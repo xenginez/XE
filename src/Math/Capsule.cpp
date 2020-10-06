@@ -1,7 +1,5 @@
 #include "Capsule.h"
 
-
-
 BEG_META( XE::Capsule )
 type->Property( "radius", &Capsule::radius );
 type->Property( "height", &Capsule::height );

@@ -1,7 +1,5 @@
 #include "DecalComponent.h"
 
-
-
 BEG_META( XE::DecalComponent )
 END_META()
 

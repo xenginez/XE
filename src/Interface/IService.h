@@ -9,6 +9,8 @@
 #ifndef __ISERVICE_H__963670C3_A42A_4D62_844E_62A87B29D0D6
 #define __ISERVICE_H__963670C3_A42A_4D62_844E_62A87B29D0D6
 
+#include "Utils/Object.h"
+
 #include "Type.h"
 
 BEG_XE_NAMESPACE

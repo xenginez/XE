@@ -2,6 +2,8 @@
 
 #include "UserInterface.h"
 
+BEG_META( Layout )
+END_META()
 
 XE::Layout::Layout()
 	:_TopMargin( 0 ), _LeftMargin( 0 ), _BottomMargin( 0 ), _RightMargin( 0 ), _WidgetSpacing( 0 ), _SizeConstraint( SizeConstraint::MINIMUM_SIZE )

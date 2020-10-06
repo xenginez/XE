@@ -2,8 +2,6 @@
 
 #include "Node.h"
 
-
-
 BEG_META( XE::BehaviorTree )
 type->Property( "HandleAlloc", &BehaviorTree::_HandleAlloc, IMetaProperty::NoDesign );
 type->Property( "Root", &BehaviorTree::_Root, IMetaProperty::NoDesign );

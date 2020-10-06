@@ -2,8 +2,6 @@
 
 #include "Key.h"
 
-
-
 BEG_META( XE::AIModule )
 type->Property( "Name", &AIModule::_Name );
 type->Property( "Keys", &AIModule::_Keys );

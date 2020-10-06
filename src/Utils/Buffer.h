@@ -128,4 +128,28 @@ public:
 	}
 };
 
+template<> struct XE::BufferReadable< std::string >
+{
+	static void Read( XE::Buffer & buf, std::string & val )
+	{
+		std::string::size_type size = 0;
+
+		buf.Read( size );
+
+		val.resize( size );
+
+		buf.Read( ( char * ) val.data(), size );
+	}
+};
+
+template<> struct XE::BufferWirteable< std::string >
+{
+	static void Wirte( XE::Buffer & buf, const std::string & val )
+	{
+		buf.Wirte( val.size() );
+
+		buf.Wirte( val.c_str(), val.size() );
+	}
+};
+
 #endif // BUFFER_H__E817FF86_E6FC_4F72_B38E_70A67AFE6BF9

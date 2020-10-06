@@ -9,7 +9,13 @@
 #ifndef __TYPE_H__B9857ED9_F6EE_4A0A_8E87_0DAA433A5E40
 #define __TYPE_H__B9857ED9_F6EE_4A0A_8E87_0DAA433A5E40
 
-#include "Global.h"
+#include <memory>
+#include <string>
+#include <chrono>
+#include <sstream>
+#include <iomanip>
+
+#include "Base/Config.h"
 
 namespace std
 {
@@ -51,10 +57,6 @@ namespace std
 
 	template< typename T > inline constexpr bool is_shared_ptr_v = is_shared_ptr<T>::value;
 
-	template< typename T > inline bool is_ready( std::future< T > & _Future )
-	{
-		return _Future.valid() && _Future.wait_for( std::chrono::seconds( 0 ) ) == std::future_status::ready;
-	}
 };
 
 BEG_XE_NAMESPACE

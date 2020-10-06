@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class Event; using EventHandle = XE::Handle< XE::Event >; DECL_META_CLASS( XE_API, EventHandle );
+DECL_HANDLE( XE_API, Event );
 
 class XE_API Event
 {
@@ -33,8 +33,12 @@ public:
 	ObjectPtr recver;
 	Variant parameter;
 };
+
 DECL_META_CLASS( XE_API, Event );
 
 END_XE_NAMESPACE
+
+#define DECL_EVENT( NAME, DESC, PARAM ) \
+DLL_VAR_WEAK extern const XE::Handle<XE::Event> NAME = XE::Order::RegisterOrder< XE::EventGroup >( #NAME, DESC, XE::TypeID< PARAM >::Get() )
 
 #endif // EVENT_H__297F9FF1_F984_41D3_8EFF_6E87D3E265B5

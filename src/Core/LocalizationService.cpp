@@ -1,6 +1,6 @@
 #include "LocalizationService.h"
 
-
+#include <fstream>
 
 BEG_META( XE::LocalizationService )
 END_META()

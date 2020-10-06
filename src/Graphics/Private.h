@@ -9,6 +9,11 @@
 #ifndef PRIVATE_H__D0889097_46CE_4E49_B998_1260127343E7
 #define PRIVATE_H__D0889097_46CE_4E49_B998_1260127343E7
 
+#include <mutex>
+
+#include "Utils/Buffer.h"
+#include "Utils/Platform.h"
+
 #include "Type.h"
 
 BEG_XE_NAMESPACE

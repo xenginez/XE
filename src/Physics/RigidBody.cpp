@@ -3,8 +3,6 @@
 #include "Shape.h"
 #include "Constraint.h"
 
-
-
 BEG_META( XE::RigidBody )
 type->Property( "Shapes", &RigidBody::_Shapes );
 type->Property( "Constraints", &RigidBody::_Constraints );

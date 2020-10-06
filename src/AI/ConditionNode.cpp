@@ -2,8 +2,6 @@
 
 #include "BehaviorTree.h"
 
-
-
 BEG_META( XE::ConditionNode )
 type->Property( "Child", &ConditionNode::_Child );
 type->Property( "MultiJudgment", &ConditionNode::_MultiJudgment );

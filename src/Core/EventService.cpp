@@ -4,8 +4,6 @@
 #include <tbb/concurrent_hash_map.h>
 #include <tbb/concurrent_priority_queue.h>
 
-
-
 BEG_META( XE::EventService )
 END_META()
 
@@ -92,18 +90,18 @@ void XE::EventService::Clearup()
 
 void XE::EventService::PostEvent( XE::EventPtr val )
 {
+	if( val->recver )
+	{
+		val->recver->ProcessEvent( val );
+		if( val->accept )
+		{
+			return;
+		}
+	}
+
 	Private::ListenerMap::accessor accessor;
 	if ( _p->_Listeners.find( accessor, val->handle ) )
 	{
-		if( val->recver )
-		{
-			val->recver->ProcessEvent( val );
-			if( val->accept )
-			{
-				return;
-			}
-		}
-
 		for ( auto var : accessor->second )
 		{
 			if ( var )

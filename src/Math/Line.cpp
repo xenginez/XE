@@ -2,8 +2,6 @@
 
 #include "Mathf.h"
 
-
-
 BEG_META( XE::Line )
 type->Property( "start", &Line::start );
 type->Property( "end", &Line::end );

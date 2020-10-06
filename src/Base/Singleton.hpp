@@ -25,4 +25,6 @@ public:
 
 END_XE_NAMESPACE
 
+#define SINGLETON( TYPE ) friend class XE::Singleton< TYPE >;
+
 #endif // __SINGLETON_HPP__4F8FE7B0_3EA0_4004_BB97_87DD466307DD

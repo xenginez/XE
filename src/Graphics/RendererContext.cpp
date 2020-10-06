@@ -1,5 +1,7 @@
 #include "RendererContext.h"
 
+#include <optional>
+
 #include "Encoder.h"
 
 struct XE::RendererContext::Private

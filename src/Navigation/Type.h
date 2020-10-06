@@ -9,7 +9,7 @@
 #ifndef __TYPE_H__25FF3200_FE17_4091_8E4B_16F76E16ABC5
 #define __TYPE_H__25FF3200_FE17_4091_8E4B_16F76E16ABC5
 
-#include "Global.h"
+#include "Utils/Handle.hpp"
 
 BEG_XE_NAMESPACE
 

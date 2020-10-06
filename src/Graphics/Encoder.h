@@ -34,7 +34,7 @@ public:
 
 	void SetScissor( const XE::Rect & scissor );
 
-	void SetTransform( XE::BasicMemoryView<XE::Mat4> transform );
+	void SetTransform( XE::MemoryView transform );
 
 	void SetUniform( UniformHandle handle, XE::MemoryView mem );
 

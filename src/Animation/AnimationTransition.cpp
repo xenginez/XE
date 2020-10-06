@@ -2,8 +2,6 @@
 
 #include "AnimationCondition.h"
 
-
-
 BEG_META( XE::AnimationTransition )
 type->Property( "State", &AnimationTransition::_State );
 type->Property( "Conditions", &AnimationTransition::_Conditions );

@@ -9,6 +9,8 @@
 #ifndef JOINT_H__E597880A_FE98_41A0_9AFB_C6EBEA13CCB1
 #define JOINT_H__E597880A_FE98_41A0_9AFB_C6EBEA13CCB1
 
+#include "Utils/Object.h"
+
 #include "Type.h"
 
 BEG_XE_NAMESPACE

@@ -1,7 +1,5 @@
 #include "LightComponent.h"
 
-
-
 BEG_META( XE::LightComponent )
 END_META()
 

@@ -9,7 +9,7 @@
 #ifndef __TYPE_H__67D32AA5_C812_4032_BD6F_E5A4FA0C221D
 #define __TYPE_H__67D32AA5_C812_4032_BD6F_E5A4FA0C221D
 
-#include "Global.h"
+#include "Reflect/Reflect.h"
 
 BEG_XE_NAMESPACE
 
@@ -745,8 +745,6 @@ enum class ThreadType
 	UNKNOWN,
 };
 DECL_META_ENUM( XE_API, ThreadType );
-
-using WindowEventPair = Pair<WindowHandle, XE::WindowEvent>;
 
 END_XE_NAMESPACE
 

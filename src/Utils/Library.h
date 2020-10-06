@@ -9,11 +9,11 @@
 #ifndef __LIBRARY_H__752AAED6_001C_4D36_A353_57FC8E154A2A
 #define __LIBRARY_H__752AAED6_001C_4D36_A353_57FC8E154A2A
 
-#include "Handle.hpp"
+#include "Utils/Handle.hpp"
 
 BEG_XE_NAMESPACE
 
-class Library; using LibraryHandle = XE::Handle< XE::Library >; DECL_META_CLASS( XE_API, LibraryHandle );
+DECL_HANDLE( XE_API, Library );
 
 class XE_API Library : public XE::Singleton< Library >
 {

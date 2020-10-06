@@ -9,7 +9,7 @@
 #ifndef __TYPE_H__63E7BFCE_AD18_4AC6_80A0_B76BA2D68A0D
 #define __TYPE_H__63E7BFCE_AD18_4AC6_80A0_B76BA2D68A0D
 
-#include "Global.h"
+#include "Utils/Handle.hpp"
 
 BEG_XE_NAMESPACE
 
@@ -17,6 +17,7 @@ DECL_PTR( Widget );
 DECL_PTR( Layout );
 DECL_PTR( UserInterface );
 
+DECL_HANDLE( XE_API, Widget );
 
 enum class Alignment
 {
@@ -68,8 +69,6 @@ enum class SizeConstraint
 };
 DECL_META_ENUM( XE_API, SizeConstraint );
 
-
-DECL_HANDLE( XE_API, Widget );
 
 END_XE_NAMESPACE
 

@@ -1,7 +1,5 @@
 #include "INavigationService.h"
 
-
-
 BEG_META( XE::INavigationService )
 END_META()
 

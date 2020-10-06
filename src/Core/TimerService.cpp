@@ -1,7 +1,5 @@
 #include "TimerService.h"
 
-
-
 BEG_META( XE::TimerService )
 END_META()
 

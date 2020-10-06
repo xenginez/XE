@@ -6,8 +6,6 @@
 #include "Condition.h"
 #include "StateMachine.h"
 
-
-
 BEG_META( XE::State )
 type->Property( "Handle", &State::_Handle, IMetaProperty::NoDesign );
 type->Property( "Conditions", &State::_Conditions );

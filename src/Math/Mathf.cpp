@@ -1,7 +1,5 @@
 #include "Mathf.h"
 
-
-
 BEG_META( XE::Mathf )
 type->Property( "Pi", &Mathf::Pi );
 type->Property( "Pi2", &Mathf::Pi2 );

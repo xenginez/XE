@@ -1,7 +1,5 @@
 #include "IRenderService.h"
 
-
-
 BEG_META( XE::IRenderService )
 END_META()
 

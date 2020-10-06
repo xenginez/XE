@@ -1,7 +1,5 @@
 #include "Key.h"
 
-
-
 BEG_META( XE::Key )
 type->Property( "Key", &Key::_Key );
 END_META()

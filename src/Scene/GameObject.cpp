@@ -7,8 +7,6 @@
 #include <Interface/IFramework.h>
 #include <Interface/IThreadService.h>
 
-
-
 BEG_META( XE::GameObject )
 type->Property( "Name", &GameObject::_Name );
 type->Property( "Handle", &GameObject::_Handle, IMetaProperty::NoDesign );

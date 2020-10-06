@@ -1,7 +1,5 @@
 #include "AnimationTrigger.h"
 
-
-
 BEG_META( XE::AnimationTrigger )
 type->Property( "Time", &AnimationTrigger::_Time );
 type->Property( "EventHandle", &AnimationTrigger::_Handle );

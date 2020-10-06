@@ -9,7 +9,8 @@
 #ifndef __TYPE_H__E9FBF2A2_BC47_464B_AAAE_44C511E818E3
 #define __TYPE_H__E9FBF2A2_BC47_464B_AAAE_44C511E818E3
 
-#include "Global.h"
+#include "Reflect/Reflect.h"
+#include "Utils/Handle.hpp"
 
 BEG_XE_NAMESPACE
 

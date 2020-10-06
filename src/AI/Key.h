@@ -9,6 +9,8 @@
 #ifndef KEY_H__88D541E2_6D11_4128_AF3F_BC8253B6A753
 #define KEY_H__88D541E2_6D11_4128_AF3F_BC8253B6A753
 
+#include "Utils/Object.h"
+
 #include "Type.h"
 
 BEG_XE_NAMESPACE

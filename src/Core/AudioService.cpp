@@ -3,6 +3,8 @@
 #include <AL/al.h>
 #include <AL/alc.h>
 
+#include "Utils/Logger.h"
+
 #define CHECK_ALC( X ) \
 { \
 	X; \

@@ -9,6 +9,8 @@
 #ifndef HIT_H__C401DD79_F933_4621_AB28_9A13DF8483CF
 #define HIT_H__C401DD79_F933_4621_AB28_9A13DF8483CF
 
+#include "Math/Vec3.h"
+
 #include "Type.h"
 
 BEG_XE_NAMESPACE

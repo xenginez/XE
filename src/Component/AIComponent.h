@@ -9,6 +9,9 @@
 #ifndef __AICOMPONENT_H__5B311461_A156_4393_B2B3_7A1587EF3F08
 #define __AICOMPONENT_H__5B311461_A156_4393_B2B3_7A1587EF3F08
 
+#include "Scene/BehaviorComponent.h"
+#include "AI/AIModule.h"
+
 #include "Type.h"
 
 BEG_XE_NAMESPACE

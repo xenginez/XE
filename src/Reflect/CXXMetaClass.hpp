@@ -600,7 +600,46 @@ template<typename ... Types> struct ClassID< std::multimap<Types...> >
 	}
 };
 
-
 END_XE_NAMESPACE
+
+#define DECL_META_CLASS_3(_DLL_EXPORT, _CLASS, _SUPER) \
+template<> struct _DLL_EXPORT XE::ClassID<_CLASS> \
+{ \
+	static XE::IMetaClassPtr Get( const _CLASS * val = nullptr ) \
+	{ \
+		static auto p = XE::MakeShared< XE::CXXMetaClass<_CLASS> >( #_CLASS, XE::ClassID<_SUPER>::Get(), nullptr ); \
+		return p; \
+	} \
+}
+#define DECL_META_CLASS_2(_DLL_EXPORT, _CLASS) \
+template<> struct _DLL_EXPORT XE::ClassID<_CLASS> \
+{ \
+	static XE::IMetaClassPtr Get( const _CLASS * val = nullptr ) \
+	{ \
+		static auto p = XE::MakeShared< XE::CXXMetaClass<_CLASS> >( #_CLASS, nullptr, nullptr ); \
+		return p; \
+	} \
+}
+#define DECL_META_CLASS(...)            MACRO_EXP_(MACRO_GLUE(DECL_META_CLASS_,MACRO_ARGS_CONTER(__VA_ARGS__))(__VA_ARGS__))
+
+#define DECL_META_CLASS_P_2(_CLASS, _SUPER) \
+template<> struct XE::ClassID<_CLASS> \
+{ \
+	static XE::IMetaClassPtr Get( const _CLASS * val = nullptr ) \
+	{ \
+		static auto p = XE::MakeShared< XE::CXXMetaClass<_CLASS> >( #_CLASS, XE::ClassID<_SUPER>::Get(), nullptr ); \
+		return p; \
+	} \
+}
+#define DECL_META_CLASS_P_1(_CLASS) \
+template<> struct XE::ClassID<_CLASS> \
+{ \
+	static XE::IMetaClassPtr Get( const _CLASS * val = nullptr ) \
+	{ \
+		static auto p = XE::MakeShared< XE::CXXMetaClass<_CLASS> >( #_CLASS, nullptr, nullptr ); \
+		return p; \
+	} \
+}
+#define DECL_META_CLASS_P(...)            MACRO_EXP_(MACRO_GLUE(DECL_META_CLASS_P_,MACRO_ARGS_CONTER(__VA_ARGS__))(__VA_ARGS__))
 
 #endif // __CXXMETACLASS_HPP__B0EBC0E5_97E9_4A1F_B8EE_EF87D334D01A

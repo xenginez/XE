@@ -33,4 +33,24 @@ public:
 
 END_XE_NAMESPACE
 
+#define DECL_META_ENUM(_DLL_EXPORT, ENUM) \
+template<> struct _DLL_EXPORT XE::EnumID<ENUM> \
+{ \
+	static XE::IMetaEnumPtr Get( const ENUM * val = nullptr ) \
+	{ \
+		static auto p = XE::MakeShared< XE::CXXMetaEnum<ENUM> >( #ENUM, nullptr ); \
+		return p; \
+	} \
+}
+
+#define DECL_META_ENUM_P(ENUM) \
+template<> struct XE::EnumID<ENUM> \
+{ \
+	static XE::IMetaEnumPtr Get( const ENUM * val = nullptr ) \
+	{ \
+		static auto p = XE::MakeShared< XE::CXXMetaEnum<ENUM> >( #ENUM, nullptr ); \
+		return p; \
+	} \
+}
+
 #endif // __CXXMETAENUM_HPP__1D036321_0050_4C40_8B6D_4EDFD9A417F4

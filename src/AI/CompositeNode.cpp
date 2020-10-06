@@ -2,8 +2,6 @@
 
 #include "BehaviorTree.h"
 
-
-
 BEG_META( XE::CompositeNode )
 type->Property( "Children", &CompositeNode::_Children );
 END_META()

@@ -1,8 +1,7 @@
 #include "Variant.h"
 
+#include <mutex>
 #include "CXXMetaClass.hpp"
-
-
 
 class VariantSharedPool : public XE::Singleton<VariantSharedPool>
 {
@@ -11,8 +10,8 @@ class VariantSharedPool : public XE::Singleton<VariantSharedPool>
 public:
 	struct Data
 	{
-		std::atomic_size_t Count;
 		XE::SharedPtr<void> Ptr;
+		std::atomic<XE::uint32> Count;
 	};
 
 private:
@@ -29,12 +28,12 @@ private:
 public:
 	XE::SharedPtr<void> * Register( XE::SharedPtr<void> val )
 	{
+		std::unique_lock<std::mutex> lock( _Lock );
+
 		if( val == nullptr )
 		{
 			return nullptr;
 		}
-
-		std::lock_guard<std::mutex> lock( Instance()->_Lock );
 
 		auto it = _Ptr.find( val.get() );
 		if( it != _Ptr.end() )
@@ -52,12 +51,12 @@ public:
 
 	void Lock( XE::SharedPtr<void> * val )
 	{
+		std::unique_lock<std::mutex> lock( _Lock );
+
 		if( val == nullptr )
 		{
 			return;
 		}
-
-		std::lock_guard<std::mutex> lock( Instance()->_Lock );
 
 		auto it = _Ptr.find( val->get() );
 		if( it != _Ptr.end() )
@@ -66,18 +65,18 @@ public:
 		}
 		else
 		{
-			std::cout << "lock error" << std::endl;
+			throw XE::RuntimeException();
 		}
 	}
 
 	void Unlock( XE::SharedPtr<void> * val )
 	{
+		std::unique_lock<std::mutex> lock( _Lock );
+
 		if( val == nullptr )
 		{
 			return;
 		}
-
-		std::lock_guard<std::mutex> lock( Instance()->_Lock );
 
 		auto it = _Ptr.find( val->get() );
 		if( it != _Ptr.end() )
@@ -90,7 +89,7 @@ public:
 		}
 		else
 		{
-			std::cout << "unlock error" << std::endl;
+			throw XE::RuntimeException();
 		}
 	}
 

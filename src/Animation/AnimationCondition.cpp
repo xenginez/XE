@@ -2,8 +2,6 @@
 
 #include "AnimationController.h"
 
-
-
 BEG_META( XE::AnimationCondition )
 END_META()
 

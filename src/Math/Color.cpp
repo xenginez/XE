@@ -2,16 +2,6 @@
 
 #include "Mathf.h"
 
-
-
-BEG_META( XE::Color )
-		type->Property("r", &Color::r);
-		type->Property("g", &Color::g);
-		type->Property("b", &Color::b);
-		type->Property("a", &Color::a);
-END_META()
-
-
 const XE::Color XE::Color::White = { 0xffffff };
 const XE::Color XE::Color::Black = { 0x000000 };
 const XE::Color XE::Color::Red = { 0xff0000 };
@@ -30,6 +20,12 @@ const XE::Color XE::Color::Gray = { 0xa0a0a4 };
 const XE::Color XE::Color::DarkGray = { 0x808080 };
 const XE::Color XE::Color::LightGray = { 0xc0c0c0 };
 
+BEG_META( XE::Color )
+		type->Property("r", &Color::r);
+		type->Property("g", &Color::g);
+		type->Property("b", &Color::b);
+		type->Property("a", &Color::a);
+END_META()
 
 XE::Color::Color()
 		:r(0), g(0), b(0), a(0)

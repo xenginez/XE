@@ -66,4 +66,12 @@ private:
 
 END_XE_NAMESPACE
 
+#define DECL_GROUP( _DLL_EXPORT, INDEX, NAME ) \
+template<> class _DLL_EXPORT XE::OrderGroup< INDEX > \
+{ \
+public: \
+    static constexpr XE::uint8 group_value = INDEX; \
+}; \
+namespace XE{ using NAME##Group = XE::OrderGroup< INDEX >; }
+
 #endif // __ORDER_H__F15EE138_6173_4905_9684_08685B5F706A

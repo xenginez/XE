@@ -41,4 +41,7 @@ private:
 
 END_XE_NAMESPACE
 
+#define XE_LOG(LEVEL, FMT, ...) \
+XE::Logger::Instance()->Log( LEVEL, XE::StringUtils::Format(FMT, __VA_ARGS__) )
+
 #endif // LOGGER_H__FABB4435_9587_4290_9EA3_18733C722EE2

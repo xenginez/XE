@@ -9,6 +9,9 @@
 #ifndef ANIMATIONTRIGGER_H__5F6822EE_2525_4899_9028_FE7E463643B0
 #define ANIMATIONTRIGGER_H__5F6822EE_2525_4899_9028_FE7E463643B0
 
+#include "Utils/Event.h"
+#include "Utils/Object.h"
+
 #include "Type.h"
 
 BEG_XE_NAMESPACE

@@ -2,8 +2,6 @@
 
 #include "Mathf.h"
 
-
-
 BEG_META( XE::Mat4 )
 type->Property( "m00", &Mat4::m00 );
 type->Property( "m01", &Mat4::m01 );

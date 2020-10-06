@@ -9,9 +9,13 @@
 #ifndef ANIMATIONCONTROLLER_H__ADFBA495_DC2D_4E46_BBC6_A81D9890F673
 #define ANIMATIONCONTROLLER_H__ADFBA495_DC2D_4E46_BBC6_A81D9890F673
 
+#include "Utils/Object.h"
+
 #include "Type.h"
 
 BEG_XE_NAMESPACE
+
+DECL_PTR( Skeleton );
 
 class XE_API AnimationController : public XE::Object
 {

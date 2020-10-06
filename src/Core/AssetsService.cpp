@@ -4,6 +4,9 @@
 #define TBB_PREVIEW_CONCURRENT_LRU_CACHE 1
 #include <tbb/concurrent_lru_cache.h>
 
+#include "Utils/Zipper.h"
+#include "Utils/Logger.h"
+
 static constexpr char * SELECT_PACKAGES = "SELECT * FROM packages;";
 static constexpr char * SELECT_ASSET = "SELECT package_name FROM assets WHERE path=\"%1\";";
 

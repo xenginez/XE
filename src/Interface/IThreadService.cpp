@@ -1,7 +1,5 @@
 #include "IThreadService.h"
 
-
-
 BEG_META( XE::IThreadService )
 END_META()
 

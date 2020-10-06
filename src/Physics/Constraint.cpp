@@ -1,7 +1,5 @@
 #include "Constraint.h"
 
-
-
 BEG_META( XE::Constraint )
 END_META()
 

@@ -9,7 +9,10 @@
 #ifndef __TYPE_H__C42D32D2_F661_421A_A1A7_D0EB0BB50848
 #define __TYPE_H__C42D32D2_F661_421A_A1A7_D0EB0BB50848
 
-#include "Global.h"
+#include "Math/Math.h"
+#include "Utils/Flags.hpp"
+#include "Utils/Handle.hpp"
+#include "Utils/Platform.h"
 
 BEG_XE_NAMESPACE
 

@@ -1,7 +1,5 @@
 #include "SpacerItem.h"
 
-
-
 BEG_META( XE::SpacerItem )
 END_META()
 

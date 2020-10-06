@@ -2,7 +2,7 @@
 
 
 
-IMPLEMENT_META( XE::Buffer )
+IMPLEMENT_META( XE::Buffer );
 
 XE::Buffer::Buffer()
 	:_ReadPos( 0 ), _WirtePos( 0 )

@@ -1,7 +1,5 @@
 #include "TerrainComponent.h"
 
-
-
 BEG_META( XE::TerrainComponent )
 END_META()
 

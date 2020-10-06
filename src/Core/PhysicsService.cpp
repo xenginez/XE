@@ -1,8 +1,8 @@
 #include "PhysicsService.h"
 
-//#include <physx/PxPhysicsAPI.h>
+// #include <PhysX/PxPhysicsAPI.h>
 
-
+#include "Utils/Logger.h"
 
 BEG_META( XE::PhysicsService )
 END_META()
@@ -15,13 +15,14 @@ struct XE::PhysicsService::Private
 };
 
 XE::PhysicsService::PhysicsService()
+	:_p( new Private )
 {
 
 }
 
 XE::PhysicsService::~PhysicsService()
 {
-
+	delete _p;
 }
 
 void XE::PhysicsService::Prepare()
@@ -42,7 +43,7 @@ bool XE::PhysicsService::Startup()
 // 	physx::PxTolerancesScale scale;
 // 
 // 	scale.length = 100;
-// 	scale.speed = GetFramework()->GetConfigService()->GetInt32( "Physicis.Gravity", 981 );
+// 	scale.speed = GetFramework()->GetInt32( "Physicis.Gravity", 981 );
 // 
 // 	_p->_Physicis = PxCreatePhysics( PX_PHYSICS_VERSION, *_p->_Foundation, scale, true, nullptr );
 // 	if( !_p->_Physicis )

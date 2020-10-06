@@ -9,9 +9,14 @@
 #ifndef ANIMATIONIKSOLVER_H__23350757_7A32_4A7D_A723_66A8ED64D4A8
 #define ANIMATIONIKSOLVER_H__23350757_7A32_4A7D_A723_66A8ED64D4A8
 
+#include "Math/Mathf.h"
+#include "Utils/Object.h"
+
 #include "Type.h"
 
 BEG_XE_NAMESPACE
+
+DECL_PTR( Skeleton );
 
 class XE_API AnimationIKEffector
 {

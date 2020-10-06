@@ -120,21 +120,6 @@ xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\recastnavigation\ /s
 del %cd%\install\ /f /s /q
 
 
-:BUILD_IMGUI
-echo "copy imgui head file to depend"
-cd %RD3_PATH%
-xcopy %cd%\imgui\imgui.cpp %RD3_PATH%\..\src\GUI\ /y
-xcopy %cd%\imgui\imgui.h %RD3_PATH%\..\src\GUI\ /y
-xcopy %cd%\imgui\imgui_demo.cpp %RD3_PATH%\..\src\GUI\ /y
-xcopy %cd%\imgui\imgui_draw.cpp %RD3_PATH%\..\src\GUI\ /y
-xcopy %cd%\imgui\imgui_widgets.cpp %RD3_PATH%\..\src\GUI\ /y
-xcopy %cd%\imgui\imgui_internal.h %RD3_PATH%\..\src\GUI\ /y
-xcopy %cd%\imgui\imconfig.h %RD3_PATH%\..\src\GUI\ /y
-xcopy %cd%\imgui\imstb_rectpack.h %RD3_PATH%\..\src\GUI\ /y
-xcopy %cd%\imgui\imstb_textedit.h %RD3_PATH%\..\src\GUI\ /y
-xcopy %cd%\imgui\imstb_truetype.h %RD3_PATH%\..\src\GUI\ /y
-
-
 :BUILD_ZLIB
 echo "build zlib debug"
 cd %RD3_PATH%
@@ -305,6 +290,20 @@ del %cd%\install\ /f /s /q
 
 
 
+
+
+:BUILD_IMGUI
+echo "copy imgui head file to depend"
+cd %RD3_PATH%
+xcopy %cd%\imgui\imgui.cpp %RD3_PATH%\..\src\GUI\ /y
+xcopy %cd%\imgui\imgui.h %RD3_PATH%\..\src\GUI\ /y
+xcopy %cd%\imgui\imgui_draw.cpp %RD3_PATH%\..\src\GUI\ /y
+xcopy %cd%\imgui\imgui_widgets.cpp %RD3_PATH%\..\src\GUI\ /y
+xcopy %cd%\imgui\imgui_internal.h %RD3_PATH%\..\src\GUI\ /y
+xcopy %cd%\imgui\imconfig.h %RD3_PATH%\..\src\GUI\ /y
+xcopy %cd%\imgui\imstb_rectpack.h %RD3_PATH%\..\src\GUI\ /y
+xcopy %cd%\imgui\imstb_textedit.h %RD3_PATH%\..\src\GUI\ /y
+xcopy %cd%\imgui\imstb_truetype.h %RD3_PATH%\..\src\GUI\ /y
 
 
 :BUILD_STB

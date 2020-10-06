@@ -1,6 +1,7 @@
 #include "IWorldService.h"
 
-
+#include "Scene/World.h"
+#include "Scene/GameObject.h"
 
 BEG_META( XE::IWorldService )
 END_META()
@@ -30,7 +31,7 @@ XE::GameObjectPtr XE::IWorldService::FindGameObject( const String & val ) const
 	return GetCurrentWorld()->FindGameObject( val );
 }
 
-XE::GameObjectPtr XE::IWorldService::FindGameObject( GameObjectHandle val ) const
+XE::GameObjectPtr XE::IWorldService::FindGameObject( const GameObjectHandle & val ) const
 {
 	return GetCurrentWorld()->FindGameObject( val );
 }

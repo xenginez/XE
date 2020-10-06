@@ -9,7 +9,7 @@
 #ifndef __TYPE_H__73959EA8_D866_4007_8631_FA5571A35593
 #define __TYPE_H__73959EA8_D866_4007_8631_FA5571A35593
 
-#include "Global.h"
+#include "Utils/Handle.hpp"
 
 BEG_XE_NAMESPACE
 
@@ -22,6 +22,9 @@ DECL_PTR( BehaviorTree );
 DECL_PTR( State );
 DECL_PTR( Condition );
 DECL_PTR( StateMachine );
+
+DECL_HANDLE( XE_API, Node );
+DECL_HANDLE( XE_API, State );
 
 class Key;
 template<typename T> class KeyT;
@@ -43,10 +46,6 @@ enum class ConditionStatus
 	Always,
 };
 DECL_META_ENUM( XE_API, ConditionStatus );
-
-
-DECL_HANDLE( XE_API, Node );
-DECL_HANDLE( XE_API, State );
 
 END_XE_NAMESPACE
 

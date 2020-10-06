@@ -1,7 +1,5 @@
 #include "Item.h"
 
-
-
 BEG_META( XE::Item )
 type->Property( "Name", &Item::_Name );
 END_META()

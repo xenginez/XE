@@ -9,6 +9,8 @@
 #ifndef RENDERERCONTEXT_H__759BB776_4331_4BA8_AAB0_8AA62934A3A5
 #define RENDERERCONTEXT_H__759BB776_4331_4BA8_AAB0_8AA62934A3A5
 
+#include <optional>
+
 #include "Type.h"
 #include "Private.h"
 

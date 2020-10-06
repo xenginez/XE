@@ -9,7 +9,7 @@
 #ifndef __TYPE_H__C1BC0FEB_0FFF_431E_9A82_D643BD9D302F
 #define __TYPE_H__C1BC0FEB_0FFF_431E_9A82_D643BD9D302F
 
-#include "Global.h"
+#include "Reflect/Reflect.h"
 
 BEG_XE_NAMESPACE
 

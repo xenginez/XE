@@ -5,8 +5,6 @@
 #include "AABB.h"
 #include "Plane.h"
 
-
-
 BEG_META( XE::Sphere )
 type->Property( "center", &Sphere::center );
 type->Property( "radius", &Sphere::radius );

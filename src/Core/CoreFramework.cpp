@@ -1,5 +1,16 @@
 #include "CoreFramework.h"
 
+#include <fstream>
+
+#include <rapidjson/rapidjson.h>
+#include <rapidjson/document.h>
+#include <rapidjson/prettywriter.h>
+#include <rapidjson/istreamwrapper.h>
+#include <rapidjson/ostreamwrapper.h>
+
+#include "Utils/Logger.h"
+#include "Utils/Library.h"
+
 #include "TimerService.h"
 #include "EventService.h"
 #include "AudioService.h"
@@ -11,12 +22,6 @@
 #include "PhysicsService.h"
 #include "NavigationService.h"
 #include "LocalizationService.h"
-
-#include <rapidjson/rapidjson.h>
-#include <rapidjson/document.h>
-#include <rapidjson/prettywriter.h>
-#include <rapidjson/istreamwrapper.h>
-#include <rapidjson/ostreamwrapper.h>
 
 void nest_json( rapidjson::Value & parent, std::vector<std::string>::const_iterator beg, std::vector<std::string>::const_iterator end, const std::string & str, rapidjson::MemoryPoolAllocator<> & allocator )
 {

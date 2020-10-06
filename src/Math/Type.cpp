@@ -1,7 +1,5 @@
 #include "Type.h"
 
-
-
 BEG_META( XE::SideType )
 type->Value( "NOOP", SideType::NOOP );
 type->Value( "BOTH", SideType::BOTH );

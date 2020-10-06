@@ -1,7 +1,5 @@
 #include "IService.h"
 
-
-
 BEG_META( XE::IService )
 END_META()
 

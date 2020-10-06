@@ -2,8 +2,6 @@
 
 #include "Mathf.h"
 
-
-
 BEG_META( XE::Rect )
 END_META()
 

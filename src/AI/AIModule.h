@@ -9,6 +9,8 @@
 #ifndef __AIMODULE_H__A590ED03_BAEC_4291_90B5_DBFC9EB9A475
 #define __AIMODULE_H__A590ED03_BAEC_4291_90B5_DBFC9EB9A475
 
+#include "Utils/Object.h"
+
 #include "Type.h"
 
 BEG_XE_NAMESPACE

@@ -2,8 +2,6 @@
 
 #include "Animator.h"
 
-
-
 BEG_META( XE::AnimationController )
 type->Property( "Enable", &AnimationController::_Enable );
 type->Property( "Animators", &AnimationController::_Animators );

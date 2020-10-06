@@ -1,7 +1,5 @@
 #include "AIComponent.h"
 
-
-
 BEG_META( XE::AIComponent )
 type->Property( "AIModules", &AIComponent::_AIModules );
 END_META()

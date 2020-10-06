@@ -1,8 +1,8 @@
 #include "DecoratorNode.h"
 
+#include "Math/Mathf.h"
+
 #include "BehaviorTree.h"
-
-
 
 BEG_META( XE::DecoratorNode )
 type->Property( "Child", &DecoratorNode::_Child );

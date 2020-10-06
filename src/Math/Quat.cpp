@@ -2,8 +2,6 @@
 
 #include "Mathf.h"
 
-
-
 BEG_META( XE::Quat )
 type->Property( "x", &Quat::x );
 type->Property( "y", &Quat::y );

@@ -9,7 +9,7 @@
 #ifndef __BASE64_H__42CDEC97_29D9_428E_94CF_C482E8BA58C4
 #define __BASE64_H__42CDEC97_29D9_428E_94CF_C482E8BA58C4
 
-#include "Global.h"
+#include "Type.h"
 
 BEG_XE_NAMESPACE
 

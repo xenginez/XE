@@ -9,11 +9,10 @@
 #ifndef __TYPE_H__EB1374C2_88D3_4E49_9C23_BF526801C55A
 #define __TYPE_H__EB1374C2_88D3_4E49_9C23_BF526801C55A
 
-#include "Global.h"
+#include "Reflect/Reflect.h"
 
 BEG_XE_NAMESPACE
 
-DECL_PTR( AudioSound );
 DECL_PTR( AudioSoundSource );
 
 END_XE_NAMESPACE

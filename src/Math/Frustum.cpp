@@ -1,7 +1,5 @@
 #include "Frustum.h"
 
-
-
 BEG_META( XE::Frustum )
 type->Property( "top", &Frustum::top );
 type->Property( "bottom", &Frustum::bottom );

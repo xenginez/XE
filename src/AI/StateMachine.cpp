@@ -3,8 +3,6 @@
 #include "State.h"
 #include "Condition.h"
 
-
-
 BEG_META( XE::StateMachine )
 type->Property( "Root", &StateMachine::_Root );
 type->Property( "States", &StateMachine::_States );

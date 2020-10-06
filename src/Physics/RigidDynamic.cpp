@@ -1,7 +1,5 @@
 #include "RigidDynamic.h"
 
-
-
 BEG_META( XE::RigidDynamic )
 END_META()
 

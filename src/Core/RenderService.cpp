@@ -1,13 +1,15 @@
 #include "RenderService.h"
 
-
+#include "Graphics/Graphics.h"
 
 BEG_META( XE::RenderService )
 END_META()
 
 struct XE::RenderService::Private
 {
-
+	XE::Array<XE::LightPtr> _Lights;
+	XE::Array<XE::CameraPtr> _Cameras;
+	XE::Array<XE::RenderablePtr> _Renderables;
 };
 
 XE::RenderService::RenderService()
@@ -154,18 +156,15 @@ void XE::RenderService::UnregisterRenderable( const XE::RenderablePtr & val )
 
 const XE::Array<XE::LightPtr> & XE::RenderService::GetLights() const
 {
-	return {};
-	//return _p->_Lights;
+	return _p->_Lights;
 }
 
 const XE::Array<XE::CameraPtr> & XE::RenderService::GetCameras() const
 {
-	return {};
-	//return _p->_Cameras;
+	return _p->_Cameras;
 }
 
 const XE::Array<XE::RenderablePtr> & XE::RenderService::GetRenderables() const
 {
-	return {};
-	//return _p->_Renderables;
+	return _p->_Renderables;
 }

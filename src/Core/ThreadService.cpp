@@ -2,8 +2,6 @@
 
 #include <tbb/concurrent_queue.h>
 
-
-
 BEG_META( XE::ThreadService )
 END_META()
 

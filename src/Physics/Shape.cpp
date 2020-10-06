@@ -2,8 +2,6 @@
 
 #include "PhysicsMaterial.h"
 
-
-
 BEG_META( XE::Shape )
 type->Property( "Material", &Shape::_Material );
 END_META()

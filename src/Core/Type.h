@@ -9,7 +9,7 @@
 #ifndef __TYPE_H__14214677_E236_47F9_92B5_48295B609787
 #define __TYPE_H__14214677_E236_47F9_92B5_48295B609787
 
-#include "Global.h"
+#include "Interface/Interface.h"
 
 BEG_XE_NAMESPACE
 

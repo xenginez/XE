@@ -62,7 +62,7 @@ XE::Logger::Logger()
 								{
 									if( listener.second )
 									{
-										listener.second( std::ref(node.time), node.level, std::ref( node.msg ) );
+										listener.second( std::ref( node.time ), node.level, std::ref( node.msg ) );
 									}
 								}
 							}
@@ -104,7 +104,6 @@ void XE::Logger::Log( LoggerLevel level, const std::string & text )
 	node.msg = text;
 	node.level = level;
 	node.time = std::chrono::system_clock::now();
-
 
 	_p->_Queue.push( std::move( node ) );
 

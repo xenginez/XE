@@ -1,7 +1,5 @@
 #include "ParticleComponent.h"
 
-
-
 BEG_META( XE::ParticleComponent )
 END_META()
 

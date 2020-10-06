@@ -1,7 +1,5 @@
 #include "Type.h"
 
-
-
 BEG_META( XE::KeyCode )
 type->Value( "None", XE::KeyCode::None );
 type->Value( "Backspace", XE::KeyCode::Backspace );

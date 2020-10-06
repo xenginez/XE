@@ -2,8 +2,6 @@
 
 #include "GameObject.h"
 
-
-
 BEG_META( XE::Component )
 type->Property( "Name", &Component::_Name );
 type->Property( "Handle", &Component::_Handle, IMetaProperty::NoDesign | IMetaProperty::NoClone );

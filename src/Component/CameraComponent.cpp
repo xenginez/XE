@@ -1,7 +1,5 @@
 #include "CameraComponent.h"
 
-
-
 BEG_META( XE::CameraComponent )
 END_META()
 

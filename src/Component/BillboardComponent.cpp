@@ -1,7 +1,5 @@
 #include "BillboardComponent.h"
 
-
-
 BEG_META( XE::BillboardComponent )
 END_META()
 

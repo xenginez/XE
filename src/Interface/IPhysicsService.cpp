@@ -1,7 +1,5 @@
 #include "IPhysicsService.h"
 
-
-
 BEG_META( XE::IPhysicsService )
 END_META()
 

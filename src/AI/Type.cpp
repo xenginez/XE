@@ -1,7 +1,5 @@
 #include "Type.h"
 
-
-
 BEG_META( XE::NodeStatus )
 type->Value( "None", XE::NodeStatus::None );
 type->Value( "Running", XE::NodeStatus::Running );

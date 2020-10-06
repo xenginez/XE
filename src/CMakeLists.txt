@@ -51,10 +51,15 @@ Utils)
 add_custom_command(TARGET XE
 				POST_BUILD
 				COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_CURRENT_SOURCE_DIR}/../target/include/"
+				COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_CURRENT_SOURCE_DIR}/../target/include/"
 				COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_SOURCE_DIR}/XE.h" "${CMAKE_CURRENT_SOURCE_DIR}/../target/include/"
 				)
 
 foreach(INC_DIR ${INC_DIRS})
+		add_custom_command(TARGET XE
+				POST_BUILD
+				COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_CURRENT_SOURCE_DIR}/../target/include/${INC_DIR}/"
+				)
 
 	FILE(GLOB INC_FILES ${INC_DIR}/*.h ${INC_DIR}/*.hpp ${INC_DIR}/*.inc)
 	foreach (INC_FILE ${INC_FILES})
@@ -63,11 +68,13 @@ foreach(INC_DIR ${INC_DIRS})
 				COMMAND ${CMAKE_COMMAND} -E copy ${INC_FILE} "${CMAKE_CURRENT_SOURCE_DIR}/../target/include/${INC_DIR}/"
 				)
 	endforeach (INC_FILE)
-
-	message("copy include: " ${INC_DIR})
-
 endforeach (INC_DIR)
 
+
+add_custom_command(TARGET XE
+		POST_BUILD
+		COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_CURRENT_SOURCE_DIR}/../target/${XE_CONFIG}/bin/"
+		)
 FILE(GLOB LIBRARY_FILES ../depend/bin/${XE_PLATFORM}/${XE_CONFIG}/*.*)
 foreach (LIBRARY_FILE ${LIBRARY_FILES})
 	add_custom_command(TARGET XE

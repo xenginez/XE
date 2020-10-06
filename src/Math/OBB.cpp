@@ -2,8 +2,6 @@
 
 #include "AABB.h"
 
-
-
 BEG_META( XE::OBB );
 type->Property( "center", &OBB::center );
 type->Property( "extent", &OBB::extent );

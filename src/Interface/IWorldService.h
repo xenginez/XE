@@ -9,9 +9,15 @@
 #ifndef __IWORLDSERVICE_H__1CE0128D_8AE2_434B_BF15_97B410BA145D
 #define __IWORLDSERVICE_H__1CE0128D_8AE2_434B_BF15_97B410BA145D
 
+#include "Math/Math.h"
+
 #include "IService.h"
 
 BEG_XE_NAMESPACE
+
+DECL_PTR( World );
+DECL_PTR( GameObject );
+using GameObjectHandle = XE::Handle<GameObject>;
 
 class XE_API IWorldService : public IService
 {
@@ -32,7 +38,7 @@ public:
 
 	GameObjectPtr FindGameObject( const String & val ) const;
 
-	GameObjectPtr FindGameObject( GameObjectHandle val ) const;
+	GameObjectPtr FindGameObject( const GameObjectHandle & val ) const;
 
 	const Array< GameObjectPtr > & GetGameObjects() const;
 

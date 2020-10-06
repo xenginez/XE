@@ -1,6 +1,7 @@
 #include "WorldService.h"
 
-
+#include "Scene/World.h"
+#include "Scene/GameObject.h"
 
 BEG_META( XE::WorldService )
 END_META()

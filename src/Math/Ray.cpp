@@ -5,8 +5,6 @@
 #include "Plane.h"
 #include "Sphere.h"
 
-
-
 BEG_META( XE::Ray )
 type->Property( "origin", &Ray::origin );
 type->Property( "direction", &Ray::direction );

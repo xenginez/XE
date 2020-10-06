@@ -9,7 +9,16 @@
 #ifndef __TYPE_H__6AF9B68A_CAEE_4C9A_88C7_E1903198CC04
 #define __TYPE_H__6AF9B68A_CAEE_4C9A_88C7_E1903198CC04
 
-#include "Global.h"
+#include <set>
+#include <map>
+#include <list>
+#include <deque>
+#include <stack>
+#include <queue>
+#include <unordered_set>
+#include <unordered_map>
+
+#include "Base/Base.h"
 
 BEG_XE_NAMESPACE
 

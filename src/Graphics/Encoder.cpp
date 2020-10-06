@@ -1,5 +1,7 @@
 #include "Encoder.h"
 
+#include <mutex>
+
 #include "Private.h"
 
 XE::MemoryView CopyToFrame( XE::Frame * frame, XE::MemoryView mem )
@@ -58,13 +60,13 @@ void XE::Encoder::SetScissor( const XE::Rect & scissor )
 	_p->_Draw.Scissor = scissor;
 }
 
-void XE::Encoder::SetTransform( XE::BasicMemoryView<XE::Mat4> transform )
+void XE::Encoder::SetTransform( XE::MemoryView transform )
 {
 	XE::uint64 start = _p->_Frame->TransformsSize;
 
 	while( !_p->_Frame->TransformsSize.compare_exchange_weak( start, start + transform.size() ) );
 
-	std::memcpy( &_p->_Frame->Transforms[start], transform.data(), transform.size() * sizeof( XE::Mat4 ) );
+	std::memcpy( &_p->_Frame->Transforms[start], transform.data(), transform.size() );
 
 	_p->_Draw.StartMatrix = start;
 	_p->_Draw.NumMatrices = transform.size();

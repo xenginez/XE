@@ -405,4 +405,6 @@ template< typename T > bool operator==( XE::uint64 left, XE::Handle< T > right )
 
 template< typename T > const XE::Handle<T> XE::Handle<T>::Invalid( std::numeric_limits<XE::uint64>::max() );
 
+#define DECL_HANDLE( _DLL_EXPORT, NAME ) class NAME; using NAME##Handle = XE::Handle< NAME >; DECL_META_CLASS( _DLL_EXPORT, NAME##Handle );using NAME##HandleAllocator = XE::HandleAllocator< XE::Handle< NAME > >; DECL_META_CLASS( _DLL_EXPORT, NAME##HandleAllocator );
+
 #endif // __HANDLE_HPP__7920C1A9_2044_45F0_84C4_221961C006AF

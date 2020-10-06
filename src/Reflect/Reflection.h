@@ -87,4 +87,55 @@ private:
 
 END_XE_NAMESPACE
 
+#define BEG_META( CLASS ) \
+namespace XE \
+{ \
+	template<> struct MetaDataCollector< CLASS > \
+	{ \
+		typedef CLASS ThisType; \
+		MetaDataCollector() \
+		{ \
+			auto type = std::conditional_t< std::is_enum< ThisType >::value, XE::Reflection::Enum< ThisType >, XE::Reflection::Class< ThisType > >::Get();
+
+#define END_META() \
+			XE::Reflection::RegisterMetaInfo( type ); \
+		} \
+		static void Use() \
+		{ \
+			XE::ActiveSingleton< XE::MetaDataCollector<ThisType> >::Register(); \
+		} \
+	}; \
+};
+
+#define IMPLEMENT_META(CLASS) BEG_META(CLASS) END_META()
+
+#define OBJECT_2(_CLASS, _SUPER) \
+	template< typename T > friend struct XE::MetaDataCollector; \
+public: \
+    typedef _SUPER Super; \
+	static XE::IMetaClassPtr GetMetaClassStatic() \
+	{ \
+		static auto p = XE::MakeShared< XE::CXXMetaClass<_CLASS> >( #_CLASS, XE::ClassID<_SUPER>::Get(), nullptr ); \
+		return p; \
+	} \
+	virtual XE::IMetaClassPtr GetMetaClass() const \
+	{ \
+		return GetMetaClassStatic(); \
+	} \
+private:
+#define OBJECT_1(_CLASS) \
+	template< typename T > friend struct XE::MetaDataCollector; \
+public: \
+	static XE::IMetaClassPtr GetMetaClassStatic() \
+	{ \
+		static auto p = XE::MakeShared< XE::CXXMetaClass<_CLASS> >( #_CLASS, nullptr, nullptr ); \
+		return p; \
+	} \
+	virtual XE::IMetaClassPtr GetMetaClass() const \
+	{ \
+		return GetMetaClassStatic(); \
+	} \
+private:
+#define OBJECT(...)            MACRO_EXP_(MACRO_GLUE(OBJECT_,MACRO_ARGS_CONTER(__VA_ARGS__))(__VA_ARGS__))
+
 #endif // __REFLECTION_H__7A09BEF6_4373_410D_94CD_7AF277A37AB3

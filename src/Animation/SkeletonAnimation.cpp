@@ -1,7 +1,5 @@
 #include "SkeletonAnimation.h"
 
-
-
 BEG_META( XE::SkeletonAnimationKey )
 type->Property( "Time", &SkeletonAnimationKey::GetTime, &SkeletonAnimationKey::SetTime );
 type->Property( "Position", &SkeletonAnimationKey::GetPosition, &SkeletonAnimationKey::SetPosition );

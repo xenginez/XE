@@ -9,7 +9,7 @@
 #ifndef __TYPE_H__BB848F51_DB84_4BE8_9C2D_C6B7F7E738A9
 #define __TYPE_H__BB848F51_DB84_4BE8_9C2D_C6B7F7E738A9
 
-#include "Global.h"
+#include "Utils/Handle.hpp"
 
 BEG_XE_NAMESPACE
 
@@ -20,6 +20,8 @@ DECL_PTR( SceneComponent );
 DECL_PTR( RenderComponent );
 DECL_PTR( BehaviorComponent );
 
+DECL_HANDLE( XE_API, Component );
+DECL_HANDLE( XE_API, GameObject );
 
 enum class GameObjectType
 {
@@ -28,9 +30,6 @@ enum class GameObjectType
 };
 DECL_META_ENUM( XE_API, GameObjectType );
 
-
-DECL_HANDLE( XE_API, Component );
-DECL_HANDLE( XE_API, GameObject );
 
 END_XE_NAMESPACE
 

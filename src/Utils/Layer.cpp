@@ -1,7 +1,5 @@
 #include "Layer.h"
 
-
-
 BEG_META( XE::Layer )
 type->Property( "Value", &Layer::GetValue, &Layer::SetValue );
 END_META()

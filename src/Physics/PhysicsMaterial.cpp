@@ -1,7 +1,5 @@
 #include "PhysicsMaterial.h"
 
-
-
 BEG_META( XE::PhysicsMaterial )
 type->Property( "Flag", &PhysicsMaterial::_Flag );
 type->Property( "Restitution", &PhysicsMaterial::_Restitution );

@@ -9,6 +9,10 @@
 #ifndef SHAPE_H__888F3A03_457E_43C2_9762_4007ECABA020
 #define SHAPE_H__888F3A03_457E_43C2_9762_4007ECABA020
 
+#include "Math/Math.h"
+#include "Utils/Layer.h"
+#include "Utils/Object.h"
+
 #include "Type.h"
 
 BEG_XE_NAMESPACE

@@ -5,7 +5,6 @@
 #include <Interface/IFramework.h>
 #include <Interface/IThreadService.h>
 
-
 BEG_META( XE::SceneComponent )
 type->Property( "Children", &SceneComponent::_Children, IMetaProperty::NoDesign );
 type->Property( "WorldTransform", &SceneComponent::_WorldTransform, IMetaProperty::NoDesign );

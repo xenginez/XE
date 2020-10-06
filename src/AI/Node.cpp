@@ -2,8 +2,6 @@
 
 #include "BehaviorTree.h"
 
-
-
 BEG_META( XE::Node )
 type->Property( "Parent", &XE::Node::_Parent, XE::IMetaProperty::NoDesign );
 type->Property( "Handle", &XE::Node::_Handle, XE::IMetaProperty::NoDesign );

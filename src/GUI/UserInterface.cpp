@@ -2,8 +2,6 @@
 
 #include "Widget.h"
 
-
-
 BEG_META( XE::UserInterface )
 END_META()
 

@@ -1,7 +1,5 @@
 #include "InputService.h"
 
-
-
 BEG_META( XE::InputService )
 END_META()
 

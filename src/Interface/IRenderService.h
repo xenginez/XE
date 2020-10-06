@@ -13,6 +13,10 @@
 
 BEG_XE_NAMESPACE
 
+DECL_PTR( Light );
+DECL_PTR( Camera );
+DECL_PTR( Renderable );
+
 class XE_API IRenderService : public IService
 {
 	OBJECT( IRenderService, IService )

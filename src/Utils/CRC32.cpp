@@ -1,9 +1,7 @@
 #include "CRC32.h"
 
 
-
-BEG_META( XE::CRC32 )
-END_META()
+IMPLEMENT_META( XE::CRC32 );
 
 
 static unsigned int crc32_table[] = {

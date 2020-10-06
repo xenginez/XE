@@ -9,6 +9,9 @@
 #ifndef RIGIDBODY_H__F9398FC0_E3E7_4E55_99AF_8A689017D38B
 #define RIGIDBODY_H__F9398FC0_E3E7_4E55_99AF_8A689017D38B
 
+#include "Math/Math.h"
+#include "Utils/Object.h"
+
 #include "Type.h"
 
 BEG_XE_NAMESPACE

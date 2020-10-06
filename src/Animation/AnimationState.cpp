@@ -3,8 +3,6 @@
 #include "AnimationTrigger.h"
 #include "AnimationController.h"
 
-
-
 BEG_META( XE::AnimationState )
 type->Property( "Looped", &AnimationState::_Looped );
 type->Property( "WaitOut", &AnimationState::_WaitOut );

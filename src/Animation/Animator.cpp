@@ -3,8 +3,6 @@
 #include "AnimationState.h"
 #include "AnimationTransition.h"
 
-
-
 BEG_META( XE::Animator )
 type->Property( "Name", &Animator::_Name );
 type->Property( "Enable", &Animator::_Enable );

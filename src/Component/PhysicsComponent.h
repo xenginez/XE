@@ -9,13 +9,15 @@
 #ifndef __PHYSICSCOMPONENT_H__06889AFB_D509_4C0A_AB26_53F551A07B0B
 #define __PHYSICSCOMPONENT_H__06889AFB_D509_4C0A_AB26_53F551A07B0B
 
+#include "Scene/SceneComponent.h"
+
 #include "Type.h"
 
 BEG_XE_NAMESPACE
 
-class XE_API PhysicsComponent : public BehaviorComponent
+class XE_API PhysicsComponent : public SceneComponent
 {
-	OBJECT( PhysicsComponent, BehaviorComponent )
+	OBJECT( PhysicsComponent, SceneComponent )
 public:
 	PhysicsComponent();
 

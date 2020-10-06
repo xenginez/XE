@@ -9,6 +9,8 @@
 #ifndef ITEM_H__06FDB718_96FC_4CE4_94A5_5D05106F608B
 #define ITEM_H__06FDB718_96FC_4CE4_94A5_5D05106F608B
 
+#include "Utils/Object.h"
+
 #include "Type.h"
 
 BEG_XE_NAMESPACE
