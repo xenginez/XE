@@ -185,7 +185,7 @@ void XE::AssetsService::AsyncLoad( const XE::FileSystem::Path & path, const Load
 	}
 	else
 	{
-		( void ) GetFramework()->GetThreadService()->PostTask( ThreadType::IO, [=]()
+		GetFramework()->GetThreadService()->PostTask( ThreadType::IO, [=]()
 															   {
 																   callback( Load( path ) );
 															   } );
@@ -218,7 +218,7 @@ void XE::AssetsService::AsyncLoadObject( const XE::FileSystem::Path & path, cons
 	}
 	else
 	{
-		( void ) GetFramework()->GetThreadService()->PostTask( ThreadType::IO, [=]()
+		GetFramework()->GetThreadService()->PostTask( ThreadType::IO, [=]()
 															   {
 																   callback( LoadObject( path ) );
 															   } );
