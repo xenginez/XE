@@ -27,33 +27,37 @@ set RD3_PATH=%cd%
 echo "update git submodule"
 git submodule update --init --recursive
 
-:BUILD_IK
+:BUILD_OZZ
 cd %RD3_PATH%
-echo "build ik debug"
-mkdir .\ik\build
-cd .\ik\build
-cmake -DIK_LIB_TYPE=SHARED -DIK_PRECISION=float -DIK_PIC=OFF -DCMAKE_INSTALL_PREFIX=.\install\ .. -G "Visual Studio 16 2019" 
+echo "build ozz-animation debug"
+mkdir .\ozz-animation\build
+cd .\ozz-animation\build
+cmake -Dozz_build_msvc_rt_dll=ON -Dozz_build_fbx=OFF -Dozz_build_gltf=OFF -Dozz_build_howtos=OFF -Dozz_build_postfix=OFF -Dozz_build_samples=OFF -Dozz_build_simd_ref=ON -Dozz_build_tests=OFF -Dozz_build_tools=OFF -Dozz_run_tests_headless=OFF -DCMAKE_INSTALL_PREFIX=.\install\ .. -G "Visual Studio 16 2019" 
 msbuild.exe ".\INSTALL.vcxproj"  /m /nr:true ^
     /p:Configuration=Debug ^
     /p:Platform=x64 ^
     /p:AppxBundlePlatforms=x64 ^
     /p:UseSubFolderForOutputDirDuringMultiPlatformBuild=false
 
-echo "copy ik debug file to depend"
-xcopy %cd%\install\lib\*.* %RD3_PATH%\..\depend\lib\win\debug\ /s /e /y
-xcopy %cd%\install\bin\*.* %RD3_PATH%\..\depend\bin\win\debug\ /s /e /y
+echo "copy ozz-animation debug file to depend"
+xcopy %cd%\install\lib\ozz_animation.lib %RD3_PATH%\..\depend\lib\win\debug\ /y
+xcopy %cd%\install\lib\ozz_base.lib %RD3_PATH%\..\depend\lib\win\debug\ /y
+xcopy %cd%\install\lib\ozz_geometry.lib %RD3_PATH%\..\depend\lib\win\debug\ /y
+xcopy %cd%\install\lib\ozz_options.lib %RD3_PATH%\..\depend\lib\win\debug\ /y
 del %cd%\install\ /f /s /q
 
-echo "build ik release"
+echo "build ozz-animation release"
 msbuild.exe ".\INSTALL.vcxproj"  /m /nr:true ^
     /p:Configuration=Release ^
     /p:Platform=x64 ^
     /p:AppxBundlePlatforms=x64 ^
     /p:UseSubFolderForOutputDirDuringMultiPlatformBuild=false
 
-echo "copy ik release file to depend"
-xcopy %cd%\install\lib\*.* %RD3_PATH%\..\depend\lib\win\release\ /s /e /y
-xcopy %cd%\install\bin\*.* %RD3_PATH%\..\depend\bin\win\release\ /s /e /y
+echo "copy ozz-animation release file to depend"
+xcopy %cd%\install\lib\ozz_animation.lib %RD3_PATH%\..\depend\lib\win\release\ /y
+xcopy %cd%\install\lib\ozz_base.lib %RD3_PATH%\..\depend\lib\win\release\ /y
+xcopy %cd%\install\lib\ozz_geometry.lib %RD3_PATH%\..\depend\lib\win\release\ /y
+xcopy %cd%\install\lib\ozz_options.lib %RD3_PATH%\..\depend\lib\win\release\ /y
 xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\ /s /e /y
 del %cd%\install\ /f /s /q
 
@@ -133,7 +137,7 @@ msbuild.exe ".\INSTALL.vcxproj"  /m /nr:true ^
     /p:UseSubFolderForOutputDirDuringMultiPlatformBuild=false
     
 echo "copy zlib debug file to depend"
-xcopy %cd%\install\lib\*.* %RD3_PATH%\..\depend\lib\win\debug\ /s /e /y
+xcopy %cd%\install\lib\zlibd.lib %RD3_PATH%\..\depend\lib\win\debug\ /s /e /y
 xcopy %cd%\install\bin\*.* %RD3_PATH%\..\depend\bin\win\debug\ /s /e /y
 del %cd%\install\ /f /s /q
 
@@ -147,7 +151,7 @@ msbuild.exe ".\INSTALL.vcxproj"  /m /nr:true ^
     /p:AppxBundlePlatforms=x64 ^
     /p:UseSubFolderForOutputDirDuringMultiPlatformBuild=false
 echo "copy zlib release file to depend"
-xcopy %cd%\install\lib\*.* %RD3_PATH%\..\depend\lib\win\release\ /s /e /y
+xcopy %cd%\install\lib\zlib.lib %RD3_PATH%\..\depend\lib\win\release\ /s /e /y
 xcopy %cd%\install\bin\*.* %RD3_PATH%\..\depend\bin\win\release\ /s /e /y
 xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\ /s /e /y
 del %cd%\install\ /f /s /q
@@ -217,8 +221,8 @@ msbuild.exe ".\INSTALL.vcxproj"  /m /nr:true ^
     /p:UseSubFolderForOutputDirDuringMultiPlatformBuild=false
 
 echo "copy openal debug file to depend"
-xcopy %cd%\install\lib\*.lib %RD3_PATH%\..\depend\lib\win\debug\ /s /e /y
-xcopy %cd%\install\bin\*.dll %RD3_PATH%\..\depend\bin\win\debug\ /s /e /y
+xcopy %cd%\install\lib\*.lib %RD3_PATH%\..\depend\lib\win\debug\ /e /y
+xcopy %cd%\install\bin\*.dll %RD3_PATH%\..\depend\bin\win\debug\ /e /y
 del %cd%\install\ /f /s /q
 
 echo "build openal release"
@@ -231,8 +235,8 @@ msbuild.exe ".\INSTALL.vcxproj"  /m /nr:true ^
     /p:AppxBundlePlatforms=x64 ^
     /p:UseSubFolderForOutputDirDuringMultiPlatformBuild=false
 echo "copy openal release file to depend"
-xcopy %cd%\install\lib\*.lib %RD3_PATH%\..\depend\lib\win\release\ /s /e /y
-xcopy %cd%\install\bin\*.dll %RD3_PATH%\..\depend\bin\win\release\ /s /e /y
+xcopy %cd%\install\lib\*.lib %RD3_PATH%\..\depend\lib\win\release\ /e /y
+xcopy %cd%\install\bin\*.dll %RD3_PATH%\..\depend\bin\win\release\ /e /y
 xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\ /s /e /y
 del %cd%\install\ /f /s /q
 
