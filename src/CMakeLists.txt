@@ -7,7 +7,6 @@ target_compile_definitions(XE PRIVATE -DXE_EXPORT)
 
 target_link_libraries(XE
 		Detour
-		ik
 		PhysXCharacterKinematic_static_64
 		PhysXCommon_64
 		PhysXCooking_64
@@ -23,6 +22,10 @@ target_link_libraries(XE
 		zlib${XE_ZLIB_POSTFIX}
 		OpenAL32
 		sqlite3
+		ozz_animation
+		ozz_base
+		ozz_geometry
+		ozz_options
 		)
 
 set(INC_DIRS 
