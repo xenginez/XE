@@ -6,10 +6,7 @@ add_library(XE ${XE_LIB_TYPE} ${SOURCE_FILES})
 target_compile_definitions(XE PRIVATE -DXE_EXPORT)
 
 target_link_libraries(XE
-		DebugUtils
 		Detour
-		DetourCrowd
-		DetourTileCache
 		ik
 		PhysXCharacterKinematic_static_64
 		PhysXCommon_64
@@ -20,7 +17,6 @@ target_link_libraries(XE
 		PhysXTask_static_64
 		PhysXVehicle_static_64
 		PhysX_64
-		Recast
 		tbb${XE_TBB_POSTFIX}
 		tbbmalloc${XE_TBB_POSTFIX}
 		tbbmalloc_proxy${XE_TBB_POSTFIX}
