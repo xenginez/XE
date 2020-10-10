@@ -205,6 +205,7 @@ xcopy %cd%\PhysX\physx\install\vc15win64\PhysX\bin\win.x86_64.vc142.md\release\*
 xcopy %cd%\PhysX\physx\install\vc15win64\PhysX\bin\win.x86_64.vc142.md\release\*.pdb %RD3_PATH%\..\depend\bin\win\release\ /s /e /y
 xcopy %cd%\PhysX\physx\install\vc15win64\PhysX\bin\win.x86_64.vc142.md\release\*.lib %RD3_PATH%\..\depend\lib\win\release\ /s /e /y
 xcopy %cd%\PhysX\physx\install\vc15win64\PhysX\include\*.* %RD3_PATH%\..\depend\include\PhysX\ /s /e /y
+xcopy %cd%\PhysX\physx\install\vc15win64\PxShared\include\*.* %RD3_PATH%\..\depend\include\PhysX\ /s /e /y
 del %cd%\PhysX\physx\install\ /f /s /q
 
 
