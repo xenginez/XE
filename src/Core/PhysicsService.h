@@ -37,7 +37,9 @@ public:
 public:
 	XE::PhysicsSceneHandle CreateScene() override;
 
-	void ReleaseScene( XE::PhysicsSceneHandle val ) override;
+	void ReleaseScene( XE::PhysicsSceneHandle handle ) override;
+
+	void * FindScene( XE::PhysicsSceneHandle handle ) override;
 
 private:
 	Private * _p;

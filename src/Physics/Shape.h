@@ -94,6 +94,24 @@ private:
 	XE::AABB _Box;
 };
 
+class XE_API PlaneShape : public Shape
+{
+	OBJECT( PlaneShape, Shape )
+
+public:
+	PlaneShape();
+
+	~PlaneShape() override;
+
+public:
+	const XE::Plane & GetPlane() const;
+
+	void SetPlane( const XE::Plane & val );
+
+private:
+	XE::Plane _Plane;
+};
+
 class XE_API SphereShape : public Shape
 {
 	OBJECT( SphereShape, Shape )
@@ -128,24 +146,6 @@ public:
 
 private:
 	XE::Capsule _Capsule;
-};
-
-class XE_API PlaneShape : public Shape
-{
-	OBJECT( PlaneShape, Shape )
-
-public:
-	PlaneShape();
-
-	~PlaneShape() override;
-
-public:
-	const XE::Plane & GetPlane() const;
-
-	void SetPlane( const XE::Plane & val );
-
-private:
-	XE::Plane _Plane;
 };
 
 class XE_API HeightFieldShape : public Shape

@@ -26,9 +26,11 @@ public:
 	~IPhysicsService() override;
 
 public:
-	virtual XE::PhysicsSceneHandle CreateScene();
+	virtual XE::PhysicsSceneHandle CreateScene() = 0;
 
-	virtual void ReleaseScene( XE::PhysicsSceneHandle val );
+	virtual void ReleaseScene( XE::PhysicsSceneHandle val ) = 0;
+
+	virtual void * FindScene( XE::PhysicsSceneHandle handle ) = 0;
 
 };
 

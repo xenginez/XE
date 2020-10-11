@@ -125,12 +125,13 @@ bool XE::PhysicsService::Startup()
 		return false;
 	}
 
-	_p->_Physicis = PxCreatePhysics( PX_PHYSICS_VERSION, *_p->_Foundation, scale, false, nullptr );
+	_p->_Physicis = PxCreateBasePhysics( PX_PHYSICS_VERSION, *_p->_Foundation, scale, false, nullptr );
 	if( !_p->_Physicis )
 	{
 		XE_LOG( LoggerLevel::Error, "PxCreatePhysics failed!" );
 		return false;
 	}
+	PxRegisterHeightFields( *_p->_Physicis );
 
 	return true;
 }
@@ -197,14 +198,25 @@ XE::PhysicsSceneHandle XE::PhysicsService::CreateScene()
 	return handle;
 }
 
-void XE::PhysicsService::ReleaseScene( XE::PhysicsSceneHandle val )
+void XE::PhysicsService::ReleaseScene( XE::PhysicsSceneHandle handle )
 {
-	if( val )
+	if( handle )
 	{
 		tbb::concurrent_hash_map<XE::PhysicsSceneHandle, physx::PxScene *>::accessor accessor;
-		if( _p->_Scenes.find( accessor, val ) )
+		if( _p->_Scenes.find( accessor, handle ) )
 		{
 			_p->_Scenes.erase( accessor );
 		}
 	}
+}
+
+void * XE::PhysicsService::FindScene( XE::PhysicsSceneHandle handle )
+{
+	tbb::concurrent_hash_map<XE::PhysicsSceneHandle, physx::PxScene *>::accessor accessor;
+	if( _p->_Scenes.find( accessor, handle ) )
+	{
+		return accessor->second;
+	}
+
+	return nullptr;
 }

@@ -10,6 +10,7 @@
 #define PHYSICSSCENE_H__FB446DFF_5426_40D5_B375_25BB7F184281
 
 #include "Utils/Object.h"
+#include "Utils/Flags.hpp"
 
 #include "Type.h"
 
@@ -30,6 +31,27 @@ public:
 	void Clearup();
 
 	XE::PhysicsSceneHandle GetHandle() const;
+
+public:
+	XE::Flags<XE::PhysicsSceneFlag> GetFlag() const;
+
+	void SetFlag( XE::Flags<XE::PhysicsSceneFlag> flags );
+
+	XE::Vec3 GetGravity() const;
+
+	void SetGravity( const XE::Vec3 & val );
+
+	XE::float32 GetThresholdVelocity() const;
+
+	void SetThresholdVelocity( XE::float32 val );
+
+	XE::uint32 GetCCDMaxPasses() const;
+
+	void SetCCDMaxPasses( XE::uint32 val );
+
+	XE::FrictionType GetFrictionType() const;
+
+	void SetFrictionType( XE::FrictionType val );
 
 private:
 	XE::PhysicsSceneHandle _Handle;
