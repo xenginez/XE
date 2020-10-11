@@ -13,6 +13,9 @@
 
 BEG_XE_NAMESPACE
 
+DECL_PTR( PhysicsScene );
+using PhysicsSceneHandle = XE::Handle<PhysicsScene>;
+
 class XE_API IPhysicsService : public IService
 {
 	OBJECT( IPhysicsService, IService )
@@ -21,6 +24,11 @@ public:
 	IPhysicsService();
 
 	~IPhysicsService() override;
+
+public:
+	virtual XE::PhysicsSceneHandle CreateScene();
+
+	virtual void ReleaseScene( XE::PhysicsSceneHandle val );
 
 };
 

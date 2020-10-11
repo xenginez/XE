@@ -16,11 +16,14 @@ BEG_XE_NAMESPACE
 DECL_PTR( Shape );
 DECL_PTR( RigidBody );
 DECL_PTR( Constraint );
+DECL_PTR( PhysicsScene );
 DECL_PTR( PhysicsMaterial );
 
 DECL_HANDLE( XE_API, Shape );
 DECL_HANDLE( XE_API, RigidBody );
 DECL_HANDLE( XE_API, Constraint );
+DECL_HANDLE( XE_API, PhysicsScene );
+DECL_HANDLE( XE_API, PhysicsMaterial );
 
 enum ShapeFlag
 {

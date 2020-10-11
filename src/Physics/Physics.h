@@ -13,6 +13,7 @@
 #include "Shape.h"
 #include "RigidBody.h"
 #include "Constraint.h"
+#include "PhysicsScene.h"
 #include "PhysicsMaterial.h"
 
 #endif // PHYSICS_H__B00CBAE6_CFD6_4654_9D6D_F89F7C62299B

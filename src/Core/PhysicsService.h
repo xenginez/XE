@@ -34,6 +34,11 @@ public:
 
 	void Clearup() override;
 
+public:
+	XE::PhysicsSceneHandle CreateScene() override;
+
+	void ReleaseScene( XE::PhysicsSceneHandle val ) override;
+
 private:
 	Private * _p;
 };

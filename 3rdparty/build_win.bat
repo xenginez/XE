@@ -187,9 +187,15 @@ msbuild.exe "%cd%\PhysX\physx\compiler\vc16win64\INSTALL.vcxproj"  /m /nr:true ^
     /p:UseSubFolderForOutputDirDuringMultiPlatformBuild=false
 
 echo "copy phyxs debug file to depend"
-xcopy %cd%\PhysX\physx\install\vc15win64\PhysX\bin\win.x86_64.vc142.md\debug\*.dll %RD3_PATH%\..\depend\bin\win\debug\ /s /e /y
-xcopy %cd%\PhysX\physx\install\vc15win64\PhysX\bin\win.x86_64.vc142.md\debug\*.pdb %RD3_PATH%\..\depend\bin\win\debug\ /s /e /y
-xcopy %cd%\PhysX\physx\install\vc15win64\PhysX\bin\win.x86_64.vc142.md\debug\*.lib %RD3_PATH%\..\depend\lib\win\debug\ /s /e /y
+xcopy %cd%\PhysX\physx\install\vc15win64\PhysX\bin\win.x86_64.vc142.md\debug\PhysX_64.dll %RD3_PATH%\..\depend\bin\win\debug\ /y
+xcopy %cd%\PhysX\physx\install\vc15win64\PhysX\bin\win.x86_64.vc142.md\debug\PhysXCommon_64.dll %RD3_PATH%\..\depend\bin\win\debug\ /y
+xcopy %cd%\PhysX\physx\install\vc15win64\PhysX\bin\win.x86_64.vc142.md\debug\PhysXFoundation_64.dll %RD3_PATH%\..\depend\bin\win\debug\ /y
+xcopy %cd%\PhysX\physx\install\vc15win64\PhysX\bin\win.x86_64.vc142.md\debug\PhysX_64.pdb %RD3_PATH%\..\depend\bin\win\debug\ /y
+xcopy %cd%\PhysX\physx\install\vc15win64\PhysX\bin\win.x86_64.vc142.md\debug\PhysXCommon_64.pdb %RD3_PATH%\..\depend\bin\win\debug\ /y
+xcopy %cd%\PhysX\physx\install\vc15win64\PhysX\bin\win.x86_64.vc142.md\debug\PhysXFoundation_64.pdb %RD3_PATH%\..\depend\bin\win\debug\ /y
+xcopy %cd%\PhysX\physx\install\vc15win64\PhysX\bin\win.x86_64.vc142.md\debug\PhysX_64.lib %RD3_PATH%\..\depend\lib\win\debug\ /y
+xcopy %cd%\PhysX\physx\install\vc15win64\PhysX\bin\win.x86_64.vc142.md\debug\PhysXCommon_64.lib %RD3_PATH%\..\depend\lib\win\debug\ /y
+xcopy %cd%\PhysX\physx\install\vc15win64\PhysX\bin\win.x86_64.vc142.md\debug\PhysXFoundation_64.lib %RD3_PATH%\..\depend\lib\win\debug\ /y
 del %cd%\PhysX\physx\install\ /f /s /q
 
 echo "build phyxs release"
@@ -204,6 +210,17 @@ echo "copy phyxs release file to depend"
 xcopy %cd%\PhysX\physx\install\vc15win64\PhysX\bin\win.x86_64.vc142.md\release\*.dll %RD3_PATH%\..\depend\bin\win\release\ /s /e /y
 xcopy %cd%\PhysX\physx\install\vc15win64\PhysX\bin\win.x86_64.vc142.md\release\*.pdb %RD3_PATH%\..\depend\bin\win\release\ /s /e /y
 xcopy %cd%\PhysX\physx\install\vc15win64\PhysX\bin\win.x86_64.vc142.md\release\*.lib %RD3_PATH%\..\depend\lib\win\release\ /s /e /y
+
+xcopy %cd%\PhysX\physx\install\vc15win64\PhysX\bin\win.x86_64.vc142.md\release\PhysX_64.dll %RD3_PATH%\..\depend\bin\win\release\ /y
+xcopy %cd%\PhysX\physx\install\vc15win64\PhysX\bin\win.x86_64.vc142.md\release\PhysXCommon_64.dll %RD3_PATH%\..\depend\bin\win\release\ /y
+xcopy %cd%\PhysX\physx\install\vc15win64\PhysX\bin\win.x86_64.vc142.md\release\PhysXFoundation_64.dll %RD3_PATH%\..\depend\bin\win\release\ /y
+xcopy %cd%\PhysX\physx\install\vc15win64\PhysX\bin\win.x86_64.vc142.md\release\PhysX_64.pdb %RD3_PATH%\..\depend\bin\win\release\ /y
+xcopy %cd%\PhysX\physx\install\vc15win64\PhysX\bin\win.x86_64.vc142.md\release\PhysXCommon_64.pdb %RD3_PATH%\..\depend\bin\win\release\ /y
+xcopy %cd%\PhysX\physx\install\vc15win64\PhysX\bin\win.x86_64.vc142.md\release\PhysXFoundation_64.pdb %RD3_PATH%\..\depend\bin\win\release\ /y
+xcopy %cd%\PhysX\physx\install\vc15win64\PhysX\bin\win.x86_64.vc142.md\release\PhysX_64.lib %RD3_PATH%\..\depend\lib\win\release\ /y
+xcopy %cd%\PhysX\physx\install\vc15win64\PhysX\bin\win.x86_64.vc142.md\release\PhysXCommon_64.lib %RD3_PATH%\..\depend\lib\win\release\ /y
+xcopy %cd%\PhysX\physx\install\vc15win64\PhysX\bin\win.x86_64.vc142.md\release\PhysXFoundation_64.lib %RD3_PATH%\..\depend\lib\win\release\ /y
+
 xcopy %cd%\PhysX\physx\install\vc15win64\PhysX\include\*.* %RD3_PATH%\..\depend\include\PhysX\ /s /e /y
 xcopy %cd%\PhysX\physx\install\vc15win64\PxShared\include\*.* %RD3_PATH%\..\depend\include\PhysX\ /s /e /y
 del %cd%\PhysX\physx\install\ /f /s /q
