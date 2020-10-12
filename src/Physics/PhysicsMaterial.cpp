@@ -1,7 +1,7 @@
 #include "PhysicsMaterial.h"
 
 BEG_META( XE::PhysicsMaterial )
-type->Property( "Flag", &PhysicsMaterial::_Flag );
+type->Property( "Flag", &PhysicsMaterial::_Flags );
 type->Property( "Restitution", &PhysicsMaterial::_Restitution );
 type->Property( "StaticFriction", &PhysicsMaterial::_StaticFriction );
 type->Property( "DynamicFriction", &PhysicsMaterial::_DynamicFriction );
@@ -50,16 +50,6 @@ void XE::PhysicsMaterial::SetDynamicFriction( XE::float32 val )
 	_DynamicFriction = val;
 }
 
-XE::PhysicsMaterialFlag XE::PhysicsMaterial::GetFlag() const
-{
-	return _Flag;
-}
-
-void XE::PhysicsMaterial::SetFlag( PhysicsMaterialFlag val )
-{
-	_Flag = val;
-}
-
 XE::CombineMode XE::PhysicsMaterial::GetFrictionCombineMode() const
 {
 	return _FrictionCombineMode;
@@ -78,4 +68,14 @@ XE::CombineMode XE::PhysicsMaterial::GetRestitutionCombineMode() const
 void XE::PhysicsMaterial::SetRestitutionCombineMode( CombineMode val )
 {
 	_RestitutionCombineMode = val;
+}
+
+XE::Flags<XE::PhysicsMaterialFlag> XE::PhysicsMaterial::GetFlag() const
+{
+	return _Flags;
+}
+
+void XE::PhysicsMaterial::SetFlag( XE::Flags<XE::PhysicsMaterialFlag> val )
+{
+	_Flags = val;
 }

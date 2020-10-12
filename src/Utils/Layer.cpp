@@ -5,7 +5,7 @@ type->Property( "Value", &Layer::GetValue, &Layer::SetValue );
 END_META()
 
 XE::Layer::Layer()
-	:_Value( Default )
+	:_Value( DEFAULT )
 {
 
 }

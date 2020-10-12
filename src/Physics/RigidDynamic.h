@@ -23,7 +23,7 @@ public:
 	~RigidDynamic() override;
 
 public:
-	const XE::Mat4 & GetKinematicTarget()	const;
+	const XE::Mat4 & GetKinematicTarget() const;
 
 	void SetKinematicTarget( const XE::Mat4 & val );
 

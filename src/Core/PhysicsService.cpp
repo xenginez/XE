@@ -3,7 +3,6 @@
 #include <PhysX/PxPhysicsAPI.h>
 #include <tbb/concurrent_vector.h>
 #include <tbb/scalable_allocator.h>
-#include <tbb/concurrent_hash_map.h>
 
 #include "Utils/Logger.h"
 #include "Interface/IThreadService.h"
@@ -92,8 +91,9 @@ struct XE::PhysicsService::Private
 	physx::PxFoundation * _Foundation = nullptr;
 	XEPPhysXErrorCallback _ErrorCallback;
 	XEPPhysXAllocator _AllocatorCallback;
-	XE::HandleAllocator<XE::PhysicsSceneHandle> _SceneHandleAlloc;
-	tbb::concurrent_hash_map<XE::PhysicsSceneHandle, physx::PxScene *> _Scenes;
+
+	std::mutex _ScenesMutex;
+	std::list<physx::PxScene *> _Scenes;
 };
 
 XE::PhysicsService::PhysicsService()
@@ -147,9 +147,9 @@ void XE::PhysicsService::Update()
 
 		for( auto it : _p->_Scenes )
 		{
-			it.second->fetchResults( true );
+			it->fetchResults( true );
 
-			it.second->simulate( ftime );
+			it->simulate( ftime );
 		}
 	}
 }
@@ -160,7 +160,7 @@ void XE::PhysicsService::Clearup()
 
 	for( auto it : _p->_Scenes )
 	{
-		it.second->release();
+		it->release();
 	}
 	_p->_Scenes.clear();
 
@@ -191,32 +191,37 @@ XE::PhysicsSceneHandle XE::PhysicsService::CreateScene()
 		return XE::PhysicsSceneHandle::Invalid;
 	}
 
-	auto handle = _p->_SceneHandleAlloc.Alloc();
+	{
+		std::unique_lock<std::mutex> lock( _p->_ScenesMutex );
+		_p->_Scenes.push_back( scene );
+	}
 
-	_p->_Scenes.insert( { handle, scene } );
-
-	return handle;
+	return { reinterpret_cast< XE::uint64 >( scene ) };
 }
 
 void XE::PhysicsService::ReleaseScene( XE::PhysicsSceneHandle handle )
 {
 	if( handle )
 	{
-		tbb::concurrent_hash_map<XE::PhysicsSceneHandle, physx::PxScene *>::accessor accessor;
-		if( _p->_Scenes.find( accessor, handle ) )
+		physx::PxScene * scene = reinterpret_cast< physx::PxScene * >( handle.GetValue() );
+		if( scene )
 		{
-			_p->_Scenes.erase( accessor );
+			{
+				std::unique_lock<std::mutex> lock( _p->_ScenesMutex );
+				auto it = std::find( _p->_Scenes.begin(), _p->_Scenes.end(), scene );
+				if( it != _p->_Scenes.end() )
+				{
+					_p->_Scenes.erase( it );
+				}
+			}
+
+			scene->release();
 		}
 	}
 }
 
-void * XE::PhysicsService::FindScene( XE::PhysicsSceneHandle handle )
+XE::PhysicsSceneHandle XE::PhysicsService::GetFirstScene() const
 {
-	tbb::concurrent_hash_map<XE::PhysicsSceneHandle, physx::PxScene *>::accessor accessor;
-	if( _p->_Scenes.find( accessor, handle ) )
-	{
-		return accessor->second;
-	}
-
-	return nullptr;
+	std::unique_lock<std::mutex> lock( _p->_ScenesMutex );
+	return { reinterpret_cast< XE::uint64 >( _p->_Scenes.front() ) };
 }

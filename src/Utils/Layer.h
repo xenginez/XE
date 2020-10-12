@@ -16,7 +16,7 @@ BEG_XE_NAMESPACE
 class XE_API Layer
 {
 public:
-	static constexpr XE::uint64 Default = std::numeric_limits<XE::uint64>::max();
+	static constexpr XE::uint64 DEFAULT = std::numeric_limits<XE::uint64>::max();
 
 public:
 	Layer();

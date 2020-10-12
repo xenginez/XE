@@ -10,6 +10,7 @@
 #define PHYSICSMATERIAL_H__6AD29062_3EA4_4E14_B361_D3FB8DBEE49B
 
 #include "Utils/Object.h"
+#include "Utils/Flags.hpp"
 
 #include "Type.h"
 
@@ -25,10 +26,6 @@ public:
 	~PhysicsMaterial() override;
 
 public:
-	PhysicsMaterialFlag	GetFlag() const;
-
-	void SetFlag( PhysicsMaterialFlag val );
-
 	XE::float32 GetRestitution() const;
 
 	void SetRestitution( XE::float32 val );
@@ -49,13 +46,17 @@ public:
 
 	void SetRestitutionCombineMode( CombineMode val );
 
+	XE::Flags<PhysicsMaterialFlag>	GetFlag() const;
+
+	void SetFlag( XE::Flags<PhysicsMaterialFlag> val );
+
 private:
-	PhysicsMaterialFlag _Flag;
 	XE::float32 _Restitution;
 	XE::float32 _StaticFriction;
 	XE::float32 _DynamicFriction;
 	CombineMode _FrictionCombineMode;
 	CombineMode _RestitutionCombineMode;
+	XE::Flags<PhysicsMaterialFlag> _Flags;
 };
 
 END_XE_NAMESPACE

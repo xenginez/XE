@@ -274,4 +274,6 @@ template< typename T > bool operator !=( T left, XE::Flags< T > right )
 	return XE::MakeFlags( left ) != right;
 }
 
+#define DECL_META_FLAGS( EXPORT, TYPE, NAME ) DECL_META_ENUM( EXPORT, TYPE ); using NAME = XE::Flags< TYPE >
+
 #endif // FLAGS_HPP__C8E5511D_71B9_46C1_A4BF_35B5E8ADBDF3

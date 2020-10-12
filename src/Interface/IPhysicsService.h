@@ -30,7 +30,7 @@ public:
 
 	virtual void ReleaseScene( XE::PhysicsSceneHandle val ) = 0;
 
-	virtual void * FindScene( XE::PhysicsSceneHandle handle ) = 0;
+	virtual XE::PhysicsSceneHandle GetFirstScene() const = 0;
 
 };
 

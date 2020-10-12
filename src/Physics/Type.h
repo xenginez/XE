@@ -9,6 +9,7 @@
 #ifndef __TYPE_H__1C1C3DA4_0D11_418D_8EC6_B03DB2644537
 #define __TYPE_H__1C1C3DA4_0D11_418D_8EC6_B03DB2644537
 
+#include "Utils/Flags.hpp"
 #include "Utils/Handle.hpp"
 
 BEG_XE_NAMESPACE
@@ -39,7 +40,7 @@ enum class ShapeFlag
 	TRIGGER_SHAPE = 1 << 2,
 	VISUALIZATION = 1 << 3,
 };
-DECL_META_ENUM( XE_API, ShapeFlag );
+DECL_META_FLAGS( XE_API, ShapeFlag, ShapeFlags );
 
 enum class FrictionType
 {
@@ -68,7 +69,14 @@ enum class PhysicsSceneFlag
 	ENABLE_FRICTION_EVERY_ITERATION = 1 << 15,
 	MUTABLE_FLAGS = ENABLE_ACTIVE_ACTORS | EXCLUDE_KINEMATICS_FROM_ACTIVE_ACTORS,
 };
-DECL_META_ENUM( XE_API, PhysicsSceneFlag );
+DECL_META_FLAGS( XE_API, PhysicsSceneFlag, PhysicsSceneFlags );
+
+enum class PhysicsQueryFlag
+{
+	STATIC = 1 << 0,
+	DYNAMIC = 1 << 1,
+};
+DECL_META_FLAGS( XE_API, PhysicsQueryFlag, PhysicsQueryFlags );
 
 enum class PhysicsMaterialFlag
 {
@@ -76,7 +84,7 @@ enum class PhysicsMaterialFlag
 	DISABLE_STRONG_FRICTION = 1 << 1,
 	IMPROVED_PATCH_FRICTION = 1 << 2,
 };
-DECL_META_ENUM( XE_API, PhysicsMaterialFlag );
+DECL_META_FLAGS( XE_API, PhysicsMaterialFlag, PhysicsMaterialFlags );
 
 enum class CombineMode
 {
