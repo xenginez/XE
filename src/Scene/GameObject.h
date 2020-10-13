@@ -9,26 +9,18 @@
 #ifndef __GAMEOBJECT_H__ECCC67A6_5AD3_4306_8C14_915D53744BBA
 #define __GAMEOBJECT_H__ECCC67A6_5AD3_4306_8C14_915D53744BBA
 
-#include "Math/Math.h"
-#include "Utils/Object.h"
-
-#include "Type.h"
+#include "Entity.h"
 
 BEG_XE_NAMESPACE
 
-class XE_API GameObject : public XE::Object
+class XE_API GameObject : public XE::Entity
 {
-	OBJECT( GameObject, Object )
-
-	friend class World;
+	OBJECT( GameObject, Entity )
 
 public:
 	GameObject();
 
 	~GameObject();
-
-public:
-	GameObjectHandle GetHandle() const;
 
 public:
 	const XE::AABB & GetBoundingBox() const;
@@ -82,17 +74,9 @@ public:
 	void SetRelativeTransform( const Mat4 & val );
 
 public:
-	bool GetEnabled() const;
-
-	void SetEnabled( bool val );
-
 	GameObjectType GetType() const;
 
 	void SetType( GameObjectType val );
-
-	const String & GetName() const;
-
-	void SetName( const String & val );
 
 public:
 	SceneComponentPtr AddSceneComponent( IMetaClassPtr val, const SceneComponentPtr& parent );
@@ -134,17 +118,19 @@ public:
 	void ProcessEvent( EventPtr & val ) override;
 
 protected:
-	void Startup();
+	void Startup() override;
 
-	void Update( XE::float32 dt );
+	void Update( XE::float32 dt ) override;
 
-	void Clearup();
+	void Clearup() override;
+
+protected:
+	void OnEnable() override;
+
+	void OnDisable() override;
 
 private:
-	String _Name;
-	bool _Enabled;
 	GameObjectType _Type;
-	GameObjectHandle _Handle;
 	SceneComponentPtr _RootSceneComponent;
 	XE::ComponentHandleAllocator _HandleTable;
 	XE::Array< BehaviorComponentPtr > _BehaviorComponents;

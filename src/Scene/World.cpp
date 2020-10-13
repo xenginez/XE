@@ -1,7 +1,5 @@
 #include "World.h"
 
-#include "GameObject.h"
-
 #include <Interface/IFramework.h>
 #include <Interface/IThreadService.h>
 
@@ -9,7 +7,7 @@
 
 BEG_META( XE::World )
 type->Property( "Name", &World::_Name );
-type->Property( "GameObjects", &World::_GameObjects );
+type->Property( "Entities", &World::_Entities );
 type->Property( "HandleTable", &World::_HandleTable, XE::IMetaProperty::NoDesign );
 END_META()
 
@@ -33,38 +31,32 @@ void XE::World::SetName( const String & val )
 	_Name = val;
 }
 
-bool XE::World::AddGameObject( const GameObjectPtr & val )
+bool XE::World::AddEntity( const EntityPtr & val )
 {
-	auto it = std::find( _GameObjects.begin(), _GameObjects.end(), val );
-	if( it != _GameObjects.end() )
+	auto it = std::find( _Entities.begin(), _Entities.end(), val );
+	if( it != _Entities.end() )
 	{
 		return false;
 	}
 
 	val->_Handle = _HandleTable.Alloc();
 
-	XE::IFramework::GetCurrentFramework()->GetThreadService()->PostTask( ThreadType::GAME, [val]()
-																				  {
-																					  val->Startup();
-																				  } );
+	val->Startup();
 
-	_GameObjects.push_back( val );
+	_Entities.push_back( val );
 
 	return true;
 }
 
-bool XE::World::RemoveGameObject( const XE::GameObjectPtr & val )
+bool XE::World::RemoveEntity( const XE::EntityPtr & val )
 {
-	auto it = std::find( _GameObjects.begin(), _GameObjects.end(), val );
+	auto it = std::find( _Entities.begin(), _Entities.end(), val );
 
-	if( it != _GameObjects.end() )
+	if( it != _Entities.end() )
 	{
-		_GameObjects.erase( it );
+		_Entities.erase( it );
 
-		XE::IFramework::GetCurrentFramework()->GetThreadService()->PostTask( ThreadType::GAME, [val]()
-																					  {
-																						  val->Clearup();
-																					  } );
+		val->Clearup();
 
 		return true;
 	}
@@ -72,9 +64,9 @@ bool XE::World::RemoveGameObject( const XE::GameObjectPtr & val )
 	return false;
 }
 
-XE::GameObjectPtr XE::World::FindGameObject( const String & val ) const
+XE::EntityPtr XE::World::FindEntity( const String & val ) const
 {
-	for( const auto & obj : _GameObjects )
+	for( const auto & obj : _Entities )
 	{
 		if( obj->GetName() == val )
 		{
@@ -85,9 +77,9 @@ XE::GameObjectPtr XE::World::FindGameObject( const String & val ) const
 	return nullptr;
 }
 
-XE::GameObjectPtr XE::World::FindGameObject( GameObjectHandle val ) const
+XE::EntityPtr XE::World::FindEntity( EntityHandle val ) const
 {
-	for( const auto & obj : _GameObjects )
+	for( const auto & obj : _Entities )
 	{
 		if( obj->GetHandle() == val )
 		{
@@ -98,207 +90,39 @@ XE::GameObjectPtr XE::World::FindGameObject( GameObjectHandle val ) const
 	return nullptr;
 }
 
-const XE::Array< XE::GameObjectPtr > & XE::World::GetGameObjects() const
+const XE::Array< XE::EntityPtr > & XE::World::GetEntitys() const
 {
-	return _GameObjects;
-}
-
-XE::GameObjectPtr XE::World::Intersect( const Array<GameObjectPtr> exclude, const Ray & val ) const
-{
-	if( GameObjectPtr obj = _StaticTree.Intersect( val, exclude ) )
-	{
-		return obj;
-	}
-	if( GameObjectPtr obj = _DynmicTree.Intersect( val, exclude ) )
-	{
-		return obj;
-	}
-	return nullptr;
-}
-
-XE::GameObjectPtr XE::World::Intersect( const Array<GameObjectPtr> exclude, const AABB & val ) const
-{
-	if( GameObjectPtr obj = _StaticTree.Intersect( val, exclude ) )
-	{
-		return obj;
-	}
-	if( GameObjectPtr obj = _DynmicTree.Intersect( val, exclude ) )
-	{
-		return obj;
-	}
-	return nullptr;
-}
-
-XE::GameObjectPtr XE::World::Intersect( const Array<GameObjectPtr> exclude, const Line & val ) const
-{
-	if( GameObjectPtr obj = _StaticTree.Intersect( val, exclude ) )
-	{
-		return obj;
-	}
-	if( GameObjectPtr obj = _DynmicTree.Intersect( val, exclude ) )
-	{
-		return obj;
-	}
-	return nullptr;
-}
-
-XE::GameObjectPtr XE::World::Intersect( const Array<GameObjectPtr> exclude, const Plane & val ) const
-{
-	if( GameObjectPtr obj = _StaticTree.Intersect( val, exclude ) )
-	{
-		return obj;
-	}
-	if( GameObjectPtr obj = _DynmicTree.Intersect( val, exclude ) )
-	{
-		return obj;
-	}
-	return nullptr;
-}
-
-XE::GameObjectPtr XE::World::Intersect( const Array<GameObjectPtr> exclude, const Sphere & val ) const
-{
-	if( GameObjectPtr obj = _StaticTree.Intersect( val, exclude ) )
-	{
-		return obj;
-	}
-	if( GameObjectPtr obj = _DynmicTree.Intersect( val, exclude ) )
-	{
-		return obj;
-	}
-	return nullptr;
-}
-
-XE::GameObjectPtr XE::World::Intersect( const Array<GameObjectPtr> exclude, const Frustum & val ) const
-{
-	if( GameObjectPtr obj = _StaticTree.Intersect( val, exclude ) )
-	{
-		return obj;
-	}
-	if( GameObjectPtr obj = _DynmicTree.Intersect( val, exclude ) )
-	{
-		return obj;
-	}
-	return nullptr;
-}
-
-XE::Array<XE::GameObjectPtr> XE::World::Intersects( const Ray & val ) const
-{
-	XE::Array<XE::GameObjectPtr> static_objects = _StaticTree.Intersects( val );
-
-	XE::Array<XE::GameObjectPtr> dynmic_objects = _DynmicTree.Intersects( val );
-
-	static_objects.insert( static_objects.end(), dynmic_objects.begin(), dynmic_objects.end() );
-
-	return std::move( static_objects );
-}
-
-XE::Array<XE::GameObjectPtr> XE::World::Intersects( const AABB & val ) const
-{
-	XE::Array<XE::GameObjectPtr> static_objects = _StaticTree.Intersects( val );
-
-	XE::Array<XE::GameObjectPtr> dynmic_objects = _DynmicTree.Intersects( val );
-
-	static_objects.insert( static_objects.end(), dynmic_objects.begin(), dynmic_objects.end() );
-
-	return std::move( static_objects );
-}
-
-XE::Array<XE::GameObjectPtr> XE::World::Intersects( const Line & val ) const
-{
-	XE::Array<XE::GameObjectPtr> static_objects = _StaticTree.Intersects( val );
-
-	XE::Array<XE::GameObjectPtr> dynmic_objects = _DynmicTree.Intersects( val );
-
-	static_objects.insert( static_objects.end(), dynmic_objects.begin(), dynmic_objects.end() );
-
-	return std::move( static_objects );
-}
-
-XE::Array<XE::GameObjectPtr> XE::World::Intersects( const Plane & val ) const
-{
-	XE::Array<XE::GameObjectPtr> static_objects = _StaticTree.Intersects( val );
-
-	XE::Array<XE::GameObjectPtr> dynmic_objects = _DynmicTree.Intersects( val );
-
-	static_objects.insert( static_objects.end(), dynmic_objects.begin(), dynmic_objects.end() );
-
-	return std::move( static_objects );
-}
-
-XE::Array<XE::GameObjectPtr> XE::World::Intersects( const Sphere & val ) const
-{
-	XE::Array<XE::GameObjectPtr> static_objects = _StaticTree.Intersects( val );
-
-	XE::Array<XE::GameObjectPtr> dynmic_objects = _DynmicTree.Intersects( val );
-
-	static_objects.insert( static_objects.end(), dynmic_objects.begin(), dynmic_objects.end() );
-
-	return std::move( static_objects );
-}
-
-XE::Array<XE::GameObjectPtr> XE::World::Intersects( const Frustum & val ) const
-{
-	XE::Array<XE::GameObjectPtr> static_objects = _StaticTree.Intersects( val );
-
-	XE::Array<XE::GameObjectPtr> dynmic_objects = _DynmicTree.Intersects( val );
-
-	static_objects.insert( static_objects.end(), dynmic_objects.begin(), dynmic_objects.end() );
-
-	return std::move( static_objects );
+	return _Entities;
 }
 
 void XE::World::Startup()
 {
-	Array<GameObjectPtr> static_objs;
-	Array<GameObjectPtr> dynmic_objs;
-
-	for( auto obj : _GameObjects )
+	for( auto entity : _Entities )
 	{
-		obj->Startup();
-
-		if( obj->GetType() == GameObjectType::STATIC )
-		{
-			static_objs.push_back( obj );
-		}
-		else
-		{
-			dynmic_objs.push_back( obj );
-		}
+		entity->Startup();
 	}
-
-	_StaticTree.Rebuild( static_objs.begin(), static_objs.end() );
-	_DynmicTree.Rebuild( dynmic_objs.begin(), dynmic_objs.end() );
 }
 
 void XE::World::Update( XE::float32 dt )
 {
-	Array<GameObjectPtr> dynmic_objs;
-
-	for( XE::uint64 i = 0; i < _GameObjects.size(); ++i )
+	for( auto & entity : _Entities )
 	{
-		if( _GameObjects[i] )
+		if( entity )
 		{
-			if( _GameObjects[i]->GetEnabled() )
+			if( entity->GetEnable() )
 			{
-				_GameObjects[i]->Update( dt );
-
-				if( _GameObjects[i]->GetType() == GameObjectType::DYNAMIC )
-				{
-					dynmic_objs.push_back( _GameObjects[i] );
-				}
+				entity->Update( dt );
 			}
 		}
 	}
-
-	_DynmicTree.Rebuild( dynmic_objs.begin(), dynmic_objs.end() );
 }
 
 void XE::World::Clearup()
 {
-	for( auto obj : _GameObjects )
+	for( auto entity : _Entities )
 	{
-		obj->Clearup();
+		entity->Clearup();
 	}
 
-	_GameObjects.clear();
+	_Entities.clear();
 }

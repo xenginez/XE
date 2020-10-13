@@ -22,6 +22,9 @@ class XE_API PhysicsScene : public XE::Object
 	OBJECT( PhysicsScene, Object )
 
 public:
+	using QueryHitCallback = std::function<bool( const QueryHitResult & )>;
+
+public:
 	PhysicsScene();
 
 	~PhysicsScene();
@@ -55,19 +58,33 @@ public:
 	void SetBounceThresholdVelocity( XE::float32 val );
 
 public:
-	bool Raycast( const XE::Ray & ray, XE::float32 distance, bool multi = false, XE::PhysicsQueryFlags query = XE::PhysicsQueryFlag::DYNAMIC, const XE::Layer & layer = {} );
+	bool Raycast( const XE::Ray & ray, XE::float32 distance,
+				  const QueryHitCallback & callback, const XE::Layer & layer = {},
+				  XE::PhysicsQueryFlags query = XE::MakeFlags( XE::PhysicsQueryFlag::STATIC, XE::PhysicsQueryFlag::DYNAMIC ) );
 
-	bool Sweep( const XE::AABB & box, const XE::Vec3 & dir, XE::float32 distance, bool multi = false, XE::PhysicsQueryFlags query = XE::PhysicsQueryFlag::DYNAMIC, const XE::Layer & layer = {} );
+	bool Sweep( const XE::AABB & box, const XE::Vec3 & dir, XE::float32 distance,
+				const QueryHitCallback & callback, const XE::Layer & layer = {},
+				XE::PhysicsQueryFlags query = XE::MakeFlags( XE::PhysicsQueryFlag::STATIC, XE::PhysicsQueryFlag::DYNAMIC ) );
 
-	bool Sweep( const XE::Sphere & sphere, const XE::Vec3 & dir, XE::float32 distance, bool multi = false, XE::PhysicsQueryFlags query = XE::PhysicsQueryFlag::DYNAMIC, const XE::Layer & layer = {} );
+	bool Sweep( const XE::Sphere & sphere, const XE::Vec3 & dir, XE::float32 distance,
+				const QueryHitCallback & callback, const XE::Layer & layer = {},
+				XE::PhysicsQueryFlags query = XE::MakeFlags( XE::PhysicsQueryFlag::STATIC, XE::PhysicsQueryFlag::DYNAMIC ) );
 
-	bool Sweep( const XE::Capsule & capsule, const XE::Vec3 & dir, XE::float32 distance, bool multi = false, XE::PhysicsQueryFlags query = XE::PhysicsQueryFlag::DYNAMIC, const XE::Layer & layer = {} );
+	bool Sweep( const XE::Capsule & capsule, const XE::Vec3 & dir, XE::float32 distance,
+				const QueryHitCallback & callback, const XE::Layer & layer = {},
+				XE::PhysicsQueryFlags query = XE::MakeFlags( XE::PhysicsQueryFlag::STATIC, XE::PhysicsQueryFlag::DYNAMIC ) );
 
-	bool Overlap( const XE::AABB & box, XE::PhysicsQueryFlags query = XE::PhysicsQueryFlag::DYNAMIC, const XE::Layer & layer = {} );
+	bool Overlap( const XE::AABB & box,
+				  const QueryHitCallback & callback, const XE::Layer & layer = {},
+				  XE::PhysicsQueryFlags query = XE::MakeFlags( XE::PhysicsQueryFlag::STATIC, XE::PhysicsQueryFlag::DYNAMIC ) );
 
-	bool Overlap( const XE::Sphere & sphere, XE::PhysicsQueryFlags query = XE::PhysicsQueryFlag::DYNAMIC, const XE::Layer & layer = {} );
+	bool Overlap( const XE::Sphere & sphere,
+				  const QueryHitCallback & callback, const XE::Layer & layer = {},
+				  XE::PhysicsQueryFlags query = XE::MakeFlags( XE::PhysicsQueryFlag::STATIC, XE::PhysicsQueryFlag::DYNAMIC ) );
 
-	bool Overlap( const XE::Capsule & capsule, XE::PhysicsQueryFlags query = XE::PhysicsQueryFlag::DYNAMIC, const XE::Layer & layer = {} );
+	bool Overlap( const XE::Capsule & capsule,
+				  const QueryHitCallback & callback, const XE::Layer & layer = {},
+				  XE::PhysicsQueryFlags query = XE::MakeFlags( XE::PhysicsQueryFlag::STATIC, XE::PhysicsQueryFlag::DYNAMIC ) );
 
 private:
 	XE::PhysicsSceneHandle _Handle;

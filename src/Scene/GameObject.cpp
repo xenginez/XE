@@ -8,15 +8,12 @@
 #include <Interface/IThreadService.h>
 
 BEG_META( XE::GameObject )
-type->Property( "Name", &GameObject::_Name );
-type->Property( "Handle", &GameObject::_Handle, IMetaProperty::NoDesign );
-type->Property( "Enabled", &GameObject::GetEnabled, &GameObject::SetEnabled );
 type->Property( "RootSceneComponent", &GameObject::_RootSceneComponent, IMetaProperty::NoDesign );
 type->Property( "BehaviorComponents", &GameObject::_BehaviorComponents, IMetaProperty::NoDesign );
 END_META()
 
 XE::GameObject::GameObject()
-	:_Enabled( true ), _Type( GameObjectType::STATIC )
+	:_Type( GameObjectType::STATIC )
 {
 	_RootSceneComponent = XE::MakeShared<XE::SceneComponent>();
 	_RootSceneComponent->SetName( "Root" );
@@ -27,34 +24,9 @@ XE::GameObject::~GameObject()
 
 }
 
-XE::GameObjectHandle XE::GameObject::GetHandle() const
-{
-	return _Handle;
-}
-
 const XE::AABB & XE::GameObject::GetBoundingBox() const
 {
 	return _RootSceneComponent->GetBoundingBox();
-}
-
-bool XE::GameObject::GetEnabled() const
-{
-	return _Enabled;
-}
-
-void XE::GameObject::SetEnabled( bool val )
-{
-	if (_Enabled != val)
-	{
-		_Enabled = val;
-
-		_RootSceneComponent->SetEnabled( val );
-
-		for( auto & coms : _BehaviorComponents )
-		{
-			coms->SetEnabled( val );
-		}
-	}
 }
 
 XE::GameObjectType XE::GameObject::GetType() const
@@ -65,16 +37,6 @@ XE::GameObjectType XE::GameObject::GetType() const
 void XE::GameObject::SetType( GameObjectType val )
 {
 	_Type = val;
-}
-
-const XE::String & XE::GameObject::GetName() const
-{
-	return _Name;
-}
-
-void XE::GameObject::SetName( const XE::String & val )
-{
-	_Name = val;
 }
 
 XE::SceneComponentPtr XE::GameObject::AddSceneComponent( IMetaClassPtr val, const SceneComponentPtr & parent )
@@ -362,7 +324,7 @@ void XE::GameObject::Startup()
 
 void XE::GameObject::Update( XE::float32 dt )
 {
-	if( _Enabled == false )
+	if( GetEnable() == false )
 	{
 		return;
 	}
@@ -393,4 +355,24 @@ void XE::GameObject::Clearup()
 	}
 
 	_BehaviorComponents.clear();
+}
+
+void XE::GameObject::OnEnable()
+{
+	_RootSceneComponent->SetEnabled( GetEnable() );
+
+	for( auto & coms : _BehaviorComponents )
+	{
+		coms->SetEnabled( GetEnable() );
+	}
+}
+
+void XE::GameObject::OnDisable()
+{
+	_RootSceneComponent->SetEnabled( GetEnable() );
+
+	for( auto & coms : _BehaviorComponents )
+	{
+		coms->SetEnabled( GetEnable() );
+	}
 }

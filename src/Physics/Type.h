@@ -116,6 +116,16 @@ enum class RigidDynamicLockFlag
 };
 DECL_META_ENUM( XE_API, RigidDynamicLockFlag );
 
+struct XE_API QueryHitResult
+{
+	XE::ShapeHandle Shape;
+	XE::RigidBodyHandle Body;
+
+	XE::Vec3 Position;
+	XE::Vec3 Normal;
+	XE::float32 Depth;
+};
+
 END_XE_NAMESPACE
 
 #endif // __TYPE_H__1C1C3DA4_0D11_418D_8EC6_B03DB2644537

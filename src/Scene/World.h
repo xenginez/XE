@@ -9,7 +9,7 @@
 #ifndef WORLD_H__BEE693B5_480D_4746_BBDA_EEECB0455761
 #define WORLD_H__BEE693B5_480D_4746_BBDA_EEECB0455761
 
-#include "GameObject.h"
+#include "Entity.h"
 
 BEG_XE_NAMESPACE
 
@@ -28,41 +28,15 @@ public:
 	void SetName( const String & val );
 
 public:
-	bool AddGameObject( const GameObjectPtr & val );
+	bool AddEntity( const EntityPtr & val );
 
-	bool RemoveGameObject( const GameObjectPtr & val );
+	bool RemoveEntity( const EntityPtr & val );
 
-	GameObjectPtr FindGameObject( const String & val ) const;
+	EntityPtr FindEntity( const String & val ) const;
 
-	GameObjectPtr FindGameObject( GameObjectHandle val ) const;
+	EntityPtr FindEntity( EntityHandle val ) const;
 
-	const Array< GameObjectPtr > & GetGameObjects() const;
-
-public:
-	GameObjectPtr Intersect( const Array<GameObjectPtr> exclude, const Ray & val ) const;
-
-	GameObjectPtr Intersect( const Array<GameObjectPtr> exclude, const AABB & val ) const;
-
-	GameObjectPtr Intersect( const Array<GameObjectPtr> exclude, const Line & val ) const;
-
-	GameObjectPtr Intersect( const Array<GameObjectPtr> exclude, const Plane & val ) const;
-
-	GameObjectPtr Intersect( const Array<GameObjectPtr> exclude, const Sphere & val ) const;
-
-	GameObjectPtr Intersect( const Array<GameObjectPtr> exclude, const Frustum & val ) const;
-
-public:
-	Array<GameObjectPtr> Intersects( const Ray & val ) const;
-
-	Array<GameObjectPtr> Intersects( const AABB & val ) const;
-
-	Array<GameObjectPtr> Intersects( const Line & val ) const;
-
-	Array<GameObjectPtr> Intersects( const Plane & val ) const;
-
-	Array<GameObjectPtr> Intersects( const Sphere & val ) const;
-
-	Array<GameObjectPtr> Intersects( const Frustum & val ) const;
+	const Array< EntityPtr > & GetEntitys() const;
 
 public:
 	void Startup();
@@ -73,10 +47,8 @@ public:
 
 private:
 	String _Name;
-	OCTree<GameObjectPtr> _StaticTree;
-	OCTree<GameObjectPtr> _DynmicTree;
-	Array< GameObjectPtr > _GameObjects;
-	XE::GameObjectHandleAllocator _HandleTable;
+	Array< EntityPtr > _Entities;
+	XE::EntityHandleAllocator _HandleTable;
 };
 
 END_XE_NAMESPACE
