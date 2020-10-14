@@ -4,17 +4,9 @@
 #include "Constraint.h"
 
 BEG_META( XE::RigidBody )
+type->Property( "Name", &RigidBody::_Name );
 type->Property( "Shapes", &RigidBody::_Shapes );
 type->Property( "Constraints", &RigidBody::_Constraints );
-type->Property( "Mass", &RigidBody::_Mass );
-type->Property( "CenterMass", &RigidBody::_CenterMass );
-type->Property( "LinearDamping", &RigidBody::_LinearDamping );
-type->Property( "AngularDamping", &RigidBody::_AngularDamping );
-type->Property( "LinearVelocity", &RigidBody::_LinearVelocity );
-type->Property( "AngularVelocity", &RigidBody::_AngularVelocity );
-type->Property( "MaxLinearVelocity", &RigidBody::_MaxLinearVelocity );
-type->Property( "MaxAngularVelocity", &RigidBody::_MaxAngularVelocity );
-type->Property( "MassSpaceInertiaTensor", &RigidBody::_MassSpaceInertiaTensor );
 END_META()
 
 XE::RigidBody::RigidBody()
@@ -51,6 +43,49 @@ void XE::RigidBody::SetHandle( RigidBodyHandle val )
 	_Handle = val;
 }
 
+XE::PhysicsSceneHandle XE::RigidBody::GetSceneHandle() const
+{
+	return _SceneHandle;
+}
+
+const XE::String & XE::RigidBody::GetName() const
+{
+	return _Name;
+}
+
+void XE::RigidBody::SetName( const XE::String & val )
+{
+	_Name = val;
+}
+
+const XE::Mat4 & XE::RigidBody::GetWorldPose() const
+{
+	return _WorldPose;
+}
+
+void XE::RigidBody::SetWorldPose( const XE::Mat4 & val )
+{
+	_WorldPose = val;
+}
+
+void XE::RigidBody::AttachShape( const XE::ShapePtr & val )
+{
+	auto it = std::find( _Shapes.begin(), _Shapes.end(), val );
+	if( it == _Shapes.end() )
+	{
+		_Shapes.push_back( val );
+	}
+}
+
+void XE::RigidBody::DetachShape( const XE::ShapePtr & val )
+{
+	auto it = std::find( _Shapes.begin(), _Shapes.end(), val );
+	if( it == _Shapes.end() )
+	{
+		_Shapes.erase( val );
+	}
+}
+
 const XE::Array<XE::ShapePtr> & XE::RigidBody::GetShapes() const
 {
 	return _Shapes;
@@ -69,114 +104,4 @@ const XE::Array<XE::ConstraintPtr> & XE::RigidBody::GetConstraints() const
 void XE::RigidBody::SetConstraints( const Array<ConstraintPtr> & val )
 {
 	_Constraints = val;
-}
-
-const XE::Mat4 & XE::RigidBody::GetWorldTransform() const
-{
-	return _Transform;
-}
-
-void XE::RigidBody::SetWorldTransform( const XE::Mat4 & val )
-{
-	_Transform = val;
-}
-
-const XE::Vec3 & XE::RigidBody::GetCenterMass() const
-{
-	return _CenterMass;
-}
-
-void XE::RigidBody::SetCenterMass( const XE::Vec3 & val )
-{
-	_CenterMass = val;
-}
-
-XE::float32 XE::RigidBody::GetMass() const
-{
-	return _Mass;
-}
-
-void XE::RigidBody::SetMass( XE::float32 val )
-{
-	_Mass = val;
-}
-
-const XE::Vec3 & XE::RigidBody::GetMassSpaceInertiaTensor() const
-{
-	return _MassSpaceInertiaTensor;
-}
-
-void XE::RigidBody::SetMassSpaceInertiaTensor( const XE::Vec3 & val )
-{
-	_MassSpaceInertiaTensor = val;
-}
-
-XE::float32 XE::RigidBody::GetLinearDamping() const
-{
-	return _LinearDamping;
-}
-
-void XE::RigidBody::SetLinearDamping( XE::float32 val )
-{
-	_LinearDamping = val;
-}
-
-XE::float32 XE::RigidBody::GetAngularDamping() const
-{
-	return _AngularDamping;
-}
-
-void XE::RigidBody::SetAngularDamping( XE::float32 val )
-{
-	_AngularDamping = val;
-}
-
-const XE::Vec3 & XE::RigidBody::GetLinearVelocity() const
-{
-	return _LinearVelocity;
-}
-
-void XE::RigidBody::SetLinearVelocity( const XE::Vec3 & val )
-{
-	_LinearVelocity = val;
-}
-
-const XE::Vec3 & XE::RigidBody::GetAngularVelocity() const
-{
-	return _AngularVelocity;
-}
-
-void XE::RigidBody::SetAngularVelocity( const XE::Vec3 & val )
-{
-	_AngularVelocity = val;
-}
-
-XE::float32 XE::RigidBody::GetMaxLinearVelocity() const
-{
-	return _MaxLinearVelocity;
-}
-
-void XE::RigidBody::SetMaxLinearVelocity( XE::float32 val )
-{
-	_MaxLinearVelocity = val;
-}
-
-XE::float32 XE::RigidBody::GetMaxAngularVelocity() const
-{
-	return _MaxAngularVelocity;
-}
-
-void XE::RigidBody::SetMaxAngularVelocity( XE::float32 val )
-{
-	_MaxAngularVelocity = val;
-}
-
-void XE::RigidBody::AddForce( const XE::Vec3 & force )
-{
-	_AddForce += force;
-}
-
-void XE::RigidBody::AddTorque( const XE::Vec3 & torque )
-{
-	_AddTorque += torque;
 }

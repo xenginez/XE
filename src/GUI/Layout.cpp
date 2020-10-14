@@ -14,52 +14,52 @@ XE::Layout::~Layout()
 {
 }
 
-XE::real XE::Layout::GetLeftMargin() const
+XE::float32 XE::Layout::GetLeftMargin() const
 {
 	return _LeftMargin;
 }
 
-void XE::Layout::SetLeftMargin( XE::real val )
+void XE::Layout::SetLeftMargin( XE::float32 val )
 {
 	_LeftMargin = val;
 }
 
-XE::real XE::Layout::GetTopMargin() const
+XE::float32 XE::Layout::GetTopMargin() const
 {
 	return _TopMargin;
 }
 
-void XE::Layout::SetTopMargin( XE::real val )
+void XE::Layout::SetTopMargin( XE::float32 val )
 {
 	_TopMargin = val;
 }
 
-XE::real XE::Layout::GetBottomMargin() const
+XE::float32 XE::Layout::GetBottomMargin() const
 {
 	return _BottomMargin;
 }
 
-void XE::Layout::SetBottomMargin( XE::real val )
+void XE::Layout::SetBottomMargin( XE::float32 val )
 {
 	_BottomMargin = val;
 }
 
-XE::real XE::Layout::GetRightMargin() const
+XE::float32 XE::Layout::GetRightMargin() const
 {
 	return _RightMargin;
 }
 
-void XE::Layout::SetRightMargin( XE::real val )
+void XE::Layout::SetRightMargin( XE::float32 val )
 {
 	_RightMargin = val;
 }
 
-XE::real XE::Layout::GetWidgetSpacing() const
+XE::float32 XE::Layout::GetWidgetSpacing() const
 {
 	return _WidgetSpacing;
 }
 
-void XE::Layout::SetWidgetSpacing( XE::real val )
+void XE::Layout::SetWidgetSpacing( XE::float32 val )
 {
 	_WidgetSpacing = val;
 }

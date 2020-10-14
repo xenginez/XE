@@ -17,7 +17,7 @@ XE::Vec2::Vec2()
 
 }
 
-XE::Vec2::Vec2( XE::real val )
+XE::Vec2::Vec2( XE::float32 val )
 	: x( val ), y( val )
 {
 
@@ -29,13 +29,13 @@ XE::Vec2::Vec2( const Vec2& val )
 
 }
 
-XE::Vec2::Vec2( XE::real x, XE::real y )
+XE::Vec2::Vec2( XE::float32 x, XE::float32 y )
 	: x( x ), y( y )
 {
 
 }
 
-XE::Vec2& XE::Vec2::operator=( XE::real val )
+XE::Vec2& XE::Vec2::operator=( XE::float32 val )
 {
 	x = val;
 	y = val;

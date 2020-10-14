@@ -17,7 +17,7 @@ XE::Capsule::Capsule( const Capsule & val )
 
 }
 
-XE::Capsule::Capsule( XE::real radius, XE::real height )
+XE::Capsule::Capsule( XE::float32 radius, XE::float32 height )
 	: radius( radius ), height( height )
 {
 
@@ -76,7 +76,7 @@ bool XE::Capsule::Intersect( const Frustum & val ) const
 	return false;
 }
 
-std::pair<bool, XE::real> XE::Capsule::Intersect( const Ray & ray, bool discardInside /*= true */ ) const
+std::pair<bool, XE::float32> XE::Capsule::Intersect( const Ray & ray, bool discardInside /*= true */ ) const
 {
 	return { false, 0.0f };
 }

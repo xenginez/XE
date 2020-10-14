@@ -29,32 +29,32 @@ public:
 public:
 	union
 	{
-		struct { XE::real x, y, z; };
-		XE::real d[3];
+		struct { XE::float32 x, y, z; };
+		XE::float32 d[3];
 	};
 
 public:
 	Vec3();
 
-	Vec3( XE::real val );
+	Vec3( XE::float32 val );
 
 	Vec3( const Vec3& val );
 
-	Vec3( XE::real x, XE::real y, XE::real z );
+	Vec3( XE::float32 x, XE::float32 y, XE::float32 z );
 
 public:
-	Vec3& operator=( XE::real val );
+	Vec3& operator=( XE::float32 val );
 
 	Vec3& operator=( const Vec3 & val );
 
 public:
-	XE::real& operator[]( XE::uint64 val )
+	XE::float32& operator[]( XE::uint64 val )
 	{
 		XE_ASSERT( val < 3 );
 		return d[val];
 	}
 
-	XE::real operator[]( XE::uint64 val ) const
+	XE::float32 operator[]( XE::uint64 val ) const
 	{
 		XE_ASSERT( val < 3 );
 		return d[val];

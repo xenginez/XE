@@ -20,14 +20,14 @@ public:
 
 public:
 	Vec3 center;
-	XE::real radius;
+	XE::float32 radius;
 
 public:
 	Sphere();
 
 	Sphere( const Sphere& val );
 
-	Sphere( const Vec3&center, XE::real radius );
+	Sphere( const Vec3&center, XE::float32 radius );
 
 public:
 	Sphere& operator=( const Sphere & val );
@@ -52,7 +52,7 @@ public:
 
 	bool Intersect( const Frustum& val ) const;
 
-	std::pair<bool, XE::real> Intersect( const Ray& ray, bool discardInside = true ) const;
+	std::pair<bool, XE::float32> Intersect( const Ray& ray, bool discardInside = true ) const;
 
 public:
 	void Merge( const Vec3& val );

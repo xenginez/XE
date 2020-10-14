@@ -4,7 +4,7 @@ BEG_META( XE::Widget )
 END_META()
 
 XE::Widget::Widget()
-	:_Enable( true ), _MinSize( XE::Vec2::Zero ), _MaxSize( std::numeric_limits<XE::real>::max() )
+	:_Enable( true ), _MinSize( XE::Vec2::Zero ), _MaxSize( std::numeric_limits<XE::float32>::max() )
 {
 
 }

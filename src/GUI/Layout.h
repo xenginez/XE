@@ -23,25 +23,25 @@ public:
 	~Layout() override;
 
 public:
-	XE::real GetLeftMargin() const;
+	XE::float32 GetLeftMargin() const;
 
-	void SetLeftMargin( XE::real val );
+	void SetLeftMargin( XE::float32 val );
 
-	XE::real GetTopMargin() const;
+	XE::float32 GetTopMargin() const;
 
-	void SetTopMargin( XE::real val );
+	void SetTopMargin( XE::float32 val );
 
-	XE::real GetBottomMargin() const;
+	XE::float32 GetBottomMargin() const;
 
-	void SetBottomMargin( XE::real val );
+	void SetBottomMargin( XE::float32 val );
 
-	XE::real GetRightMargin() const;
+	XE::float32 GetRightMargin() const;
 
-	void SetRightMargin( XE::real val );
+	void SetRightMargin( XE::float32 val );
 
-	XE::real GetWidgetSpacing() const;
+	XE::float32 GetWidgetSpacing() const;
 
-	void SetWidgetSpacing( XE::real val );
+	void SetWidgetSpacing( XE::float32 val );
 
 	SizeConstraint GetSizeConstraint() const;
 
@@ -76,11 +76,11 @@ protected:
 	virtual void OnRender();
 
 private:
-	XE::real _LeftMargin;
-	XE::real _TopMargin;
-	XE::real _BottomMargin;
-	XE::real _RightMargin;
-	XE::real _WidgetSpacing;
+	XE::float32 _LeftMargin;
+	XE::float32 _TopMargin;
+	XE::float32 _BottomMargin;
+	XE::float32 _RightMargin;
+	XE::float32 _WidgetSpacing;
 	SizeConstraint _SizeConstraint;
 	XE::Array< XE::Pair< WidgetHandle, XE::uint8> > _Children;
 };

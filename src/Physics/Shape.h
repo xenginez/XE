@@ -14,6 +14,7 @@
 #include "Utils/Object.h"
 
 #include "Type.h"
+#include "ConvexMesh.h"
 
 BEG_XE_NAMESPACE
 
@@ -27,9 +28,9 @@ public:
 	~Shape() override;
 
 public:
-	ShapeFlag GetFlag() const;
+	XE::ShapeFlags GetFlags() const;
 
-	void SetFlag( ShapeFlag val );
+	void SetFlags( XE::ShapeFlags val );
 
 	const XE::Mat4 & GetLocalTransform() const;
 
@@ -43,21 +44,21 @@ public:
 
 	void SetQueryFilter( const XE::Layer & val );
 
-	XE::real GetContactOffset() const;
+	XE::float32 GetContactOffset() const;
 
-	void SetContactOffset( XE::real val );
+	void SetContactOffset( XE::float32 val );
 
-	XE::real GetRestOffset() const;
+	XE::float32 GetRestOffset() const;
 
-	void SetRestOffset( XE::real val );
+	void SetRestOffset( XE::float32 val );
 
-	XE::real GetTorsionalPatchRadius() const;
+	XE::float32 GetTorsionalPatchRadius() const;
 
-	void SetTorsionalPatchRadius( XE::real val );
+	void SetTorsionalPatchRadius( XE::float32 val );
 
-	XE::real GetMinTorsionalPatchRadius() const;
+	XE::float32 GetMinTorsionalPatchRadius() const;
 
-	void SetMinTorsionalPatchRadius( XE::real val );
+	void SetMinTorsionalPatchRadius( XE::float32 val );
 
 public:
 	const PhysicsMaterialPtr & GetMaterial() const;
@@ -65,15 +66,15 @@ public:
 	void SetMaterial( const PhysicsMaterialPtr & val );
 
 private:
-	ShapeFlag _Flag;
-	XE::real _RestOffset;
+	ShapeFlags _Flags;
+	XE::float32 _RestOffset;
 	XE::Layer _QueryFilter;
-	XE::real _ContactOffset;
+	XE::float32 _ContactOffset;
 	XE::Mat4 _LocalTransform;
 	XE::Layer _SimulationFilter;
 	PhysicsMaterialPtr _Material;
-	XE::real _TorsionalPatchRadius;
-	XE::real _MinTorsionalPatchRadius;
+	XE::float32 _TorsionalPatchRadius;
+	XE::float32 _MinTorsionalPatchRadius;
 };
 
 class XE_API BoxShape : public Shape
@@ -148,6 +149,24 @@ private:
 	XE::Capsule _Capsule;
 };
 
+class XE_API ConvexMeshShape : public Shape
+{
+	OBJECT( ConvexMeshShape, Shape )
+
+public:
+	ConvexMeshShape();
+
+	~ConvexMeshShape() override;
+
+public:
+	const XE::ConvexMesh & GetCapsule() const;
+
+	void SetCapsule( const XE::ConvexMesh & val );
+
+private:
+	XE::ConvexMesh _ConvexMesh;
+};
+
 class XE_API HeightFieldShape : public Shape
 {
 	OBJECT( HeightFieldShape, Shape )
@@ -170,15 +189,15 @@ public:
 
 	void SetDepth( XE::float32 val );
 
-	const XE::Array<XE::float16> & GetHeightData() const;
+	const XE::Array<XE::float16> & GetData() const;
 
-	void SetHeightData( const XE::Array<XE::float16> & val );
+	void SetData( const XE::Array<XE::float16> & val );
 
 private:
 	XE::uint32 _Width;
 	XE::uint32 _Height;
 	XE::float32 _Depth;
-	XE::Array<XE::float16> _HeightData;
+	XE::Array<XE::float16> _Data;
 };
 
 END_XE_NAMESPACE

@@ -40,57 +40,26 @@ protected:
 	virtual void OnClearup() = 0;
 
 public:
-	const XE::Mat4 & GetWorldTransform() const;
-
-	void SetWorldTransform( const XE::Mat4 & val );
-
-	const XE::Vec3 & GetCenterMass() const;
-
-	void SetCenterMass( const XE::Vec3 & val );
-
-	XE::float32 GetMass() const;
-
-	void SetMass( XE::float32 val );
-
-	const XE::Vec3 & GetMassSpaceInertiaTensor() const;
-
-	void SetMassSpaceInertiaTensor( const XE::Vec3 & val );
-
-	XE::float32 GetLinearDamping() const;
-
-	void SetLinearDamping( XE::float32 val );
-
-	XE::float32 GetAngularDamping() const;
-
-	void SetAngularDamping( XE::float32 val );
-
-	const XE::Vec3 & GetLinearVelocity() const;
-
-	void SetLinearVelocity( const XE::Vec3 & val );
-
-	const XE::Vec3 & GetAngularVelocity() const;
-
-	void SetAngularVelocity( const XE::Vec3 & val );
-
-	XE::float32 GetMaxLinearVelocity() const;
-
-	void SetMaxLinearVelocity( XE::float32 val );
-
-	XE::float32 GetMaxAngularVelocity() const;
-
-	void SetMaxAngularVelocity( XE::float32 val );
-
-public:
-	void AddForce( const XE::Vec3 & force );
-
-	void AddTorque( const XE::Vec3 & torque );
-
-public:
 	RigidBodyHandle GetHandle() const;
 
 	void SetHandle( RigidBodyHandle val );
 
+	XE::PhysicsSceneHandle GetSceneHandle() const;
+
 public:
+	const XE::String & GetName() const;
+
+	void SetName( const XE::String & val );
+
+	const XE::Mat4 & GetWorldPose() const;
+
+	void SetWorldPose( const XE::Mat4 & val );
+
+public:
+	void AttachShape( const XE::ShapePtr & val );
+
+	void DetachShape( const XE::ShapePtr & val );
+
 	const Array<ShapePtr> & GetShapes() const;
 
 	void SetShapes( const Array<ShapePtr> & val );
@@ -100,23 +69,12 @@ public:
 	void SetConstraints( const Array<ConstraintPtr> & val );
 
 private:
-	XE::Mat4 _Transform;
-	RigidBodyHandle _Handle;
-	Array<ShapePtr> _Shapes;
-	Array<ConstraintPtr> _Constraints;
-
-	XE::float32 _Mass;
-	XE::Vec3 _CenterMass;
-	XE::Vec3 _LinearVelocity;
-	XE::Vec3 _AngularVelocity;
-	XE::float32 _LinearDamping;
-	XE::float32 _AngularDamping;
-	XE::float32 _MaxLinearVelocity;
-	XE::float32 _MaxAngularVelocity;
-	XE::Vec3 _MassSpaceInertiaTensor;
-
-	XE::Vec3 _AddForce;
-	XE::Vec3 _AddTorque;
+	XE::String _Name;
+	XE::Mat4 _WorldPose;
+	XE::RigidBodyHandle _Handle;
+	XE::Array<ShapePtr> _Shapes;
+	XE::PhysicsSceneHandle _SceneHandle;
+	XE::Array<ConstraintPtr> _Constraints;
 };
 
 END_XE_NAMESPACE

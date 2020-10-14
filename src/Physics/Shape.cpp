@@ -26,14 +26,14 @@ void XE::Shape::SetMaterial( const PhysicsMaterialPtr & val )
 	_Material = val;
 }
 
-XE::ShapeFlag XE::Shape::GetFlag() const
+XE::ShapeFlags XE::Shape::GetFlags() const
 {
-	return _Flag;
+	return _Flags;
 }
 
-void XE::Shape::SetFlag( ShapeFlag val )
+void XE::Shape::SetFlags( ShapeFlags val )
 {
-	_Flag = val;
+	_Flags = val;
 }
 
 const XE::Mat4 & XE::Shape::GetLocalTransform() const
@@ -66,42 +66,42 @@ void XE::Shape::SetQueryFilter( const XE::Layer & val )
 	_QueryFilter = val;
 }
 
-XE::real XE::Shape::GetContactOffset() const
+XE::float32 XE::Shape::GetContactOffset() const
 {
 	return _ContactOffset;
 }
 
-void XE::Shape::SetContactOffset( XE::real val )
+void XE::Shape::SetContactOffset( XE::float32 val )
 {
 	_ContactOffset = val;
 }
 
-XE::real XE::Shape::GetRestOffset() const
+XE::float32 XE::Shape::GetRestOffset() const
 {
 	return _RestOffset;
 }
 
-void XE::Shape::SetRestOffset( XE::real val )
+void XE::Shape::SetRestOffset( XE::float32 val )
 {
 	_RestOffset = val;
 }
 
-XE::real XE::Shape::GetTorsionalPatchRadius() const
+XE::float32 XE::Shape::GetTorsionalPatchRadius() const
 {
 	return _TorsionalPatchRadius;
 }
 
-void XE::Shape::SetTorsionalPatchRadius( XE::real val )
+void XE::Shape::SetTorsionalPatchRadius( XE::float32 val )
 {
 	_TorsionalPatchRadius = val;
 }
 
-XE::real XE::Shape::GetMinTorsionalPatchRadius() const
+XE::float32 XE::Shape::GetMinTorsionalPatchRadius() const
 {
 	return _MinTorsionalPatchRadius;
 }
 
-void XE::Shape::SetMinTorsionalPatchRadius( XE::real val )
+void XE::Shape::SetMinTorsionalPatchRadius( XE::float32 val )
 {
 	_MinTorsionalPatchRadius = val;
 }
@@ -241,12 +241,12 @@ void XE::HeightFieldShape::SetDepth( XE::float32 val )
 	_Depth = val;
 }
 
-const XE::Array<XE::float16> & XE::HeightFieldShape::GetHeightData() const
+const XE::Array<XE::float16> & XE::HeightFieldShape::GetData() const
 {
-	return _HeightData;
+	return _Data;
 }
 
-void XE::HeightFieldShape::SetHeightData( const XE::Array<XE::float16> & val )
+void XE::HeightFieldShape::SetData( const XE::Array<XE::float16> & val )
 {
-	_HeightData = val;
+	_Data = val;
 }

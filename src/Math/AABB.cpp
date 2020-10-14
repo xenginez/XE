@@ -57,12 +57,12 @@ XE::Vec3 XE::AABB::GetCenter() const
 	return ( max + min ) / 2;
 }
 
-XE::real XE::AABB::GetRadius() const
+XE::float32 XE::AABB::GetRadius() const
 {
 	return Mathf::Length( ( max - min ) * 0.5 );
 }
 
-XE::real XE::AABB::GetVolume() const
+XE::float32 XE::AABB::GetVolume() const
 {
 	Vec3 diff = max - min;
 	return diff.x * diff.y * diff.z;
@@ -163,10 +163,10 @@ bool XE::AABB::Intersect( const Plane& val ) const
 
 bool XE::AABB::Intersect( const Sphere& val ) const
 {
-	XE::real radius = val.radius;
+	XE::float32 radius = val.radius;
 	const Vec3& center = val.center;
 
-	XE::real s, d = 0;
+	XE::float32 s, d = 0;
 	for ( int i = 0; i < 3; ++i )
 	{
 		if ( center[i] < min[i] )
@@ -189,10 +189,10 @@ bool XE::AABB::Intersect( const Frustum & val ) const
 	return false;
 }
 
-std::pair<bool, XE::real> XE::AABB::Intersect( const Ray& ray, bool discardInside /*= true */ ) const
+std::pair<bool, XE::float32> XE::AABB::Intersect( const Ray& ray, bool discardInside /*= true */ ) const
 {
-	XE::real lowt = 0.0f;
-	XE::real t;
+	XE::float32 lowt = 0.0f;
+	XE::float32 t;
 	bool hit = false;
 	Vec3 hitpoint;
 	const Vec3& rayorig = ray.origin;
@@ -200,7 +200,7 @@ std::pair<bool, XE::real> XE::AABB::Intersect( const Ray& ray, bool discardInsid
 
 	if ( ( rayorig.x > min.x && rayorig.y > min.y && rayorig.z > min.z ) && ( rayorig.x < max.x && rayorig.y < max.y && rayorig.z < max.z ) )
 	{
-		return std::pair<bool, XE::real>( true, 0.0f );
+		return std::pair<bool, XE::float32>( true, 0.0f );
 	}
 
 	if ( rayorig.x <= min.x && raydir.x > 0 )
@@ -299,10 +299,10 @@ std::pair<bool, XE::real> XE::AABB::Intersect( const Ray& ray, bool discardInsid
 		}
 	}
 
-	return std::pair<bool, XE::real>( hit, lowt );
+	return std::pair<bool, XE::float32>( hit, lowt );
 }
 
-void XE::AABB::Scale( XE::real val )
+void XE::AABB::Scale( XE::float32 val )
 {
 	Vec3 center = GetCenter();
 	min = center + ( min - center ) * val;
@@ -368,8 +368,8 @@ void XE::AABB::TransformAffine( const Mat4& val )
 	{
 		for ( XE::uint32 j = 0; j < 3; j++ )
 		{
-			XE::real e = val[i][j] * this->min[j];
-			XE::real f = val[i][j] * this->max[j];
+			XE::float32 e = val[i][j] * this->min[j];
+			XE::float32 f = val[i][j] * this->max[j];
 
 			if ( e < f )
 			{

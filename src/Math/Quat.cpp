@@ -24,7 +24,7 @@ XE::Quat::Quat( const Quat& val )
 
 }
 
-XE::Quat::Quat( XE::real x, XE::real y, XE::real z, XE::real w )
+XE::Quat::Quat( XE::float32 x, XE::float32 y, XE::float32 z, XE::float32 w )
 	: x( x ), y( y ), z( z ), w( w )
 {
 

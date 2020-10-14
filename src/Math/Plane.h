@@ -17,16 +17,16 @@ class XE_API alignas( 16 ) Plane
 {
 public:
 	Vec3 normal;
-	XE::real distance;
+	XE::float32 distance;
 
 public:
 	Plane();
 
 	Plane( const Plane& val );
 
-	Plane( const Vec3& normal, XE::real d );
+	Plane( const Vec3& normal, XE::float32 d );
 
-	Plane( XE::real a, XE::real b, XE::real c, XE::real d );
+	Plane( XE::float32 a, XE::float32 b, XE::float32 c, XE::float32 d );
 
 	Plane( const Vec3& normal, const Vec3& point );
 
@@ -47,9 +47,9 @@ public:
 	SideType GetSide( const Sphere& val ) const;
 
 public:
-	XE::real Normalize();
+	XE::float32 Normalize();
 
-	XE::real GetDistance( const Vec3& val ) const;
+	XE::float32 GetDistance( const Vec3& val ) const;
 
 public:
 	Vec3 Project( const Vec3& val ) const;
@@ -67,7 +67,7 @@ public:
 
 	bool Intersect( const Frustum& val ) const;
 
-	std::pair<bool, XE::real> Intersect( const Ray& ray, bool discardInside = true ) const;
+	std::pair<bool, XE::float32> Intersect( const Ray& ray, bool discardInside = true ) const;
 
 };
 DECL_META_CLASS( XE_API, Plane );

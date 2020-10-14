@@ -16,15 +16,15 @@ BEG_XE_NAMESPACE
 class XE_API alignas( 16 ) Capsule
 {
 public:
-	XE::real radius;
-	XE::real height;
+	XE::float32 radius;
+	XE::float32 height;
 
 public:
 	Capsule();
 
 	Capsule( const Capsule & val );
 
-	Capsule( XE::real radius, XE::real height );
+	Capsule( XE::float32 radius, XE::float32 height );
 
 public:
 	Capsule & operator=( const Capsule & val );
@@ -49,7 +49,7 @@ public:
 
 	bool Intersect( const Frustum & val ) const;
 
-	std::pair<bool, XE::real> Intersect( const Ray & ray, bool discardInside = true ) const;
+	std::pair<bool, XE::float32> Intersect( const Ray & ray, bool discardInside = true ) const;
 
 };
 DECL_META_CLASS( XE_API, Capsule );

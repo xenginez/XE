@@ -42,14 +42,18 @@ enum class ShapeFlag
 };
 DECL_META_FLAGS( XE_API, ShapeFlag, ShapeFlags );
 
-enum class FrictionType
+enum class RigidDynamicFlag
 {
-	PATCH,
-	ONE_DIRECTIONAL,
-	TWO_DIRECTIONAL,
-	FRICTION_COUNT
+	KINEMATIC = 1 << 0,
+	USE_KINEMATIC_TARGET_FOR_SCENE_QUERIES = 1 << 1,
+	ENABLE_CCD = 1 << 2,
+	ENABLE_CCD_FRICTION = 1 << 3,
+	ENABLE_POSE_INTEGRATION_PREVIEW = 1 << 4,
+	ENABLE_SPECULATIVE_CCD = 1 << 5,
+	ENABLE_CCD_MAX_CONTACT_IMPULSE = 1 << 6,
+	RETAIN_ACCELERATIONS = 1 << 7,
 };
-DECL_META_ENUM( XE_API, FrictionType );
+DECL_META_FLAGS( XE_API, RigidDynamicFlag, RigidDynamicFlags );
 
 enum class PhysicsSceneFlag
 {
@@ -86,6 +90,26 @@ enum class PhysicsMaterialFlag
 };
 DECL_META_FLAGS( XE_API, PhysicsMaterialFlag, PhysicsMaterialFlags );
 
+enum class RigidDynamicLockFlag
+{
+	LINEAR_X = 1 << 0,
+	LINEAR_Y = 1 << 1,
+	LINEAR_Z = 1 << 2,
+	ANGULAR_X = 1 << 3,
+	ANGULAR_Y = 1 << 4,
+	ANGULAR_Z = 1 << 5,
+};
+DECL_META_FLAGS( XE_API, RigidDynamicLockFlag, RigidDynamicLockFlags );
+
+enum class ForceMode
+{
+	FORCE,
+	IMPULSE,
+	VELOCITY_CHANGE,
+	ACCELERATION
+};
+DECL_META_ENUM( XE_API, ForceMode );
+
 enum class CombineMode
 {
 	AVERAGE,
@@ -97,24 +121,14 @@ enum class CombineMode
 };
 DECL_META_ENUM( XE_API, CombineMode );
 
-enum class RigidDynamicLockFlag
+enum class FrictionType
 {
-	LINEAR_X = 1 << 0,
-	LINEAR_Y = 1 << 1,
-	LINEAR_Z = 1 << 2,
-	ANGULAR_X = 1 << 3,
-	ANGULAR_Y = 1 << 4,
-	ANGULAR_Z = 1 << 5,
-	LINEAR_XY = LINEAR_X | LINEAR_Y,
-	LINEAR_XZ = LINEAR_X | LINEAR_Z,
-	LINEAR_YZ = LINEAR_Y | LINEAR_Z,
-	LINEAR_XYZ = LINEAR_X | LINEAR_Y | LINEAR_Z,
-	ANGULAR_XY = ANGULAR_X | ANGULAR_Y,
-	ANGULAR_XZ = ANGULAR_X | ANGULAR_Z,
-	ANGULAR_YZ = ANGULAR_Y | ANGULAR_Z,
-	ANGULAR_XYZ = ANGULAR_X | ANGULAR_Y | ANGULAR_Z,
+	PATCH,
+	ONE_DIRECTIONAL,
+	TWO_DIRECTIONAL,
+	FRICTION_COUNT
 };
-DECL_META_ENUM( XE_API, RigidDynamicLockFlag );
+DECL_META_ENUM( XE_API, FrictionType );
 
 struct XE_API QueryHitResult
 {

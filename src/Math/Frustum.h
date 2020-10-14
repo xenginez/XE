@@ -42,16 +42,6 @@ public:
 	Frustum & operator=( const Frustum & val );
 
 public:
-	Vec3 left_bottom_near;
-	Vec3 right_bottom_near;
-	Vec3 left_top_near;
-	Vec3 right_top_near;
-	Vec3 left_bottom_far;
-	Vec3 right_bottom_far;
-	Vec3 left_top_far;
-	Vec3 right_top_far;
-
-public:
 	bool Intersect( const OBB& val ) const;
 
 	bool Intersect( const AABB& val ) const;
@@ -64,7 +54,7 @@ public:
 
 	bool Intersect( const Frustum& val ) const;
 
-	std::pair<bool, XE::real> Intersect( const Ray& ray, bool discardInside = true ) const;
+	std::pair<bool, XE::float32> Intersect( const Ray& ray, bool discardInside = true ) const;
 
 };
 DECL_META_CLASS( XE_API, Frustum );

@@ -67,7 +67,7 @@ bool XE::Frustum::Intersect( const Frustum & val ) const
 	return false;
 }
 
-std::pair<bool, XE::real> XE::Frustum::Intersect( const Ray & ray, bool discardInside /*= true */ ) const
+std::pair<bool, XE::float32> XE::Frustum::Intersect( const Ray & ray, bool discardInside /*= true */ ) const
 {
 	return { false, 0.0f };
 }

@@ -48,7 +48,7 @@ public:
 
 	bool Intersect( const Frustum& val ) const;
 
-	std::pair<bool, XE::real> Intersect( const Ray& ray, bool discardInside = true ) const;
+	std::pair<bool, XE::float32> Intersect( const Ray& ray, bool discardInside = true ) const;
 
 };
 DECL_META_CLASS( XE_API, OBB );

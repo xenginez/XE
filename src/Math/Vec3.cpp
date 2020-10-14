@@ -23,7 +23,7 @@ XE::Vec3::Vec3()
 {
 }
 
-XE::Vec3::Vec3( XE::real val )
+XE::Vec3::Vec3( XE::float32 val )
 	: x( val ), y( val ), z( val )
 {
 
@@ -35,13 +35,13 @@ XE::Vec3::Vec3( const Vec3& val )
 
 }
 
-XE::Vec3::Vec3( XE::real x, XE::real y, XE::real z )
+XE::Vec3::Vec3( XE::float32 x, XE::float32 y, XE::float32 z )
 	: x( x ), y( y ), z( z )
 {
 
 }
 
-XE::Vec3& XE::Vec3::operator=( XE::real val )
+XE::Vec3& XE::Vec3::operator=( XE::float32 val )
 {
 	x = val;
 	y = val;

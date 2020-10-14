@@ -22,13 +22,13 @@ XE::Plane::Plane( const Plane& val )
 
 }
 
-XE::Plane::Plane( const Vec3& normal, XE::real d )
+XE::Plane::Plane( const Vec3& normal, XE::float32 d )
 	: normal( normal ), distance( d )
 {
 
 }
 
-XE::Plane::Plane( XE::real a, XE::real b, XE::real c, XE::real d )
+XE::Plane::Plane( XE::float32 a, XE::float32 b, XE::float32 c, XE::float32 d )
 	: normal( a, b, c ), distance( d )
 {
 
@@ -71,7 +71,7 @@ bool XE::Plane::operator!=( const Plane& val ) const
 
 XE::SideType XE::Plane::GetSide( const Vec3& val ) const
 {
-	XE::real dist = GetDistance( val );
+	XE::float32 dist = GetDistance( val );
 
 	if ( dist > Mathf::Epsilon )
 		return SideType::POSITIVE;
@@ -84,10 +84,10 @@ XE::SideType XE::Plane::GetSide( const Vec3& val ) const
 
 XE::SideType XE::Plane::GetSide( const AABB& val ) const
 {
-	XE::real dist = GetDistance( val.GetCenter() );
+	XE::float32 dist = GetDistance( val.GetCenter() );
 
 	Vec3 halfSize = val.GetSize() * 0.5f;
-	XE::real maxAbsDist = Mathf::Abs( normal.x * halfSize.x ) + Mathf::Abs( normal.y * halfSize.y ) + Mathf::Abs( normal.z * halfSize.z );
+	XE::float32 maxAbsDist = Mathf::Abs( normal.x * halfSize.x ) + Mathf::Abs( normal.y * halfSize.y ) + Mathf::Abs( normal.z * halfSize.z );
 
 	if ( dist < -maxAbsDist )
 		return SideType::NEGATIVE;
@@ -100,8 +100,8 @@ XE::SideType XE::Plane::GetSide( const AABB& val ) const
 
 XE::SideType XE::Plane::GetSide( const Sphere& val ) const
 {
-	XE::real dist = GetDistance( val.center );
-	XE::real radius = val.radius;
+	XE::float32 dist = GetDistance( val.center );
+	XE::float32 radius = val.radius;
 
 	if ( dist < -radius )
 		return SideType::NEGATIVE;
@@ -112,13 +112,13 @@ XE::SideType XE::Plane::GetSide( const Sphere& val ) const
 	return SideType::BOTH;
 }
 
-XE::real XE::Plane::Normalize()
+XE::float32 XE::Plane::Normalize()
 {
-	XE::real fLength = Mathf::Length( normal );
+	XE::float32 fLength = Mathf::Length( normal );
 
 	if ( fLength > Mathf::Epsilon )
 	{
-		XE::real fInvLength = 1.0f / fLength;
+		XE::float32 fInvLength = 1.0f / fLength;
 		normal *= fInvLength;
 		distance *= fInvLength;
 	}
@@ -126,7 +126,7 @@ XE::real XE::Plane::Normalize()
 	return fLength;
 }
 
-XE::real XE::Plane::GetDistance( const Vec3& val ) const
+XE::float32 XE::Plane::GetDistance( const Vec3& val ) const
 {
 	return Mathf::Dot( normal, val ) - distance;
 }
@@ -141,17 +141,17 @@ bool XE::Plane::Intersect( const Sphere& val ) const
 	return val.Intersect( *this );
 }
 
-std::pair<bool, XE::real> XE::Plane::Intersect( const Ray& val, bool discardInside/* = true*/ ) const
+std::pair<bool, XE::float32> XE::Plane::Intersect( const Ray& val, bool discardInside/* = true*/ ) const
 {
-	XE::real denom = Mathf::Dot( normal, val.direction );
+	XE::float32 denom = Mathf::Dot( normal, val.direction );
 	if ( Mathf::Abs( denom ) < Mathf::Epsilon )
 	{
-		return std::pair<bool, XE::real>( false, 0.0f );
+		return std::pair<bool, XE::float32>( false, 0.0f );
 	}
 
-	XE::real nom = Mathf::Dot( normal, val.origin ) - distance;
-	XE::real t = -( nom / denom );
-	return std::pair<bool, XE::real>( t >= 0.0f, t );
+	XE::float32 nom = Mathf::Dot( normal, val.origin ) - distance;
+	XE::float32 t = -( nom / denom );
+	return std::pair<bool, XE::float32>( t >= 0.0f, t );
 }
 
 XE::Vec3 XE::Plane::Project( const Vec3& val ) const

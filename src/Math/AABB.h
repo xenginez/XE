@@ -38,9 +38,9 @@ public:
 
 	Vec3 GetCenter() const;
 
-	XE::real GetRadius() const;
+	XE::float32 GetRadius() const;
 
-	XE::real GetVolume() const;
+	XE::float32 GetVolume() const;
 
 	Vec3 GetFarLeftTop() const;
 
@@ -76,10 +76,10 @@ public:
 
 	bool Intersect( const Frustum& val ) const;
 
-	std::pair<bool, XE::real> Intersect( const Ray& ray, bool discardInside = true ) const;
+	std::pair<bool, XE::float32> Intersect( const Ray& ray, bool discardInside = true ) const;
 
 public:
-	void Scale( XE::real val );
+	void Scale( XE::float32 val );
 
 	void Scale( const Vec3& val );
 

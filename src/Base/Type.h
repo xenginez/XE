@@ -71,11 +71,6 @@ using uint32 = unsigned int;
 using uint64 = unsigned long long;
 using float32 = float;
 using float64 = double;
-#ifndef XE_DOUBLE
-using real = float32;
-#else
-using real = float64;
-#endif
 
 inline std::string ToString( bool _Val )
 {

@@ -20,7 +20,7 @@ XE::Vec4::Vec4()
 {
 }
 
-XE::Vec4::Vec4( XE::real x, XE::real y, XE::real z, XE::real w )
+XE::Vec4::Vec4( XE::float32 x, XE::float32 y, XE::float32 z, XE::float32 w )
 	: x( x ), y( y ), z( z ), w( w )
 {
 }

@@ -24,7 +24,7 @@ XE::Sphere::Sphere( const Sphere& val )
 
 }
 
-XE::Sphere::Sphere( const Vec3&center, XE::real radius )
+XE::Sphere::Sphere( const Vec3&center, XE::float32 radius )
 	: center( center ), radius( radius )
 {
 
@@ -49,7 +49,7 @@ bool XE::Sphere::operator!=( const Sphere& val ) const
 
 void XE::Sphere::Merge( const Vec3& val )
 {
-	XE::real dist = Mathf::Distance( val, center );
+	XE::float32 dist = Mathf::Distance( val, center );
 	radius = Mathf::Max( radius, dist );
 }
 
@@ -57,8 +57,8 @@ void XE::Sphere::Merge( const Sphere& val )
 {
 	Vec3 newCenter = ( center + val.center ) * 0.5f;
 
-	XE::real newRadiusA = Mathf::Distance( newCenter, center ) + radius;
-	XE::real newRadiusB = Mathf::Distance( newCenter, val.center ) + val.radius;
+	XE::float32 newRadiusA = Mathf::Distance( newCenter, center ) + radius;
+	XE::float32 newRadiusB = Mathf::Distance( newCenter, val.center ) + val.radius;
 
 	center = newCenter;
 	radius = Mathf::Max( newRadiusA, newRadiusB );
@@ -84,45 +84,45 @@ bool XE::Sphere::Intersect( const Sphere& val ) const
 	return Mathf::SqrLength( val.center - center ) <= Mathf::Sqrt( val.radius + radius );
 }
 
-std::pair<bool, XE::real> XE::Sphere::Intersect( const Ray& ray, bool discardInside /*= true */ ) const
+std::pair<bool, XE::float32> XE::Sphere::Intersect( const Ray& ray, bool discardInside /*= true */ ) const
 {
 	const Vec3& raydir = ray.direction;
 	const Vec3& rayorig = ray.origin - center;
 
 	if ( Mathf::SqrLength( rayorig ) <= radius * radius && discardInside )
 	{
-		return std::pair<bool, XE::real>( true, 0.0f );
+		return std::pair<bool, XE::float32>( true, 0.0f );
 	}
 
-	XE::real a = Mathf::Dot( raydir, raydir );
-	XE::real b = 2 * Mathf::Dot( rayorig, raydir );
-	XE::real c = Mathf::Dot( rayorig, rayorig ) - radius * radius;
+	XE::float32 a = Mathf::Dot( raydir, raydir );
+	XE::float32 b = 2 * Mathf::Dot( rayorig, raydir );
+	XE::float32 c = Mathf::Dot( rayorig, rayorig ) - radius * radius;
 
-	XE::real d = ( b * b ) - ( 4 * a * c );
+	XE::float32 d = ( b * b ) - ( 4 * a * c );
 	if ( d < 0 )
 	{
-		return std::pair<bool, XE::real>( false, 0.0f );
+		return std::pair<bool, XE::float32>( false, 0.0f );
 	}
 	else
 	{
-		XE::real t = ( -b - Mathf::Sqrt( d ) ) / ( 2 * a );
+		XE::float32 t = ( -b - Mathf::Sqrt( d ) ) / ( 2 * a );
 		if ( t < 0 )
 			t = ( -b + Mathf::Sqrt( d ) ) / ( 2 * a );
 
-		return std::pair<bool, XE::real>( true, t );
+		return std::pair<bool, XE::float32>( true, t );
 	}
 }
 
 void XE::Sphere::Transform( const Mat4& val )
 {
-	XE::real lengthSqrd[3];
+	XE::float32 lengthSqrd[3];
 	for ( XE::uint32 i = 0; i < 3; i++ )
 	{
 		Vec3 column( val[0][i], val[1][i], val[2][i] );
 		lengthSqrd[i] = Mathf::Dot( column, column );
 	}
 
-	XE::real maxLengthSqrd = Mathf::Max( lengthSqrd[0], Mathf::Max( lengthSqrd[1], lengthSqrd[2] ) );
+	XE::float32 maxLengthSqrd = Mathf::Max( lengthSqrd[0], Mathf::Max( lengthSqrd[1], lengthSqrd[2] ) );
 
 	center = Mathf::MultiplyAffine( val, center );
 	radius *= Mathf::Sqrt( maxLengthSqrd );

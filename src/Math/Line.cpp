@@ -12,7 +12,7 @@ XE::Line::Line()
 
 }
 
-XE::Line::Line( const Ray& ray, XE::real distance )
+XE::Line::Line( const Ray& ray, XE::float32 distance )
 	:start( ray.origin ), end( ray.direction * distance )
 {
 
@@ -58,7 +58,7 @@ XE::Ray XE::Line::GetRay() const
 	return { start, Mathf::Normalize( end - start ) };
 }
 
-XE::real XE::Line::GetDistance() const
+XE::float32 XE::Line::GetDistance() const
 {
 	return Mathf::Distance( start, end );
 }
@@ -98,7 +98,7 @@ bool XE::Line::Intersect( const Frustum& val ) const
 	return false;
 }
 
-std::pair<bool, XE::real> XE::Line::Intersect( const Ray& ray, bool discardInside /*= true */ ) const
+std::pair<bool, XE::float32> XE::Line::Intersect( const Ray& ray, bool discardInside /*= true */ ) const
 {
 	return { false, 0.0f };
 }

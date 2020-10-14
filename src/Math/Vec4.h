@@ -23,14 +23,14 @@ public:
 public:
 	union
 	{
-		struct { XE::real x, y, z, w; };
-		XE::real d[4];
+		struct { XE::float32 x, y, z, w; };
+		XE::float32 d[4];
 	};
 
 public:
 	Vec4();
 
-	Vec4( XE::real x, XE::real y, XE::real z, XE::real w );
+	Vec4( XE::float32 x, XE::float32 y, XE::float32 z, XE::float32 w );
 
 	Vec4( const Vec4& val );
 
@@ -38,13 +38,13 @@ public:
 	Vec4& operator=( const Vec4& val );
 
 public:
-	XE::real& operator[]( XE::uint64 val )
+	XE::float32& operator[]( XE::uint64 val )
 	{
 		XE_ASSERT( val < 4 );
 		return d[val];
 	}
 
-	XE::real operator[]( XE::uint64 val ) const
+	XE::float32 operator[]( XE::uint64 val ) const
 	{
 		XE_ASSERT( val < 4 );
 		return d[val];
