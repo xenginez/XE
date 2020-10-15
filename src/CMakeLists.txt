@@ -13,7 +13,7 @@ target_link_libraries(XE
 		tbb${XE_TBB_POSTFIX}
 		tbbmalloc${XE_TBB_POSTFIX}
 		tbbmalloc_proxy${XE_TBB_POSTFIX}
-		zlib${XE_ZLIB_POSTFIX}
+		zip
 		OpenAL32
 		sqlite3
 		ozz_animation
