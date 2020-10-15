@@ -6,7 +6,7 @@ static constexpr XE::uint64 IO_BUFFER_SIZE = 65536;
 
 void Encrypt( XE::uint64 hash, XE::int8 * buf, XE::uint64 size )
 {
-	while( buf != ( buf + size ) )
+	while( buf < ( buf + size ) )
 	{
 		*( ( XE::uint64 * )buf ) ^= hash;
 		buf += sizeof( XE::uint64 );
@@ -15,7 +15,7 @@ void Encrypt( XE::uint64 hash, XE::int8 * buf, XE::uint64 size )
 
 void Decrypt( XE::uint64 hash, XE::int8 * buf, XE::uint64 size )
 {
-	while( buf != ( buf + size ) )
+	while( buf < ( buf + size ) )
 	{
 		*( ( XE::uint64 * )buf ) ^= hash;
 		buf += sizeof( XE::uint64 );
@@ -55,7 +55,7 @@ bool XE::Zipper::Add( std::istream & source, const std::string & name, const std
 	{
 		auto hash = std::hash<std::string>()( password );
 
-		XE::int8 buf[IO_BUFFER_SIZE] = {};
+		XE::int8 buf[IO_BUFFER_SIZE];
 
 		while( !source.eof() )
 		{
@@ -166,7 +166,7 @@ bool XE::Unzipper::GetEntryData( const std::string & name, std::ostream & stream
 		auto hash = std::hash<std::string>()( password );
 
 		XE::int8 buf[IO_BUFFER_SIZE];
-
+		
 		while( 1 )
 		{
 			std::memset( buf, 0, IO_BUFFER_SIZE );
