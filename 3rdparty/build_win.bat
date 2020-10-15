@@ -124,35 +124,33 @@ xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\recastnavigation\ /s
 del %cd%\install\ /f /s /q
 
 
-:BUILD_ZLIB
-echo "build zlib debug"
+:BUILD_ZIP
+echo "build zip debug"
 cd %RD3_PATH%
-mkdir .\zlib\build
-cd .\zlib\build
-cmake -DCMAKE_INSTALL_PREFIX=.\install\ -DINSTALL_BIN_DIR=.\install\bin\ -DINSTALL_INC_DIR=.\install\include\zlib\ -DINSTALL_LIB_DIR=.\install\lib\ -DINSTALL_MAN_DIR=.\install\man\ -DINSTALL_PKGCONFIG_DIR=.\install\pkgconfig\ .. -G "Visual Studio 16 2019"
+mkdir .\zip\build
+cd .\zip\build
+cmake -DCMAKE_INSTALL_PREFIX=.\install\ .. -G "Visual Studio 16 2019"
 msbuild.exe ".\INSTALL.vcxproj"  /m /nr:true ^
     /p:Configuration=Debug ^
     /p:Platform=x64 ^
     /p:AppxBundlePlatforms=x64 ^
     /p:UseSubFolderForOutputDirDuringMultiPlatformBuild=false
     
-echo "copy zlib debug file to depend"
-xcopy %cd%\install\lib\zlibd.lib %RD3_PATH%\..\depend\lib\win\debug\ /s /e /y
-xcopy %cd%\install\bin\*.* %RD3_PATH%\..\depend\bin\win\debug\ /s /e /y
+echo "copy zip debug file to depend"
+xcopy %cd%\install\lib\zip.lib %RD3_PATH%\..\depend\lib\win\debug\ /s /e /y
 del %cd%\install\ /f /s /q
 
-echo "build zlib release"
+echo "build zip release"
 cd %RD3_PATH%
-mkdir .\zlib\build
-cd .\zlib\build
+mkdir .\zip\build
+cd .\zip\build
 msbuild.exe ".\INSTALL.vcxproj"  /m /nr:true ^
     /p:Configuration=Release ^
     /p:Platform=x64 ^
     /p:AppxBundlePlatforms=x64 ^
     /p:UseSubFolderForOutputDirDuringMultiPlatformBuild=false
-echo "copy zlib release file to depend"
-xcopy %cd%\install\lib\zlib.lib %RD3_PATH%\..\depend\lib\win\release\ /s /e /y
-xcopy %cd%\install\bin\*.* %RD3_PATH%\..\depend\bin\win\release\ /s /e /y
+echo "copy zip release file to depend"
+xcopy %cd%\install\lib\zip.lib %RD3_PATH%\..\depend\lib\win\release\ /s /e /y
 xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\ /s /e /y
 del %cd%\install\ /f /s /q
 

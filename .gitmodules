@@ -16,9 +16,6 @@
 [submodule "3rdparty/PhysX"]
 	path = 3rdparty/PhysX
 	url = https://github.com/NVIDIAGameWorks/PhysX.git
-[submodule "3rdparty/zlib"]
-	path = 3rdparty/zlib
-	url = https://github.com/madler/zlib.git
 [submodule "3rdparty/openal-soft"]
 	path = 3rdparty/openal-soft
 	url = https://github.com/kcat/openal-soft.git
@@ -31,3 +28,6 @@
 [submodule "3rdparty/ozz-animation"]
 	path = 3rdparty/ozz-animation
 	url = https://github.com/guillaumeblanc/ozz-animation.git
+[submodule "3rdparty/zip"]
+	path = 3rdparty/zip
+	url = https://github.com/kuba--/zip.git
