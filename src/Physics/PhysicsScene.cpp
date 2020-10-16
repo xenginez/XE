@@ -6,6 +6,8 @@
 #include "Interface/IFramework.h"
 #include "Interface/IPhysicsService.h"
 
+#define CAST() reinterpret_cast< physx::PxScene * >( GetHandle().GetValue() )
+
 BEG_META( PhysicsScene )
 END_META()
 

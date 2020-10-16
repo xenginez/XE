@@ -1,9 +1,10 @@
 #include "Shape.h"
 
-#include "PhysicsMaterial.h"
+#include <PhysX/PxPhysicsAPI.h>
+
+#define CAST() reinterpret_cast< physx::PxShape * >( GetHandle().GetValue() )
 
 BEG_META( XE::Shape )
-type->Property( "Material", &Shape::_Material );
 END_META()
 
 XE::Shape::Shape()

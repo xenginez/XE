@@ -26,6 +26,11 @@ public:
 	~PhysicsMaterial() override;
 
 public:
+	XE::PhysicsMaterialHandle GetHandle() const;
+
+	void SetHandle( XE::PhysicsMaterialHandle val );
+
+public:
 	XE::float32 GetRestitution() const;
 
 	void SetRestitution( XE::float32 val );
@@ -51,12 +56,7 @@ public:
 	void SetFlag( XE::Flags<PhysicsMaterialFlag> val );
 
 private:
-	XE::float32 _Restitution;
-	XE::float32 _StaticFriction;
-	XE::float32 _DynamicFriction;
-	CombineMode _FrictionCombineMode;
-	CombineMode _RestitutionCombineMode;
-	XE::Flags<PhysicsMaterialFlag> _Flags;
+	XE::PhysicsMaterialHandle _Handle;
 };
 
 END_XE_NAMESPACE

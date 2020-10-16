@@ -26,55 +26,37 @@ public:
 	~RigidBody() override;
 
 public:
-	void Startup();
+	XE::RigidBodyHandle GetHandle() const;
 
-	void Update();
-
-	void Clearup();
-
-protected:
-	virtual void OnStartup() = 0;
-
-	virtual void OnUpdate() = 0;
-
-	virtual void OnClearup() = 0;
-
-public:
-	RigidBodyHandle GetHandle() const;
-
-	void SetHandle( RigidBodyHandle val );
+	void SetHandle( XE::RigidBodyHandle val );
 
 	XE::PhysicsSceneHandle GetSceneHandle() const;
 
 public:
-	const XE::String & GetName() const;
+	XE::String GetName() const;
 
 	void SetName( const XE::String & val );
 
-	const XE::Mat4 & GetWorldPose() const;
+	XE::Mat4 GetWorldPose() const;
 
 	void SetWorldPose( const XE::Mat4 & val );
 
 public:
-	void AttachShape( const XE::ShapePtr & val );
+	void AttachShape( XE::ShapeHandle val );
 
-	void DetachShape( const XE::ShapePtr & val );
+	void DetachShape( XE::ShapeHandle val );
 
-	const Array<ShapePtr> & GetShapes() const;
+	XE::Array<XE::ShapeHandle> GetShapes() const;
 
-	void SetShapes( const Array<ShapePtr> & val );
+	void SetShapes( const XE::Array<XE::ShapeHandle> & val );
 
-	const Array<ConstraintPtr> & GetConstraints() const;
+	XE::Array<XE::ConstraintHandle> GetConstraints() const;
 
-	void SetConstraints( const Array<ConstraintPtr> & val );
+	void SetConstraints( const XE::Array<XE::ConstraintHandle> & val );
 
 private:
-	XE::String _Name;
-	XE::Mat4 _WorldPose;
 	XE::RigidBodyHandle _Handle;
-	XE::Array<ShapePtr> _Shapes;
 	XE::PhysicsSceneHandle _SceneHandle;
-	XE::Array<ConstraintPtr> _Constraints;
 };
 
 END_XE_NAMESPACE

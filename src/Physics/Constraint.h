@@ -26,7 +26,13 @@ public:
 	~Constraint() override;
 
 public:
+	XE::ConstraintHandle GetHandle() const;
+
+	void SetHandle( XE::ConstraintHandle val );
+
 	XE::PhysicsSceneHandle GetSceneHandle() const;
+
+	void GetSceneHandle( XE::PhysicsSceneHandle val );
 
 public:
 	XE::ConstraintFlags GetFlags() const;
@@ -56,6 +62,9 @@ public:
 
 	void SetMinResponseThreshold( XE::float32 val );
 
+private:
+	XE::ConstraintHandle _Handle;
+	XE::PhysicsSceneHandle _SceneHandle;
 };
 
 END_XE_NAMESPACE

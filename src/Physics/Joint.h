@@ -27,19 +27,9 @@ public:
 	~Joint() override;
 
 public:
-	XE::Mat4 GetRelativeTransform() const;
+	XE::JointHandle GetHandle() const;
 
-	XE::Mat4 GetFirstRigidBodyPose() const;
-
-	XE::Mat4 GetSecondRigidBodyPose() const;
-
-	XE::Vec3 GetRelativeLinearVelocity() const;
-
-	XE::Vec3 GetRelativeAngularVelocity() const;
-
-	XE::PhysicsSceneHandle GetSceneHandle() const;
-
-	XE::ConstraintHandle GetConstraintHandle() const;
+	void SetHandle( XE::JointHandle val );
 
 public:
 	const XE::String & GetName() const;
@@ -78,8 +68,23 @@ public:
 
 	void SetRigidBodyHandle( const XE::Pair<XE::RigidBodyHandle, XE::RigidBodyHandle> & val );
 
+public:
+	XE::Mat4 GetRelativeTransform() const;
 
+	XE::Mat4 GetFirstRigidBodyPose() const;
 
+	XE::Mat4 GetSecondRigidBodyPose() const;
+
+	XE::Vec3 GetRelativeLinearVelocity() const;
+
+	XE::Vec3 GetRelativeAngularVelocity() const;
+
+	XE::PhysicsSceneHandle GetSceneHandle() const;
+
+	XE::ConstraintHandle GetConstraintHandle() const;
+
+private:
+	XE::JointHandle _Handle;
 };
 
 END_XE_NAMESPACE

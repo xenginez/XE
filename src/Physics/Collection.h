@@ -25,6 +25,11 @@ public:
 	~Collection();
 
 public:
+	XE::CollectionHandle GetHandle() const;
+
+	void SetHandle( XE::CollectionHandle val );
+
+public:
 	void FindRigidBody( const XE::String val );
 
 	void InsertRigidBody( XE::RigidBodyHandle val );
@@ -33,8 +38,11 @@ public:
 
 	void ContainsRigidBody( XE::RigidBodyHandle val );
 
+public:
 	void MergeCollection( XE::CollectionHandle val );
 
+private:
+	XE::CollectionHandle _Handle;
 };
 
 END_XE_NAMESPACE

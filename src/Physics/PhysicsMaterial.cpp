@@ -1,16 +1,13 @@
 #include "PhysicsMaterial.h"
 
+#include <PhysX/PxPhysicsAPI.h>
+
+#define CAST() reinterpret_cast< physx::PxMaterial * >( GetHandle().GetValue() )
+
 BEG_META( XE::PhysicsMaterial )
-type->Property( "Flag", &PhysicsMaterial::_Flags );
-type->Property( "Restitution", &PhysicsMaterial::_Restitution );
-type->Property( "StaticFriction", &PhysicsMaterial::_StaticFriction );
-type->Property( "DynamicFriction", &PhysicsMaterial::_DynamicFriction );
-type->Property( "FrictionCombineMode", &PhysicsMaterial::_FrictionCombineMode );
-type->Property( "RestitutionCombineMode", &PhysicsMaterial::_RestitutionCombineMode );
 END_META()
 
 XE::PhysicsMaterial::PhysicsMaterial()
-	:_Restitution( 0.0f ), _StaticFriction( 0.0f ), _DynamicFriction( 0.0f )
 {
 
 }
@@ -18,64 +15,4 @@ XE::PhysicsMaterial::PhysicsMaterial()
 XE::PhysicsMaterial::~PhysicsMaterial()
 {
 
-}
-
-XE::float32 XE::PhysicsMaterial::GetRestitution() const
-{
-	return _Restitution;
-}
-
-void XE::PhysicsMaterial::SetRestitution( XE::float32 val )
-{
-	_Restitution = val;
-}
-
-XE::float32 XE::PhysicsMaterial::GetStaticFriction() const
-{
-	return _StaticFriction;
-}
-
-void XE::PhysicsMaterial::SetStaticFriction( XE::float32 val )
-{
-	_StaticFriction = val;
-}
-
-XE::float32 XE::PhysicsMaterial::GetDynamicFriction() const
-{
-	return _DynamicFriction;
-}
-
-void XE::PhysicsMaterial::SetDynamicFriction( XE::float32 val )
-{
-	_DynamicFriction = val;
-}
-
-XE::CombineMode XE::PhysicsMaterial::GetFrictionCombineMode() const
-{
-	return _FrictionCombineMode;
-}
-
-void XE::PhysicsMaterial::SetFrictionCombineMode( CombineMode val )
-{
-	_FrictionCombineMode = val;
-}
-
-XE::CombineMode XE::PhysicsMaterial::GetRestitutionCombineMode() const
-{
-	return _RestitutionCombineMode;
-}
-
-void XE::PhysicsMaterial::SetRestitutionCombineMode( CombineMode val )
-{
-	_RestitutionCombineMode = val;
-}
-
-XE::Flags<XE::PhysicsMaterialFlag> XE::PhysicsMaterial::GetFlag() const
-{
-	return _Flags;
-}
-
-void XE::PhysicsMaterial::SetFlag( XE::Flags<XE::PhysicsMaterialFlag> val )
-{
-	_Flags = val;
 }

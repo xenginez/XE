@@ -13,7 +13,7 @@
 #include "Utils/Layer.h"
 #include "Utils/Object.h"
 
-#include "ConvexMesh.h"
+#include "Type.h"
 
 BEG_XE_NAMESPACE
 
@@ -25,6 +25,11 @@ public:
 	Shape();
 
 	~Shape() override;
+
+public:
+	XE::ShapeHandle GetHandle() const;
+
+	void SetHandle( XE::ShapeHandle val );
 
 public:
 	XE::ShapeFlags GetFlags() const;
@@ -43,15 +48,15 @@ public:
 
 	void SetContactOffset( XE::float32 val );
 
-	const XE::Mat4 & GetLocalTransform() const;
+	XE::Mat4 GetLocalTransform() const;
 
 	void SetLocalTransform( const XE::Mat4 & val );
 
-	const XE::Layer & GetQueryFilter() const;
+	XE::Layer GetQueryFilter() const;
 
 	void SetQueryFilter( const XE::Layer & val );
 
-	const XE::Layer & GetSimulationFilter() const;
+	XE::Layer GetSimulationFilter() const;
 
 	void SetSimulationFilter( const XE::Layer & val );
 
@@ -67,6 +72,8 @@ public:
 
 	void SetMaterial( XE::PhysicsMaterialHandle val );
 
+private:
+	XE::ShapeHandle _Handle;
 };
 
 class XE_API BoxShape : public Shape
@@ -79,7 +86,7 @@ public:
 	~BoxShape() override;
 
 public:
-	const XE::AABB & GetBox() const;
+	XE::AABB GetBox() const;
 
 	void SetBox( const XE::AABB & val );
 
@@ -95,7 +102,7 @@ public:
 	~PlaneShape() override;
 
 public:
-	const XE::Plane & GetPlane() const;
+	XE::Plane GetPlane() const;
 
 	void SetPlane( const XE::Plane & val );
 
@@ -111,7 +118,7 @@ public:
 	~SphereShape() override;
 
 public:
-	const XE::Sphere & GetSphere() const;
+	XE::Sphere GetSphere() const;
 
 	void SetSphere( const XE::Sphere & val );
 
@@ -127,7 +134,7 @@ public:
 	~CapsuleShape() override;
 
 public:
-	const XE::Capsule & GetCapsule() const;
+	XE::Capsule GetCapsule() const;
 
 	void SetCapsule( const XE::Capsule & val );
 
@@ -143,7 +150,7 @@ public:
 	~ConvexMeshShape() override;
 
 public:
-	const XE::ConvexMesh & GetCapsule() const;
+	XE::ConvexMesh GetCapsule() const;
 
 	void SetCapsule( const XE::ConvexMesh & val );
 
@@ -171,7 +178,7 @@ public:
 
 	void SetDepth( XE::float32 val );
 
-	const XE::Array<XE::float16> & GetData() const;
+	XE::Array<XE::float16> GetData() const;
 
 	void SetData( const XE::Array<XE::float16> & val );
 

@@ -2,6 +2,8 @@
 
 #include <PhysX/PxPhysicsAPI.h>
 
+#define CAST() reinterpret_cast< physx::PxConstraint * >( GetHandle().GetValue() )
+
 BEG_META( XE::Constraint )
 END_META()
 

@@ -15,6 +15,7 @@
 BEG_XE_NAMESPACE
 
 DECL_PTR( Shape );
+DECL_PTR( Joint );
 DECL_PTR( RigidBody );
 DECL_PTR( Constraint );
 DECL_PTR( Collection );
@@ -22,6 +23,7 @@ DECL_PTR( PhysicsScene );
 DECL_PTR( PhysicsMaterial );
 
 DECL_HANDLE( XE_API, Shape );
+DECL_HANDLE( XE_API, Joint );
 DECL_HANDLE( XE_API, RigidBody );
 DECL_HANDLE( XE_API, Constraint );
 DECL_HANDLE( XE_API, Collection );
@@ -140,6 +142,12 @@ enum class FrictionType
 	FRICTION_COUNT
 };
 DECL_META_ENUM( XE_API, FrictionType );
+
+struct XE_API ConvexMesh
+{
+	XE::Array<XE::Vec3> _Vertices;
+	XE::Array<XE::uint8> _Indices;
+};
 
 struct XE_API QueryHitResult
 {
