@@ -7,7 +7,9 @@ END_META()
 
 XE::Layout::Layout()
 	:_TopMargin( 0 ), _LeftMargin( 0 ), _BottomMargin( 0 ), _RightMargin( 0 ), _WidgetSpacing( 0 ), _SizeConstraint( SizeConstraint::MINIMUM_SIZE )
+	,_OnGeometryChanged( std::bind( &Layout::OnGeometryChanged, this, std::placeholders::_1 ) )
 {
+	XE::Connect( &GeometryChanged, &_OnGeometryChanged );
 }
 
 XE::Layout::~Layout()
@@ -135,15 +137,8 @@ XE::WidgetPtr XE::Layout::GetWidget( XE::WidgetHandle val ) const
 
 void XE::Layout::Render()
 {
-	OnRender();
-
 	for( auto & pair : _Children )
 	{
 		GetWidget( pair.first )->Render();
 	}
-}
-
-void XE::Layout::OnRender()
-{
-
 }

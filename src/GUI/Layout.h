@@ -72,8 +72,8 @@ public:
 public:
 	void Render() override;
 
-protected:
-	virtual void OnRender();
+private:
+	virtual void OnGeometryChanged( const XE::Rect & val ) = 0;
 
 private:
 	XE::float32 _LeftMargin;
@@ -82,6 +82,7 @@ private:
 	XE::float32 _RightMargin;
 	XE::float32 _WidgetSpacing;
 	SizeConstraint _SizeConstraint;
+	XE::Slot<const XE::Rect &> _OnGeometryChanged;
 	XE::Array< XE::Pair< WidgetHandle, XE::uint8> > _Children;
 };
 

@@ -23,10 +23,8 @@ public:
 	~HBoxLayout() override;
 
 private:
-	void OnGeometryChanged( const XE::Rect & val );
+	void OnGeometryChanged( const XE::Rect & val ) override;
 
-private:
-	XE::Slot<const XE::Rect &> _OnGeometryChanged;
 };
 
 END_XE_NAMESPACE

@@ -4,9 +4,7 @@ BEG_META( HBoxLayout )
 END_META()
 
 XE::HBoxLayout::HBoxLayout()
-	:_OnGeometryChanged( std::bind( &HBoxLayout::OnGeometryChanged, this, std::placeholders::_1 ) )
 {
-	XE::Connect( &GeometryChanged, &_OnGeometryChanged );
 }
 
 XE::HBoxLayout::~HBoxLayout()

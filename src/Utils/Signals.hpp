@@ -18,13 +18,10 @@ template< typename ... Args > class Signal;
 template< typename ... Args > class Connect;
 template< typename ... Args > class Disconnect;
 
-
-struct _ConnectNoRepeat
+struct XE_API _ConnectNoRepeat
 {
 };
 static constexpr _ConnectNoRepeat ConnectNoRepeat = {};
-
-
 
 template< typename ... Args > class Signal : public XE::NonCopyable
 {
