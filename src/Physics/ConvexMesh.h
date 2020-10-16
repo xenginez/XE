@@ -12,6 +12,8 @@
 #include "Math/Vec3.h"
 #include "Utils/Object.h"
 
+#include "Type.h"
+
 BEG_XE_NAMESPACE
 
 class XE_API ConvexMesh : public XE::Object

@@ -37,6 +37,22 @@ enum class ShapeFlag
 };
 DECL_META_FLAGS( XE_API, ShapeFlag, ShapeFlags );
 
+enum class ConstraintFlag
+{
+	BROKEN = 1 << 0,
+	PROJECT_TO_ACTOR0 = 1 << 1,
+	PROJECT_TO_ACTOR1 = 1 << 2,
+	PROJECTION = PROJECT_TO_ACTOR0 | PROJECT_TO_ACTOR1,
+	COLLISION_ENABLED = 1 << 3,
+	VISUALIZATION = 1 << 4,
+	DRIVE_LIMITS_ARE_FORCES = 1 << 5,
+	IMPROVED_SLERP = 1 << 7,
+	DISABLE_PREPROCESSING = 1 << 8,
+	ENABLE_EXTENDED_LIMITS = 1 << 9,
+	GPU_COMPATIBLE = 1 << 10,
+};
+DECL_META_FLAGS( XE_API, ConstraintFlag, ConstraintFlags );
+
 enum class RigidDynamicFlag
 {
 	KINEMATIC = 1 << 0,

@@ -13,7 +13,6 @@
 #include "Utils/Layer.h"
 #include "Utils/Object.h"
 
-#include "Type.h"
 #include "ConvexMesh.h"
 
 BEG_XE_NAMESPACE
@@ -32,25 +31,29 @@ public:
 
 	void SetFlags( XE::ShapeFlags val );
 
-	const XE::Mat4 & GetLocalTransform() const;
+	const XE::String & GetName() const;
 
-	void SetLocalTransform( const XE::Mat4 & val );
+	void SetName( const XE::String & val );
 
-	const XE::Layer & GetSimulationFilter() const;
+	XE::float32 GetRestOffset() const;
 
-	void SetSimulationFilter( const XE::Layer & val );
-
-	const XE::Layer & GetQueryFilter() const;
-
-	void SetQueryFilter( const XE::Layer & val );
+	void SetRestOffset( XE::float32 val );
 
 	XE::float32 GetContactOffset() const;
 
 	void SetContactOffset( XE::float32 val );
 
-	XE::float32 GetRestOffset() const;
+	const XE::Mat4 & GetLocalTransform() const;
 
-	void SetRestOffset( XE::float32 val );
+	void SetLocalTransform( const XE::Mat4 & val );
+
+	const XE::Layer & GetQueryFilter() const;
+
+	void SetQueryFilter( const XE::Layer & val );
+
+	const XE::Layer & GetSimulationFilter() const;
+
+	void SetSimulationFilter( const XE::Layer & val );
 
 	XE::float32 GetTorsionalPatchRadius() const;
 
@@ -60,21 +63,10 @@ public:
 
 	void SetMinTorsionalPatchRadius( XE::float32 val );
 
-public:
-	const PhysicsMaterialPtr & GetMaterial() const;
+	XE::PhysicsMaterialHandle GetMaterial() const;
 
-	void SetMaterial( const PhysicsMaterialPtr & val );
+	void SetMaterial( XE::PhysicsMaterialHandle val );
 
-private:
-	ShapeFlags _Flags;
-	XE::float32 _RestOffset;
-	XE::Layer _QueryFilter;
-	XE::float32 _ContactOffset;
-	XE::Mat4 _LocalTransform;
-	XE::Layer _SimulationFilter;
-	PhysicsMaterialPtr _Material;
-	XE::float32 _TorsionalPatchRadius;
-	XE::float32 _MinTorsionalPatchRadius;
 };
 
 class XE_API BoxShape : public Shape
@@ -91,8 +83,6 @@ public:
 
 	void SetBox( const XE::AABB & val );
 
-private:
-	XE::AABB _Box;
 };
 
 class XE_API PlaneShape : public Shape
@@ -109,8 +99,6 @@ public:
 
 	void SetPlane( const XE::Plane & val );
 
-private:
-	XE::Plane _Plane;
 };
 
 class XE_API SphereShape : public Shape
@@ -127,8 +115,6 @@ public:
 
 	void SetSphere( const XE::Sphere & val );
 
-private:
-	XE::Sphere _Sphere;
 };
 
 class XE_API CapsuleShape : public Shape
@@ -145,8 +131,6 @@ public:
 
 	void SetCapsule( const XE::Capsule & val );
 
-private:
-	XE::Capsule _Capsule;
 };
 
 class XE_API ConvexMeshShape : public Shape
@@ -163,8 +147,6 @@ public:
 
 	void SetCapsule( const XE::ConvexMesh & val );
 
-private:
-	XE::ConvexMesh _ConvexMesh;
 };
 
 class XE_API HeightFieldShape : public Shape
@@ -193,11 +175,6 @@ public:
 
 	void SetData( const XE::Array<XE::float16> & val );
 
-private:
-	XE::uint32 _Width;
-	XE::uint32 _Height;
-	XE::float32 _Depth;
-	XE::Array<XE::float16> _Data;
 };
 
 END_XE_NAMESPACE

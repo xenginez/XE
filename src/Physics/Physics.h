@@ -9,10 +9,13 @@
 #ifndef PHYSICS_H__B00CBAE6_CFD6_4654_9D6D_F89F7C62299B
 #define PHYSICS_H__B00CBAE6_CFD6_4654_9D6D_F89F7C62299B
 
-#include "Joint.h"
 #include "Shape.h"
+#include "Joint.h"
+#include "ConvexMesh.h"
 #include "RigidBody.h"
 #include "Constraint.h"
+#include "RigidStatic.h"
+#include "RigidDynamic.h"
 #include "PhysicsScene.h"
 #include "PhysicsMaterial.h"
 

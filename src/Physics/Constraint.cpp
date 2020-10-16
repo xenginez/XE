@@ -1,5 +1,7 @@
 #include "Constraint.h"
 
+#include <PhysX/PxPhysicsAPI.h>
+
 BEG_META( XE::Constraint )
 END_META()
 
