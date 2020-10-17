@@ -52,10 +52,10 @@ typedef TYPE * TYPE##RPtr
 template<> class XE::AllocatorProxy< TYPE > \
 { \
 public: \
-	static std::pmr::polymorphic_allocator< TYPE > * GetAllocator() \
+	static std::pmr::polymorphic_allocator< TYPE > & GetAllocator() \
 	{ \
 		static std::pmr::polymorphic_allocator< TYPE > _alloc( GetResource() ); \
-		return &_alloc; \
+		return _alloc; \
 	} \
 	static std::pmr::memory_resource * GetResource() \
 	{ \

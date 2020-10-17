@@ -29,47 +29,10 @@ public:
 	~IWorldService() override;
 
 public:
+	virtual XE::WorldPtr GetCurrentWorld() const = 0;
+
 	virtual void LoadWorld( const XE::String & val ) = 0;
 
-public:
-	bool AddGameObject( const GameObjectPtr & val );
-
-	bool RemoveGameObject( const GameObjectPtr & val );
-
-	GameObjectPtr FindGameObject( const String & val ) const;
-
-	GameObjectPtr FindGameObject( const GameObjectHandle & val ) const;
-
-	const Array< GameObjectPtr > & GetGameObjects() const;
-
-public:
-	GameObjectPtr Intersect( const Array<GameObjectPtr> exclude, const Ray & val ) const;
-
-	GameObjectPtr Intersect( const Array<GameObjectPtr> exclude, const AABB & val ) const;
-
-	GameObjectPtr Intersect( const Array<GameObjectPtr> exclude, const Line & val ) const;
-
-	GameObjectPtr Intersect( const Array<GameObjectPtr> exclude, const Plane & val ) const;
-
-	GameObjectPtr Intersect( const Array<GameObjectPtr> exclude, const Sphere & val ) const;
-
-	GameObjectPtr Intersect( const Array<GameObjectPtr> exclude, const Frustum & val ) const;
-
-public:
-	Array<GameObjectPtr> Intersects( const Ray & val ) const;
-
-	Array<GameObjectPtr> Intersects( const AABB & val ) const;
-
-	Array<GameObjectPtr> Intersects( const Line & val ) const;
-
-	Array<GameObjectPtr> Intersects( const Plane & val ) const;
-
-	Array<GameObjectPtr> Intersects( const Sphere & val ) const;
-
-	Array<GameObjectPtr> Intersects( const Frustum & val ) const;
-
-protected:
-	virtual XE::WorldPtr GetCurrentWorld() const = 0;
 };
 
 END_XE_NAMESPACE

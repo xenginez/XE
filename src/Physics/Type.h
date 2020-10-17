@@ -9,6 +9,7 @@
 #ifndef __TYPE_H__1C1C3DA4_0D11_418D_8EC6_B03DB2644537
 #define __TYPE_H__1C1C3DA4_0D11_418D_8EC6_B03DB2644537
 
+#include "Math/Math.h"
 #include "Utils/Flags.hpp"
 #include "Utils/Handle.hpp"
 

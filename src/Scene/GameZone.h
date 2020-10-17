@@ -15,7 +15,7 @@ BEG_XE_NAMESPACE
 
 class XE_API GameZone : public XE::Entity
 {
-	Object( GameZone, Entity )
+	OBJECT( GameZone, Entity )
 
 public:
 	GameZone();

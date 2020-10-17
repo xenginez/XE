@@ -39,7 +39,7 @@ public:
 
 	void SetConstraintFlags( XE::ConstraintFlags val );
 
-	const XE::Pair<XE::RigidActorHandle, XE::RigidActorHandle> & GetRigidActorHandle() const;
+	XE::Pair<XE::RigidActorHandle, XE::RigidActorHandle> GetRigidActorHandle() const;
 
 	void SetRigidActorHandle( const XE::Pair<XE::RigidActorHandle, XE::RigidActorHandle> & val );
 

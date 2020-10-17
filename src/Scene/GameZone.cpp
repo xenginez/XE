@@ -3,7 +3,7 @@
 BEG_META( XE::GameZone )
 END_META()
 
-GameZone::GameZone()
+XE::GameZone::GameZone()
 {
 
 }

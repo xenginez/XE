@@ -24,6 +24,8 @@ XE::PhysicsScene::~PhysicsScene()
 bool XE::PhysicsScene::Startup()
 {
 	_Handle = XE::IFramework::GetCurrentFramework()->GetPhysicsService()->CreateScene();
+
+	return true;
 }
 
 void XE::PhysicsScene::Clearup()

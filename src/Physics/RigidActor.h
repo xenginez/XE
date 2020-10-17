@@ -9,7 +9,6 @@
 #ifndef RIGIDACTOR_H__1E45A27D_5B5D_43E8_9361_DF2E1F39D4F3
 #define RIGIDACTOR_H__1E45A27D_5B5D_43E8_9361_DF2E1F39D4F3
 
-#include "Math/Math.h"
 #include "Utils/Object.h"
 
 #include "Type.h"

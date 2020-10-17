@@ -5,7 +5,7 @@ type->Value( "STATIC", GameObjectType::STATIC );
 type->Value( "DYNAMIC", GameObjectType::DYNAMIC );
 END_META()
 
-BEG_META( XE::GameObjectHandle )
+BEG_META( XE::EntityHandle )
 END_META()
 
 BEG_META( XE::ComponentHandle )

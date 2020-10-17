@@ -35,10 +35,9 @@ public:
 	void Clearup() override;
 
 public:
-	void LoadWorld( const XE::String & val ) override;
-
-protected:
 	XE::WorldPtr GetCurrentWorld() const override;
+
+	void LoadWorld( const XE::String & val ) override;
 
 private:
 	Private * _p;

@@ -68,7 +68,7 @@ void XE::Shape::SetHandle( XE::ShapeHandle val )
 
 XE::String XE::Shape::GetName() const
 {
-	_p->getName();
+	return _p->getName();
 }
 
 void XE::Shape::SetName( const XE::String & val )
@@ -127,7 +127,7 @@ XE::Layer XE::Shape::GetQueryFilter() const
 {
 	physx::PxFilterData data = _p->getQueryFilterData();
 
-	return XE::uint64( data.word0 ) || XE::uint64( data.word1 << 32 );
+	return XE::uint64( data.word0 ) || ( XE::uint64( data.word1 ) << 32 );
 }
 
 void XE::Shape::SetQueryFilter( const XE::Layer & val )
@@ -144,7 +144,7 @@ XE::Layer XE::Shape::GetSimulationFilter() const
 {
 	physx::PxFilterData data = _p->getSimulationFilterData();
 
-	return XE::uint64( data.word0 ) || XE::uint64( data.word1 << 32 );
+	return XE::uint64( data.word0 ) || ( XE::uint64( data.word1 ) << 32 );
 }
 
 void XE::Shape::SetSimulationFilter( const XE::Layer & val )
@@ -190,7 +190,7 @@ XE::Array<XE::PhysicsMaterialHandle> XE::Shape::GetPhysicsMaterials() const
 
 	auto size = _p->getMaterials( materials, 1024 );
 
-	for( int i = 0; i < size; ++i )
+	for( XE::uint32 i = 0; i < size; ++i )
 	{
 		res.push_back( reinterpret_cast< XE::uint64 >( materials[i] ) );
 	}
@@ -270,7 +270,7 @@ void XE::PlaneShape::SetPlane( const XE::Plane & val )
 	_p->setGeometry( physx::PxPlaneGeometry() );
 }
 
-BEG_META( XE::CapsuleShape )
+BEG_META( XE::SphereShape )
 END_META()
 
 XE::SphereShape::SphereShape()
@@ -552,4 +552,6 @@ bool XE::HeightFieldShape::ModifySamples( XE::uint32 x, XE::uint32 y, XE::uint32
 
 		return geometry.heightField->modifySamples( x, y, desc );
 	}
+
+	return false;
 }
