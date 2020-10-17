@@ -29,20 +29,34 @@ public:
 
 	void SetHandle( XE::CollectionHandle val );
 
-public:
-	void FindRigidBody( const XE::String val );
+	XE::PhysicsSceneHandle GetSceneHandle() const;
 
-	void InsertRigidBody( XE::RigidBodyHandle val );
-
-	void RemoveRigidBody( XE::RigidBodyHandle val );
-
-	void ContainsRigidBody( XE::RigidBodyHandle val );
+	void GetSceneHandle( XE::PhysicsSceneHandle val );
 
 public:
-	void MergeCollection( XE::CollectionHandle val );
+	void InsertRigidActor( XE::RigidActorHandle val );
+
+	void RemoveRigidActor( XE::RigidActorHandle val );
+
+	void ContainsRigidActor( XE::RigidActorHandle val );
+
+	XE::RigidActorHandle  FindRigidActor( const XE::String val );
+
+public:
+	XE::uint64 GetRigidActorCount() const;
+
+	XE::Array<XE::RigidActorHandle> GetRigidActors() const;
+
+	XE::RigidActorHandle GetRigidActor( XE::uint64 val ) const;
+
+public:
+	void InsertCollection( XE::CollectionHandle val );
+
+	void RemoveCollection( XE::CollectionHandle val );
 
 private:
 	XE::CollectionHandle _Handle;
+	XE::PhysicsSceneHandle _SceneHandle;
 };
 
 END_XE_NAMESPACE

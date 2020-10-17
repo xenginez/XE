@@ -23,52 +23,10 @@ public:
 	~RigidDynamic() override;
 
 public:
-	XE::RigidDynamicFlags GetFlags() const;
+	XE::Mat4 GetKinematicTarget() const;
 
-	void SetFlags( XE::RigidDynamicFlags val );
+	void SetKinematicTarget( const XE::Mat4 & val );
 
-	XE::RigidDynamicLockFlags GetLockFlags() const;
-
-	void SetLockFlags( XE::RigidDynamicLockFlags val );
-
-public:
-	XE::float32 GetMass() const;
-
-	void SetMass( XE::float32 val );
-
-	XE::float32 GetInvMass() const;
-
-	void SetInvMass( XE::float32 val );
-
-	XE::float32 GetLinearDamping() const;
-
-	void SetLinearDamping( XE::float32 val );
-
-	XE::float32 GetAngularDamping() const;
-
-	void SetAngularDamping( XE::float32 val );
-
-	XE::Vec3 GetLienarVelocity() const;
-
-	void SetLinearVelocity( const XE::Vec3 & val );
-
-	XE::Vec3 GetAngularVelocity() const;
-
-	void SetAngularVelocity( const XE::Vec3 & val );
-
-	XE::Mat4 GetCMassLocalPose() const;
-
-	void SetCMassLocalPose( const XE::Mat4 & val );
-
-	XE::Vec3 GetMaxLienarVelocity() const;
-
-	void SetMaxLinearVelocity( const XE::Vec3 & val );
-
-	XE::Vec3 GetMaxAngularVelocity() const;
-
-	void SetMaxAngularVelocity( const XE::Vec3 & val );
-
-public:
 	XE::float32 GetSleepThreshold() const;
 
 	void SetSleepThreshold( XE::float32 val );
@@ -81,24 +39,17 @@ public:
 
 	void SetVelocityIteration( XE::uint32 val );
 
-	XE::Mat4 GetKinematicTarget() const;
-
-	void SetKinematicTarget( const XE::Mat4 & val );
-
 	XE::float32 GetStabilizationThreshold() const;
 
 	void SetStabilizationThreshold( XE::float32 val );
 
-public:
-	void AddForce( const XE::Vec3 & force, ForceMode mode = ForceMode::FORCE );
+	XE::float32 GetContactReportThreshold() const;
 
-	void AddTorque( const XE::Vec3 & torque, ForceMode mode = ForceMode::FORCE );
+	void SetContactReportThreshold( XE::float32 val );
 
-	void ClearForce( ForceMode mode = ForceMode::FORCE );
+	XE::RigidDynamicLockFlags GetRigidDynamicLockFlags() const;
 
-	void ClearTorque( ForceMode mode = ForceMode::FORCE );
-
-	void SetForceAndTorque( const XE::Vec3 & force, const XE::Vec3 & torque, ForceMode mode = ForceMode::FORCE );
+	void SetRigidDynamicLockFlags( XE::RigidDynamicLockFlags val );
 
 public:
 	void Sleep();

@@ -35,13 +35,13 @@ public:
 	void GetSceneHandle( XE::PhysicsSceneHandle val );
 
 public:
-	XE::ConstraintFlags GetFlags() const;
+	XE::ConstraintFlags GetConstraintFlags() const;
 
-	void SetFlags( XE::ConstraintFlags val );
+	void SetConstraintFlags( XE::ConstraintFlags val );
 
-	const XE::Pair<XE::RigidBodyHandle, XE::RigidBodyHandle> & GetRigidBodyHandle() const;
+	const XE::Pair<XE::RigidActorHandle, XE::RigidActorHandle> & GetRigidActorHandle() const;
 
-	void SetRigidBodyHandle( const XE::Pair<XE::RigidBodyHandle, XE::RigidBodyHandle> & val );
+	void SetRigidActorHandle( const XE::Pair<XE::RigidActorHandle, XE::RigidActorHandle> & val );
 
 public:
 	bool IsValid() const;

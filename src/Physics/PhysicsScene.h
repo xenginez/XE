@@ -45,10 +45,6 @@ public:
 
 	void SetCCDMaxPasses( XE::uint32 val );
 
-	XE::PhysicsSceneFlags GetFlag() const;
-
-	void SetFlag( XE::PhysicsSceneFlags flags );
-
 	XE::FrictionType GetFrictionType() const;
 
 	void SetFrictionType( XE::FrictionType val );
@@ -56,6 +52,10 @@ public:
 	XE::float32 GetBounceThresholdVelocity() const;
 
 	void SetBounceThresholdVelocity( XE::float32 val );
+
+	XE::PhysicsSceneFlags GetPhysicsSceneFlags() const;
+
+	void SetPhysicsSceneFlags( XE::PhysicsSceneFlags flags );
 
 public:
 	bool Raycast( const XE::Ray & ray, XE::float32 distance,

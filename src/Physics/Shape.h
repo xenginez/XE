@@ -27,18 +27,25 @@ public:
 	~Shape() override;
 
 public:
+	static XE::ShapePtr CreateShape( XE::ShapeHandle val );
+
+public:
 	XE::ShapeHandle GetHandle() const;
 
 	void SetHandle( XE::ShapeHandle val );
 
 public:
-	XE::ShapeFlags GetFlags() const;
-
-	void SetFlags( XE::ShapeFlags val );
-
-	const XE::String & GetName() const;
+	XE::String GetName() const;
 
 	void SetName( const XE::String & val );
+
+	XE::Mat4 GetLocalPose() const;
+
+	void SetLocalPose( const XE::Mat4 & val );
+
+	XE::ShapeFlags GetShapeFlags() const;
+
+	void SetShapeFlags( XE::ShapeFlags val );
 
 	XE::float32 GetRestOffset() const;
 
@@ -47,10 +54,6 @@ public:
 	XE::float32 GetContactOffset() const;
 
 	void SetContactOffset( XE::float32 val );
-
-	XE::Mat4 GetLocalTransform() const;
-
-	void SetLocalTransform( const XE::Mat4 & val );
 
 	XE::Layer GetQueryFilter() const;
 
@@ -68,9 +71,14 @@ public:
 
 	void SetMinTorsionalPatchRadius( XE::float32 val );
 
-	XE::PhysicsMaterialHandle GetMaterial() const;
+public:
+	XE::uint64 GetPhysicsMaterialCount() const;
 
-	void SetMaterial( XE::PhysicsMaterialHandle val );
+	XE::Array<XE::PhysicsMaterialHandle> GetPhysicsMaterials() const;
+
+	XE::PhysicsMaterialHandle GetPhysicsMaterial( XE::uint64 val ) const;
+
+	void SetPhysicsMaterials( const XE::Array<XE::PhysicsMaterialHandle> & val );
 
 private:
 	XE::ShapeHandle _Handle;
@@ -150,9 +158,20 @@ public:
 	~ConvexMeshShape() override;
 
 public:
-	XE::ConvexMesh GetCapsule() const;
+	XE::Vec3 GetScale() const;
 
-	void SetCapsule( const XE::ConvexMesh & val );
+	XE::Quat GetRotation() const;
+
+public:
+	XE::uint64 GetVertexCount() const;
+
+	XE::uint64 GetPolygonCount() const;
+
+	XE::BasicMemoryView<XE::Vec3> GetVertexBuffer() const;
+
+	XE::BasicMemoryView<XE::uint8> GetIndexBuffer() const;
+
+	XE::HullPolygon GetPolygonData( XE::uint64 val ) const;
 
 };
 
@@ -166,21 +185,23 @@ public:
 	~HeightFieldShape() override;
 
 public:
-	XE::uint32 GetWidth() const;
+	XE::float32 GetRowCount() const;
 
-	void SetWidth( XE::uint32 val );
+	XE::float32 GetColCount() const;
 
-	XE::uint32 GetHeight() const;
+	XE::float32 GetRowScale() const;
 
-	void SetHeight( XE::uint32 val );
+	XE::float32 GetColScale() const;
 
-	XE::float32 GetDepth() const;
+	XE::float32 GetHeightScale() const;
 
-	void SetDepth( XE::float32 val );
+	XE::uint32 GetSampleStride() const;
 
-	XE::Array<XE::float16> GetData() const;
+	XE::float32 GetConvexEdgeThreshold() const;
 
-	void SetData( const XE::Array<XE::float16> & val );
+	XE::float32 GetHeight( XE::float32 x, XE::float32 y ) const;
+
+	bool ModifySamples( XE::uint32 x, XE::uint32 y, XE::uint32 w, XE::uint32 h, XE::BasicMemoryView<XE::uint16> data, XE::float32 convex_edge_threshold );
 
 };
 

@@ -14,21 +14,40 @@
 
 BEG_XE_NAMESPACE
 
-DECL_PTR( Shape );
 DECL_PTR( Joint );
+DECL_PTR( Shape );
+DECL_PTR( BoxShape );
+DECL_PTR( PlaneShape );
+DECL_PTR( SphereShape );
+DECL_PTR( CapsuleShape );
+DECL_PTR( ConvexMeshShape );
+DECL_PTR( HeightFieldShape );
 DECL_PTR( RigidBody );
+DECL_PTR( RigidActor );
+DECL_PTR( RigidStatic );
+DECL_PTR( RigidDynamic );
 DECL_PTR( Constraint );
 DECL_PTR( Collection );
 DECL_PTR( PhysicsScene );
 DECL_PTR( PhysicsMaterial );
 
-DECL_HANDLE( XE_API, Shape );
 DECL_HANDLE( XE_API, Joint );
-DECL_HANDLE( XE_API, RigidBody );
+DECL_HANDLE( XE_API, Shape );
+DECL_HANDLE( XE_API, RigidActor );
 DECL_HANDLE( XE_API, Constraint );
 DECL_HANDLE( XE_API, Collection );
 DECL_HANDLE( XE_API, PhysicsScene );
 DECL_HANDLE( XE_API, PhysicsMaterial );
+
+OBJECT_ALLOCATOR_PROXY( XE::Shape );
+OBJECT_ALLOCATOR_PROXY( XE::BoxShape );
+OBJECT_ALLOCATOR_PROXY( XE::PlaneShape );
+OBJECT_ALLOCATOR_PROXY( XE::SphereShape );
+OBJECT_ALLOCATOR_PROXY( XE::CapsuleShape );
+OBJECT_ALLOCATOR_PROXY( XE::ConvexMeshShape );
+OBJECT_ALLOCATOR_PROXY( XE::HeightFieldShape );
+OBJECT_ALLOCATOR_PROXY( XE::RigidStatic );
+OBJECT_ALLOCATOR_PROXY( XE::RigidDynamic );
 
 enum class ShapeFlag
 {
@@ -38,6 +57,15 @@ enum class ShapeFlag
 	VISUALIZATION = 1 << 3,
 };
 DECL_META_FLAGS( XE_API, ShapeFlag, ShapeFlags );
+
+enum class RigidActorFlag
+{
+	VISUALIZATION = 1 << 0,
+	DISABLE_GRAVITY = 1 << 1,
+	SEND_SLEEP_NOTIFIES = 1 << 2,
+	DISABLE_SIMULATION = 1 << 3,
+};
+DECL_META_FLAGS( XE_API, RigidActorFlag, RigidActorFlags );
 
 enum class ConstraintFlag
 {
@@ -55,7 +83,7 @@ enum class ConstraintFlag
 };
 DECL_META_FLAGS( XE_API, ConstraintFlag, ConstraintFlags );
 
-enum class RigidDynamicFlag
+enum class RigidBodyFlag
 {
 	KINEMATIC = 1 << 0,
 	USE_KINEMATIC_TARGET_FOR_SCENE_QUERIES = 1 << 1,
@@ -66,7 +94,7 @@ enum class RigidDynamicFlag
 	ENABLE_CCD_MAX_CONTACT_IMPULSE = 1 << 6,
 	RETAIN_ACCELERATIONS = 1 << 7,
 };
-DECL_META_FLAGS( XE_API, RigidDynamicFlag, RigidDynamicFlags );
+DECL_META_FLAGS( XE_API, RigidBodyFlag, RigidBodyFlags );
 
 enum class PhysicsSceneFlag
 {
@@ -143,16 +171,17 @@ enum class FrictionType
 };
 DECL_META_ENUM( XE_API, FrictionType );
 
-struct XE_API ConvexMesh
+struct XE_API HullPolygon
 {
-	XE::Array<XE::Vec3> _Vertices;
-	XE::Array<XE::uint8> _Indices;
+	XE::Plane Plane;
+	XE::uint32 IndexCount;
+	XE::uint32 IndexOffset;
 };
 
 struct XE_API QueryHitResult
 {
 	XE::ShapeHandle Shape;
-	XE::RigidBodyHandle Body;
+	XE::RigidActorHandle Actor;
 
 	XE::Vec3 Position;
 	XE::Vec3 Normal;

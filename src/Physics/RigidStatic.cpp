@@ -2,7 +2,7 @@
 
 #include <PhysX/PxPhysicsAPI.h>
 
-#define CAST() reinterpret_cast< physx::PxRigidStatic * >( GetHandle().GetValue() )
+#define _p reinterpret_cast< physx::PxRigidStatic * >( GetHandle().GetValue() )
 
 BEG_META( XE::RigidStatic )
 END_META()

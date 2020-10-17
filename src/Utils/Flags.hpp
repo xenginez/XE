@@ -13,12 +13,11 @@
 
 BEG_XE_NAMESPACE
 
-template< typename T > class Flags
+template< typename T, typename V = XE::uint64 > class Flags
 {
-	static_assert( std::is_enum_v<T> && ( XE::uint64 )( T::NONE ) == 0 );
-
 public:
-	static const XE::Flags< T > NONE;
+	using enum_type = T;
+	using value_type = V;
 
 public:
 	Flags()
@@ -27,8 +26,14 @@ public:
 
 	}
 
-	Flags( T val )
-		:_Value( static_cast< XE::uint64 >( val ) )
+	Flags( enum_type val )
+		:_Value( static_cast< value_type >( val ) )
+	{
+
+	}
+
+	Flags( value_type val )
+		:_Value( val )
 	{
 
 	}
@@ -39,17 +44,10 @@ public:
 
 	}
 
-private:
-	Flags( XE::uint64 val )
-		:_Value( val )
-	{
-
-	}
-
 public:
-	Flags operator |( T val ) const
+	Flags operator |( enum_type val ) const
 	{
-		return _Value | static_cast< XE::uint64 >( val );
+		return _Value | static_cast< value_type >( val );
 	}
 
 	Flags operator |( const Flags & val ) const
@@ -57,9 +55,9 @@ public:
 		return _Value | val._Value;
 	}
 
-	Flags operator &( T val ) const
+	Flags operator &( enum_type val ) const
 	{
-		return _Value & static_cast< XE::uint64 >( val );
+		return _Value & static_cast< value_type >( val );
 	}
 
 	Flags operator &( const Flags & val ) const
@@ -67,9 +65,9 @@ public:
 		return _Value & val._Value;
 	}
 
-	Flags operator << ( T val ) const
+	Flags operator << ( enum_type val ) const
 	{
-		return _Value << XE::uint64( val );
+		return _Value << static_cast< value_type >( val );
 	}
 
 	Flags operator << ( const Flags & val ) const
@@ -77,9 +75,9 @@ public:
 		return _Value << val._Value;
 	}
 
-	Flags operator >> ( T val ) const
+	Flags operator >> ( enum_type val ) const
 	{
-		return _Value >> XE::uint64( val );
+		return _Value >> static_cast< value_type >( val );
 	}
 
 	Flags operator >> ( const Flags & val ) const
@@ -88,9 +86,9 @@ public:
 	}
 
 public:
-	Flags & operator =( T val )
+	Flags & operator =( enum_type val )
 	{
-		_Value = static_cast< XE::uint64 >( val );
+		_Value = static_cast< value_type >( val );
 
 		return *this;
 	}
@@ -102,9 +100,9 @@ public:
 		return *this;
 	}
 
-	Flags & operator |=( T val )
+	Flags & operator |=( enum_type val )
 	{
-		_Value |= static_cast< XE::uint64 >( val );
+		_Value |= static_cast< value_type >( val );
 
 		return *this;
 	}
@@ -116,9 +114,9 @@ public:
 		return *this;
 	}
 
-	Flags & operator &=( T val )
+	Flags & operator &=( enum_type val )
 	{
-		_Value &= static_cast< XE::uint64 >( val );
+		_Value &= static_cast< value_type >( val );
 
 		return *this;
 	}
@@ -131,9 +129,9 @@ public:
 	}
 
 public:
-	bool operator ||( T val ) const
+	bool operator ||( enum_type val ) const
 	{
-		return ( _Value | static_cast< XE::uint64 >( val ) ) != 0;
+		return ( _Value | static_cast< value_type >( val ) ) != 0;
 	}
 
 	bool operator ||( const Flags & val ) const
@@ -141,9 +139,9 @@ public:
 		return ( _Value | val._Value ) != 0;
 	}
 
-	bool operator &&( T val ) const
+	bool operator &&( enum_type val ) const
 	{
-		return ( _Value & static_cast< XE::uint64 >( val ) ) != 0;
+		return ( _Value & static_cast< value_type >( val ) ) != 0;
 	}
 
 	bool operator &&( const Flags & val ) const
@@ -151,9 +149,9 @@ public:
 		return ( _Value & val._Value ) != 0;
 	}
 
-	bool operator ==( T val ) const
+	bool operator ==( enum_type val ) const
 	{
-		return _Value == static_cast< XE::uint64 >( val );
+		return _Value == static_cast< value_type >( val );
 	}
 
 	bool operator ==( const Flags & val ) const
@@ -161,9 +159,9 @@ public:
 		return _Value == val._Value;
 	}
 
-	bool operator !=( T val ) const
+	bool operator !=( enum_type val ) const
 	{
-		return _Value != static_cast< XE::uint64 >( val );
+		return _Value != static_cast< value_type >( val );
 	}
 
 	bool operator !=( const Flags & val ) const
@@ -172,15 +170,14 @@ public:
 	}
 
 public:
-	XE::uint64 GetValue() const
+	value_type GetValue() const
 	{
 		return _Value;
 	}
 
 private:
-	XE::uint64 _Value;
+	value_type _Value;
 };
-template< typename T > const XE::Flags< T > Flags< T >::NONE = {};
 
 template< typename T > XE::Flags< T > MakeFlags( T arg0 )
 {

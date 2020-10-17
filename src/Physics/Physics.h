@@ -12,6 +12,7 @@
 #include "Shape.h"
 #include "Joint.h"
 #include "RigidBody.h"
+#include "RigidActor.h"
 #include "Collection.h"
 #include "Constraint.h"
 #include "RigidStatic.h"

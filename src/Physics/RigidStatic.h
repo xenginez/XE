@@ -9,13 +9,13 @@
 #ifndef RIGIDSTATIC_H__9FFFFAAC_6141_4B82_804D_06BA61E39E62
 #define RIGIDSTATIC_H__9FFFFAAC_6141_4B82_804D_06BA61E39E62
 
-#include "RigidBody.h"
+#include "RigidActor.h"
 
 BEG_XE_NAMESPACE
 
-class XE_API RigidStatic : public XE::RigidBody
+class XE_API RigidStatic : public XE::RigidActor
 {
-	OBJECT( RigidStatic, RigidBody )
+	OBJECT( RigidStatic, RigidActor )
 
 public:
 	RigidStatic();

@@ -48,14 +48,13 @@ typedef TYPE * TYPE##RPtr
 #define RP_CAST std::reinterpret_pointer_cast
 #define XE_THIS(TYPE) std::static_pointer_cast<TYPE>( shared_from_this() )
 
-
 #define OBJECT_ALLOCATOR_PROXY( TYPE ) \
-template<> class XE::AllocatorProxy<TYPE> \
+template<> class XE::AllocatorProxy< TYPE > \
 { \
 public: \
-	static std::pmr::polymorphic_allocator< T > * GetAllocator() \
+	static std::pmr::polymorphic_allocator< TYPE > * GetAllocator() \
 	{ \
-		static std::pmr::polymorphic_allocator< T > _alloc( GetResource() ); \
+		static std::pmr::polymorphic_allocator< TYPE > _alloc( GetResource() ); \
 		return &_alloc; \
 	} \
 	static std::pmr::memory_resource * GetResource() \

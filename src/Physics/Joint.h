@@ -32,7 +32,7 @@ public:
 	void SetHandle( XE::JointHandle val );
 
 public:
-	const XE::String & GetName() const;
+	XE::String GetName() const;
 
 	void SetName( const XE::String & val );
 
@@ -43,10 +43,6 @@ public:
 	XE::float32 GetBreakTorque() const;
 
 	void SetBreakTorque( XE::float32 val );
-
-	XE::ConstraintFlags GetFlags() const;
-
-	void SetFlags( XE::ConstraintFlags val );
 
 	XE::float32 GetFirstInvMassScale() const;
 
@@ -64,16 +60,20 @@ public:
 
 	void SetSecondInvInertiaScale( XE::float32 val );
 
-	const XE::Pair<XE::RigidBodyHandle, XE::RigidBodyHandle> & GetRigidBodyHandle() const;
+	XE::ConstraintFlags GetConstraintFlags() const;
 
-	void SetRigidBodyHandle( const XE::Pair<XE::RigidBodyHandle, XE::RigidBodyHandle> & val );
+	void SetConstraintFlags( XE::ConstraintFlags val );
+
+	const XE::Pair<XE::RigidActorHandle, XE::RigidActorHandle> & GetRigidActorHandle() const;
+
+	void SetRigidActorHandle( const XE::Pair<XE::RigidActorHandle, XE::RigidActorHandle> & val );
 
 public:
 	XE::Mat4 GetRelativeTransform() const;
 
-	XE::Mat4 GetFirstRigidBodyPose() const;
+	XE::Mat4 GetFirstRigidActorPose() const;
 
-	XE::Mat4 GetSecondRigidBodyPose() const;
+	XE::Mat4 GetSecondRigidActorPose() const;
 
 	XE::Vec3 GetRelativeLinearVelocity() const;
 

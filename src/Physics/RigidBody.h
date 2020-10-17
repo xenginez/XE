@@ -9,16 +9,13 @@
 #ifndef RIGIDBODY_H__F9398FC0_E3E7_4E55_99AF_8A689017D38B
 #define RIGIDBODY_H__F9398FC0_E3E7_4E55_99AF_8A689017D38B
 
-#include "Math/Math.h"
-#include "Utils/Object.h"
-
-#include "Type.h"
+#include "RigidActor.h"
 
 BEG_XE_NAMESPACE
 
-class XE_API RigidBody : public XE::Object
+class XE_API RigidBody : public XE::RigidActor
 {
-	OBJECT( RigidBody, Object )
+	OBJECT( RigidBody, RigidActor )
 
 public:
 	RigidBody();
@@ -26,37 +23,74 @@ public:
 	~RigidBody() override;
 
 public:
-	XE::RigidBodyHandle GetHandle() const;
+	XE::float32 GetMass() const;
 
-	void SetHandle( XE::RigidBodyHandle val );
+	XE::float32 GetInvMass() const;
 
-	XE::PhysicsSceneHandle GetSceneHandle() const;
+	void SetMass( XE::float32 val );
 
-public:
-	XE::String GetName() const;
+	XE::Vec3 GetMassSpaceInertiaTensor() const;
 
-	void SetName( const XE::String & val );
+	XE::Vec3 GetMassSpaceInvInertiaTensor() const;
 
-	XE::Mat4 GetWorldPose() const;
-
-	void SetWorldPose( const XE::Mat4 & val );
+	void SetMassSpaceInertiaTensor( const XE::Vec3 & val );
 
 public:
-	void AttachShape( XE::ShapeHandle val );
+	XE::float32 GetLinearDamping() const;
 
-	void DetachShape( XE::ShapeHandle val );
+	void SetLinearDamping( XE::float32 val );
 
-	XE::Array<XE::ShapeHandle> GetShapes() const;
+	XE::float32 GetAngularDamping() const;
 
-	void SetShapes( const XE::Array<XE::ShapeHandle> & val );
+	void SetAngularDamping( XE::float32 val );
 
-	XE::Array<XE::ConstraintHandle> GetConstraints() const;
+	XE::float32 GetMaxContactImpulse() const;
 
-	void SetConstraints( const XE::Array<XE::ConstraintHandle> & val );
+	void SetMaxContactImpulse( XE::float32 val );
 
-private:
-	XE::RigidBodyHandle _Handle;
-	XE::PhysicsSceneHandle _SceneHandle;
+	XE::Vec3 GetLienarVelocity() const;
+
+	void SetLinearVelocity( const XE::Vec3 & val );
+
+	XE::Vec3 GetAngularVelocity() const;
+
+	void SetAngularVelocity( const XE::Vec3 & val );
+
+	XE::Mat4 GetCMassLocalPose() const;
+
+	void SetCMassLocalPose( const XE::Mat4 & val );
+
+	XE::float32 GetMaxLienarVelocity() const;
+
+	void SetMaxLinearVelocity( const XE::float32 & val );
+
+	XE::float32 GetMaxAngularVelocity() const;
+
+	void SetMaxAngularVelocity( const XE::float32 & val );
+
+	XE::RigidBodyFlags GetRigidBodyFlags() const;
+
+	void SetRigidBodyFlags( XE::RigidBodyFlags val );
+
+	XE::float32 GetMinCCDAdvanceCoefficient() const;
+
+	void SetMinCCDAdvanceCoefficient( XE::float32 val );
+
+	XE::float32 GetMaxDepenetrationVelocity() const;
+
+	void SetMaxDepenetrationVelocity( XE::float32 val );
+
+public:
+	void AddForce( const XE::Vec3 & force, ForceMode mode = ForceMode::FORCE );
+
+	void AddTorque( const XE::Vec3 & torque, ForceMode mode = ForceMode::FORCE );
+
+	void ClearForce( ForceMode mode = ForceMode::FORCE );
+
+	void ClearTorque( ForceMode mode = ForceMode::FORCE );
+
+	void SetForceAndTorque( const XE::Vec3 & force, const XE::Vec3 & torque, ForceMode mode = ForceMode::FORCE );
+
 };
 
 END_XE_NAMESPACE

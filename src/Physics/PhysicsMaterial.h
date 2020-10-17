@@ -51,9 +51,9 @@ public:
 
 	void SetRestitutionCombineMode( CombineMode val );
 
-	XE::Flags<PhysicsMaterialFlag>	GetFlag() const;
+	XE::PhysicsMaterialFlags GetPhysicsMaterialFlags() const;
 
-	void SetFlag( XE::Flags<PhysicsMaterialFlag> val );
+	void SetPhysicsMaterialFlags( XE::PhysicsMaterialFlags val );
 
 private:
 	XE::PhysicsMaterialHandle _Handle;
