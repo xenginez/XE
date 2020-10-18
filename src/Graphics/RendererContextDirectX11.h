@@ -28,7 +28,7 @@ public:
 	~RendererContextDirectX11() override;
 
 protected:
-	void OnRender( XE::Frame* val ) override;
+	void OnRender( XE::Frame * val ) override;
 
 private:
 	void RenderItems( XE::Frame * val );

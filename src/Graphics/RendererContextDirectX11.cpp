@@ -1,9 +1,11 @@
 #include "RendererContextDirectX11.h"
-#if 0//PLATFORM_OS & (OS_WINDOWS)
+#if 0// PLATFORM_OS & (OS_WINDOWS)
 
 #include <d3d11_4.h>
 #include <dxgi1_6.h>
 #include <d3dcommon.h>
+
+#include "Utils/Logger.h"
 
 #ifdef max
 #undef max
@@ -1207,12 +1209,12 @@ void XE::RendererContextDirectX11::EXEC_RENDERER_INIT( XE::Buffer & buffer )
 			hr = adapter->GetDesc( &desc );
 			if( SUCCEEDED( hr ) )
 			{
-				XE_LOG( XE::LoggerLevel::Message, "Adapter #%d", i );
+				XE_LOG( XE::LoggerLevel::Message, "Adapter #%1", i );
 
 				char description[128];
 				wcstombs( description, desc.Description, 128 );
 
-				XE_LOG( XE::LoggerLevel::Message, "\tDescription: %s", description );
+				XE_LOG( XE::LoggerLevel::Message, "\tDescription: %1", description );
 				XE_LOG( XE::LoggerLevel::Message, "\tVendorId: %1, DeviceId: %2, SubSysId: %3, Revision: %4", desc.VendorId, desc.DeviceId, desc.SubSysId, desc.Revision );
 				XE_LOG( XE::LoggerLevel::Message, "\tMemory: %1 (video), %2 (system), %3 (shared)", desc.DedicatedVideoMemory, desc.DedicatedSystemMemory, desc.SharedSystemMemory );
 
@@ -1243,7 +1245,7 @@ void XE::RendererContextDirectX11::EXEC_RENDERER_INIT( XE::Buffer & buffer )
 			hr = output->GetDesc( &outputDesc );
 			if( SUCCEEDED( hr ) )
 			{
-				XE_LOG( XE::LoggerLevel::Message, "\tOutput #%d", j );
+				XE_LOG( XE::LoggerLevel::Message, "\tOutput #%1", j );
 
 				char deviceName[32];
 				wcstombs( deviceName, outputDesc.DeviceName, 32 );
