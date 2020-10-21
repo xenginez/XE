@@ -31,7 +31,7 @@ void XE::World::SetName( const String & val )
 	_Name = val;
 }
 
-bool XE::World::AddEntity( const EntityPtr & val )
+bool XE::World::AddEntity( const GameEntityPtr & val )
 {
 	auto it = std::find( _Entities.begin(), _Entities.end(), val );
 	if( it != _Entities.end() )
@@ -48,7 +48,7 @@ bool XE::World::AddEntity( const EntityPtr & val )
 	return true;
 }
 
-bool XE::World::RemoveEntity( const XE::EntityPtr & val )
+bool XE::World::RemoveEntity( const XE::GameEntityPtr & val )
 {
 	auto it = std::find( _Entities.begin(), _Entities.end(), val );
 
@@ -64,7 +64,7 @@ bool XE::World::RemoveEntity( const XE::EntityPtr & val )
 	return false;
 }
 
-XE::EntityPtr XE::World::FindEntity( const String & val ) const
+XE::GameEntityPtr XE::World::FindEntity( const String & val ) const
 {
 	for( const auto & obj : _Entities )
 	{
@@ -77,7 +77,7 @@ XE::EntityPtr XE::World::FindEntity( const String & val ) const
 	return nullptr;
 }
 
-XE::EntityPtr XE::World::FindEntity( EntityHandle val ) const
+XE::GameEntityPtr XE::World::FindEntity( GameEntityHandle val ) const
 {
 	for( const auto & obj : _Entities )
 	{
@@ -90,7 +90,7 @@ XE::EntityPtr XE::World::FindEntity( EntityHandle val ) const
 	return nullptr;
 }
 
-const XE::Array< XE::EntityPtr > & XE::World::GetEntitys() const
+const XE::Array< XE::GameEntityPtr > & XE::World::GetEntitys() const
 {
 	return _Entities;
 }

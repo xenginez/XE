@@ -29,7 +29,7 @@ public:
     const String & Tr( const String & val ) const;
 
 public:
-	virtual void ProcessEvent( EventPtr & val );
+	virtual void ProcessEvent( const EventPtr & val );
 };
 
 END_XE_NAMESPACE

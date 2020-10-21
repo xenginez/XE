@@ -9,13 +9,13 @@
 #ifndef __GAMEOBJECT_H__ECCC67A6_5AD3_4306_8C14_915D53744BBA
 #define __GAMEOBJECT_H__ECCC67A6_5AD3_4306_8C14_915D53744BBA
 
-#include "Entity.h"
+#include "GameEntity.h"
 
 BEG_XE_NAMESPACE
 
-class XE_API GameObject : public XE::Entity
+class XE_API GameObject : public XE::GameEntity
 {
-	OBJECT( GameObject, Entity )
+	OBJECT( GameObject, GameEntity )
 
 public:
 	GameObject();
@@ -24,6 +24,11 @@ public:
 
 public:
 	const XE::AABB & GetBoundingBox() const;
+
+public:
+	GameObjectType GetType() const;
+
+	void SetType( GameObjectType val );
 
 public:
 	Vec3 GetWorldUp();
@@ -74,11 +79,6 @@ public:
 	void SetRelativeTransform( const Mat4 & val );
 
 public:
-	GameObjectType GetType() const;
-
-	void SetType( GameObjectType val );
-
-public:
 	SceneComponentPtr AddSceneComponent( IMetaClassPtr val, const SceneComponentPtr& parent );
 
 	BehaviorComponentPtr AddBehaviorComponent( IMetaClassPtr val );
@@ -115,7 +115,7 @@ public:
 	const XE::Array<BehaviorComponentPtr>& GetBehaviorComponents() const;
 
 public:
-	void ProcessEvent( EventPtr & val ) override;
+	void ProcessEvent( const EventPtr & val ) override;
 
 protected:
 	void Startup() override;

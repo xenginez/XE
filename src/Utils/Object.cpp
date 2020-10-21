@@ -28,7 +28,7 @@ const XE::String & XE::Object::Tr( const String & val ) const
 	return XE::IFramework::GetCurrentFramework()->GetLocalizationService()->LocalizedString( GetMetaClass()->GetFullName() + "." + val, val );
 }
 
-void XE::Object::ProcessEvent( EventPtr & val )
+void XE::Object::ProcessEvent( const EventPtr & val )
 {
 
 }

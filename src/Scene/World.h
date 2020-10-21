@@ -9,7 +9,7 @@
 #ifndef WORLD_H__BEE693B5_480D_4746_BBDA_EEECB0455761
 #define WORLD_H__BEE693B5_480D_4746_BBDA_EEECB0455761
 
-#include "Entity.h"
+#include "GameEntity.h"
 
 BEG_XE_NAMESPACE
 
@@ -28,15 +28,15 @@ public:
 	void SetName( const String & val );
 
 public:
-	bool AddEntity( const EntityPtr & val );
+	bool AddEntity( const GameEntityPtr & val );
 
-	bool RemoveEntity( const EntityPtr & val );
+	bool RemoveEntity( const GameEntityPtr & val );
 
-	EntityPtr FindEntity( const String & val ) const;
+	GameEntityPtr FindEntity( const String & val ) const;
 
-	EntityPtr FindEntity( EntityHandle val ) const;
+	GameEntityPtr FindEntity( GameEntityHandle val ) const;
 
-	const Array< EntityPtr > & GetEntitys() const;
+	const Array< GameEntityPtr > & GetEntitys() const;
 
 public:
 	void Startup();
@@ -47,8 +47,8 @@ public:
 
 private:
 	String _Name;
-	Array< EntityPtr > _Entities;
-	XE::EntityHandleAllocator _HandleTable;
+	Array< GameEntityPtr > _Entities;
+	XE::GameEntityHandleAllocator _HandleTable;
 };
 
 END_XE_NAMESPACE

@@ -288,7 +288,7 @@ void XE::GameObject::SetRelativeTransform( const Mat4 & val )
 	_RootSceneComponent->SetRelativeTransform( val );
 }
 
-void XE::GameObject::ProcessEvent( EventPtr & val )
+void XE::GameObject::ProcessEvent( const EventPtr & val )
 {
 	_RootSceneComponent->ProcessEvent( val );
 

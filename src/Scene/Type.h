@@ -14,7 +14,7 @@
 BEG_XE_NAMESPACE
 
 DECL_PTR( World );
-DECL_PTR( Entity );
+DECL_PTR( GameEntity );
 DECL_PTR( GameZone );
 DECL_PTR( Component );
 DECL_PTR( GameObject );
@@ -22,7 +22,7 @@ DECL_PTR( SceneComponent );
 DECL_PTR( RenderComponent );
 DECL_PTR( BehaviorComponent );
 
-DECL_HANDLE( XE_API, Entity );
+DECL_HANDLE( XE_API, GameEntity );
 DECL_HANDLE( XE_API, Component );
 
 enum class GameObjectType
