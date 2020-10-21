@@ -23,6 +23,14 @@ public:
 	SkeletonAnimation();
 
 	~SkeletonAnimation() override;
+
+public:
+	XE::SkeletonAnimationHandle GetHandle() const;
+
+public:
+
+private:
+	XE::SkeletonAnimationHandle _Handle;
 };
 
 END_XE_NAMESPACE

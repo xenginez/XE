@@ -117,7 +117,7 @@ void XE::Joint::SetConstraintFlags( XE::ConstraintFlags val )
 	_p->setConstraintFlags( physx::PxConstraintFlags( val.GetValue() ) );
 }
 
-const XE::Pair<XE::RigidActorHandle, XE::RigidActorHandle> & XE::Joint::GetRigidActorHandle() const
+XE::Pair<XE::RigidActorHandle, XE::RigidActorHandle> XE::Joint::GetRigidActorHandle() const
 {
 	physx::PxRigidActor * actor0, * actor1;
 	

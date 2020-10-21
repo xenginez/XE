@@ -128,7 +128,7 @@ XE::Array<XE::ShapeHandle> XE::RigidActor::GetShapes() const
 
 	auto size = _p->getShapes( shapes, 1024 );
 
-	for( int i = 0; i < size; ++i )
+	for( XE::uint32 i = 0; i < size; ++i )
 	{
 		res.push_back( reinterpret_cast< XE::uint64 >( shapes[i] ) );
 	}
@@ -144,7 +144,7 @@ XE::Array<XE::ConstraintHandle> XE::RigidActor::GetConstraints() const
 
 	auto size = _p->getConstraints( constraint, 1024 );
 
-	for( int i = 0; i < size; ++i )
+	for( XE::uint32 i = 0; i < size; ++i )
 	{
 		res.push_back( reinterpret_cast< XE::uint64 >( constraint[i] ) );
 	}

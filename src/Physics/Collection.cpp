@@ -58,7 +58,7 @@ XE::RigidActorHandle XE::Collection::FindRigidActor( const XE::String val )
 
 	auto size = _p->getObjects( bodys, 1024 );
 
-	for( int i = 0; i < size; ++i )
+	for( XE::uint32 i = 0; i < size; ++i )
 	{
 		if( auto body = bodys[i]->is<physx::PxRigidActor>() )
 		{
@@ -68,6 +68,8 @@ XE::RigidActorHandle XE::Collection::FindRigidActor( const XE::String val )
 			}
 		}
 	}
+
+	return {};
 }
 
 XE::uint64 XE::Collection::GetRigidActorCount() const
@@ -83,7 +85,7 @@ XE::Array<XE::RigidActorHandle> XE::Collection::GetRigidActors() const
 
 	auto size = _p->getObjects( bodys, 1024 );
 
-	for( int i = 0; i < size; ++i )
+	for( XE::uint32 i = 0; i < size; ++i )
 	{
 		if( auto body = bodys[i]->is<physx::PxRigidActor>() )
 		{

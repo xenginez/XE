@@ -44,11 +44,11 @@ public:
 	void SetStatus( NodeStatus val );
 
 public:
-	void Startup();
+	virtual void Startup();
 
-	void Update( XE::float32 dt );
+	virtual void Update( XE::float32 dt );
 
-	void Clearup();
+	virtual void Clearup();
 
 protected:
 	virtual void OnStartup();

@@ -36,7 +36,6 @@ else()
 	set(XE_PHYSX_POSTFIX _static_64)
 endif()
 
-option(USE_MATH "whether to use a high-precision float type" OFF)
 option(USE_SHARED_LIBS "whether to use a high-precision float type" ON)
 
 
