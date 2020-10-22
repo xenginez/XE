@@ -9,9 +9,9 @@
 #ifndef SAMPLINGSTATE_H__B98C338F_4CAF_409B_8A4A_453BF0F0AEDB
 #define SAMPLINGSTATE_H__B98C338F_4CAF_409B_8A4A_453BF0F0AEDB
 
-#include "AnimationState.h"
+#include "Utils/Asset.h"
 
-#include "Skeleton.h"
+#include "AnimationState.h"
 #include "SkeletonAnimation.h"
 
 BEG_XE_NAMESPACE
@@ -29,13 +29,9 @@ public:
 	~SamplingState() override;
 
 public:
-	const SkeletonPtr & GetSkeleton() const;
+	const XE::AssetPtr< XE::SkeletonAnimation > & GetSkeletonAnimation() const;
 
-	void SetSkeleton( const SkeletonPtr & val );
-
-	const SkeletonAnimationPtr & GetSkeletonAnimation() const;
-
-	void SetSkeletonAnimation( const SkeletonAnimationPtr & val );
+	void SetSkeletonAnimation( const XE::AssetPtr< XE::SkeletonAnimation > & val );
 
 public:
 	void OnUpdate( XE::float32 dt ) override;

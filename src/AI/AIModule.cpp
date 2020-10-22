@@ -27,6 +27,16 @@ void XE::AIModule::SetName( const XE::String & val )
 	_Name = val;
 }
 
+XE::GameObjectPtr XE::AIModule::GetGameObject() const
+{
+	return _GameObject.lock();
+}
+
+void XE::AIModule::SetGameObject( const XE::GameObjectPtr & val )
+{
+	_GameObject = val;
+}
+
 XE::Variant XE::AIModule::GetKey( const XE::Key & val ) const
 {
 	auto it = _Keys.find( val.GetKey() );

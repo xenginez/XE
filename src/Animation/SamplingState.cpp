@@ -8,18 +8,19 @@
 #include <ozz/animation/runtime/sampling_job.h>
 #include <ozz/animation/runtime/local_to_model_job.h>
 
+#include "Skeleton.h"
+#include "AnimationController.h"
+
 BEG_META( XE::SamplingState )
-type->Property( "Skeleton", &XE::SamplingState::GetSkeleton, &XE::SamplingState::SetSkeleton );
 type->Property( "SkeletonAnimation", &XE::SamplingState::GetSkeletonAnimation, &XE::SamplingState::SetSkeletonAnimation );
 END_META()
 
 struct XE::SamplingState::Private
 {
-	XE::SkeletonPtr _Skeleton;
-	XE::SkeletonAnimationPtr _Animation;
 	ozz::animation::SamplingCache _Cache;
 	ozz::vector<ozz::math::Float4x4> _Models;
 	ozz::vector<ozz::math::SoaTransform> _Locals;
+	XE::AssetPtr< XE::SkeletonAnimation > _Animation;
 };
 
 XE::SamplingState::SamplingState()
@@ -33,22 +34,12 @@ XE::SamplingState::~SamplingState()
 	delete _p;
 }
 
-const XE::SkeletonPtr & XE::SamplingState::GetSkeleton() const
-{
-	return _p->_Skeleton;
-}
-
-void XE::SamplingState::SetSkeleton( const SkeletonPtr & val )
-{
-	_p->_Skeleton = val;
-}
-
-const XE::SkeletonAnimationPtr & XE::SamplingState::GetSkeletonAnimation() const
+const XE::AssetPtr< XE::SkeletonAnimation > & XE::SamplingState::GetSkeletonAnimation() const
 {
 	return _p->_Animation;
 }
 
-void XE::SamplingState::SetSkeletonAnimation( const SkeletonAnimationPtr & val )
+void XE::SamplingState::SetSkeletonAnimation( const XE::AssetPtr< XE::SkeletonAnimation > & val )
 {
 	_p->_Animation = val;
 }
@@ -67,7 +58,7 @@ void XE::SamplingState::OnUpdate( XE::float32 dt )
 	}
 
 	ozz::animation::LocalToModelJob ltm_job;
-	ltm_job.skeleton = reinterpret_cast< ozz::animation::Skeleton * >( _p->_Skeleton->GetHandle().GetValue() );
+	ltm_job.skeleton = reinterpret_cast< ozz::animation::Skeleton * >( GetAnimationController()->GetSkeleton()->GetHandle().GetValue() );
 	ltm_job.input = ozz::make_span( _p->_Locals );
 	ltm_job.output = ozz::make_span( _p->_Models );
 	if( !ltm_job.Run() )

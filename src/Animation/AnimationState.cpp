@@ -1,6 +1,9 @@
 #include "AnimationState.h"
 
 #include "Math/Mathf.h"
+#include "AI/StateMachine.h"
+#include "Scene/GameObject.h"
+#include "AnimationController.h"
 
 BEG_META( XE::AnimationState )
 type->Property( "Loop", &XE::AnimationState::_Loop );
@@ -87,8 +90,7 @@ void XE::AnimationState::OnUpdate( XE::float32 dt )
 		{
 			if( XE::Mathf::Abs( event.GetKey() - _Time ) < XE::Mathf::Nan )
 			{
-				// TODO: Å×ÊÂ¼þ
-
+				GetStateMachine()->GetGameObject()->ProcessEvent( event.GetEvent() );
 				event.Processed();
 			}
 		}
@@ -105,4 +107,9 @@ void XE::AnimationState::OnClearup()
 	}
 
 	Super::OnClearup();
+}
+
+XE::AnimationControllerPtr XE::AnimationState::GetAnimationController() const
+{
+	return SP_CAST< XE::AnimationController >( GetStateMachine() );
 }

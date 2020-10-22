@@ -23,6 +23,8 @@ DECL_PTR( State );
 DECL_PTR( Condition );
 DECL_PTR( StateMachine );
 
+DECL_PTR( GameObject );
+
 DECL_HANDLE( XE_API, Node );
 DECL_HANDLE( XE_API, State );
 

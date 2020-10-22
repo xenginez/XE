@@ -41,7 +41,6 @@ public:
 private:
 	XE::float32 _Key = 0.0f;
 	XE::EventPtr _Event;
-	bool _Processed = false;
 };
 DECL_META_CLASS( XE_API, AnimationEvent );
 

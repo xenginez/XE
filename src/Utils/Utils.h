@@ -14,6 +14,7 @@
 #include "Event.h"
 #include "Layer.h"
 #include "Order.h"
+#include "Asset.h"
 #include "Logger.h"
 #include "BASE64.h"
 #include "Buffer.h"

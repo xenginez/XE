@@ -37,15 +37,15 @@ void XE::AnimationEvent::SetEvent( const XE::EventPtr & val )
 
 void XE::AnimationEvent::Reset()
 {
-	_Processed = false;
+	_Event->accept = false;
 }
 
 void XE::AnimationEvent::Processed()
 {
-	_Processed = true;
+	_Event->accept = true;
 }
 
 bool XE::AnimationEvent::IsProcessed() const
 {
-	return _Processed;
+	return _Event->accept;
 }

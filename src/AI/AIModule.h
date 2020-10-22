@@ -36,6 +36,11 @@ public:
 
 	void SetName( const XE::String & val );
 
+	XE::GameObjectPtr GetGameObject() const;
+
+	void SetGameObject( const XE::GameObjectPtr & val );
+
+public:
 	XE::Variant GetKey( const Key & val ) const;
 
 	void SetKey( const Key & key, const XE::Variant & val );
@@ -57,6 +62,7 @@ public:
 
 private:
 	XE::String _Name;
+	XE::GameObjectWPtr _GameObject;
 	XE::Map<XE::String, XE::Variant> _Keys;
 };
 

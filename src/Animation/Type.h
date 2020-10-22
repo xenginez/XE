@@ -16,6 +16,7 @@ BEG_XE_NAMESPACE
 
 DECL_PTR( Skeleton );
 DECL_PTR( SkeletonAnimation );
+DECL_PTR( AnimationController );
 
 DECL_HANDLE( XE_API, Skeleton );
 DECL_HANDLE( XE_API, SkeletonAnimation );

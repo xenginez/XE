@@ -51,6 +51,9 @@ public:
 
 	void OnClearup() override;
 
+public:
+	XE::AnimationControllerPtr GetAnimationController() const;
+
 private:
 	bool _Loop = false;
 	XE::float32 _Time = 0.0f;
