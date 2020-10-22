@@ -9,6 +9,7 @@
 #ifndef EVENT_H__297F9FF1_F984_41D3_8EFF_6E87D3E265B5
 #define EVENT_H__297F9FF1_F984_41D3_8EFF_6E87D3E265B5
 
+#include "Order.h"
 #include "Handle.hpp"
 
 BEG_XE_NAMESPACE
@@ -20,7 +21,7 @@ class XE_API Event
 public:
 	Event();
 
-	Event( EventHandle handle, ObjectPtr sender, ObjectPtr recver, const Variant & parameter = Variant() );
+	Event( XE::EventHandle handle, XE::ObjectPtr sender, XE::ObjectPtr recver, const XE::Variant & parameter = XE::Variant() );
 
 	Event( const Event & val );
 
@@ -28,17 +29,17 @@ public:
 
 public:
 	bool accept;
-	EventHandle handle;
-	ObjectPtr sender;
-	ObjectPtr recver;
-	Variant parameter;
+	XE::EventHandle handle;
+	XE::ObjectPtr sender;
+	XE::ObjectPtr recver;
+	XE::Variant parameter;
 };
 
 DECL_META_CLASS( XE_API, Event );
 
 END_XE_NAMESPACE
 
-#define DECL_EVENT( NAME, DESC, PARAM ) \
-DLL_VAR_WEAK extern const XE::Handle<XE::Event> NAME = XE::Order::RegisterOrder< XE::EventGroup >( #NAME, DESC, XE::TypeID< PARAM >::Get() )
+#define DECL_EVENT( NAME, DESC, ... ) \
+DLL_VAR_WEAK extern const XE::Handle<XE::Event> NAME = XE::Order::RegisterOrder< XE::EventGroup >( #NAME, DESC, XE::TypeID< __VA_ARGS__ >::Get() )
 
 #endif // EVENT_H__297F9FF1_F984_41D3_8EFF_6E87D3E265B5

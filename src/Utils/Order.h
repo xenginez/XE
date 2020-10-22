@@ -74,4 +74,6 @@ public: \
 }; \
 namespace XE{ using NAME##Group = XE::OrderGroup< INDEX >; }
 
+DECL_GROUP( XE_API, 1, Event );
+
 #endif // __ORDER_H__F15EE138_6173_4905_9684_08685B5F706A
