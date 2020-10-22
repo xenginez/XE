@@ -38,14 +38,8 @@ public:
 
 	void SetSkeleton( const XE::AssetPtr<XE::Skeleton> & val );
 
-public:
-	const XE::Array<XE::Mat4> & GetSkeletonTransform() const;
-
-	void SetSkeletonTransform( const XE::Array<XE::Mat4> & val );
-
 private:
 	XE::AssetPtr<XE::Skeleton> _Skeleton;
-	XE::Array<XE::Mat4> _SkeletonTransform;
 };
 
 END_XE_NAMESPACE
