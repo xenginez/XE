@@ -29,12 +29,32 @@ public:
 	~SamplingState() override;
 
 public:
+	bool GetLoop() const;
+
+	void SetLoop( bool val );
+
+	XE::float32 GetTime() const;
+
+	void SetTime( XE::float32 val );
+
+	XE::float32 GetSpeed() const;
+
+	void SetSpeed( XE::float32 val );
+
 	const XE::AssetPtr< XE::SkeletonAnimation > & GetSkeletonAnimation() const;
 
 	void SetSkeletonAnimation( const XE::AssetPtr< XE::SkeletonAnimation > & val );
 
+	const XE::Array< XE::Pair<XE::float32, XE::EventPtr> > & GetAnimationEvents() const;
+
+	void SetAnimationEvents( const XE::Array< XE::Pair<XE::float32, XE::EventPtr> > & val );
+
 public:
+	void OnStartup() override;
+
 	void OnUpdate( XE::float32 dt ) override;
+
+	void OnClearup() override;
 
 private:
 	Private * _p;

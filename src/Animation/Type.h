@@ -9,8 +9,10 @@
 #ifndef __TYPE_H__E9FBF2A2_BC47_464B_AAAE_44C511E818E3
 #define __TYPE_H__E9FBF2A2_BC47_464B_AAAE_44C511E818E3
 
-#include "Reflect/Reflect.h"
+#include "Math/Mat4.h"
+#include "Utils/Event.h"
 #include "Utils/Handle.hpp"
+#include "Reflect/Reflect.h"
 
 BEG_XE_NAMESPACE
 
@@ -20,6 +22,8 @@ DECL_PTR( AnimationController );
 
 DECL_HANDLE( XE_API, Skeleton );
 DECL_HANDLE( XE_API, SkeletonAnimation );
+
+DECL_EVENT( UPDATE_SKELETON_TRANSFORM, "animation update skeleton transform( XE::Mat4 )", XE::MemoryView );
 
 END_XE_NAMESPACE
 

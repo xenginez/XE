@@ -409,6 +409,16 @@ template<> struct VariantCreate<Variant>
 	}
 };
 
+template< typename T > struct VariantCreate< XE::BasicMemoryView< T > >
+{
+	static void Create( Variant * var, const XE::BasicMemoryView< T > & val )
+	{
+		var->_Type = TypeID<XE::MemoryView>::Get( nullptr );
+		var->_Data.pp = new Variant::PrivatePtrTpl<XE::MemoryView>( XE::MemoryView( ( const char * )( val.data() ), val.size() * sizeof( T ) ) );
+		var->_Flag = Variant::Flag::PRIVATEPTR;
+	}
+};
+
 template< typename ... Args > struct VariantCreate< std::basic_string<Args...> >
 {
 	static void Create( Variant * var, const std::basic_string<Args...> & val )
@@ -896,6 +906,15 @@ template<> struct VariantCast<XE::VariantArray>
 	static XE::VariantArray Cast( const Variant * val )
 	{
 		return val->ToArray();
+	}
+};
+
+template< typename T > struct VariantCast< XE::BasicMemoryView< T > >
+{
+	static XE::BasicMemoryView< T > Cast( const Variant * val )
+	{
+		auto m = VariantCast<XE::MemoryView &>::Cast( val );
+		return { static_cast< const T * >( m.data() ), m.size() / sizeof( T ) };
 	}
 };
 

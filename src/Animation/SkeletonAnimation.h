@@ -28,6 +28,7 @@ public:
 	XE::SkeletonAnimationHandle GetHandle() const;
 
 public:
+	XE::float32 GetDuration() const;
 
 private:
 	XE::SkeletonAnimationHandle _Handle;

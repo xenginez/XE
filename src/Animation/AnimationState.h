@@ -11,7 +11,7 @@
 
 #include "AI/State.h"
 
-#include "AnimationEvent.h"
+#include "Type.h"
 
 BEG_XE_NAMESPACE
 
@@ -25,40 +25,7 @@ public:
 	~AnimationState() override;
 
 public:
-	bool GetLoop() const;
-
-	void SetLoop( bool val );
-
-	XE::float32 GetTime() const;
-
-	void SetTime( XE::float32 val );
-
-	XE::float32 GetSpeed() const;
-
-	void SetSpeed( XE::float32 val );
-
-public:
-	void AddAnimationEvent( const XE::AnimationEvent & val );
-
-	void RemoveAnimationEvent( XE::float32 val );
-
-	const XE::Array< XE::AnimationEvent > & GetAnimationEvents() const;
-
-public:
-	void OnStartup() override;
-
-	void OnUpdate( XE::float32 dt ) override;
-
-	void OnClearup() override;
-
-public:
 	XE::AnimationControllerPtr GetAnimationController() const;
-
-private:
-	bool _Loop = false;
-	XE::float32 _Time = 0.0f;
-	XE::float32 _Speed = 1.0f;
-	XE::Array< XE::AnimationEvent > _Events;
 };
 
 END_XE_NAMESPACE
