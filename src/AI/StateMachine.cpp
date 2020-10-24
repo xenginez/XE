@@ -38,26 +38,28 @@ void XE::StateMachine::Startup()
 
 void XE::StateMachine::Update( XE::float32 dt )
 {
-	StatePtr s = _States[_Current.GetValue()];
+	StatePtr current = _States[_Current.GetValue()];
 
-	auto conds = s->GetConditions();
-	for( auto c : conds )
+	auto conds = current->GetConditions();
+	for( auto cond : conds )
 	{
-		if( c->Judgment() )
+		if( cond->Judgment() )
 		{
-			s->Clearup();
+			_Current = cond->GetNextStateHandle();
 
-			_Current = c->GetNextStateHandle();
+			auto next = _States[_Current.GetValue()];
 
-			s = _States[_Current.GetValue()];
+			next->Startup();
 
-			s->Startup();
+			current->Transform( next );
+
+			current->Clearup();
 
 			break;
 		}
 	}
 
-	s->Update( dt );
+	current->Update( dt );
 }
 
 void XE::StateMachine::Clearup()

@@ -46,12 +46,16 @@ public:
 
 	virtual void Update( XE::float32 dt );
 
+	virtual void Transform( const StatePtr & val );
+
 	virtual void Clearup();
 
 protected:
 	virtual void OnStartup();
 
 	virtual void OnUpdate( XE::float32 dt );
+
+	virtual void OnTransform( const StatePtr & val );
 
 	virtual void OnClearup();
 

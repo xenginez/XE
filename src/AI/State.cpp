@@ -83,6 +83,11 @@ void XE::State::OnUpdate( XE::float32 dt )
 
 }
 
+void XE::State::Transform( const StatePtr & val )
+{
+	OnTransform( val );
+}
+
 void XE::State::OnClearup()
 {
 
