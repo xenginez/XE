@@ -913,7 +913,7 @@ template< typename T > struct VariantCast< XE::BasicMemoryView< T > >
 {
 	static XE::BasicMemoryView< T > Cast( const Variant * val )
 	{
-		auto m = VariantCast<XE::MemoryView &>::Cast( val );
+		auto m = VariantCast<XE::MemoryView>::Cast( val );
 		return { static_cast< const T * >( m.data() ), m.size() / sizeof( T ) };
 	}
 };

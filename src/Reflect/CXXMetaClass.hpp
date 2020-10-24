@@ -504,12 +504,20 @@ template<> struct XE_API ClassID< VariantUnorderedMultiMap >
 };
 
 
+template<> struct XE_API ClassID< XE::MemoryView >
+{
+	static IMetaClassPtr Get( const XE::MemoryView * val = nullptr )
+	{
+		static auto meta = XE::MakeShared< CXXMetaClass<XE::MemoryView> >( "MemoryView", nullptr, nullptr );
+		return meta;
+	}
+};
+
 template<typename T> struct ClassID< XE::BasicMemoryView< T > >
 {
 	static IMetaClassPtr Get( const XE::BasicMemoryView< T > * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< CXXMetaClass<XE::MemoryView> >( "MemoryView", nullptr, nullptr );
-		return meta;
+		return ClassID< XE::MemoryView >::Get( nullptr );
 	}
 };
 

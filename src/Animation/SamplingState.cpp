@@ -112,7 +112,7 @@ void XE::SamplingState::OnStartup()
 	_p->_UpdateSkeletonTransformEvent = XE::MakeShared<XE::Event>( 
 		UPDATE_SKELETON_TRANSFORM,
 		thi, obj,
-		XE::MemoryView( ( const char * )_p->_Transform.data(), _p->_Transform.size() * sizeof( XE::Mat4 ) ) );
+		XE::BasicMemoryView< XE::Mat4 >( _p->_Transform.data(), _p->_Transform.size() ) );
 
 	for( auto & it : _p->_Events )
 	{

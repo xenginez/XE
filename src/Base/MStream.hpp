@@ -15,15 +15,15 @@
 
 BEG_XE_NAMESPACE
 
-template <class _Elem, class _Traits>
+template <class _Elem>
 class BasicMemoryView;
 
-template <class _Traits> 
+template <class _Elem>
 class _Memory_view_iterator
 {
 public:
 	using iterator_category = std::random_access_iterator_tag;
-	using value_type        = typename _Traits::char_type;
+	using value_type        = typename _Elem;
 	using difference_type   = ptrdiff_t;
 	using pointer           = const value_type *;
 	using reference         = const value_type &;
@@ -38,7 +38,7 @@ public:
 	}
 
 private:
-	friend BasicMemoryView<value_type, _Traits>;
+	friend BasicMemoryView<value_type>;
 
 #ifdef XE_DEBUG
 	constexpr _Memory_view_iterator( const pointer _Data, const size_t _Size, const size_t _Off ) noexcept
@@ -258,17 +258,16 @@ private:
 #endif 
 };
 
-template <class _Elem, class _Traits = std::char_traits<_Elem>> 
+template <class _Elem> 
 class BasicMemoryView
 {
 public:
-	using traits_type            = _Traits;
 	using value_type             = _Elem;
 	using pointer                = _Elem *;
 	using const_pointer          = const _Elem *;
 	using reference              = _Elem &;
 	using const_reference        = const _Elem &;
-	using const_iterator         = _Memory_view_iterator<_Traits>;
+	using const_iterator         = _Memory_view_iterator<_Elem>;
 	using iterator               = const_iterator;
 	using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 	using reverse_iterator       = const_reverse_iterator;
@@ -371,7 +370,7 @@ public:
 
 	constexpr size_type max_size() const noexcept
 	{
-		return _Min_value( static_cast< size_t >( PTRDIFF_MAX ), static_cast< size_t >( -1 ) / sizeof( _Elem ) );
+		return std::min( static_cast< size_t >( PTRDIFF_MAX ), static_cast< size_t >( -1 ) / sizeof( _Elem ) );
 	}
 
 public:
@@ -435,7 +434,7 @@ public:
 	{
 		_Check_offset( _Off );
 		_Count = _Clamp_suffix_size( _Off, _Count );
-		_Traits::copy( _Ptr, _Mydata + _Off, _Count );
+		std::memcpy( _Ptr, _Mydata + _Off, _Count * sizeof( _Elem ) );
 		return _Count;
 	}
 
@@ -465,7 +464,7 @@ private:
 
 	constexpr size_type _Clamp_suffix_size( const size_type _Off, const size_type _Size ) const noexcept
 	{
-		return _Min_value( _Size, _Mysize - _Off );
+		return std::min( _Size, _Mysize - _Off );
 	}
 
 	static void _Xran()
@@ -483,7 +482,7 @@ class BasicMemoryBuf : public std::basic_streambuf<_Elem, _Traits>
 public:
 	using allocator_type = _Alloc;
 	using _Mysb          = std::basic_streambuf<_Elem, _Traits>;
-	using _Myview         = BasicMemoryView<_Elem, _Traits>;
+	using _Myview         = BasicMemoryView<_Elem>;
 	using _Mysize_type   = typename _Myview::size_type;
 
 	explicit BasicMemoryBuf( std::ios_base::openmode _Mode = std::ios_base::in | std::ios_base::out )
@@ -901,7 +900,7 @@ public:
 	using _Mybase        = std::basic_istream<_Elem, _Traits>;
 	using allocator_type = _Alloc;
 	using _Mysb          = BasicMemoryBuf<_Elem, _Traits, _Alloc>;
-	using _Myview         = BasicMemoryView<_Elem, _Traits>;
+	using _Myview         = BasicMemoryView<_Elem>;
 
 	explicit BasicIMemoryStream( std::ios_base::openmode _Mode = std::ios_base::in )
 		: _Mybase( &_Memorybuffer ), _Memorybuffer( _Mode | std::ios_base::in )
@@ -976,7 +975,7 @@ public:
 	using _Mybase        = std::basic_ostream<_Elem, _Traits>;
 	using allocator_type = _Alloc;
 	using _Mysb          = BasicMemoryBuf<_Elem, _Traits, _Alloc>;
-	using _Myview         = BasicMemoryView<_Elem, _Traits>;
+	using _Myview         = BasicMemoryView<_Elem>;
 
 	explicit BasicOMemoryStream( std::ios_base::openmode _Mode = std::ios_base::out )
 		: _Mybase( &_Memorybuffer ), _Memorybuffer( _Mode | std::ios_base::out )
@@ -1057,7 +1056,7 @@ public:
 	using pos_type       = typename _Traits::pos_type;
 	using off_type       = typename _Traits::off_type;
 	using _Mysb          = BasicMemoryBuf<_Elem, _Traits, _Alloc>;
-	using _Myview         = BasicMemoryView<_Elem, _Traits>;
+	using _Myview         = BasicMemoryView<_Elem>;
 
 	BasicMemoryStream( std::ios_base::openmode _Mode = std::ios_base::in | std::ios_base::out )
 		: _Mybase( &_Stringbuffer ), _Stringbuffer( _Mode )
