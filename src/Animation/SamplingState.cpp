@@ -9,6 +9,7 @@
 #include <ozz/animation/runtime/local_to_model_job.h>
 
 #include "Math/Mathf.h"
+#include "Utils/Logger.h"
 #include "AI/StateMachine.h"
 #include "Scene/GameObject.h"
 
@@ -107,11 +108,11 @@ void XE::SamplingState::OnStartup()
 	auto obj = GetAnimationController()->GetGameObject();
 	auto skel = reinterpret_cast< ozz::animation::Skeleton * >( GetAnimationController()->GetSkeleton()->GetHandle().GetValue() );
 
+	_p->_Models.resize( skel->num_joints() );
+	_p->_Locals.resize( skel->num_joints() );
 	_p->_Transform.resize( skel->num_joints() );
 
-	_p->_UpdateSkeletonTransformEvent = XE::MakeShared<XE::Event>( 
-		UPDATE_SKELETON_TRANSFORM,
-		thi, obj,
+	_p->_UpdateSkeletonTransformEvent = XE::MakeShared<XE::Event>(  UPDATE_SKELETON_TRANSFORM, thi, obj,
 		XE::BasicMemoryView< XE::Mat4 >( _p->_Transform.data(), _p->_Transform.size() ) );
 
 	for( auto & it : _p->_Events )
@@ -132,17 +133,26 @@ void XE::SamplingState::OnUpdate( XE::float32 dt )
 	{
 		return;
 	}
-
 	_p->_Time += dt * _p->_Speed;
+	XE::float32 time = std::min( _p->_Time, anim->duration() );
+	if( _p->_Time >= anim->duration() && _p->_Loop )
+	{
+		_p->_Time = 0;
+		for( auto & it : _p->_Events )
+		{
+			it.second->accept = false;
+		}
+	}
 
 	ozz::animation::SamplingJob sampling_job;
 	sampling_job.animation = anim;
 	sampling_job.cache = &_p->_Cache;
-	sampling_job.ratio = _p->_Time;
+	sampling_job.ratio = time;
 	sampling_job.output = ozz::make_span( _p->_Locals );
 	
 	if( !sampling_job.Run() )
 	{
+		XE_LOG( LoggerLevel::Error, "%1 state sampling job runing error", GetName() );
 		return;
 	}
 
@@ -152,6 +162,7 @@ void XE::SamplingState::OnUpdate( XE::float32 dt )
 	ltm_job.output = ozz::make_span( _p->_Models );
 	if( !ltm_job.Run() )
 	{
+		XE_LOG( LoggerLevel::Error, "%1 state local to model job runing error", GetName() );
 		return;
 	}
 
@@ -172,27 +183,27 @@ void XE::SamplingState::OnUpdate( XE::float32 dt )
 	}
 	_p->_UpdateSkeletonTransformEvent->accept = false;
 	_p->_UpdateSkeletonTransformEvent->recver->ProcessEvent( _p->_UpdateSkeletonTransformEvent );
-
-	if( _p->_Time >= anim->duration() && _p->_Loop )
-	{
-		_p->_Time -= anim->duration();
-		for( auto & it : _p->_Events )
-		{
-			it.second->accept = false;
-		}
-	}
 }
 
 void XE::SamplingState::OnClearup()
 {
 	Super::OnClearup();
 
-	_p->_UpdateSkeletonTransformEvent = nullptr;
+	_p->_Locals.clear();
+	_p->_Models.clear();
 	_p->_Transform.clear();
+	_p->_UpdateSkeletonTransformEvent = nullptr;
 
 	for( auto & it : _p->_Events )
 	{
 		it.second->sender = nullptr;
 		it.second->recver = nullptr;
 	}
+}
+
+void XE::SamplingState::AssetLoad()
+{
+	Super::AssetLoad();
+
+	_p->_Animation.Load();
 }

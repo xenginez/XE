@@ -17,6 +17,7 @@
 BEG_XE_NAMESPACE
 
 DECL_PTR( Skeleton );
+DECL_PTR( BlendingLayer );
 DECL_PTR( SkeletonAnimation );
 DECL_PTR( AnimationController );
 

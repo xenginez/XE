@@ -56,6 +56,8 @@ public:
 
 	void OnClearup() override;
 
+	void AssetLoad() override;
+
 private:
 	Private * _p;
 };
