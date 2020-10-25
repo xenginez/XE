@@ -1,9 +1,9 @@
 #include "BlendingLayer.h"
 
 BEG_META( XE::BlendingLayer )
-type->Property( "Name", XE::BlendingLayer::_Name );
-type->Property( "Weight", XE::BlendingLayer::_Weight );
-type->Property( "Animation", XE::BlendingLayer::_Animation );
+type->Property( "Name", &XE::BlendingLayer::_Name );
+type->Property( "Weight", &XE::BlendingLayer::_Weight );
+type->Property( "Animation", &XE::BlendingLayer::_Animation );
 END_META()
 
 XE::BlendingLayer::BlendingLayer()

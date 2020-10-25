@@ -45,21 +45,19 @@ void XE::StateMachine::Update( XE::float32 dt )
 	{
 		if( cond->Judgment() )
 		{
-			_Current = cond->GetNextStateHandle();
-
-			auto next = _States[_Current.GetValue()];
-
-			next->Startup();
-
-			current->Transform( next );
+			auto next = _States[cond->GetNextStateHandle()];
 
 			current->Clearup();
+
+			_Current = cond->GetNextStateHandle();
+
+			next->Startup();
 
 			break;
 		}
 	}
 
-	current->Update( dt );
+	_States[_Current.GetValue()]->Update( dt );
 }
 
 void XE::StateMachine::Clearup()

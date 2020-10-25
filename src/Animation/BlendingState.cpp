@@ -1,5 +1,8 @@
 #include "BlendingState.h"
 
+#include <tbb/parallel_for.h>
+#include <tbb/blocked_range.h>
+
 #include <ozz/base/maths/vec_float.h>
 #include <ozz/base/containers/vector.h>
 #include <ozz/base/maths/soa_transform.h>
@@ -116,21 +119,21 @@ void XE::BlendingState::OnUpdate( XE::float32 dt )
 
 	auto skel = reinterpret_cast< ozz::animation::Skeleton * >( GetAnimationController()->GetSkeleton()->GetHandle().GetValue() );
 
-	for( int i = 0; i < _p->_Layers.size(); ++i )
-	{
-		auto anim = reinterpret_cast< ozz::animation::Animation * >( _p->_Layers[i]->GetSkeletonAnimation()->GetHandle().GetValue() );
+	tbb::parallel_for( XE::uint64( 0 ), XE::uint64( _p->_Layers.size() ), XE::uint64( 1 ), [this, time]( XE::uint64 i )
+					   {
+						   auto anim = reinterpret_cast< ozz::animation::Animation * >( _p->_Layers[i]->GetSkeletonAnimation()->GetHandle().GetValue() );
 
-		ozz::animation::SamplingJob sampling_job;
-		sampling_job.animation = anim;
-		sampling_job.cache = &_p->_LayerCaches[i];
-		sampling_job.ratio = time;
-		sampling_job.output = ozz::make_span( _p->_LayerLocals[i] );
-		if( !sampling_job.Run() )
-		{
-			XE_LOG( LoggerLevel::Error, "%1 state %2 layer samping job runing error", GetName(), _p->_Layers[i]->GetName() );
-			return;
-		}
-	}
+						   ozz::animation::SamplingJob sampling_job;
+						   sampling_job.animation = anim;
+						   sampling_job.cache = &_p->_LayerCaches[i];
+						   sampling_job.ratio = time;
+						   sampling_job.output = ozz::make_span( _p->_LayerLocals[i] );
+						   if( !sampling_job.Run() )
+						   {
+							   XE_LOG( LoggerLevel::Error, "%1 state %2 layer samping job runing error", GetName(), _p->_Layers[i]->GetName() );
+							   return;
+						   }
+					   } );
 
 	XE::Array<ozz::animation::BlendingJob::Layer> layers( XE::MemoryResource::GetStackMemoryResource() );
 	layers.resize( _p->_Layers.size() );
