@@ -9,7 +9,6 @@
 #ifndef __ACTIONNODE_H__C24DA3A3_57C0_409B_B964_A146B2FF23E1
 #define __ACTIONNODE_H__C24DA3A3_57C0_409B_B964_A146B2FF23E1
 
-#include "Key.h"
 #include "Node.h"
 
 BEG_XE_NAMESPACE
@@ -25,33 +24,6 @@ public:
 
 	~ActionNode();
 
-};
-
-class XE_API SubNode : public XE::ActionNode
-{
-	OBJECT( SubNode, ActionNode )
-
-public:
-	SubNode();
-
-	~SubNode();
-
-public:
-	const XE::Map<XE::Key, XE::Key> & GetConnectKeys() const;
-
-	void SetConnectKeys( const XE::Map<XE::Key, XE::Key> & val );
-
-protected:
-	virtual void OnStartup() override;
-
-	virtual void OnUpdate( XE::float32 dt ) override;
-
-	virtual void OnClearup() override;
-
-private:
-	XE::AIModulePtr _SubAI;
-	XE::FileSystem::Path _SubAIPath;
-	XE::Map<XE::Key, XE::Key> _ConnectKeys;
 };
 
 END_XE_NAMESPACE

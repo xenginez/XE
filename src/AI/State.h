@@ -9,8 +9,8 @@
 #ifndef __STATE_H__0F576F56_4DD5_458C_8B62_10766BAE42AF
 #define __STATE_H__0F576F56_4DD5_458C_8B62_10766BAE42AF
 
-#include "Key.h"
 #include "Item.h"
+#include "BlackboardKey.h"
 
 BEG_XE_NAMESPACE
 
@@ -71,9 +71,9 @@ public:
 	~SubState();
 
 public:
-	const XE::Map<XE::Key, XE::Key> & GetConnectKeys() const;
+	const XE::Map<XE::BlackboardKey, XE::BlackboardKey> & GetConnectKeys() const;
 
-	void SetConnectKeys( const XE::Map<XE::Key, XE::Key> & val );
+	void SetConnectKeys( const XE::Map<XE::BlackboardKey, XE::BlackboardKey> & val );
 
 protected:
 	virtual void OnStartup() override;
@@ -85,7 +85,7 @@ protected:
 private:
 	XE::AIModulePtr _SubAI;
 	XE::FileSystem::Path _SubAIPath;
-	XE::Map<XE::Key, XE::Key> _ConnectKeys;
+	XE::Map<XE::BlackboardKey, XE::BlackboardKey> _ConnectKeys;
 };
 
 END_XE_NAMESPACE

@@ -9,9 +9,7 @@
 #ifndef __AIMODULE_H__A590ED03_BAEC_4291_90B5_DBFC9EB9A475
 #define __AIMODULE_H__A590ED03_BAEC_4291_90B5_DBFC9EB9A475
 
-#include "Utils/Object.h"
-
-#include "Type.h"
+#include "BlackboardKey.h"
 
 BEG_XE_NAMESPACE
 
@@ -41,21 +39,21 @@ public:
 	void SetGameObject( const XE::GameObjectPtr & val );
 
 public:
-	XE::Variant GetKey( const Key & val ) const;
+	XE::Variant GetKey( const BlackboardKey & val ) const;
 
-	void SetKey( const Key & key, const XE::Variant & val );
+	void SetKey( const BlackboardKey & key, const XE::Variant & val );
 
 	const XE::Map<XE::String, XE::Variant> & GetKeys() const;
 
 	void SetKeys( const XE::Map<XE::String, XE::Variant> & val );
 
 public:
-	template< typename T > T GetKeyT( const KeyT<T> & val ) const
+	template< typename T > T GetKeyT( const BlackboardKeyKeyT<T> & val ) const
 	{
 		return GetKey( val ).Value<T>();
 	}
 
-	template< typename T > void SetKeyT( const KeyT<T> & key, const T & val )
+	template< typename T > void SetKeyT( const BlackboardKeyKeyT<T> & key, const T & val )
 	{
 		SetKey( key, val );
 	}

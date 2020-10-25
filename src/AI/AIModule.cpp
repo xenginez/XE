@@ -1,7 +1,5 @@
 #include "AIModule.h"
 
-#include "Key.h"
-
 BEG_META( XE::AIModule )
 type->Property( "Name", &AIModule::_Name );
 type->Property( "Keys", &AIModule::_Keys );
@@ -37,7 +35,7 @@ void XE::AIModule::SetGameObject( const XE::GameObjectPtr & val )
 	_GameObject = val;
 }
 
-XE::Variant XE::AIModule::GetKey( const XE::Key & val ) const
+XE::Variant XE::AIModule::GetKey( const XE::BlackboardKey & val ) const
 {
 	auto it = _Keys.find( val.GetKey() );
 	if( it != _Keys.end() )
@@ -47,7 +45,7 @@ XE::Variant XE::AIModule::GetKey( const XE::Key & val ) const
 	return {};
 }
 
-void XE::AIModule::SetKey( const XE::Key & key, const XE::Variant & val )
+void XE::AIModule::SetKey( const XE::BlackboardKey & key, const XE::Variant & val )
 {
 	_Keys[key.GetKey()] = val;
 }

@@ -13,14 +13,13 @@
 
 BEG_XE_NAMESPACE
 
-DECL_PTR( AIModule );
 
 DECL_PTR( Node );
+DECL_PTR( State );
+DECL_PTR( AIModule );
+DECL_PTR( Condition );
 DECL_PTR( BlackBoard );
 DECL_PTR( BehaviorTree );
-
-DECL_PTR( State );
-DECL_PTR( Condition );
 DECL_PTR( StateMachine );
 
 DECL_PTR( GameObject );
@@ -28,8 +27,8 @@ DECL_PTR( GameObject );
 DECL_HANDLE( XE_API, Node );
 DECL_HANDLE( XE_API, State );
 
-class Key;
-template<typename T> class KeyT;
+class BlackboardKey;
+template<typename T> class BlackboardKeyKeyT;
 
 
 enum class NodeStatus

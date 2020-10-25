@@ -117,12 +117,17 @@ void XE::SubState::OnStartup()
 
 void XE::SubState::OnUpdate( XE::float32 dt )
 {
-	for( const auto & keys : _ConnectKeys )
+	for( const auto & key : _ConnectKeys )
 	{
-		_SubAI->SetKey( keys.second, GetStateMachine()->GetKey( keys.first ) );
+		_SubAI->SetKey( key.second, GetStateMachine()->GetKey( key.first ) );
 	}
 
 	_SubAI->Update( dt );
+
+	for( const auto & key : _ConnectKeys )
+	{
+		GetStateMachine()->SetKey( key.first, _SubAI->GetKey( key.second ) );
+	}
 }
 
 void XE::SubState::OnClearup()
@@ -130,12 +135,12 @@ void XE::SubState::OnClearup()
 	_SubAI->Clearup();
 }
 
-const XE::Map<XE::Key, XE::Key> & XE::SubState::GetConnectKeys() const
+const XE::Map<XE::BlackboardKey, XE::BlackboardKey> & XE::SubState::GetConnectKeys() const
 {
 	return _ConnectKeys;
 }
 
-void XE::SubState::SetConnectKeys( const XE::Map<XE::Key, XE::Key> & val )
+void XE::SubState::SetConnectKeys( const XE::Map<XE::BlackboardKey, XE::BlackboardKey> & val )
 {
 	_ConnectKeys = val;
 }

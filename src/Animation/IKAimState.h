@@ -41,6 +41,10 @@ public:
 
 	void SetSpeed( XE::float32 val );
 
+	const XE::BlackboardKey & GetTarget() const;
+
+	void SetTarget( const XE::BlackboardKey & val );
+
 	const XE::AssetPtr< XE::SkeletonAnimation > & GetSkeletonAnimation() const;
 
 	void SetSkeletonAnimation( const XE::AssetPtr< XE::SkeletonAnimation > & val );
