@@ -58,6 +58,9 @@ public:
 		SetKey( key, val );
 	}
 
+public:
+	void AssetLoad() override;
+
 private:
 	XE::String _Name;
 	XE::GameObjectWPtr _GameObject;

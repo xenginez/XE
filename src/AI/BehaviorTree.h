@@ -23,11 +23,13 @@ public:
 	~BehaviorTree();
 
 public:
-	virtual void Startup() override;
+	void Startup() override;
 
-	virtual void Update( XE::float32 dt ) override;
+	void Update( XE::float32 dt ) override;
 
-	virtual void Clearup() override;
+	void Clearup() override;
+
+	void AssetLoad() override;
 
 public:
 	AINodeHandle GetRoot() const;

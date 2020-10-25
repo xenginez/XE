@@ -98,3 +98,13 @@ void XE::BehaviorTree::SetNodes( const XE::Array< XE::AINodePtr > & val )
 {
 	_Nodes = val;
 }
+
+void XE::BehaviorTree::AssetLoad()
+{
+	Super::AssetLoad();
+
+	for( auto & node : _Nodes )
+	{
+		node->AssetLoad();
+	}
+}

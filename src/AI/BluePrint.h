@@ -36,7 +36,6 @@ public:
 
 	XE::AIElementPtr GetElement( XE::AIElementHandle val ) const;
 
-private:
 	const XE::Array< XE::AIElementPtr > & GetElements() const;
 
 	void SetElements( const XE::Array< XE::AIElementPtr > & val );

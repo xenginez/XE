@@ -1,5 +1,8 @@
 #include "AIElement.h"
 
+#include "Interface/IFramework.h"
+#include "Interface/IAssetsService.h"
+
 #include "BluePrint.h"
 
 BEG_META( XE::AIElement )
@@ -97,4 +100,69 @@ void XE::AIElement::OnUpdate( XE::float32 dt )
 void XE::AIElement::OnClearup()
 {
 
+}
+
+BEG_META( XE::SubElement )
+type->Property( "SubAI", &SubElement::_SubAI );
+type->Property( "ConnectKeys", &SubElement::_ConnectKeys );
+END_META()
+
+XE::SubElement::SubElement()
+{
+
+}
+
+XE::SubElement::~SubElement()
+{
+
+}
+
+void XE::SubElement::OnStartup()
+{
+	for( const auto & keys : _ConnectKeys )
+	{
+		_SubAI->SetKey( keys.second, GetBluePrint()->GetKey( keys.first ) );
+	}
+
+	_SubAI->Startup();
+}
+
+void XE::SubElement::OnUpdate( XE::float32 dt )
+{
+	for( const auto & key : _ConnectKeys )
+	{
+		_SubAI->SetKey( key.second, GetBluePrint()->GetKey( key.first ) );
+	}
+
+	_SubAI->Update( dt );
+
+	for( const auto & key : _ConnectKeys )
+	{
+		GetBluePrint()->SetKey( key.first, _SubAI->GetKey( key.second ) );
+	}
+}
+
+void XE::SubElement::OnClearup()
+{
+	_SubAI->Clearup();
+}
+
+const XE::AIModulePtr & XE::SubElement::GetSubAIModule() const
+{
+	return _SubAI;
+}
+
+void XE::SubElement::SetSubAIModule( const XE::AIModulePtr & val )
+{
+	_SubAI = val;
+}
+
+const XE::Map<XE::BlackboardKey, XE::BlackboardKey> & XE::SubElement::GetConnectKeys() const
+{
+	return _ConnectKeys;
+}
+
+void XE::SubElement::SetConnectKeys( const XE::Map<XE::BlackboardKey, XE::BlackboardKey> & val )
+{
+	_ConnectKeys = val;
 }

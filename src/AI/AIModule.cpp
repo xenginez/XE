@@ -1,5 +1,7 @@
 #include "AIModule.h"
 
+#include "Utils/Asset.h"
+
 BEG_META( XE::AIModule )
 type->Property( "Name", &AIModule::_Name );
 type->Property( "Keys", &AIModule::_Keys );
@@ -58,4 +60,21 @@ const XE::Map<XE::String, XE::Variant> & XE::AIModule::GetKeys() const
 void XE::AIModule::SetKeys( const XE::Map<XE::String, XE::Variant> & val )
 {
 	_Keys = val;
+}
+
+void XE::AIModule::AssetLoad()
+{
+	Super::AssetLoad();
+
+	auto cls = XE::ClassID<XE::Asset>::Get();
+	for( auto & key : _Keys )
+	{
+		if( key.second.GetType() == cls )
+		{
+			if( XE::ObjectPtr obj = key.second.Value<XE::ObjectPtr>() )
+			{
+				obj->AssetLoad();
+			}
+		}
+	}
 }

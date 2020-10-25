@@ -33,10 +33,10 @@ struct XE::SamplingState::Private
 	XE::Array< XE::Mat4 > _Transform;
 	XE::EventPtr _UpdateSkeletonTransformEvent;
 
+	XE::SkeletonAnimationPtr _Animation;
 	ozz::animation::SamplingCache _Cache;
 	ozz::vector<ozz::math::Float4x4> _Models;
 	ozz::vector<ozz::math::SoaTransform> _Locals;
-	XE::AssetPtr< XE::SkeletonAnimation > _Animation;
 };
 
 XE::SamplingState::SamplingState()
@@ -80,12 +80,12 @@ void XE::SamplingState::SetSpeed( XE::float32 val )
 	_p->_Speed = val;
 }
 
-const XE::AssetPtr< XE::SkeletonAnimation > & XE::SamplingState::GetSkeletonAnimation() const
+const XE::SkeletonAnimationPtr & XE::SamplingState::GetSkeletonAnimation() const
 {
 	return _p->_Animation;
 }
 
-void XE::SamplingState::SetSkeletonAnimation( const XE::AssetPtr< XE::SkeletonAnimation > & val )
+void XE::SamplingState::SetSkeletonAnimation( const XE::SkeletonAnimationPtr & val )
 {
 	_p->_Animation = val;
 }
@@ -199,11 +199,4 @@ void XE::SamplingState::OnClearup()
 		it.second->sender = nullptr;
 		it.second->recver = nullptr;
 	}
-}
-
-void XE::SamplingState::AssetLoad()
-{
-	Super::AssetLoad();
-
-	_p->_Animation.Load();
 }

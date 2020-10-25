@@ -158,3 +158,582 @@ void XE::SubNode::SetConnectKeys( const XE::Map<XE::BlackboardKey, XE::Blackboar
 {
 	_ConnectKeys = val;
 }
+
+BEG_META( XE::ActionNode )
+END_META()
+
+XE::ActionNode::ActionNode()
+{
+
+}
+
+XE::ActionNode::~ActionNode()
+{
+
+}
+
+BEG_META( XE::CompositeNode )
+type->Property( "Children", &CompositeNode::_Children );
+END_META()
+
+XE::CompositeNode::CompositeNode()
+{
+
+}
+
+XE::CompositeNode::~CompositeNode()
+{
+
+}
+
+const XE::Array<XE::AINodeHandle> & XE::CompositeNode::GetChildren() const
+{
+	return _Children;
+}
+
+void XE::CompositeNode::SetChildren( const XE::Array<XE::AINodeHandle> & val )
+{
+	_Children = val;
+}
+
+void XE::CompositeNode::OnStartup()
+{
+	Super::OnStartup();
+
+	SetStatus( NodeStatus::Running );
+}
+
+void XE::CompositeNode::OnClearup()
+{
+	for( auto handle : _Children )
+	{
+		auto node = GetBehaviorTree()->GetNode( handle );
+
+		if( node->GetStatus() != NodeStatus::Finish )
+		{
+			node->Clearup();
+		}
+	}
+
+	Super::OnClearup();
+}
+
+BEG_META( XE::SequenceNode )
+END_META()
+
+XE::SequenceNode::SequenceNode()
+	:_Current( 0 )
+{
+
+}
+
+XE::SequenceNode::~SequenceNode()
+{
+
+}
+
+void XE::SequenceNode::OnStartup()
+{
+	Super::OnStartup();
+
+	_Current = 0;
+}
+
+void XE::SequenceNode::OnUpdate( XE::float32 dt )
+{
+	Super::OnUpdate( dt );
+
+	auto children = GetChildren();
+
+	if( AINodePtr node = GetBehaviorTree()->GetNode( GetChildren()[_Current] ) )
+	{
+		if( node->GetStatus() == XE::NodeStatus::None )
+		{
+			node->Startup();
+		}
+
+		if( node->GetStatus() == XE::NodeStatus::Running )
+		{
+			node->Update( dt );
+		}
+		else if( node->GetStatus() == XE::NodeStatus::Success || node->GetStatus() == XE::NodeStatus::Failure )
+		{
+			node->Clearup();
+			_Current++;
+		}
+	}
+
+	if( _Current == children.size() )
+	{
+		SetStatus( XE::NodeStatus::Success );
+	}
+}
+
+BEG_META( XE::SelectorNode )
+END_META()
+
+XE::SelectorNode::SelectorNode()
+	:_Current( 0 )
+{
+
+}
+
+XE::SelectorNode::~SelectorNode()
+{
+
+}
+
+void XE::SelectorNode::OnStartup()
+{
+	Super::OnStartup();
+
+	_Current = 0;
+}
+
+void XE::SelectorNode::OnUpdate( XE::float32 dt )
+{
+	Super::OnUpdate( dt );
+
+	auto children = GetChildren();
+
+	if( AINodePtr node = GetBehaviorTree()->GetNode( GetChildren()[_Current] ) )
+	{
+		if( node->GetStatus() == XE::NodeStatus::None )
+		{
+			node->Startup();
+		}
+
+		if( node->GetStatus() == XE::NodeStatus::Running )
+		{
+			node->Update( dt );
+		}
+
+		if( node->GetStatus() == XE::NodeStatus::Failure )
+		{
+			node->Clearup();
+			_Current++;
+		}
+		else if( node->GetStatus() == XE::NodeStatus::Success )
+		{
+			node->Clearup();
+			SetStatus( XE::NodeStatus::Success );
+			return;
+		}
+	}
+
+	if( _Current == children.size() )
+	{
+		SetStatus( XE::NodeStatus::Failure );
+	}
+}
+
+BEG_META( XE::ParallelNode )
+END_META()
+
+XE::ParallelNode::ParallelNode()
+{
+
+}
+
+XE::ParallelNode::~ParallelNode()
+{
+
+}
+
+void XE::ParallelNode::OnUpdate( XE::float32 dt )
+{
+	Super::OnUpdate( dt );
+
+	auto children = GetChildren();
+
+	bool IsFinish = true;
+
+	for( auto handle : children )
+	{
+		AINodePtr node = GetBehaviorTree()->GetNode( handle );
+
+		if( node->GetStatus() == XE::NodeStatus::None )
+		{
+			node->Startup();
+		}
+
+		if( node->GetStatus() == XE::NodeStatus::Running )
+		{
+			node->Update( dt );
+		}
+
+		if( node->GetStatus() == XE::NodeStatus::Success || node->GetStatus() == XE::NodeStatus::Failure )
+		{
+			node->Clearup();
+		}
+
+		if( node->GetStatus() != XE::NodeStatus::Finish )
+		{
+			IsFinish = false;
+		}
+	}
+
+	if( IsFinish )
+	{
+		SetStatus( XE::NodeStatus::Success );
+	}
+}
+
+BEG_META( XE::ConditionNode )
+type->Property( "Child", &ConditionNode::_Child );
+type->Property( "MultiJudgment", &ConditionNode::_MultiJudgment );
+END_META()
+
+XE::ConditionNode::ConditionNode()
+	:_MultiJudgment( false )
+{
+
+}
+
+XE::ConditionNode::~ConditionNode()
+{
+
+}
+
+XE::AINodeHandle XE::ConditionNode::GetChild() const
+{
+	return _Child;
+}
+
+void XE::ConditionNode::SetChild( XE::AINodeHandle val )
+{
+	_Child = val;
+}
+
+void XE::ConditionNode::OnStartup()
+{
+	Super::OnStartup();
+
+	if( ConditionalJudgment() )
+	{
+		GetBehaviorTree()->GetNode( GetChild() )->Startup();
+
+		SetStatus( XE::NodeStatus::Running );
+	}
+	else
+	{
+		SetStatus( XE::NodeStatus::Failure );
+	}
+}
+
+void XE::ConditionNode::OnUpdate( XE::float32 dt )
+{
+	Super::OnUpdate( dt );
+
+	if( _MultiJudgment )
+	{
+		if( !ConditionalJudgment() )
+		{
+			return;
+		}
+	}
+
+	GetBehaviorTree()->GetNode( GetChild() )->Update( dt );
+}
+
+void XE::ConditionNode::OnClearup()
+{
+	Super::OnClearup();
+
+	if( GetBehaviorTree()->GetNode( GetChild() )->GetStatus() != XE::NodeStatus::Finish )
+	{
+		GetBehaviorTree()->GetNode( GetChild() )->Clearup();
+	}
+}
+
+BEG_META( XE::DecoratorNode )
+type->Property( "Child", &DecoratorNode::_Child );
+END_META()
+
+XE::DecoratorNode::DecoratorNode()
+{
+
+}
+
+XE::DecoratorNode::~DecoratorNode()
+{
+
+}
+
+XE::AINodeHandle XE::DecoratorNode::GetChild() const
+{
+	return _Child;
+}
+
+void XE::DecoratorNode::SetChild( XE::AINodeHandle val )
+{
+	_Child = val;
+}
+
+void XE::DecoratorNode::OnStartup()
+{
+	Super::OnStartup();
+
+	if( auto node = GetBehaviorTree()->GetNode( GetChild() ) )
+	{
+		node->Startup();
+
+		SetStatus( NodeStatus::Running );
+	}
+	else
+	{
+		SetStatus( NodeStatus::Failure );
+	}
+}
+
+void XE::DecoratorNode::OnUpdate( XE::float32 dt )
+{
+	Super::OnUpdate( dt );
+
+	if( GetBehaviorTree()->GetNode( GetChild() )->GetStatus() == XE::NodeStatus::Running )
+	{
+		GetBehaviorTree()->GetNode( GetChild() )->Update( dt );
+	}
+}
+
+void XE::DecoratorNode::OnClearup()
+{
+	Super::OnClearup();
+
+	if( GetBehaviorTree()->GetNode( GetChild() )->GetStatus() != XE::NodeStatus::Finish )
+	{
+		GetBehaviorTree()->GetNode( GetChild() )->Clearup();
+	}
+}
+
+BEG_META( XE::RepeatNode )
+type->Property( "Count", &RepeatNode::_Count );
+END_META()
+
+XE::RepeatNode::RepeatNode()
+	:_Count( -1 ), _Tally( -1 )
+{
+
+}
+
+XE::RepeatNode::~RepeatNode()
+{
+
+}
+
+void XE::RepeatNode::OnStartup()
+{
+	_Tally = _Count;
+
+	Super::OnStartup();
+}
+
+void XE::RepeatNode::OnUpdate( XE::float32 dt )
+{
+	Super::OnUpdate( dt );
+
+	if( auto node = GetBehaviorTree()->GetNode( GetChild() ) )
+	{
+		if( node->GetStatus() == XE::NodeStatus::Failure || node->GetStatus() == XE::NodeStatus::Success )
+		{
+			node->Clearup();
+
+			if( _Count == -1 )
+			{
+				node->SetStatus( XE::NodeStatus::None );
+				node->Startup();
+			}
+			else
+			{
+				_Tally--;
+
+				if( _Tally <= 0 )
+				{
+					SetStatus( XE::NodeStatus::Success );
+				}
+				else
+				{
+					node->SetStatus( XE::NodeStatus::None );
+					node->Startup();
+				}
+			}
+		}
+
+	}
+}
+
+BEG_META( XE::SuccessNode )
+END_META()
+
+XE::SuccessNode::SuccessNode()
+{
+
+}
+
+XE::SuccessNode::~SuccessNode()
+{
+
+}
+
+void XE::SuccessNode::OnStartup()
+{
+	Super::OnStartup();
+
+	switch( GetBehaviorTree()->GetNode( GetChild() )->GetStatus() )
+	{
+	case XE::NodeStatus::Failure:
+	case XE::NodeStatus::Success:
+		SetStatus( XE::NodeStatus::Success );
+		break;
+	default:
+		SetStatus( XE::NodeStatus::Running );
+		break;
+	}
+}
+
+void XE::SuccessNode::OnUpdate( XE::float32 dt )
+{
+	Super::OnUpdate( dt );
+
+	switch( GetBehaviorTree()->GetNode( GetChild() )->GetStatus() )
+	{
+	case XE::NodeStatus::Failure:
+	case XE::NodeStatus::Success:
+		SetStatus( XE::NodeStatus::Success );
+		break;
+	default:
+		break;
+	}
+}
+
+BEG_META( XE::FailureNode )
+END_META()
+
+XE::FailureNode::FailureNode()
+{
+
+}
+
+XE::FailureNode::~FailureNode()
+{
+
+}
+
+void XE::FailureNode::OnStartup()
+{
+	Super::OnStartup();
+
+	switch( GetBehaviorTree()->GetNode( GetChild() )->GetStatus() )
+	{
+	case XE::NodeStatus::Failure:
+	case XE::NodeStatus::Success:
+		SetStatus( XE::NodeStatus::Failure );
+		break;
+	default:
+		break;
+	}
+}
+
+void XE::FailureNode::OnUpdate( XE::float32 dt )
+{
+	Super::OnUpdate( dt );
+
+	switch( GetBehaviorTree()->GetNode( GetChild() )->GetStatus() )
+	{
+	case XE::NodeStatus::Failure:
+	case XE::NodeStatus::Success:
+		SetStatus( XE::NodeStatus::Failure );
+		break;
+	default:
+		break;
+	}
+}
+
+BEG_META( XE::ReversedNode )
+END_META()
+
+XE::ReversedNode::ReversedNode()
+{
+
+}
+
+XE::ReversedNode::~ReversedNode()
+{
+
+}
+
+void XE::ReversedNode::OnStartup()
+{
+	Super::OnStartup();
+
+	switch( GetBehaviorTree()->GetNode( GetChild() )->GetStatus() )
+	{
+	case XE::NodeStatus::Failure:
+		SetStatus( XE::NodeStatus::Success );
+		break;
+	case XE::NodeStatus::Success:
+		SetStatus( XE::NodeStatus::Failure );
+		break;
+	default:
+		break;
+	}
+}
+
+void XE::ReversedNode::OnUpdate( XE::float32 dt )
+{
+	Super::OnUpdate( dt );
+
+	switch( GetBehaviorTree()->GetNode( GetChild() )->GetStatus() )
+	{
+	case XE::NodeStatus::Failure:
+		SetStatus( XE::NodeStatus::Success );
+		break;
+	case XE::NodeStatus::Success:
+		SetStatus( XE::NodeStatus::Failure );
+		break;
+	default:
+		break;
+	}
+}
+
+BEG_META( XE::DelayNode )
+type->Property( "DetlaTime", &DelayNode::_DetlaTime );
+END_META()
+
+XE::DelayNode::DelayNode()
+	:_DetlaTime( 0 ), _Dt( 0 )
+{
+
+}
+
+XE::DelayNode::~DelayNode()
+{
+
+}
+
+void XE::DelayNode::OnStartup()
+{
+	Super::OnStartup();
+
+	_Dt = _DetlaTime;
+
+	SetStatus( XE::NodeStatus::Running );
+}
+
+void XE::DelayNode::OnUpdate( XE::float32 dt )
+{
+	Super::OnUpdate( dt );
+
+	if( auto node = GetBehaviorTree()->GetNode( GetChild() ) )
+	{
+		if( node->GetStatus() == XE::NodeStatus::Failure || node->GetStatus() == XE::NodeStatus::Success )
+		{
+			_Dt -= dt;
+
+			if( _Dt <= XE::Mathf::Epsilon )
+			{
+				SetStatus( GetBehaviorTree()->GetNode( GetChild() )->GetStatus() );
+			}
+		}
+	}
+}

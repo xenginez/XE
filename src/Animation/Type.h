@@ -18,13 +18,15 @@ BEG_XE_NAMESPACE
 
 DECL_PTR( Skeleton );
 DECL_PTR( BlendingLayer );
+DECL_PTR( SkeletonTransform );
 DECL_PTR( SkeletonAnimation );
 DECL_PTR( AnimationController );
 
 DECL_HANDLE( XE_API, Skeleton );
+DECL_HANDLE( XE_API, SkeletonTransform );
 DECL_HANDLE( XE_API, SkeletonAnimation );
 
-DECL_EVENT( UPDATE_SKELETON_TRANSFORM, "animation update skeleton transform", XE::BasicMemoryView<XE::Mat4> );
+DECL_EVENT( UPDATE_SKELETON_TRANSFORM, "animation update skeleton transform", XE::SkeletonTransformPtr );
 
 END_XE_NAMESPACE
 

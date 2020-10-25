@@ -91,3 +91,13 @@ void XE::StateMachine::SetStates( const XE::Array< XE::AIStatePtr > & val )
 {
 	_States = val;
 }
+
+void XE::StateMachine::AssetLoad()
+{
+	Super::AssetLoad();
+
+	for( auto & state : _States )
+	{
+		state->AssetLoad();
+	}
+}

@@ -9,6 +9,8 @@
 #ifndef ITEM_H__06FDB718_96FC_4CE4_94A5_5D05106F608B
 #define ITEM_H__06FDB718_96FC_4CE4_94A5_5D05106F608B
 
+#include "Utils/Asset.h"
+
 #include "BlackboardKey.h"
 
 BEG_XE_NAMESPACE
@@ -69,6 +71,36 @@ private:
 	XE::Map< XE::AIElementHandle, XE::Pair< XE::String, XE::String > > _OutParameter;
 
 	XE::BluePrintWPtr _BluePrint;
+};
+
+class XE_API SubElement : public XE::AIElement
+{
+	OBJECT( SubElement, AIElement )
+
+public:
+	SubElement();
+
+	~SubElement();
+
+public:
+	const XE::AIModulePtr & GetSubAIModule() const;
+
+	void SetSubAIModule( const XE::AIModulePtr & val );
+
+	const XE::Map<XE::BlackboardKey, XE::BlackboardKey> & GetConnectKeys() const;
+
+	void SetConnectKeys( const XE::Map<XE::BlackboardKey, XE::BlackboardKey> & val );
+
+protected:
+	virtual void OnStartup() override;
+
+	virtual void OnUpdate( XE::float32 dt ) override;
+
+	virtual void OnClearup() override;
+
+private:
+	XE::AIModulePtr _SubAI;
+	XE::Map<XE::BlackboardKey, XE::BlackboardKey> _ConnectKeys;
 };
 
 END_XE_NAMESPACE

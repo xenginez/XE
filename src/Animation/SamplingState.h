@@ -41,9 +41,9 @@ public:
 
 	void SetSpeed( XE::float32 val );
 
-	const XE::AssetPtr< XE::SkeletonAnimation > & GetSkeletonAnimation() const;
+	const XE::SkeletonAnimationPtr & GetSkeletonAnimation() const;
 
-	void SetSkeletonAnimation( const XE::AssetPtr< XE::SkeletonAnimation > & val );
+	void SetSkeletonAnimation( const XE::SkeletonAnimationPtr & val );
 
 	const XE::Array< XE::Pair<XE::float32, XE::EventPtr> > & GetAnimationEvents() const;
 
@@ -55,8 +55,6 @@ public:
 	void OnUpdate( XE::float32 dt ) override;
 
 	void OnClearup() override;
-
-	void AssetLoad() override;
 
 private:
 	Private * _p;
