@@ -24,6 +24,8 @@ public:
 	static constexpr XE::uint8 NoDesign  = 1 << 2;
 	static constexpr XE::uint8 NoRuntime = 1 << 3;
 	static constexpr XE::uint8 NoSerialize = 1 << 4;
+	static constexpr XE::uint8 NoRead = 1 << 5;
+	static constexpr XE::uint8 NoWirte = 1 << 6;
 
 public:
 	IMetaProperty( const String& Name, XE::uint8 Flag, bool IsStatic, bool IsConst, bool IsObject, bool IsPointer, bool IsSharedPtr, bool IsReference, IMetaInfoPtr Value, IMetaClassPtr Owner, const String & ModuleName = "XE" );

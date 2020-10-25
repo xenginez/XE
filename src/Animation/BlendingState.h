@@ -47,6 +47,10 @@ public:
 
 	void SetLayers( const XE::Array< XE::BlendingLayerPtr > & val );
 
+	const XE::Array< XE::Pair<XE::float32, XE::EventPtr> > & GetAnimationEvents() const;
+
+	void SetAnimationEvents( const XE::Array< XE::Pair<XE::float32, XE::EventPtr> > & val );
+
 public:
 	void OnStartup() override;
 

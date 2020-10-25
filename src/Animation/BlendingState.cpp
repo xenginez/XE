@@ -53,6 +53,46 @@ XE::BlendingState::~BlendingState()
 
 }
 
+bool XE::BlendingState::GetLoop() const
+{
+	return _p->_Loop;
+}
+
+void XE::BlendingState::SetLoop( bool val )
+{
+	_p->_Loop = val;
+}
+
+XE::float32 XE::BlendingState::GetTime() const
+{
+	return _p->_Time;
+}
+
+void XE::BlendingState::SetTime( XE::float32 val )
+{
+	_p->_Time = val;
+}
+
+XE::float32 XE::BlendingState::GetSpeed() const
+{
+	return _p->_Speed;
+}
+
+void XE::BlendingState::SetSpeed( XE::float32 val )
+{
+	_p->_Speed = val;
+}
+
+XE::float32 XE::BlendingState::GetThreshold() const
+{
+	return _p->_Threshold;
+}
+
+void XE::BlendingState::SetThreshold( XE::float32 val )
+{
+	_p->_Threshold = val;
+}
+
 const XE::Array< XE::BlendingLayerPtr > & XE::BlendingState::GetLayers() const
 {
 	return _p->_Layers;
@@ -61,6 +101,16 @@ const XE::Array< XE::BlendingLayerPtr > & XE::BlendingState::GetLayers() const
 void XE::BlendingState::SetLayers( const XE::Array< XE::BlendingLayerPtr > & val )
 {
 	_p->_Layers = val;
+}
+
+const XE::Array< XE::Pair<XE::float32, XE::EventPtr> > & XE::BlendingState::GetAnimationEvents() const
+{
+	return _p->_Events;
+}
+
+void XE::BlendingState::SetAnimationEvents( const XE::Array< XE::Pair<XE::float32, XE::EventPtr> > & val )
+{
+	_p->_Events = val;
 }
 
 void XE::BlendingState::OnStartup()

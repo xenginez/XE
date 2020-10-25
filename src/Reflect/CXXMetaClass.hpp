@@ -118,6 +118,30 @@ public:
 		_RegisterProperty( prop );
 	}
 
+	template< typename GetType > void Property( const String & Name, GetType( *Get )( ), XE::uint8 Flag = IMetaProperty::Default )
+	{
+		auto prop = XE::MakeShared<CXXMetaProperty<GetType( * )( )>>( Name, Get, Flag, SP_CAST<IMetaClass>( shared_from_this() ) );
+		_RegisterProperty( prop );
+	}
+
+	template< typename GetType > void Property( const String & Name, GetType( ClassType:: * Get )( ), XE::uint8 Flag = IMetaProperty::Default )
+	{
+		auto prop = XE::MakeShared<CXXMetaProperty<GetType( ClassType:: * )( )>>( Name, Get, Flag, SP_CAST<IMetaClass>( shared_from_this() ) );
+		_RegisterProperty( prop );
+	}
+
+	template< typename SetType > void Property( const String & Name, void( *Set )( SetType ), XE::uint8 Flag = IMetaProperty::Default )
+	{
+		auto prop = XE::MakeShared<CXXMetaProperty<void( * )( SetType )>>( Name, Set, Flag, SP_CAST<IMetaClass>( shared_from_this() ) );
+		_RegisterProperty( prop );
+	}
+
+	template< typename SetType > void Property( const String & Name, void( ClassType:: * Set )( SetType ), XE::uint8 Flag = IMetaProperty::Default )
+	{
+		auto prop = XE::MakeShared<CXXMetaProperty<void( ClassType:: * )( SetType )>>( Name, Set, Flag, SP_CAST<IMetaClass>( shared_from_this() ) );
+		_RegisterProperty( prop );
+	}
+
 	template< typename Result > void Operator( const String& Name, Result( ClassType::*Callback )( ) )
 	{
 		auto oper = XE::MakeShared<CXXMetaOperator<Result( ClassType::* )( )>>( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ) );

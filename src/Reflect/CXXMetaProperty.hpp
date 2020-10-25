@@ -173,6 +173,120 @@ private:
 	SetFuncType _SetFunc;
 };
 
+template< typename _GetType > class CXXMetaProperty<_GetType( * )( )> : public IMetaProperty
+{
+public:
+	using ValueType = _GetType;
+	using GetFuncType = _GetType( * )( );
+
+public:
+	CXXMetaProperty( const String & Name, GetFuncType get, XE::uint8 Flag, IMetaClassPtr Owner )
+		:IMetaProperty( Name, Flag | IMetaProperty::NoWirte, false, false, !std::is_pointer_v<ValueType> && !std::is_reference_v<ValueType> && !std::is_weak_ptr_v<ValueType> && !std::is_shared_ptr_v<ValueType>, std::is_pointer_v<ValueType>, std::is_shared_ptr_v<ValueType> || std::is_weak_ptr_v<ValueType>, std::is_reference_v<ValueType>, TypeID<typename TypeTraits<ValueType>::raw_t>::Get(), Owner ), _GetFunc( get )
+	{
+
+	}
+
+public:
+	virtual Variant Get( const Variant & obj ) const override
+	{
+		return _GetFunc();
+	}
+
+	virtual void Set( const Variant & obj, const Variant & val ) const override
+	{
+		XE_ASSERT( false && "is read only!" );
+	}
+
+private:
+	GetFuncType _GetFunc;
+};
+
+template< typename ClassType, typename _GetType > class CXXMetaProperty<_GetType( ClassType:: * )( )> : public IMetaProperty
+{
+public:
+	using ValueType = _GetType;
+	using GetFuncType = _GetType( ClassType:: * )( );
+
+public:
+	CXXMetaProperty( const String & Name, GetFuncType get, XE::uint8 Flag, IMetaClassPtr Owner )
+		:IMetaProperty( Name, Flag | IMetaProperty::NoWirte, false, false, !std::is_pointer_v<ValueType> && !std::is_reference_v<ValueType> && !std::is_weak_ptr_v<ValueType> && !std::is_shared_ptr_v<ValueType>, std::is_pointer_v<ValueType>, std::is_shared_ptr_v<ValueType> || std::is_weak_ptr_v<ValueType>, std::is_reference_v<ValueType>, TypeID<typename TypeTraits<ValueType>::raw_t>::Get(), Owner ), _GetFunc( get ), _SetFunc( set )
+	{
+
+	}
+
+public:
+	virtual Variant Get( const Variant & obj ) const override
+	{
+		return ( obj.Value<ClassType *>()->*_GetFunc )( );
+	}
+
+	virtual void Set( const Variant & obj, const Variant & val ) const override
+	{
+		XE_ASSERT( false && "is read only!" );
+	}
+
+private:
+	GetFuncType _GetFunc;
+};
+
+template< typename _SetType > class CXXMetaProperty<void( * )( _SetType )> : public IMetaProperty
+{
+public:
+	using ValueType = _SetType;
+	using SetFuncType = void( * )( _SetType );
+
+public:
+	CXXMetaProperty( const String & Name, SetFuncType set, XE::uint8 Flag, IMetaClassPtr Owner )
+		:IMetaProperty( Name, Flag | IMetaProperty::NoRead, false, false, !std::is_pointer_v<ValueType> && !std::is_reference_v<ValueType> && !std::is_weak_ptr_v<ValueType> && !std::is_shared_ptr_v<ValueType>, std::is_pointer_v<ValueType>, std::is_shared_ptr_v<ValueType> || std::is_weak_ptr_v<ValueType>, std::is_reference_v<ValueType>, TypeID<typename TypeTraits<ValueType>::raw_t>::Get(), Owner ), _GetFunc( get ), _SetFunc( set )
+	{
+
+	}
+
+public:
+	virtual Variant Get( const Variant & obj ) const override
+	{
+		XE_ASSERT( false && "is only wirte!" );
+		return Variant();
+	}
+
+	virtual void Set( const Variant & obj, const Variant & val ) const override
+	{
+		_SetFunc( val.Value<_SetType>() );
+	}
+
+private:
+	SetFuncType _SetFunc;
+};
+
+template< typename ClassType, typename _SetType > class CXXMetaProperty<void( ClassType:: * )( _SetType )> : public IMetaProperty
+{
+public:
+	using ValueType = _SetType;
+	using SetFuncType = void( ClassType:: * )( _SetType );
+
+public:
+	CXXMetaProperty( const String & Name, SetFuncType set, XE::uint8 Flag, IMetaClassPtr Owner )
+		:IMetaProperty( Name, Flag | IMetaProperty::NoRead, false, false, !std::is_pointer_v<ValueType> && !std::is_reference_v<ValueType> && !std::is_weak_ptr_v<ValueType> && !std::is_shared_ptr_v<ValueType>, std::is_pointer_v<ValueType>, std::is_shared_ptr_v<ValueType> || std::is_weak_ptr_v<ValueType>, std::is_reference_v<ValueType>, TypeID<typename TypeTraits<ValueType>::raw_t>::Get(), Owner ), _GetFunc( get ), _SetFunc( set )
+	{
+
+	}
+
+public:
+	virtual Variant Get( const Variant & obj ) const override
+	{
+		XE_ASSERT( false && "is only wirte!" );
+		return Variant();
+	}
+
+	virtual void Set( const Variant & obj, const Variant & val ) const override
+	{
+		( obj.Value<ClassType *>()->*_SetFunc )( val.Value<_SetType>() );
+	}
+
+private:
+	SetFuncType _SetFunc;
+};
+
 END_XE_NAMESPACE
 
 #endif // __CXXMETAPROPERTY_HPP__3B024B46_FC59_464C_8819_339019E204F5
