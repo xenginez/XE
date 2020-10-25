@@ -11,7 +11,7 @@ struct XE::SkeletonTransform::Private
 {
 	XE::Array< XE::Mat4 > _Transform;
 	ozz::vector<ozz::math::Float4x4> _Models;
-}
+};
 
 XE::SkeletonTransform::SkeletonTransform()
 	:_p( new Private )

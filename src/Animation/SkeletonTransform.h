@@ -13,17 +13,15 @@
 
 BEG_XE_NAMESPACE
 
-class XE_API SkeletonTransform : public XE::Object
+class XE_API SkeletonTransform
 {
-	OBJECT( SkeletonTransform, Object )
-
 private:
 	struct Private;
 
 public:
 	SkeletonTransform();
 
-	~SkeletonTransform() override;
+	~SkeletonTransform();
 
 public:
 	XE::SkeletonTransformHandle GetHandle() const;
@@ -36,6 +34,7 @@ public:
 private:
 	Private * _p;
 };
+DECL_META_CLASS( XE_API, SkeletonTransform );
 
 END_XE_NAMESPACE
 

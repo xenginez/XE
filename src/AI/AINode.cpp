@@ -1,7 +1,8 @@
 #include "AINode.h"
 
-#include <Interface/IFramework.h>
-#include <Interface/IAssetsService.h>
+#include "Math/Math.h"
+#include "Interface/IFramework.h"
+#include "Interface/IAssetsService.h"
 
 #include "BehaviorTree.h"
 

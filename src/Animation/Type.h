@@ -26,7 +26,7 @@ DECL_HANDLE( XE_API, Skeleton );
 DECL_HANDLE( XE_API, SkeletonTransform );
 DECL_HANDLE( XE_API, SkeletonAnimation );
 
-DECL_EVENT( UPDATE_SKELETON_TRANSFORM, "animation update skeleton transform", XE::SkeletonTransformPtr );
+DECL_EVENT( UPDATE_SKELETON_TRANSFORM, "animation update skeleton transform", XE::BasicMemoryView< XE::Mat4 > );
 
 END_XE_NAMESPACE
 

@@ -1,7 +1,7 @@
 #include "BlackboardKey.h"
 
 BEG_META( XE::BlackboardKey )
-type->Property( "Key", &BlackboardKey::_Key );
+type->Property( "Key", &BlackboardKey::GetKey, &BlackboardKey::SetKey );
 END_META()
 
 XE::BlackboardKey::BlackboardKey()

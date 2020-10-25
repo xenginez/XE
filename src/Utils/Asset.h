@@ -54,7 +54,6 @@ protected:
 	XE::ObjectPtr _Ptr;
 	XE::FileSystem::Path _AssetPath;
 };
-
 DECL_META_CLASS( XE_API, Asset );
 
 
