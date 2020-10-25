@@ -1,106 +1,106 @@
-#include "Node.h"
+#include "AINode.h"
 
 #include <Interface/IFramework.h>
 #include <Interface/IAssetsService.h>
 
 #include "BehaviorTree.h"
 
-BEG_META( XE::Node )
-type->Property( "Parent", &XE::Node::_Parent, XE::IMetaProperty::NoDesign );
-type->Property( "Handle", &XE::Node::_Handle, XE::IMetaProperty::NoDesign );
+BEG_META( XE::AINode )
+type->Property( "Name", &XE::AINode::_Name );
+type->Property( "Parent", &XE::AINode::_Parent, XE::IMetaProperty::NoDesign );
+type->Property( "Handle", &XE::AINode::_Handle, XE::IMetaProperty::NoDesign );
 END_META()
 
-XE::Node::Node()
-	:_Status( NodeStatus::None ), _BehaviorTree( nullptr )
+XE::AINode::AINode()
+	:_Status( NodeStatus::None )
 {
 
 }
 
-XE::Node::~Node()
+XE::AINode::~AINode()
 {
 
 }
 
-XE::NodeHandle XE::Node::GetHandle() const
+XE::AINodeHandle XE::AINode::GetHandle() const
 {
 	return _Handle;
 }
 
-void XE::Node::SetHandle( XE::NodeHandle val )
+void XE::AINode::SetHandle( XE::AINodeHandle val )
 {
 	_Handle = val;
 }
 
-XE::NodeHandle XE::Node::GetParent() const
+XE::AINodeHandle XE::AINode::GetParent() const
 {
 	return _Parent;
 }
 
-void XE::Node::SetParent( XE::NodeHandle val )
+void XE::AINode::SetParent( XE::AINodeHandle val )
 {
 	_Parent = val;
 }
 
-void XE::Node::SetBehaviorTree( const BehaviorTreePtr & val )
+XE::BehaviorTreePtr XE::AINode::GetBehaviorTree() const
+{
+	return _BehaviorTree.lock();
+}
+
+void XE::AINode::SetBehaviorTree( BehaviorTreePtr val )
 {
 	_BehaviorTree = val;
 }
 
-const XE::BehaviorTreePtr & XE::Node::GetBehaviorTree() const
-{
-	return _BehaviorTree;
-}
-
-XE::NodeStatus XE::Node::GetStatus() const
+XE::NodeStatus XE::AINode::GetStatus() const
 {
 	return _Status;
 }
 
-void XE::Node::SetStatus( NodeStatus val )
+void XE::AINode::SetStatus( NodeStatus val )
 {
 	_Status = val;
 }
 
-void XE::Node::Startup()
+const XE::String & XE::AINode::GetName() const
+{
+	return _Name;
+}
+
+void XE::AINode::SetName( const XE::String & val )
+{
+	_Name = val;
+}
+
+void XE::AINode::Startup()
 {
 	OnStartup();
 }
 
-void XE::Node::Update( XE::float32 dt )
+void XE::AINode::Update( XE::float32 dt )
 {
 	OnUpdate( dt );
 }
 
-void XE::Node::Clearup()
+void XE::AINode::Clearup()
 {
 	OnClearup();
 }
 
-void XE::Node::OnStartup()
+void XE::AINode::OnStartup()
 {
 	SetStatus( NodeStatus::Running );
 }
 
-void XE::Node::OnUpdate( XE::float32 dt )
+void XE::AINode::OnUpdate( XE::float32 dt )
 {
 
 }
 
-void XE::Node::OnClearup()
+void XE::AINode::OnClearup()
 {
 	SetStatus( NodeStatus::Finish );
 }
-
-void XE::Node::OnRemove()
-{
-
-}
-
-void XE::Node::OnResetHandle()
-{
-
-}
-
 
 BEG_META( XE::SubNode )
 type->Property( "SubAI", &SubNode::_SubAIPath );

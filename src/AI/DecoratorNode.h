@@ -9,13 +9,13 @@
 #ifndef __DECORATORNODE_H__2A691197_19EA_4562_AE5B_28F1439B2C47
 #define __DECORATORNODE_H__2A691197_19EA_4562_AE5B_28F1439B2C47
 
-#include "Node.h"
+#include "AINode.h"
 
 BEG_XE_NAMESPACE
 
-class XE_API DecoratorNode : public Node
+class XE_API DecoratorNode : public AINode
 {
-	OBJECT( DecoratorNode, Node )
+	OBJECT( DecoratorNode, AINode )
 
 public:
 	DecoratorNode();
@@ -23,11 +23,9 @@ public:
 	~DecoratorNode();
 
 public:
-	NodeHandle GetChild() const;
+	XE::AINodeHandle GetChild() const;
 
-	NodeHandle AddChild( const IMetaClassPtr & val );
-
-	void RemoveChild();
+	void SetChild( XE::AINodeHandle val );
 
 public:
 	void OnStartup() override;
@@ -36,12 +34,8 @@ public:
 
 	void OnClearup() override;
 
-	void OnRemove() override;
-
-	void OnResetHandle() override;
-
 private:
-	NodeHandle _Child;
+	AINodeHandle _Child;
 };
 
 class XE_API RepeatNode : public DecoratorNode

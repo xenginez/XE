@@ -9,13 +9,13 @@
 #ifndef CONDITIONNODE_H__6EC1A1E4_3026_416A_8F03_7C5BDD9A391A
 #define CONDITIONNODE_H__6EC1A1E4_3026_416A_8F03_7C5BDD9A391A
 
-#include "Node.h"
+#include "AINode.h"
 
 BEG_XE_NAMESPACE
 
-class XE_API ConditionNode : public XE::Node
+class XE_API ConditionNode : public XE::AINode
 {
-	OBJECT( ConditionNode, Node )
+	OBJECT( ConditionNode, AINode )
 
 public:
 	ConditionNode();
@@ -23,11 +23,9 @@ public:
 	~ConditionNode();
 
 public:
-	NodeHandle GetChild() const;
+	XE::AINodeHandle GetChild() const;
 
-	NodeHandle AddChild( const IMetaClassPtr & val );
-
-	void RemoveChild();
+	void SetChild( XE::AINodeHandle val );
 
 public:
 	void OnStartup() override;
@@ -36,16 +34,12 @@ public:
 
 	void OnClearup() override;
 
-	void OnRemove() override;
-
-	void OnResetHandle() override;
-
 public:
 	virtual bool ConditionalJudgment() const = 0;
 
 private:
-	NodeHandle _Child;
 	bool _MultiJudgment;
+	XE::AINodeHandle _Child;
 };
 
 END_XE_NAMESPACE

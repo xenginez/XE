@@ -9,13 +9,13 @@
 #ifndef __COMPOSITENODE_H__70BFB67B_E6B3_45A9_B9E1_A31B99D95716
 #define __COMPOSITENODE_H__70BFB67B_E6B3_45A9_B9E1_A31B99D95716
 
-#include "Node.h"
+#include "AINode.h"
 
 BEG_XE_NAMESPACE
 
-class XE_API CompositeNode : public Node
+class XE_API CompositeNode : public AINode
 {
-	OBJECT( CompositeNode, Node )
+	OBJECT( CompositeNode, AINode )
 
 public:
 	CompositeNode();
@@ -23,24 +23,17 @@ public:
 	~CompositeNode();
 
 public:
-	const Array<NodeHandle> & GetChildren() const;
+	const XE::Array<XE::AINodeHandle> & GetChildren() const;
 
-public:
-	NodeHandle AddChild( const IMetaClassPtr & val );
-
-	void RemoveChild( NodeHandle val );
+	void SetChildren( const XE::Array<XE::AINodeHandle> & val );
 
 protected:
 	void OnStartup() override;
 
 	void OnClearup() override;
 
-	void OnRemove() override;
-
-	void OnResetHandle() override;
-
 private:
-	Array<NodeHandle> _Children;
+	XE::Array<XE::AINodeHandle> _Children;
 };
 
 class XE_API SequenceNode : public CompositeNode

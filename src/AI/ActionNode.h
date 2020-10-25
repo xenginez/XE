@@ -9,15 +9,15 @@
 #ifndef __ACTIONNODE_H__C24DA3A3_57C0_409B_B964_A146B2FF23E1
 #define __ACTIONNODE_H__C24DA3A3_57C0_409B_B964_A146B2FF23E1
 
-#include "Node.h"
+#include "AINode.h"
 
 BEG_XE_NAMESPACE
 
 class ConditionNode;
 
-class XE_API ActionNode : public Node
+class XE_API ActionNode : public AINode
 {
-	OBJECT( ActionNode, Node )
+	OBJECT( ActionNode, AINode )
 
 public:
 	ActionNode();

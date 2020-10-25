@@ -16,9 +16,14 @@ XE::CompositeNode::~CompositeNode()
 
 }
 
-const XE::Array<XE::NodeHandle> & XE::CompositeNode::GetChildren() const
+const XE::Array<XE::AINodeHandle> & XE::CompositeNode::GetChildren() const
 {
 	return _Children;
+}
+
+void XE::CompositeNode::SetChildren( const XE::Array<XE::AINodeHandle> & val )
+{
+	_Children = val;
 }
 
 void XE::CompositeNode::OnStartup()
@@ -41,45 +46,6 @@ void XE::CompositeNode::OnClearup()
 	}
 
 	Super::OnClearup();
-}
-
-void XE::CompositeNode::OnRemove()
-{
-	for( const auto & child : _Children )
-	{
-		if( child != NodeHandle::Invalid )
-		{
-			GetBehaviorTree()->RemoveNode( child );
-		}
-	}
-}
-
-XE::NodeHandle XE::CompositeNode::AddChild( const XE::IMetaClassPtr & val )
-{
-	XE::NodeHandle handle = GetBehaviorTree()->AddNode( val );
-	GetBehaviorTree()->GetNode( handle )->SetParent( GetHandle() );
-	_Children.push_back( handle );
-	return handle;
-}
-
-void XE::CompositeNode::RemoveChild( XE::NodeHandle val )
-{
-	auto it = std::find( _Children.begin(), _Children.end(), val );
-
-	if( it != _Children.end() )
-	{
-		_Children.erase( it );
-
-		GetBehaviorTree()->RemoveNode( val );
-	}
-}
-
-void XE::CompositeNode::OnResetHandle()
-{
-	for( const auto & handle : _Children )
-	{
-		GetBehaviorTree()->GetNode( handle )->SetParent( GetHandle() );
-	}
 }
 
 BEG_META( XE::SequenceNode )
@@ -109,7 +75,7 @@ void XE::SequenceNode::OnUpdate( XE::float32 dt )
 
 	auto children = GetChildren();
 
-	if( NodePtr node = GetBehaviorTree()->GetNode( GetChildren()[_Current] ) )
+	if( AINodePtr node = GetBehaviorTree()->GetNode( GetChildren()[_Current] ) )
 	{
 		if ( node->GetStatus() == XE::NodeStatus::None )
 		{
@@ -160,7 +126,7 @@ void XE::SelectorNode::OnUpdate( XE::float32 dt )
 
 	auto children = GetChildren();
 
-	if( NodePtr node = GetBehaviorTree()->GetNode( GetChildren()[_Current] ) )
+	if( AINodePtr node = GetBehaviorTree()->GetNode( GetChildren()[_Current] ) )
 	{
 		if ( node->GetStatus() == XE::NodeStatus::None )
 		{
@@ -214,7 +180,7 @@ void XE::ParallelNode::OnUpdate( XE::float32 dt )
 
 	for ( auto handle : children )
 	{
-		NodePtr node = GetBehaviorTree()->GetNode( handle );
+		AINodePtr node = GetBehaviorTree()->GetNode( handle );
 
 		if ( node->GetStatus() == XE::NodeStatus::None )
 		{

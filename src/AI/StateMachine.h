@@ -30,24 +30,21 @@ public:
 	virtual void Clearup() override;
 
 public:
-	XE::StateHandle GetRoot() const;
+	XE::AIStateHandle GetRoot() const;
 
-	void SetRoot( XE::StateHandle val );
+	void SetRoot( XE::AIStateHandle val );
 
-public:
-	XE::StatePtr GetState( XE::StateHandle val );
-
-	const XE::Array< XE::StatePtr > & GetAllState() const;
-
-public:
-	XE::StateHandle AddState( const XE::IMetaClassPtr & val );
-
-	void RemoveState( XE::StateHandle val );
+	XE::AIStatePtr GetState( XE::AIStateHandle val );
 
 private:
-	StateHandle _Root;
-	StateHandle _Current;
-	Array< StatePtr > _States;
+	const XE::Array< XE::AIStatePtr > & GetStates() const;
+
+	void SetStates( const XE::Array< XE::AIStatePtr > & val );
+
+private:
+	AIStateHandle _Root;
+	AIStateHandle _Current;
+	Array< AIStatePtr > _States;
 };
 
 END_XE_NAMESPACE

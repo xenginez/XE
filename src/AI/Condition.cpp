@@ -30,12 +30,12 @@ void XE::Condition::SetAIModule( const XE::AIModulePtr & val )
 	_AIModule = val;
 }
 
-XE::StateHandle XE::Condition::GetNextStateHandle() const
+XE::AIStateHandle XE::Condition::GetNextStateHandle() const
 {
 	return _NextState;
 }
 
-void XE::Condition::SetNextStateHandle( XE::StateHandle val )
+void XE::Condition::SetNextStateHandle( XE::AIStateHandle val )
 {
 	_NextState = val;
 }

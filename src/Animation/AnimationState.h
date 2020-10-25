@@ -9,15 +9,15 @@
 #ifndef ANIMATIONSTATE_H__C48F9826_7C1E_44A2_B4A1_1F579B74E9A8
 #define ANIMATIONSTATE_H__C48F9826_7C1E_44A2_B4A1_1F579B74E9A8
 
-#include "AI/State.h"
+#include "AI/AIState.h"
 
 #include "Type.h"
 
 BEG_XE_NAMESPACE
 
-class XE_API AnimationState : public XE::State
+class XE_API AnimationState : public XE::AIState
 {
-	OBJECT( AnimationState, State )
+	OBJECT( AnimationState, AIState )
 
 public:
 	AnimationState();

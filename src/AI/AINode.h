@@ -9,40 +9,44 @@
 #ifndef __NODE_H__4E15E329_D9A1_4F5D_B63A_CA4079844C18
 #define __NODE_H__4E15E329_D9A1_4F5D_B63A_CA4079844C18
 
-#include "Item.h"
 #include "BlackboardKey.h"
 
 BEG_XE_NAMESPACE
 
-class XE_API Node : public XE::Item
+class XE_API AINode : public XE::Object
 {
-	OBJECT( Node, Item )
+	OBJECT( AINode, Object )
 
 private:
 	friend class BehaviorTree;
 
 public:
-	Node();
+	AINode();
 
-	~Node();
-
-public:
-	NodeHandle GetHandle() const;
-
-	void SetHandle( NodeHandle val );
-
-	NodeHandle GetParent() const;
-
-	void SetParent( NodeHandle val );
-
-	const BehaviorTreePtr & GetBehaviorTree() const;
-
-	void SetBehaviorTree( const BehaviorTreePtr & val );
+	~AINode();
 
 public:
 	NodeStatus GetStatus() const;
 
 	void SetStatus( NodeStatus val );
+
+	AINodeHandle GetHandle() const;
+
+	void SetHandle( AINodeHandle val );
+
+	AINodeHandle GetParent() const;
+
+	void SetParent( AINodeHandle val );
+
+	const XE::String & GetName() const;
+
+	void SetName( const XE::String & val );
+
+public:
+	BehaviorTreePtr GetBehaviorTree() const;
+
+private:
+	void SetBehaviorTree( BehaviorTreePtr val );
 
 public:
 	virtual void Startup();
@@ -58,21 +62,18 @@ protected:
 				 
 	virtual void OnClearup();
 
-	virtual void OnRemove();
-
-	virtual void OnResetHandle();
-
 private:
-	NodeHandle _Handle;
-	NodeHandle _Parent;
+	XE::String _Name;
 	NodeStatus _Status;
+	AINodeHandle _Handle;
+	AINodeHandle _Parent;
 
-	BehaviorTreePtr _BehaviorTree;
+	BehaviorTreeWPtr _BehaviorTree;
 };
 
-class XE_API SubNode : public XE::Node
+class XE_API SubNode : public XE::AINode
 {
-	OBJECT( SubNode, Node )
+	OBJECT( SubNode, AINode )
 
 public:
 	SubNode();

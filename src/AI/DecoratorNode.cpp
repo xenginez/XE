@@ -18,25 +18,14 @@ XE::DecoratorNode::~DecoratorNode()
 
 }
 
-XE::NodeHandle XE::DecoratorNode::GetChild() const
+XE::AINodeHandle XE::DecoratorNode::GetChild() const
 {
 	return _Child;
 }
 
-XE::NodeHandle XE::DecoratorNode::AddChild( const XE::IMetaClassPtr & val )
+void XE::DecoratorNode::SetChild( XE::AINodeHandle val )
 {
-	_Child = GetBehaviorTree()->AddNode( val );
-	GetBehaviorTree()->GetNode( _Child )->SetParent( GetHandle() );
-	return _Child;
-}
-
-void XE::DecoratorNode::RemoveChild()
-{
-	if( _Child != XE::NodeHandle::Invalid )
-	{
-		GetBehaviorTree()->RemoveNode( _Child );
-		_Child = XE::NodeHandle::Invalid;
-	}
+	_Child = val;
 }
 
 void XE::DecoratorNode::OnStartup()
@@ -72,22 +61,6 @@ void XE::DecoratorNode::OnClearup()
 	if( GetBehaviorTree()->GetNode( GetChild() )->GetStatus() != XE::NodeStatus::Finish )
 	{
 		GetBehaviorTree()->GetNode( GetChild() )->Clearup();
-	}
-}
-
-void XE::DecoratorNode::OnRemove()
-{
-	if( _Child != XE::NodeHandle::Invalid )
-	{
-		GetBehaviorTree()->RemoveNode( _Child );
-	}
-}
-
-void XE::DecoratorNode::OnResetHandle()
-{
-	if( _Child != XE::NodeHandle::Invalid )
-	{
-		GetBehaviorTree()->GetNode( _Child )->SetParent( GetHandle() );
 	}
 }
 

@@ -18,25 +18,14 @@ XE::ConditionNode::~ConditionNode()
 
 }
 
-XE::NodeHandle XE::ConditionNode::GetChild() const
+XE::AINodeHandle XE::ConditionNode::GetChild() const
 {
 	return _Child;
 }
 
-XE::NodeHandle XE::ConditionNode::AddChild( const XE::IMetaClassPtr & val )
+void XE::ConditionNode::SetChild( XE::AINodeHandle val )
 {
-	_Child = GetBehaviorTree()->AddNode( val );
-	GetBehaviorTree()->GetNode( _Child )->SetParent( GetHandle() );
-	return _Child;
-}
-
-void XE::ConditionNode::RemoveChild()
-{
-	if( _Child != XE::NodeHandle::Invalid )
-	{
-		GetBehaviorTree()->RemoveNode( _Child );
-		_Child = XE::NodeHandle::Invalid;
-	}
+	_Child = val;
 }
 
 void XE::ConditionNode::OnStartup()
@@ -47,11 +36,11 @@ void XE::ConditionNode::OnStartup()
 	{
 		GetBehaviorTree()->GetNode( GetChild() )->Startup();
 
-		SetStatus( NodeStatus::Running );
+		SetStatus( XE::NodeStatus::Running );
 	}
 	else
 	{
-		SetStatus( NodeStatus::Failure );
+		SetStatus( XE::NodeStatus::Failure );
 	}
 }
 
@@ -77,21 +66,5 @@ void XE::ConditionNode::OnClearup()
 	if( GetBehaviorTree()->GetNode( GetChild() )->GetStatus() != XE::NodeStatus::Finish )
 	{
 		GetBehaviorTree()->GetNode( GetChild() )->Clearup();
-	}
-}
-
-void XE::ConditionNode::OnRemove()
-{
-	if( _Child != NodeHandle::Invalid )
-	{
-		GetBehaviorTree()->RemoveNode( _Child );
-	}
-}
-
-void XE::ConditionNode::OnResetHandle()
-{
-	if( _Child != NodeHandle::Invalid )
-	{
-		GetBehaviorTree()->GetNode( _Child )->SetParent( GetHandle() );
 	}
 }

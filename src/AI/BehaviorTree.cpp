@@ -1,9 +1,8 @@
 #include "BehaviorTree.h"
 
-#include "Node.h"
+#include "AINode.h"
 
 BEG_META( XE::BehaviorTree )
-type->Property( "HandleAlloc", &BehaviorTree::_HandleAlloc, IMetaProperty::NoDesign );
 type->Property( "Root", &BehaviorTree::_Root, IMetaProperty::NoDesign );
 type->Property( "Nodes", &BehaviorTree::_Nodes, IMetaProperty::NoDesign );
 END_META()
@@ -20,20 +19,24 @@ XE::BehaviorTree::~BehaviorTree()
 
 void XE::BehaviorTree::Startup()
 {
+	Super::Startup();
+
 	for( auto node : _Nodes )
 	{
-		node.second->SetBehaviorTree( XE_THIS( BehaviorTree ) );
+		node->SetBehaviorTree( XE_THIS( BehaviorTree ) );
 	}
 }
 
 void XE::BehaviorTree::Update( XE::float32 dt )
 {
-	if( _Root == NodeHandle::Invalid )
+	Super::Update( dt );
+
+	if( _Root == AINodeHandle::Invalid )
 	{
 		return;
 	}
 
-	NodePtr root = _Nodes[_Root];
+	AINodePtr root = _Nodes[_Root];
 
 	if( root->GetStatus() == NodeStatus::Finish )
 	{
@@ -60,73 +63,38 @@ void XE::BehaviorTree::Clearup()
 {
 	for( auto node : _Nodes )
 	{
-		if( node.second->GetStatus() != NodeStatus::Finish )
+		if( node->GetStatus() != NodeStatus::Finish )
 		{
-			node.second->Clearup();
+			node->Clearup();
 		}
 	}
+
+	Super::Clearup();
 }
 
-XE::NodeHandle XE::BehaviorTree::GetRoot() const
+XE::AINodeHandle XE::BehaviorTree::GetRoot() const
 {
 	return _Root;
 }
 
-void XE::BehaviorTree::SetRoot( XE::NodeHandle val )
+void XE::BehaviorTree::SetRoot( XE::AINodeHandle val )
 {
 	_Root = val;
 }
 
-XE::NodePtr XE::BehaviorTree::GetNode( NodeHandle val ) const
+XE::AINodePtr XE::BehaviorTree::GetNode( AINodeHandle val ) const
 {
-	auto it = _Nodes.find( val );
+	XE_ASSERT( val.GetValue() <= _Nodes.size() );
 
-	if( it != _Nodes.end() )
-	{
-		return it->second;
-	}
-
-	return nullptr;
+	return _Nodes[val.GetValue()];
 }
 
-XE::NodeHandle XE::BehaviorTree::AddNode( const XE::IMetaClassPtr & val )
+const XE::Array< XE::AINodePtr > & XE::BehaviorTree::GetNodes() const
 {
-	if( val )
-	{
-		if( XE::NodePtr node = val->ConstructPtr().Value<XE::NodePtr>() )
-		{
-			node->SetName( val->GetName() );
-			node->SetBehaviorTree( XE_THIS( XE::BehaviorTree ) );
-			node->SetHandle( _HandleAlloc.Alloc() );
-
-			_Nodes.insert( { node->GetHandle(), node } );
-
-			return node->GetHandle();
-		}
-	}
-
-	return XE::NodeHandle::Invalid;
+	return _Nodes;
 }
 
-void XE::BehaviorTree::RemoveNode( XE::NodeHandle val )
+void XE::BehaviorTree::SetNodes( const XE::Array< XE::AINodePtr > & val )
 {
-	auto it = _Nodes.find( val );
-	if( it != _Nodes.end() )
-	{
-		it->second->OnRemove();
-		_Nodes.erase( it );
-	}
-}
-
-void XE::BehaviorTree::SwapNodeHandle( XE::NodeHandle node1, XE::NodeHandle node2 )
-{
-	_Nodes[node1]->SetHandle( node2 );
-	_Nodes[node2]->SetHandle( node1 );
-
-	auto node = _Nodes[node1];
-	_Nodes[node1] = _Nodes[node2];
-	_Nodes[node2] = node;
-
-	_Nodes[node1]->OnResetHandle();
-	_Nodes[node2]->OnResetHandle();
+	_Nodes = val;
 }

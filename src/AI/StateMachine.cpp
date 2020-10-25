@@ -1,6 +1,6 @@
 #include "StateMachine.h"
 
-#include "State.h"
+#include "AIState.h"
 #include "Condition.h"
 
 BEG_META( XE::StateMachine )
@@ -22,11 +22,11 @@ void XE::StateMachine::Startup()
 {
 	_Current = _Root;
 
-	for( auto s : _States )
+	for( auto state : _States )
 	{
-		s->SetStateMachine( XE_THIS( StateMachine ) );
+		state->SetStateMachine( XE_THIS( StateMachine ) );
 
-		auto conds = s->GetConditions();
+		auto conds = state->GetConditions();
 		for( auto cond : conds )
 		{
 			cond->SetAIModule( XE_THIS( AIModule ) );
@@ -38,7 +38,7 @@ void XE::StateMachine::Startup()
 
 void XE::StateMachine::Update( XE::float32 dt )
 {
-	StatePtr current = _States[_Current.GetValue()];
+	AIStatePtr current = _States[_Current.GetValue()];
 
 	auto conds = current->GetConditions();
 	for( auto cond : conds )
@@ -65,75 +65,29 @@ void XE::StateMachine::Clearup()
 	_States[_Current.GetValue()]->Clearup();
 }
 
-XE::StateHandle XE::StateMachine::GetRoot() const
+XE::AIStateHandle XE::StateMachine::GetRoot() const
 {
 	return _Root;
 }
 
-void XE::StateMachine::SetRoot( XE::StateHandle val )
+void XE::StateMachine::SetRoot( XE::AIStateHandle val )
 {
 	_Root = val;
 }
 
-XE::StatePtr XE::StateMachine::GetState( XE::StateHandle val )
+XE::AIStatePtr XE::StateMachine::GetState( XE::AIStateHandle val )
 {
 	XE_ASSERT( val.GetValue() <= _States.size() );
 
 	return _States[val.GetValue()];
 }
 
-const XE::Array< XE::StatePtr > & XE::StateMachine::GetAllState() const
+const XE::Array< XE::AIStatePtr > & XE::StateMachine::GetStates() const
 {
 	return _States;
 }
 
-XE::StateHandle XE::StateMachine::AddState( const XE::IMetaClassPtr & val )
+void XE::StateMachine::SetStates( const XE::Array< XE::AIStatePtr > & val )
 {
-	if( val->CanConvert( XE::State::GetMetaClassStatic() ) )
-	{
-		auto state = val->ConstructPtr().Value<XE::StatePtr>();
-
-		state->SetName( val->GetName() );
-		state->SetStateMachine( XE_THIS( XE::StateMachine ) );
-
-		for( XE::uint64 i = 0; i < _States.size(); ++i )
-		{
-			if( _States[i] == nullptr )
-			{
-				state->_Handle = i;
-				_States[i] = state;
-				return state->_Handle;
-			}
-		}
-
-		state->_Handle = _States.size();
-		_States.push_back( state );
-		return state->_Handle;
-	}
-
-	return XE::StateHandle::Invalid;
-}
-
-void XE::StateMachine::RemoveState( XE::StateHandle val )
-{
-	XE_ASSERT( val.GetValue() < _States.size() );
-
-	_States[val.GetValue()] = nullptr;
-
-	for( auto & s : _States )
-	{
-		if( s )
-		{
-			for( auto it = s->_Conditions.begin(); it != s->_Conditions.end(); )
-			{
-				if( ( *it )->GetNextStateHandle() == val )
-				{
-					it = s->_Conditions.erase( it );
-					continue;
-				}
-
-				++it;
-			}
-		}
-	}
+	_States = val;
 }

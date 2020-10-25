@@ -32,13 +32,13 @@ public:
 
 	void SetAIModule( const AIModulePtr & val );
 
-	XE::StateHandle GetNextStateHandle() const;
+	XE::AIStateHandle GetNextStateHandle() const;
 
-	void SetNextStateHandle( XE::StateHandle val );
+	void SetNextStateHandle( XE::AIStateHandle val );
 
 private:
 	AIModulePtr _AIModule;
-	XE::StateHandle _NextState;
+	XE::AIStateHandle _NextState;
 };
 
 END_XE_NAMESPACE

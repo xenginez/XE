@@ -9,37 +9,40 @@
 #ifndef __STATE_H__0F576F56_4DD5_458C_8B62_10766BAE42AF
 #define __STATE_H__0F576F56_4DD5_458C_8B62_10766BAE42AF
 
-#include "Item.h"
 #include "BlackboardKey.h"
 
 BEG_XE_NAMESPACE
 
-class XE_API State : public XE::Item
+class XE_API AIState : public XE::Object
 {
-	OBJECT( State, Item )
+	OBJECT( AIState, Object )
 
 public:
 	friend class StateMachine;
 
 public:
-	State();
+	AIState();
 
-	~State();
-
-public:
-	StateHandle GetHandle() const;
+	~AIState();
 
 public:
-	void AddConditions( const XE::ConditionPtr & val );
+	AIStateHandle GetHandle() const;
 
-	void RemoveConditions( const XE::ConditionPtr & val );
+	void SetHandle( XE::AIStateHandle val );
 
-	const Array< ConditionPtr > & GetConditions() const;
+	const XE::String & GetName() const;
+
+	void SetName( const XE::String & val );
+
+	const XE::Array< XE::ConditionPtr > & GetConditions() const;
+
+	void SetConditions( const XE::Array< XE::ConditionPtr > & val );
 
 public:
-	const StateMachinePtr & GetStateMachine() const;
+	StateMachinePtr GetStateMachine() const;
 
-	void SetStateMachine( const StateMachinePtr & val );
+private:
+	void SetStateMachine( StateMachinePtr val );
 
 public:
 	virtual void Startup();
@@ -56,14 +59,15 @@ protected:
 	virtual void OnClearup();
 
 private:
-	StateHandle _Handle;
-	StateMachinePtr _StateMachine;
-	Array< ConditionPtr > _Conditions;
+	XE::String _Name;
+	XE::AIStateHandle _Handle;
+	XE::StateMachineWPtr _StateMachine;
+	XE::Array< XE::ConditionPtr > _Conditions;
 };
 
-class XE_API SubState : public XE::State
+class XE_API SubState : public XE::AIState
 {
-	OBJECT( SubState, State )
+	OBJECT( SubState, AIState )
 
 public:
 	SubState();

@@ -13,5 +13,6 @@ type->Value( "Once", XE::ConditionStatus::Once );
 type->Value( "Always", XE::ConditionStatus::Always );
 END_META()
 
-IMPLEMENT_META( XE::NodeHandle )
-IMPLEMENT_META( XE::StateHandle )
+IMPLEMENT_META( XE::AINodeHandle )
+IMPLEMENT_META( XE::AIStateHandle )
+IMPLEMENT_META( XE::AIElementHandle )

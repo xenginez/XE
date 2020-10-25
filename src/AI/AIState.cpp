@@ -1,4 +1,4 @@
-#include "State.h"
+#include "AIState.h"
 
 #include <Interface/IFramework.h>
 #include <Interface/IAssetsService.h>
@@ -6,84 +6,88 @@
 #include "Condition.h"
 #include "StateMachine.h"
 
-BEG_META( XE::State )
-type->Property( "Handle", &State::_Handle, IMetaProperty::NoDesign );
-type->Property( "Conditions", &State::_Conditions );
+BEG_META( XE::AIState )
+type->Property( "Name", &AIState::_Name );
+type->Property( "Conditions", &AIState::_Conditions );
+type->Property( "Handle", &AIState::_Handle, IMetaProperty::NoDesign );
 END_META()
 
-XE::State::State()
+XE::AIState::AIState()
 {
 
 }
 
-XE::State::~State()
+XE::AIState::~AIState()
 {
 
 }
 
-XE::StateHandle XE::State::GetHandle() const
+XE::AIStateHandle XE::AIState::GetHandle() const
 {
 	return _Handle;
 }
 
-void XE::State::AddConditions( const XE::ConditionPtr & val )
+void XE::AIState::SetHandle( XE::AIStateHandle val )
 {
-	_Conditions.push_back( val );
+	_Handle = val;
 }
 
-void XE::State::RemoveConditions( const XE::ConditionPtr & val )
+const XE::String & XE::AIState::GetName() const
 {
-	for( auto it = _Conditions.begin(); it != _Conditions.end(); ++it )
-	{
-		if( ( *it ) == val )
-		{
-			_Conditions.erase( it );
-			return;
-		}
-	}
+	return _Name;
 }
 
-const XE::Array< XE::ConditionPtr > & XE::State::GetConditions() const
+void XE::AIState::SetName( const XE::String & val )
+{
+	_Name = val;
+}
+
+const XE::Array< XE::ConditionPtr > & XE::AIState::GetConditions() const
 {
 	return _Conditions;
 }
 
-const XE::StateMachinePtr & XE::State::GetStateMachine() const
+void XE::AIState::SetConditions( const XE::Array< XE::ConditionPtr > & val )
 {
-	return _StateMachine;
+	_Conditions = val;
 }
 
-void XE::State::SetStateMachine( const XE::StateMachinePtr & val )
+XE::StateMachinePtr XE::AIState::GetStateMachine() const
+{
+	return _StateMachine.lock();
+}
+
+void XE::AIState::SetStateMachine( XE::StateMachinePtr val )
 {
 	_StateMachine = val;
 }
 
-void XE::State::Startup()
+void XE::AIState::Startup()
 {
 	OnStartup();
 }
 
-void XE::State::Update( XE::float32 dt )
+void XE::AIState::Update( XE::float32 dt )
 {
 	OnUpdate( dt );
 }
 
-void XE::State::Clearup()
+void XE::AIState::Clearup()
 {
 	OnClearup();
 }
 
-void XE::State::OnStartup()
+void XE::AIState::OnStartup()
 {
 
 }
 
-void XE::State::OnUpdate( XE::float32 dt )
+void XE::AIState::OnUpdate( XE::float32 dt )
 {
 
 }
 
-void XE::State::OnClearup()
+void XE::AIState::OnClearup()
 {
 
 }

@@ -30,23 +30,20 @@ public:
 	virtual void Clearup() override;
 
 public:
-	NodeHandle GetRoot() const;
+	AINodeHandle GetRoot() const;
 
-	void SetRoot( NodeHandle val );
+	void SetRoot( AINodeHandle val );
 
-	NodePtr GetNode( NodeHandle val ) const;
-
-public:
-	NodeHandle AddNode( const IMetaClassPtr & val );
-
-	void RemoveNode( XE::NodeHandle val );
-
-	void SwapNodeHandle( XE::NodeHandle node1, XE::NodeHandle node2 );
+	AINodePtr GetNode( AINodeHandle val ) const;
 
 public:
-	NodeHandle _Root;
-	XE::NodeHandleAllocator _HandleAlloc;
-	XE::Map< XE::NodeHandle,  NodePtr > _Nodes;
+	const XE::Array< XE::AINodePtr > & GetNodes() const;
+
+	void SetNodes( const XE::Array< XE::AINodePtr > & val );
+
+public:
+	AINodeHandle _Root;
+	XE::Array< XE::AINodePtr > _Nodes;
 };
 
 END_XE_NAMESPACE
