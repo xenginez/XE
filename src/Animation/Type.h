@@ -20,11 +20,28 @@ DECL_PTR( Skeleton );
 DECL_PTR( BlendingLayer );
 DECL_PTR( SkeletonTransform );
 DECL_PTR( SkeletonAnimation );
+DECL_PTR( AnimationLayer );
 DECL_PTR( AnimationController );
 
 DECL_HANDLE( XE_API, Skeleton );
+DECL_HANDLE( XE_API, AnimationState );
 DECL_HANDLE( XE_API, SkeletonTransform );
 DECL_HANDLE( XE_API, SkeletonAnimation );
+
+enum class AnimationBlendMode : XE::uint8
+{
+	ADDITIVE,
+	OVERRIDE,
+};
+DECL_META_ENUM( XE_API, AnimationBlendMode );
+
+enum class AnimationStateStatus : XE::uint8
+{
+	NONE,
+	RUNNING,
+	SUCCESS,
+};
+DECL_META_ENUM( XE_API, AnimationStateStatus );
 
 DECL_EVENT( UPDATE_SKELETON_TRANSFORM, "animation update skeleton transform", XE::BasicMemoryView< XE::Mat4 > );
 

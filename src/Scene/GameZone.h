@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class XE_API GameZone : public XE::GameEntity
+class XE_API GameZone final : public XE::GameEntity
 {
 	OBJECT( GameZone, GameEntity )
 

@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-class XE_API World : public XE::Object
+class XE_API World final : public XE::Object
 {
 	OBJECT( World, Object )
 
