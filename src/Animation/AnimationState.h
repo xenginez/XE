@@ -9,7 +9,7 @@
 #ifndef ANIMATIONSTATE_H__C48F9826_7C1E_44A2_B4A1_1F579B74E9A8
 #define ANIMATIONSTATE_H__C48F9826_7C1E_44A2_B4A1_1F579B74E9A8
 
-#include "Utils/Object.h"
+#include "AnimationCondition.h"
 
 #include "Type.h"
 
@@ -29,10 +29,6 @@ public:
 public:
 	XE::AnimationStateHandle GetHandle() const;
 
-	XE::AnimationLayerPtr GetAnimationLayer() const;
-
-	XE::AnimationControllerPtr GetAnimationController() const;
-
 public:
 	const XE::String & GetName() const;
 
@@ -41,6 +37,14 @@ public:
 	XE::AnimationStateStatus GetStatus() const;
 
 	void SetStatus( XE::AnimationStateStatus val );
+
+	XE::AnimationLayerPtr GetAnimationLayer() const;
+
+	void SetAnimationLayer( XE::AnimationLayerPtr val );
+
+	const XE::Array< XE::AnimationCondition > & GetAnimationConditions() const;
+
+	void SetAnimationConditions( const XE::Array< XE::AnimationCondition > & val );
 
 public:
 	virtual void Startup();
@@ -66,10 +70,11 @@ protected:
 
 private:
 	XE::String _Name;
-	XE::AnimationStateStatus _Status;
 	XE::AnimationStateHandle _Handle;
+	XE::Array< XE::AnimationCondition > _AnimationConditions;
+
+	XE::AnimationStateStatus _Status;
 	XE::AnimationLayerWPtr _AnimationLayer;
-	XE::AnimationControllerWPtr _AnimationController;
 };
 
 END_XE_NAMESPACE
