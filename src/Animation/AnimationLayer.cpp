@@ -44,8 +44,12 @@ void XE::AnimationLayer::Update( XE::float32 dt )
 	case XE::AnimationStateStatus::RUNNING:
 		state->Update( dt );
 		break;
+	case XE::AnimationStateStatus::FAILED:
+		state->Quit();
+		break;
 	case XE::AnimationStateStatus::SUCCESS:
 		state->Quit();
+		break;
 	default:
 		break;
 	}
@@ -69,7 +73,9 @@ void XE::AnimationLayer::Clearup()
 {
 	for( auto & state : _States )
 	{
-		if( state->GetStatus() == XE::AnimationStateStatus::RUNNING || state->GetStatus() == XE::AnimationStateStatus::SUCCESS )
+		if( state->GetStatus() == XE::AnimationStateStatus::RUNNING
+			|| state->GetStatus() == XE::AnimationStateStatus::FAILED
+			|| state->GetStatus() == XE::AnimationStateStatus::SUCCESS )
 		{
 			state->Quit();
 		}

@@ -58,15 +58,15 @@ public:
 	virtual void Clearup();
 
 protected:
-	virtual void OnStartup() = 0;
+	virtual void OnStartup();
 
-	virtual void OnEnter() = 0;
+	virtual void OnEnter();
 
-	virtual void OnUpdate( XE::float32 dt ) = 0;
+	virtual void OnUpdate( XE::float32 dt );
 
-	virtual void OnQuit() = 0;
+	virtual void OnQuit();
 
-	virtual void OnClearup() = 0;
+	virtual void OnClearup();
 
 private:
 	XE::String _Name;

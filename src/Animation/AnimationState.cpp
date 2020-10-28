@@ -95,3 +95,28 @@ void XE::AnimationState::Clearup()
 {
 	OnClearup();
 }
+
+void XE::AnimationState::OnStartup()
+{
+
+}
+
+void XE::AnimationState::OnEnter()
+{
+
+}
+
+void XE::AnimationState::OnUpdate( XE::float32 dt )
+{
+
+}
+
+void XE::AnimationState::OnQuit()
+{
+
+}
+
+void XE::AnimationState::OnClearup()
+{
+
+}

@@ -38,6 +38,7 @@ enum class AnimationStateStatus : XE::uint8
 {
 	NONE,
 	RUNNING,
+	FAILED,
 	SUCCESS,
 };
 DECL_META_ENUM( XE_API, AnimationStateStatus );
