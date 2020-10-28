@@ -21,6 +21,7 @@ class XE_API AnimationLayer : XE::Object
 {
 	OBJECT( AnimationLayer, Object )
 
+	friend class AnimationState;
 	friend class AnimationController;
 
 public:
@@ -58,10 +59,6 @@ public:
 
 	void SetRootState( XE::AnimationStateHandle val );
 
-	const XE::Array< XE::Mat4 > & GetLocalTransform() const;
-
-	void SetLocalTransform( const XE::Array< XE::Mat4 > & val );
-
 	XE::AnimationControllerPtr GetAnimationController() const;
 
 	void SetAnimationController( XE::AnimationControllerPtr val );
@@ -69,6 +66,9 @@ public:
 	const XE::Array< XE::AnimationStatePtr > & GetAnimationStates() const;
 
 	void SetAnimationStates( const XE::Array< XE::AnimationStatePtr > & val );
+
+private:
+	void * GetLocalTransform() const;
 
 private:
 	XE::String _Name;
@@ -79,7 +79,7 @@ private:
 	XE::Array< XE::AnimationStatePtr > _States;
 	XE::AnimationControllerWPtr _AnimationController;
 
-	XE::Array< XE::Mat4 > _LocalTransform;
+	void * _LocalTransform;
 	XE::AnimationStateHandle _CurrentState;
 };
 

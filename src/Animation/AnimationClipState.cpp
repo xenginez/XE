@@ -63,19 +63,17 @@ void XE::AnimationClipState::OnUpdate( XE::float32 dt )
 		}
 	}
 
-	XE::Array<ozz::math::SoaTransform> locals( XE::MemoryResource::GetStackMemoryResource() );
 	ozz::animation::SamplingCache * cache = reinterpret_cast< ozz::animation::SamplingCache * >( _Cache );
 
+	auto locals = reinterpret_cast< XE::Array<ozz::math::SoaTransform> * >( GetLocalTransform() );
 	auto animation = reinterpret_cast< ozz::animation::Animation * >( GetSkeletonAnimation()->GetHandle().GetValue() );
 	auto skeleton = reinterpret_cast< ozz::animation::Skeleton * >( GetAnimationLayer()->GetAnimationController()->GetSkeleton()->GetHandle().GetValue() );
-
-	locals.resize( skeleton->num_joints() );
 
 	ozz::animation::SamplingJob sampling_job;
 	sampling_job.animation = animation;
 	sampling_job.cache = cache;
 	sampling_job.ratio = _CurrentTime;
-	sampling_job.output = ozz::make_span( locals );
+	sampling_job.output = ozz::make_span( *locals );
 
 	if( !sampling_job.Run() )
 	{
@@ -83,10 +81,6 @@ void XE::AnimationClipState::OnUpdate( XE::float32 dt )
 		SetStatus( XE::AnimationStateStatus::FAILED );
 		return;
 	}
-
-	XE::Array< XE::Mat4 > transform( XE::MemoryResource::GetStackMemoryResource() );
-	// TODO: 
-	GetAnimationLayer()->SetLocalTransform( transform );
 
 	if( _CurrentTime >= _EndTime )
 	{

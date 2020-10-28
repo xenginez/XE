@@ -68,6 +68,9 @@ protected:
 
 	virtual void OnClearup();
 
+protected:
+	void * GetLocalTransform() const;
+
 private:
 	XE::String _Name;
 	XE::AnimationStateHandle _Handle;

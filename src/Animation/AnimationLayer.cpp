@@ -1,6 +1,11 @@
 #include "AnimationLayer.h"
 
+#include <ozz/base/maths/soa_transform.h>
+#include <ozz/animation/runtime/skeleton.h>
+
+#include "Skeleton.h"
 #include "AnimationState.h"
+#include "AnimationController.h"
 
 BEG_META( XE::AnimationLayer )
 type->Property( "Name", &XE::AnimationLayer::_Name );
@@ -23,6 +28,9 @@ XE::AnimationLayer::~AnimationLayer()
 
 void XE::AnimationLayer::Startup()
 {
+	auto skeleton = reinterpret_cast< ozz::animation::Skeleton * >( GetAnimationController()->GetSkeleton()->GetHandle().GetValue() );
+	_LocalTransform = new XE::Array< ozz::math::SoaTransform >( skeleton->num_soa_joints() );
+
 	for( auto & state : _States )
 	{
 		state->SetAnimationLayer( XE_THIS( XE::AnimationLayer ) );
@@ -142,16 +150,6 @@ void XE::AnimationLayer::SetRootState( XE::AnimationStateHandle val )
 	_RootState = val;
 }
 
-const XE::Array< XE::Mat4 > & XE::AnimationLayer::GetLocalTransform() const
-{
-	return _LocalTransform;
-}
-
-void XE::AnimationLayer::SetLocalTransform( const XE::Array< XE::Mat4 > & val )
-{
-	_LocalTransform = val;
-}
-
 XE::AnimationControllerPtr XE::AnimationLayer::GetAnimationController() const
 {
 	return _AnimationController.lock();
@@ -170,4 +168,9 @@ const XE::Array< XE::AnimationStatePtr > & XE::AnimationLayer::GetAnimationState
 void XE::AnimationLayer::SetAnimationStates( const XE::Array< XE::AnimationStatePtr > & val )
 {
 	_States = val;
+}
+
+void * XE::AnimationLayer::GetLocalTransform() const
+{
+	return _LocalTransform;
 }

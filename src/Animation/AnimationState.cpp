@@ -120,3 +120,8 @@ void XE::AnimationState::OnClearup()
 {
 
 }
+
+void * XE::AnimationState::GetLocalTransform() const
+{
+	return GetAnimationLayer()->GetLocalTransform();
+}
