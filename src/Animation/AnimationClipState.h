@@ -12,6 +12,7 @@
 #include "Utils/Asset.h"
 
 #include "AnimationState.h"
+#include "AnimationSampler.h"
 #include "SkeletonAnimation.h"
 
 BEG_XE_NAMESPACE
@@ -62,9 +63,9 @@ private:
 	XE::float32 _Speed;
 	XE::float32 _EndTime;
 	XE::float32 _StartTime;
+	AnimationSampler _Sampler;
 	XE::AssetPtr< XE::SkeletonAnimation > _SkeletonAnimation;
 
-	void * _Cache;
 	XE::float32 _CurrentTime;
 };
 

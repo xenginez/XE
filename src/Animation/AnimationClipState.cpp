@@ -1,11 +1,6 @@
 #include "AnimationClipState.h"
 
-#include <ozz/base/maths/vec_float.h>
-#include <ozz/base/containers/vector.h>
 #include <ozz/base/maths/soa_transform.h>
-#include <ozz/animation/runtime/skeleton.h>
-#include <ozz/animation/runtime/animation.h>
-#include <ozz/animation/runtime/sampling_job.h>
 
 #include "Utils/Logger.h"
 
@@ -36,7 +31,7 @@ void XE::AnimationClipState::OnStartup()
 {
 	Super::OnStartup();
 
-	_Cache = new ozz::animation::SamplingCache();
+	_Sampler.Startup( GetAnimationLayer()->GetAnimationController()->GetSkeleton().GetShared(), _SkeletonAnimation.GetShared() );
 }
 
 void XE::AnimationClipState::OnEnter()
@@ -63,24 +58,16 @@ void XE::AnimationClipState::OnUpdate( XE::float32 dt )
 		}
 	}
 
-	ozz::animation::SamplingCache * cache = reinterpret_cast< ozz::animation::SamplingCache * >( _Cache );
-
-	auto locals = reinterpret_cast< XE::Array<ozz::math::SoaTransform> * >( GetLocalTransform() );
-	auto animation = reinterpret_cast< ozz::animation::Animation * >( GetSkeletonAnimation()->GetHandle().GetValue() );
-	auto skeleton = reinterpret_cast< ozz::animation::Skeleton * >( GetAnimationLayer()->GetAnimationController()->GetSkeleton()->GetHandle().GetValue() );
-
-	ozz::animation::SamplingJob sampling_job;
-	sampling_job.animation = animation;
-	sampling_job.cache = cache;
-	sampling_job.ratio = _CurrentTime;
-	sampling_job.output = ozz::make_span( *locals );
-
-	if( !sampling_job.Run() )
+	if( !_Sampler.Update( _CurrentTime ) )
 	{
-		XE_LOG( LoggerLevel::Error, "%1 state sampling job runing error", GetName() );
+		XE_LOG( LoggerLevel::Error, "%1 runing animation error", GetName() );
 		SetStatus( XE::AnimationStateStatus::FAILED );
 		return;
 	}
+
+	auto local1 = reinterpret_cast< XE::Array< ozz::math::SoaTransform > * >( GetLocalTransform() );
+	auto local2 = reinterpret_cast< XE::Array< ozz::math::SoaTransform > * >( _Sampler.GetLocal() );
+	*local1 = *local2;
 
 	if( _CurrentTime >= _EndTime )
 	{
@@ -92,8 +79,6 @@ void XE::AnimationClipState::OnClearup()
 {
 	Super::OnClearup();
 
-	delete _Cache;
-	_Cache = nullptr;
 	_SkeletonAnimation = nullptr;
 }
 
@@ -101,7 +86,7 @@ void XE::AnimationClipState::AssetLoad()
 {
 	Super::AssetLoad();
 
-	_SkeletonAnimation->AssetLoad();
+	_SkeletonAnimation.AsyncLoad();
 }
 
 bool XE::AnimationClipState::GetLoop() const
