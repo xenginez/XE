@@ -419,17 +419,17 @@ template< typename T > struct VariantCreate< XE::BasicMemoryView< T > >
 	}
 };
 
-template< typename ... Args > struct VariantCreate< std::basic_string<Args...> >
+template< typename T > struct VariantCreate< std::basic_string< T > >
 {
-	static void Create( Variant * var, const std::basic_string<Args...> & val )
+	static void Create( Variant * var, const std::basic_string< T > & val )
 	{
 		VariantCreate<XE::String>::Create( var, val );
 	}
 };
 
-template< typename ... Args > struct VariantCreate< std::list< Args... > >
+template< typename T > struct VariantCreate< XE::List< T > >
 {
-	static void Create( Variant * var, const std::list< Args... > & val )
+	static void Create( Variant * var, const XE::List< T > & val )
 	{
 		VariantList list;
 
@@ -444,9 +444,9 @@ template< typename ... Args > struct VariantCreate< std::list< Args... > >
 	}
 };
 
-template< typename ... Args > struct VariantCreate< std::deque< Args... > >
+template< typename T > struct VariantCreate< XE::Deque< T > >
 {
-	static void Create( Variant * var, const std::deque< Args... > & val )
+	static void Create( Variant * var, const XE::Deque< T > & val )
 	{
 		VariantDeque deque;
 
@@ -461,9 +461,9 @@ template< typename ... Args > struct VariantCreate< std::deque< Args... > >
 	}
 };
 
-template< typename ... Args > struct VariantCreate< std::stack< Args... > >
+template< typename T > struct VariantCreate< XE::Stack< T > >
 {
-	static void Create( Variant * var, const std::stack< Args... > & val )
+	static void Create( Variant * var, const XE::Stack< T > & val )
 	{
 		VariantStack stack;
 
@@ -478,9 +478,9 @@ template< typename ... Args > struct VariantCreate< std::stack< Args... > >
 	}
 };
 
-template< typename ... Args > struct VariantCreate< std::queue< Args... > >
+template< typename T > struct VariantCreate< XE::Queue< T > >
 {
-	static void Create( Variant * var, const std::queue< Args... > & val )
+	static void Create( Variant * var, const XE::Queue< T > & val )
 	{
 		VariantQueue queue;
 
@@ -495,9 +495,9 @@ template< typename ... Args > struct VariantCreate< std::queue< Args... > >
 	}
 };
 
-template< typename ... Args > struct VariantCreate< std::vector< Args... > >
+template< typename T > struct VariantCreate< XE::Array< T > >
 {
-	static void Create( Variant * var, const std::vector< Args... > & val )
+	static void Create( Variant * var, const XE::Array< T > & val )
 	{
 		VariantArray array;
 
@@ -512,9 +512,9 @@ template< typename ... Args > struct VariantCreate< std::vector< Args... > >
 	}
 };
 
-template< typename ... Args > struct VariantCreate< std::pair< Args... > >
+template< typename K, typename V > struct VariantCreate< XE::Pair< K, V > >
 {
-	static void Create( Variant * var, const std::pair< Args... > & val )
+	static void Create( Variant * var, const XE::Pair< K, V > & val )
 	{
 		VariantPair pair;
 
@@ -527,9 +527,9 @@ template< typename ... Args > struct VariantCreate< std::pair< Args... > >
 	}
 };
 
-template< typename ... Args > struct VariantCreate< std::set< Args... > >
+template< typename T > struct VariantCreate< XE::Set< T > >
 {
-	static void Create( Variant * var, const std::set< Args... > & val )
+	static void Create( Variant * var, const XE::Set< T > & val )
 	{
 		VariantSet set;
 
@@ -544,9 +544,9 @@ template< typename ... Args > struct VariantCreate< std::set< Args... > >
 	}
 };
 
-template< typename ... Args > struct VariantCreate< std::map< Args... > >
+template< typename K, typename V > struct VariantCreate< XE::Map< K, V > >
 {
-	static void Create( Variant * var, const std::map< Args... > & val )
+	static void Create( Variant * var, const XE::Map< K, V > & val )
 	{
 		VariantMap map;
 
@@ -566,9 +566,9 @@ template< typename ... Args > struct VariantCreate< std::map< Args... > >
 	}
 };
 
-template< typename ... Args > struct VariantCreate< std::multiset< Args... > >
+template< typename T > struct VariantCreate< XE::MultiSet< T > >
 {
-	static void Create( Variant * var, const std::multiset< Args... > & val )
+	static void Create( Variant * var, const XE::MultiSet< T > & val )
 	{
 		VariantMultiSet multiset;
 
@@ -583,9 +583,9 @@ template< typename ... Args > struct VariantCreate< std::multiset< Args... > >
 	}
 };
 
-template< typename ... Args > struct VariantCreate< std::multimap< Args... > >
+template< typename K, typename V > struct VariantCreate< XE::MultiMap< K, V > >
 {
-	static void Create( Variant * var, const std::multimap< Args... > & val )
+	static void Create( Variant * var, const XE::MultiMap< K, V > & val )
 	{
 		VariantMultiMap multimap;
 
@@ -605,9 +605,9 @@ template< typename ... Args > struct VariantCreate< std::multimap< Args... > >
 	}
 };
 
-template< typename ... Args > struct VariantCreate< std::unordered_set< Args... > >
+template< typename T > struct VariantCreate< XE::UnorderedSet< T > >
 {
-	static void Create( Variant * var, const std::unordered_set< Args... > & val )
+	static void Create( Variant * var, const XE::UnorderedSet< T > & val )
 	{
 		VariantUnorderedSet set;
 
@@ -622,9 +622,9 @@ template< typename ... Args > struct VariantCreate< std::unordered_set< Args... 
 	}
 };
 
-template< typename ... Args > struct VariantCreate< std::unordered_map< Args... > >
+template< typename K, typename V > struct VariantCreate< XE::UnorderedMap< K, V > >
 {
-	static void Create( Variant * var, const std::unordered_map< Args... > & val )
+	static void Create( Variant * var, const XE::UnorderedMap< K, V > & val )
 	{
 		VariantUnorderedMap map;
 
@@ -644,9 +644,9 @@ template< typename ... Args > struct VariantCreate< std::unordered_map< Args... 
 	}
 };
 
-template< typename ... Args > struct VariantCreate< std::unordered_multiset< Args... > >
+template< typename T > struct VariantCreate< XE::UnorderedMultiSet< T > >
 {
-	static void Create( Variant * var, const std::unordered_multiset< Args... > & val )
+	static void Create( Variant * var, const XE::UnorderedMultiSet< T > & val )
 	{
 		VariantUnorderedMultiSet multiset;
 
@@ -661,9 +661,9 @@ template< typename ... Args > struct VariantCreate< std::unordered_multiset< Arg
 	}
 };
 
-template< typename ... Args > struct VariantCreate< std::unordered_multimap< Args... > >
+template< typename K, typename V > struct VariantCreate< XE::UnorderedMultiMap< K, V > >
 {
-	static void Create( Variant * var, const std::unordered_multimap< Args... > & val )
+	static void Create( Variant * var, const XE::UnorderedMultiMap< K, V > & val )
 	{
 		VariantUnorderedMultiMap multimap;
 
@@ -918,27 +918,27 @@ template< typename T > struct VariantCast< XE::BasicMemoryView< T > >
 	}
 };
 
-template< typename ... Args > struct VariantCast< std::basic_string<Args...> >
+template< typename T > struct VariantCast< std::basic_string<T> >
 {
-	static std::basic_string<Args...> Cast( const Variant * val )
+	static std::basic_string<T> Cast( const Variant * val )
 	{
 		return VariantCast<XE::String &>::Cast( val ).ToStdString();
 	}
 };
 
-template< typename ... Args > struct VariantCast<const std::basic_string<Args...> &>
+template< typename T > struct VariantCast<const std::basic_string< T > &>
 {
-	static const std::basic_string<Args...> & Cast( const Variant * val )
+	static const std::basic_string< T > & Cast( const Variant * val )
 	{
 		return VariantCast<const XE::String &>::Cast( val ).ToStdString();
 	}
 };
 
-template< typename T, typename ... Args > struct VariantCast< std::list< T, Args... > >
+template< typename T > struct VariantCast< XE::List< T > >
 {
-	static std::list< T, Args... > Cast( const Variant * val )
+	static XE::List< T > Cast( const Variant * val )
 	{
-		std::list< T, Args... > list;
+		XE::List< T > list;
 
 		auto v_list = val->ToArray();
 		for( const auto & it : v_list )
@@ -950,11 +950,11 @@ template< typename T, typename ... Args > struct VariantCast< std::list< T, Args
 	}
 };
 
-template< typename T, typename ... Args > struct VariantCast< std::deque< T, Args... > >
+template< typename T > struct VariantCast< XE::Deque< T > >
 {
-	static std::deque< T, Args... > Cast( const Variant * val )
+	static XE::Deque< T > Cast( const Variant * val )
 	{
-		std::deque< T, Args... > deque;
+		XE::Deque< T > deque;
 
 		auto v_deque = val->ToArray();
 		for( const auto & it : v_deque )
@@ -966,11 +966,11 @@ template< typename T, typename ... Args > struct VariantCast< std::deque< T, Arg
 	}
 };
 
-template< typename T, typename ... Args > struct VariantCast< std::stack< T, Args... > >
+template< typename T > struct VariantCast< XE::Stack< T > >
 {
-	static std::stack< T, Args... > Cast( const Variant * val )
+	static XE::Stack< T > Cast( const Variant * val )
 	{
-		std::stack< T, Args... > stack;
+		XE::Stack< T > stack;
 
 		auto v_stack = val->ToArray();
 		for( const auto & it : v_stack )
@@ -982,11 +982,11 @@ template< typename T, typename ... Args > struct VariantCast< std::stack< T, Arg
 	}
 };
 
-template< typename T, typename ... Args > struct VariantCast< std::queue< T, Args... > >
+template< typename T > struct VariantCast< XE::Queue< T > >
 {
-	static std::queue< T, Args... > Cast( const Variant * val )
+	static XE::Queue< T > Cast( const Variant * val )
 	{
-		std::queue< T, Args... > queue;
+		XE::Queue< T > queue;
 
 		auto v_queue = val->ToArray();
 		for( const auto & it : v_queue )
@@ -998,11 +998,11 @@ template< typename T, typename ... Args > struct VariantCast< std::queue< T, Arg
 	}
 };
 
-template< typename T, typename ... Args > struct VariantCast< std::vector< T, Args... > >
+template< typename T > struct VariantCast< XE::Array< T > >
 {
-	static std::vector< T, Args... > Cast( const Variant * val )
+	static XE::Array< T > Cast( const Variant * val )
 	{
-		std::vector< T, Args... > array;
+		XE::Array< T > array;
 
 		const VariantArray & v_array = val->ToArray();
 		for( const auto & it : v_array )
@@ -1014,11 +1014,11 @@ template< typename T, typename ... Args > struct VariantCast< std::vector< T, Ar
 	}
 };
 
-template< typename K, typename V > struct VariantCast< std::pair< K, V > >
+template< typename K, typename V > struct VariantCast< XE::Pair< K, V > >
 {
-	static std::pair< K, V > Cast( const Variant * val )
+	static XE::Pair< K, V > Cast( const Variant * val )
 	{
-		std::pair< K, V > pair;
+		XE::Pair< K, V > pair;
 
 		const VariantArray & v_array = val->ToArray();
 		if( v_array.size() == 2 )
@@ -1031,11 +1031,11 @@ template< typename K, typename V > struct VariantCast< std::pair< K, V > >
 	}
 };
 
-template< typename T, typename ... Args > struct VariantCast< std::set< T, Args... > >
+template< typename T > struct VariantCast< XE::Set< T > >
 {
-	static std::set< T, Args... > Cast( const Variant * val )
+	static XE::Set< T > Cast( const Variant * val )
 	{
-		std::set< T, Args... > set;
+		XE::Set< T > set;
 
 		auto v_set = val->ToArray();
 		for( const auto & it : v_set )
@@ -1047,11 +1047,11 @@ template< typename T, typename ... Args > struct VariantCast< std::set< T, Args.
 	}
 };
 
-template< typename K, typename V, typename ... Args > struct VariantCast< std::map< K, V, Args... > >
+template< typename K, typename V > struct VariantCast< XE::Map< K, V > >
 {
-	static std::map< K, V, Args... > Cast( const Variant * val )
+	static XE::Map< K, V > Cast( const Variant * val )
 	{
-		std::map< K, V, Args... > map;
+		XE::Map< K, V > map;
 
 		auto v_map = val->ToArray();
 		for( const auto & it : v_map )
@@ -1063,11 +1063,11 @@ template< typename K, typename V, typename ... Args > struct VariantCast< std::m
 	}
 };
 
-template< typename T, typename ... Args > struct VariantCast< std::multiset< T, Args... > >
+template< typename T > struct VariantCast< XE::MultiSet< T > >
 {
-	static std::multiset< T, Args... > Cast( const Variant * val )
+	static XE::MultiSet< T > Cast( const Variant * val )
 	{
-		std::multiset< T, Args... > multiset;
+		XE::MultiSet< T > multiset;
 
 		auto v_multiset = val->ToArray();
 		for( const auto & it : v_multiset )
@@ -1079,11 +1079,11 @@ template< typename T, typename ... Args > struct VariantCast< std::multiset< T, 
 	}
 };
 
-template< typename K, typename V, typename ... Args > struct VariantCast< std::multimap< K, V, Args... > >
+template< typename K, typename V > struct VariantCast< XE::MultiMap< K, V > >
 {
-	static std::multimap< K, V, Args... > Cast( const Variant * val )
+	static XE::MultiMap< K, V > Cast( const Variant * val )
 	{
-		std::multimap< K, V, Args... > multimap;
+		XE::MultiMap< K, V > multimap;
 
 		auto v_multimap = val->ToArray();
 		for( const auto & it : v_multimap )
@@ -1095,11 +1095,11 @@ template< typename K, typename V, typename ... Args > struct VariantCast< std::m
 	}
 };
 
-template< typename T, typename ... Args > struct VariantCast< std::unordered_set< T, Args... > >
+template< typename T > struct VariantCast< XE::UnorderedSet< T > >
 {
-	static std::unordered_set< T, Args... > Cast( const Variant * val )
+	static XE::UnorderedSet< T > Cast( const Variant * val )
 	{
-		std::unordered_set< T, Args... > set;
+		XE::UnorderedSet< T > set;
 
 		auto v_set = val->ToArray();
 		for( const auto & it : v_set )
@@ -1111,11 +1111,11 @@ template< typename T, typename ... Args > struct VariantCast< std::unordered_set
 	}
 };
 
-template< typename K, typename V, typename ... Args > struct VariantCast< std::unordered_map< K, V, Args... > >
+template< typename K, typename V > struct VariantCast< XE::UnorderedMap< K, V > >
 {
-	static std::unordered_map< K, V, Args... > Cast( const Variant * val )
+	static XE::UnorderedMap< K, V > Cast( const Variant * val )
 	{
-		std::unordered_map< K, V, Args... > map;
+		XE::UnorderedMap< K, V > map;
 
 		auto v_map = val->ToArray();
 		for( const auto & it : v_map )
@@ -1127,11 +1127,11 @@ template< typename K, typename V, typename ... Args > struct VariantCast< std::u
 	}
 };
 
-template< typename T, typename ... Args > struct VariantCast< std::unordered_multiset< T, Args... > >
+template< typename T > struct VariantCast< XE::UnorderedMultiSet< T > >
 {
-	static std::unordered_multiset< T, Args... > Cast( const Variant * val )
+	static XE::UnorderedMultiSet< T > Cast( const Variant * val )
 	{
-		std::unordered_multiset< T, Args... > multiset;
+		XE::UnorderedMultiSet< T > multiset;
 
 		auto v_multiset = val->ToArray();
 		for( const auto & it : v_multiset )
@@ -1143,11 +1143,11 @@ template< typename T, typename ... Args > struct VariantCast< std::unordered_mul
 	}
 };
 
-template< typename K, typename V, typename ... Args > struct VariantCast< std::unordered_multimap< K, V, Args... > >
+template< typename K, typename V > struct VariantCast< XE::UnorderedMultiMap< K, V > >
 {
-	static std::unordered_multimap< K, V, Args... > Cast( const Variant * val )
+	static XE::UnorderedMultiMap< K, V > Cast( const Variant * val )
 	{
-		std::unordered_multimap< K, V, Args... > multimap;
+		XE::UnorderedMultiMap< K, V > multimap;
 
 		auto v_multimap = val->ToArray();
 		for( const auto & it : v_multimap )

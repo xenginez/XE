@@ -42,9 +42,9 @@ public:
 
 	void SetAnimationLayer( XE::AnimationLayerPtr val );
 
-	const XE::Array< XE::AnimationCondition > & GetAnimationConditions() const;
+	const XE::Array< XE::AnimationConditionPtr > & GetAnimationConditions() const;
 
-	void SetAnimationConditions( const XE::Array< XE::AnimationCondition > & val );
+	void SetAnimationConditions( const XE::Array< XE::AnimationConditionPtr > & val );
 
 public:
 	virtual void Startup();
@@ -74,7 +74,7 @@ protected:
 private:
 	XE::String _Name;
 	XE::AnimationStateHandle _Handle;
-	XE::Array< XE::AnimationCondition > _AnimationConditions;
+	XE::Array< XE::AnimationConditionPtr > _AnimationConditions;
 
 	XE::AnimationStateStatus _Status;
 	XE::AnimationLayerWPtr _AnimationLayer;

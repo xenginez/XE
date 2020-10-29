@@ -21,6 +21,7 @@ DECL_PTR( BlendingLayer );
 DECL_PTR( AnimationState );
 DECL_PTR( AnimationLayer );
 DECL_PTR( SkeletonAnimation );
+DECL_PTR( AnimationCondition );
 DECL_PTR( AnimationController );
 
 DECL_HANDLE( XE_API, Skeleton );
@@ -42,8 +43,6 @@ enum class AnimationStateStatus : XE::uint8
 	SUCCESS,
 };
 DECL_META_ENUM( XE_API, AnimationStateStatus );
-
-DECL_EVENT( UPDATE_SKELETON_TRANSFORM, "animation update skeleton transform", XE::BasicMemoryView< XE::Mat4 > );
 
 END_XE_NAMESPACE
 

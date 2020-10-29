@@ -55,12 +55,12 @@ void XE::AnimationState::SetAnimationLayer( XE::AnimationLayerPtr val )
 	_AnimationLayer = val;
 }
 
-const XE::Array< XE::AnimationCondition > & XE::AnimationState::GetAnimationConditions() const
+const XE::Array< XE::AnimationConditionPtr > & XE::AnimationState::GetAnimationConditions() const
 {
 	return _AnimationConditions;
 }
 
-void XE::AnimationState::SetAnimationConditions( const XE::Array< XE::AnimationCondition > & val )
+void XE::AnimationState::SetAnimationConditions( const XE::Array< XE::AnimationConditionPtr > & val )
 {
 	_AnimationConditions = val;
 }

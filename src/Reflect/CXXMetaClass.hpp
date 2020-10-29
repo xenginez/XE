@@ -70,21 +70,21 @@ public:
 	}
 
 public:
-	template< typename Result, typename ... Types > void Method( const String& Name, Result( *Callback )( Types... ) )
+	template< typename Result, typename T > void Method( const String& Name, Result( *Callback )( T ) )
 	{
-		auto method = XE::MakeShared< CXXMetaMethod< Result( *)( Types... )> >( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ) );
+		auto method = XE::MakeShared< CXXMetaMethod< Result( *)( T )> >( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ) );
 		_RegisterMethod( method );
 	}
 
-	template< typename Result, typename ... Types > void Method( const String& Name, Result( ClassType::*Callback )( Types... ) )
+	template< typename Result, typename T > void Method( const String& Name, Result( ClassType::*Callback )( T ) )
 	{
-		auto method = XE::MakeShared< CXXMetaMethod<Result( ClassType::* )( Types... )> >( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ) );
+		auto method = XE::MakeShared< CXXMetaMethod<Result( ClassType::* )( T )> >( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ) );
 		_RegisterMethod( method );
 	}
 
-	template< typename Result, typename ... Types > void Method( const String& Name, Result( ClassType::*Callback )( Types... ) const )
+	template< typename Result, typename T > void Method( const String& Name, Result( ClassType::*Callback )( T ) const )
 	{
-		auto method = XE::MakeShared< CXXMetaMethod<Result( ClassType::* )( Types... ) const> >( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ) );
+		auto method = XE::MakeShared< CXXMetaMethod<Result( ClassType::* )( T ) const> >( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ) );
 		_RegisterMethod( method );
 	}
 
@@ -228,416 +228,432 @@ public:
 };
 
 
-template<> struct XE_API ClassID< void >
+template<> struct XE_API XE::ClassID< void >
 {
-	static IMetaClassPtr Get( const void * val = nullptr )
+	static XE::IMetaClassPtr Get( const void * val = nullptr )
 	{
 		return nullptr;
 	}
 };
 
-template<> struct XE_API ClassID< std::nullptr_t >
+template<> struct XE_API XE::ClassID< std::nullptr_t >
 {
-	static IMetaClassPtr Get( const std::nullptr_t * val = nullptr )
+	static XE::IMetaClassPtr Get( const std::nullptr_t * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< CXXMetaFundamental<std::nullptr_t> >( "null" );
+		static auto meta = XE::MakeShared< XE::CXXMetaFundamental<std::nullptr_t> >( "null" );
 		return meta;
 	}
 };
 
-template<> struct XE_API ClassID< bool >
+template<> struct XE_API XE::ClassID< bool >
 {
-	static IMetaClassPtr Get( const bool * val = nullptr )
+	static XE::IMetaClassPtr Get( const bool * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< CXXMetaFundamental<bool> >( "bool" );
+		static auto meta = XE::MakeShared< XE::CXXMetaFundamental<bool> >( "bool" );
 		return meta;
 	}
 };
 
-template<> struct XE_API ClassID< XE::int8 >
+template<> struct XE_API XE::ClassID< XE::int8 >
 {
-	static IMetaClassPtr Get( const XE::int8 * val = nullptr )
+	static XE::IMetaClassPtr Get( const XE::int8 * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< CXXMetaFundamental<XE::int8> >( "int8" );
+		static auto meta = XE::MakeShared< XE::CXXMetaFundamental<XE::int8> >( "int8" );
 		return meta;
 	}
 };
 
-template<> struct XE_API ClassID< XE::int16 >
+template<> struct XE_API XE::ClassID< XE::int16 >
 {
-	static IMetaClassPtr Get( const XE::int16 * val = nullptr )
+	static XE::IMetaClassPtr Get( const XE::int16 * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< CXXMetaFundamental<XE::int16> >( "int16" );
+		static auto meta = XE::MakeShared< XE::CXXMetaFundamental<XE::int16> >( "int16" );
 		return meta;
 	}
 };
 
-template<> struct XE_API ClassID< XE::int32 >
+template<> struct XE_API XE::ClassID< XE::int32 >
 {
-	static IMetaClassPtr Get( const XE::int32 * val = nullptr )
+	static XE::IMetaClassPtr Get( const XE::int32 * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< CXXMetaFundamental<XE::int32> >( "int32" );
+		static auto meta = XE::MakeShared< XE::CXXMetaFundamental<XE::int32> >( "int32" );
 		return meta;
 	}
 };
 
-template<> struct XE_API ClassID< long >
+template<> struct XE_API XE::ClassID< long >
 {
-	static IMetaClassPtr Get( const long * val = nullptr )
+	static XE::IMetaClassPtr Get( const long * val = nullptr )
 	{
 		return ClassID< XE::int32 >::Get();
 	}
 };
 
-template<> struct XE_API ClassID< XE::int64 >
+template<> struct XE_API XE::ClassID< XE::int64 >
 {
-	static IMetaClassPtr Get( const XE::int64 * val = nullptr )
+	static XE::IMetaClassPtr Get( const XE::int64 * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< CXXMetaFundamental<XE::int64> >( "int64" );
+		static auto meta = XE::MakeShared< XE::CXXMetaFundamental<XE::int64> >( "int64" );
 		return meta;
 	}
 };
 
-template<> struct XE_API ClassID< XE::uint8 >
+template<> struct XE_API XE::ClassID< XE::uint8 >
 {
-	static IMetaClassPtr Get( const XE::uint8 * val = nullptr )
+	static XE::IMetaClassPtr Get( const XE::uint8 * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< CXXMetaFundamental<XE::uint8> >( "uint8" );
+		static auto meta = XE::MakeShared< XE::CXXMetaFundamental<XE::uint8> >( "uint8" );
 		return meta;
 	}
 };
 
-template<> struct XE_API ClassID< XE::uint16 >
+template<> struct XE_API XE::ClassID< XE::uint16 >
 {
-	static IMetaClassPtr Get( const XE::uint16 * val = nullptr )
+	static XE::IMetaClassPtr Get( const XE::uint16 * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< CXXMetaFundamental<XE::uint16> >( "uint16" );
+		static auto meta = XE::MakeShared< XE::CXXMetaFundamental<XE::uint16> >( "uint16" );
 		return meta;
 	}
 };
 
-template<> struct XE_API ClassID< XE::uint32 >
+template<> struct XE_API XE::ClassID< XE::uint32 >
 {
-	static IMetaClassPtr Get( const XE::uint32 * val = nullptr )
+	static XE::IMetaClassPtr Get( const XE::uint32 * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< CXXMetaFundamental<XE::uint32> >( "uint32" );
+		static auto meta = XE::MakeShared< XE::CXXMetaFundamental<XE::uint32> >( "uint32" );
 		return meta;
 	}
 };
 
-template<> struct XE_API ClassID< unsigned long >
+template<> struct XE_API XE::ClassID< unsigned long >
 {
-	static IMetaClassPtr Get( const unsigned long * val = nullptr )
+	static XE::IMetaClassPtr Get( const unsigned long * val = nullptr )
 	{
 		return ClassID< XE::uint32 >::Get();
 	}
 };
 
-template<> struct XE_API ClassID< XE::uint64 >
+template<> struct XE_API XE::ClassID< XE::uint64 >
 {
-	static IMetaClassPtr Get( const XE::uint64 * val = nullptr )
+	static XE::IMetaClassPtr Get( const XE::uint64 * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< CXXMetaFundamental<XE::uint64> >( "uint64" );
+		static auto meta = XE::MakeShared< XE::CXXMetaFundamental<XE::uint64> >( "uint64" );
 		return meta;
 	}
 };
 
-template<> struct XE_API ClassID< XE::float32 >
+template<> struct XE_API XE::ClassID< XE::float32 >
 {
-	static IMetaClassPtr Get( const XE::float32 * val = nullptr )
+	static XE::IMetaClassPtr Get( const XE::float32 * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< CXXMetaFundamental<XE::float32> >( "float32" );
+		static auto meta = XE::MakeShared< XE::CXXMetaFundamental<XE::float32> >( "float32" );
 		return meta;
 	}
 };
 
-template<> struct XE_API ClassID< XE::float64 >
+template<> struct XE_API XE::ClassID< XE::float64 >
 {
-	static IMetaClassPtr Get( const XE::float64 * val = nullptr )
+	static XE::IMetaClassPtr Get( const XE::float64 * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< CXXMetaFundamental<XE::float64> >( "float64" );
+		static auto meta = XE::MakeShared< XE::CXXMetaFundamental<XE::float64> >( "float64" );
 		return meta;
 	}
 };
 
-template<> struct XE_API ClassID< Variant >
+template<> struct XE_API XE::ClassID< XE::Variant >
 {
-	static IMetaClassPtr Get( const Variant * val = nullptr )
+	static XE::IMetaClassPtr Get( const XE::Variant * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< CXXMetaClass<Variant> >( "Variant", nullptr, nullptr );
+		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::Variant> >( "Variant", nullptr, nullptr );
 		return meta;
 	}
 };
 
-template<> struct XE_API TypeID< Variant >
+template<> struct XE_API XE::TypeID< XE::Variant >
 {
-	static IMetaTypePtr Get( const Variant * val = nullptr )
+	static XE::IMetaTypePtr Get( const XE::Variant * val = nullptr )
 	{
 		if( val != nullptr && val->IsInvalid() == false )
 		{
 			return val->GetType();
 		}
 
-		return ClassID<Variant>::Get();
+		return XE::ClassID<XE::Variant>::Get();
 	}
 };
 
 
-template<> struct XE_API ClassID< String >
+template<> struct XE_API XE::ClassID< XE::String >
 {
-	static IMetaClassPtr Get( const String * val = nullptr )
+	static XE::IMetaClassPtr Get( const XE::String * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< CXXMetaClass<String> >( "String", nullptr, nullptr );
+		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::String> >( "String", nullptr, nullptr );
 		return meta;
 	}
 };
 
-template<> struct XE_API ClassID< FileSystem::Path >
+template<> struct XE_API XE::ClassID< XE::FileSystem::Path >
 {
-	static IMetaClassPtr Get( const FileSystem::Path * val = nullptr )
+	static XE::IMetaClassPtr Get( const XE::FileSystem::Path * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< CXXMetaClass<String> >( "Path", nullptr, nullptr );
+		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::String> >( "Path", nullptr, nullptr );
 		return meta;
 	}
 };
 
-template<> struct XE_API ClassID< VariantList >
+template<> struct XE_API XE::ClassID< XE::VariantList >
 {
-	static IMetaClassPtr Get( const VariantList * val = nullptr )
+	static XE::IMetaClassPtr Get( const XE::VariantList * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< CXXMetaClass<VariantList> >( "List", nullptr, nullptr );
+		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::VariantList> >( "List", nullptr, nullptr );
 		return meta;
 	}
 };
 
-template<> struct XE_API ClassID< VariantDeque >
+template<> struct XE_API XE::ClassID< XE::VariantDeque >
 {
-	static IMetaClassPtr Get( const VariantDeque * val = nullptr )
+	static XE::IMetaClassPtr Get( const XE::VariantDeque * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< CXXMetaClass<VariantDeque> >( "Deque", nullptr, nullptr );
+		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::VariantDeque> >( "Deque", nullptr, nullptr );
 		return meta;
 	}
 };
 
-template<> struct XE_API ClassID< VariantStack >
+template<> struct XE_API XE::ClassID< XE::VariantStack >
 {
-	static IMetaClassPtr Get( const VariantStack * val = nullptr )
+	static XE::IMetaClassPtr Get( const XE::VariantStack * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< CXXMetaClass<VariantStack> >( "Stack", nullptr, nullptr );
+		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::VariantStack> >( "Stack", nullptr, nullptr );
 		return meta;
 	}
 };
 
-template<> struct XE_API ClassID< VariantQueue >
+template<> struct XE_API XE::ClassID< XE::VariantQueue >
 {
-	static IMetaClassPtr Get( const VariantQueue * val = nullptr )
+	static XE::IMetaClassPtr Get( const XE::VariantQueue * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< CXXMetaClass<VariantQueue> >( "Queue", nullptr, nullptr );
+		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::VariantQueue> >( "Queue", nullptr, nullptr );
 		return meta;
 	}
 };
 
-template<> struct XE_API ClassID< VariantArray >
+template<> struct XE_API XE::ClassID< XE::VariantArray >
 {
-	static IMetaClassPtr Get( const VariantArray * val = nullptr )
+	static XE::IMetaClassPtr Get( const XE::VariantArray * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< CXXMetaClass<VariantArray> >( "Array", nullptr, nullptr );
+		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::VariantArray> >( "Array", nullptr, nullptr );
 		return meta;
 	}
 };
 
-template<> struct XE_API ClassID< VariantPair >
+template<> struct XE_API XE::ClassID< XE::VariantPair >
 {
-	static IMetaClassPtr Get( const VariantPair * val = nullptr )
+	static XE::IMetaClassPtr Get( const XE::VariantPair * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< CXXMetaClass<VariantPair> >( "Pair", nullptr, nullptr );
+		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::VariantPair> >( "Pair", nullptr, nullptr );
 		return meta;
 	}
 };
 
-template<> struct XE_API ClassID< VariantSet >
+template<> struct XE_API XE::ClassID< XE::VariantSet >
 {
-	static IMetaClassPtr Get( const VariantSet * val = nullptr )
+	static XE::IMetaClassPtr Get( const XE::VariantSet * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< CXXMetaClass<VariantSet> >( "Set", nullptr, nullptr );
+		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::VariantSet> >( "Set", nullptr, nullptr );
 		return meta;
 	}
 };
 
-template<> struct XE_API ClassID< VariantMap >
+template<> struct XE_API XE::ClassID< XE::VariantMap >
 {
-	static IMetaClassPtr Get( const VariantMap * val = nullptr )
+	static XE::IMetaClassPtr Get( const XE::VariantMap * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< CXXMetaClass<VariantMap> >( "Map", nullptr, nullptr );
+		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::VariantMap> >( "Map", nullptr, nullptr );
 		return meta;
 	}
 };
 
-template<> struct XE_API ClassID< VariantMultiSet >
+template<> struct XE_API XE::ClassID< XE::VariantMultiSet >
 {
-	static IMetaClassPtr Get( const VariantMultiSet * val = nullptr )
+	static XE::IMetaClassPtr Get( const XE::VariantMultiSet * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< CXXMetaClass<VariantMultiSet> >( "MultiSet", nullptr, nullptr );
+		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::VariantMultiSet> >( "MultiSet", nullptr, nullptr );
 		return meta;
 	}
 };
 
-template<> struct XE_API ClassID< VariantMultiMap >
+template<> struct XE_API XE::ClassID< XE::VariantMultiMap >
 {
-	static IMetaClassPtr Get( const VariantMultiMap * val = nullptr )
+	static XE::IMetaClassPtr Get( const XE::VariantMultiMap * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< CXXMetaClass<VariantMultiMap> >( "MultiMap", nullptr, nullptr );
+		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::VariantMultiMap> >( "MultiMap", nullptr, nullptr );
 		return meta;
 	}
 };
 
-template<> struct XE_API ClassID< VariantUnorderedSet >
+template<> struct XE_API XE::ClassID< XE::VariantUnorderedSet >
 {
-	static IMetaClassPtr Get( const VariantUnorderedSet * val = nullptr )
+	static XE::IMetaClassPtr Get( const XE::VariantUnorderedSet * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< CXXMetaClass<VariantUnorderedSet> >( "UnorderedSet", nullptr, nullptr );
+		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::VariantUnorderedSet> >( "UnorderedSet", nullptr, nullptr );
 		return meta;
 	}
 };
 
-template<> struct XE_API ClassID< VariantUnorderedMap >
+template<> struct XE_API XE::ClassID< XE::VariantUnorderedMap >
 {
-	static IMetaClassPtr Get( const VariantUnorderedMap * val = nullptr )
+	static XE::IMetaClassPtr Get( const XE::VariantUnorderedMap * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< CXXMetaClass<VariantUnorderedMap> >( "UnorderedMap", nullptr, nullptr );
+		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::VariantUnorderedMap> >( "UnorderedMap", nullptr, nullptr );
 		return meta;
 	}
 };
 
-template<> struct XE_API ClassID< VariantUnorderedMultiSet >
+template<> struct XE_API XE::ClassID< XE::VariantUnorderedMultiSet >
 {
-	static IMetaClassPtr Get( const VariantUnorderedMultiSet * val = nullptr )
+	static XE::IMetaClassPtr Get( const XE::VariantUnorderedMultiSet * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< CXXMetaClass<VariantUnorderedMultiSet> >( "UnorderedMultiSet", nullptr, nullptr );
+		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::VariantUnorderedMultiSet> >( "UnorderedMultiSet", nullptr, nullptr );
 		return meta;
 	}
 };
 
-template<> struct XE_API ClassID< VariantUnorderedMultiMap >
+template<> struct XE_API XE::ClassID< XE::VariantUnorderedMultiMap >
 {
-	static IMetaClassPtr Get( const VariantUnorderedMultiMap * val = nullptr )
+	static XE::IMetaClassPtr Get( const XE::VariantUnorderedMultiMap * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< CXXMetaClass<VariantUnorderedMultiMap> >( "UnorderedMultiMap", nullptr, nullptr );
+		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::VariantUnorderedMultiMap> >( "UnorderedMultiMap", nullptr, nullptr );
 		return meta;
 	}
 };
 
 
-template<> struct XE_API ClassID< XE::MemoryView >
+template<> struct XE_API XE::ClassID< XE::MemoryView >
 {
-	static IMetaClassPtr Get( const XE::MemoryView * val = nullptr )
+	static XE::IMetaClassPtr Get( const XE::MemoryView * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< CXXMetaClass<XE::MemoryView> >( "MemoryView", nullptr, nullptr );
+		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::MemoryView> >( "MemoryView", nullptr, nullptr );
 		return meta;
 	}
 };
 
-template<typename T> struct ClassID< XE::BasicMemoryView< T > >
+template<typename T> struct XE::ClassID< XE::BasicMemoryView< T > >
 {
-	static IMetaClassPtr Get( const XE::BasicMemoryView< T > * val = nullptr )
+	static XE::IMetaClassPtr Get( const XE::BasicMemoryView< T > * val = nullptr )
 	{
-		return ClassID< XE::MemoryView >::Get( nullptr );
+		return XE::ClassID< XE::MemoryView >::Get( nullptr );
 	}
 };
 
-template<typename ... Types> struct ClassID< std::basic_string<Types...> >
+template<typename T> struct XE::ClassID< std::basic_string<T> >
 {
-	static IMetaClassPtr Get( const std::basic_string<Types...> * val = nullptr )
+	static XE::IMetaClassPtr Get( const std::basic_string<T> * val = nullptr )
 	{
-		return ClassID<String>::Get();
+		return XE::ClassID<XE::String>::Get();
 	}
 };
 
-template<typename ... Types> struct ClassID< std::list<Types...> >
+template<typename T> struct XE::ClassID< XE::List<T> >
 {
-	static IMetaClassPtr Get( const std::list<Types...> * val = nullptr )
+	static XE::IMetaClassPtr Get( const XE::List<T> * val = nullptr )
 	{
-		return ClassID<VariantList>::Get();
+		return XE::ClassID<XE::VariantList>::Get();
 	}
 };
 
-template<typename ... Types> struct ClassID< std::deque<Types...> >
+template<typename T> struct XE::ClassID< XE::Deque<T> >
 {
-	static IMetaClassPtr Get( const std::deque<Types...> * val = nullptr )
+	static XE::IMetaClassPtr Get( const XE::Deque<T> * val = nullptr )
 	{
-		return ClassID<VariantDeque>::Get();
+		return XE::ClassID<XE::VariantDeque>::Get();
 	}
 };
 
-template<typename ... Types> struct ClassID< std::stack<Types...> >
+template<typename T> struct XE::ClassID< XE::Stack<T> >
 {
-	static IMetaClassPtr Get( const std::stack<Types...> * val = nullptr )
+	static XE::IMetaClassPtr Get( const XE::Stack<T> * val = nullptr )
 	{
-		return ClassID<VariantStack>::Get();
+		return XE::ClassID<XE::VariantStack>::Get();
 	}
 };
 
-template<typename ... Types> struct ClassID< std::queue<Types...> >
+template<typename T> struct XE::ClassID< XE::Queue<T> >
 {
-	static IMetaClassPtr Get( const std::queue<Types...> * val = nullptr )
+	static XE::IMetaClassPtr Get( const XE::Queue<T> * val = nullptr )
 	{
-		return ClassID<VariantQueue>::Get();
+		return XE::ClassID<XE::VariantQueue>::Get();
 	}
 };
 
-template<typename ... Types> struct ClassID< std::array<Types...> >
+template<typename T, std::size_t N> struct XE::ClassID< std::array<T, N> >
 {
-	static IMetaClassPtr Get( const std::array<Types...> * val = nullptr )
+	static XE::IMetaClassPtr Get( const std::array<T, N> * val = nullptr )
 	{
-		return ClassID<VariantArray>::Get();
+		return XE::ClassID<XE::VariantArray>::Get();
 	}
 };
 
-template<typename ... Types> struct ClassID< std::vector<Types...> >
+template<typename T> struct XE::ClassID< XE::Array<T> >
 {
-	static IMetaClassPtr Get( const std::vector<Types...> * val = nullptr )
+	static XE::IMetaClassPtr Get( const XE::Array<T> * val = nullptr )
 	{
-		return ClassID<VariantArray>::Get();
+		return XE::ClassID<XE::VariantArray>::Get();
 	}
 };
 
-template<typename ... Types> struct ClassID< std::pair<Types...> >
+template<typename K, typename V> struct XE::ClassID< XE::Pair<K, V> >
 {
-	static IMetaClassPtr Get( const std::pair<Types...> * val = nullptr )
+	static XE::IMetaClassPtr Get( const XE::Pair<K, V> * val = nullptr )
 	{
-		return ClassID<VariantPair>::Get();
+		return XE::ClassID<XE::VariantPair>::Get();
 	}
 };
 
-template<typename ... Types> struct ClassID< std::set<Types...> >
+template<typename T> struct XE::ClassID< XE::Set<T> >
 {
-	static IMetaClassPtr Get( const std::set<Types...> * val = nullptr )
+	static XE::IMetaClassPtr Get( const XE::Set<T> * val = nullptr )
 	{
-		return ClassID<VariantSet>::Get();
+		return XE::ClassID<XE::VariantSet>::Get();
 	}
 };
 
-template<typename ... Types> struct ClassID< std::map<Types...> >
+template<typename K, typename V> struct XE::ClassID< XE::Map<K, V> >
 {
-	static IMetaClassPtr Get( const std::map<Types...> * val = nullptr )
+	static XE::IMetaClassPtr Get( const XE::Map<K, V> * val = nullptr )
 	{
-		return ClassID<VariantMap>::Get();
+		return XE::ClassID<XE::VariantMap>::Get();
 	}
 };
 
-template<typename ... Types> struct ClassID< std::multiset<Types...> >
+template<typename T> struct XE::ClassID< XE::MultiSet<T> >
 {
-	static IMetaClassPtr Get( const std::multiset<Types...> * val = nullptr )
+	static XE::IMetaClassPtr Get( const XE::MultiSet<T> * val = nullptr )
 	{
-		return ClassID<VariantMultiSet>::Get();
+		return XE::ClassID<XE::VariantMultiSet>::Get();
 	}
 };
 
-template<typename ... Types> struct ClassID< std::multimap<Types...> >
+template<typename K, typename V> struct XE::ClassID< XE::MultiMap<K, V> >
 {
-	static IMetaClassPtr Get( const std::multimap<Types...> * val = nullptr )
+	static XE::IMetaClassPtr Get( const XE::MultiMap<K, V> * val = nullptr )
 	{
-		return ClassID<VariantMultiMap>::Get();
+		return XE::ClassID<XE::VariantMultiMap>::Get();
+	}
+};
+
+template<typename T> struct XE::ClassID< XE::UnorderedMultiSet<T> >
+{
+	static XE::IMetaClassPtr Get( const XE::UnorderedMultiSet<T> * val = nullptr )
+	{
+		return XE::ClassID<XE::VariantUnorderedMultiSet>::Get();
+	}
+};
+
+template<typename K, typename V> struct XE::ClassID< XE::UnorderedMultiMap<K, V> >
+{
+	static XE::IMetaClassPtr Get( const XE::UnorderedMultiMap<K, V> * val = nullptr )
+	{
+		return XE::ClassID<XE::VariantUnorderedMultiMap>::Get();
 	}
 };
 

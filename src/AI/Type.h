@@ -24,8 +24,6 @@ DECL_PTR( BlackBoard );
 DECL_PTR( BehaviorTree );
 DECL_PTR( StateMachine );
 
-DECL_PTR( GameObject );
-
 DECL_HANDLE( XE_API, AINode );
 DECL_HANDLE( XE_API, AIState );
 DECL_HANDLE( XE_API, AIElement );

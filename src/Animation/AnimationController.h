@@ -21,6 +21,9 @@ class XE_API AnimationController : public XE::Object
 	OBJECT( AnimationController, Object )
 
 public:
+	using ProcessEventCallback = std::function<void( const XE::EventPtr & )>;
+
+public:
 	AnimationController();
 
 	~AnimationController() override;
@@ -43,6 +46,10 @@ public:
 
 	void SetSkeleton( const XE::AssetPtr<XE::Skeleton> & val );
 
+	const XE::Array< XE::Mat4 > & GetSkeletonTransform() const;
+
+	void SetSkeletonTransform( const XE::Array< XE::Mat4 > & val );
+
 	const XE::Array< XE::AnimationLayerPtr > & GetAnimationLayers() const;
 
 	void SetAnimationLayers( const XE::Array< XE::AnimationLayerPtr > & val );
@@ -56,11 +63,20 @@ public:
 
 	void SetKeys( const XE::Map<XE::String, XE::Variant> & val );
 
+public:
+	void PostEvent( const XE::EventPtr & val );
+
+	void ProcessEvent( const EventPtr & val ) override;
+
+	void SetProcessEventCallback( const ProcessEventCallback & val );
+
 private:
 	XE::String _Name;
 	XE::AssetPtr<XE::Skeleton> _Skeleton;
 	XE::Map<XE::String, XE::Variant> _Keys;
+	XE::Array< XE::Mat4 > _SkeletonTransform;
 	XE::Array< XE::AnimationLayerPtr > _Layers;
+	ProcessEventCallback _ProcessEventCallback;
 };
 
 END_XE_NAMESPACE

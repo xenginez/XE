@@ -4,8 +4,8 @@
 #include <ozz/animation/runtime/animation.h>
 
 BEG_META( XE::AnimationBlendLayer )
-type->Property( "Weight", XE::AnimationBlendLayer::_Weight );
-type->Property( "SkeletonAnimation", XE::AnimationBlendLayer::_SkeletonAnimation );
+type->Property( "Weight", &XE::AnimationBlendLayer::_Weight );
+type->Property( "SkeletonAnimation", &XE::AnimationBlendLayer::_SkeletonAnimation );
 END_META()
 
 XE::AnimationBlendLayer::AnimationBlendLayer()
@@ -43,12 +43,12 @@ XE::float32 XE::AnimationBlendLayer::GetWeight() const
 	return _Weight;
 }
 
-const AnimationSampler & XE::AnimationBlendLayer::GetAnimationSampler() const
-{
-	return _Sampler;
-}
-
 XE::SkeletonAnimationPtr XE::AnimationBlendLayer::GetSkeletonAnimation() const
 {
 	return _SkeletonAnimation.GetShared();
+}
+
+const XE::AnimationSampler & XE::AnimationBlendLayer::GetAnimationSampler() const
+{
+	return _Sampler;
 }

@@ -18,25 +18,24 @@ class XE_API AIModule : public XE::Object
 	OBJECT( AIModule, Object )
 
 public:
+	using ProcessEventCallback = std::function<void( const XE::EventPtr & )>;
+
+public:
 	AIModule();
 
 	~AIModule();
 
 public:
-	virtual void Startup() = 0;
+	virtual void Startup();
 
-	virtual void Update( XE::float32 dt ) = 0;
+	virtual void Update( XE::float32 dt );
 
-	virtual void Clearup() = 0;
+	virtual void Clearup();
 
 public:
 	const XE::String & GetName() const;
 
 	void SetName( const XE::String & val );
-
-	XE::GameObjectPtr GetGameObject() const;
-
-	void SetGameObject( const XE::GameObjectPtr & val );
 
 public:
 	XE::Variant GetKey( const BlackboardKey & val ) const;
@@ -61,10 +60,15 @@ public:
 public:
 	void AssetLoad() override;
 
+public:
+	void PostEvent( const XE::EventPtr & val );
+
+	void SetProcessEventCallback( const ProcessEventCallback & val );
+
 private:
 	XE::String _Name;
-	XE::GameObjectWPtr _GameObject;
 	XE::Map<XE::String, XE::Variant> _Keys;
+	ProcessEventCallback _ProcessEventCallback;
 };
 
 END_XE_NAMESPACE

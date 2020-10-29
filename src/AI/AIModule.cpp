@@ -17,6 +17,21 @@ XE::AIModule::~AIModule()
 
 }
 
+void XE::AIModule::Startup()
+{
+
+}
+
+void XE::AIModule::Update( XE::float32 dt )
+{
+
+}
+
+void XE::AIModule::Clearup()
+{
+	_ProcessEventCallback = nullptr;
+}
+
 const XE::String & XE::AIModule::GetName() const
 {
 	return _Name;
@@ -25,16 +40,6 @@ const XE::String & XE::AIModule::GetName() const
 void XE::AIModule::SetName( const XE::String & val )
 {
 	_Name = val;
-}
-
-XE::GameObjectPtr XE::AIModule::GetGameObject() const
-{
-	return _GameObject.lock();
-}
-
-void XE::AIModule::SetGameObject( const XE::GameObjectPtr & val )
-{
-	_GameObject = val;
 }
 
 XE::Variant XE::AIModule::GetKey( const XE::BlackboardKey & val ) const
@@ -77,4 +82,21 @@ void XE::AIModule::AssetLoad()
 			}
 		}
 	}
+}
+
+void XE::AIModule::PostEvent( const XE::EventPtr & val )
+{
+	if( _ProcessEventCallback )
+	{
+		_ProcessEventCallback( std::ref( val ) );
+	}
+	else
+	{
+		ProcessEvent( val );
+	}
+}
+
+void XE::AIModule::SetProcessEventCallback( const ProcessEventCallback & val )
+{
+	_ProcessEventCallback = val;
 }

@@ -37,9 +37,9 @@ public:
 public:
 	XE::float32 GetWeight() const;
 
-	const AnimationSampler & GetAnimationSampler() const;
-
 	XE::SkeletonAnimationPtr GetSkeletonAnimation() const;
+
+	const XE::AnimationSampler & GetAnimationSampler() const;
 
 private:
 	XE::float32 _Weight;

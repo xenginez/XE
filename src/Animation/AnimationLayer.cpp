@@ -65,14 +65,14 @@ void XE::AnimationLayer::Update( XE::float32 dt )
 	const auto & conds = state->GetAnimationConditions();
 	for( const auto & cond : conds )
 	{
-		if( cond.Judgment() )
+		if( cond->Judgment() )
 		{
 			if( state->GetStatus() == XE::AnimationStateStatus::RUNNING )
 			{
 				state->Quit();
 			}
 
-			_CurrentState = cond.GetNextStateHandle();
+			_CurrentState = cond->GetNextStateHandle();
 		}
 	}
 }

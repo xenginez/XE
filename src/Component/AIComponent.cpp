@@ -1,5 +1,7 @@
 #include "AIComponent.h"
 
+#include "Scene/GameObject.h"
+
 BEG_META( XE::AIComponent )
 type->Property( "AIModules", &AIComponent::_AIModules );
 END_META()
@@ -20,8 +22,10 @@ void XE::AIComponent::OnStartup()
 
 	for ( auto ai : _AIModules )
 	{
-		ai->SetGameObject( GetGameObject() );
-
+		ai->SetProcessEventCallback( [this]( const XE::EventPtr & val )
+									 {
+										 GetGameObject()->ProcessEvent( val );
+									 } );
 		ai->Startup();
 	}
 }
