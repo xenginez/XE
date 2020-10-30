@@ -36,9 +36,10 @@ public:
 
 	void SetRoot( XE::AIStateHandle val );
 
+	XE::AIStatePtr GetCurrentState() const;
+
 	XE::AIStatePtr GetState( XE::AIStateHandle val );
 
-private:
 	const XE::Array< XE::AIStatePtr > & GetStates() const;
 
 	void SetStates( const XE::Array< XE::AIStatePtr > & val );

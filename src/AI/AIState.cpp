@@ -1,10 +1,46 @@
 #include "AIState.h"
 
-#include <Interface/IFramework.h>
-#include <Interface/IAssetsService.h>
-
-#include "Condition.h"
 #include "StateMachine.h"
+
+BEG_META( XE::Condition )
+type->Property( "NextState", &Condition::_NextState );
+END_META()
+
+XE::Condition::Condition()
+	:_AIModule( nullptr )
+{
+
+}
+
+XE::Condition::~Condition()
+{
+
+}
+
+bool XE::Condition::Judgment() const
+{
+	return false;
+}
+
+const XE::AIModulePtr & XE::Condition::GetAIModule() const
+{
+	return _AIModule;
+}
+
+void XE::Condition::SetAIModule( const XE::AIModulePtr & val )
+{
+	_AIModule = val;
+}
+
+XE::AIStateHandle XE::Condition::GetNextStateHandle() const
+{
+	return _NextState;
+}
+
+void XE::Condition::SetNextStateHandle( XE::AIStateHandle val )
+{
+	_NextState = val;
+}
 
 BEG_META( XE::AIState )
 type->Property( "Name", &AIState::_Name );
@@ -42,22 +78,22 @@ void XE::AIState::SetName( const XE::String & val )
 	_Name = val;
 }
 
-const XE::Array< XE::ConditionPtr > & XE::AIState::GetConditions() const
+const XE::Array< XE::Condition > & XE::AIState::GetConditions() const
 {
 	return _Conditions;
 }
 
-void XE::AIState::SetConditions( const XE::Array< XE::ConditionPtr > & val )
+void XE::AIState::SetConditions( const XE::Array< XE::Condition > & val )
 {
 	_Conditions = val;
 }
 
-XE::StateMachinePtr XE::AIState::GetStateMachine() const
+const XE::StateMachinePtr & XE::AIState::GetStateMachine() const
 {
-	return _StateMachine.lock();
+	return _StateMachine;
 }
 
-void XE::AIState::SetStateMachine( XE::StateMachinePtr val )
+void XE::AIState::SetStateMachine( const XE::StateMachinePtr & val )
 {
 	_StateMachine = val;
 }
@@ -67,9 +103,19 @@ void XE::AIState::Startup()
 	OnStartup();
 }
 
+void XE::AIState::Enter()
+{
+	OnEnter();
+}
+
 void XE::AIState::Update( XE::float32 dt )
 {
 	OnUpdate( dt );
+}
+
+void XE::AIState::Quit()
+{
+	OnQuit();
 }
 
 void XE::AIState::Clearup()
@@ -82,7 +128,17 @@ void XE::AIState::OnStartup()
 
 }
 
+void XE::AIState::OnEnter()
+{
+
+}
+
 void XE::AIState::OnUpdate( XE::float32 dt )
+{
+
+}
+
+void XE::AIState::OnQuit()
 {
 
 }
@@ -93,7 +149,7 @@ void XE::AIState::OnClearup()
 }
 
 BEG_META( XE::SubState )
-type->Property( "SubAI", &SubState::_SubAIPath );
+type->Property( "AIModule", &SubState::_AIModule );
 type->Property( "ConnectKeys", &SubState::_ConnectKeys );
 END_META()
 
@@ -109,34 +165,32 @@ XE::SubState::~SubState()
 
 void XE::SubState::OnStartup()
 {
-	_SubAI = DP_CAST<XE::AIModule>( XE::IFramework::GetCurrentFramework()->GetAssetsService()->LoadObject( _SubAIPath ) );
-
-	for( const auto & keys : _ConnectKeys )
-	{
-		_SubAI->SetKey( keys.second, GetStateMachine()->GetKey( keys.first ) );
-	}
-
-	_SubAI->Startup();
+	_AIModule->Startup();
 }
 
 void XE::SubState::OnUpdate( XE::float32 dt )
 {
 	for( const auto & key : _ConnectKeys )
 	{
-		_SubAI->SetKey( key.second, GetStateMachine()->GetKey( key.first ) );
+		_AIModule->SetKey( key.second, GetStateMachine()->GetKey( key.first ) );
 	}
 
-	_SubAI->Update( dt );
+	_AIModule->Update( dt );
 
 	for( const auto & key : _ConnectKeys )
 	{
-		GetStateMachine()->SetKey( key.first, _SubAI->GetKey( key.second ) );
+		GetStateMachine()->SetKey( key.first, _AIModule->GetKey( key.second ) );
 	}
 }
 
 void XE::SubState::OnClearup()
 {
-	_SubAI->Clearup();
+	_AIModule->Clearup();
+}
+
+void XE::SubState::AssetLoad()
+{
+	_AIModule.AsyncLoad();
 }
 
 const XE::Map<XE::BlackboardKey, XE::BlackboardKey> & XE::SubState::GetConnectKeys() const

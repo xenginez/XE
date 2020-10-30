@@ -9,9 +9,37 @@
 #ifndef __STATE_H__0F576F56_4DD5_458C_8B62_10766BAE42AF
 #define __STATE_H__0F576F56_4DD5_458C_8B62_10766BAE42AF
 
+#include "Utils/Asset.h"
+
 #include "BlackboardKey.h"
 
 BEG_XE_NAMESPACE
+
+class XE_API Condition : public XE::Object
+{
+	OBJECT( Condition, Object )
+
+public:
+	Condition();
+
+	~Condition() override;
+
+public:
+	virtual bool Judgment() const;
+
+public:
+	const XE::AIModulePtr & GetAIModule() const;
+
+	void SetAIModule( const XE::AIModulePtr & val );
+
+	XE::AIStateHandle GetNextStateHandle() const;
+
+	void SetNextStateHandle( XE::AIStateHandle val );
+
+private:
+	XE::AIModulePtr _AIModule;
+	XE::AIStateHandle _NextState;
+};
 
 class XE_API AIState : public XE::Object
 {
@@ -34,35 +62,43 @@ public:
 
 	void SetName( const XE::String & val );
 
-	const XE::Array< XE::ConditionPtr > & GetConditions() const;
+	const XE::Array< XE::Condition > & GetConditions() const;
 
-	void SetConditions( const XE::Array< XE::ConditionPtr > & val );
+	void SetConditions( const XE::Array< XE::Condition > & val );
 
 public:
-	StateMachinePtr GetStateMachine() const;
+	const StateMachinePtr & GetStateMachine() const;
 
 private:
-	void SetStateMachine( StateMachinePtr val );
+	void SetStateMachine( const StateMachinePtr & val );
 
 public:
 	virtual void Startup();
 
+	virtual void Enter();
+
 	virtual void Update( XE::float32 dt );
+
+	virtual void Quit();
 
 	virtual void Clearup();
 
 protected:
 	virtual void OnStartup();
 
+	virtual void OnEnter();
+
 	virtual void OnUpdate( XE::float32 dt );
+
+	virtual void OnQuit();
 
 	virtual void OnClearup();
 
 private:
 	XE::String _Name;
 	XE::AIStateHandle _Handle;
-	XE::StateMachineWPtr _StateMachine;
-	XE::Array< XE::ConditionPtr > _Conditions;
+	XE::StateMachinePtr _StateMachine;
+	XE::Array< XE::Condition > _Conditions;
 };
 
 class XE_API SubState : public XE::AIState
@@ -80,15 +116,16 @@ public:
 	void SetConnectKeys( const XE::Map<XE::BlackboardKey, XE::BlackboardKey> & val );
 
 protected:
-	virtual void OnStartup() override;
+	void OnStartup() override;
 
-	virtual void OnUpdate( XE::float32 dt ) override;
+	void OnUpdate( XE::float32 dt ) override;
 
-	virtual void OnClearup() override;
+	void OnClearup() override;
+
+	void AssetLoad() override;
 
 private:
-	XE::AIModulePtr _SubAI;
-	XE::FileSystem::Path _SubAIPath;
+	XE::AssetInstance< XE::AIModule > _AIModule;
 	XE::Map<XE::BlackboardKey, XE::BlackboardKey> _ConnectKeys;
 };
 
