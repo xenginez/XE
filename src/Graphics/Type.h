@@ -719,13 +719,13 @@ enum class ShaderType
 
 enum class RenderGroup : XE::uint8
 {
-	BACKGROUND,			// this render group is rendered before any others.
-	GEOMETRY,			// opaque geometry uses this group.
-	ALPHATEST,			// alpha tested geometry uses this group.
-	GEOMETRYLAST,		// last render group that is considered "opaque".
-	TRANSPARENT,
-	OVERLAY,			// this render group is meant for overlay effects.
-	HUD,				// this render group is user interface.
+	HUD = 0,				// this render group is user interface.
+	BACKGROUND = 1,			// this render group is rendered before any others.
+	GEOMETRY = 2,			// opaque geometry uses this group.
+	ALPHATEST = 3,			// alpha tested geometry uses this group.
+	GEOMETRYLAST = 4,		// last render group that is considered "opaque".
+	TRANSPARENT = 5,
+	OVERLAY = 6,			// this render group is meant for overlay effects.
 };
 
 class XE_API CapsInfo

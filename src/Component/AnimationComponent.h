@@ -32,6 +32,9 @@ protected:
 
 	void OnClearup() override;
 
+protected:
+	virtual void OnAnimationIK();
+
 private:
 	XE::AnimationControllerPtr _AnimationController;
 };

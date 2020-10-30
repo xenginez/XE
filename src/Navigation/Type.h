@@ -13,7 +13,11 @@
 
 BEG_XE_NAMESPACE
 
-DECL_HANDLE( XE_API, Obstacle );
+DECL_PTR( NavigationMesh );
+DECL_PTR( NavigationObstacle );
+DECL_PTR( NavigationPathFinder );
+
+DECL_HANDLE( XE_API, NavigationMesh );
 
 END_XE_NAMESPACE
 

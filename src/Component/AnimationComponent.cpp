@@ -32,9 +32,16 @@ void XE::AnimationComponent::OnUpdate( XE::float32 dt )
 	Super::OnUpdate( dt );
 
 	_AnimationController->Update( dt );
+
+	OnAnimationIK();
 }
 
 void XE::AnimationComponent::OnClearup()
 {
 	_AnimationController->Clearup();
+}
+
+void XE::AnimationComponent::OnAnimationIK()
+{
+
 }
