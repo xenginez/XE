@@ -32,9 +32,9 @@ using List = std::pmr::list<T>;
 template< typename T >
 using Deque = std::pmr::deque<T>;
 template< typename T >
-using Stack = std::stack<T>;
+using Stack = std::stack<T, XE::Deque< T > >;
 template< typename T >
-using Queue = std::queue<T>;
+using Queue = std::queue<T, XE::Deque< T > >;
 template< typename T >
 using Array = std::pmr::vector<T>;
 template< typename K, typename V >

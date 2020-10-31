@@ -177,14 +177,28 @@ private:
 	XE::uint64 _Current;
 };
 
-class XE_API ParallelNode : public CompositeNode
+class XE_API ParallelSequenceNode : public CompositeNode
 {
-	OBJECT( ParallelNode, CompositeNode )
+	OBJECT( ParallelSequenceNode, CompositeNode )
 
 public:
-	ParallelNode();
+	ParallelSequenceNode();
 
-	~ParallelNode();
+	~ParallelSequenceNode();
+
+protected:
+	void OnUpdate( XE::float32 dt ) override;
+
+};
+
+class XE_API ParallelSelectorNode : public CompositeNode
+{
+	OBJECT( ParallelSelectorNode, CompositeNode )
+
+public:
+	ParallelSelectorNode();
+
+	~ParallelSelectorNode();
 
 protected:
 	void OnUpdate( XE::float32 dt ) override;
@@ -219,7 +233,6 @@ public:
 	bool JudgmentChanged() const;
 
 private:
-	bool _PreJudgment;
 	bool _CurJudgment;
 	XE::AINodeHandle _Child;
 };

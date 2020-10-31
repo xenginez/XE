@@ -17,6 +17,8 @@ class XE_API BehaviorTree : public XE::AIModule
 {
 	OBJECT( BehaviorTree, AIModule )
 
+	struct PrivateNode;
+	friend class CompositeNode;
 	friend class ConditionNode;
 
 public:
@@ -48,14 +50,15 @@ public:
 	void SetNodes( const XE::Array< XE::AINodePtr > & val );
 
 private:
+	void PushCompositeNode( XE::CompositeNode * val );
+
 	void PushConditionNode( XE::ConditionNode * val );
 
 public:
 	XE::AINodeHandle _Root;
 	XE::NodeStatus _Status;
-	XE::AINodeHandle _Current;
 	XE::Array< XE::AINodePtr > _Nodes;
-	XE::Deque< XE::ConditionNode * > _Conditions;
+	XE::Deque< PrivateNode > _PrivateNodes;
 };
 
 END_XE_NAMESPACE

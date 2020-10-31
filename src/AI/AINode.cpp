@@ -215,6 +215,8 @@ void XE::CompositeNode::OnEnter()
 	Super::OnEnter();
 
 	SetStatus( NodeStatus::Running );
+
+	GetBehaviorTree()->PushCompositeNode( this );
 }
 
 void XE::CompositeNode::OnQuit()
@@ -230,8 +232,6 @@ void XE::CompositeNode::OnQuit()
 			node->Quit();
 		}
 	}
-
-	Super::OnClearup();
 }
 
 const XE::Array<XE::AINodeHandle> & XE::CompositeNode::GetChildren() const
@@ -281,8 +281,9 @@ void XE::SequenceNode::OnUpdate( XE::float32 dt )
 			node->Update( dt );
 			break;
 		case XE::NodeStatus::Failure:
+			SetStatus( XE::NodeStatus::Failure );
+			break;
 		case XE::NodeStatus::Success:
-			node->Quit();
 			_Current != children.size() ? _Current++ : SetStatus( XE::NodeStatus::Success );
 		default:
 			break;
@@ -327,34 +328,36 @@ void XE::SelectorNode::OnUpdate( XE::float32 dt )
 		case XE::NodeStatus::Running:
 			node->Update( dt );
 			break;
-		case XE::NodeStatus::Failure:
 		case XE::NodeStatus::Success:
-			node->Quit();
-			_Current != children.size() ? _Current++ : SetStatus( status );
+			SetStatus( XE::NodeStatus::Success );
+			break;
+		case XE::NodeStatus::Failure:
+			_Current != children.size() ? _Current++ : SetStatus( XE::NodeStatus::Failure );
+			break;
 		default:
 			break;
 		}
 	}
 }
 
-BEG_META( XE::ParallelNode )
+BEG_META( XE::ParallelSequenceNode )
 END_META()
 
-XE::ParallelNode::ParallelNode()
+XE::ParallelSequenceNode::ParallelSequenceNode()
 {
 
 }
 
-XE::ParallelNode::~ParallelNode()
+XE::ParallelSequenceNode::~ParallelSequenceNode()
 {
 
 }
 
-void XE::ParallelNode::OnUpdate( XE::float32 dt )
+void XE::ParallelSequenceNode::OnUpdate( XE::float32 dt )
 {
 	Super::OnUpdate( dt );
 
-	bool IsFinish = true;
+	int success_count = 0;
 
 	const auto & children = GetChildren();
 
@@ -369,19 +372,71 @@ void XE::ParallelNode::OnUpdate( XE::float32 dt )
 			node->Enter();
 		case XE::NodeStatus::Running:
 			node->Update( dt );
-			IsFinish = false;
 			break;
 		case XE::NodeStatus::Failure:
+			SetStatus( XE::NodeStatus::Failure );
+			break;
 		case XE::NodeStatus::Success:
-			node->Quit();
+			success_count++;
+			break;
 		default:
 			break;
 		}
 	}
 
-	if( IsFinish )
+	if( success_count == children.size() )
 	{
 		SetStatus( XE::NodeStatus::Success );
+	}
+}
+
+BEG_META( XE::ParallelSelectorNode )
+END_META()
+
+XE::ParallelSelectorNode::ParallelSelectorNode()
+{
+
+}
+
+XE::ParallelSelectorNode::~ParallelSelectorNode()
+{
+
+}
+
+void XE::ParallelSelectorNode::OnUpdate( XE::float32 dt )
+{
+	Super::OnUpdate( dt );
+
+	int failure_count = 0;
+
+	const auto & children = GetChildren();
+
+	for( auto handle : children )
+	{
+		AINodePtr node = GetBehaviorTree()->GetNode( handle );
+
+		auto status = node->GetStatus();
+		switch( status )
+		{
+		case XE::NodeStatus::None:
+			node->Enter();
+		case XE::NodeStatus::Running:
+			node->Update( dt );
+			break;
+		case XE::NodeStatus::Success:
+			SetStatus( NodeStatus::Success );
+			break;
+		case XE::NodeStatus::Failure:
+			failure_count++;
+			break;
+		default:
+			break;
+		}
+	}
+
+	if( failure_count == children.size() )
+	{
+		SetStatus( XE::NodeStatus::Failure );
 	}
 }
 
@@ -390,7 +445,7 @@ type->Property( "Child", &ConditionNode::_Child );
 END_META()
 
 XE::ConditionNode::ConditionNode()
-	: _PreJudgment( false ), _CurJudgment( false )
+	: _CurJudgment( false )
 {
 
 }
@@ -406,10 +461,9 @@ void XE::ConditionNode::OnEnter()
 
 	bool judgment = Judgment();
 
-	_PreJudgment = judgment;
 	_CurJudgment = judgment;
 
-	if( judgment )
+	if( _CurJudgment )
 	{
 		auto node = GetBehaviorTree()->GetNode( GetChild() );
 
@@ -444,16 +498,13 @@ void XE::ConditionNode::OnUpdate( XE::float32 dt )
 {
 	Super::OnUpdate( dt );
 
-	bool judgment = Judgment();
+	_CurJudgment = Judgment();
 
-	if( !judgment )
+	if( !_CurJudgment )
 	{
 		SetStatus( XE::NodeStatus::Failure );
 		return;
 	}
-
-	_PreJudgment = _CurJudgment;
-	_CurJudgment = judgment;
 
 	auto node = GetBehaviorTree()->GetNode( GetChild() );
 	auto status = node->GetStatus();
@@ -487,7 +538,7 @@ void XE::ConditionNode::OnQuit()
 
 bool XE::ConditionNode::JudgmentChanged() const
 {
-	return _PreJudgment != _CurJudgment;
+	return Judgment() != _CurJudgment;
 }
 
 XE::AINodeHandle XE::ConditionNode::GetChild() const
@@ -577,8 +628,6 @@ void XE::RepeatNode::OnEnter()
 	Super::OnEnter();
 
 	_Tally = _Count;
-
-	SetStatus( NodeStatus::Running );
 }
 
 void XE::RepeatNode::OnUpdate( XE::float32 dt )
@@ -594,20 +643,14 @@ void XE::RepeatNode::OnUpdate( XE::float32 dt )
 			node->Quit();
 			node->Enter();
 		}
+		else if( --_Tally > 0 )
+		{
+			node->Quit();
+			node->Enter();
+		}
 		else
 		{
-			_Tally--;
-
-			if( _Tally == 0 )
-			{
-				SetStatus( node->GetStatus() );
-				node->Quit();
-			}
-			else
-			{
-				node->Quit();
-				node->Enter();
-			}
+			SetStatus( node->GetStatus() );
 		}
 	}
 }
@@ -774,16 +817,17 @@ void XE::DelayNode::OnEnter()
 
 void XE::DelayNode::OnUpdate( XE::float32 dt )
 {
-	_Dt += dt;
+	Super::OnUpdate( dt );
 
-	if( _Dt > _DetlaTime )
+	auto node = GetBehaviorTree()->GetNode( GetChild() );
+	if( node->GetStatus() == XE::NodeStatus::Failure || node->GetStatus() == XE::NodeStatus::Success )
 	{
-		Super::OnUpdate( dt );
+		_Dt += dt;
 
-		auto node = GetBehaviorTree()->GetNode( GetChild() );
-		if( node->GetStatus() == XE::NodeStatus::Failure || node->GetStatus() == XE::NodeStatus::Success )
+		if( _Dt > _DetlaTime )
 		{
 			SetStatus( node->GetStatus() );
 		}
 	}
+
 }
