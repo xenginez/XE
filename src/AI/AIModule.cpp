@@ -32,6 +32,11 @@ void XE::AIModule::Clearup()
 	_ProcessEventCallback = nullptr;
 }
 
+bool XE::AIModule::IsStopped() const
+{
+	return false;
+}
+
 const XE::String & XE::AIModule::GetName() const
 {
 	return _Name;

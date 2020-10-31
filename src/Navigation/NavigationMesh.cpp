@@ -13,7 +13,7 @@ XE::NavigationMesh::~NavigationMesh()
 
 }
 
-XE::NavigationMeshHandle NavigationMesh::GetHandle() const
+XE::NavigationMeshHandle XE::NavigationMesh::GetHandle() const
 {
 	return _Handle;
 }

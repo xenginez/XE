@@ -32,6 +32,8 @@ public:
 
 	virtual void Clearup();
 
+	virtual bool IsStopped() const;
+
 public:
 	const XE::String & GetName() const;
 

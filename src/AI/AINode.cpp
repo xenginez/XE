@@ -75,12 +75,28 @@ void XE::AINode::SetName( const XE::String & val )
 
 void XE::AINode::Startup()
 {
+	_Status = XE::NodeStatus::None;
+
 	OnStartup();
+}
+
+void XE::AINode::Enter()
+{
+	_Status = XE::NodeStatus::Running;
+
+	OnEnter();
 }
 
 void XE::AINode::Update( XE::float32 dt )
 {
 	OnUpdate( dt );
+}
+
+void XE::AINode::Quit()
+{
+	OnQuit();
+
+	_Status = XE::NodeStatus::None;
 }
 
 void XE::AINode::Clearup()
@@ -90,7 +106,12 @@ void XE::AINode::Clearup()
 
 void XE::AINode::OnStartup()
 {
-	SetStatus( NodeStatus::Running );
+
+}
+
+void XE::AINode::OnEnter()
+{
+
 }
 
 void XE::AINode::OnUpdate( XE::float32 dt )
@@ -98,13 +119,18 @@ void XE::AINode::OnUpdate( XE::float32 dt )
 
 }
 
+void XE::AINode::OnQuit()
+{
+
+}
+
 void XE::AINode::OnClearup()
 {
-	SetStatus( NodeStatus::Finish );
+
 }
 
 BEG_META( XE::SubNode )
-type->Property( "SubAI", &SubNode::_SubAIPath );
+type->Property( "AIModule", &SubNode::_AIModule );
 type->Property( "ConnectKeys", &SubNode::_ConnectKeys );
 END_META()
 
@@ -120,34 +146,31 @@ XE::SubNode::~SubNode()
 
 void XE::SubNode::OnStartup()
 {
-	_SubAI = DP_CAST<XE::AIModule>( XE::IFramework::GetCurrentFramework()->GetAssetsService()->LoadObject( _SubAIPath ) );
-
-	for( const auto & keys : _ConnectKeys )
-	{
-		_SubAI->SetKey( keys.second, GetBehaviorTree()->GetKey( keys.first ) );
-	}
-
-	_SubAI->Startup();
+	_AIModule->Startup();
 }
 
 void XE::SubNode::OnUpdate( XE::float32 dt )
 {
 	for( const auto & key : _ConnectKeys )
 	{
-		_SubAI->SetKey( key.second, GetBehaviorTree()->GetKey( key.first ) );
+		_AIModule->SetKey( key.second, GetBehaviorTree()->GetKey( key.first ) );
 	}
 
-	_SubAI->Update( dt );
+	_AIModule->Update( dt );
+	if( _AIModule->IsStopped() )
+	{
+		SetStatus( NodeStatus::Success );
+	}
 
 	for( const auto & key : _ConnectKeys )
 	{
-		GetBehaviorTree()->SetKey( key.first, _SubAI->GetKey( key.second ) );
+		GetBehaviorTree()->SetKey( key.first, _AIModule->GetKey( key.second ) );
 	}
 }
 
 void XE::SubNode::OnClearup()
 {
-	_SubAI->Clearup();
+	_AIModule->Clearup();
 }
 
 const XE::Map<XE::BlackboardKey, XE::BlackboardKey> & XE::SubNode::GetConnectKeys() const
@@ -187,6 +210,30 @@ XE::CompositeNode::~CompositeNode()
 
 }
 
+void XE::CompositeNode::OnEnter()
+{
+	Super::OnEnter();
+
+	SetStatus( NodeStatus::Running );
+}
+
+void XE::CompositeNode::OnQuit()
+{
+	Super::OnQuit();
+
+	for( auto handle : _Children )
+	{
+		auto node = GetBehaviorTree()->GetNode( handle );
+
+		if( node->GetStatus() != NodeStatus::None )
+		{
+			node->Quit();
+		}
+	}
+
+	Super::OnClearup();
+}
+
 const XE::Array<XE::AINodeHandle> & XE::CompositeNode::GetChildren() const
 {
 	return _Children;
@@ -195,28 +242,6 @@ const XE::Array<XE::AINodeHandle> & XE::CompositeNode::GetChildren() const
 void XE::CompositeNode::SetChildren( const XE::Array<XE::AINodeHandle> & val )
 {
 	_Children = val;
-}
-
-void XE::CompositeNode::OnStartup()
-{
-	Super::OnStartup();
-
-	SetStatus( NodeStatus::Running );
-}
-
-void XE::CompositeNode::OnClearup()
-{
-	for( auto handle : _Children )
-	{
-		auto node = GetBehaviorTree()->GetNode( handle );
-
-		if( node->GetStatus() != NodeStatus::Finish )
-		{
-			node->Clearup();
-		}
-	}
-
-	Super::OnClearup();
 }
 
 BEG_META( XE::SequenceNode )
@@ -233,9 +258,9 @@ XE::SequenceNode::~SequenceNode()
 
 }
 
-void XE::SequenceNode::OnStartup()
+void XE::SequenceNode::OnEnter()
 {
-	Super::OnStartup();
+	Super::OnEnter();
 
 	_Current = 0;
 }
@@ -244,29 +269,24 @@ void XE::SequenceNode::OnUpdate( XE::float32 dt )
 {
 	Super::OnUpdate( dt );
 
-	auto children = GetChildren();
+	const auto & children = GetChildren();
 
-	if( AINodePtr node = GetBehaviorTree()->GetNode( GetChildren()[_Current] ) )
+	if( AINodePtr node = GetBehaviorTree()->GetNode( children[_Current] ) )
 	{
-		if( node->GetStatus() == XE::NodeStatus::None )
+		switch( node->GetStatus() )
 		{
-			node->Startup();
-		}
-
-		if( node->GetStatus() == XE::NodeStatus::Running )
-		{
+		case XE::NodeStatus::None:
+			node->Enter();
+		case XE::NodeStatus::Running:
 			node->Update( dt );
+			break;
+		case XE::NodeStatus::Failure:
+		case XE::NodeStatus::Success:
+			node->Quit();
+			_Current != children.size() ? _Current++ : SetStatus( XE::NodeStatus::Success );
+		default:
+			break;
 		}
-		else if( node->GetStatus() == XE::NodeStatus::Success || node->GetStatus() == XE::NodeStatus::Failure )
-		{
-			node->Clearup();
-			_Current++;
-		}
-	}
-
-	if( _Current == children.size() )
-	{
-		SetStatus( XE::NodeStatus::Success );
 	}
 }
 
@@ -284,9 +304,9 @@ XE::SelectorNode::~SelectorNode()
 
 }
 
-void XE::SelectorNode::OnStartup()
+void XE::SelectorNode::OnEnter()
 {
-	Super::OnStartup();
+	Super::OnEnter();
 
 	_Current = 0;
 }
@@ -295,36 +315,25 @@ void XE::SelectorNode::OnUpdate( XE::float32 dt )
 {
 	Super::OnUpdate( dt );
 
-	auto children = GetChildren();
+	const auto & children = GetChildren();
 
-	if( AINodePtr node = GetBehaviorTree()->GetNode( GetChildren()[_Current] ) )
+	if( AINodePtr node = GetBehaviorTree()->GetNode( children[_Current] ) )
 	{
-		if( node->GetStatus() == XE::NodeStatus::None )
+		auto status = node->GetStatus();
+		switch( status )
 		{
-			node->Startup();
-		}
-
-		if( node->GetStatus() == XE::NodeStatus::Running )
-		{
+		case XE::NodeStatus::None:
+			node->Enter();
+		case XE::NodeStatus::Running:
 			node->Update( dt );
+			break;
+		case XE::NodeStatus::Failure:
+		case XE::NodeStatus::Success:
+			node->Quit();
+			_Current != children.size() ? _Current++ : SetStatus( status );
+		default:
+			break;
 		}
-
-		if( node->GetStatus() == XE::NodeStatus::Failure )
-		{
-			node->Clearup();
-			_Current++;
-		}
-		else if( node->GetStatus() == XE::NodeStatus::Success )
-		{
-			node->Clearup();
-			SetStatus( XE::NodeStatus::Success );
-			return;
-		}
-	}
-
-	if( _Current == children.size() )
-	{
-		SetStatus( XE::NodeStatus::Failure );
 	}
 }
 
@@ -345,32 +354,28 @@ void XE::ParallelNode::OnUpdate( XE::float32 dt )
 {
 	Super::OnUpdate( dt );
 
-	auto children = GetChildren();
-
 	bool IsFinish = true;
+
+	const auto & children = GetChildren();
 
 	for( auto handle : children )
 	{
 		AINodePtr node = GetBehaviorTree()->GetNode( handle );
 
-		if( node->GetStatus() == XE::NodeStatus::None )
+		auto status = node->GetStatus();
+		switch( status )
 		{
-			node->Startup();
-		}
-
-		if( node->GetStatus() == XE::NodeStatus::Running )
-		{
+		case XE::NodeStatus::None:
+			node->Enter();
+		case XE::NodeStatus::Running:
 			node->Update( dt );
-		}
-
-		if( node->GetStatus() == XE::NodeStatus::Success || node->GetStatus() == XE::NodeStatus::Failure )
-		{
-			node->Clearup();
-		}
-
-		if( node->GetStatus() != XE::NodeStatus::Finish )
-		{
 			IsFinish = false;
+			break;
+		case XE::NodeStatus::Failure:
+		case XE::NodeStatus::Success:
+			node->Quit();
+		default:
+			break;
 		}
 	}
 
@@ -382,11 +387,10 @@ void XE::ParallelNode::OnUpdate( XE::float32 dt )
 
 BEG_META( XE::ConditionNode )
 type->Property( "Child", &ConditionNode::_Child );
-type->Property( "MultiJudgment", &ConditionNode::_MultiJudgment );
 END_META()
 
 XE::ConditionNode::ConditionNode()
-	:_MultiJudgment( false )
+	: _PreJudgment( false ), _CurJudgment( false )
 {
 
 }
@@ -396,25 +400,39 @@ XE::ConditionNode::~ConditionNode()
 
 }
 
-XE::AINodeHandle XE::ConditionNode::GetChild() const
+void XE::ConditionNode::OnEnter()
 {
-	return _Child;
-}
+	Super::OnEnter();
 
-void XE::ConditionNode::SetChild( XE::AINodeHandle val )
-{
-	_Child = val;
-}
+	bool judgment = Judgment();
 
-void XE::ConditionNode::OnStartup()
-{
-	Super::OnStartup();
+	_PreJudgment = judgment;
+	_CurJudgment = judgment;
 
-	if( ConditionalJudgment() )
+	if( judgment )
 	{
-		GetBehaviorTree()->GetNode( GetChild() )->Startup();
+		auto node = GetBehaviorTree()->GetNode( GetChild() );
 
-		SetStatus( XE::NodeStatus::Running );
+		node->Enter();
+
+		switch( node->GetStatus() )
+		{
+		case XE::NodeStatus::Running:
+			SetStatus( XE::NodeStatus::Running );
+			GetBehaviorTree()->PushConditionNode( this );
+			break;
+		case XE::NodeStatus::None:
+		case XE::NodeStatus::Failure:
+			node->Quit();
+			SetStatus( NodeStatus::Failure );
+			break;
+		case XE::NodeStatus::Success:
+			node->Quit();
+			SetStatus( NodeStatus::Success );
+			break;
+		default:
+			break;
+		}
 	}
 	else
 	{
@@ -426,25 +444,60 @@ void XE::ConditionNode::OnUpdate( XE::float32 dt )
 {
 	Super::OnUpdate( dt );
 
-	if( _MultiJudgment )
+	bool judgment = Judgment();
+
+	if( !judgment )
 	{
-		if( !ConditionalJudgment() )
-		{
-			return;
-		}
+		SetStatus( XE::NodeStatus::Failure );
+		return;
 	}
 
-	GetBehaviorTree()->GetNode( GetChild() )->Update( dt );
+	_PreJudgment = _CurJudgment;
+	_CurJudgment = judgment;
+
+	auto node = GetBehaviorTree()->GetNode( GetChild() );
+	auto status = node->GetStatus();
+	switch( status )
+	{
+	case XE::NodeStatus::None:
+		node->Enter();
+	case XE::NodeStatus::Running:
+		node->Update( dt );
+		break;
+	case XE::NodeStatus::Failure:
+	case XE::NodeStatus::Success:
+		node->Quit();
+		SetStatus( status );
+		break;
+	default:
+		break;
+	}
 }
 
-void XE::ConditionNode::OnClearup()
+void XE::ConditionNode::OnQuit()
 {
-	Super::OnClearup();
+	Super::OnQuit();
 
-	if( GetBehaviorTree()->GetNode( GetChild() )->GetStatus() != XE::NodeStatus::Finish )
+	auto node = GetBehaviorTree()->GetNode( GetChild() );
+	if( node->GetStatus() != XE::NodeStatus::None )
 	{
-		GetBehaviorTree()->GetNode( GetChild() )->Clearup();
+		node->Quit();
 	}
+}
+
+bool XE::ConditionNode::JudgmentChanged() const
+{
+	return _PreJudgment != _CurJudgment;
+}
+
+XE::AINodeHandle XE::ConditionNode::GetChild() const
+{
+	return _Child;
+}
+
+void XE::ConditionNode::SetChild( XE::AINodeHandle val )
+{
+	_Child = val;
 }
 
 BEG_META( XE::DecoratorNode )
@@ -471,39 +524,36 @@ void XE::DecoratorNode::SetChild( XE::AINodeHandle val )
 	_Child = val;
 }
 
-void XE::DecoratorNode::OnStartup()
+void XE::DecoratorNode::OnEnter()
 {
-	Super::OnStartup();
+	Super::OnEnter();
 
-	if( auto node = GetBehaviorTree()->GetNode( GetChild() ) )
-	{
-		node->Startup();
+	auto node = GetBehaviorTree()->GetNode( GetChild() );
 
-		SetStatus( NodeStatus::Running );
-	}
-	else
-	{
-		SetStatus( NodeStatus::Failure );
-	}
+	node->Enter();
 }
 
 void XE::DecoratorNode::OnUpdate( XE::float32 dt )
 {
 	Super::OnUpdate( dt );
 
-	if( GetBehaviorTree()->GetNode( GetChild() )->GetStatus() == XE::NodeStatus::Running )
+	auto node = GetBehaviorTree()->GetNode( GetChild() );
+
+	if( node->GetStatus() == XE::NodeStatus::Running )
 	{
-		GetBehaviorTree()->GetNode( GetChild() )->Update( dt );
+		node->Update( dt );
 	}
 }
 
-void XE::DecoratorNode::OnClearup()
+void XE::DecoratorNode::OnQuit()
 {
-	Super::OnClearup();
+	Super::OnQuit();
 
-	if( GetBehaviorTree()->GetNode( GetChild() )->GetStatus() != XE::NodeStatus::Finish )
+	auto node = GetBehaviorTree()->GetNode( GetChild() );
+
+	if( node->GetStatus() != XE::NodeStatus::None )
 	{
-		GetBehaviorTree()->GetNode( GetChild() )->Clearup();
+		node->Clearup();
 	}
 }
 
@@ -522,44 +572,43 @@ XE::RepeatNode::~RepeatNode()
 
 }
 
-void XE::RepeatNode::OnStartup()
+void XE::RepeatNode::OnEnter()
 {
+	Super::OnEnter();
+
 	_Tally = _Count;
 
-	Super::OnStartup();
+	SetStatus( NodeStatus::Running );
 }
 
 void XE::RepeatNode::OnUpdate( XE::float32 dt )
 {
 	Super::OnUpdate( dt );
+	
+	auto node = GetBehaviorTree()->GetNode( GetChild() );
 
-	if( auto node = GetBehaviorTree()->GetNode( GetChild() ) )
+	if( node->GetStatus() == XE::NodeStatus::Failure || node->GetStatus() == XE::NodeStatus::Success )
 	{
-		if( node->GetStatus() == XE::NodeStatus::Failure || node->GetStatus() == XE::NodeStatus::Success )
+		if( _Count == 0 )
 		{
-			node->Clearup();
+			node->Quit();
+			node->Enter();
+		}
+		else
+		{
+			_Tally--;
 
-			if( _Count == -1 )
+			if( _Tally == 0 )
 			{
-				node->SetStatus( XE::NodeStatus::None );
-				node->Startup();
+				SetStatus( node->GetStatus() );
+				node->Quit();
 			}
 			else
 			{
-				_Tally--;
-
-				if( _Tally <= 0 )
-				{
-					SetStatus( XE::NodeStatus::Success );
-				}
-				else
-				{
-					node->SetStatus( XE::NodeStatus::None );
-					node->Startup();
-				}
+				node->Quit();
+				node->Enter();
 			}
 		}
-
 	}
 }
 
@@ -576,9 +625,9 @@ XE::SuccessNode::~SuccessNode()
 
 }
 
-void XE::SuccessNode::OnStartup()
+void XE::SuccessNode::OnEnter()
 {
-	Super::OnStartup();
+	Super::OnEnter();
 
 	switch( GetBehaviorTree()->GetNode( GetChild() )->GetStatus() )
 	{
@@ -620,9 +669,9 @@ XE::FailureNode::~FailureNode()
 
 }
 
-void XE::FailureNode::OnStartup()
+void XE::FailureNode::OnEnter()
 {
-	Super::OnStartup();
+	Super::OnEnter();
 
 	switch( GetBehaviorTree()->GetNode( GetChild() )->GetStatus() )
 	{
@@ -631,6 +680,7 @@ void XE::FailureNode::OnStartup()
 		SetStatus( XE::NodeStatus::Failure );
 		break;
 	default:
+		SetStatus( XE::NodeStatus::Running );
 		break;
 	}
 }
@@ -663,9 +713,9 @@ XE::ReversedNode::~ReversedNode()
 
 }
 
-void XE::ReversedNode::OnStartup()
+void XE::ReversedNode::OnEnter()
 {
-	Super::OnStartup();
+	Super::OnEnter();
 
 	switch( GetBehaviorTree()->GetNode( GetChild() )->GetStatus() )
 	{
@@ -676,6 +726,7 @@ void XE::ReversedNode::OnStartup()
 		SetStatus( XE::NodeStatus::Failure );
 		break;
 	default:
+		SetStatus( XE::NodeStatus::Running );
 		break;
 	}
 }
@@ -712,29 +763,27 @@ XE::DelayNode::~DelayNode()
 
 }
 
-void XE::DelayNode::OnStartup()
+void XE::DelayNode::OnEnter()
 {
-	Super::OnStartup();
+	Super::OnEnter();
 
 	_Dt = _DetlaTime;
 
-	SetStatus( XE::NodeStatus::Running );
+	SetStatus( GetBehaviorTree()->GetNode( GetChild() )->GetStatus() );
 }
 
 void XE::DelayNode::OnUpdate( XE::float32 dt )
 {
-	Super::OnUpdate( dt );
+	_Dt += dt;
 
-	if( auto node = GetBehaviorTree()->GetNode( GetChild() ) )
+	if( _Dt > _DetlaTime )
 	{
+		Super::OnUpdate( dt );
+
+		auto node = GetBehaviorTree()->GetNode( GetChild() );
 		if( node->GetStatus() == XE::NodeStatus::Failure || node->GetStatus() == XE::NodeStatus::Success )
 		{
-			_Dt -= dt;
-
-			if( _Dt <= XE::Mathf::Epsilon )
-			{
-				SetStatus( GetBehaviorTree()->GetNode( GetChild() )->GetStatus() );
-			}
+			SetStatus( node->GetStatus() );
 		}
 	}
 }

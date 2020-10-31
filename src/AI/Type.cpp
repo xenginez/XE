@@ -5,7 +5,6 @@ type->Value( "None", XE::NodeStatus::None );
 type->Value( "Running", XE::NodeStatus::Running );
 type->Value( "Success", XE::NodeStatus::Success );
 type->Value( "Failure", XE::NodeStatus::Failure );
-type->Value( "Finish", XE::NodeStatus::Finish );
 END_META()
 
 BEG_META( XE::ConditionStatus )

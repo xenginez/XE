@@ -24,52 +24,71 @@ void XE::BehaviorTree::Startup()
 	for( auto node : _Nodes )
 	{
 		node->SetBehaviorTree( XE_THIS( BehaviorTree ) );
+		node->Startup();
 	}
+
+	_Current = _Root;
 }
 
 void XE::BehaviorTree::Update( XE::float32 dt )
 {
 	Super::Update( dt );
 
-	if( _Root == AINodeHandle::Invalid )
+	for( auto it = _Conditions.begin(); it != _Conditions.end(); ++it )
 	{
-		return;
+		if( ( *it )->JudgmentChanged() )
+		{
+			( *it )->Quit();
+			_Current = ( *it )->GetHandle();
+			_Conditions.erase( it, _Conditions.end() );
+		}
 	}
 
-	AINodePtr root = _Nodes[_Root];
+	auto & current = _Nodes[_Current];
 
-	if( root->GetStatus() == NodeStatus::Finish )
+	auto status = current->GetStatus();
+
+	switch( status )
 	{
-		return;
+	case XE::NodeStatus::None:
+		current->Enter();
+	case XE::NodeStatus::Running:
+		current->Update( dt );
+		break;
+	case XE::NodeStatus::Failure:
+	case XE::NodeStatus::Success:
+		current->Quit();
+	default:
+		break;
 	}
 
-	if( root->GetStatus() == NodeStatus::None )
-	{
-		root->Startup();
-	}
-
-	if( root->GetStatus() == NodeStatus::Running )
-	{
-		root->Update( dt );
-	}
-
-	if( root->GetStatus() == NodeStatus::Success || root->GetStatus() == NodeStatus::Failure )
-	{
-		root->Clearup();
-	}
+	_Status = status;
 }
 
 void XE::BehaviorTree::Clearup()
 {
 	for( auto node : _Nodes )
 	{
-		if( node->GetStatus() != NodeStatus::Finish )
-		{
-			node->Clearup();
-		}
+		node->Clearup();
+		node->SetBehaviorTree( nullptr );
 	}
 
 	Super::Clearup();
+}
+
+void XE::BehaviorTree::AssetLoad()
+{
+	Super::AssetLoad();
+
+	for( auto & node : _Nodes )
+	{
+		node->AssetLoad();
+	}
+}
+
+bool XE::BehaviorTree::IsStopped() const
+{
+	return _Status == NodeStatus::Success || _Status == NodeStatus::Failure;
 }
 
 XE::AINodeHandle XE::BehaviorTree::GetRoot() const
@@ -99,12 +118,16 @@ void XE::BehaviorTree::SetNodes( const XE::Array< XE::AINodePtr > & val )
 	_Nodes = val;
 }
 
-void XE::BehaviorTree::AssetLoad()
+void XE::BehaviorTree::PushConditionNode( XE::ConditionNode * val )
 {
-	Super::AssetLoad();
-
-	for( auto & node : _Nodes )
+	if( !_Conditions.empty() )
 	{
-		node->AssetLoad();
+		if( _Conditions.back() == val )
+		{
+			return;
+		}
 	}
+
+	_Current = val->GetHandle();
+	_Conditions.push_back( val );
 }

@@ -38,7 +38,6 @@ enum class NodeStatus
 	Running,
 	Success,
 	Failure,
-	Finish,
 };
 DECL_META_ENUM( XE_API, NodeStatus );
 

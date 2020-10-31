@@ -9,6 +9,8 @@
 #ifndef __NODE_H__4E15E329_D9A1_4F5D_B63A_CA4079844C18
 #define __NODE_H__4E15E329_D9A1_4F5D_B63A_CA4079844C18
 
+#include "Utils/Asset.h"
+
 #include "BlackboardKey.h"
 
 BEG_XE_NAMESPACE
@@ -51,15 +53,23 @@ private:
 public:
 	virtual void Startup();
 
+	virtual void Enter();
+
 	virtual void Update( XE::float32 dt );
+
+	virtual void Quit();
 
 	virtual void Clearup();
 
 protected:
 	virtual void OnStartup();
 				 
+	virtual void OnEnter();
+
 	virtual void OnUpdate( XE::float32 dt );
 				 
+	virtual void OnQuit();
+
 	virtual void OnClearup();
 
 private:
@@ -86,15 +96,14 @@ public:
 	void SetConnectKeys( const XE::Map<XE::BlackboardKey, XE::BlackboardKey> & val );
 
 protected:
-	virtual void OnStartup() override;
+	void OnStartup() override;
 
-	virtual void OnUpdate( XE::float32 dt ) override;
+	void OnUpdate( XE::float32 dt ) override;
 
-	virtual void OnClearup() override;
+	void OnClearup() override;
 
 private:
-	XE::AIModulePtr _SubAI;
-	XE::FileSystem::Path _SubAIPath;
+	XE::AssetInstance< XE::AIModule > _AIModule;
 	XE::Map<XE::BlackboardKey, XE::BlackboardKey> _ConnectKeys;
 };
 
@@ -118,15 +127,15 @@ public:
 
 	~CompositeNode();
 
+protected:
+	void OnEnter() override;
+
+	void OnQuit() override;
+
 public:
 	const XE::Array<XE::AINodeHandle> & GetChildren() const;
 
 	void SetChildren( const XE::Array<XE::AINodeHandle> & val );
-
-protected:
-	void OnStartup() override;
-
-	void OnClearup() override;
 
 private:
 	XE::Array<XE::AINodeHandle> _Children;
@@ -142,9 +151,9 @@ public:
 	~SequenceNode();
 
 protected:
-	virtual void OnStartup() override;
+	void OnEnter() override;
 
-	virtual void OnUpdate( XE::float32 dt ) override;
+	void OnUpdate( XE::float32 dt ) override;
 
 private:
 	XE::uint64 _Current;
@@ -160,9 +169,9 @@ public:
 	~SelectorNode();
 
 protected:
-	virtual void OnStartup() override;
+	void OnEnter() override;
 
-	virtual void OnUpdate( XE::float32 dt ) override;
+	void OnUpdate( XE::float32 dt ) override;
 
 private:
 	XE::uint64 _Current;
@@ -178,7 +187,7 @@ public:
 	~ParallelNode();
 
 protected:
-	virtual void OnUpdate( XE::float32 dt ) override;
+	void OnUpdate( XE::float32 dt ) override;
 
 };
 
@@ -197,17 +206,21 @@ public:
 	void SetChild( XE::AINodeHandle val );
 
 public:
-	void OnStartup() override;
+	void OnEnter() override;
 
 	void OnUpdate( XE::float32 dt ) override;
 
-	void OnClearup() override;
+	void OnQuit() override;
 
 public:
-	virtual bool ConditionalJudgment() const = 0;
+	virtual bool Judgment() const = 0;
+
+public:
+	bool JudgmentChanged() const;
 
 private:
-	bool _MultiJudgment;
+	bool _PreJudgment;
+	bool _CurJudgment;
 	XE::AINodeHandle _Child;
 };
 
@@ -226,11 +239,11 @@ public:
 	void SetChild( XE::AINodeHandle val );
 
 public:
-	void OnStartup() override;
+	void OnEnter() override;
 
 	void OnUpdate( XE::float32 dt ) override;
 
-	void OnClearup() override;
+	void OnQuit() override;
 
 private:
 	AINodeHandle _Child;
@@ -246,13 +259,13 @@ public:
 	~RepeatNode();
 
 public:
-	virtual void OnStartup() override;
+	void OnEnter() override;
 
-	virtual void OnUpdate( XE::float32 dt ) override;
+	void OnUpdate( XE::float32 dt ) override;
 
 private:
-	XE::int64 _Count;
-	XE::int64 _Tally;
+	XE::uint64 _Count;
+	XE::uint64 _Tally;
 };
 
 class XE_API SuccessNode : public DecoratorNode
@@ -265,9 +278,9 @@ public:
 	~SuccessNode();
 
 public:
-	virtual void OnStartup() override;
+	void OnEnter() override;
 
-	virtual void OnUpdate( XE::float32 dt ) override;
+	void OnUpdate( XE::float32 dt ) override;
 
 };
 
@@ -281,9 +294,9 @@ public:
 	~FailureNode();
 
 public:
-	virtual void OnStartup() override;
+	void OnEnter() override;
 
-	virtual void OnUpdate( XE::float32 dt ) override;
+	void OnUpdate( XE::float32 dt ) override;
 
 };
 
@@ -297,9 +310,9 @@ public:
 	~ReversedNode();
 
 public:
-	virtual void OnStartup() override;
+	void OnEnter() override;
 
-	virtual void OnUpdate( XE::float32 dt ) override;
+	void OnUpdate( XE::float32 dt ) override;
 
 };
 
@@ -313,9 +326,9 @@ public:
 	~DelayNode();
 
 public:
-	virtual void OnStartup() override;
+	void OnEnter() override;
 
-	virtual void OnUpdate( XE::float32 dt ) override;
+	void OnUpdate( XE::float32 dt ) override;
 
 private:
 	XE::float32 _DetlaTime;

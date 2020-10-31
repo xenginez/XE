@@ -17,6 +17,8 @@ class XE_API BehaviorTree : public XE::AIModule
 {
 	OBJECT( BehaviorTree, AIModule )
 
+	friend class ConditionNode;
+
 public:
 	BehaviorTree();
 
@@ -31,21 +33,29 @@ public:
 
 	void AssetLoad() override;
 
-public:
-	AINodeHandle GetRoot() const;
-
-	void SetRoot( AINodeHandle val );
-
-	AINodePtr GetNode( AINodeHandle val ) const;
+	bool IsStopped() const override;
 
 public:
+	XE::AINodePtr GetNode( XE::AINodeHandle val ) const;
+
+public:
+	XE::AINodeHandle GetRoot() const;
+
+	void SetRoot( XE::AINodeHandle val );
+
 	const XE::Array< XE::AINodePtr > & GetNodes() const;
 
 	void SetNodes( const XE::Array< XE::AINodePtr > & val );
 
+private:
+	void PushConditionNode( XE::ConditionNode * val );
+
 public:
-	AINodeHandle _Root;
+	XE::AINodeHandle _Root;
+	XE::NodeStatus _Status;
+	XE::AINodeHandle _Current;
 	XE::Array< XE::AINodePtr > _Nodes;
+	XE::Deque< XE::ConditionNode * > _Conditions;
 };
 
 END_XE_NAMESPACE
