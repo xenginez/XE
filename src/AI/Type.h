@@ -13,38 +13,28 @@
 
 BEG_XE_NAMESPACE
 
-
 DECL_PTR( AINode );
 DECL_PTR( AIState );
 DECL_PTR( AIModule );
-DECL_PTR( AIElement );
-DECL_PTR( BluePrint );
-DECL_PTR( Condition );
-DECL_PTR( BlackBoard );
 DECL_PTR( BehaviorTree );
 DECL_PTR( StateMachine );
 
 DECL_HANDLE( XE_API, AINode );
 DECL_HANDLE( XE_API, AIState );
-DECL_HANDLE( XE_API, AIElement );
-
-class BlackboardKey;
-template<typename T> class BlackboardKeyKeyT;
-
 
 enum class NodeStatus
 {
-	None,
-	Running,
-	Success,
-	Failure,
+	NONE,
+	RUNNING,
+	SUCCESS,
+	FAILURE,
 };
 DECL_META_ENUM( XE_API, NodeStatus );
 
 enum class ConditionStatus
 {
-	Once,
-	Always,
+	ONCE,
+	ALWAYS,
 };
 DECL_META_ENUM( XE_API, ConditionStatus );
 

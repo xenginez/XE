@@ -13,7 +13,7 @@ type->Property( "Handle", &XE::AINode::_Handle, XE::IMetaProperty::NoDesign );
 END_META()
 
 XE::AINode::AINode()
-	:_Status( NodeStatus::None )
+	:_Status( NodeStatus::NONE )
 {
 
 }
@@ -75,14 +75,14 @@ void XE::AINode::SetName( const XE::String & val )
 
 void XE::AINode::Startup()
 {
-	_Status = XE::NodeStatus::None;
+	_Status = XE::NodeStatus::NONE;
 
 	OnStartup();
 }
 
 void XE::AINode::Enter()
 {
-	_Status = XE::NodeStatus::Running;
+	_Status = XE::NodeStatus::RUNNING;
 
 	OnEnter();
 }
@@ -96,7 +96,7 @@ void XE::AINode::Quit()
 {
 	OnQuit();
 
-	_Status = XE::NodeStatus::None;
+	_Status = XE::NodeStatus::NONE;
 }
 
 void XE::AINode::Clearup()
@@ -170,7 +170,7 @@ void XE::SubNode::OnUpdate( XE::float32 dt )
 	_AIModule->Update( dt );
 	if( _AIModule->IsStopped() )
 	{
-		SetStatus( NodeStatus::Success );
+		SetStatus( NodeStatus::SUCCESS );
 	}
 
 	for( const auto & key : _ConnectKeys )
@@ -234,7 +234,7 @@ void XE::CompositeNode::OnEnter()
 {
 	Super::OnEnter();
 
-	SetStatus( NodeStatus::Running );
+	SetStatus( NodeStatus::RUNNING );
 
 	GetBehaviorTree()->PushCompositeNode( this );
 }
@@ -247,7 +247,7 @@ void XE::CompositeNode::OnQuit()
 	{
 		auto node = GetBehaviorTree()->GetNode( handle );
 
-		if( node->GetStatus() != NodeStatus::None )
+		if( node->GetStatus() != NodeStatus::NONE )
 		{
 			node->Quit();
 		}
@@ -295,16 +295,16 @@ void XE::SequenceNode::OnUpdate( XE::float32 dt )
 	{
 		switch( node->GetStatus() )
 		{
-		case XE::NodeStatus::None:
+		case XE::NodeStatus::NONE:
 			node->Enter();
-		case XE::NodeStatus::Running:
+		case XE::NodeStatus::RUNNING:
 			node->Update( dt );
 			break;
-		case XE::NodeStatus::Failure:
-			SetStatus( XE::NodeStatus::Failure );
+		case XE::NodeStatus::FAILURE:
+			SetStatus( XE::NodeStatus::FAILURE );
 			break;
-		case XE::NodeStatus::Success:
-			_Current != children.size() ? _Current++ : SetStatus( XE::NodeStatus::Success );
+		case XE::NodeStatus::SUCCESS:
+			_Current != children.size() ? _Current++ : SetStatus( XE::NodeStatus::SUCCESS );
 		default:
 			break;
 		}
@@ -343,16 +343,16 @@ void XE::SelectorNode::OnUpdate( XE::float32 dt )
 		auto status = node->GetStatus();
 		switch( status )
 		{
-		case XE::NodeStatus::None:
+		case XE::NodeStatus::NONE:
 			node->Enter();
-		case XE::NodeStatus::Running:
+		case XE::NodeStatus::RUNNING:
 			node->Update( dt );
 			break;
-		case XE::NodeStatus::Success:
-			SetStatus( XE::NodeStatus::Success );
+		case XE::NodeStatus::SUCCESS:
+			SetStatus( XE::NodeStatus::SUCCESS );
 			break;
-		case XE::NodeStatus::Failure:
-			_Current != children.size() ? _Current++ : SetStatus( XE::NodeStatus::Failure );
+		case XE::NodeStatus::FAILURE:
+			_Current != children.size() ? _Current++ : SetStatus( XE::NodeStatus::FAILURE );
 			break;
 		default:
 			break;
@@ -388,15 +388,15 @@ void XE::ParallelSequenceNode::OnUpdate( XE::float32 dt )
 		auto status = node->GetStatus();
 		switch( status )
 		{
-		case XE::NodeStatus::None:
+		case XE::NodeStatus::NONE:
 			node->Enter();
-		case XE::NodeStatus::Running:
+		case XE::NodeStatus::RUNNING:
 			node->Update( dt );
 			break;
-		case XE::NodeStatus::Failure:
-			SetStatus( XE::NodeStatus::Failure );
+		case XE::NodeStatus::FAILURE:
+			SetStatus( XE::NodeStatus::FAILURE );
 			break;
-		case XE::NodeStatus::Success:
+		case XE::NodeStatus::SUCCESS:
 			success_count++;
 			break;
 		default:
@@ -406,7 +406,7 @@ void XE::ParallelSequenceNode::OnUpdate( XE::float32 dt )
 
 	if( success_count == children.size() )
 	{
-		SetStatus( XE::NodeStatus::Success );
+		SetStatus( XE::NodeStatus::SUCCESS );
 	}
 }
 
@@ -438,15 +438,15 @@ void XE::ParallelSelectorNode::OnUpdate( XE::float32 dt )
 		auto status = node->GetStatus();
 		switch( status )
 		{
-		case XE::NodeStatus::None:
+		case XE::NodeStatus::NONE:
 			node->Enter();
-		case XE::NodeStatus::Running:
+		case XE::NodeStatus::RUNNING:
 			node->Update( dt );
 			break;
-		case XE::NodeStatus::Success:
-			SetStatus( NodeStatus::Success );
+		case XE::NodeStatus::SUCCESS:
+			SetStatus( NodeStatus::SUCCESS );
 			break;
-		case XE::NodeStatus::Failure:
+		case XE::NodeStatus::FAILURE:
 			failure_count++;
 			break;
 		default:
@@ -456,7 +456,7 @@ void XE::ParallelSelectorNode::OnUpdate( XE::float32 dt )
 
 	if( failure_count == children.size() )
 	{
-		SetStatus( XE::NodeStatus::Failure );
+		SetStatus( XE::NodeStatus::FAILURE );
 	}
 }
 
@@ -491,18 +491,18 @@ void XE::ConditionNode::OnEnter()
 
 		switch( node->GetStatus() )
 		{
-		case XE::NodeStatus::Running:
-			SetStatus( XE::NodeStatus::Running );
+		case XE::NodeStatus::RUNNING:
+			SetStatus( XE::NodeStatus::RUNNING );
 			GetBehaviorTree()->PushConditionNode( this );
 			break;
-		case XE::NodeStatus::None:
-		case XE::NodeStatus::Failure:
+		case XE::NodeStatus::NONE:
+		case XE::NodeStatus::FAILURE:
 			node->Quit();
-			SetStatus( NodeStatus::Failure );
+			SetStatus( NodeStatus::FAILURE );
 			break;
-		case XE::NodeStatus::Success:
+		case XE::NodeStatus::SUCCESS:
 			node->Quit();
-			SetStatus( NodeStatus::Success );
+			SetStatus( NodeStatus::SUCCESS );
 			break;
 		default:
 			break;
@@ -510,7 +510,7 @@ void XE::ConditionNode::OnEnter()
 	}
 	else
 	{
-		SetStatus( XE::NodeStatus::Failure );
+		SetStatus( XE::NodeStatus::FAILURE );
 	}
 }
 
@@ -522,7 +522,7 @@ void XE::ConditionNode::OnUpdate( XE::float32 dt )
 
 	if( !_CurJudgment )
 	{
-		SetStatus( XE::NodeStatus::Failure );
+		SetStatus( XE::NodeStatus::FAILURE );
 		return;
 	}
 
@@ -530,13 +530,13 @@ void XE::ConditionNode::OnUpdate( XE::float32 dt )
 	auto status = node->GetStatus();
 	switch( status )
 	{
-	case XE::NodeStatus::None:
+	case XE::NodeStatus::NONE:
 		node->Enter();
-	case XE::NodeStatus::Running:
+	case XE::NodeStatus::RUNNING:
 		node->Update( dt );
 		break;
-	case XE::NodeStatus::Failure:
-	case XE::NodeStatus::Success:
+	case XE::NodeStatus::FAILURE:
+	case XE::NodeStatus::SUCCESS:
 		node->Quit();
 		SetStatus( status );
 		break;
@@ -550,7 +550,7 @@ void XE::ConditionNode::OnQuit()
 	Super::OnQuit();
 
 	auto node = GetBehaviorTree()->GetNode( GetChild() );
-	if( node->GetStatus() != XE::NodeStatus::None )
+	if( node->GetStatus() != XE::NodeStatus::NONE )
 	{
 		node->Quit();
 	}
@@ -610,7 +610,7 @@ void XE::DecoratorNode::OnUpdate( XE::float32 dt )
 
 	auto node = GetBehaviorTree()->GetNode( GetChild() );
 
-	if( node->GetStatus() == XE::NodeStatus::Running )
+	if( node->GetStatus() == XE::NodeStatus::RUNNING )
 	{
 		node->Update( dt );
 	}
@@ -622,7 +622,7 @@ void XE::DecoratorNode::OnQuit()
 
 	auto node = GetBehaviorTree()->GetNode( GetChild() );
 
-	if( node->GetStatus() != XE::NodeStatus::None )
+	if( node->GetStatus() != XE::NodeStatus::NONE )
 	{
 		node->Clearup();
 	}
@@ -656,7 +656,7 @@ void XE::RepeatNode::OnUpdate( XE::float32 dt )
 	
 	auto node = GetBehaviorTree()->GetNode( GetChild() );
 
-	if( node->GetStatus() == XE::NodeStatus::Failure || node->GetStatus() == XE::NodeStatus::Success )
+	if( node->GetStatus() == XE::NodeStatus::FAILURE || node->GetStatus() == XE::NodeStatus::SUCCESS )
 	{
 		if( _Count == 0 )
 		{
@@ -694,12 +694,12 @@ void XE::SuccessNode::OnEnter()
 
 	switch( GetBehaviorTree()->GetNode( GetChild() )->GetStatus() )
 	{
-	case XE::NodeStatus::Failure:
-	case XE::NodeStatus::Success:
-		SetStatus( XE::NodeStatus::Success );
+	case XE::NodeStatus::FAILURE:
+	case XE::NodeStatus::SUCCESS:
+		SetStatus( XE::NodeStatus::SUCCESS );
 		break;
 	default:
-		SetStatus( XE::NodeStatus::Running );
+		SetStatus( XE::NodeStatus::RUNNING );
 		break;
 	}
 }
@@ -710,9 +710,9 @@ void XE::SuccessNode::OnUpdate( XE::float32 dt )
 
 	switch( GetBehaviorTree()->GetNode( GetChild() )->GetStatus() )
 	{
-	case XE::NodeStatus::Failure:
-	case XE::NodeStatus::Success:
-		SetStatus( XE::NodeStatus::Success );
+	case XE::NodeStatus::FAILURE:
+	case XE::NodeStatus::SUCCESS:
+		SetStatus( XE::NodeStatus::SUCCESS );
 		break;
 	default:
 		break;
@@ -738,12 +738,12 @@ void XE::FailureNode::OnEnter()
 
 	switch( GetBehaviorTree()->GetNode( GetChild() )->GetStatus() )
 	{
-	case XE::NodeStatus::Failure:
-	case XE::NodeStatus::Success:
-		SetStatus( XE::NodeStatus::Failure );
+	case XE::NodeStatus::FAILURE:
+	case XE::NodeStatus::SUCCESS:
+		SetStatus( XE::NodeStatus::FAILURE );
 		break;
 	default:
-		SetStatus( XE::NodeStatus::Running );
+		SetStatus( XE::NodeStatus::RUNNING );
 		break;
 	}
 }
@@ -754,9 +754,9 @@ void XE::FailureNode::OnUpdate( XE::float32 dt )
 
 	switch( GetBehaviorTree()->GetNode( GetChild() )->GetStatus() )
 	{
-	case XE::NodeStatus::Failure:
-	case XE::NodeStatus::Success:
-		SetStatus( XE::NodeStatus::Failure );
+	case XE::NodeStatus::FAILURE:
+	case XE::NodeStatus::SUCCESS:
+		SetStatus( XE::NodeStatus::FAILURE );
 		break;
 	default:
 		break;
@@ -782,14 +782,14 @@ void XE::ReversedNode::OnEnter()
 
 	switch( GetBehaviorTree()->GetNode( GetChild() )->GetStatus() )
 	{
-	case XE::NodeStatus::Failure:
-		SetStatus( XE::NodeStatus::Success );
+	case XE::NodeStatus::FAILURE:
+		SetStatus( XE::NodeStatus::SUCCESS );
 		break;
-	case XE::NodeStatus::Success:
-		SetStatus( XE::NodeStatus::Failure );
+	case XE::NodeStatus::SUCCESS:
+		SetStatus( XE::NodeStatus::FAILURE );
 		break;
 	default:
-		SetStatus( XE::NodeStatus::Running );
+		SetStatus( XE::NodeStatus::RUNNING );
 		break;
 	}
 }
@@ -800,11 +800,11 @@ void XE::ReversedNode::OnUpdate( XE::float32 dt )
 
 	switch( GetBehaviorTree()->GetNode( GetChild() )->GetStatus() )
 	{
-	case XE::NodeStatus::Failure:
-		SetStatus( XE::NodeStatus::Success );
+	case XE::NodeStatus::FAILURE:
+		SetStatus( XE::NodeStatus::SUCCESS );
 		break;
-	case XE::NodeStatus::Success:
-		SetStatus( XE::NodeStatus::Failure );
+	case XE::NodeStatus::SUCCESS:
+		SetStatus( XE::NodeStatus::FAILURE );
 		break;
 	default:
 		break;
@@ -840,7 +840,7 @@ void XE::DelayNode::OnUpdate( XE::float32 dt )
 	Super::OnUpdate( dt );
 
 	auto node = GetBehaviorTree()->GetNode( GetChild() );
-	if( node->GetStatus() == XE::NodeStatus::Failure || node->GetStatus() == XE::NodeStatus::Success )
+	if( node->GetStatus() == XE::NodeStatus::FAILURE || node->GetStatus() == XE::NodeStatus::SUCCESS )
 	{
 		_Dt += dt;
 

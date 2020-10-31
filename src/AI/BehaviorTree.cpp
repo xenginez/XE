@@ -83,13 +83,13 @@ void XE::BehaviorTree::Update( XE::float32 dt )
 
 	switch( current->GetStatus() )
 	{
-	case XE::NodeStatus::None:
+	case XE::NodeStatus::NONE:
 		current->Enter();
-	case XE::NodeStatus::Running:
+	case XE::NodeStatus::RUNNING:
 		current->Update( dt );
 		break;
-	case XE::NodeStatus::Failure:
-	case XE::NodeStatus::Success:
+	case XE::NodeStatus::FAILURE:
+	case XE::NodeStatus::SUCCESS:
 		_PrivateNodes.clear();
 		break;
 	default:
@@ -129,7 +129,7 @@ void XE::BehaviorTree::AssetLoad()
 
 bool XE::BehaviorTree::IsStopped() const
 {
-	return _Nodes[_Root]->GetStatus() == NodeStatus::Success || _Nodes[_Root]->GetStatus() == NodeStatus::Failure;
+	return _Nodes[_Root]->GetStatus() == NodeStatus::SUCCESS || _Nodes[_Root]->GetStatus() == NodeStatus::FAILURE;
 }
 
 XE::AINodeHandle XE::BehaviorTree::GetRoot() const
