@@ -22,7 +22,17 @@ void XE::AIModule::Startup()
 
 }
 
+void XE::AIModule::Enter()
+{
+
+}
+
 void XE::AIModule::Update( XE::float32 dt )
+{
+
+}
+
+void XE::AIModule::Quit()
 {
 
 }

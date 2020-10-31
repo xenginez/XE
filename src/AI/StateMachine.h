@@ -25,7 +25,11 @@ public:
 public:
 	void Startup() override;
 
+	void Enter() override;
+
 	void Update( XE::float32 dt ) override;
+
+	void Quit() override;
 
 	void Clearup() override;
 

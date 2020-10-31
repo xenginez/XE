@@ -96,11 +96,15 @@ public:
 	void SetConnectKeys( const XE::Map<XE::BlackboardKey, XE::BlackboardKey> & val );
 
 protected:
+	void OnStartup() override;
+
 	void OnEnter() override;
 
 	void OnUpdate( XE::float32 dt ) override;
 
 	void OnQuit() override;
+
+	void OnClearup() override;
 
 private:
 	XE::AssetInstance< XE::AIModule > _AIModule;

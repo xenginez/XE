@@ -17,6 +17,9 @@ class XE_API AIModule : public XE::Object
 {
 	OBJECT( AIModule, Object )
 
+	friend class BehaviorTree;
+	friend class StateMachine;
+
 public:
 	using ProcessEventCallback = std::function<void( const XE::EventPtr & )>;
 
@@ -28,7 +31,11 @@ public:
 public:
 	virtual void Startup();
 
+	virtual void Enter();
+
 	virtual void Update( XE::float32 dt );
+
+	virtual void Quit();
 
 	virtual void Clearup();
 

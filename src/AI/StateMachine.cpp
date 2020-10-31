@@ -19,6 +19,8 @@ XE::StateMachine::~StateMachine()
 
 void XE::StateMachine::Startup()
 {
+	Super::Startup();
+
 	for( auto state : _States )
 	{
 		state->SetStateMachine( XE_THIS( StateMachine ) );
@@ -29,6 +31,11 @@ void XE::StateMachine::Startup()
 			cond.SetAIModule( XE_THIS( AIModule ) );
 		}
 	}
+}
+
+void XE::StateMachine::Enter()
+{
+	Super::Enter();
 
 	_Current = _Root;
 
@@ -37,6 +44,8 @@ void XE::StateMachine::Startup()
 
 void XE::StateMachine::Update( XE::float32 dt )
 {
+	Super::Update( dt );
+
 	for( auto cond : _States[_Current.GetValue()]->_Conditions )
 	{
 		if( cond.Judgment() )
@@ -56,6 +65,13 @@ void XE::StateMachine::Update( XE::float32 dt )
 	_States[_Current.GetValue()]->Update( dt );
 }
 
+void XE::StateMachine::Quit()
+{
+	_States[_Current.GetValue()]->Quit();
+
+	Super::Quit();
+}
+
 void XE::StateMachine::Clearup()
 {
 	for( auto & state : _States )
@@ -68,6 +84,8 @@ void XE::StateMachine::Clearup()
 		state->Clearup();
 		state->SetStateMachine( nullptr );
 	}
+
+	Super::Clearup();
 }
 
 XE::AIStateHandle XE::StateMachine::GetRoot() const

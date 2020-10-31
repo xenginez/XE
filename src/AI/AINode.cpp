@@ -144,13 +144,24 @@ XE::SubNode::~SubNode()
 
 }
 
+void XE::SubNode::OnStartup()
+{
+	Super::OnStartup();
+
+	_AIModule->Startup();
+}
+
 void XE::SubNode::OnEnter()
 {
-	_AIModule->Startup();
+	Super::OnEnter();
+
+	_AIModule->Enter();
 }
 
 void XE::SubNode::OnUpdate( XE::float32 dt )
 {
+	Super::OnUpdate( dt );
+
 	for( const auto & key : _ConnectKeys )
 	{
 		_AIModule->SetKey( key.second, GetBehaviorTree()->GetKey( key.first ) );
@@ -170,6 +181,15 @@ void XE::SubNode::OnUpdate( XE::float32 dt )
 
 void XE::SubNode::OnQuit()
 {
+	Super::OnQuit();
+
+	_AIModule->Quit();
+}
+
+void XE::SubNode::OnClearup()
+{
+	Super::OnClearup();
+
 	_AIModule->Clearup();
 }
 

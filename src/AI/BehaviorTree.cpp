@@ -7,12 +7,6 @@ type->Property( "Root", &BehaviorTree::_Root, IMetaProperty::NoDesign );
 type->Property( "Nodes", &BehaviorTree::_Nodes, IMetaProperty::NoDesign );
 END_META()
 
-struct XE::BehaviorTree::PrivateNode
-{
-	bool IsCondition = false;
-	XE::AINode * Node = nullptr;
-};
-
 XE::BehaviorTree::BehaviorTree()
 {
 
@@ -32,6 +26,13 @@ void XE::BehaviorTree::Startup()
 		node->SetBehaviorTree( XE_THIS( BehaviorTree ) );
 		node->Startup();
 	}
+}
+
+void XE::BehaviorTree::Enter()
+{
+	Super::Enter();
+
+	_Nodes[_Root]->Enter();
 }
 
 void XE::BehaviorTree::Update( XE::float32 dt )
@@ -94,6 +95,13 @@ void XE::BehaviorTree::Update( XE::float32 dt )
 	default:
 		break;
 	}
+}
+
+void XE::BehaviorTree::Quit()
+{
+	_Nodes[_Root]->Quit();
+
+	Super::Quit();
 }
 
 void XE::BehaviorTree::Clearup()

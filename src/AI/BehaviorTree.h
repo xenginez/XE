@@ -13,13 +13,22 @@
 
 BEG_XE_NAMESPACE
 
+class CompositeNode;
+class ConditionNode;
+
 class XE_API BehaviorTree : public XE::AIModule
 {
 	OBJECT( BehaviorTree, AIModule )
 
-	struct PrivateNode;
 	friend class CompositeNode;
 	friend class ConditionNode;
+
+private:
+	struct PrivateNode
+	{
+		bool IsCondition = false;
+		XE::AINode * Node = nullptr;
+	};
 
 public:
 	BehaviorTree();
@@ -29,7 +38,11 @@ public:
 public:
 	void Startup() override;
 
+	void Enter() override;
+
 	void Update( XE::float32 dt ) override;
+
+	void Quit() override;
 
 	void Clearup() override;
 

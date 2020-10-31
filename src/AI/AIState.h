@@ -118,7 +118,11 @@ public:
 protected:
 	void OnStartup() override;
 
+	void OnEnter() override;
+
 	void OnUpdate( XE::float32 dt ) override;
+
+	void OnQuit() override;
 
 	void OnClearup() override;
 

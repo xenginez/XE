@@ -165,11 +165,22 @@ XE::SubState::~SubState()
 
 void XE::SubState::OnStartup()
 {
+	Super::OnStartup();
+
 	_AIModule->Startup();
+}
+
+void XE::SubState::OnEnter()
+{
+	Super::OnEnter();
+
+	_AIModule->Enter();
 }
 
 void XE::SubState::OnUpdate( XE::float32 dt )
 {
+	Super::OnUpdate( dt );
+
 	for( const auto & key : _ConnectKeys )
 	{
 		_AIModule->SetKey( key.second, GetStateMachine()->GetKey( key.first ) );
@@ -183,9 +194,18 @@ void XE::SubState::OnUpdate( XE::float32 dt )
 	}
 }
 
+void XE::SubState::OnQuit()
+{
+	_AIModule->Quit();
+
+	Super::OnQuit();
+}
+
 void XE::SubState::OnClearup()
 {
 	_AIModule->Clearup();
+
+	Super::OnClearup();
 }
 
 void XE::SubState::AssetLoad()
