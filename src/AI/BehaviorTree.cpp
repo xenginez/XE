@@ -32,13 +32,16 @@ void XE::BehaviorTree::Startup()
 		node->SetBehaviorTree( XE_THIS( BehaviorTree ) );
 		node->Startup();
 	}
-
-	_Current = _Root;
 }
 
 void XE::BehaviorTree::Update( XE::float32 dt )
 {
 	Super::Update( dt );
+
+	if( IsStopped() )
+	{
+		return;
+	}
 
 	XE::AINodeHandle handle;
 	for( auto it = _PrivateNodes.begin(); it != _PrivateNodes.end(); ++it )
@@ -83,15 +86,10 @@ void XE::BehaviorTree::Update( XE::float32 dt )
 		current->Enter();
 	case XE::NodeStatus::Running:
 		current->Update( dt );
-		_Status = NodeStatus::Running;
 		break;
 	case XE::NodeStatus::Failure:
-		_Status = NodeStatus::Failure;
-		current->Quit();
-		break;
 	case XE::NodeStatus::Success:
-		_Status = NodeStatus::Success;
-		current->Quit();
+		_PrivateNodes.clear();
 		break;
 	default:
 		break;
@@ -100,6 +98,8 @@ void XE::BehaviorTree::Update( XE::float32 dt )
 
 void XE::BehaviorTree::Clearup()
 {
+	_PrivateNodes.clear();
+
 	for( auto node : _Nodes )
 	{
 		node->Clearup();
@@ -121,7 +121,7 @@ void XE::BehaviorTree::AssetLoad()
 
 bool XE::BehaviorTree::IsStopped() const
 {
-	return _Status == NodeStatus::Success || _Status == NodeStatus::Failure;
+	return _Nodes[_Root]->GetStatus() == NodeStatus::Success || _Nodes[_Root]->GetStatus() == NodeStatus::Failure;
 }
 
 XE::AINodeHandle XE::BehaviorTree::GetRoot() const

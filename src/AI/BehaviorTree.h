@@ -56,7 +56,6 @@ private:
 
 public:
 	XE::AINodeHandle _Root;
-	XE::NodeStatus _Status;
 	XE::Array< XE::AINodePtr > _Nodes;
 	XE::Deque< PrivateNode > _PrivateNodes;
 };

@@ -144,7 +144,7 @@ XE::SubNode::~SubNode()
 
 }
 
-void XE::SubNode::OnStartup()
+void XE::SubNode::OnEnter()
 {
 	_AIModule->Startup();
 }
@@ -168,7 +168,7 @@ void XE::SubNode::OnUpdate( XE::float32 dt )
 	}
 }
 
-void XE::SubNode::OnClearup()
+void XE::SubNode::OnQuit()
 {
 	_AIModule->Clearup();
 }
