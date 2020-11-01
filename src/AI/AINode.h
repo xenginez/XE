@@ -9,6 +9,8 @@
 #ifndef __NODE_H__4E15E329_D9A1_4F5D_B63A_CA4079844C18
 #define __NODE_H__4E15E329_D9A1_4F5D_B63A_CA4079844C18
 
+#include <random>
+
 #include "Utils/Asset.h"
 
 #include "BlackboardKey.h"
@@ -181,9 +183,44 @@ private:
 	XE::uint64 _Current;
 };
 
-class XE_API ParallelSequenceNode : public CompositeNode
+class XE_API RandomSelectorNode : public CompositeNode
 {
-	OBJECT( ParallelSequenceNode, CompositeNode )
+	OBJECT( RandomSelectorNode, CompositeNode )
+
+public:
+	RandomSelectorNode();
+
+	~RandomSelectorNode();
+
+protected:
+	void OnEnter() override;
+
+	void OnUpdate( XE::float32 dt ) override;
+
+private:
+	XE::uint64 _Seed;
+	XE::uint64 _Current;
+	std::default_random_engine _Random;
+	std::uniform_int_distribution<XE::uint64> _Uniform;
+};
+
+class XE_API ParallelNode : public CompositeNode
+{
+	OBJECT( ParallelNode, CompositeNode )
+
+public:
+	ParallelNode();
+
+	~ParallelNode() override;
+
+protected:
+	void OnEnter() override;
+
+};
+
+class XE_API ParallelSequenceNode : public ParallelNode
+{
+	OBJECT( ParallelSequenceNode, ParallelNode )
 
 public:
 	ParallelSequenceNode();
@@ -191,13 +228,15 @@ public:
 	~ParallelSequenceNode();
 
 protected:
+	void OnEnter() override;
+
 	void OnUpdate( XE::float32 dt ) override;
 
 };
 
-class XE_API ParallelSelectorNode : public CompositeNode
+class XE_API ParallelSelectorNode : public ParallelNode
 {
-	OBJECT( ParallelSelectorNode, CompositeNode )
+	OBJECT( ParallelSelectorNode, ParallelNode )
 
 public:
 	ParallelSelectorNode();

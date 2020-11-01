@@ -235,8 +235,6 @@ void XE::CompositeNode::OnEnter()
 	Super::OnEnter();
 
 	SetStatus( NodeStatus::RUNNING );
-
-	GetBehaviorTree()->PushCompositeNode( this );
 }
 
 void XE::CompositeNode::OnQuit()
@@ -358,6 +356,79 @@ void XE::SelectorNode::OnUpdate( XE::float32 dt )
 			break;
 		}
 	}
+}
+
+BEG_META( XE::RandomSelectorNode )
+type->Property( "Seed", &XE::RandomSelectorNode::_Seed );
+END_META()
+
+XE::RandomSelectorNode::RandomSelectorNode()
+	:_Seed( 0 ), _Current( 0 )
+{
+
+}
+
+XE::RandomSelectorNode::~RandomSelectorNode()
+{
+
+}
+
+void XE::RandomSelectorNode::OnEnter()
+{
+	Super::OnEnter();
+
+	_Random = std::default_random_engine( _Seed );
+	_Uniform = std::uniform_int_distribution<XE::uint64>( 0, GetChildren().size() );
+
+	_Current = _Uniform( _Random );
+}
+
+void XE::RandomSelectorNode::OnUpdate( XE::float32 dt )
+{
+	Super::OnUpdate( dt );
+
+	const auto & children = GetChildren();
+
+	if( AINodePtr node = GetBehaviorTree()->GetNode( children[_Current] ) )
+	{
+		auto status = node->GetStatus();
+		switch( status )
+		{
+		case XE::NodeStatus::NONE:
+			node->Enter();
+		case XE::NodeStatus::RUNNING:
+			node->Update( dt );
+			break;
+		case XE::NodeStatus::SUCCESS:
+			SetStatus( XE::NodeStatus::SUCCESS );
+			break;
+		case XE::NodeStatus::FAILURE:
+			_Current != children.size() ? _Current = _Uniform( _Random ) : SetStatus( XE::NodeStatus::FAILURE );
+			break;
+		default:
+			break;
+		}
+	}
+}
+
+BEG_META( XE::ParallelNode )
+END_META()
+
+XE::ParallelNode::ParallelNode()
+{
+
+}
+
+XE::ParallelNode::~ParallelNode()
+{
+
+}
+
+void XE::ParallelNode::OnEnter()
+{
+	Super::OnEnter();
+
+	GetBehaviorTree()->PushParallelNode( this );
 }
 
 BEG_META( XE::ParallelSequenceNode )

@@ -164,7 +164,7 @@ void XE::BehaviorTree::SetNodes( const XE::Array< XE::AINodePtr > & val )
 	_Nodes = val;
 }
 
-void XE::BehaviorTree::PushCompositeNode( XE::CompositeNode * val )
+void XE::BehaviorTree::PushParallelNode( XE::ParallelNode * val )
 {
 	XE::BehaviorTree::PrivateNode node;
 	node.Node = val;
