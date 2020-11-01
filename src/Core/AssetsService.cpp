@@ -1,6 +1,7 @@
 #include "AssetsService.h"
 
 #include <sqlite3/sqlite3.h>
+#include <tbb/concurrent_hash_map.h>
 #define TBB_PREVIEW_CONCURRENT_LRU_CACHE 1
 #include <tbb/concurrent_lru_cache.h>
 
@@ -92,9 +93,9 @@ struct XE::AssetsService::Private
 {
 	sqlite3 * _DB = nullptr;
 	XE::Map<XE::String, XE::Unzipper> _Packages;
-	tbb::concurrent_lru_cache<XE::String, XE::MemoryStream> _Caches = { []( const XE::String )->XE::MemoryStream {return {};}, 100 };
+	tbb::concurrent_hash_map<XE::String, XE::ObjectWPtr> _ObjectCache;
+	tbb::concurrent_lru_cache<XE::String, XE::MemoryStream> _Caches = { []( XE::String )->XE::MemoryStream {return {};}, 100 };
 };
-
 
 XE::AssetsService::AssetsService()
 	:_p( new Private )
@@ -179,22 +180,23 @@ XE::MemoryView XE::AssetsService::Load( const XE::FileSystem::Path & path )
 
 void XE::AssetsService::AsyncLoad( const XE::FileSystem::Path & path, const LoadFinishCallback & callback )
 {
-	if( CHECK_THREAD( ThreadType::IO ) )
-	{
-		callback( Load( path ) );
-	}
-	else
-	{
-		GetFramework()->GetThreadService()->PostTask( ThreadType::IO, [=]()
-															   {
-																   callback( Load( path ) );
-															   } );
-	}
+	CHECK_THREAD( ThreadType::IO ) ? callback( Load( path ) ) : GetFramework()->GetThreadService()->PostTask( ThreadType::IO, [=]()
+																											  {
+																												  callback( Load( path ) );
+																											  } );
 }
 
 XE::ObjectPtr XE::AssetsService::LoadObject( const XE::FileSystem::Path & path )
 {
-	if( auto mem = Load( path ) )
+	tbb::concurrent_hash_map<XE::String, XE::ObjectWPtr>::accessor it;
+	if( _p->_ObjectCache.find( it, path.u8string() ) )
+	{
+		if( !it->second.expired() )
+		{
+			return it->second.lock();
+		}
+	}
+	else if( auto mem = Load( path ) )
 	{
 		XE::BinaryLoadArchive load( mem );
 
@@ -204,6 +206,8 @@ XE::ObjectPtr XE::AssetsService::LoadObject( const XE::FileSystem::Path & path )
 
 		obj->AssetLoad();
 
+		_p->_ObjectCache.insert( { path.u8string(), obj } );
+
 		return obj;
 	}
 
@@ -212,15 +216,8 @@ XE::ObjectPtr XE::AssetsService::LoadObject( const XE::FileSystem::Path & path )
 
 void XE::AssetsService::AsyncLoadObject( const XE::FileSystem::Path & path, const LoadObjectFinishCallback & callback )
 {
-	if( CHECK_THREAD( ThreadType::IO ) )
-	{
-		callback( LoadObject( path ) );
-	}
-	else
-	{
-		GetFramework()->GetThreadService()->PostTask( ThreadType::IO, [=]()
-															   {
-																   callback( LoadObject( path ) );
-															   } );
-	}
+	CHECK_THREAD( ThreadType::IO ) ? callback( LoadObject( path ) ) : GetFramework()->GetThreadService()->PostTask( ThreadType::IO, [=]()
+																													{
+																														callback( LoadObject( path ) );
+																													} );
 }
