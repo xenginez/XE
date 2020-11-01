@@ -71,6 +71,7 @@ public:
 	XE::AINodeHandle _Root;
 	XE::Array< XE::AINodePtr > _Nodes;
 	XE::Deque< PrivateNode > _PrivateNodes;
+	XE::Deque< XE::AINodeHandle > _ParallelNodes;
 };
 
 END_XE_NAMESPACE

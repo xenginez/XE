@@ -45,6 +45,7 @@ void XE::BehaviorTree::Update( XE::float32 dt )
 	}
 
 	XE::AINodeHandle handle;
+
 	for( auto it = _PrivateNodes.begin(); it != _PrivateNodes.end(); ++it )
 	{
 		if( it->IsCondition )
@@ -55,12 +56,15 @@ void XE::BehaviorTree::Update( XE::float32 dt )
 				if( handle )
 				{
 					_PrivateNodes.erase( it + 1, _PrivateNodes.end() );
+					if( !_ParallelNodes.empty() )
+					{
+						handle = _ParallelNodes.front();
+					}
 					break;
 				}
 				else
 				{
-					handle = cond->GetHandle();
-					break;
+					_ParallelNodes.push_front( cond->GetHandle() );
 				}
 			}
 		}
@@ -70,6 +74,7 @@ void XE::BehaviorTree::Update( XE::float32 dt )
 			break;
 		}
 	}
+	_ParallelNodes.clear();
 
 	if( !handle )
 	{
