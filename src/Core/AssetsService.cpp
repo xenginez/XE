@@ -94,7 +94,7 @@ struct XE::AssetsService::Private
 	sqlite3 * _DB = nullptr;
 	XE::Map<XE::String, XE::Unzipper> _Packages;
 	tbb::concurrent_hash_map<XE::String, XE::ObjectWPtr> _ObjectCache;
-	tbb::concurrent_lru_cache<XE::String, XE::MemoryStream> _Caches = { []( XE::String )->XE::MemoryStream {return {};}, 100 };
+	tbb::concurrent_lru_cache<XE::String, XE::MemoryStream> _MemoryCache = { []( XE::String )->XE::MemoryStream {return {};}, 100 };
 };
 
 XE::AssetsService::AssetsService()
@@ -154,7 +154,7 @@ void XE::AssetsService::Clearup()
 
 XE::MemoryView XE::AssetsService::Load( const XE::FileSystem::Path & path )
 {
-	auto handle = _p->_Caches[path.u8string()];
+	auto handle = _p->_MemoryCache[path.u8string()];
 	if( handle && handle.value().view() )
 	{
 		return handle.value().view();
@@ -196,7 +196,8 @@ XE::ObjectPtr XE::AssetsService::LoadObject( const XE::FileSystem::Path & path )
 			return it->second.lock();
 		}
 	}
-	else if( auto mem = Load( path ) )
+
+	if( auto mem = Load( path ) )
 	{
 		XE::BinaryLoadArchive load( mem );
 

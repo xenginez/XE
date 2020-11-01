@@ -67,16 +67,20 @@ void XE::BehaviorTree::Update( XE::float32 dt )
 		else
 		{
 			handle = static_cast< XE::CompositeNode * >( it->Node )->GetHandle();
+			break;
 		}
 	}
 
-	if( !handle && !_PrivateNodes.empty() )
+	if( !handle )
 	{
-		handle = static_cast< XE::ConditionNode * >( _PrivateNodes.back().Node )->GetChild();
-	}
-	else
-	{
-		handle = _Root;
+		if( !_PrivateNodes.empty() )
+		{
+			handle = static_cast< XE::ConditionNode * >( _PrivateNodes.back().Node )->GetChild();
+		}
+		else
+		{
+			handle = _Root;
+		}
 	}
 
 	auto & current = _Nodes[handle];
