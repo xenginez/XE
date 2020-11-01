@@ -94,6 +94,7 @@ void XE::BehaviorTree::Update( XE::float32 dt )
 		break;
 	case XE::NodeStatus::FAILURE:
 	case XE::NodeStatus::SUCCESS:
+		_Nodes[_Root]->Quit();
 		_PrivateNodes.clear();
 		break;
 	default:
