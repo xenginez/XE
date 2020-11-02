@@ -46,41 +46,41 @@ void XE::BehaviorTree::Update( XE::float32 dt )
 
 	XE::AINodeHandle handle;
 
-	for( auto it = _PrivateNodes.begin(); it != _PrivateNodes.end(); ++it )
+	for( auto it = _RunningNodes.begin(); it != _RunningNodes.end(); ++it )
 	{
-		if( it->IsCondition )
+		if( ( *it )->GetType() == XE::AINodeType::CONDITION_NODE )
 		{
-			auto cond = static_cast< XE::ConditionNode * >( it->Node );
+			auto cond = static_cast< XE::ConditionNode * >( ( *it ) );
 			if( cond->JudgmentChanged() )
 			{
 				if( handle )
 				{
-					_PrivateNodes.erase( it + 1, _PrivateNodes.end() );
-					if( !_ParallelNodes.empty() )
+					_RunningNodes.erase( it + 1, _RunningNodes.end() );
+					if( !_CompositeNodes.empty() )
 					{
-						handle = _ParallelNodes.front();
+						handle = _CompositeNodes.front();
 					}
 					break;
 				}
 				else
 				{
-					_ParallelNodes.push_front( cond->GetHandle() );
+					_CompositeNodes.push_front( cond->GetHandle() );
 				}
 			}
 		}
 		else
 		{
-			handle = static_cast< XE::CompositeNode * >( it->Node )->GetHandle();
+			handle = static_cast< XE::CompositeNode * >( ( *it ) )->GetHandle();
 			break;
 		}
 	}
-	_ParallelNodes.clear();
+	_CompositeNodes.clear();
 
 	if( !handle )
 	{
-		if( !_PrivateNodes.empty() )
+		if( !_RunningNodes.empty() )
 		{
-			handle = static_cast< XE::ConditionNode * >( _PrivateNodes.back().Node )->GetChild();
+			handle = static_cast< XE::ConditionNode * >( _RunningNodes.back() )->GetChild();
 		}
 		else
 		{
@@ -92,15 +92,15 @@ void XE::BehaviorTree::Update( XE::float32 dt )
 
 	switch( current->GetStatus() )
 	{
-	case XE::NodeStatus::NONE:
+	case XE::AINodeStatus::NONE:
 		current->Enter();
-	case XE::NodeStatus::RUNNING:
+	case XE::AINodeStatus::RUNNING:
 		current->Update( dt );
 		break;
-	case XE::NodeStatus::FAILURE:
-	case XE::NodeStatus::SUCCESS:
+	case XE::AINodeStatus::FAILURE:
+	case XE::AINodeStatus::SUCCESS:
 		_Nodes[_Root]->Quit();
-		_PrivateNodes.clear();
+		_RunningNodes.clear();
 		break;
 	default:
 		break;
@@ -116,7 +116,7 @@ void XE::BehaviorTree::Quit()
 
 void XE::BehaviorTree::Clearup()
 {
-	_PrivateNodes.clear();
+	_RunningNodes.clear();
 
 	for( auto node : _Nodes )
 	{
@@ -139,7 +139,7 @@ void XE::BehaviorTree::AssetLoad()
 
 bool XE::BehaviorTree::IsStopped() const
 {
-	return _Nodes[_Root]->GetStatus() == NodeStatus::SUCCESS || _Nodes[_Root]->GetStatus() == NodeStatus::FAILURE;
+	return _Nodes[_Root]->GetStatus() == AINodeStatus::SUCCESS || _Nodes[_Root]->GetStatus() == AINodeStatus::FAILURE;
 }
 
 XE::AINodeHandle XE::BehaviorTree::GetRoot() const
@@ -169,12 +169,12 @@ void XE::BehaviorTree::SetNodes( const XE::Array< XE::AINodePtr > & val )
 	_Nodes = val;
 }
 
-void XE::BehaviorTree::PushParallelNode( XE::ParallelNode * val )
+void XE::BehaviorTree::PushCompositeNode( XE::CompositeNode * val )
 {
 	XE::BehaviorTree::PrivateNode node;
 	node.Node = val;
 	node.IsCondition = false;
-	_PrivateNodes.emplace_back( std::move( node ) );
+	_RunningNodes.emplace_back( std::move( node ) );
 }
 
 void XE::BehaviorTree::PushConditionNode( XE::ConditionNode * val )
@@ -182,5 +182,5 @@ void XE::BehaviorTree::PushConditionNode( XE::ConditionNode * val )
 	XE::BehaviorTree::PrivateNode node;
 	node.Node = val;
 	node.IsCondition = true;
-	_PrivateNodes.emplace_back( std::move( node ) );
+	_RunningNodes.emplace_back( std::move( node ) );
 }

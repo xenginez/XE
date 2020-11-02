@@ -13,14 +13,14 @@
 
 BEG_XE_NAMESPACE
 
-class ParallelNode;
+class CompositeNode;
 class ConditionNode;
 
 class XE_API BehaviorTree : public XE::AIModule
 {
 	OBJECT( BehaviorTree, AIModule )
 
-	friend class ParallelNode;
+	friend class CompositeNode;
 	friend class ConditionNode;
 
 private:
@@ -63,15 +63,16 @@ public:
 	void SetNodes( const XE::Array< XE::AINodePtr > & val );
 
 private:
-	void PushParallelNode( XE::ParallelNode * val );
+	void PushCompositeNode( XE::CompositeNode * val );
 
 	void PushConditionNode( XE::ConditionNode * val );
 
 public:
 	XE::AINodeHandle _Root;
 	XE::Array< XE::AINodePtr > _Nodes;
-	XE::Deque< PrivateNode > _PrivateNodes;
-	XE::Deque< XE::AINodeHandle > _ParallelNodes;
+
+	XE::Deque< XE::AINode * > _RunningNodes;
+	XE::Deque< XE::AINodeHandle > _CompositeNodes;
 };
 
 END_XE_NAMESPACE

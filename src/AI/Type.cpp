@@ -1,15 +1,18 @@
 #include "Type.h"
 
-BEG_META( XE::NodeStatus )
-type->Value( "NONE", XE::NodeStatus::NONE );
-type->Value( "RUNNING", XE::NodeStatus::RUNNING );
-type->Value( "SUCCESS", XE::NodeStatus::SUCCESS );
-type->Value( "FAILURE", XE::NodeStatus::FAILURE );
+BEG_META( XE::AINodeType )
+type->Value( "SUB_NODE", XE::AINodeType::SUB_NODE );
+type->Value( "ACTION_NODE", XE::AINodeType::ACTION_NODE );
+type->Value( "COMPOSITE_NODE", XE::AINodeType::COMPOSITE_NODE );
+type->Value( "CONDITION_NODE", XE::AINodeType::CONDITION_NODE );
+type->Value( "DECORATOR_NODE", XE::AINodeType::DECORATOR_NODE );
 END_META()
 
-BEG_META( XE::ConditionStatus )
-type->Value( "ONCE", XE::ConditionStatus::ONCE );
-type->Value( "ALWAYS", XE::ConditionStatus::ALWAYS );
+BEG_META( XE::AINodeStatus )
+type->Value( "NONE", XE::AINodeStatus::NONE );
+type->Value( "RUNNING", XE::AINodeStatus::RUNNING );
+type->Value( "SUCCESS", XE::AINodeStatus::SUCCESS );
+type->Value( "FAILURE", XE::AINodeStatus::FAILURE );
 END_META()
 
 IMPLEMENT_META( XE::AINodeHandle )

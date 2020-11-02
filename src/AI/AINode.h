@@ -30,9 +30,11 @@ public:
 	~AINode();
 
 public:
-	NodeStatus GetStatus() const;
+	XE::AINodeType GetType() const;
 
-	void SetStatus( NodeStatus val );
+	AINodeStatus GetStatus() const;
+
+	void SetStatus( AINodeStatus val );
 
 	AINodeHandle GetHandle() const;
 
@@ -46,8 +48,10 @@ public:
 
 	void SetName( const XE::String & val );
 
-public:
 	BehaviorTreePtr GetBehaviorTree() const;
+
+protected:
+	void SetType( XE::AINodeType val );
 
 private:
 	void SetBehaviorTree( BehaviorTreePtr val );
@@ -76,7 +80,8 @@ protected:
 
 private:
 	XE::String _Name;
-	NodeStatus _Status;
+	XE::AINodeType _Type;
+	AINodeStatus _Status;
 	AINodeHandle _Handle;
 	AINodeHandle _Parent;
 
@@ -204,23 +209,9 @@ private:
 	std::uniform_int_distribution<XE::uint64> _Uniform;
 };
 
-class XE_API ParallelNode : public CompositeNode
+class XE_API ParallelSequenceNode : public CompositeNode
 {
-	OBJECT( ParallelNode, CompositeNode )
-
-public:
-	ParallelNode();
-
-	~ParallelNode() override;
-
-protected:
-	void OnEnter() override;
-
-};
-
-class XE_API ParallelSequenceNode : public ParallelNode
-{
-	OBJECT( ParallelSequenceNode, ParallelNode )
+	OBJECT( ParallelSequenceNode, CompositeNode )
 
 public:
 	ParallelSequenceNode();
@@ -234,9 +225,9 @@ protected:
 
 };
 
-class XE_API ParallelSelectorNode : public ParallelNode
+class XE_API ParallelSelectorNode : public CompositeNode
 {
-	OBJECT( ParallelSelectorNode, ParallelNode )
+	OBJECT( ParallelSelectorNode, CompositeNode )
 
 public:
 	ParallelSelectorNode();

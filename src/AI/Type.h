@@ -22,21 +22,24 @@ DECL_PTR( StateMachine );
 DECL_HANDLE( XE_API, AINode );
 DECL_HANDLE( XE_API, AIState );
 
-enum class NodeStatus
+enum class AINodeType
+{
+	SUB_NODE,
+	ACTION_NODE,
+	COMPOSITE_NODE,
+	CONDITION_NODE,
+	DECORATOR_NODE,
+};
+DECL_META_ENUM( XE_API, AINodeType );
+
+enum class AINodeStatus
 {
 	NONE,
 	RUNNING,
 	SUCCESS,
 	FAILURE,
 };
-DECL_META_ENUM( XE_API, NodeStatus );
-
-enum class ConditionStatus
-{
-	ONCE,
-	ALWAYS,
-};
-DECL_META_ENUM( XE_API, ConditionStatus );
+DECL_META_ENUM( XE_API, AINodeStatus );
 
 END_XE_NAMESPACE
 
