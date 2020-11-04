@@ -51,9 +51,6 @@ void nest_json( rapidjson::Value & parent, std::vector<std::string>::const_itera
 	}
 }
 
-
-
-
 BEG_META( XE::CoreFramework )
 END_META()
 
@@ -141,6 +138,11 @@ XE::IRenderServicePtr XE::CoreFramework::GetRenderService() const
 XE::IPhysicsServicePtr XE::CoreFramework::GetPhysicsService() const
 {
 	return GetServiceT<IPhysicsService>();
+}
+
+XE::INavigationServicePtr XE::CoreFramework::GetINavigationService() const
+{
+	return GetServiceT<INavigationService>();
 }
 
 XE::ILocalizationServicePtr XE::CoreFramework::GetLocalizationService() const

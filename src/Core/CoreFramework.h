@@ -51,6 +51,8 @@ public:
 
 	IPhysicsServicePtr GetPhysicsService() const override;
 
+	INavigationServicePtr GetINavigationService() const override;
+
 	ILocalizationServicePtr GetLocalizationService() const override;
 
 	IServicePtr GetService( const IMetaClassPtr & val ) const override;

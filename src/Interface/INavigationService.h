@@ -21,6 +21,19 @@ public:
 	INavigationService();
 
 	~INavigationService() override;
+
+public:
+
+public:
+	virtual XE::uint64 AddObstacle( const XE::OBB & geometry, const XE::Vec3 & position ) = 0;
+
+	virtual XE::uint64 AddObstacle( const XE::AABB & geometry, const XE::Vec3 & position ) = 0;
+
+	virtual XE::uint64 AddObstacle( const XE::Capsule & geometry, const XE::Vec3 & position ) = 0;
+
+	virtual void UpdateObstacle( XE::uint64 handle, const XE::Vec3 & position ) = 0;
+
+	virtual void RemoveObstacle( XE::uint64 handle ) = 0;
 };
 
 END_XE_NAMESPACE

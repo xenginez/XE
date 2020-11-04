@@ -15,9 +15,17 @@ BEG_XE_NAMESPACE
 
 DECL_PTR( NavigationMesh );
 DECL_PTR( NavigationObstacle );
-DECL_PTR( NavigationPathFinder );
 
 DECL_HANDLE( XE_API, NavigationMesh );
+DECL_HANDLE( XE_API, NavigationObstacle );
+
+enum class NavigationObstacleType
+{
+	OBB,
+	AABB,
+	CAPSULE,
+};
+DECL_META_ENUM( XE_API, NavigationObstacleType );
 
 END_XE_NAMESPACE
 
