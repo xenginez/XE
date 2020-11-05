@@ -423,24 +423,6 @@ void XE::RandomSelectorNode::OnUpdate( XE::float32 dt )
 	}
 }
 
-BEG_META( XE::ParallelNode )
-END_META()
-
-XE::ParallelNode::ParallelNode()
-{
-
-}
-
-XE::ParallelNode::~ParallelNode()
-{
-
-}
-
-void XE::ParallelNode::OnEnter()
-{
-	Super::OnEnter();
-}
-
 BEG_META( XE::ParallelSequenceNode )
 END_META()
 

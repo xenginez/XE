@@ -93,7 +93,7 @@ struct XE::AssetsService::Private
 {
 	sqlite3 * _DB = nullptr;
 	XE::Map<XE::String, XE::Unzipper> _Packages;
-	tbb::concurrent_hash_map<XE::String, XE::ObjectWPtr> _ObjectCache;
+	tbb::concurrent_hash_map<XE::String, XE::ObjectWPtr, StringHashCompare > _ObjectCache;
 	tbb::concurrent_lru_cache<XE::String, XE::MemoryStream> _MemoryCache = { []( XE::String )->XE::MemoryStream {return {};}, 100 };
 };
 
@@ -188,7 +188,7 @@ void XE::AssetsService::AsyncLoad( const XE::FileSystem::Path & path, const Load
 
 XE::ObjectPtr XE::AssetsService::LoadObject( const XE::FileSystem::Path & path )
 {
-	tbb::concurrent_hash_map<XE::String, XE::ObjectWPtr>::accessor it;
+	tbb::concurrent_hash_map<XE::String, XE::ObjectWPtr, StringHashCompare >::accessor it;
 	if( _p->_ObjectCache.find( it, path.u8string() ) )
 	{
 		if( !it->second.expired() )

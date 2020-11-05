@@ -49,11 +49,10 @@ private:
 };
 DECL_META_CLASS( XE_API, BlackboardKey );
 
-template< typename T, typename A > class BlackboardKeyPtr : public XE::BlackboardKey
+template< typename T > class BlackboardKeyPtr : public XE::BlackboardKey
 {
 public:
 	using ValueType = T;
-	using AIModuleType = A;
 
 public:
 	BlackboardKeyPtr() = default;
@@ -76,14 +75,14 @@ public:
 	}
 
 private:
-	XE::SharedPtr< AIModuleType > _Module;
+	XE::SharedPtr< XE::AIModulePtr > _Module;
 };
 
 END_XE_NAMESPACE
 
-template< typename T, typename A > struct XE::ClassID< XE::BlackboardKeyPtr< T, A > >
+template< typename T > struct XE::ClassID< XE::BlackboardKeyPtr< T > >
 {
-	static XE::IMetaClassPtr Get( const XE::BlackboardKeyPtr< T, A > * val = nullptr )
+	static XE::IMetaClassPtr Get( const XE::BlackboardKeyPtr< T > * val = nullptr )
 	{
 		return XE::ClassID< XE::BlackboardKey >::Get();
 	}

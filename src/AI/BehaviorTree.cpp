@@ -174,7 +174,7 @@ void XE::BehaviorTree::PushCompositeNode( XE::CompositeNode * val )
 	XE::BehaviorTree::PrivateNode node;
 	node.Node = val;
 	node.IsCondition = false;
-	_RunningNodes.emplace_back( std::move( node ) );
+	_RunningNodes.push_back( val );
 }
 
 void XE::BehaviorTree::PushConditionNode( XE::ConditionNode * val )
@@ -182,5 +182,5 @@ void XE::BehaviorTree::PushConditionNode( XE::ConditionNode * val )
 	XE::BehaviorTree::PrivateNode node;
 	node.Node = val;
 	node.IsCondition = true;
-	_RunningNodes.emplace_back( std::move( node ) );
+	_RunningNodes.push_back( val );
 }

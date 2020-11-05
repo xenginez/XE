@@ -56,12 +56,12 @@ public:
 	void SetKeys( const XE::Map<XE::String, XE::Variant> & val );
 
 public:
-	template< typename T > T GetKeyT( const BlackboardKeyKeyT<T> & val ) const
+	template< typename T > T GetKeyT( const BlackboardKeyPtr<T> & val ) const
 	{
 		return GetKey( val ).Value<T>();
 	}
 
-	template< typename T > void SetKeyT( const BlackboardKeyKeyT<T> & key, const T & val )
+	template< typename T > void SetKeyT( const BlackboardKeyPtr<T> & key, const T & val )
 	{
 		SetKey( key, val );
 	}

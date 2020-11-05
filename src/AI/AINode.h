@@ -219,8 +219,6 @@ public:
 	~ParallelSequenceNode();
 
 protected:
-	void OnEnter() override;
-
 	void OnUpdate( XE::float32 dt ) override;
 
 };
