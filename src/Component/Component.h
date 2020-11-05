@@ -22,12 +22,8 @@
 #include "SkyLightComponent.h"
 #include "BillboardComponent.h"
 #include "SpotLightComponent.h"
-#include "PathfinderComponent.h"
 #include "PointLightComponent.h"
 #include "AudioSourceComponent.h"
-#include "ObstacleBoxComponent.h"
-#include "ObstacleSphereComponent.h"
-#include "ObstacleCapsuleComponent.h"
 #include "DirectionalLightComponent.h"
 
 #endif // COMPONENT_H__CB557BA8_3FF8_48A3_BF14_81098CCDFB10
