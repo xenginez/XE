@@ -17,6 +17,9 @@ class XE_API NavigationService : public XE::INavigationService
 {
 	OBJECT( NavigationService, INavigationService )
 
+private:
+	struct Private;
+
 public:
 	NavigationService();
 
@@ -31,6 +34,27 @@ public:
 
 	void Clearup() override;
 
+public:
+	XE::Array< XE::Vec3 > FindRoute( const XE::OBB & geometry, const XE::Vec3 & start, const XE::Vec3 & end ) override;
+
+	XE::Array< XE::Vec3 > FindRoute( const XE::AABB & geometry, const XE::Vec3 & start, const XE::Vec3 & end ) override;
+
+	XE::Array< XE::Vec3 > FindRoute( const XE::Capsule & geometry, const XE::Vec3 & start, const XE::Vec3 & end ) override;
+
+public:
+	XE::NavMeshHandle AddNavMeshTile( const XE::FileSystem::Path & val ) override;
+
+	void RemvoeNavMesh( XE::NavMeshHandle val ) override;
+
+public:
+	XE::NavObstacleHandle AddObstacle( const XE::OBB & geometry ) override;
+
+	XE::NavObstacleHandle AddObstacle( const XE::AABB & geometry ) override;
+
+	void RemoveObstacle( XE::NavObstacleHandle handle ) override;
+
+private:
+	Private * _p;
 };
 
 END_XE_NAMESPACE

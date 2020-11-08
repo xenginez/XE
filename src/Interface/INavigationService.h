@@ -30,11 +30,16 @@ public:
 	virtual XE::Array< XE::Vec3 > FindRoute( const XE::Capsule & geometry, const XE::Vec3 & start, const XE::Vec3 & end ) = 0;
 
 public:
-	virtual XE::uint64 AddObstacle( const XE::OBB & geometry ) = 0;
+	virtual XE::NavMeshHandle AddNavMeshTile( const XE::FileSystem::Path & val ) = 0;
 
-	virtual XE::uint64 AddObstacle( const XE::AABB & geometry ) = 0;
+	virtual void RemvoeNavMesh( XE::NavMeshHandle val ) = 0;
 
-	virtual void RemoveObstacle( XE::uint64 handle ) = 0;
+public:
+	virtual XE::NavObstacleHandle AddObstacle( const XE::OBB & geometry ) = 0;
+
+	virtual XE::NavObstacleHandle AddObstacle( const XE::AABB & geometry ) = 0;
+
+	virtual void RemoveObstacle( XE::NavObstacleHandle handle ) = 0;
 };
 
 END_XE_NAMESPACE

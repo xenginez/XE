@@ -9,7 +9,7 @@
 #ifndef __TYPE_H__67D32AA5_C812_4032_BD6F_E5A4FA0C221D
 #define __TYPE_H__67D32AA5_C812_4032_BD6F_E5A4FA0C221D
 
-#include "Reflect/Reflect.h"
+#include "Utils/Handle.hpp"
 
 BEG_XE_NAMESPACE
 
@@ -29,6 +29,9 @@ DECL_PTR( IPhysicsService );
 DECL_PTR( INavigationService );
 DECL_PTR( ILocalizationService );
 class IFramework; typedef IFramework * IFrameworkPtr;
+
+DECL_HANDLE( XE_API, NavMesh );
+DECL_HANDLE( XE_API, NavObstacle );
 
 enum class KeyCode
 {

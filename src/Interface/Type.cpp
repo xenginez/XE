@@ -1,5 +1,8 @@
 #include "Type.h"
 
+IMPLEMENT_META( XE::NavMeshHandle );
+IMPLEMENT_META( XE::NavObstacleHandle );
+
 BEG_META( XE::KeyCode )
 type->Value( "None", XE::KeyCode::None );
 type->Value( "Backspace", XE::KeyCode::Backspace );
