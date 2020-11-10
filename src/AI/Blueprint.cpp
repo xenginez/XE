@@ -3,9 +3,7 @@
 #include "AIElement.h"
 
 BEG_META( XE::Blueprint )
-type->Property( "Startup", &Blueprint::_StartupRoot, IMetaProperty::NoDesign );
-type->Property( "Update", &Blueprint::_UpdateRoot, IMetaProperty::NoDesign );
-type->Property( "Clearup", &Blueprint::_ClearupRoot, IMetaProperty::NoDesign );
+type->Property( "Root", &Blueprint::_Root, IMetaProperty::NoDesign );
 type->Property( "Elements", &Blueprint::_Elements, IMetaProperty::NoDesign );
 END_META()
 
@@ -27,21 +25,13 @@ void XE::Blueprint::Startup()
 	{
 		element->SetBlueprint( XE_THIS( Blueprint ) );
 	}
-
-	auto handle = _StartupRoot;
-	while( handle )
-	{
-		_Elements[handle]->Execute();
-
-		handle = _Elements[handle]->GetNextHandle();
-	}
 }
 
 void XE::Blueprint::Update( XE::float32 dt )
 {
 	Super::Update( dt );
 
-	auto handle = _UpdateRoot;
+	auto handle = _Root;
 	while( handle )
 	{
 		_Elements[handle]->Execute();
@@ -52,14 +42,6 @@ void XE::Blueprint::Update( XE::float32 dt )
 
 void XE::Blueprint::Clearup()
 {
-	auto handle = _ClearupRoot;
-	while( handle )
-	{
-		_Elements[handle]->Execute();
-
-		handle = _Elements[handle]->GetNextHandle();
-	}
-
 	for( auto element : _Elements )
 	{
 		element->SetBlueprint( nullptr );
@@ -78,24 +60,24 @@ void XE::Blueprint::AssetLoad()
 	}
 }
 
-XE::AIElementHandle XE::Blueprint::GetStartupRoot() const
+XE::AIElementHandle XE::Blueprint::GetRoot() const
 {
 	return _StartupRoot;
 }
 
-void XE::Blueprint::SetStartupRoot( XE::AIElementHandle val )
+void XE::Blueprint::SetRoot( XE::AIElementHandle val )
 {
 	_StartupRoot = val;
 }
 
 XE::AIElementHandle XE::Blueprint::GetUpdateRoot() const
 {
-	return _UpdateRoot;
+	return _Root;
 }
 
 void XE::Blueprint::SetUpdateRoot( XE::AIElementHandle val )
 {
-	_UpdateRoot = val;
+	_Root = val;
 }
 
 XE::AIElementHandle XE::Blueprint::GetClearupRoot() const

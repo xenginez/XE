@@ -32,17 +32,9 @@ public:
 	void AssetLoad() override;
 
 public:
-	XE::AIElementHandle GetStartupRoot() const;
+	XE::AIElementHandle GetRoot() const;
 
-	void SetStartupRoot( XE::AIElementHandle val );
-
-	XE::AIElementHandle GetUpdateRoot() const;
-
-	void SetUpdateRoot( XE::AIElementHandle val );
-
-	XE::AIElementHandle GetClearupRoot() const;
-
-	void SetClearupRoot( XE::AIElementHandle val );
+	void SetRoot( XE::AIElementHandle val );
 
 	const XE::Array< XE::AIElementPtr > & GetElements() const;
 
@@ -51,9 +43,7 @@ public:
 	XE::AIElementPtr GetElement( XE::AIElementHandle val ) const;
 
 public:
-	XE::AIElementHandle _StartupRoot;
-	XE::AIElementHandle _UpdateRoot;
-	XE::AIElementHandle _ClearupRoot;
+	XE::AIElementHandle _Root;
 	XE::Array< XE::AIElementPtr > _Elements;
 };
 
