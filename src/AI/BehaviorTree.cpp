@@ -171,16 +171,10 @@ void XE::BehaviorTree::SetNodes( const XE::Array< XE::AINodePtr > & val )
 
 void XE::BehaviorTree::PushCompositeNode( XE::CompositeNode * val )
 {
-	XE::BehaviorTree::PrivateNode node;
-	node.Node = val;
-	node.IsCondition = false;
 	_RunningNodes.push_back( val );
 }
 
 void XE::BehaviorTree::PushConditionNode( XE::ConditionNode * val )
 {
-	XE::BehaviorTree::PrivateNode node;
-	node.Node = val;
-	node.IsCondition = true;
 	_RunningNodes.push_back( val );
 }

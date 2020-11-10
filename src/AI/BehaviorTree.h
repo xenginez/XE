@@ -23,13 +23,6 @@ class XE_API BehaviorTree : public XE::AIModule
 	friend class CompositeNode;
 	friend class ConditionNode;
 
-private:
-	struct PrivateNode
-	{
-		bool IsCondition = false;
-		XE::AINode * Node = nullptr;
-	};
-
 public:
 	BehaviorTree();
 

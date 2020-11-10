@@ -16,11 +16,14 @@ BEG_XE_NAMESPACE
 DECL_PTR( AINode );
 DECL_PTR( AIState );
 DECL_PTR( AIModule );
+DECL_PTR( AIElement );
+DECL_PTR( Blueprint );
 DECL_PTR( BehaviorTree );
 DECL_PTR( StateMachine );
 
 DECL_HANDLE( XE_API, AINode );
 DECL_HANDLE( XE_API, AIState );
+DECL_HANDLE( XE_API, AIElement );
 
 enum class AINodeType
 {
