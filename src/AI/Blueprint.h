@@ -13,6 +13,13 @@
 
 BEG_XE_NAMESPACE
 
+class DataElement;
+class CalcElement;
+class LogicElement;
+class EventElement;
+class ActionElement;
+class VariableElement;
+
 class XE_API Blueprint : public XE::AIModule
 {
 	OBJECT( Blueprint, AIModule )

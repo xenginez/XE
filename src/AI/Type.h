@@ -44,6 +44,17 @@ enum class AINodeStatus
 };
 DECL_META_ENUM( XE_API, AINodeStatus );
 
+enum class AIElementType
+{
+	DATA,
+	EVENT,
+	LOGIC,
+	ACTION,
+	VARIABLE,
+	CALCULATION,
+};
+DECL_META_ENUM( XE_API, AIElementType );
+
 END_XE_NAMESPACE
 
 #endif // __TYPE_H__73959EA8_D866_4007_8631_FA5571A35593
