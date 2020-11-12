@@ -9,6 +9,8 @@
 #ifndef AIELEMENT_H__7AD331C3_9C5F_41AE_8D41_DE75C3114690
 #define AIELEMENT_H__7AD331C3_9C5F_41AE_8D41_DE75C3114690
 
+#include "Utils/Asset.h"
+
 #include "BlackboardKey.h"
 
 BEG_XE_NAMESPACE
@@ -48,12 +50,6 @@ private:
 
 	void SetHandle( XE::AIElementHandle val );
 
-public:
-	void Execute();
-
-protected:
-	virtual void OnExecute();
-
 private:
 	XE::String _Name;
 	XE::AIElementType _Type;
@@ -73,6 +69,33 @@ private:
 逻辑单元（logic）：用来控制Graph的运行逻辑走向的单元，比如Branch（相当于“if... else...”条件语句）和Loop（相当于“for...”循环语句）等等
 */
 
+class XE_API SubElement : public XE::AIElement
+{
+	OBJECT( SubElement, AIElement )
+
+public:
+	SubElement();
+
+	~SubElement() override;
+
+public:
+	void Startup();
+
+	void Enter();
+
+	void Execute();
+
+	void Quit();
+
+	void Clearup();
+
+public:
+	void AssetLoad() override;
+
+private:
+	XE::AssetInstance< XE::AIModule > _AIModule;
+};
+
 class XE_API DataElement : public XE::AIElement
 {
 	OBJECT( DataElement, AIElement )
@@ -81,6 +104,14 @@ public:
 	DataElement();
 
 	~DataElement() override;
+
+public:
+	const XE::Variant & GetValue() const;
+
+	void SetValue( const XE::Variant & val );
+
+private:
+	XE::Variant _Value;
 };
 
 class XE_API CalcElement : public XE::AIElement
@@ -111,6 +142,22 @@ public:
 	EventElement();
 
 	~EventElement() override;
+
+public:
+	const XE::Variant & GetValue() const;
+
+	void SetValue( const XE::Variant & val );
+
+	XE::EventHandle GetListenerEvent() const;
+
+	void SetListenerEvent( XE::EventHandle val );
+
+public:
+	void Execute();
+
+private:
+	XE::Variant _Value;
+	XE::EventHandle _ListenerEvent;
 };
 
 class XE_API ActionElement : public XE::AIElement

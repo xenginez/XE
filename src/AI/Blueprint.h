@@ -13,12 +13,8 @@
 
 BEG_XE_NAMESPACE
 
-class DataElement;
-class CalcElement;
-class LogicElement;
+class SubElement;
 class EventElement;
-class ActionElement;
-class VariableElement;
 
 class XE_API Blueprint : public XE::AIModule
 {
@@ -32,26 +28,38 @@ public:
 public:
 	void Startup() override;
 
+	void Enter() override;
+
 	void Update( XE::float32 dt );
+
+	void Quit() override;
 
 	void Clearup() override;
 
+	bool IsStopped() const override;
+
 	void AssetLoad() override;
 
+	void ProcessEvent( const EventPtr & val ) override;
+
 public:
-	XE::AIElementHandle GetRoot() const;
-
-	void SetRoot( XE::AIElementHandle val );
-
 	const XE::Array< XE::AIElementPtr > & GetElements() const;
 
 	void SetElements( const XE::Array< XE::AIElementPtr > & val );
 
 	XE::AIElementPtr GetElement( XE::AIElementHandle val ) const;
 
+	template< typename T > XE::SharedPtr< T > GetElementT( XE::AIElementHandle val ) const
+	{
+		return DP_CAST< T >( GetElement( val ) );
+	}
+
 public:
-	XE::AIElementHandle _Root;
 	XE::Array< XE::AIElementPtr > _Elements;
+
+	XE::Array< XE::SubElement * > _Subs;
+	XE::Array< XE::EventElement * > _Events;
+	XE::Array< XE::EventElement * > _Updates;
 };
 
 END_XE_NAMESPACE

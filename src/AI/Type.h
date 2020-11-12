@@ -9,6 +9,7 @@
 #ifndef __TYPE_H__73959EA8_D866_4007_8631_FA5571A35593
 #define __TYPE_H__73959EA8_D866_4007_8631_FA5571A35593
 
+#include "Utils/Event.h"
 #include "Utils/Handle.hpp"
 
 BEG_XE_NAMESPACE
@@ -46,14 +47,22 @@ DECL_META_ENUM( XE_API, AINodeStatus );
 
 enum class AIElementType
 {
-	DATA,
-	EVENT,
-	LOGIC,
-	ACTION,
-	VARIABLE,
-	CALCULATION,
+	SUB_ELEMENET,
+	DATA_ELEMENET,
+	CALC_ELEMENET,
+	EVENT_ELEMENET,
+	LOGIC_ELEMENET,
+	ACTION_ELEMENET,
+	VARIABLE_ELEMENET,
 };
 DECL_META_ENUM( XE_API, AIElementType );
+
+
+DECL_EVENT( START, "blueprint event element start event", void );
+DECL_EVENT( ENTER, "blueprint event element enter event", void );
+DECL_EVENT( UPDATE, "blueprint event element update event", XE::float32 );
+DECL_EVENT( QUIT, "blueprint event element quit event", void );
+DECL_EVENT( CLEAR, "blueprint event element clear event", void );
 
 END_XE_NAMESPACE
 

@@ -18,16 +18,6 @@ XE::AIElement::~AIElement()
 
 }
 
-XE::BlueprintPtr XE::AIElement::GetBlueprint() const
-{
-	return _Blueprint.lock();
-}
-
-void XE::AIElement::SetBlueprint( BlueprintPtr val )
-{
-	_Blueprint = val;
-}
-
 const XE::String & XE::AIElement::GetName() const
 {
 	return _Name;
@@ -36,6 +26,26 @@ const XE::String & XE::AIElement::GetName() const
 void XE::AIElement::SetName( const XE::String & val )
 {
 	_Name;
+}
+
+XE::AIElementType XE::AIElement::GetType() const
+{
+	return _Type;
+}
+
+void XE::AIElement::SetType( XE::AIElementType val )
+{
+	_Type = val;
+}
+
+XE::BlueprintPtr XE::AIElement::GetBlueprint() const
+{
+	return _Blueprint.lock();
+}
+
+void XE::AIElement::SetBlueprint( BlueprintPtr val )
+{
+	_Blueprint = val;
 }
 
 XE::AIElementHandle XE::AIElement::GetHandle() const
@@ -56,14 +66,4 @@ XE::AIElementHandle XE::AIElement::GetNextHandle() const
 void XE::AIElement::SetNextHandle( XE::AIElementHandle val )
 {
 	_NextHandle = val;
-}
-
-void XE::AIElement::Execute()
-{
-	OnExecute();
-}
-
-void XE::AIElement::OnExecute()
-{
-
 }
