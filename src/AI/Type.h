@@ -47,7 +47,6 @@ DECL_META_ENUM( XE_API, AINodeStatus );
 
 enum class AIElementType
 {
-	SUB_ELEMENET,
 	DATA_ELEMENET,
 	CALC_ELEMENET,
 	EVENT_ELEMENET,
@@ -56,7 +55,6 @@ enum class AIElementType
 	VARIABLE_ELEMENET,
 };
 DECL_META_ENUM( XE_API, AIElementType );
-
 
 DECL_EVENT( START, "blueprint event element start event", void );
 DECL_EVENT( ENTER, "blueprint event element enter event", void );

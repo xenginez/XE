@@ -113,26 +113,27 @@ void XE::IMetaClass::VisitDerivedClass( const std::function<void( IMetaClassPtr 
 	}
 }
 
-XE::IMetaMethodPtr XE::IMetaClass::FindMethod( const String& Name, const ParameterType& Types /*= MakeParameterType() */ ) const
+XE::IMetaMethodPtr XE::IMetaClass::FindMethod( const String & Name ) const
 {
-	for ( auto var : _Methods )
+	for( auto var : _Methods )
 	{
-		if (var->GetName() == Name)
+		if( var->GetName() == Name )
 		{
-			ParameterType VarTypes = var->GetParameter();
-			if ( Types.size() == VarTypes.size() && std::equal( Types.begin(), Types.end(), VarTypes.begin(), VarTypes.end() ) )
-			{
-				return var;
-			}
+			return var;
 		}
 	}
 
-	if (auto super = _Super.lock())
+	if( auto super = _Super.lock() )
 	{
 		return super->FindMethod( Name );
 	}
 
 	return nullptr;
+}
+
+XE::IMetaMethodPtr XE::IMetaClass::FindMethod( const String& Name, const ParameterType& Types /*= MakeParameterType() */ ) const
+{
+	return FindMethod( Name + XE::ToString( Types ) );
 }
 
 XE::IMetaPropertyPtr XE::IMetaClass::FindProperty( const String& Name ) const
@@ -153,17 +154,27 @@ XE::IMetaPropertyPtr XE::IMetaClass::FindProperty( const String& Name ) const
 	return nullptr;
 }
 
-XE::IMetaOperatorPtr XE::IMetaClass::FindOperator( const String& Name, const IMetaInfoPtr& Type /*= nullptr */ ) const
+XE::IMetaOperatorPtr XE::IMetaClass::FindOperator( const String & Name ) const
 {
-	for ( auto var : _Operators )
+	for( auto var : _Operators )
 	{
-		if ( var->GetName() == Name && var->GetParameter() == Type )
+		if( var->GetName() == Name )
 		{
 			return var;
 		}
 	}
 
+	if( auto super = _Super.lock() )
+	{
+		return super->FindOperator( Name );
+	}
+
 	return nullptr;
+}
+
+XE::IMetaOperatorPtr XE::IMetaClass::FindOperator( const String& Name, const ParameterType & Types ) const
+{
+	return FindOperator( Name + XE::ToString( Types ) );
 }
 
 void XE::IMetaClass::_RegisterMethod( const IMetaMethodPtr& val )

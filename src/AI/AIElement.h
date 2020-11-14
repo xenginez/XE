@@ -15,6 +15,32 @@
 
 BEG_XE_NAMESPACE
 
+class XE_API AISlot
+{
+public:
+	XE::String InputPortName;
+	XE::String OutputPortName;
+	XE::AIElementHandle OutputHandle;
+};
+DECL_META_CLASS( XE_API, AISlot );
+
+class XE_API AIOutput
+{
+public:
+	XE::AIElementHandle Handle;
+};
+DECL_META_CLASS( XE_API, AIOutput );
+
+class XE_API AIInputPort
+{
+};
+DECL_META_CLASS( XE_API, AIInputPort );
+
+class XE_API AIOutputPort
+{
+};
+DECL_META_CLASS( XE_API, AIOutputPort );
+
 class XE_API AIElement : public XE::Object
 {
 	OBJECT( AIElement, Object )
@@ -38,9 +64,9 @@ public:
 
 	void SetName( const XE::String & val );
 
-	XE::AIElementHandle GetNextHandle() const;
+	const XE::Array< XE::AISlot > & GetSlots() const;
 
-	void SetNextHandle( XE::AIElementHandle val );
+	void SetSlots( const XE::Array< XE::AISlot > & val );
 
 protected:
 	void SetType( XE::AIElementType val );
@@ -50,50 +76,23 @@ private:
 
 	void SetHandle( XE::AIElementHandle val );
 
+public:
+	void Execute();
+	
+protected:
+	virtual void OnExecute();
+
+	virtual XE::Variant GetOutputValue( const XE::String & val );
+
+	virtual void SetInputValue( const XE::String & name, const XE::Variant & val );
+
 private:
 	XE::String _Name;
 	XE::AIElementType _Type;
 	XE::AIElementHandle _Handle;
-	XE::AIElementHandle _NextHandle;
+	XE::Array< XE::AISlot > _Slots;
 
 	XE::BlueprintWPtr _Blueprint;
-};
-
-
-/*
-事件单元（events）：决定“当……发生时”的各种unit，通常都会显示为绿色，被用在一个Flow Graph的起点
-命令单元（actions）：决定“做什么”的各种unit
-数据单元（data）：输入各种数据的unit，比如各种以“Literal”结尾的unit。这些单元可以无需调用变量而获得一个Unity数据，比如浮点数（float）、字符串（string）、光线（ray）、层遮罩（layer mask）等
-计算单元（calculation）：用来处理数据、计算数据的各种unit，比如加减乘除，各种数学函数等
-变量单元（variable）：用来调用或修改变量的unit，主要是Set Variable和Get Variable两个
-逻辑单元（logic）：用来控制Graph的运行逻辑走向的单元，比如Branch（相当于“if... else...”条件语句）和Loop（相当于“for...”循环语句）等等
-*/
-
-class XE_API SubElement : public XE::AIElement
-{
-	OBJECT( SubElement, AIElement )
-
-public:
-	SubElement();
-
-	~SubElement() override;
-
-public:
-	void Startup();
-
-	void Enter();
-
-	void Execute();
-
-	void Quit();
-
-	void Clearup();
-
-public:
-	void AssetLoad() override;
-
-private:
-	XE::AssetInstance< XE::AIModule > _AIModule;
 };
 
 class XE_API DataElement : public XE::AIElement
@@ -110,8 +109,14 @@ public:
 
 	void SetValue( const XE::Variant & val );
 
+protected:
+	XE::Variant GetOutputValue( const XE::String & val ) override;
+
+	void SetInputValue( const XE::String & name, const XE::Variant & val ) override;
+
 private:
 	XE::Variant _Value;
+	XE::AIOutputPort _ResultOutputPort;
 };
 
 class XE_API CalcElement : public XE::AIElement
@@ -122,6 +127,7 @@ public:
 	CalcElement();
 
 	~CalcElement() override;
+
 };
 
 class XE_API LogicElement : public XE::AIElement
@@ -132,6 +138,14 @@ public:
 	LogicElement();
 
 	~LogicElement() override;
+
+public:
+	const XE::AIOutput & GetOutput() const;
+
+	void SetOutput( const XE::AIOutput & val );
+
+private:
+	XE::AIOutput _Output;
 };
 
 class XE_API EventElement : public XE::AIElement
@@ -148,15 +162,17 @@ public:
 
 	void SetValue( const XE::Variant & val );
 
+	const XE::AIOutput & GetOutput() const;
+
+	void SetOutput( const XE::AIOutput & val );
+
 	XE::EventHandle GetListenerEvent() const;
 
 	void SetListenerEvent( XE::EventHandle val );
 
-public:
-	void Execute();
-
 private:
 	XE::Variant _Value;
+	XE::AIOutput _Output;
 	XE::EventHandle _ListenerEvent;
 };
 
@@ -168,6 +184,30 @@ public:
 	ActionElement();
 
 	~ActionElement() override;
+
+public:
+	const XE::AIOutput & GetOutput() const;
+
+	void SetOutput( const XE::AIOutput & val );
+
+	const XE::String & GetMethodFullName() const;
+
+	void SetMethodFullName( const XE::String & val );
+
+protected:
+	void OnExecute() override;
+
+	XE::Variant GetOutputValue( const XE::String & val ) override;
+
+	void SetInputValue( const XE::String & name, const XE::Variant & val ) override;
+
+private:
+	XE::AIOutput _Output;
+	XE::String _MethodFullName;
+
+	XE::Variant _This;
+	XE::Variant _Result;
+	XE::Array< XE::Variant > _Params;
 };
 
 class XE_API VariableElement : public XE::AIElement
@@ -178,6 +218,115 @@ public:
 	VariableElement();
 
 	~VariableElement() override;
+};
+
+class XE_API SetVariableElement : public XE::VariableElement
+{
+	OBJECT( SetVariableElement, VariableElement )
+
+public:
+	SetVariableElement();
+
+	~SetVariableElement() override;
+
+public:
+	const XE::AIOutput & GetOutput() const;
+
+	void SetOutput( const XE::AIOutput & val );
+
+	const XE::String & GetPropertyFullName() const;
+
+	void SetPropertyFullName( const XE::String & val );
+
+protected:
+	void OnExecute() override;
+
+	void SetInputValue( const XE::String & name, const XE::Variant & val ) override;
+
+private:
+	XE::AIOutput _Output;
+	XE::String _PropertyFullName;
+	XE::AIInputPort _ThisInputPort;
+	XE::AIInputPort _ValueInputPort;
+
+	XE::Variant _This;
+	XE::Variant _Value;
+};
+
+class XE_API GetVariableElement : public XE::VariableElement
+{
+	OBJECT( GetVariableElement, VariableElement )
+
+public:
+	GetVariableElement();
+
+	~GetVariableElement() override;
+
+public:
+	const XE::String & GetPropertyFullName() const;
+
+	void SetPropertyFullName( const XE::String & val );
+
+protected:
+	XE::Variant GetOutputValue( const XE::String & val ) override;
+
+	void SetInputValue( const XE::String & name, const XE::Variant & val ) override;
+
+private:
+	XE::String _PropertyFullName;
+	XE::AIInputPort _ThisInputPort;
+	XE::AIOutputPort _ResultOutputPort;
+
+	XE::Variant _This;
+};
+
+class XE_API SetBlackboardKeyElement : public XE::VariableElement
+{
+	OBJECT( SetBlackboardKeyElement, VariableElement )
+
+public:
+	SetBlackboardKeyElement();
+
+	~SetBlackboardKeyElement() override;
+
+public:
+	const XE::AIOutput & GetOutput() const;
+
+	void SetOutput( const XE::AIOutput & val );
+
+	const XE::BlackboardKey & GetBlackboardKey() const;
+
+	void SetBlackboardKey( const XE::BlackboardKey & val );
+
+protected:
+	void SetInputValue( const XE::String & name, const XE::Variant & val ) override;
+
+private:
+	XE::AIOutput _Output;
+	XE::AIInputPort _ValueInputPort;
+	XE::BlackboardKey _BlackboardKey;
+};
+
+class XE_API GetBlackboardKeyElement : public XE::VariableElement
+{
+	OBJECT( GetBlackboardKeyElement, VariableElement )
+
+public:
+	GetBlackboardKeyElement();
+
+	~GetBlackboardKeyElement() override;
+
+public:
+	const XE::BlackboardKey & GetBlackboardKey() const;
+
+	void SetBlackboardKey( const XE::BlackboardKey & val );
+
+protected:
+	XE::Variant GetOutputValue( const XE::String & val ) override;
+
+private:
+	XE::BlackboardKey _BlackboardKey;
+	XE::AIOutputPort _ResultOutputPort;
 };
 
 END_XE_NAMESPACE

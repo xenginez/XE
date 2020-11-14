@@ -54,11 +54,15 @@ public:
 	void VisitDerivedClass( const  std::function<void( IMetaClassPtr )> & val ) const;
 
 public:
-	IMetaMethodPtr FindMethod( const String& Name, const ParameterType& Types = MakeParameterType() ) const;
+	IMetaMethodPtr FindMethod( const String& Name ) const;
 
 	IMetaPropertyPtr FindProperty( const String& Name ) const;
 
-	IMetaOperatorPtr FindOperator( const String& Name, const IMetaInfoPtr& Type = nullptr ) const;
+	IMetaOperatorPtr FindOperator( const String & Name ) const;
+
+	IMetaMethodPtr FindMethod( const String & Name, const ParameterType & Types ) const;
+
+	IMetaOperatorPtr FindOperator( const String & Name, const ParameterType & Types ) const;
 
 public:
 	virtual Variant ConstructPtr( XE::SharedPtr<void> ptr = nullptr ) const = 0;

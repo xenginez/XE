@@ -7,11 +7,11 @@ XE::IMetaInfo::IMetaInfo( const String & Name, MetaType Type, IMetaInfoPtr Owner
 {
 	if( auto owner = _Owner.lock() )
 	{
-		_FullName = owner->GetFullName() + "::" + _Name;
+		_FullName = owner->GetFullName() + "." + _Name;
 	}
 	else
 	{
-		_FullName = ( _ModuleName != "" ? _ModuleName + "::" : _ModuleName ) + _Name;
+		_FullName = ( _ModuleName != "" ? _ModuleName + "." : _ModuleName ) + _Name;
 	}
 }
 

@@ -49,6 +49,22 @@ template< typename ... Types >ParameterType MakeParameterType()
 	return ret;
 }
 
+inline std::string ToString( const ParameterType & _Val )
+{
+	std::string ret = "(";
+
+	for( int i = 0; i < _Val.size(); ++i )
+	{
+		ret += _Val[i]->GetFullName().ToStdString();
+		if( i != _Val.size() - 1 )
+		{
+			ret += ", ";
+		}
+	}
+
+	return ret + ")";
+}
+
 END_XE_NAMESPACE
 
 #endif // __PARAMETERTYPE_HPP__DD6460A4_04AB_4F79_8A04_4C4CF356BDC4

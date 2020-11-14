@@ -75,11 +75,15 @@ public:
 
 	static IMetaClassPtr FindClass( const String& FullName );
 
+	static IMetaMethodPtr FindMethod( const String & FullName );
+
 	static IMetaPropertyPtr FindProperty( const String& FullName );
 
-	static IMetaOperatorPtr FindOperator( const String& FullName, const IMetaInfoPtr& Type = nullptr );
+	static IMetaOperatorPtr FindOperator( const String& FullName );
 
-	static IMetaMethodPtr FindMethod( const String& FullName, const ParameterType& Types = MakeParameterType() );
+	static IMetaMethodPtr FindMethod( const String & FullName, const ParameterType & Types );
+
+	static IMetaOperatorPtr FindOperator( const String & FullName, const ParameterType & Types );
 
 private:
 	Private * _p;

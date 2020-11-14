@@ -24,7 +24,7 @@ public:
 
 public:
 	CXXMetaMethod( const String& Name, MethodType Callback, IMetaClassPtr Owner )
-		:IMetaMethod( Name, true, false, nullptr, MakeParameterType<ParameterType...>(), Owner ), _Callback( Callback )
+		:IMetaMethod( Name + XE::ToString( MakeParameterType<ParameterType...>() ), true, false, nullptr, MakeParameterType<ParameterType...>(), Owner ), _Callback( Callback )
 	{
 	}
 
@@ -46,7 +46,7 @@ public:
 
 public:
 	CXXMetaMethod( const String& Name, MethodType Callback, IMetaClassPtr Owner )
-		:IMetaMethod( Name, true, false, TypeID<typename TypeTraits< ResultType >::raw_t>::Get(), MakeParameterType<ParameterType...>(), Owner ), _Callback( Callback )
+		:IMetaMethod( Name + XE::ToString( MakeParameterType<ParameterType...>() ), true, false, TypeID<typename TypeTraits< ResultType >::raw_t>::Get(), MakeParameterType<ParameterType...>(), Owner ), _Callback( Callback )
 	{
 	}
 
@@ -67,7 +67,7 @@ public:
 
 public:
 	CXXMetaMethod( const String& Name, MethodType Callback, IMetaClassPtr Owner )
-		:IMetaMethod( Name, false, false, nullptr, MakeParameterType<ParameterType...>(), Owner ), _Callback( Callback )
+		:IMetaMethod( Name + XE::ToString( MakeParameterType<ParameterType...>() ), false, false, nullptr, MakeParameterType<ParameterType...>(), Owner ), _Callback( Callback )
 	{
 	}
 
@@ -89,7 +89,7 @@ public:
 
 public:
 	CXXMetaMethod( const String& Name, MethodType Callback, IMetaClassPtr Owner )
-		:IMetaMethod( Name, false, true, nullptr, MakeParameterType<ParameterType...>(), Owner ), _Callback( Callback )
+		:IMetaMethod( Name + XE::ToString( MakeParameterType<ParameterType...>() ), false, true, nullptr, MakeParameterType<ParameterType...>(), Owner ), _Callback( Callback )
 	{
 	}
 
@@ -111,7 +111,7 @@ public:
 
 public:
 	CXXMetaMethod( const String& Name, MethodType Callback, IMetaClassPtr Owner )
-		:IMetaMethod( Name, false, false, TypeID<typename TypeTraits< ResultType >::raw_t>::Get(), MakeParameterType<ParameterType...>(), Owner ), _Callback( Callback )
+		:IMetaMethod( Name + XE::ToString( MakeParameterType<ParameterType...>() ), false, false, TypeID<typename TypeTraits< ResultType >::raw_t>::Get(), MakeParameterType<ParameterType...>(), Owner ), _Callback( Callback )
 	{
 	}
 
@@ -132,7 +132,7 @@ public:
 
 public:
 	CXXMetaMethod( const String& Name, MethodType Callback, IMetaClassPtr Owner )
-		:IMetaMethod( Name, false, true, TypeID<typename TypeTraits< ResultType >::raw_t>::Get(), MakeParameterType<ParameterType...>(), Owner ), _Callback( Callback )
+		:IMetaMethod( Name + XE::ToString( MakeParameterType<ParameterType...>() ), false, true, TypeID<typename TypeTraits< ResultType >::raw_t>::Get(), MakeParameterType<ParameterType...>(), Owner ), _Callback( Callback )
 	{
 	}
 
