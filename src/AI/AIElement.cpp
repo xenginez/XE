@@ -163,6 +163,72 @@ XE::CalcElement::~CalcElement()
 
 }
 
+BEG_META( XE::UnaryCalcElement )
+type->Property( "Value", &XE::UnaryCalcElement::_ValueInputPort, XE::IMetaProperty::NoDesign );
+type->Property( "Result", &XE::UnaryCalcElement::_ResultOutputPort, XE::IMetaProperty::NoDesign );
+END_META()
+
+XE::UnaryCalcElement::UnaryCalcElement()
+{
+
+}
+
+XE::UnaryCalcElement::~UnaryCalcElement()
+{
+
+}
+
+void XE::UnaryCalcElement::SetInputValue( const XE::String & name, const XE::Variant & val )
+{
+	if( name == "Value" )
+	{
+		_Value = val;
+	}
+}
+
+const XE::Variant XE::UnaryCalcElement::GetValue() const
+{
+	return _Value;
+}
+
+BEG_META( XE::BinaryCalcElement )
+type->Property( "Left", &XE::BinaryCalcElement::_LeftInputPort, XE::IMetaProperty::NoDesign );
+type->Property( "Right", &XE::BinaryCalcElement::_RightInputPort, XE::IMetaProperty::NoDesign );
+type->Property( "Result", &XE::BinaryCalcElement::_ResultOutputPort, XE::IMetaProperty::NoDesign );
+END_META()
+
+XE::BinaryCalcElement::BinaryCalcElement()
+{
+
+}
+
+XE::BinaryCalcElement::~BinaryCalcElement()
+{
+
+}
+
+void XE::BinaryCalcElement::SetInputValue( const XE::String & name, const XE::Variant & val )
+{
+	if( name == "Left" )
+	{
+		_Left = val;
+	}
+	else if( name == "Right" )
+	{
+		_Right = val;
+	}
+}
+
+const XE::Variant XE::BinaryCalcElement::GetLeft() const
+{
+	return _Left;
+}
+
+const XE::Variant XE::BinaryCalcElement::GetRight() const
+{
+	return _Right;
+}
+
 BEG_META( XE::LogicElement )
 type->Property( "Output", &XE::LogicElement::_Output, XE::IMetaProperty::NoDesign );
 END_META()
@@ -299,12 +365,19 @@ XE::Variant XE::ActionElement::GetOutputValue( const XE::String & val )
 
 void XE::ActionElement::SetInputValue( const XE::String & name, const XE::Variant & val )
 {
-	for( int i = 0; i < 10; ++i )
+	if( name == "This" )
 	{
-		if( name == XE::StringUtils::Format( "arg_$1", i ) )
+		_This = val;
+	}
+	else if( name.Find( "arg" ) != XE::String::npos )
+	{
+		for( int i = 0; i < 10; ++i )
 		{
-			_Params[i] = val;
-			return;
+			if( name == XE::StringUtils::Format( "arg_$1", i ) )
+			{
+				_Params[i] = val;
+				return;
+			}
 		}
 	}
 }

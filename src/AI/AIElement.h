@@ -112,8 +112,6 @@ public:
 protected:
 	XE::Variant GetOutputValue( const XE::String & val ) override;
 
-	void SetInputValue( const XE::String & name, const XE::Variant & val ) override;
-
 private:
 	XE::Variant _Value;
 	XE::AIOutputPort _ResultOutputPort;
@@ -127,6 +125,320 @@ public:
 	CalcElement();
 
 	~CalcElement() override;
+
+};
+
+class XE_API UnaryCalcElement : public XE::CalcElement
+{
+	OBJECT( UnaryCalcElement, CalcElement )
+
+public:
+	UnaryCalcElement();
+
+	~UnaryCalcElement() override;
+
+protected:
+	void SetInputValue( const XE::String & name, const XE::Variant & val ) override;
+
+protected:
+	const XE::Variant GetValue() const;
+
+private:
+	XE::AIInputPort _ValueInputPort;
+	XE::AIOutputPort _ResultOutputPort;
+
+	XE::Variant _Value;
+};
+
+class XE_API NotCalcElement : public XE::UnaryCalcElement
+{
+	OBJECT( NotCalcElement, UnaryCalcElement )
+
+public:
+	NotCalcElement();
+
+	~NotCalcElement() override;
+
+protected:
+	XE::Variant GetOutputValue( const XE::String & val ) override;
+
+};
+
+class XE_API RevCalcElement : public XE::UnaryCalcElement
+{
+	OBJECT( RevCalcElement, UnaryCalcElement )
+
+public:
+	RevCalcElement();
+
+	~RevCalcElement() override;
+
+protected:
+	XE::Variant GetOutputValue( const XE::String & val ) override;
+
+};
+
+class XE_API IncCalcElement : public XE::UnaryCalcElement
+{
+	OBJECT( NotCalcElement, UnaryCalcElement )
+
+public:
+	IncCalcElement();
+
+	~IncCalcElement() override;
+
+protected:
+	XE::Variant GetOutputValue( const XE::String & val ) override;
+
+};
+
+class XE_API DecCalcElement : public XE::UnaryCalcElement
+{
+	OBJECT( DecCalcElement, UnaryCalcElement )
+
+public:
+	DecCalcElement();
+
+	~DecCalcElement() override;
+
+protected:
+	XE::Variant GetOutputValue( const XE::String & val ) override;
+
+};
+
+class XE_API NegCalcElement : public XE::UnaryCalcElement
+{
+	OBJECT( NegCalcElement, UnaryCalcElement )
+
+public:
+	NegCalcElement();
+
+	~NegCalcElement() override;
+
+protected:
+	XE::Variant GetOutputValue( const XE::String & val ) override;
+
+};
+
+class XE_API BinaryCalcElement : public XE::CalcElement
+{
+	OBJECT( BinaryCalcElement, CalcElement )
+
+public:
+	BinaryCalcElement();
+
+	~BinaryCalcElement() override;
+
+protected:
+	void SetInputValue( const XE::String & name, const XE::Variant & val ) override;
+
+protected:
+	const XE::Variant GetLeft() const;
+
+	const XE::Variant GetRight() const;
+
+private:
+	XE::AIInputPort _LeftInputPort;
+	XE::AIInputPort _RightInputPort;
+	XE::AIOutputPort _ResultOutputPort;
+
+	XE::Variant _Left;
+	XE::Variant _Right;
+};
+
+class XE_API AddCalcElement : public XE::BinaryCalcElement
+{
+	OBJECT( AddCalcElement, BinaryCalcElement )
+
+public:
+	AddCalcElement();
+
+	~AddCalcElement() override;
+
+protected:
+	XE::Variant GetOutputValue( const XE::String & val ) override;
+
+};
+
+class XE_API SubCalcElement : public XE::BinaryCalcElement
+{
+	OBJECT( SubCalcElement, BinaryCalcElement )
+
+public:
+	SubCalcElement();
+
+	~SubCalcElement() override;
+
+protected:
+	XE::Variant GetOutputValue( const XE::String & val ) override;
+
+};
+
+class XE_API MulCalcElement : public XE::BinaryCalcElement
+{
+	OBJECT( MulCalcElement, BinaryCalcElement )
+
+public:
+	MulCalcElement();
+
+	~MulCalcElement() override;
+
+protected:
+	XE::Variant GetOutputValue( const XE::String & val ) override;
+
+};
+
+class XE_API DivCalcElement : public XE::BinaryCalcElement
+{
+	OBJECT( DivCalcElement, BinaryCalcElement )
+
+public:
+	DivCalcElement();
+
+	~DivCalcElement() override;
+
+protected:
+	XE::Variant GetOutputValue( const XE::String & val ) override;
+
+};
+
+class XE_API ModCalcElement : public XE::BinaryCalcElement
+{
+	OBJECT( AddCalcElement, BinaryCalcElement )
+
+public:
+	ModCalcElement();
+
+	~ModCalcElement() override;
+
+protected:
+	XE::Variant GetOutputValue( const XE::String & val ) override;
+
+};
+
+class XE_API XorCalcElement : public XE::BinaryCalcElement
+{
+	OBJECT( AddCalcElement, BinaryCalcElement )
+
+public:
+	XorCalcElement();
+
+	~XorCalcElement() override;
+
+protected:
+	XE::Variant GetOutputValue( const XE::String & val ) override;
+
+};
+
+class XE_API AndCalcElement : public XE::BinaryCalcElement
+{
+	OBJECT( AndCalcElement, BinaryCalcElement )
+
+public:
+	AndCalcElement();
+
+	~AndCalcElement() override;
+
+protected:
+	XE::Variant GetOutputValue( const XE::String & val ) override;
+
+};
+
+class XE_API OrCalcElement : public XE::BinaryCalcElement
+{
+	OBJECT( OrCalcElement, BinaryCalcElement )
+
+public:
+	OrCalcElement();
+
+	~OrCalcElement() override;
+
+protected:
+	XE::Variant GetOutputValue( const XE::String & val ) override;
+
+};
+
+class XE_API GreaterCalcElement : public XE::BinaryCalcElement
+{
+	OBJECT( GreaterCalcElement, BinaryCalcElement )
+
+public:
+	GreaterCalcElement();
+
+	~GreaterCalcElement() override;
+
+protected:
+	XE::Variant GetOutputValue( const XE::String & val ) override;
+
+};
+
+class XE_API LessCalcElement : public XE::BinaryCalcElement
+{
+	OBJECT( LessCalcElement, BinaryCalcElement )
+
+public:
+	LessCalcElement();
+
+	~LessCalcElement() override;
+
+protected:
+	XE::Variant GetOutputValue( const XE::String & val ) override;
+
+};
+
+class XE_API GreaterEqualCalcElement : public XE::BinaryCalcElement
+{
+	OBJECT( GreaterEqualCalcElement, BinaryCalcElement )
+
+public:
+	GreaterEqualCalcElement();
+
+	~GreaterEqualCalcElement() override;
+
+protected:
+	XE::Variant GetOutputValue( const XE::String & val ) override;
+
+};
+
+class XE_API LessEqualCalcElement : public XE::BinaryCalcElement
+{
+	OBJECT( LessEqualCalcElement, BinaryCalcElement )
+
+public:
+	LessEqualCalcElement();
+
+	~LessEqualCalcElement() override;
+
+protected:
+	XE::Variant GetOutputValue( const XE::String & val ) override;
+
+};
+
+class XE_API EqualCalcElement : public XE::BinaryCalcElement
+{
+	OBJECT( EqualCalcElement, BinaryCalcElement )
+
+public:
+	EqualCalcElement();
+
+	~EqualCalcElement() override;
+
+protected:
+	XE::Variant GetOutputValue( const XE::String & val ) override;
+
+};
+
+class XE_API NotEqualCalcElement : public XE::BinaryCalcElement
+{
+	OBJECT( NotEqualCalcElement, BinaryCalcElement )
+
+public:
+	NotEqualCalcElement();
+
+	~NotEqualCalcElement() override;
+
+protected:
+	XE::Variant GetOutputValue( const XE::String & val ) override;
 
 };
 
