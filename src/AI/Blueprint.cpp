@@ -24,11 +24,9 @@ void XE::Blueprint::Startup()
 	{
 		element->SetBlueprint( XE_THIS( Blueprint ) );
 
-		if( element->GetType() == XE::AIElementType::SUB_ELEMENET )
-		{
-			_Subs.push_back( static_cast< XE::SubElement * >( element.get() ) );
-		}
-		else if( element->GetType() == XE::AIElementType::EVENT_ELEMENET )
+		element->Startup();
+
+		if( element->GetType() == XE::AIElementType::EVENT_ELEMENET )
 		{
 			auto event = static_cast< XE::EventElement * >( element.get() );
 			
@@ -39,11 +37,6 @@ void XE::Blueprint::Startup()
 
 			_Events.push_back( event );
 		}
-	}
-
-	for( auto sub : _Subs )
-	{
-		sub->Startup();
 	}
 
 	for( auto event : _Events )
@@ -58,11 +51,6 @@ void XE::Blueprint::Startup()
 void XE::Blueprint::Enter()
 {
 	Super::Enter();
-
-	for( auto sub : _Subs )
-	{
-		sub->Enter();
-	}
 
 	for( auto event : _Events )
 	{
@@ -87,11 +75,6 @@ void XE::Blueprint::Update( XE::float32 dt )
 
 void XE::Blueprint::Quit()
 {
-	for( auto sub : _Subs )
-	{
-		sub->Quit();
-	}
-
 	for( auto event : _Events )
 	{
 		if( event->GetListenerEvent() == EVENT_QUIT )
@@ -105,10 +88,6 @@ void XE::Blueprint::Quit()
 
 void XE::Blueprint::Clearup()
 {
-	for( auto sub : _Subs )
-	{
-		sub->Clearup();
-	}
 	for( auto event : _Events )
 	{
 		if( event->GetListenerEvent() == EVENT_CLEAR )
@@ -116,12 +95,14 @@ void XE::Blueprint::Clearup()
 			event->Execute();
 		}
 	}
+
 	for( auto element : _Elements )
 	{
+		element->Clearup();
+
 		element->SetBlueprint( nullptr );
 	}
 
-	_Subs.clear();
 	_Events.clear();
 	_Updates.clear();
 

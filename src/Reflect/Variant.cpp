@@ -228,6 +228,661 @@ XE::Variant & XE::Variant::operator=( const Variant & val )
 	return *this;
 }
 
+XE::Variant XE::Variant::operator!() const
+{
+	if( _Flag == Flag::FUNDAMENTAL )
+	{
+		if( _Type == TypeID<bool>::Get() )
+		{
+			return !_Data.b;
+		}
+		else if( _Type == TypeID<XE::int8>::Get() )
+		{
+			return !_Data.i8;
+		}
+		else if( _Type == TypeID<XE::int16>::Get() )
+		{
+			return !_Data.i16;
+		}
+		else if( _Type == TypeID<XE::int32>::Get() )
+		{
+			return !_Data.i32;
+		}
+		else if( _Type == TypeID<XE::int64>::Get() )
+		{
+			return !_Data.i64;
+		}
+		else if( _Type == TypeID<XE::uint8>::Get() )
+		{
+			return !_Data.u8;
+		}
+		else if( _Type == TypeID<XE::uint16>::Get() )
+		{
+			return !_Data.u16;
+		}
+		else if( _Type == TypeID<XE::uint32>::Get() )
+		{
+			return !_Data.u32;
+		}
+		else if( _Type == TypeID<XE::uint64>::Get() )
+		{
+			return !_Data.u64;
+		}
+	}
+
+	throw XE::VariantException( *this, "operator!() this type is not supported!" );
+}
+
+XE::Variant XE::Variant::operator~() const
+{
+	if( _Flag == Flag::FUNDAMENTAL )
+	{
+		if( _Type == TypeID<bool>::Get() )
+		{
+			return ~_Data.b;
+		}
+		else if( _Type == TypeID<XE::int8>::Get() )
+		{
+			return ~_Data.i8;
+		}
+		else if( _Type == TypeID<XE::int16>::Get() )
+		{
+			return ~_Data.i16;
+		}
+		else if( _Type == TypeID<XE::int32>::Get() )
+		{
+			return ~_Data.i32;
+		}
+		else if( _Type == TypeID<XE::int64>::Get() )
+		{
+			return ~_Data.i64;
+		}
+		else if( _Type == TypeID<XE::uint8>::Get() )
+		{
+			return ~_Data.u8;
+		}
+		else if( _Type == TypeID<XE::uint16>::Get() )
+		{
+			return ~_Data.u16;
+		}
+		else if( _Type == TypeID<XE::uint32>::Get() )
+		{
+			return ~_Data.u32;
+		}
+		else if( _Type == TypeID<XE::uint64>::Get() )
+		{
+			return ~_Data.u64;
+		}
+	}
+
+	throw XE::VariantException( *this, "operator~() this type is not supported!" );
+}
+
+XE::Variant XE::Variant::operator-() const
+{
+	if( _Flag == Flag::FUNDAMENTAL )
+	{
+		if( _Type == TypeID<XE::int8>::Get() )
+		{
+			return -_Data.i8;
+		}
+		else if( _Type == TypeID<XE::int16>::Get() )
+		{
+			return -_Data.i16;
+		}
+		else if( _Type == TypeID<XE::int32>::Get() )
+		{
+			return -_Data.i32;
+		}
+		else if( _Type == TypeID<XE::int64>::Get() )
+		{
+			return -_Data.i64;
+		}
+		else if( _Type == TypeID<XE::uint8>::Get() )
+		{
+			return -_Data.u8;
+		}
+		else if( _Type == TypeID<XE::uint16>::Get() )
+		{
+			return -_Data.u16;
+		}
+		else if( _Type == TypeID<XE::uint32>::Get() )
+		{
+			return -_Data.u32;
+		}
+		else if( _Type == TypeID<XE::uint64>::Get() )
+		{
+			return -_Data.u64;
+		}
+	}
+
+	throw XE::VariantException( *this, "operator-() this type is not supported!" );
+}
+
+XE::Variant XE::Variant::operator++()
+{
+	if( _Flag == Flag::FUNDAMENTAL )
+	{
+		if( _Type == TypeID<XE::int8>::Get() )
+		{
+			return ++_Data.i8;
+		}
+		else if( _Type == TypeID<XE::int16>::Get() )
+		{
+			return ++_Data.i16;
+		}
+		else if( _Type == TypeID<XE::int32>::Get() )
+		{
+			return ++_Data.i32;
+		}
+		else if( _Type == TypeID<XE::int64>::Get() )
+		{
+			return ++_Data.i64;
+		}
+		else if( _Type == TypeID<XE::uint8>::Get() )
+		{
+			return ++_Data.u8;
+		}
+		else if( _Type == TypeID<XE::uint16>::Get() )
+		{
+			return ++_Data.u16;
+		}
+		else if( _Type == TypeID<XE::uint32>::Get() )
+		{
+			return ++_Data.u32;
+		}
+		else if( _Type == TypeID<XE::uint64>::Get() )
+		{
+			return ++_Data.u64;
+		}
+	}
+
+	throw XE::VariantException( *this, "operator++() this type is not supported!" );
+}
+
+XE::Variant XE::Variant::operator++( int )
+{
+	if( _Flag == Flag::FUNDAMENTAL )
+	{
+		if( _Type == TypeID<XE::int8>::Get() )
+		{
+			return _Data.i8++;
+		}
+		else if( _Type == TypeID<XE::int16>::Get() )
+		{
+			return _Data.i16++;
+		}
+		else if( _Type == TypeID<XE::int32>::Get() )
+		{
+			return _Data.i32++;
+		}
+		else if( _Type == TypeID<XE::int64>::Get() )
+		{
+			return _Data.i64++;
+		}
+		else if( _Type == TypeID<XE::uint8>::Get() )
+		{
+			return _Data.u8++;
+		}
+		else if( _Type == TypeID<XE::uint16>::Get() )
+		{
+			return _Data.u16++;
+		}
+		else if( _Type == TypeID<XE::uint32>::Get() )
+		{
+			return _Data.u32++;
+		}
+		else if( _Type == TypeID<XE::uint64>::Get() )
+		{
+			return _Data.u64++;
+		}
+	}
+
+	throw XE::VariantException( *this, "operator++(int) this type is not supported!" );
+}
+
+XE::Variant XE::Variant::operator--()
+{
+	if( _Flag == Flag::FUNDAMENTAL )
+	{
+		if( _Type == TypeID<XE::int8>::Get() )
+		{
+			return --_Data.i8;
+		}
+		else if( _Type == TypeID<XE::int16>::Get() )
+		{
+			return --_Data.i16;
+		}
+		else if( _Type == TypeID<XE::int32>::Get() )
+		{
+			return --_Data.i32;
+		}
+		else if( _Type == TypeID<XE::int64>::Get() )
+		{
+			return --_Data.i64;
+		}
+		else if( _Type == TypeID<XE::uint8>::Get() )
+		{
+			return --_Data.u8;
+		}
+		else if( _Type == TypeID<XE::uint16>::Get() )
+		{
+			return --_Data.u16;
+		}
+		else if( _Type == TypeID<XE::uint32>::Get() )
+		{
+			return --_Data.u32;
+		}
+		else if( _Type == TypeID<XE::uint64>::Get() )
+		{
+			return --_Data.u64;
+		}
+	}
+
+	throw XE::VariantException( *this, "operator--() this type is not supported!" );
+}
+
+XE::Variant XE::Variant::operator--( int )
+{
+	if( _Flag == Flag::FUNDAMENTAL )
+	{
+		if( _Type == TypeID<XE::int8>::Get() )
+		{
+			return _Data.i8--;
+		}
+		else if( _Type == TypeID<XE::int16>::Get() )
+		{
+			return _Data.i16--;
+		}
+		else if( _Type == TypeID<XE::int32>::Get() )
+		{
+			return _Data.i32--;
+		}
+		else if( _Type == TypeID<XE::int64>::Get() )
+		{
+			return _Data.i64--;
+		}
+		else if( _Type == TypeID<XE::uint8>::Get() )
+		{
+			return _Data.u8--;
+		}
+		else if( _Type == TypeID<XE::uint16>::Get() )
+		{
+			return _Data.u16--;
+		}
+		else if( _Type == TypeID<XE::uint32>::Get() )
+		{
+			return _Data.u32--;
+		}
+		else if( _Type == TypeID<XE::uint64>::Get() )
+		{
+			return _Data.u64--;
+		}
+	}
+
+	throw XE::VariantException( *this, "operator--(int) this type is not supported!" );
+}
+
+XE::Variant XE::Variant::operator+( const Variant & val ) const
+{
+	if( _Flag == Flag::FUNDAMENTAL && val._Flag == Flag::FUNDAMENTAL )
+	{
+		if( _Type == TypeID<XE::int8>::Get() )
+		{
+			return _Data.i8 + val._Data.i8;
+		}
+		else if( _Type == TypeID<XE::int16>::Get() )
+		{
+			return _Data.i16 + val._Data.i16;
+		}
+		else if( _Type == TypeID<XE::int32>::Get() )
+		{
+			return _Data.i32 + val._Data.i32;
+		}
+		else if( _Type == TypeID<XE::int64>::Get() )
+		{
+			return _Data.i64 + val._Data.i64;
+		}
+		else if( _Type == TypeID<XE::uint8>::Get() )
+		{
+			return _Data.u8 + val._Data.u8;
+		}
+		else if( _Type == TypeID<XE::uint16>::Get() )
+		{
+			return _Data.u16 + val._Data.u16;
+		}
+		else if( _Type == TypeID<XE::uint32>::Get() )
+		{
+			return _Data.u32 + val._Data.u32;
+		}
+		else if( _Type == TypeID<XE::uint64>::Get() )
+		{
+			return _Data.u64 + val._Data.u64;
+		}
+		else if( _Type == TypeID<XE::float32>::Get() )
+		{
+			return _Data.f + val._Data.f;
+		}
+		else if( _Type == TypeID<XE::float64>::Get() )
+		{
+			return _Data.d + val._Data.d;
+		}
+	}
+
+	throw XE::VariantException( *this, "operator+(variant) this type is not supported!" );
+}
+
+XE::Variant XE::Variant::operator-( const Variant & val ) const
+{
+	if( _Flag == Flag::FUNDAMENTAL && val._Flag == Flag::FUNDAMENTAL )
+	{
+		if( _Type == TypeID<XE::int8>::Get() )
+		{
+			return _Data.i8 - val._Data.i8;
+		}
+		else if( _Type == TypeID<XE::int16>::Get() )
+		{
+			return _Data.i16 - val._Data.i16;
+		}
+		else if( _Type == TypeID<XE::int32>::Get() )
+		{
+			return _Data.i32 - val._Data.i32;
+		}
+		else if( _Type == TypeID<XE::int64>::Get() )
+		{
+			return _Data.i64 - val._Data.i64;
+		}
+		else if( _Type == TypeID<XE::uint8>::Get() )
+		{
+			return _Data.u8 - val._Data.u8;
+		}
+		else if( _Type == TypeID<XE::uint16>::Get() )
+		{
+			return _Data.u16 - val._Data.u16;
+		}
+		else if( _Type == TypeID<XE::uint32>::Get() )
+		{
+			return _Data.u32 - val._Data.u32;
+		}
+		else if( _Type == TypeID<XE::uint64>::Get() )
+		{
+			return _Data.u64 - val._Data.u64;
+		}
+		else if( _Type == TypeID<XE::float32>::Get() )
+		{
+			return _Data.f - val._Data.f;
+		}
+		else if( _Type == TypeID<XE::float64>::Get() )
+		{
+			return _Data.d - val._Data.d;
+		}
+	}
+
+	throw XE::VariantException( *this, "operator-(variant) this type is not supported!" );
+}
+
+XE::Variant XE::Variant::operator*( const Variant & val ) const
+{
+	if( _Flag == Flag::FUNDAMENTAL && val._Flag == Flag::FUNDAMENTAL )
+	{
+		if( _Type == TypeID<XE::int8>::Get() )
+		{
+			return _Data.i8 * val._Data.i8;
+		}
+		else if( _Type == TypeID<XE::int16>::Get() )
+		{
+			return _Data.i16 * val._Data.i16;
+		}
+		else if( _Type == TypeID<XE::int32>::Get() )
+		{
+			return _Data.i32 * val._Data.i32;
+		}
+		else if( _Type == TypeID<XE::int64>::Get() )
+		{
+			return _Data.i64 * val._Data.i64;
+		}
+		else if( _Type == TypeID<XE::uint8>::Get() )
+		{
+			return _Data.u8 * val._Data.u8;
+		}
+		else if( _Type == TypeID<XE::uint16>::Get() )
+		{
+			return _Data.u16 * val._Data.u16;
+		}
+		else if( _Type == TypeID<XE::uint32>::Get() )
+		{
+			return _Data.u32 * val._Data.u32;
+		}
+		else if( _Type == TypeID<XE::uint64>::Get() )
+		{
+			return _Data.u64 * val._Data.u64;
+		}
+		else if( _Type == TypeID<XE::float32>::Get() )
+		{
+			return _Data.f * val._Data.f;
+		}
+		else if( _Type == TypeID<XE::float64>::Get() )
+		{
+			return _Data.d * val._Data.d;
+		}
+	}
+
+	throw XE::VariantException( *this, "operator*(variant) this type is not supported!" );
+}
+
+XE::Variant XE::Variant::operator/( const Variant & val ) const
+{
+	if( _Flag == Flag::FUNDAMENTAL && val._Flag == Flag::FUNDAMENTAL )
+	{
+		if( _Type == TypeID<XE::int8>::Get() )
+		{
+			return _Data.i8 / val._Data.i8;
+		}
+		else if( _Type == TypeID<XE::int16>::Get() )
+		{
+			return _Data.i16 / val._Data.i16;
+		}
+		else if( _Type == TypeID<XE::int32>::Get() )
+		{
+			return _Data.i32 / val._Data.i32;
+		}
+		else if( _Type == TypeID<XE::int64>::Get() )
+		{
+			return _Data.i64 / val._Data.i64;
+		}
+		else if( _Type == TypeID<XE::uint8>::Get() )
+		{
+			return _Data.u8 / val._Data.u8;
+		}
+		else if( _Type == TypeID<XE::uint16>::Get() )
+		{
+			return _Data.u16 / val._Data.u16;
+		}
+		else if( _Type == TypeID<XE::uint32>::Get() )
+		{
+			return _Data.u32 / val._Data.u32;
+		}
+		else if( _Type == TypeID<XE::uint64>::Get() )
+		{
+			return _Data.u64 / val._Data.u64;
+		}
+		else if( _Type == TypeID<XE::float32>::Get() )
+		{
+			return _Data.f / val._Data.f;
+		}
+		else if( _Type == TypeID<XE::float64>::Get() )
+		{
+			return _Data.d / val._Data.d;
+		}
+	}
+
+	throw XE::VariantException( *this, "operator/(variant) this type is not supported!" );
+}
+
+XE::Variant XE::Variant::operator%( const Variant & val ) const
+{
+	if( _Flag == Flag::FUNDAMENTAL && val._Flag == Flag::FUNDAMENTAL )
+	{
+		if( _Type == TypeID<XE::int8>::Get() )
+		{
+			return _Data.i8 % val._Data.i8;
+		}
+		else if( _Type == TypeID<XE::int16>::Get() )
+		{
+			return _Data.i16 % val._Data.i16;
+		}
+		else if( _Type == TypeID<XE::int32>::Get() )
+		{
+			return _Data.i32 % val._Data.i32;
+		}
+		else if( _Type == TypeID<XE::int64>::Get() )
+		{
+			return _Data.i64 % val._Data.i64;
+		}
+		else if( _Type == TypeID<XE::uint8>::Get() )
+		{
+			return _Data.u8 % val._Data.u8;
+		}
+		else if( _Type == TypeID<XE::uint16>::Get() )
+		{
+			return _Data.u16 % val._Data.u16;
+		}
+		else if( _Type == TypeID<XE::uint32>::Get() )
+		{
+			return _Data.u32 % val._Data.u32;
+		}
+		else if( _Type == TypeID<XE::uint64>::Get() )
+		{
+			return _Data.u64 % val._Data.u64;
+		}
+	}
+
+	throw XE::VariantException( *this, "operator%(variant) this type is not supported!" );
+}
+
+XE::Variant XE::Variant::operator^( const Variant & val ) const
+{
+	if( _Flag == Flag::FUNDAMENTAL && val._Flag == Flag::FUNDAMENTAL )
+	{
+		if( _Type == TypeID<XE::int8>::Get() )
+		{
+			return _Data.i8 ^ val._Data.i8;
+		}
+		else if( _Type == TypeID<XE::int16>::Get() )
+		{
+			return _Data.i16 ^ val._Data.i16;
+		}
+		else if( _Type == TypeID<XE::int32>::Get() )
+		{
+			return _Data.i32 ^ val._Data.i32;
+		}
+		else if( _Type == TypeID<XE::int64>::Get() )
+		{
+			return _Data.i64 ^ val._Data.i64;
+		}
+		else if( _Type == TypeID<XE::uint8>::Get() )
+		{
+			return _Data.u8 ^ val._Data.u8;
+		}
+		else if( _Type == TypeID<XE::uint16>::Get() )
+		{
+			return _Data.u16 ^ val._Data.u16;
+		}
+		else if( _Type == TypeID<XE::uint32>::Get() )
+		{
+			return _Data.u32 ^ val._Data.u32;
+		}
+		else if( _Type == TypeID<XE::uint64>::Get() )
+		{
+			return _Data.u64 ^ val._Data.u64;
+		}
+	}
+
+	throw XE::VariantException( *this, "operator^(variant) this type is not supported!" );
+}
+
+XE::Variant XE::Variant::operator&( const Variant & val ) const
+{
+	if( _Flag == Flag::FUNDAMENTAL && val._Flag == Flag::FUNDAMENTAL )
+	{
+		if( _Type == TypeID<XE::int8>::Get() )
+		{
+			return _Data.i8 & val._Data.i8;
+		}
+		else if( _Type == TypeID<XE::int16>::Get() )
+		{
+			return _Data.i16 & val._Data.i16;
+		}
+		else if( _Type == TypeID<XE::int32>::Get() )
+		{
+			return _Data.i32 & val._Data.i32;
+		}
+		else if( _Type == TypeID<XE::int64>::Get() )
+		{
+			return _Data.i64 & val._Data.i64;
+		}
+		else if( _Type == TypeID<XE::uint8>::Get() )
+		{
+			return _Data.u8 & val._Data.u8;
+		}
+		else if( _Type == TypeID<XE::uint16>::Get() )
+		{
+			return _Data.u16 & val._Data.u16;
+		}
+		else if( _Type == TypeID<XE::uint32>::Get() )
+		{
+			return _Data.u32 & val._Data.u32;
+		}
+		else if( _Type == TypeID<XE::uint64>::Get() )
+		{
+			return _Data.u64 & val._Data.u64;
+		}
+	}
+
+	throw XE::VariantException( *this, "operator&(variant) this type is not supported!" );
+}
+
+XE::Variant XE::Variant::operator|( const Variant & val ) const
+{
+	if( _Flag == Flag::FUNDAMENTAL && val._Flag == Flag::FUNDAMENTAL )
+	{
+		if( _Type == TypeID<XE::int8>::Get() )
+		{
+			return _Data.i8 | val._Data.i8;
+		}
+		else if( _Type == TypeID<XE::int16>::Get() )
+		{
+			return _Data.i16 | val._Data.i16;
+		}
+		else if( _Type == TypeID<XE::int32>::Get() )
+		{
+			return _Data.i32 | val._Data.i32;
+		}
+		else if( _Type == TypeID<XE::int64>::Get() )
+		{
+			return _Data.i64 | val._Data.i64;
+		}
+		else if( _Type == TypeID<XE::uint8>::Get() )
+		{
+			return _Data.u8 | val._Data.u8;
+		}
+		else if( _Type == TypeID<XE::uint16>::Get() )
+		{
+			return _Data.u16 | val._Data.u16;
+		}
+		else if( _Type == TypeID<XE::uint32>::Get() )
+		{
+			return _Data.u32 | val._Data.u32;
+		}
+		else if( _Type == TypeID<XE::uint64>::Get() )
+		{
+			return _Data.u64 | val._Data.u64;
+		}
+	}
+
+	throw XE::VariantException( *this, "operator|(variant) this type is not supported!" );
+}
+
 bool XE::Variant::operator<( const Variant & val ) const
 {
 	if( _Type == val._Type && _Flag == val._Flag )
@@ -1219,8 +1874,6 @@ void XE::Variant::Unlock()
 		}
 	}
 }
-
-
 
 XE::VariantException::VariantException( const Variant & val, const String & msg )
 	:_Value( val ), _Msg( msg )

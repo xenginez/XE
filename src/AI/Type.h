@@ -19,6 +19,8 @@ DECL_PTR( AIState );
 DECL_PTR( AIModule );
 DECL_PTR( AIElement );
 DECL_PTR( Blueprint );
+DECL_PTR( AIInputPort );
+DECL_PTR( AIOutputPort );
 DECL_PTR( BehaviorTree );
 DECL_PTR( StateMachine );
 

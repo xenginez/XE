@@ -228,6 +228,38 @@ public:
 	Variant & operator=( const Variant & val );
 
 public:
+	Variant operator!() const;
+
+	Variant operator~() const;
+
+	Variant operator-() const;
+
+	Variant operator++();
+
+	Variant operator--();
+
+	Variant operator++(int);
+
+	Variant operator--(int);
+
+public:
+	Variant operator+( const Variant & val )const;
+
+	Variant operator-( const Variant & val )const;
+
+	Variant operator*( const Variant & val )const;
+
+	Variant operator/( const Variant & val )const;
+
+	Variant operator%( const Variant & val )const;
+
+	Variant operator^( const Variant & val )const;
+
+	Variant operator&( const Variant & val )const;
+
+	Variant operator|( const Variant & val )const;
+
+public:
 	bool operator <( const Variant & val ) const;
 
 	bool operator >( const Variant & val ) const;

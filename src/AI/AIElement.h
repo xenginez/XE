@@ -11,35 +11,9 @@
 
 #include "Utils/Asset.h"
 
-#include "BlackboardKey.h"
+#include "AIElementPort.h"
 
 BEG_XE_NAMESPACE
-
-class XE_API AISlot
-{
-public:
-	XE::String InputPortName;
-	XE::String OutputPortName;
-	XE::AIElementHandle OutputHandle;
-};
-DECL_META_CLASS( XE_API, AISlot );
-
-class XE_API AIOutput
-{
-public:
-	XE::AIElementHandle Handle;
-};
-DECL_META_CLASS( XE_API, AIOutput );
-
-class XE_API AIInputPort
-{
-};
-DECL_META_CLASS( XE_API, AIInputPort );
-
-class XE_API AIOutputPort
-{
-};
-DECL_META_CLASS( XE_API, AIOutputPort );
 
 class XE_API AIElement : public XE::Object
 {
@@ -76,20 +50,35 @@ private:
 
 	void SetHandle( XE::AIElementHandle val );
 
+protected:
+	const XE::AIInputPortPtr & GetInputPort() const;
+
+	void SetInputPort( const XE::AIInputPortPtr & val );
+
+	const XE::AIOutputPortPtr & GetOutputPort() const;
+
+	void SetOutputPort( const XE::AIOutputPortPtr & val );
+
 public:
+	void Startup();
+
 	void Execute();
 	
+	void Clearup();
+
 protected:
+	virtual void OnStartup();
+
 	virtual void OnExecute();
 
-	virtual XE::Variant GetOutputValue( const XE::String & val );
-
-	virtual void SetInputValue( const XE::String & name, const XE::Variant & val );
+	virtual void OnClearup();
 
 private:
 	XE::String _Name;
 	XE::AIElementType _Type;
 	XE::AIElementHandle _Handle;
+	XE::AIInputPortPtr _InputPort;
+	XE::AIOutputPortPtr _OutputPort;
 	XE::Array< XE::AISlot > _Slots;
 
 	XE::BlueprintWPtr _Blueprint;
@@ -104,17 +93,8 @@ public:
 
 	~DataElement() override;
 
-public:
-	const XE::Variant & GetValue() const;
-
-	void SetValue( const XE::Variant & val );
-
 protected:
-	XE::Variant GetOutputValue( const XE::String & val ) override;
-
-private:
-	XE::Variant _Value;
-	XE::AIOutputPort _ResultOutputPort;
+	void OnStartup() override;
 };
 
 class XE_API CalcElement : public XE::AIElement
@@ -128,31 +108,9 @@ public:
 
 };
 
-class XE_API UnaryCalcElement : public XE::CalcElement
+class XE_API NotCalcElement : public XE::CalcElement
 {
-	OBJECT( UnaryCalcElement, CalcElement )
-
-public:
-	UnaryCalcElement();
-
-	~UnaryCalcElement() override;
-
-protected:
-	void SetInputValue( const XE::String & name, const XE::Variant & val ) override;
-
-protected:
-	const XE::Variant GetValue() const;
-
-private:
-	XE::AIInputPort _ValueInputPort;
-	XE::AIOutputPort _ResultOutputPort;
-
-	XE::Variant _Value;
-};
-
-class XE_API NotCalcElement : public XE::UnaryCalcElement
-{
-	OBJECT( NotCalcElement, UnaryCalcElement )
+	OBJECT( NotCalcElement, CalcElement )
 
 public:
 	NotCalcElement();
@@ -160,13 +118,13 @@ public:
 	~NotCalcElement() override;
 
 protected:
-	XE::Variant GetOutputValue( const XE::String & val ) override;
+	void OnExecute() override;
 
 };
 
-class XE_API RevCalcElement : public XE::UnaryCalcElement
+class XE_API RevCalcElement : public XE::CalcElement
 {
-	OBJECT( RevCalcElement, UnaryCalcElement )
+	OBJECT( RevCalcElement, CalcElement )
 
 public:
 	RevCalcElement();
@@ -174,13 +132,13 @@ public:
 	~RevCalcElement() override;
 
 protected:
-	XE::Variant GetOutputValue( const XE::String & val ) override;
+	void OnExecute() override;
 
 };
 
-class XE_API IncCalcElement : public XE::UnaryCalcElement
+class XE_API IncCalcElement : public XE::CalcElement
 {
-	OBJECT( NotCalcElement, UnaryCalcElement )
+	OBJECT( IncCalcElement, CalcElement )
 
 public:
 	IncCalcElement();
@@ -188,13 +146,13 @@ public:
 	~IncCalcElement() override;
 
 protected:
-	XE::Variant GetOutputValue( const XE::String & val ) override;
+	void OnExecute() override;
 
 };
 
-class XE_API DecCalcElement : public XE::UnaryCalcElement
+class XE_API DecCalcElement : public XE::CalcElement
 {
-	OBJECT( DecCalcElement, UnaryCalcElement )
+	OBJECT( DecCalcElement, CalcElement )
 
 public:
 	DecCalcElement();
@@ -202,13 +160,13 @@ public:
 	~DecCalcElement() override;
 
 protected:
-	XE::Variant GetOutputValue( const XE::String & val ) override;
+	void OnExecute() override;
 
 };
 
-class XE_API NegCalcElement : public XE::UnaryCalcElement
+class XE_API NegCalcElement : public XE::CalcElement
 {
-	OBJECT( NegCalcElement, UnaryCalcElement )
+	OBJECT( NegCalcElement, CalcElement )
 
 public:
 	NegCalcElement();
@@ -216,39 +174,13 @@ public:
 	~NegCalcElement() override;
 
 protected:
-	XE::Variant GetOutputValue( const XE::String & val ) override;
+	void OnExecute() override;
 
 };
 
-class XE_API BinaryCalcElement : public XE::CalcElement
+class XE_API AddCalcElement : public XE::CalcElement
 {
-	OBJECT( BinaryCalcElement, CalcElement )
-
-public:
-	BinaryCalcElement();
-
-	~BinaryCalcElement() override;
-
-protected:
-	void SetInputValue( const XE::String & name, const XE::Variant & val ) override;
-
-protected:
-	const XE::Variant GetLeft() const;
-
-	const XE::Variant GetRight() const;
-
-private:
-	XE::AIInputPort _LeftInputPort;
-	XE::AIInputPort _RightInputPort;
-	XE::AIOutputPort _ResultOutputPort;
-
-	XE::Variant _Left;
-	XE::Variant _Right;
-};
-
-class XE_API AddCalcElement : public XE::BinaryCalcElement
-{
-	OBJECT( AddCalcElement, BinaryCalcElement )
+	OBJECT( AddCalcElement, CalcElement )
 
 public:
 	AddCalcElement();
@@ -256,13 +188,13 @@ public:
 	~AddCalcElement() override;
 
 protected:
-	XE::Variant GetOutputValue( const XE::String & val ) override;
+	void OnExecute() override;
 
 };
 
-class XE_API SubCalcElement : public XE::BinaryCalcElement
+class XE_API SubCalcElement : public XE::CalcElement
 {
-	OBJECT( SubCalcElement, BinaryCalcElement )
+	OBJECT( SubCalcElement, CalcElement )
 
 public:
 	SubCalcElement();
@@ -270,13 +202,13 @@ public:
 	~SubCalcElement() override;
 
 protected:
-	XE::Variant GetOutputValue( const XE::String & val ) override;
+	void OnExecute() override;
 
 };
 
-class XE_API MulCalcElement : public XE::BinaryCalcElement
+class XE_API MulCalcElement : public XE::CalcElement
 {
-	OBJECT( MulCalcElement, BinaryCalcElement )
+	OBJECT( MulCalcElement, CalcElement )
 
 public:
 	MulCalcElement();
@@ -284,13 +216,13 @@ public:
 	~MulCalcElement() override;
 
 protected:
-	XE::Variant GetOutputValue( const XE::String & val ) override;
+	void OnExecute() override;
 
 };
 
-class XE_API DivCalcElement : public XE::BinaryCalcElement
+class XE_API DivCalcElement : public XE::CalcElement
 {
-	OBJECT( DivCalcElement, BinaryCalcElement )
+	OBJECT( DivCalcElement, CalcElement )
 
 public:
 	DivCalcElement();
@@ -298,13 +230,13 @@ public:
 	~DivCalcElement() override;
 
 protected:
-	XE::Variant GetOutputValue( const XE::String & val ) override;
+	void OnExecute() override;
 
 };
 
-class XE_API ModCalcElement : public XE::BinaryCalcElement
+class XE_API ModCalcElement : public XE::CalcElement
 {
-	OBJECT( AddCalcElement, BinaryCalcElement )
+	OBJECT( AddCalcElement, CalcElement )
 
 public:
 	ModCalcElement();
@@ -312,13 +244,13 @@ public:
 	~ModCalcElement() override;
 
 protected:
-	XE::Variant GetOutputValue( const XE::String & val ) override;
+	void OnExecute() override;
 
 };
 
-class XE_API XorCalcElement : public XE::BinaryCalcElement
+class XE_API XorCalcElement : public XE::CalcElement
 {
-	OBJECT( AddCalcElement, BinaryCalcElement )
+	OBJECT( AddCalcElement, CalcElement )
 
 public:
 	XorCalcElement();
@@ -326,13 +258,13 @@ public:
 	~XorCalcElement() override;
 
 protected:
-	XE::Variant GetOutputValue( const XE::String & val ) override;
+	void OnExecute() override;
 
 };
 
-class XE_API AndCalcElement : public XE::BinaryCalcElement
+class XE_API AndCalcElement : public XE::CalcElement
 {
-	OBJECT( AndCalcElement, BinaryCalcElement )
+	OBJECT( AndCalcElement, CalcElement )
 
 public:
 	AndCalcElement();
@@ -340,13 +272,13 @@ public:
 	~AndCalcElement() override;
 
 protected:
-	XE::Variant GetOutputValue( const XE::String & val ) override;
+	void OnExecute() override;
 
 };
 
-class XE_API OrCalcElement : public XE::BinaryCalcElement
+class XE_API OrCalcElement : public XE::CalcElement
 {
-	OBJECT( OrCalcElement, BinaryCalcElement )
+	OBJECT( OrCalcElement, CalcElement )
 
 public:
 	OrCalcElement();
@@ -354,13 +286,13 @@ public:
 	~OrCalcElement() override;
 
 protected:
-	XE::Variant GetOutputValue( const XE::String & val ) override;
+	void OnExecute() override;
 
 };
 
-class XE_API GreaterCalcElement : public XE::BinaryCalcElement
+class XE_API GreaterCalcElement : public XE::CalcElement
 {
-	OBJECT( GreaterCalcElement, BinaryCalcElement )
+	OBJECT( GreaterCalcElement, CalcElement )
 
 public:
 	GreaterCalcElement();
@@ -372,9 +304,9 @@ protected:
 
 };
 
-class XE_API LessCalcElement : public XE::BinaryCalcElement
+class XE_API LessCalcElement : public XE::CalcElement
 {
-	OBJECT( LessCalcElement, BinaryCalcElement )
+	OBJECT( LessCalcElement, CalcElement )
 
 public:
 	LessCalcElement();
@@ -386,9 +318,9 @@ protected:
 
 };
 
-class XE_API GreaterEqualCalcElement : public XE::BinaryCalcElement
+class XE_API GreaterEqualCalcElement : public XE::CalcElement
 {
-	OBJECT( GreaterEqualCalcElement, BinaryCalcElement )
+	OBJECT( GreaterEqualCalcElement, CalcElement )
 
 public:
 	GreaterEqualCalcElement();
@@ -400,9 +332,9 @@ protected:
 
 };
 
-class XE_API LessEqualCalcElement : public XE::BinaryCalcElement
+class XE_API LessEqualCalcElement : public XE::CalcElement
 {
-	OBJECT( LessEqualCalcElement, BinaryCalcElement )
+	OBJECT( LessEqualCalcElement, CalcElement )
 
 public:
 	LessEqualCalcElement();
@@ -414,9 +346,9 @@ protected:
 
 };
 
-class XE_API EqualCalcElement : public XE::BinaryCalcElement
+class XE_API EqualCalcElement : public XE::CalcElement
 {
-	OBJECT( EqualCalcElement, BinaryCalcElement )
+	OBJECT( EqualCalcElement, CalcElement )
 
 public:
 	EqualCalcElement();
@@ -428,9 +360,9 @@ protected:
 
 };
 
-class XE_API NotEqualCalcElement : public XE::BinaryCalcElement
+class XE_API NotEqualCalcElement : public XE::CalcElement
 {
-	OBJECT( NotEqualCalcElement, BinaryCalcElement )
+	OBJECT( NotEqualCalcElement, CalcElement )
 
 public:
 	NotEqualCalcElement();
@@ -451,13 +383,91 @@ public:
 
 	~LogicElement() override;
 
-public:
-	const XE::AIOutput & GetOutput() const;
+};
 
-	void SetOutput( const XE::AIOutput & val );
+class XE_API IfLogicElement : public XE::LogicElement
+{
+	OBJECT( IfLogicElement, LogicElement )
+
+public:
+	IfLogicElement();
+
+	~IfLogicElement() override;
+
+protected:
+	void OnExecute() override;
 
 private:
-	XE::AIOutput _Output;
+	XE::AIOutput _IfOutput;
+	XE::AIOutput _ElseOutput;
+};
+
+class XE_API ForLogicElement : public XE::LogicElement
+{
+	OBJECT( ForLogicElement, LogicElement )
+
+public:
+	ForLogicElement();
+
+	~ForLogicElement() override;
+
+protected:
+	void OnExecute() override;
+
+private:
+	XE::AIOutput _LoopOutput;
+	XE::AIOutput _CompletedOutput;
+};
+
+class XE_API SwitchLogicElement : public XE::LogicElement
+{
+	OBJECT( SwitchLogicElement, LogicElement )
+
+public:
+	SwitchLogicElement();
+
+	~SwitchLogicElement() override;
+
+protected:
+	void OnExecute() override;
+
+private:
+	XE::AIOutput _CaseOutput0;
+	XE::AIOutput _CaseOutput1;
+	XE::AIOutput _CaseOutput2;
+	XE::AIOutput _CaseOutput3;
+	XE::AIOutput _CaseOutput4;
+	XE::AIOutput _CaseOutput5;
+	XE::AIOutput _CaseOutput6;
+	XE::AIOutput _CaseOutput7;
+	XE::AIOutput _CaseOutput8;
+	XE::AIOutput _CaseOutput9;
+	XE::AIOutput _DefaultOutput;
+};
+
+class XE_API SequenceLogicElement : public XE::LogicElement
+{
+	OBJECT( SequenceLogicElement, LogicElement )
+
+public:
+	SequenceLogicElement();
+
+	~SequenceLogicElement() override;
+
+protected:
+	void OnExecute() override;
+
+private:
+	XE::AIOutput _Output0;
+	XE::AIOutput _Output1;
+	XE::AIOutput _Output2;
+	XE::AIOutput _Output3;
+	XE::AIOutput _Output4;
+	XE::AIOutput _Output5;
+	XE::AIOutput _Output6;
+	XE::AIOutput _Output7;
+	XE::AIOutput _Output8;
+	XE::AIOutput _Output9;
 };
 
 class XE_API EventElement : public XE::AIElement
@@ -470,20 +480,14 @@ public:
 	~EventElement() override;
 
 public:
-	const XE::Variant & GetValue() const;
-
-	void SetValue( const XE::Variant & val );
-
-	const XE::AIOutput & GetOutput() const;
-
-	void SetOutput( const XE::AIOutput & val );
-
 	XE::EventHandle GetListenerEvent() const;
 
 	void SetListenerEvent( XE::EventHandle val );
 
+protected:
+	void OnExecute() override;
+
 private:
-	XE::Variant _Value;
 	XE::AIOutput _Output;
 	XE::EventHandle _ListenerEvent;
 };
@@ -498,28 +502,18 @@ public:
 	~ActionElement() override;
 
 public:
-	const XE::AIOutput & GetOutput() const;
-
-	void SetOutput( const XE::AIOutput & val );
-
 	const XE::String & GetMethodFullName() const;
 
 	void SetMethodFullName( const XE::String & val );
 
 protected:
+	void OnStartup() override;
+
 	void OnExecute() override;
-
-	XE::Variant GetOutputValue( const XE::String & val ) override;
-
-	void SetInputValue( const XE::String & name, const XE::Variant & val ) override;
 
 private:
 	XE::AIOutput _Output;
 	XE::String _MethodFullName;
-
-	XE::Variant _This;
-	XE::Variant _Result;
-	XE::Array< XE::Variant > _Params;
 };
 
 class XE_API VariableElement : public XE::AIElement
@@ -553,16 +547,9 @@ public:
 protected:
 	void OnExecute() override;
 
-	void SetInputValue( const XE::String & name, const XE::Variant & val ) override;
-
 private:
 	XE::AIOutput _Output;
 	XE::String _PropertyFullName;
-	XE::AIInputPort _ThisInputPort;
-	XE::AIInputPort _ValueInputPort;
-
-	XE::Variant _This;
-	XE::Variant _Value;
 };
 
 class XE_API GetVariableElement : public XE::VariableElement
@@ -580,16 +567,10 @@ public:
 	void SetPropertyFullName( const XE::String & val );
 
 protected:
-	XE::Variant GetOutputValue( const XE::String & val ) override;
-
-	void SetInputValue( const XE::String & name, const XE::Variant & val ) override;
+	void OnExecute() override;
 
 private:
 	XE::String _PropertyFullName;
-	XE::AIInputPort _ThisInputPort;
-	XE::AIOutputPort _ResultOutputPort;
-
-	XE::Variant _This;
 };
 
 class XE_API SetBlackboardKeyElement : public XE::VariableElement
@@ -611,11 +592,10 @@ public:
 	void SetBlackboardKey( const XE::BlackboardKey & val );
 
 protected:
-	void SetInputValue( const XE::String & name, const XE::Variant & val ) override;
+	void OnExecute() override;
 
 private:
 	XE::AIOutput _Output;
-	XE::AIInputPort _ValueInputPort;
 	XE::BlackboardKey _BlackboardKey;
 };
 
@@ -634,11 +614,10 @@ public:
 	void SetBlackboardKey( const XE::BlackboardKey & val );
 
 protected:
-	XE::Variant GetOutputValue( const XE::String & val ) override;
+	void OnExecute() override;
 
 private:
 	XE::BlackboardKey _BlackboardKey;
-	XE::AIOutputPort _ResultOutputPort;
 };
 
 END_XE_NAMESPACE

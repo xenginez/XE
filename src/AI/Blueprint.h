@@ -13,7 +13,6 @@
 
 BEG_XE_NAMESPACE
 
-class SubElement;
 class EventElement;
 
 class XE_API Blueprint : public XE::AIModule
@@ -57,7 +56,6 @@ public:
 public:
 	XE::Array< XE::AIElementPtr > _Elements;
 
-	XE::Array< XE::SubElement * > _Subs;
 	XE::Array< XE::EventElement * > _Events;
 	XE::Array< XE::EventElement * > _Updates;
 };
