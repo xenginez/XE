@@ -18,7 +18,7 @@ XE::Line::Line( const Ray& ray, XE::float32 distance )
 
 }
 
-XE::Line::Line( const Vec3& start, const Vec3& end )
+XE::Line::Line( const Vec3f& start, const Vec3f& end )
 	: start( start ), end( end )
 {
 
@@ -63,7 +63,7 @@ XE::float32 XE::Line::GetDistance() const
 	return Mathf::Distance( start, end );
 }
 
-XE::Vec3 XE::Line::GetDirection() const
+XE::Vec3f XE::Line::GetDirection() const
 {
 	return Mathf::Normalize( end - start );
 }

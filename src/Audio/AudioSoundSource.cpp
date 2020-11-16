@@ -229,34 +229,34 @@ void XE::AudioSoundSource::SetPitch( XE::float32 val )
 	_Dirty = true;
 }
 
-const XE::Vec3 & XE::AudioSoundSource::GetPosition() const
+const XE::Vec3f & XE::AudioSoundSource::GetPosition() const
 {
 	return _Position;
 }
 
-void XE::AudioSoundSource::SetPosition( const XE::Vec3 & val )
+void XE::AudioSoundSource::SetPosition( const XE::Vec3f & val )
 {
 	_Position = val;
 	_Dirty = true;
 }
 
-const XE::Vec3 & XE::AudioSoundSource::GetVelocity() const
+const XE::Vec3f & XE::AudioSoundSource::GetVelocity() const
 {
 	return _Velocity;
 }
 
-void XE::AudioSoundSource::SetVelocity( const XE::Vec3 & val )
+void XE::AudioSoundSource::SetVelocity( const XE::Vec3f & val )
 {
 	_Velocity = val;
 	_Dirty = true;
 }
 
-const XE::Vec3 & XE::AudioSoundSource::GetDirection() const
+const XE::Vec3f & XE::AudioSoundSource::GetDirection() const
 {
 	return _Direction;
 }
 
-void XE::AudioSoundSource::SetDirection( const XE::Vec3 & val )
+void XE::AudioSoundSource::SetDirection( const XE::Vec3f & val )
 {
 	_Direction = val;
 	_Dirty = true;

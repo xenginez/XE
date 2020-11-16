@@ -178,52 +178,52 @@ const XE::Array<XE::BehaviorComponentPtr> & XE::GameObject::GetBehaviorComponent
 	return _BehaviorComponents;
 }
 
-XE::Vec3 XE::GameObject::GetWorldUp()
+XE::Vec3f XE::GameObject::GetWorldUp()
 {
 	return _RootSceneComponent->GetWorldUp();
 }
 
-XE::Vec3 XE::GameObject::GetWorldRight()
+XE::Vec3f XE::GameObject::GetWorldRight()
 {
 	return _RootSceneComponent->GetWorldRight();
 }
 
-XE::Vec3 XE::GameObject::GetWorldForward()
+XE::Vec3f XE::GameObject::GetWorldForward()
 {
 	return _RootSceneComponent->GetWorldForward();
 }
 
-XE::Vec3 XE::GameObject::GetRelativeUp() const
+XE::Vec3f XE::GameObject::GetRelativeUp() const
 {
 	return _RootSceneComponent->GetRelativeUp();
 }
 
-XE::Vec3 XE::GameObject::GetRelativeRight() const
+XE::Vec3f XE::GameObject::GetRelativeRight() const
 {
 	return _RootSceneComponent->GetRelativeRight();
 }
 
-XE::Vec3 XE::GameObject::GetRelativeForward() const
+XE::Vec3f XE::GameObject::GetRelativeForward() const
 {
 	return _RootSceneComponent->GetRelativeForward();
 }
 
-const XE::Vec3 & XE::GameObject::GetWorldScale()
+const XE::Vec3f & XE::GameObject::GetWorldScale()
 {
 	return _RootSceneComponent->GetWorldScale();
 }
 
-void XE::GameObject::SetWorldScale( const Vec3 & val )
+void XE::GameObject::SetWorldScale( const Vec3f & val )
 {
 	_RootSceneComponent->SetWorldScale( val );
 }
 
-const XE::Vec3 & XE::GameObject::GetWorldPosition()
+const XE::Vec3f & XE::GameObject::GetWorldPosition()
 {
 	return _RootSceneComponent->GetWorldPosition();
 }
 
-void XE::GameObject::SetWorldPosition( const Vec3 & val )
+void XE::GameObject::SetWorldPosition( const Vec3f & val )
 {
 	_RootSceneComponent->SetWorldPosition( val );
 }
@@ -238,22 +238,22 @@ void XE::GameObject::SetWorldRotation( const Quat & val )
 	_RootSceneComponent->SetWorldRotation( val );
 }
 
-const XE::Vec3 & XE::GameObject::GetRelativeScale() const
+const XE::Vec3f & XE::GameObject::GetRelativeScale() const
 {
 	return _RootSceneComponent->GetRelativeScale();
 }
 
-void XE::GameObject::SetRelativeScale( const Vec3 & val )
+void XE::GameObject::SetRelativeScale( const Vec3f & val )
 {
 	_RootSceneComponent->SetRelativeScale( val );
 }
 
-const XE::Vec3 & XE::GameObject::GetRelativePosition() const
+const XE::Vec3f & XE::GameObject::GetRelativePosition() const
 {
 	return _RootSceneComponent->GetRelativePosition();
 }
 
-void XE::GameObject::SetRelativePosition( const Vec3 & val )
+void XE::GameObject::SetRelativePosition( const Vec3f & val )
 {
 	_RootSceneComponent->SetRelativePosition( val );
 }
@@ -268,22 +268,22 @@ void XE::GameObject::SetRelativeRotation( const Quat & val )
 	_RootSceneComponent->SetRelativeRotation( val );
 }
 
-const XE::Mat4 & XE::GameObject::GetWorldTransform() const
+const XE::Mat4f & XE::GameObject::GetWorldTransform() const
 {
 	return _RootSceneComponent->GetWorldTransform();
 }
 
-void XE::GameObject::SetWorldTransform( const Mat4 & val )
+void XE::GameObject::SetWorldTransform( const Mat4f & val )
 {
 	_RootSceneComponent->SetWorldTransform( val );
 }
 
-const XE::Mat4 & XE::GameObject::GetRelativeTransform() const
+const XE::Mat4f & XE::GameObject::GetRelativeTransform() const
 {
 	return _RootSceneComponent->GetRelativeTransform();
 }
 
-void XE::GameObject::SetRelativeTransform( const Mat4 & val )
+void XE::GameObject::SetRelativeTransform( const Mat4f & val )
 {
 	_RootSceneComponent->SetRelativeTransform( val );
 }

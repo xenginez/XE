@@ -20,7 +20,7 @@ XE::AABB::AABB( const AABB& val )
 
 }
 
-XE::AABB::AABB( const Vec3& min, const Vec3& max )
+XE::AABB::AABB( const Vec3f& min, const Vec3f& max )
 	: min( min ), max( max )
 {
 
@@ -47,12 +47,12 @@ bool XE::AABB::operator!=( const AABB& val ) const
 	return min != val.min || max != val.max;
 }
 
-XE::Vec3 XE::AABB::GetSize() const
+XE::Vec3f XE::AABB::GetSize() const
 {
 	return max - min;
 }
 
-XE::Vec3 XE::AABB::GetCenter() const
+XE::Vec3f XE::AABB::GetCenter() const
 {
 	return ( max + min ) / 2;
 }
@@ -64,51 +64,51 @@ XE::float32 XE::AABB::GetRadius() const
 
 XE::float32 XE::AABB::GetVolume() const
 {
-	Vec3 diff = max - min;
+	Vec3f diff = max - min;
 	return diff.x * diff.y * diff.z;
 }
 
-XE::Vec3 XE::AABB::GetFarLeftTop() const
+XE::Vec3f XE::AABB::GetFarLeftTop() const
 {
 	return { min.x, max.y, min.z };
 }
 
-XE::Vec3 XE::AABB::GetFarRightTop() const
+XE::Vec3f XE::AABB::GetFarRightTop() const
 {
 	return { max.x, max.y, min.z };
 }
 
-XE::Vec3 XE::AABB::GetFarLeftBottom() const
+XE::Vec3f XE::AABB::GetFarLeftBottom() const
 {
 	return { min.x, min.y, min.z };
 }
 
-XE::Vec3 XE::AABB::GetFarRightBottom() const
+XE::Vec3f XE::AABB::GetFarRightBottom() const
 {
 	return { max.x, min.y, min.z };
 }
 
-XE::Vec3 XE::AABB::GetNearLeftTop() const
+XE::Vec3f XE::AABB::GetNearLeftTop() const
 {
 	return { min.x, max.y, max.z };
 }
 
-XE::Vec3 XE::AABB::GetNearRightTop() const
+XE::Vec3f XE::AABB::GetNearRightTop() const
 {
 	return { max.x, max.y, max.z };
 }
 
-XE::Vec3 XE::AABB::GetNearLeftBottom() const
+XE::Vec3f XE::AABB::GetNearLeftBottom() const
 {
 	return { min.x, min.y, max.z };
 }
 
-XE::Vec3 XE::AABB::GetNearRightBottom() const
+XE::Vec3f XE::AABB::GetNearRightBottom() const
 {
 	return { max.x, min.y, max.z };
 }
 
-bool XE::AABB::Contains( const Vec3& val ) const
+bool XE::AABB::Contains( const Vec3f& val ) const
 {
 	return min.x <= val.x && val.x <= max.x &&
 		min.y <= val.y && val.y <= max.y &&
@@ -164,7 +164,7 @@ bool XE::AABB::Intersect( const Plane& val ) const
 bool XE::AABB::Intersect( const Sphere& val ) const
 {
 	XE::float32 radius = val.radius;
-	const Vec3& center = val.center;
+	const Vec3f& center = val.center;
 
 	XE::float32 s, d = 0;
 	for ( int i = 0; i < 3; ++i )
@@ -194,9 +194,9 @@ std::pair<bool, XE::float32> XE::AABB::Intersect( const Ray& ray, bool discardIn
 	XE::float32 lowt = 0.0f;
 	XE::float32 t;
 	bool hit = false;
-	Vec3 hitpoint;
-	const Vec3& rayorig = ray.origin;
-	const Vec3& raydir = ray.direction;
+	Vec3f hitpoint;
+	const Vec3f& rayorig = ray.origin;
+	const Vec3f& raydir = ray.direction;
 
 	if ( ( rayorig.x > min.x && rayorig.y > min.y && rayorig.z > min.z ) && ( rayorig.x < max.x && rayorig.y < max.y && rayorig.z < max.z ) )
 	{
@@ -304,19 +304,19 @@ std::pair<bool, XE::float32> XE::AABB::Intersect( const Ray& ray, bool discardIn
 
 void XE::AABB::Scale( XE::float32 val )
 {
-	Vec3 center = GetCenter();
+	Vec3f center = GetCenter();
 	min = center + ( min - center ) * val;
 	max = center + ( max - center ) * val;
 }
 
-void XE::AABB::Scale( const Vec3& val )
+void XE::AABB::Scale( const Vec3f& val )
 {
-	Vec3 center = GetCenter();
+	Vec3f center = GetCenter();
 	min = center + ( min - center ) * val;
 	max = center + ( max - center ) * val;
 }
 
-void XE::AABB::Merge( const Vec3& val )
+void XE::AABB::Merge( const Vec3f& val )
 {
 	max = Mathf::Max( max, val );
 	min = Mathf::Min( min, val );
@@ -328,11 +328,11 @@ void XE::AABB::Merge( const AABB& val )
 	min = Mathf::Min( min, val.min );
 }
 
-void XE::AABB::Transform( const Mat4& matrix )
+void XE::AABB::Transform( const Mat4f& matrix )
 {
-	Vec3 corner;
-	Vec3 old_min = min;
-	Vec3 old_max = max;
+	Vec3f corner;
+	Vec3f old_min = min;
+	Vec3f old_max = max;
 
 	corner = old_min;
 	Merge( Mathf::MultiplyAffine( matrix, corner ) );
@@ -359,10 +359,10 @@ void XE::AABB::Transform( const Mat4& matrix )
 	Merge( Mathf::MultiplyAffine( matrix, corner ) );
 }
 
-void XE::AABB::TransformAffine( const Mat4& val )
+void XE::AABB::TransformAffine( const Mat4f& val )
 {
-	Vec3 min = Mathf::Translation( val );
-	Vec3 max = Mathf::Translation( val );
+	Vec3f min = Mathf::Translation( val );
+	Vec3f max = Mathf::Translation( val );
 
 	for ( XE::uint32 i = 0; i < 3; i++ )
 	{

@@ -19,7 +19,7 @@ XE::Rect::Rect( const Rect& val )
 
 }
 
-XE::Rect::Rect( const Vec2& center, const Vec2& size )
+XE::Rect::Rect( const Vec2f& center, const Vec2f& size )
 	: x( center.x - size.x * 0.5f ), y( center.y - size.y * 0.5f ), width( size.x ), height( size.y )
 {
 
@@ -50,27 +50,27 @@ bool XE::Rect::operator!=( const Rect& val ) const
 	return x != val.x || y != val.y || width != val.width || height != val.height;
 }
 
-XE::Vec2 XE::Rect::GetMin() const
+XE::Vec2f XE::Rect::GetMin() const
 {
 	return { x, y };
 }
 
-XE::Vec2 XE::Rect::GetMax() const
+XE::Vec2f XE::Rect::GetMax() const
 {
 	return{ x + width, y + height };
 }
 
-XE::Vec2 XE::Rect::GetSize() const
+XE::Vec2f XE::Rect::GetSize() const
 {
 	return { width, height };
 }
 
-XE::Vec2 XE::Rect::GetCenter() const
+XE::Vec2f XE::Rect::GetCenter() const
 {
 	return { x + width * 0.5f, y + height * 0.5f };
 }
 
-bool XE::Rect::Contains( const Vec2& val ) const
+bool XE::Rect::Contains( const Vec2f& val ) const
 {
 	return ( val.x > x && val.x < ( x + width ) &&
 			 val.y > y && val.y < ( y + height ) );
@@ -92,9 +92,9 @@ bool XE::Rect::Intersect( const Rect& val ) const
 	return !( minx > maxx || miny > maxy );
 }
 
-bool XE::Rect::Intersect( const Vec2 & beg, const Vec2 & end ) const
+bool XE::Rect::Intersect( const Vec2f & beg, const Vec2f & end ) const
 {
-	auto line_intersect = []( const Vec2 & beg1, const Vec2 & end1, const Vec2 & beg2, const Vec2 & end2 )
+	auto line_intersect = []( const Vec2f & beg1, const Vec2f & end1, const Vec2f & beg2, const Vec2f & end2 )
 	{
 		float32 x1 = beg1.x;
 		float32 y1 = beg1.y;
@@ -118,22 +118,22 @@ bool XE::Rect::Intersect( const Vec2 & beg, const Vec2 & end ) const
 		return true;
 	};
 
-	if( line_intersect( beg, end, Vec2( x, y ), Vec2( x, y + height ) ) )
+	if( line_intersect( beg, end, Vec2f( x, y ), Vec2f( x, y + height ) ) )
 	{
 		return true;
 	}
 
-	if( line_intersect( beg, end, Vec2( x, y + height ), Vec2( x + width, y + height ) ) )
+	if( line_intersect( beg, end, Vec2f( x, y + height ), Vec2f( x + width, y + height ) ) )
 	{
 		return true;
 	}
 
-	if( line_intersect( beg, end, Vec2( x + width, y + height ), Vec2( x + width, y ) ) )
+	if( line_intersect( beg, end, Vec2f( x + width, y + height ), Vec2f( x + width, y ) ) )
 	{
 		return true;
 	}
 
-	if( line_intersect( beg, end, Vec2( x + width, y ), Vec2( x, y ) ) )
+	if( line_intersect( beg, end, Vec2f( x + width, y ), Vec2f( x, y ) ) )
 	{
 		return true;
 	}
@@ -179,13 +179,13 @@ void XE::Rect::Encapsulate( const Rect& val )
 		height = myBottom - y;
 }
 
-void XE::Rect::Transform( const Mat4& val )
+void XE::Rect::Transform( const Mat4f& val )
 {
-	Vec4 verts[4];
-	verts[0] = Vec4( x, y, 0.0f, 1.0f );
-	verts[1] = Vec4( x + width, y, 0.0f, 1.0f );
-	verts[2] = Vec4( x, y + height, 0.0f, 1.0f );
-	verts[3] = Vec4( x + width, y + height, 0.0f, 1.0f );
+	Vec4f verts[4];
+	verts[0] = Vec4f( x, y, 0.0f, 1.0f );
+	verts[1] = Vec4f( x + width, y, 0.0f, 1.0f );
+	verts[2] = Vec4f( x, y + height, 0.0f, 1.0f );
+	verts[3] = Vec4f( x + width, y + height, 0.0f, 1.0f );
 
 	for ( XE::uint32 i = 0; i < 4; i++ )
 		verts[i] = val * verts[i];

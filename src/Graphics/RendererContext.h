@@ -136,8 +136,6 @@ public:
 
 	XE::uint32 ReadTexture( TextureHandle handle, XE::uint8 * data, XE::uint8 mip );
 
-	XE::uint8 * GetDirectAccess( TextureHandle handle );
-
 	void Destory( TextureHandle handle );
 
 	FrameBufferHandle CreateFrameBuffer( const XE::String & name, XE::uint32 width, XE::uint32 height,
@@ -191,14 +189,11 @@ public:
 
 	void SetViewFrameBuffer( ViewHandle handle, FrameBufferHandle frame );
 
-	void SetViewTransform( ViewHandle handle, const XE::Mat4 & view, const XE::Mat4 & proj );
+	void SetViewTransform( ViewHandle handle, const XE::Mat4f & view, const XE::Mat4f & proj );
 
 	void ResetView( ViewHandle handle );
 
 	void Destory( ViewHandle handle );
-
-public:
-	void DebugTextPrint( XE::uint32 x, XE::uint32 y, const XE::Color & color, const std::string & text );
 
 public:
 	void RequestScreenShot( FrameBufferHandle handle, const XE::FileSystem::Path & path );

@@ -102,7 +102,7 @@ private:
 
 			if( depth < _Depth )
 			{
-				Vec3 center = _Nodes[node].Box.GetCenter();
+				Vec3f center = _Nodes[node].Box.GetCenter();
 
 				XE::uint64 children = _Nodes.size();
 
@@ -134,12 +134,12 @@ private:
 				for( int i = 0; i < 8; ++i )
 				{
 					_Nodes[children + i].Box = AABB(
-						Vec3(
+						Vec3f(
 							( i & 1 ) ? center.x : _Nodes[node].Box.min.x,
 							( i & 2 ) ? center.y : _Nodes[node].Box.min.y,
 							( i & 4 ) ? center.z : _Nodes[node].Box.min.z
 						),
-						Vec3(
+						Vec3f(
 							( i & 1 ) ? _Nodes[node].Box.max.x : center.x,
 							( i & 2 ) ? _Nodes[node].Box.max.y : center.y,
 							( i & 4 ) ? _Nodes[node].Box.max.z : center.z

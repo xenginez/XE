@@ -16,7 +16,7 @@ BEG_XE_NAMESPACE
 class XE_API alignas( 16 ) Plane
 {
 public:
-	Vec3 normal;
+	Vec3f normal;
 	XE::float32 distance;
 
 public:
@@ -24,13 +24,13 @@ public:
 
 	Plane( const Plane& val );
 
-	Plane( const Vec3& normal, XE::float32 d );
+	Plane( const Vec3f& normal, XE::float32 d );
 
 	Plane( XE::float32 a, XE::float32 b, XE::float32 c, XE::float32 d );
 
-	Plane( const Vec3& normal, const Vec3& point );
+	Plane( const Vec3f& normal, const Vec3f& point );
 
-	Plane( const Vec3& point0, const Vec3& point1, const Vec3& point2 );
+	Plane( const Vec3f& point0, const Vec3f& point1, const Vec3f& point2 );
 
 public:
 	Plane& operator=( const Plane& val );
@@ -40,7 +40,7 @@ public:
 	bool operator !=( const Plane& val ) const;
 
 public:
-	SideType GetSide( const Vec3& val ) const;
+	SideType GetSide( const Vec3f& val ) const;
 
 	SideType GetSide( const AABB& val ) const;
 
@@ -49,10 +49,10 @@ public:
 public:
 	XE::float32 Normalize();
 
-	XE::float32 GetDistance( const Vec3& val ) const;
+	XE::float32 GetDistance( const Vec3f& val ) const;
 
 public:
-	Vec3 Project( const Vec3& val ) const;
+	Vec3f Project( const Vec3f& val ) const;
 
 public:
 	bool Intersect( const OBB& val ) const;

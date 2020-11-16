@@ -29,7 +29,7 @@ public:
 
 	Rect( const Rect& val );
 
-	Rect( const Vec2& center, const Vec2& size );
+	Rect( const Vec2f& center, const Vec2f& size );
 
 	Rect( XE::float32 x, XE::float32 y, XE::float32 w, XE::float32 h );
 
@@ -41,23 +41,23 @@ public:
 	bool operator !=( const Rect& val ) const;
 
 public:
-	Vec2 GetMin() const;
+	Vec2f GetMin() const;
 
-	Vec2 GetMax() const;
+	Vec2f GetMax() const;
 
-	Vec2 GetSize() const;
+	Vec2f GetSize() const;
 
-	Vec2 GetCenter() const;
+	Vec2f GetCenter() const;
 
 public:
-	bool Contains( const Vec2& val ) const;
+	bool Contains( const Vec2f& val ) const;
 
 	bool Contains( const Rect & val ) const;
 
 public:
 	bool Intersect( const Rect & val ) const;
 
-	bool Intersect( const Vec2 & beg, const Vec2 & end )const;
+	bool Intersect( const Vec2f & beg, const Vec2f & end )const;
 
 public:
 	void Clip( const Rect& val );
@@ -65,7 +65,7 @@ public:
 	void Encapsulate( const Rect& val );
 
 public:
-	void Transform( const Mat4& val );
+	void Transform( const Mat4f& val );
 
 };
 DECL_META_CLASS( XE_API, Rect );

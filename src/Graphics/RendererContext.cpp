@@ -669,12 +669,6 @@ XE::uint32 XE::RendererContext::ReadTexture( TextureHandle handle, XE::uint8 * d
 	return {};
 }
 
-XE::uint8 * XE::RendererContext::GetDirectAccess( TextureHandle handle )
-{
-	// TODO: 
-	return {};
-}
-
 void XE::RendererContext::Destory( TextureHandle handle )
 {
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
@@ -902,7 +896,7 @@ void XE::RendererContext::SetViewFrameBuffer( ViewHandle handle, FrameBufferHand
 	_p->_Views[handle].Handle = frame;
 }
 
-void XE::RendererContext::SetViewTransform( ViewHandle handle, const XE::Mat4 & view, const XE::Mat4 & proj )
+void XE::RendererContext::SetViewTransform( ViewHandle handle, const XE::Mat4f & view, const XE::Mat4f & proj )
 {
 	_p->_Views[handle].ViewMat = view;
 	_p->_Views[handle].ProjMat = proj;
@@ -916,11 +910,6 @@ void XE::RendererContext::ResetView( ViewHandle handle )
 void XE::RendererContext::Destory( ViewHandle handle )
 {
 	_p->_ViewHandleAlloc.Free( handle );
-}
-
-void XE::RendererContext::DebugTextPrint( XE::uint32 x, XE::uint32 y, const XE::Color & color, const std::string & text )
-{
-
 }
 
 void XE::RendererContext::RequestScreenShot( FrameBufferHandle handle, const XE::FileSystem::Path & path )

@@ -46,9 +46,9 @@ public:
 public:
 	bool IsValid() const;
 
-	XE::Vec3 GetForce() const;
+	XE::Vec3f GetForce() const;
 
-	XE::Vec3 GetTorque() const;
+	XE::Vec3f GetTorque() const;
 
 	XE::float32 GetBreakForce() const;
 

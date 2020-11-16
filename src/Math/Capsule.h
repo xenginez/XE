@@ -34,7 +34,7 @@ public:
 	bool operator !=( const Capsule & val ) const;
 
 public:
-	bool Contains( const Vec3 & val ) const;
+	bool Contains( const Vec3f & val ) const;
 
 public:
 	bool Intersect( const OBB & val ) const;

@@ -39,9 +39,9 @@ public:
 
 	void SetName( const XE::String & val );
 
-	XE::Mat4 GetLocalPose() const;
+	XE::Mat4f GetLocalPose() const;
 
-	void SetLocalPose( const XE::Mat4 & val );
+	void SetLocalPose( const XE::Mat4f & val );
 
 	XE::ShapeFlags GetShapeFlags() const;
 
@@ -158,7 +158,7 @@ public:
 	~ConvexMeshShape() override;
 
 public:
-	XE::Vec3 GetScale() const;
+	XE::Vec3f GetScale() const;
 
 	XE::Quat GetRotation() const;
 
@@ -167,7 +167,7 @@ public:
 
 	XE::uint64 GetPolygonCount() const;
 
-	XE::BasicMemoryView<XE::Vec3> GetVertexBuffer() const;
+	XE::BasicMemoryView<XE::Vec3f> GetVertexBuffer() const;
 
 	XE::BasicMemoryView<XE::uint8> GetIndexBuffer() const;
 

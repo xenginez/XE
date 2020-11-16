@@ -76,17 +76,17 @@ void XE::Shape::SetName( const XE::String & val )
 	_p->setName( val.ToCString() );
 }
 
-XE::Mat4 XE::Shape::GetLocalPose() const
+XE::Mat4f XE::Shape::GetLocalPose() const
 {
 	auto trans = _p->getLocalPose();
 
-	return XE::Mathf::TRS( { trans.p.x,trans.p.y,trans.p.z }, { trans.q.x, trans.q.y, trans.q.z, trans.q.w }, XE::Vec3::One );
+	return XE::Mathf::TRS( { trans.p.x,trans.p.y,trans.p.z }, { trans.q.x, trans.q.y, trans.q.z, trans.q.w }, XE::Vec3f::One );
 }
 
-void XE::Shape::SetLocalPose( const XE::Mat4 & val )
+void XE::Shape::SetLocalPose( const XE::Mat4f & val )
 {
 	XE::Quat rot;
-	XE::Vec3 pos, scale;
+	XE::Vec3f pos, scale;
 
 	XE::Mathf::TRS( val, pos, rot, scale );
 
@@ -230,7 +230,7 @@ XE::AABB XE::BoxShape::GetBox() const
 	physx::PxBoxGeometry box;
 	if( _p->getBoxGeometry( box ) )
 	{
-		return { XE::Vec3::Zero, { box.halfExtents.x * 2, box.halfExtents.y * 2, box.halfExtents.z * 2 } };
+		return { XE::Vec3f::Zero, { box.halfExtents.x * 2, box.halfExtents.y * 2, box.halfExtents.z * 2 } };
 	}
 
 	return {};
@@ -341,7 +341,7 @@ XE::ConvexMeshShape::~ConvexMeshShape()
 
 }
 
-XE::Vec3 XE::ConvexMeshShape::GetScale() const
+XE::Vec3f XE::ConvexMeshShape::GetScale() const
 {
 	physx::PxConvexMeshGeometry geometry;
 	if( _p->getConvexMeshGeometry( geometry ) )
@@ -385,13 +385,13 @@ XE::uint64 XE::ConvexMeshShape::GetPolygonCount() const
 	return 0;
 }
 
-XE::BasicMemoryView<XE::Vec3> XE::ConvexMeshShape::GetVertexBuffer() const
+XE::BasicMemoryView<XE::Vec3f> XE::ConvexMeshShape::GetVertexBuffer() const
 {
 	physx::PxConvexMeshGeometry geometry;
 	if( _p->getConvexMeshGeometry( geometry ) )
 	{
 		auto size = geometry.convexMesh->getNbVertices();
-		XE::Vec3 * p = ( XE::Vec3 * )geometry.convexMesh->getVertices();
+		XE::Vec3f * p = ( XE::Vec3f * )geometry.convexMesh->getVertices();
 		return { p, size };
 	}
 

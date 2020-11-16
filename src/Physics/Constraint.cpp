@@ -66,7 +66,7 @@ bool XE::Constraint::IsValid() const
 	return _p->isValid();
 }
 
-XE::Vec3 XE::Constraint::GetForce() const
+XE::Vec3f XE::Constraint::GetForce() const
 {
 	physx::PxVec3 linear, angular;
 
@@ -75,7 +75,7 @@ XE::Vec3 XE::Constraint::GetForce() const
 	return { linear.x, linear.y, linear.z };
 }
 
-XE::Vec3 XE::Constraint::GetTorque() const
+XE::Vec3f XE::Constraint::GetTorque() const
 {
 	physx::PxVec3 linear, angular;
 

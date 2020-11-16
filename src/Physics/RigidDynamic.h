@@ -23,9 +23,9 @@ public:
 	~RigidDynamic() override;
 
 public:
-	XE::Mat4 GetKinematicTarget() const;
+	XE::Mat4f GetKinematicTarget() const;
 
-	void SetKinematicTarget( const XE::Mat4 & val );
+	void SetKinematicTarget( const XE::Mat4f & val );
 
 	XE::float32 GetSleepThreshold() const;
 

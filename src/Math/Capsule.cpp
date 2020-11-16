@@ -41,7 +41,7 @@ bool XE::Capsule::operator!=( const Capsule & val ) const
 	return radius != val.radius || height != val.height;
 }
 
-bool XE::Capsule::Contains( const Vec3 & val ) const
+bool XE::Capsule::Contains( const Vec3f & val ) const
 {
 	return false;
 }

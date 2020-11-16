@@ -4,7 +4,7 @@ BEG_META( XE::Widget )
 END_META()
 
 XE::Widget::Widget()
-	:_Enable( true ), _MinSize( XE::Vec2::Zero ), _MaxSize( std::numeric_limits<XE::float32>::max() )
+	:_Enable( true ), _MinSize( XE::Vec2f::Zero ), _MaxSize( std::numeric_limits<XE::float32>::max() )
 {
 
 }
@@ -64,12 +64,12 @@ void XE::Widget::SetUserInterface( const XE::UserInterfacePtr & val )
 	_UI = val;
 }
 
-XE::Vec2 XE::Widget::GetSize() const
+XE::Vec2f XE::Widget::GetSize() const
 {
 	return { _Geometry.width, _Geometry.height };
 }
 
-void XE::Widget::SetSize( const XE::Vec2 & val )
+void XE::Widget::SetSize( const XE::Vec2f & val )
 {
 	auto rect = _Geometry;
 	rect.width = val.x;
@@ -78,12 +78,12 @@ void XE::Widget::SetSize( const XE::Vec2 & val )
 	SetGeometry( rect );
 }
 
-XE::Vec2 XE::Widget::GetPosition() const
+XE::Vec2f XE::Widget::GetPosition() const
 {
 	return { _Geometry.x, _Geometry.y };
 }
 
-void XE::Widget::SetPosition( const XE::Vec2 & val )
+void XE::Widget::SetPosition( const XE::Vec2f & val )
 {
 	auto rect = _Geometry;
 	rect.x = val.x;
@@ -92,22 +92,22 @@ void XE::Widget::SetPosition( const XE::Vec2 & val )
 	SetGeometry( rect );
 }
 
-const XE::Vec2 & XE::Widget::GetMinimumSize() const
+const XE::Vec2f & XE::Widget::GetMinimumSize() const
 {
 	return _MinSize;
 }
 
-void XE::Widget::SetMinimunSize( const XE::Vec2 & val )
+void XE::Widget::SetMinimunSize( const XE::Vec2f & val )
 {
 	_MinSize = val;
 }
 
-const XE::Vec2 & XE::Widget::GetMaximumSize() const
+const XE::Vec2f & XE::Widget::GetMaximumSize() const
 {
 	return _MaxSize;
 }
 
-void XE::Widget::SetMaximunSize( const XE::Vec2 & val )
+void XE::Widget::SetMaximunSize( const XE::Vec2f & val )
 {
 	_MaxSize = val;
 }
@@ -134,7 +134,7 @@ void XE::Widget::OnRemove()
 
 }
 
-XE::Vec2 XE::Widget::SizeHint() const
+XE::Vec2f XE::Widget::SizeHint() const
 {
 	return _MinSize;
 }

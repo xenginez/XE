@@ -31,15 +31,15 @@ public:
 
 	void SetOrientation( Orientation val );
 
-	const XE::Vec2 & GetSizeHint() const;
+	const XE::Vec2f & GetSizeHint() const;
 
-	void SetSizeHint( const XE::Vec2 & val );
+	void SetSizeHint( const XE::Vec2f & val );
 
 public:
-	XE::Vec2 SizeHint() const override;
+	XE::Vec2f SizeHint() const override;
 
 private:
-	XE::Vec2 _SizeHint;
+	XE::Vec2f _SizeHint;
 	SizePolicy _SizePolicy;
 	Orientation _Orientation;
 };

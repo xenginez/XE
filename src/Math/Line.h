@@ -20,11 +20,11 @@ public:
 	{
 		struct  
 		{
-			Vec3 start;
-			Vec3 end;
+			Vec3f start;
+			Vec3f end;
 		};
 
-		Vec3 point[2];
+		Vec3f point[2];
 	};
 
 public:
@@ -34,7 +34,7 @@ public:
 
 	Line( const Ray& ray, XE::float32 distance );
 
-	Line( const Vec3& start, const Vec3& end );
+	Line( const Vec3f& start, const Vec3f& end );
 
 	~Line();
 
@@ -51,7 +51,7 @@ public:
 
 	XE::float32 GetDistance() const;
 
-	Vec3 GetDirection() const;
+	Vec3f GetDirection() const;
 
 public:
 	bool Intersect( const OBB& val ) const;

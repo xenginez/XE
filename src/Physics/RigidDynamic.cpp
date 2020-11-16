@@ -17,21 +17,21 @@ XE::RigidDynamic::~RigidDynamic()
 
 }
 
-XE::Mat4 XE::RigidDynamic::GetKinematicTarget() const
+XE::Mat4f XE::RigidDynamic::GetKinematicTarget() const
 {
 	physx::PxTransform trans;
 	if( _p->getKinematicTarget( trans ) )
 	{
-		return XE::Mathf::TRS( { trans.p.x,trans.p.y,trans.p.z }, { trans.q.x, trans.q.y, trans.q.z, trans.q.w }, XE::Vec3::One );
+		return XE::Mathf::TRS( { trans.p.x,trans.p.y,trans.p.z }, { trans.q.x, trans.q.y, trans.q.z, trans.q.w }, XE::Vec3f::One );
 	}
 
 	return {};
 }
 
-void XE::RigidDynamic::SetKinematicTarget( const XE::Mat4 & val )
+void XE::RigidDynamic::SetKinematicTarget( const XE::Mat4f & val )
 {
 	XE::Quat rot;
-	XE::Vec3 pos, scale;
+	XE::Vec3f pos, scale;
 
 	XE::Mathf::TRS( val, pos, rot, scale );
 

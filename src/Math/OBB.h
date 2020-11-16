@@ -17,8 +17,8 @@ BEG_XE_NAMESPACE
 class XE_API alignas( 16 ) OBB
 {
 public:
-	Vec3 center;
-	Vec3 extent;
+	Vec3f center;
+	Vec3f extent;
 	Quat rotation;
 
 public:
@@ -28,7 +28,7 @@ public:
 
 	OBB( const AABB& box, const Quat& orient );
 
-	OBB( const Vec3& center, const Vec3& extent, const Quat& orient );
+	OBB( const Vec3f& center, const Vec3f& extent, const Quat& orient );
 
 	~OBB();
 

@@ -814,6 +814,102 @@ public:
 	AttributeType Type;
 };
 
+struct XE_API BufferDesc
+{
+	XE::String Name;
+	XE::MemoryView Data;
+	XE::Flags< XE::BufferFlags > Flags = XE::BufferFlags::NONE;
+};
+
+struct XE_API VertexLayoutDesc
+{
+	XE::Array<VertexLayout> Layouts;
+};
+
+struct XE_API VertexBufferDesc : public XE::BufferDesc
+{
+	VertexLayoutDesc LayoutDesc;
+};
+
+struct XE_API ShaderDesc
+{
+	XE::String Name;
+	ShaderType Type;
+	XE::MemoryView Data;
+};
+
+struct XE_API TextureDesc
+{
+	XE::String Name;
+	TextureType Type;
+	XE::uint32 Width = 0;
+	XE::uint32 Height = 0;
+	XE::uint32 Depth = 0;
+	bool HasMaps = false;
+	XE::uint16 Layers = 0;
+	TextureFormat Format = TextureFormat::RGBA8;
+	XE::Flags< XE::TextureFlags > Flags = XE::TextureFlags::NONE;
+	XE::Flags< XE::SamplerFlags > Samplers = XE::SamplerFlags::NONE;
+	XE::MemoryView Data;
+};
+
+struct XE_API FrameBufferDesc
+{
+	XE::String Name;
+	XE::uint32 Width = 0;
+	XE::uint32 Height = 0;
+	TextureFormat Format = TextureFormat::RGBA8;
+	XE::Flags< XE::SamplerFlags > Samplers = XE::SamplerFlags::NONE;
+};
+
+struct XE_API FrameBufferFromTextureDesc
+{
+	XE::String Name;
+	TextureHandle Textures[8];
+	bool DestoryTexture = false;
+};
+
+struct XE_API FrameBufferFromAttachmentDesc
+{
+	XE::String Name;
+	Attachment Attachments[8];
+	bool DestoryTexture = false;
+};
+
+struct XE_API FrameBufferFromWindowDesc
+{
+	XE::String Name;
+	XE::uint32 Width = 0;
+	XE::uint32 Height = 0;
+	XE::WindowHandle Window;
+	TextureFormat ColorFormat = TextureFormat::RGBA8;
+	TextureFormat DepthFormat = TextureFormat::D24S8;
+};
+
+struct XE_API ViewClearDesc
+{
+	ViewHandle Handle;
+	XE::uint8 Stencil = 1;
+	XE::float32 Depth = 0.0f;
+	XE::Color Color = XE::Color::Black;
+	XE::Flags< XE::ClearFlags > Flags = XE::MakeFlags( XE::ClearFlags::COLOR, XE::ClearFlags::DEPTH, XE::ClearFlags::STENCIL );
+};
+
+struct XE_API UpdateTextureDesc
+{
+	TextureHandle Handle;
+	XE::uint16 Layer = 0;
+	XE::uint8 Side = 0;
+	XE::uint8 Mip = 0;
+	XE::uint32 X = 0;
+	XE::uint32 Y = 0;
+	XE::uint32 Z = 0;
+	XE::uint32 Width = 0;
+	XE::uint32 Height = 0;
+	XE::uint32 Depth = 0;
+	XE::MemoryView Data;
+};
+
 END_XE_NAMESPACE
 
 #endif // __TYPE_H__C42D32D2_F661_421A_A1A7_D0EB0BB50848

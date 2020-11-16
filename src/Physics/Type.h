@@ -184,8 +184,8 @@ struct XE_API QueryHitResult
 	XE::ShapeHandle Shape;
 	XE::RigidActorHandle Actor;
 
-	XE::Vec3 Position;
-	XE::Vec3 Normal;
+	XE::Vec3f Position;
+	XE::Vec3f Normal;
 	XE::float32 Depth;
 };
 

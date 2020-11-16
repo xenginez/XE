@@ -29,11 +29,11 @@ public:
 
 	void SetMass( XE::float32 val );
 
-	XE::Vec3 GetMassSpaceInertiaTensor() const;
+	XE::Vec3f GetMassSpaceInertiaTensor() const;
 
-	XE::Vec3 GetMassSpaceInvInertiaTensor() const;
+	XE::Vec3f GetMassSpaceInvInertiaTensor() const;
 
-	void SetMassSpaceInertiaTensor( const XE::Vec3 & val );
+	void SetMassSpaceInertiaTensor( const XE::Vec3f & val );
 
 public:
 	XE::float32 GetLinearDamping() const;
@@ -48,17 +48,17 @@ public:
 
 	void SetMaxContactImpulse( XE::float32 val );
 
-	XE::Vec3 GetLienarVelocity() const;
+	XE::Vec3f GetLienarVelocity() const;
 
-	void SetLinearVelocity( const XE::Vec3 & val );
+	void SetLinearVelocity( const XE::Vec3f & val );
 
-	XE::Vec3 GetAngularVelocity() const;
+	XE::Vec3f GetAngularVelocity() const;
 
-	void SetAngularVelocity( const XE::Vec3 & val );
+	void SetAngularVelocity( const XE::Vec3f & val );
 
-	XE::Mat4 GetCMassLocalPose() const;
+	XE::Mat4f GetCMassLocalPose() const;
 
-	void SetCMassLocalPose( const XE::Mat4 & val );
+	void SetCMassLocalPose( const XE::Mat4f & val );
 
 	XE::float32 GetMaxLienarVelocity() const;
 
@@ -81,15 +81,15 @@ public:
 	void SetMaxDepenetrationVelocity( XE::float32 val );
 
 public:
-	void AddForce( const XE::Vec3 & force, ForceMode mode = ForceMode::FORCE );
+	void AddForce( const XE::Vec3f & force, ForceMode mode = ForceMode::FORCE );
 
-	void AddTorque( const XE::Vec3 & torque, ForceMode mode = ForceMode::FORCE );
+	void AddTorque( const XE::Vec3f & torque, ForceMode mode = ForceMode::FORCE );
 
 	void ClearForce( ForceMode mode = ForceMode::FORCE );
 
 	void ClearTorque( ForceMode mode = ForceMode::FORCE );
 
-	void SetForceAndTorque( const XE::Vec3 & force, const XE::Vec3 & torque, ForceMode mode = ForceMode::FORCE );
+	void SetForceAndTorque( const XE::Vec3f & force, const XE::Vec3f & torque, ForceMode mode = ForceMode::FORCE );
 
 };
 

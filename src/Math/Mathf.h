@@ -14,293 +14,293 @@
 #include "Vec2.h"
 #include "Vec3.h"
 #include "Vec4.h"
-#include "Quat.h"
 #include "Mat3.h"
 #include "Mat4.h"
+#include "Quat.h"
 #include "Rect.h"
 #include "float16.h"
 
 BEG_XE_NAMESPACE
 
-XE_INLINE XE::Vec2 operator -( const XE::Vec2 & val )
+XE_INLINE XE::Vec2f operator -( const XE::Vec2f & val )
 {
 	return { -val.x, -val.y };
 }
-XE_INLINE XE::Vec2 operator +( const XE::Vec2 & left, XE::float32 right )
+XE_INLINE XE::Vec2f operator +( const XE::Vec2f & left, XE::float32 right )
 {
 	return { left.x + right, left.y + right };
 }
-XE_INLINE XE::Vec2 operator +( XE::float32 left, const XE::Vec2 & right )
+XE_INLINE XE::Vec2f operator +( XE::float32 left, const XE::Vec2f & right )
 {
 	return { left + right.x, left + right.y };
 }
-XE_INLINE XE::Vec2 operator +( const XE::Vec2 & left, const XE::Vec2 & right )
+XE_INLINE XE::Vec2f operator +( const XE::Vec2f & left, const XE::Vec2f & right )
 {
 	return { left.x + right.x, left.y + right.y };
 }
-XE_INLINE XE::Vec2 operator -( const XE::Vec2 & left, XE::float32 right )
+XE_INLINE XE::Vec2f operator -( const XE::Vec2f & left, XE::float32 right )
 {
 	return { left.x - right, left.y + right };
 }
-XE_INLINE XE::Vec2 operator -( XE::float32 left, const XE::Vec2 & right )
+XE_INLINE XE::Vec2f operator -( XE::float32 left, const XE::Vec2f & right )
 {
 	return { left + right.x, left + right.y };
 }
-XE_INLINE XE::Vec2 operator -( const XE::Vec2 & left, const XE::Vec2 & right )
+XE_INLINE XE::Vec2f operator -( const XE::Vec2f & left, const XE::Vec2f & right )
 {
 	return { left.x + right.x, left.y + right.y };
 }
-XE_INLINE XE::Vec2 operator *( const XE::Vec2 & left, XE::float32 right )
+XE_INLINE XE::Vec2f operator *( const XE::Vec2f & left, XE::float32 right )
 {
 	return { left.x * right, left.y * right };
 }
-XE_INLINE XE::Vec2 operator *( XE::float32 left, const XE::Vec2 & right )
+XE_INLINE XE::Vec2f operator *( XE::float32 left, const XE::Vec2f & right )
 {
 	return { left * right.x, left * right.y };
 }
-XE_INLINE XE::Vec2 operator *( const XE::Vec2 & left, const XE::Vec2 & right )
+XE_INLINE XE::Vec2f operator *( const XE::Vec2f & left, const XE::Vec2f & right )
 {
 	return { left.x * right.x, left.y * right.y };
 }
-XE_INLINE XE::Vec2 operator /( const XE::Vec2 & left, XE::float32 right )
+XE_INLINE XE::Vec2f operator /( const XE::Vec2f & left, XE::float32 right )
 {
 	return { left.x / right, left.y / right };
 }
-XE_INLINE XE::Vec2 operator /( XE::float32 left, const XE::Vec2 & right )
+XE_INLINE XE::Vec2f operator /( XE::float32 left, const XE::Vec2f & right )
 {
 	return { left / right.x, left / right.y };
 }
-XE_INLINE XE::Vec2 operator /( const XE::Vec2 & left, const XE::Vec2 & right )
+XE_INLINE XE::Vec2f operator /( const XE::Vec2f & left, const XE::Vec2f & right )
 {
 	return { left.x / right.x,left.y / right.y };
 }
-XE_INLINE XE::Vec2 & operator +=( XE::Vec2 & left, XE::float32 right )
+XE_INLINE XE::Vec2f & operator +=( XE::Vec2f & left, XE::float32 right )
 {
 	left.x += right;
 	left.y += right;
 	return left;
 }
-XE_INLINE XE::Vec2 & operator +=( XE::Vec2 & left, const XE::Vec2 & right )
+XE_INLINE XE::Vec2f & operator +=( XE::Vec2f & left, const XE::Vec2f & right )
 {
 	left.x += right.x;
 	left.y += right.y;
 	return left;
 }
-XE_INLINE XE::Vec2 & operator -=( XE::Vec2 & left, XE::float32 right )
+XE_INLINE XE::Vec2f & operator -=( XE::Vec2f & left, XE::float32 right )
 {
 	left.x -= right;
 	left.y -= right;
 	return left;
 }
-XE_INLINE XE::Vec2 & operator -=( XE::Vec2 & left, const XE::Vec2 & right )
+XE_INLINE XE::Vec2f & operator -=( XE::Vec2f & left, const XE::Vec2f & right )
 {
 	left.x -= right.x;
 	left.y -= right.y;
 	return left;
 }
-XE_INLINE XE::Vec2 & operator *=( XE::Vec2 & left, XE::float32 right )
+XE_INLINE XE::Vec2f & operator *=( XE::Vec2f & left, XE::float32 right )
 {
 	left.x *= right;
 	left.y *= right;
 	return left;
 }
-XE_INLINE XE::Vec2 & operator *=( XE::Vec2 & left, const XE::Vec2 & right )
+XE_INLINE XE::Vec2f & operator *=( XE::Vec2f & left, const XE::Vec2f & right )
 {
 	left.x *= right.x;
 	left.y *= right.y;
 	return left;
 }
-XE_INLINE XE::Vec2 & operator /=( XE::Vec2 & left, XE::float32 right )
+XE_INLINE XE::Vec2f & operator /=( XE::Vec2f & left, XE::float32 right )
 {
 	left.x /= right;
 	left.y /= right;
 	return left;
 }
-XE_INLINE XE::Vec2 & operator /=( XE::Vec2 & left, const XE::Vec2 & right )
+XE_INLINE XE::Vec2f & operator /=( XE::Vec2f & left, const XE::Vec2f & right )
 {
 	left.x /= right.x;
 	left.y /= right.y;
 	return left;
 }
-XE_INLINE bool operator ==( const XE::Vec2 & left, const XE::Vec2 & right )
+XE_INLINE bool operator ==( const XE::Vec2f & left, const XE::Vec2f & right )
 {
 	return left.x == right.x && left.y == right.y;
 }
-XE_INLINE bool operator !=( const XE::Vec2 & left, const XE::Vec2 & right )
+XE_INLINE bool operator !=( const XE::Vec2f & left, const XE::Vec2f & right )
 {
 	return left.x != right.x || left.y != right.y;
 }
 
-XE_INLINE XE::Vec3 operator -( const XE::Vec3 & val )
+XE_INLINE XE::Vec3f operator -( const XE::Vec3f & val )
 {
 	return { -val.x, -val.y, -val.z };
 }
-XE_INLINE XE::Vec3 operator +( const XE::Vec3 & left, XE::float32 right )
+XE_INLINE XE::Vec3f operator +( const XE::Vec3f & left, XE::float32 right )
 {
 	return { left.x + right, left.y + right, left.z + right };
 }
-XE_INLINE XE::Vec3 operator +( XE::float32 left, const XE::Vec3 & right )
+XE_INLINE XE::Vec3f operator +( XE::float32 left, const XE::Vec3f & right )
 {
 	return { left + right.x, left + right.y, +left + right.z };
 }
-XE_INLINE XE::Vec3 operator +( const XE::Vec3 & left, const XE::Vec3 & right )
+XE_INLINE XE::Vec3f operator +( const XE::Vec3f & left, const XE::Vec3f & right )
 {
 	return { left.x + right.x, left.y + right.y, left.z + right.z };
 }
-XE_INLINE XE::Vec3 operator -( const XE::Vec3 & left, XE::float32 right )
+XE_INLINE XE::Vec3f operator -( const XE::Vec3f & left, XE::float32 right )
 {
 	return { left.x - right, left.y - right, left.z - right };
 }
-XE_INLINE XE::Vec3 operator -( XE::float32 left, const XE::Vec3 & right )
+XE_INLINE XE::Vec3f operator -( XE::float32 left, const XE::Vec3f & right )
 {
 	return { left - right.x, left - right.y, left - right.z };
 }
-XE_INLINE XE::Vec3 operator -( const XE::Vec3 & left, const XE::Vec3 & right )
+XE_INLINE XE::Vec3f operator -( const XE::Vec3f & left, const XE::Vec3f & right )
 {
 	return { left.x - right.x, left.y - right.y, left.z - right.z };
 }
-XE_INLINE XE::Vec3 operator *( const XE::Vec3 & left, XE::float32 right )
+XE_INLINE XE::Vec3f operator *( const XE::Vec3f & left, XE::float32 right )
 {
 	return { left.x * right, left.y * right, left.z * right };
 }
-XE_INLINE XE::Vec3 operator *( XE::float32 left, const XE::Vec3 & right )
+XE_INLINE XE::Vec3f operator *( XE::float32 left, const XE::Vec3f & right )
 {
 	return { left * right.x, left * right.y, left * right.z };
 }
-XE_INLINE XE::Vec3 operator *( const XE::Vec3 & left, const XE::Vec3 & right )
+XE_INLINE XE::Vec3f operator *( const XE::Vec3f & left, const XE::Vec3f & right )
 {
 	return { left.x * right.x, left.y * right.y, left.z * right.z };
 }
-XE_INLINE XE::Vec3 operator /( const XE::Vec3 & left, XE::float32 right )
+XE_INLINE XE::Vec3f operator /( const XE::Vec3f & left, XE::float32 right )
 {
 	return { left.x / right, left.y / right, left.z / right };
 }
-XE_INLINE XE::Vec3 operator /( XE::float32 left, const XE::Vec3 & right )
+XE_INLINE XE::Vec3f operator /( XE::float32 left, const XE::Vec3f & right )
 {
 	return { left / right.x, left / right.y, left / right.z };
 }
-XE_INLINE XE::Vec3 operator /( const XE::Vec3 & left, const XE::Vec3 & right )
+XE_INLINE XE::Vec3f operator /( const XE::Vec3f & left, const XE::Vec3f & right )
 {
 	return { left.x / right.x, left.y / right.y, left.z / right.z };
 }
-XE_INLINE XE::Vec3 & operator +=( XE::Vec3 & left, XE::float32 right )
+XE_INLINE XE::Vec3f & operator +=( XE::Vec3f & left, XE::float32 right )
 {
 	left.x += right;
 	left.y += right;
 	left.z += right;
 	return left;
 }
-XE_INLINE XE::Vec3 & operator +=( XE::Vec3 & left, const XE::Vec3 & right )
+XE_INLINE XE::Vec3f & operator +=( XE::Vec3f & left, const XE::Vec3f & right )
 {
 	left.x += right.x;
 	left.y += right.y;
 	left.z += right.z;
 	return left;
 }
-XE_INLINE XE::Vec3 & operator -=( XE::Vec3 & left, XE::float32 right )
+XE_INLINE XE::Vec3f & operator -=( XE::Vec3f & left, XE::float32 right )
 {
 	left.x -= right;
 	left.y -= right;
 	left.z -= right;
 	return left;
 }
-XE_INLINE XE::Vec3 & operator -=( XE::Vec3 & left, const XE::Vec3 & right )
+XE_INLINE XE::Vec3f & operator -=( XE::Vec3f & left, const XE::Vec3f & right )
 {
 	left.x -= right.x;
 	left.y -= right.y;
 	left.z -= right.z;
 	return left;
 }
-XE_INLINE XE::Vec3 & operator *=( XE::Vec3 & left, XE::float32 right )
+XE_INLINE XE::Vec3f & operator *=( XE::Vec3f & left, XE::float32 right )
 {
 	left.x *= right;
 	left.y *= right;
 	left.z *= right;
 	return left;
 }
-XE_INLINE XE::Vec3 & operator *=( XE::Vec3 & left, const XE::Vec3 & right )
+XE_INLINE XE::Vec3f & operator *=( XE::Vec3f & left, const XE::Vec3f & right )
 {
 	left.x *= right.x;
 	left.y *= right.y;
 	left.z *= right.z;
 	return left;
 }
-XE_INLINE XE::Vec3 & operator /=( XE::Vec3 & left, XE::float32 right )
+XE_INLINE XE::Vec3f & operator /=( XE::Vec3f & left, XE::float32 right )
 {
 	left.x /= right;
 	left.y /= right;
 	left.z /= right;
 	return left;
 }
-XE_INLINE XE::Vec3 & operator /=( XE::Vec3 & left, const XE::Vec3 & right )
+XE_INLINE XE::Vec3f & operator /=( XE::Vec3f & left, const XE::Vec3f & right )
 {
 	left.x /= right.x;
 	left.y /= right.y;
 	left.z /= right.z;
 	return left;
 }
-XE_INLINE bool operator ==( const XE::Vec3 & left, const XE::Vec3 & right )
+XE_INLINE bool operator ==( const XE::Vec3f & left, const XE::Vec3f & right )
 {
 	return left.x == right.x && left.y == right.y && left.z == right.z;
 }
-XE_INLINE bool operator !=( const XE::Vec3 & left, const XE::Vec3 & right )
+XE_INLINE bool operator !=( const XE::Vec3f & left, const XE::Vec3f & right )
 {
 	return left.x != right.x || left.y != right.y || left.z != right.z;
 }
 
-XE_INLINE XE::Vec4 operator -( const XE::Vec4 & val )
+XE_INLINE XE::Vec4f operator -( const XE::Vec4f & val )
 {
 	return { -val.x, -val.y, -val.z, -val.w };
 }
-XE_INLINE XE::Vec4 operator +( const XE::Vec4 & left, XE::float32 right )
+XE_INLINE XE::Vec4f operator +( const XE::Vec4f & left, XE::float32 right )
 {
 	return { left.x + right, left.y + right, left.z + right, left.w + right };
 }
-XE_INLINE XE::Vec4 operator +( XE::float32 left, const XE::Vec4 & right )
+XE_INLINE XE::Vec4f operator +( XE::float32 left, const XE::Vec4f & right )
 {
 	return { left + right.x, left + right.y, left + right.z, left + right.w };
 }
-XE_INLINE XE::Vec4 operator +( const XE::Vec4 & left, const XE::Vec4 & right )
+XE_INLINE XE::Vec4f operator +( const XE::Vec4f & left, const XE::Vec4f & right )
 {
 	return { left.x + right.x, left.y + right.y, left.z + right.z, left.w + right.w };
 }
-XE_INLINE XE::Vec4 operator -( const XE::Vec4 & left, XE::float32 right )
+XE_INLINE XE::Vec4f operator -( const XE::Vec4f & left, XE::float32 right )
 {
 	return { left.x - right, left.y - right, left.z - right, left.w - right };
 }
-XE_INLINE XE::Vec4 operator -( XE::float32 left, const XE::Vec4 & right )
+XE_INLINE XE::Vec4f operator -( XE::float32 left, const XE::Vec4f & right )
 {
 	return { left - right.x, left - right.y, left - right.z, left - right.w };
 }
-XE_INLINE XE::Vec4 operator -( const XE::Vec4 & left, const XE::Vec4 & right )
+XE_INLINE XE::Vec4f operator -( const XE::Vec4f & left, const XE::Vec4f & right )
 {
 	return { left.x - right.x, left.y - right.y, left.z - right.z, left.w - right.w };
 }
-XE_INLINE XE::Vec4 operator *( const XE::Vec4 & left, XE::float32 right )
+XE_INLINE XE::Vec4f operator *( const XE::Vec4f & left, XE::float32 right )
 {
 	return { left.x * right, left.y * right, left.z * right, left.w * right };
 }
-XE_INLINE XE::Vec4 operator *( XE::float32 left, const XE::Vec4 & right )
+XE_INLINE XE::Vec4f operator *( XE::float32 left, const XE::Vec4f & right )
 {
 	return { left * right.x, left * right.y, left * right.z, left * right.w };
 }
-XE_INLINE XE::Vec4 operator *( const XE::Vec4 & left, const XE::Vec4 & right )
+XE_INLINE XE::Vec4f operator *( const XE::Vec4f & left, const XE::Vec4f & right )
 {
 	return { left.x * right.x, left.y * right.y, left.z * right.z, left.w * right.w };
 }
-XE_INLINE XE::Vec4 operator /( const XE::Vec4 & left, XE::float32 right )
+XE_INLINE XE::Vec4f operator /( const XE::Vec4f & left, XE::float32 right )
 {
 	return { left.x / right, left.y / right, left.z / right, left.w / right };
 }
-XE_INLINE XE::Vec4 operator /( XE::float32 left, const XE::Vec4 & right )
+XE_INLINE XE::Vec4f operator /( XE::float32 left, const XE::Vec4f & right )
 {
 	return { left / right.x, left / right.y, left / right.z, left / right.w };
 }
-XE_INLINE XE::Vec4 operator /( const XE::Vec4 & left, const XE::Vec4 & right )
+XE_INLINE XE::Vec4f operator /( const XE::Vec4f & left, const XE::Vec4f & right )
 {
 	return { left.x / right.x, left.y / right.y, left.z / right.z, left.w / right.w };
 }
-XE_INLINE XE::Vec4 & operator +=( XE::Vec4 & left, XE::float32 right )
+XE_INLINE XE::Vec4f & operator +=( XE::Vec4f & left, XE::float32 right )
 {
 	left.x += right;
 	left.y += right;
@@ -308,7 +308,7 @@ XE_INLINE XE::Vec4 & operator +=( XE::Vec4 & left, XE::float32 right )
 	left.w += right;
 	return left;
 }
-XE_INLINE XE::Vec4 & operator +=( XE::Vec4 & left, const XE::Vec4 & right )
+XE_INLINE XE::Vec4f & operator +=( XE::Vec4f & left, const XE::Vec4f & right )
 {
 	left.x += right.x;
 	left.y += right.y;
@@ -316,7 +316,7 @@ XE_INLINE XE::Vec4 & operator +=( XE::Vec4 & left, const XE::Vec4 & right )
 	left.w += right.w;
 	return left;
 }
-XE_INLINE XE::Vec4 & operator -=( XE::Vec4 & left, XE::float32 right )
+XE_INLINE XE::Vec4f & operator -=( XE::Vec4f & left, XE::float32 right )
 {
 	left.x -= right;
 	left.y -= right;
@@ -324,7 +324,7 @@ XE_INLINE XE::Vec4 & operator -=( XE::Vec4 & left, XE::float32 right )
 	left.w -= right;
 	return left;
 }
-XE_INLINE XE::Vec4 & operator -=( XE::Vec4 & left, const XE::Vec4 & right )
+XE_INLINE XE::Vec4f & operator -=( XE::Vec4f & left, const XE::Vec4f & right )
 {
 	left.x -= right.x;
 	left.y -= right.y;
@@ -332,7 +332,7 @@ XE_INLINE XE::Vec4 & operator -=( XE::Vec4 & left, const XE::Vec4 & right )
 	left.w -= right.w;
 	return left;
 }
-XE_INLINE XE::Vec4 & operator *=( XE::Vec4 & left, XE::float32 right )
+XE_INLINE XE::Vec4f & operator *=( XE::Vec4f & left, XE::float32 right )
 {
 	left.x *= right;
 	left.y *= right;
@@ -340,7 +340,7 @@ XE_INLINE XE::Vec4 & operator *=( XE::Vec4 & left, XE::float32 right )
 	left.w *= right;
 	return left;
 }
-XE_INLINE XE::Vec4 & operator *=( XE::Vec4 & left, const XE::Vec4 & right )
+XE_INLINE XE::Vec4f & operator *=( XE::Vec4f & left, const XE::Vec4f & right )
 {
 	left.x *= right.x;
 	left.y *= right.y;
@@ -348,7 +348,7 @@ XE_INLINE XE::Vec4 & operator *=( XE::Vec4 & left, const XE::Vec4 & right )
 	left.w *= right.w;
 	return left;
 }
-XE_INLINE XE::Vec4 & operator /=( XE::Vec4 & left, XE::float32 right )
+XE_INLINE XE::Vec4f & operator /=( XE::Vec4f & left, XE::float32 right )
 {
 	left.x /= right;
 	left.y /= right;
@@ -356,7 +356,7 @@ XE_INLINE XE::Vec4 & operator /=( XE::Vec4 & left, XE::float32 right )
 	left.w /= right;
 	return left;
 }
-XE_INLINE XE::Vec4 & operator /=( XE::Vec4 & left, const XE::Vec4 & right )
+XE_INLINE XE::Vec4f & operator /=( XE::Vec4f & left, const XE::Vec4f & right )
 {
 	left.x /= right.x;
 	left.y /= right.y;
@@ -364,11 +364,11 @@ XE_INLINE XE::Vec4 & operator /=( XE::Vec4 & left, const XE::Vec4 & right )
 	left.w /= right.w;
 	return left;
 }
-XE_INLINE bool operator ==( const XE::Vec4 & left, const XE::Vec4 & right )
+XE_INLINE bool operator ==( const XE::Vec4f & left, const XE::Vec4f & right )
 {
 	return left.x == right.x && left.y == right.y && left.z == right.z && left.w == right.w;
 }
-XE_INLINE bool operator !=( const XE::Vec4 & left, const XE::Vec4 & right )
+XE_INLINE bool operator !=( const XE::Vec4f & left, const XE::Vec4f & right )
 {
 	return left.x != right.x || left.y != right.y || left.z != right.z || left.w == right.w;
 }
@@ -489,7 +489,7 @@ XE_INLINE bool operator !=( const XE::Quat & left, const XE::Quat & right )
 	return left.x != right.x || left.y != right.y || left.z != right.z || left.w == right.w;
 }
 
-XE_INLINE XE::Mat3 operator -( const XE::Mat3 & val )
+XE_INLINE XE::Mat3f operator -( const XE::Mat3f & val )
 {
 	return {
 		-val[0][0], -val[0][1], -val[0][2],
@@ -497,7 +497,7 @@ XE_INLINE XE::Mat3 operator -( const XE::Mat3 & val )
 		-val[2][0], -val[2][1], -val[2][2]
 	};
 }
-XE_INLINE XE::Mat3 operator +( const XE::Mat3 & left, const XE::Mat3 & right )
+XE_INLINE XE::Mat3f operator +( const XE::Mat3f & left, const XE::Mat3f & right )
 {
 	return {
 		left[0][0] + right[0][0], left[0][1] + right[0][1], left[0][2] + right[0][2],
@@ -505,7 +505,7 @@ XE_INLINE XE::Mat3 operator +( const XE::Mat3 & left, const XE::Mat3 & right )
 		left[2][0] + right[2][0], left[2][1] + right[2][1], left[2][2] + right[2][2]
 	};
 }
-XE_INLINE XE::Mat3 operator -( const XE::Mat3 & left, const XE::Mat3 & right )
+XE_INLINE XE::Mat3f operator -( const XE::Mat3f & left, const XE::Mat3f & right )
 {
 	return {
 		left[0][0] - right[0][0], left[0][1] - right[0][1], left[0][2] - right[0][2],
@@ -513,7 +513,7 @@ XE_INLINE XE::Mat3 operator -( const XE::Mat3 & left, const XE::Mat3 & right )
 		left[2][0] - right[2][0], left[2][1] - right[2][1], left[2][2] - right[2][2]
 	};
 }
-XE_INLINE XE::Mat3 operator *( const XE::Mat3 & left, XE::float32 right )
+XE_INLINE XE::Mat3f operator *( const XE::Mat3f & left, XE::float32 right )
 {
 	return {
 		left[0][0] * right, left[0][1] * right, left[0][2] * right,
@@ -521,7 +521,7 @@ XE_INLINE XE::Mat3 operator *( const XE::Mat3 & left, XE::float32 right )
 		left[2][0] * right, left[2][1] * right, left[2][2] * right
 	};
 }
-XE_INLINE XE::Mat3 operator *( XE::float32 left, const XE::Mat3 & right )
+XE_INLINE XE::Mat3f operator *( XE::float32 left, const XE::Mat3f & right )
 {
 	return {
 		left * right[0][0], left * right[0][1], left * right[0][2],
@@ -529,7 +529,7 @@ XE_INLINE XE::Mat3 operator *( XE::float32 left, const XE::Mat3 & right )
 		left * right[2][0], left * right[2][1], left * right[2][2]
 	};
 }
-XE_INLINE XE::Vec3 operator *( const XE::Mat3 & left, const XE::Vec3 & right )
+XE_INLINE XE::Vec3f operator *( const XE::Mat3f & left, const XE::Vec3f & right )
 {
 	return {
 		left[0][0] * right[0] + left[0][1] * right[1] + left[0][2] * right[2],
@@ -537,7 +537,7 @@ XE_INLINE XE::Vec3 operator *( const XE::Mat3 & left, const XE::Vec3 & right )
 		left[2][0] * right[0] + left[2][1] * right[1] + left[2][2] * right[2]
 	};
 }
-XE_INLINE XE::Vec3 operator *( const XE::Vec3 & left, const XE::Mat3 & right )
+XE_INLINE XE::Vec3f operator *( const XE::Vec3f & left, const XE::Mat3f & right )
 {
 	return {
 		right[0][0] * left[0] + right[0][1] * left[1] + right[0][2] * left[2],
@@ -545,7 +545,7 @@ XE_INLINE XE::Vec3 operator *( const XE::Vec3 & left, const XE::Mat3 & right )
 		right[2][0] * left[0] + right[2][1] * left[1] + right[2][2] * left[2]
 	};
 }
-XE_INLINE XE::Mat3 operator *( const XE::Mat3 & left, const XE::Mat3 & right )
+XE_INLINE XE::Mat3f operator *( const XE::Mat3f & left, const XE::Mat3f & right )
 {
 	return {
 		left[0][0] * right[0][0] + left[0][1] * right[1][0] + left[0][2] * right[2][0],
@@ -559,7 +559,7 @@ XE_INLINE XE::Mat3 operator *( const XE::Mat3 & left, const XE::Mat3 & right )
 		left[2][0] * right[0][2] + left[2][1] * right[1][2] + left[2][2] * right[2][2]
 	};
 }
-XE_INLINE XE::Mat3 & operator +=( XE::Mat3 & left, const XE::Mat3 & right )
+XE_INLINE XE::Mat3f & operator +=( XE::Mat3f & left, const XE::Mat3f & right )
 {
 	left[0][0] += right[0][0];
 	left[0][1] += right[0][1];
@@ -572,7 +572,7 @@ XE_INLINE XE::Mat3 & operator +=( XE::Mat3 & left, const XE::Mat3 & right )
 	left[2][2] += right[2][2];
 	return left;
 }
-XE_INLINE XE::Mat3 & operator -=( XE::Mat3 & left, const XE::Mat3 & right )
+XE_INLINE XE::Mat3f & operator -=( XE::Mat3f & left, const XE::Mat3f & right )
 {
 	left[0][0] -= right[0][0];
 	left[0][1] -= right[0][1];
@@ -585,7 +585,7 @@ XE_INLINE XE::Mat3 & operator -=( XE::Mat3 & left, const XE::Mat3 & right )
 	left[2][2] -= right[2][2];
 	return left;
 }
-XE_INLINE XE::Mat3 & operator *=( XE::Mat3 & left, XE::float32 right )
+XE_INLINE XE::Mat3f & operator *=( XE::Mat3f & left, XE::float32 right )
 {
 	left[0][0] *= right;
 	left[0][1] *= right;
@@ -598,7 +598,7 @@ XE_INLINE XE::Mat3 & operator *=( XE::Mat3 & left, XE::float32 right )
 	left[2][2] *= right;
 	return left;
 }
-XE_INLINE XE::Mat3 & operator *=( XE::Mat3 & left, const XE::Mat3 & right )
+XE_INLINE XE::Mat3f & operator *=( XE::Mat3f & left, const XE::Mat3f & right )
 {
 	left[0][0] *= right[0][0] + left[0][1] * right[1][0] + left[0][2] * right[2][0];
 	left[0][0] *= right[0][1] + left[0][1] * right[1][1] + left[0][2] * right[2][1];
@@ -611,14 +611,14 @@ XE_INLINE XE::Mat3 & operator *=( XE::Mat3 & left, const XE::Mat3 & right )
 	left[2][0] *= right[0][2] + left[2][1] * right[1][2] + left[2][2] * right[2][2];
 	return left;
 }
-XE_INLINE bool operator ==( const XE::Mat3 & left, const XE::Mat3 & right )
+XE_INLINE bool operator ==( const XE::Mat3f & left, const XE::Mat3f & right )
 {
 	return
 		left[0][0] == right[0][0] && left[0][1] == right[0][1] && left[0][2] == right[0][2] &&
 		left[1][0] == right[1][0] && left[1][1] == right[1][1] && left[1][2] == right[1][2] &&
 		left[2][0] == right[2][0] && left[2][1] == right[2][1] && left[2][2] == right[2][2];
 }
-XE_INLINE bool operator !=( const XE::Mat3 & left, const XE::Mat3 & right )
+XE_INLINE bool operator !=( const XE::Mat3f & left, const XE::Mat3f & right )
 {
 	return
 		left[0][0] != right[0][0] || left[0][1] != right[0][1] || left[0][2] != right[0][2] ||
@@ -626,7 +626,7 @@ XE_INLINE bool operator !=( const XE::Mat3 & left, const XE::Mat3 & right )
 		left[2][0] != right[2][0] || left[2][1] != right[2][1] || left[2][2] != right[2][2];
 }
 
-XE_INLINE XE::Mat4 operator -( const XE::Mat4 & val )
+XE_INLINE XE::Mat4f operator -( const XE::Mat4f & val )
 {
 	return {
 		   -val[0][0], -val[0][1], -val[0][2], -val[0][3],
@@ -635,7 +635,7 @@ XE_INLINE XE::Mat4 operator -( const XE::Mat4 & val )
 		   -val[3][0], -val[3][1], -val[3][2], -val[3][3]
 	};
 }
-XE_INLINE XE::Mat4 operator +( const XE::Mat4 & left, const XE::Mat4 & right )
+XE_INLINE XE::Mat4f operator +( const XE::Mat4f & left, const XE::Mat4f & right )
 {
 	return {
 	left[0][0] + right[0][0], left[0][1] + right[0][1], left[0][2] + right[0][2], left[0][3] + right[0][3],
@@ -644,7 +644,7 @@ XE_INLINE XE::Mat4 operator +( const XE::Mat4 & left, const XE::Mat4 & right )
 	left[3][0] + right[3][0], left[3][1] + right[3][1], left[3][2] + right[3][2], left[3][3] + right[3][3]
 	};
 }
-XE_INLINE XE::Mat4 operator -( const XE::Mat4 & left, const XE::Mat4 & right )
+XE_INLINE XE::Mat4f operator -( const XE::Mat4f & left, const XE::Mat4f & right )
 {
 	return {
 	   left[0][0] - right[0][0], left[0][1] - right[0][1], left[0][2] - right[0][2], left[0][3] - right[0][3],
@@ -653,7 +653,7 @@ XE_INLINE XE::Mat4 operator -( const XE::Mat4 & left, const XE::Mat4 & right )
 	   left[3][0] - right[3][0], left[3][1] - right[3][1], left[3][2] - right[3][2], left[3][3] - right[3][3]
 	};
 }
-XE_INLINE XE::Vec3 operator *( const XE::Mat4 & left, const XE::Vec3 & right )
+XE_INLINE XE::Vec3f operator *( const XE::Mat4f & left, const XE::Vec3f & right )
 {
 	XE::float32 inv = 1.0f / ( left[3][0] * right.x + left[3][1] * right.y + left[3][2] * right.z + left[3][3] );
 	return {
@@ -662,7 +662,7 @@ XE_INLINE XE::Vec3 operator *( const XE::Mat4 & left, const XE::Vec3 & right )
 	 ( left[2][0] * right.x + left[2][1] * right.y + left[2][2] * right.z + left[2][3] ) * inv
 	};
 }
-XE_INLINE XE::Vec4 operator *( const XE::Mat4 & left, const XE::Vec4 & right )
+XE_INLINE XE::Vec4f operator *( const XE::Mat4f & left, const XE::Vec4f & right )
 {
 	return {
 		left[0][0] * right.x + left[0][1] * right.y + left[0][2] * right.z + left[0][3] * right.w,
@@ -671,7 +671,7 @@ XE_INLINE XE::Vec4 operator *( const XE::Mat4 & left, const XE::Vec4 & right )
 		left[3][0] * right.x + left[3][1] * right.y + left[3][2] * right.z + left[3][3] * right.w
 	};
 }
-XE_INLINE XE::Mat4 operator *( const XE::Mat4 & left, const XE::Mat4 & right )
+XE_INLINE XE::Mat4f operator *( const XE::Mat4f & left, const XE::Mat4f & right )
 {
 	return {
 	left[0][0] * right[0][0] + left[0][1] * right[1][0] + left[0][2] * right[2][0] + left[0][3] * right[3][0],
@@ -692,7 +692,7 @@ XE_INLINE XE::Mat4 operator *( const XE::Mat4 & left, const XE::Mat4 & right )
 	left[3][0] * right[0][3] + left[3][1] * right[1][3] + left[3][2] * right[2][3] + left[3][3] * right[3][3]
 	};
 }
-XE_INLINE XE::Mat4 & operator +=( XE::Mat4 & left, const XE::Mat4 & right )
+XE_INLINE XE::Mat4f & operator +=( XE::Mat4f & left, const XE::Mat4f & right )
 {
 	left[0][0] += right[0][0]; left[0][1] += right[0][1]; left[0][2] += right[0][2]; left[0][3] += right[0][3];
 	left[1][0] += right[1][0]; left[1][1] += right[1][1]; left[1][2] += right[1][2]; left[1][3] += right[1][3];
@@ -700,7 +700,7 @@ XE_INLINE XE::Mat4 & operator +=( XE::Mat4 & left, const XE::Mat4 & right )
 	left[3][0] += right[3][0]; left[3][1] += right[3][1]; left[3][2] += right[3][2]; left[3][3] += right[3][3];
 	return left;
 }
-XE_INLINE XE::Mat4 & operator -=( XE::Mat4 & left, const XE::Mat4 & right )
+XE_INLINE XE::Mat4f & operator -=( XE::Mat4f & left, const XE::Mat4f & right )
 {
 	left[0][0] -= right[0][0]; left[0][1] -= right[0][1]; left[0][2] -= right[0][2]; left[0][3] -= right[0][3];
 	left[1][0] -= right[1][0]; left[1][1] -= right[1][1]; left[1][2] -= right[1][2]; left[1][3] -= right[1][3];
@@ -708,7 +708,7 @@ XE_INLINE XE::Mat4 & operator -=( XE::Mat4 & left, const XE::Mat4 & right )
 	left[3][0] -= right[3][0]; left[3][1] -= right[3][1]; left[3][2] -= right[3][2]; left[3][3] -= right[3][3];
 	return left;
 }
-XE_INLINE XE::Mat4 & operator *=( XE::Mat4 & left, const XE::Mat4 & right )
+XE_INLINE XE::Mat4f & operator *=( XE::Mat4f & left, const XE::Mat4f & right )
 {
 	left[0][0] = left[0][0] * right[0][0] + left[0][1] * right[1][0] + left[0][2] * right[2][0] + left[0][3] * right[3][0];
 	left[0][1] = left[0][0] * right[0][1] + left[0][1] * right[1][1] + left[0][2] * right[2][1] + left[0][3] * right[3][1];
@@ -728,7 +728,7 @@ XE_INLINE XE::Mat4 & operator *=( XE::Mat4 & left, const XE::Mat4 & right )
 	left[3][3] = left[3][0] * right[0][3] + left[3][1] * right[1][3] + left[3][2] * right[2][3] + left[3][3] * right[3][3];
 	return left;
 }
-XE_INLINE bool operator ==( const XE::Mat4 & left, const XE::Mat4 & right )
+XE_INLINE bool operator ==( const XE::Mat4f & left, const XE::Mat4f & right )
 {
 	return
 		left[0][0] == right[0][0] && left[0][1] == right[0][1] && left[0][2] == right[0][2] && left[0][3] == right[0][3] &&
@@ -736,7 +736,7 @@ XE_INLINE bool operator ==( const XE::Mat4 & left, const XE::Mat4 & right )
 		left[2][0] == right[2][0] && left[2][1] == right[2][1] && left[2][2] == right[2][2] && left[2][3] == right[2][3] &&
 		left[3][0] == right[3][0] && left[3][1] == right[3][1] && left[3][2] == right[3][2] && left[3][3] == right[3][3];
 }
-XE_INLINE bool operator !=( const XE::Mat4 & left, const XE::Mat4 & right )
+XE_INLINE bool operator !=( const XE::Mat4f & left, const XE::Mat4f & right )
 {
 	return
 		left[0][0] != right[0][0] || left[0][1] != right[0][1] || left[0][2] != right[0][2] || left[0][3] != right[0][3] ||
@@ -969,34 +969,34 @@ public:
 	}
 
 public:
-	static XE_INLINE XE::float32 Length( const Vec2 & val )
+	static XE_INLINE XE::float32 Length( const Vec2f & val )
 	{
 		return Sqrt( val.x * val.x + val.y * val.y );
 	}
 
-	static XE_INLINE XE::float32 SqrLength( const Vec2 & val )
+	static XE_INLINE XE::float32 SqrLength( const Vec2f & val )
 	{
 		return ( val.x * val.x + val.y * val.y );
 	}
 
-	static XE_INLINE XE::float32 Distance( const Vec2 & left, const Vec2 & right )
+	static XE_INLINE XE::float32 Distance( const Vec2f & left, const Vec2f & right )
 	{
 		return Length( left - right );
 	}
 
-	static XE_INLINE XE::float32 SqrDistance( const Vec2 & left, const Vec2 & right )
+	static XE_INLINE XE::float32 SqrDistance( const Vec2f & left, const Vec2f & right )
 	{
 		return SqrLength( left - right );
 	}
 
-	static XE_INLINE XE::float32 Dot( const Vec2 & left, const Vec2 & right )
+	static XE_INLINE XE::float32 Dot( const Vec2f & left, const Vec2f & right )
 	{
 		return left.x * right.x + left.y * right.y;
 	}
 
-	static XE_INLINE Vec2 Normalize( const Vec2 & val )
+	static XE_INLINE Vec2f Normalize( const Vec2f & val )
 	{
-		Vec2 ret;
+		Vec2f ret;
 
 		XE::float32 len = Length( val );
 
@@ -1010,27 +1010,27 @@ public:
 		return ret;
 	}
 
-	static XE_INLINE XE::float32 Corss( const Vec2 & left, const Vec2 & right )
+	static XE_INLINE XE::float32 Corss( const Vec2f & left, const Vec2f & right )
 	{
 		return left.x * right.y - left.y * right.x;
 	}
 
-	static XE_INLINE Vec2 Floor( const Vec2 & left, const Vec2 & right )
+	static XE_INLINE Vec2f Floor( const Vec2f & left, const Vec2f & right )
 	{
 		return Min( left, right );
 	}
 
-	static XE_INLINE Vec2 Ceil( const Vec2 & left, const Vec2 & right )
+	static XE_INLINE Vec2f Ceil( const Vec2f & left, const Vec2f & right )
 	{
 		return Max( left, right );
 	}
 
-	static XE_INLINE Vec2 Reflect( const Vec2 & left, const Vec2 & right )
+	static XE_INLINE Vec2f Reflect( const Vec2f & left, const Vec2f & right )
 	{
 		return  left - ( 2 * Dot( left, right ) * right );
 	}
 
-	static XE_INLINE void OrthoNormalize( Vec2 & left, Vec2 & right )
+	static XE_INLINE void OrthoNormalize( Vec2f & left, Vec2f & right )
 	{
 		left = Normalize( left );
 		XE::float32 dot = Dot( left, right );
@@ -1038,50 +1038,50 @@ public:
 		right = Normalize( right );
 	}
 
-	static XE_INLINE bool IsNAN( const Vec2 & val )
+	static XE_INLINE bool IsNAN( const Vec2f & val )
 	{
 		return val.x == Nan || val.y == Nan;
 	}
 
-	static XE_INLINE Vec2 Min( const Vec2 & left, const Vec2 & right )
+	static XE_INLINE Vec2f Min( const Vec2f & left, const Vec2f & right )
 	{
 		return { Min( left.x, right.x ), Min( left.y, right.y ) };
 	}
 
-	static XE_INLINE Vec2 Max( const Vec2 & left, const Vec2 & right )
+	static XE_INLINE Vec2f Max( const Vec2f & left, const Vec2f & right )
 	{
 		return { Max( left.x, right.x ), Max( left.y, right.y ) };
 	}
 
 public:
-	static XE_INLINE XE::float32 Length( const Vec3 & val )
+	static XE_INLINE XE::float32 Length( const Vec3f & val )
 	{
 		return Sqrt( val.x * val.x + val.y * val.y + val.z * val.z );
 	}
 
-	static XE_INLINE XE::float32 SqrLength( const Vec3 & val )
+	static XE_INLINE XE::float32 SqrLength( const Vec3f & val )
 	{
 		return ( val.x * val.x + val.y * val.y + val.z * val.z );
 	}
 
-	static XE_INLINE XE::float32 Distance( const Vec3 & left, const Vec3 & right )
+	static XE_INLINE XE::float32 Distance( const Vec3f & left, const Vec3f & right )
 	{
 		return Length( left - right );
 	}
 
-	static XE_INLINE XE::float32 SqrDistance( const Vec3 & left, const Vec3 & right )
+	static XE_INLINE XE::float32 SqrDistance( const Vec3f & left, const Vec3f & right )
 	{
 		return SqrLength( left - right );
 	}
 
-	static XE_INLINE XE::float32 Dot( const Vec3 & left, const Vec3 & right )
+	static XE_INLINE XE::float32 Dot( const Vec3f & left, const Vec3f & right )
 	{
 		return left.x * right.x + left.y * right.y + left.z * right.z;
 	}
 
-	static XE_INLINE Vec3 Normalize( const Vec3 & val )
+	static XE_INLINE Vec3f Normalize( const Vec3f & val )
 	{
-		Vec3 ret;
+		Vec3f ret;
 
 		XE::float32 len = Length( val );
 		if( len > 1e-08f )
@@ -1094,7 +1094,7 @@ public:
 		return ret;
 	}
 
-	static XE_INLINE Vec3 Cross( const Vec3 & left, const Vec3 & right )
+	static XE_INLINE Vec3f Cross( const Vec3f & left, const Vec3f & right )
 	{
 		return {
 			left.y * right.z - left.z * right.y,
@@ -1103,12 +1103,12 @@ public:
 		};
 	}
 
-	static XE_INLINE Vec3 Reflect( const Vec3 & left, const Vec3 & right )
+	static XE_INLINE Vec3f Reflect( const Vec3f & left, const Vec3f & right )
 	{
 		return left - ( 2 * Dot( left, right ) * right );
 	}
 
-	static XE_INLINE void OrthoNormalize( Vec3 & a, Vec3 & b, Vec3 & c )
+	static XE_INLINE void OrthoNormalize( Vec3f & a, Vec3f & b, Vec3f & c )
 	{
 		a = Normalize( a );
 
@@ -1122,39 +1122,39 @@ public:
 		c = Normalize( c );
 	}
 
-	static XE_INLINE bool IsNAN( const Vec3 & val )
+	static XE_INLINE bool IsNAN( const Vec3f & val )
 	{
 		return val.x == Nan || val.y == Nan || val.z == Nan;
 	}
 
-	static XE_INLINE Vec3 Min( const Vec3 & left, const Vec3 & right )
+	static XE_INLINE Vec3f Min( const Vec3f & left, const Vec3f & right )
 	{
 		return { Min( left.x, right.x ), Min( left.y, right.y ), Min( left.z, right.z ) };
 	}
 
-	static XE_INLINE Vec3 Max( const Vec3 & left, const Vec3 & right )
+	static XE_INLINE Vec3f Max( const Vec3f & left, const Vec3f & right )
 	{
 		return { Max( left.x, right.x ), Max( left.y, right.y ), Max( left.z, right.z ) };
 	}
 
-	static XE_INLINE Vec3 Lerp( const Vec3 & left, const Vec3 & right, XE::float32 t )
+	static XE_INLINE Vec3f Lerp( const Vec3f & left, const Vec3f & right, XE::float32 t )
 	{
 		return ( 1.0f - t ) * left + t * right;
 	}
 
 public:
-	static XE_INLINE XE::float32 Dot( const Vec4 & left, const Vec4 & right )
+	static XE_INLINE XE::float32 Dot( const Vec4f & left, const Vec4f & right )
 	{
 		return left.x * right.x + left.y * right.y + left.z * right.z + left.w * right.w;
 	}
 
-	static XE_INLINE bool IsNAN( const Vec4 & val )
+	static XE_INLINE bool IsNAN( const Vec4f & val )
 	{
 		return val.x == Nan || val.y == Nan || val.z == Nan || val.w == Nan;
 	}
 
 public:
-	static XE_INLINE Quat QuatFromMat( const Mat3 & mat )
+	static XE_INLINE Quat QuatFromMat( const Mat3f & mat )
 	{
 		Quat val;
 
@@ -1202,7 +1202,7 @@ public:
 		return val;
 	}
 
-	static XE_INLINE Quat QuatFromAxisAngle( const Vec3 & axis, XE::float32 angle )
+	static XE_INLINE Quat QuatFromAxisAngle( const Vec3f & axis, XE::float32 angle )
 	{
 		Quat val;
 
@@ -1217,9 +1217,9 @@ public:
 		return val;
 	}
 
-	static XE_INLINE Quat QuatFromAxes( const Vec3 & x, const Vec3 & y, const Vec3 & z )
+	static XE_INLINE Quat QuatFromAxes( const Vec3f & x, const Vec3f & y, const Vec3f & z )
 	{
-		Mat3 mat;
+		Mat3f mat;
 
 		mat[0][0] = x.x;
 		mat[1][0] = x.y;
@@ -1236,7 +1236,7 @@ public:
 		return QuatFromMat( mat );
 	}
 
-	static XE_INLINE Quat QuatFromEuler( const Vec3 & euler )
+	static XE_INLINE Quat QuatFromEuler( const Vec3f & euler )
 	{
 		XE::float32 halfXAngle = euler.x * 0.5f;
 		XE::float32 halfYAngle = euler.y * 0.5f;
@@ -1258,7 +1258,7 @@ public:
 		return ( quatZ * quatX ) * quatY;
 	}
 
-	static XE_INLINE void QuatToMatrix( const Quat & val, Mat3 & mat )
+	static XE_INLINE void QuatToMatrix( const Quat & val, Mat3f & mat )
 	{
 		XE::float32 tx = val.x + val.x;
 		XE::float32 ty = val.y + val.y;
@@ -1284,7 +1284,7 @@ public:
 		mat[2][2] = 1.0f - ( txx + tyy );
 	}
 
-	static XE_INLINE void QuatToAxisAngle( const Quat & val, Vec3 & axis, XE::float32 & angle )
+	static XE_INLINE void QuatToAxisAngle( const Quat & val, Vec3f & axis, XE::float32 & angle )
 	{
 		XE::float32 sqrLength = val.x * val.x + val.y * val.y + val.z * val.z;
 		if( sqrLength > 0.0f )
@@ -1304,9 +1304,9 @@ public:
 		}
 	}
 
-	static XE_INLINE void QuatToAxes( const Quat & val, Vec3 & x, Vec3 & y, Vec3 & z )
+	static XE_INLINE void QuatToAxes( const Quat & val, Vec3f & x, Vec3f & y, Vec3f & z )
 	{
-		Mat3 mat;
+		Mat3f mat;
 		QuatToMatrix( val, mat );
 
 		x.x = mat[0][0];
@@ -1322,14 +1322,14 @@ public:
 		z.z = mat[2][2];
 	}
 
-	static XE_INLINE void QuatToEuler( const Quat & val, Vec3 & euler )
+	static XE_INLINE void QuatToEuler( const Quat & val, Vec3f & euler )
 	{
-		Mat3 mat;
+		Mat3f mat;
 		QuatToMatrix( val, mat );
 		MatToEuler( mat, euler );
 	}
 
-	static XE_INLINE Vec3 XAxis( const Quat & val )
+	static XE_INLINE Vec3f XAxis( const Quat & val )
 	{
 		XE::float32 fTy = 2.0f * val.y;
 		XE::float32 fTz = 2.0f * val.z;
@@ -1343,7 +1343,7 @@ public:
 		return { 1.0f - ( fTyy + fTzz ), fTxy + fTwz, fTxz - fTwy };
 	}
 
-	static XE_INLINE Vec3 YAxis( const Quat & val )
+	static XE_INLINE Vec3f YAxis( const Quat & val )
 	{
 		XE::float32 fTx = 2.0f * val.x;
 		XE::float32 fTy = 2.0f * val.y;
@@ -1358,7 +1358,7 @@ public:
 		return { fTxy - fTwz, 1.0f - ( fTxx + fTzz ), fTyz + fTwx };
 	}
 
-	static XE_INLINE Vec3 ZAxis( const Quat & val )
+	static XE_INLINE Vec3f ZAxis( const Quat & val )
 	{
 		XE::float32 fTx = 2.0f * val.x;
 		XE::float32 fTy = 2.0f * val.y;
@@ -1397,20 +1397,20 @@ public:
 		return Quat::Zero;
 	}
 
-	static XE_INLINE Vec3 Rotate( const Quat & val, const Vec3 & v )
+	static XE_INLINE Vec3f Rotate( const Quat & val, const Vec3f & v )
 	{
-		Mat3 rot;
+		Mat3f rot;
 		QuatToMatrix( val, rot );
 		return rot * v;
 	}
 
-	static XE_INLINE Quat LookAt( const Quat & val, const Vec3 & forward )
+	static XE_INLINE Quat LookAt( const Quat & val, const Vec3f & forward )
 	{
-		if( forward == Vec3::Zero )
+		if( forward == Vec3f::Zero )
 			return val;
 
-		Vec3 nrmForwardDir = Normalize( forward );
-		Vec3 currentForwardDir = -ZAxis( val );
+		Vec3f nrmForwardDir = Normalize( forward );
+		Vec3f currentForwardDir = -ZAxis( val );
 
 		if( SqrLength( nrmForwardDir + currentForwardDir ) < 0.00005f )
 		{
@@ -1420,15 +1420,15 @@ public:
 		return RotationFromTo( val, currentForwardDir, nrmForwardDir ) * val;
 	}
 
-	static XE_INLINE Quat LookAt( const Quat & val, const Vec3 & forward, const Vec3 & up )
+	static XE_INLINE Quat LookAt( const Quat & val, const Vec3f & forward, const Vec3f & up )
 	{
 		if( Abs( 1.0f - Dot( forward, up ) ) <= Epsilon )
 		{
 			return LookAt( val, forward );
 		}
 
-		Vec3 x = Cross( forward, up );
-		Vec3 y = Cross( x, forward );
+		Vec3f x = Cross( forward, up );
+		Vec3f y = Cross( x, forward );
 
 		x = Normalize( x );
 		y = Normalize( y );
@@ -1476,12 +1476,12 @@ public:
 		return Normalize( ( 1.0f - t ) * left + t * ret );
 	}
 
-	static XE_INLINE Quat RotationFromTo( const Quat & val, const Vec3 & from, const Vec3 & dest )
+	static XE_INLINE Quat RotationFromTo( const Quat & val, const Vec3f & from, const Vec3f & dest )
 	{// Based on Stan Melax's article in Game Programming Gems
 		Quat q;
 
-		Vec3 v0 = from;
-		Vec3 v1 = dest;
+		Vec3f v0 = from;
+		Vec3f v1 = dest;
 		v0 = Normalize( v0 );
 		v1 = Normalize( v1 );
 
@@ -1494,9 +1494,9 @@ public:
 		if( d < ( 1e-6f - 1.0f ) )
 		{
 			// Generate an axis
-			Vec3 axis = Cross( Vec3( 1, 0, 0 ), from );
+			Vec3f axis = Cross( Vec3f( 1, 0, 0 ), from );
 			if( Length( axis ) < ( 1e-06f * 1e-06f ) ) // Pick another if colinear
-				axis = Cross( Vec3( 0, 1, 0 ), from );
+				axis = Cross( Vec3f( 0, 1, 0 ), from );
 			axis = Normalize( axis );
 			return QuatFromAxisAngle( axis, Pi );
 		}
@@ -1504,7 +1504,7 @@ public:
 		XE::float32 s = Sqrt( ( 1 + d ) * 2 );
 		XE::float32 invs = 1 / s;
 
-		Vec3 c = Cross( v0, v1 );
+		Vec3f c = Cross( v0, v1 );
 
 		q.x = c.x * invs;
 		q.y = c.y * invs;
@@ -1524,16 +1524,16 @@ public:
 	}
 
 public:
-	static XE_INLINE Mat3 MatFromQuat( const Quat & q )
+	static XE_INLINE Mat3f MatFromQuat( const Quat & q )
 	{
-		Mat3 m;
+		Mat3f m;
 		QuatToMatrix( q, m );
 		return m;
 	}
 
-	static XE_INLINE Mat3 MatFromAxisAngle( const Vec3 & axis, XE::float32 angle )
+	static XE_INLINE Mat3f MatFromAxisAngle( const Vec3f & axis, XE::float32 angle )
 	{
-		Mat3 m;
+		Mat3f m;
 		XE::float32 cos = Cos( angle );
 		XE::float32 sin = Sin( angle );
 		XE::float32 oneMinusCos = 1.0f - cos;
@@ -1560,9 +1560,9 @@ public:
 		return m;
 	}
 
-	static XE_INLINE Mat3 MatFromEuler( const Vec3 & euler )
+	static XE_INLINE Mat3f MatFromEuler( const Vec3f & euler )
 	{
-		Mat3 m;
+		Mat3f m;
 
 		XE::float32 cx = Cos( euler.x );
 		XE::float32 sx = Sin( euler.x );
@@ -1586,12 +1586,12 @@ public:
 		return m;
 	}
 
-	static XE_INLINE void MatToQuat( const Mat3 & val, Quat & q )
+	static XE_INLINE void MatToQuat( const Mat3f & val, Quat & q )
 	{
 		q = QuatFromMat( val );
 	}
 
-	static XE_INLINE void MatToAxisAngle( const Mat3 & val, Vec3 & axis, XE::float32 & angle )
+	static XE_INLINE void MatToAxisAngle( const Mat3f & val, Vec3f & axis, XE::float32 & angle )
 	{
 		XE::float32 trace = val[0][0] + val[1][1] + val[2][2];
 		XE::float32 cos = 0.5f * ( trace - 1.0f );
@@ -1653,7 +1653,7 @@ public:
 		}
 	}
 
-	static XE_INLINE void MatToEuler( const Mat3 & val, Vec3 & euler )
+	static XE_INLINE void MatToEuler( const Mat3f & val, Vec3f & euler )
 	{
 		euler.x = -ASin( val[1][2] );
 
@@ -1677,9 +1677,9 @@ public:
 		euler.z = 0.0f;
 	}
 
-	static XE_INLINE Mat3 Transpose( const Mat3 & val )
+	static XE_INLINE Mat3f Transpose( const Mat3f & val )
 	{
-		Mat3 ret;
+		Mat3f ret;
 		for( XE::uint32 row = 0; row < 3; row++ )
 		{
 			for( XE::uint32 col = 0; col < 3; col++ )
@@ -1688,9 +1688,9 @@ public:
 		return ret;
 	}
 
-	static XE_INLINE Mat3 Inverse( const Mat3 & val )
+	static XE_INLINE Mat3f Inverse( const Mat3f & val )
 	{
-		Mat3 ret;
+		Mat3f ret;
 
 		ret[0][0] = val[1][1] * val[2][2] - val[1][2] * val[2][1];
 		ret[0][1] = val[0][2] * val[2][1] - val[0][1] * val[2][2];
@@ -1705,7 +1705,7 @@ public:
 		XE::float32 det = val[0][0] * ret[0][0] + val[0][1] * ret[1][0] + val[0][2] * ret[2][0];
 
 		if( Abs( det ) <= Epsilon )
-			return Mat3::Identity;
+			return Mat3f::Identity;
 
 		XE::float32 invDet = 1.0f / det;
 		for( XE::uint32 row = 0; row < 3; row++ )
@@ -1717,7 +1717,7 @@ public:
 		return ret;
 	}
 
-	static XE_INLINE XE::float32 Determinant( const Mat3 & val )
+	static XE_INLINE XE::float32 Determinant( const Mat3f & val )
 	{
 		XE::float32 cofactor00 = val[1][1] * val[2][2] - val[1][2] * val[2][1];
 		XE::float32 cofactor10 = val[1][2] * val[2][0] - val[1][0] * val[2][2];
@@ -1728,9 +1728,9 @@ public:
 		return det;
 	}
 
-	static XE_INLINE Mat3 OrthoNormalize( const Mat3 & val )
+	static XE_INLINE Mat3f OrthoNormalize( const Mat3f & val )
 	{
-		Mat3 m = val;
+		Mat3f m = val;
 		// Compute q0
 		XE::float32 invLength = RSqrt( m[0][0] * m[0][0] + m[1][0] * m[1][0] + m[2][0] * m[2][0] );
 
@@ -1769,7 +1769,7 @@ public:
 	}
 
 public:
-	static XE_INLINE Mat4 Transpose( const Mat4 & m )
+	static XE_INLINE Mat4f Transpose( const Mat4f & m )
 	{
 		return { m[0][0], m[1][0], m[2][0], m[3][0],
 						m[0][1], m[1][1], m[2][1], m[3][1],
@@ -1777,7 +1777,7 @@ public:
 						m[0][3], m[1][3], m[2][3], m[3][3] };
 	}
 
-	static XE_INLINE Mat4 Inverse( const Mat4 & m )
+	static XE_INLINE Mat4f Inverse( const Mat4f & m )
 	{
 		XE::float32 m00 = m[0][0], m01 = m[0][1], m02 = m[0][2], m03 = m[0][3];
 		XE::float32 m10 = m[1][0], m11 = m[1][1], m12 = m[1][2], m13 = m[1][3];
@@ -1839,14 +1839,14 @@ public:
 			d30, d31, d32, d33 };
 	}
 
-	static XE_INLINE XE::float32 MINOR( const Mat4 & m, const XE::uint32 r0, const XE::uint32 r1, const XE::uint32 r2, const XE::uint32 c0, const XE::uint32 c1, const XE::uint32 c2 )
+	static XE_INLINE XE::float32 MINOR( const Mat4f & m, const XE::uint32 r0, const XE::uint32 r1, const XE::uint32 r2, const XE::uint32 c0, const XE::uint32 c1, const XE::uint32 c2 )
 	{
 		return m[r0][c0] * ( m[r1][c1] * m[r2][c2] - m[r2][c1] * m[r1][c2] ) -
 			m[r0][c1] * ( m[r1][c0] * m[r2][c2] - m[r2][c0] * m[r1][c2] ) +
 			m[r0][c2] * ( m[r1][c0] * m[r2][c1] - m[r2][c0] * m[r1][c1] );
 	};
 
-	static XE_INLINE Mat4 Adjoint( const Mat4 & m )
+	static XE_INLINE Mat4f Adjoint( const Mat4f & m )
 	{
 		return {
 			MINOR( m, 1, 2, 3, 1, 2, 3 ),
@@ -1871,7 +1871,7 @@ public:
 		};
 	}
 
-	static XE_INLINE XE::float32 Determinant( const Mat4 & m )
+	static XE_INLINE XE::float32 Determinant( const Mat4f & m )
 	{
 		return m[0][0] * MINOR( m, 1, 2, 3, 1, 2, 3 ) -
 			m[0][1] * MINOR( m, 1, 2, 3, 0, 2, 3 ) +
@@ -1879,7 +1879,7 @@ public:
 			m[0][3] * MINOR( m, 1, 2, 3, 0, 1, 2 );
 	}
 
-	static XE_INLINE XE::float32 Determinant3( const Mat4 & m )
+	static XE_INLINE XE::float32 Determinant3( const Mat4f & m )
 	{
 		XE::float32 cofactor00 = m[1][1] * m[2][2] - m[1][2] * m[2][1];
 		XE::float32 cofactor10 = m[1][2] * m[2][0] - m[1][0] * m[2][2];
@@ -1890,7 +1890,7 @@ public:
 		return det;
 	}
 
-	static XE_INLINE Mat4 Translation( const Vec3 & val )
+	static XE_INLINE Mat4f Translation( const Vec3f & val )
 	{
 		return {
 				1.0f, 0.0f, 0.0f, val.x,
@@ -1900,17 +1900,17 @@ public:
 		};
 	}
 
-	static XE_INLINE Vec3 Translation( const Mat4 & m )
+	static XE_INLINE Vec3f Translation( const Mat4f & m )
 	{
 		return { m[0][3], m[1][3], m[2][3] };
 	}
 
-	static XE_INLINE Mat4 Rotation( const Quat & val )
+	static XE_INLINE Mat4f Rotation( const Quat & val )
 	{
 		return { MatFromQuat( val ) };
 	}
 
-	static XE_INLINE Mat4 Scale( const Vec3 & val )
+	static XE_INLINE Mat4f Scale( const Vec3f & val )
 	{
 		return {
 			val.x, 0.0f,  0.0f,  0.0f,
@@ -1920,7 +1920,7 @@ public:
 		};
 	}
 
-	static XE_INLINE Mat4 Scale( XE::float32 val )
+	static XE_INLINE Mat4f Scale( XE::float32 val )
 	{
 		return {
 			val,  0.0f, 0.0f, 0.0f,
@@ -1930,7 +1930,7 @@ public:
 		};
 	}
 
-	static XE_INLINE Mat4 ProjectionPerspective( XE::float32 fov, XE::float32 aspect, XE::float32 near, XE::float32 far )
+	static XE_INLINE Mat4f ProjectionPerspective( XE::float32 fov, XE::float32 aspect, XE::float32 near, XE::float32 far )
 	{// Note: Duplicate code in Camera, bring it all here eventually
 		static constexpr XE::float32 INFINITE_FAR_PLANE_ADJUST = 0.00001f;
 
@@ -1977,9 +1977,9 @@ public:
 		};
 	}
 
-	static XE_INLINE Mat4 ProjectionOrthographic( XE::float32 left, XE::float32 right, XE::float32 top, XE::float32 bottom, XE::float32 near, XE::float32 far )
+	static XE_INLINE Mat4f ProjectionOrthographic( XE::float32 left, XE::float32 right, XE::float32 top, XE::float32 bottom, XE::float32 near, XE::float32 far )
 	{
-		Mat4 m;
+		Mat4f m;
 
 		XE::float32 deltaX = right - left;
 		XE::float32 deltaY = bottom - top;
@@ -2017,14 +2017,14 @@ public:
 		return m;
 	}
 
-	static XE_INLINE Mat4 View( const Vec3 & position, const Quat & orientition )
+	static XE_INLINE Mat4f View( const Vec3f & position, const Quat & orientition )
 	{
-		Mat4 m;
+		Mat4f m;
 
-		Mat3 rot = MatFromQuat( orientition );
+		Mat3f rot = MatFromQuat( orientition );
 
-		Mat3 rotT = Transpose( rot );
-		Vec3 trans = ( -rotT ) * ( position );
+		Mat3f rotT = Transpose( rot );
+		Vec3f trans = ( -rotT ) * ( position );
 
 		m = rotT;
 		m[0][3] = trans.x;
@@ -2034,10 +2034,10 @@ public:
 		return m;
 	}
 
-	static XE_INLINE Mat4 TRS( const Vec3 & translation, const Quat & rotation, const Vec3 & scale )
+	static XE_INLINE Mat4f TRS( const Vec3f & translation, const Quat & rotation, const Vec3f & scale )
 	{
-		Mat4 m;
-		Mat3 rot3x3 = MatFromQuat( rotation );
+		Mat4f m;
+		Mat3f rot3x3 = MatFromQuat( rotation );
 
 		m[0][0] = scale.x * rot3x3[0][0]; m[0][1] = scale.y * rot3x3[0][1]; m[0][2] = scale.z * rot3x3[0][2]; m[0][3] = translation.x;
 		m[1][0] = scale.x * rot3x3[1][0]; m[1][1] = scale.y * rot3x3[1][1]; m[1][2] = scale.z * rot3x3[1][2]; m[1][3] = translation.y;
@@ -2048,12 +2048,12 @@ public:
 		return m;
 	}
 
-	static XE_INLINE void TRS( const Mat4 & m, Vec3 & position, Quat & rotation, Vec3 & scale )
+	static XE_INLINE void TRS( const Mat4f & m, Vec3f & position, Quat & rotation, Vec3f & scale )
 	{
-		Mat3 m3x3( m );
+		Mat3f m3x3( m );
 
-		Mat3 matQ;
-		Vec3 vecU;
+		Mat3f matQ;
+		Vec3f vecU;
 
 		XE::float32 invLength = RSqrt( m[0][0] * m[0][0] + m[1][0] * m[1][0] + m[2][0] * m[2][0] );
 		matQ[0][0] = m[0][0] * invLength;
@@ -2096,7 +2096,7 @@ public:
 					matQ[row][col] = -matQ[row][col];
 		}
 
-		Mat3 matRight;
+		Mat3f matRight;
 		matRight[0][0] = matQ[0][0] * m[0][0] + matQ[1][0] * m[1][0] +
 			matQ[2][0] * m[2][0];
 		matRight[0][1] = matQ[0][0] * m[0][1] + matQ[1][0] * m[1][1] +
@@ -2120,16 +2120,16 @@ public:
 		vecU[2] = matRight[1][2] / scale[1];
 
 		rotation = QuatFromMat( matQ );
-		position = Vec3( m[0][3], m[1][3], m[2][3] );
+		position = Vec3f( m[0][3], m[1][3], m[2][3] );
 	}
 
-	static XE_INLINE Mat4 InverseTRS( const Vec3 & translation, const Quat & rotation, const Vec3 & scale )
+	static XE_INLINE Mat4f InverseTRS( const Vec3f & translation, const Quat & rotation, const Vec3f & scale )
 	{
-		Mat4 m;
+		Mat4f m;
 
 		// Invert the parameters
-		Vec3 invTranslate = -translation;
-		Vec3 invScale( 1 / scale.x, 1 / scale.y, 1 / scale.z );
+		Vec3f invTranslate = -translation;
+		Vec3f invScale( 1 / scale.x, 1 / scale.y, 1 / scale.z );
 		Quat invRot = Inverse( rotation );
 
 		// Because we're inverting, order is translation, rotation, scale
@@ -2138,7 +2138,7 @@ public:
 		invTranslate *= invScale;
 
 		// Next, make a 3x3 rotation matrix
-		Mat3 rot3x3 = MatFromQuat( invRot );
+		Mat3f rot3x3 = MatFromQuat( invRot );
 
 		// Set up final matrix with scale, rotation and translation
 		m[0][0] = invScale.x * rot3x3[0][0]; m[0][1] = invScale.x * rot3x3[0][1]; m[0][2] = invScale.x * rot3x3[0][2]; m[0][3] = invTranslate.x;
@@ -2151,7 +2151,7 @@ public:
 		return m;
 	}
 
-	static XE_INLINE Vec3 MultiplyAffine( const Mat4 & m, const Vec3 & v )
+	static XE_INLINE Vec3f MultiplyAffine( const Mat4f & m, const Vec3f & v )
 	{
 		return {
 			m[0][0] * v.x + m[0][1] * v.y + m[0][2] * v.z + m[0][3],
@@ -2159,7 +2159,7 @@ public:
 			m[2][0] * v.x + m[2][1] * v.y + m[2][2] * v.z + m[2][3] };
 	}
 
-	static XE_INLINE Vec3 MultiplyDirection( const Mat4 & m, const Vec3 & v )
+	static XE_INLINE Vec3f MultiplyDirection( const Mat4f & m, const Vec3f & v )
 	{
 		return {
 				m[0][0] * v.x + m[0][1] * v.y + m[0][2] * v.z,
@@ -2171,17 +2171,17 @@ public:
 DECL_META_CLASS( XE_API, Mathf );
 
 
-inline std::string ToString( const XE::Vec2 & _Val )
+inline std::string ToString( const XE::Vec2f & _Val )
 {
 	return XE::StringUtils::Format( "%1, %2", _Val.x, _Val.y );
 }
 
-inline std::string ToString( const XE::Vec3 & _Val )
+inline std::string ToString( const XE::Vec3f & _Val )
 {
 	return XE::StringUtils::Format( "%1, %2, %3", _Val.x, _Val.y, _Val.z );
 }
 
-inline std::string ToString( const XE::Vec4 & _Val )
+inline std::string ToString( const XE::Vec4f & _Val )
 {
 	return XE::StringUtils::Format( "%1, %2, %3, %4", _Val.x, _Val.y, _Val.z, _Val.w );
 }
@@ -2191,14 +2191,14 @@ inline std::string ToString( const XE::Quat & _Val )
 	return XE::StringUtils::Format( "%1, %2, %3, %4", _Val.x, _Val.y, _Val.z, _Val.w );
 }
 
-inline std::string ToString( const XE::Mat3 & _Val )
+inline std::string ToString( const XE::Mat3f & _Val )
 {
 	return XE::StringUtils::Format( "%1, %2, %3, %4, %5, %6, %7, %8, %9",
 									_Val[0][0], _Val[0][1], _Val[0][2], _Val[1][0], _Val[1][1], _Val[1][2],
 									_Val[2][0], _Val[2][1], _Val[2][2] );
 }
 
-inline std::string ToString( const XE::Mat4 & _Val )
+inline std::string ToString( const XE::Mat4f & _Val )
 {
 	return XE::StringUtils::Format( "%1, %2, %3, %4, %5, %6, %7, %8, %9, %10, %11, %12, %13, %14, %15, %16",
 									_Val[0][0], _Val[0][1], _Val[0][2], _Val[0][3], _Val[1][0], _Val[1][1], _Val[1][2], _Val[1][3],
@@ -2210,7 +2210,7 @@ inline std::string ToString( const XE::float16 & _Val )
 	return ToString( _Val.ToFloat32() );
 }
 
-inline bool FromString( const std::string & _Str, XE::Vec2 & _Val )
+inline bool FromString( const std::string & _Str, XE::Vec2f & _Val )
 {
 	auto list = XE::StringUtils::Split( _Str, ", " );
 
@@ -2225,7 +2225,7 @@ inline bool FromString( const std::string & _Str, XE::Vec2 & _Val )
 	return false;
 }
 
-inline bool FromString( const std::string & _Str, XE::Vec3 & _Val )
+inline bool FromString( const std::string & _Str, XE::Vec3f & _Val )
 {
 	auto list = XE::StringUtils::Split( _Str, ", " );
 
@@ -2243,7 +2243,7 @@ inline bool FromString( const std::string & _Str, XE::Vec3 & _Val )
 	return false;
 }
 
-inline bool FromString( const std::string & _Str, XE::Vec4 & _Val )
+inline bool FromString( const std::string & _Str, XE::Vec4f & _Val )
 {
 	auto list = XE::StringUtils::Split( _Str, ", " );
 
@@ -2285,7 +2285,7 @@ inline bool FromString( const std::string & _Str, XE::Quat & _Val )
 	return false;
 }
 
-inline bool FromString( const std::string & _Str, XE::Mat3 & _Val )
+inline bool FromString( const std::string & _Str, XE::Mat3f & _Val )
 {
 	auto list = XE::StringUtils::Split( _Str, ", " );
 
@@ -2321,7 +2321,7 @@ inline bool FromString( const std::string & _Str, XE::Mat3 & _Val )
 	return false;
 }
 
-inline bool FromString( const std::string & _Str, XE::Mat4 & _Val )
+inline bool FromString( const std::string & _Str, XE::Mat4f & _Val )
 {
 	auto list = XE::StringUtils::Split( _Str, ", " );
 
@@ -2391,10 +2391,10 @@ inline bool FromString( const std::string & _Str, XE::float16 & _Val )
 	return false;
 }
 
-template<> struct XE::Serializable< XE::Vec2 >
+template<> struct XE::Serializable< XE::Vec2f >
 {
 public:
-	static void Serialize( Archive & arc, XE::Vec2 * val )
+	static void Serialize( Archive & arc, XE::Vec2f * val )
 	{
 		std::string str = XE::ToString( *val );
 		auto nvp = XE::Archive::NVP( "@value", str );
@@ -2404,10 +2404,10 @@ public:
 	}
 };
 
-template<> struct XE::Serializable< XE::Vec3 >
+template<> struct XE::Serializable< XE::Vec3f >
 {
 public:
-	static void Serialize( Archive & arc, XE::Vec3 * val )
+	static void Serialize( Archive & arc, XE::Vec3f * val )
 	{
 		std::string str = XE::ToString( *val );
 		auto nvp = XE::Archive::NVP( "@value", str );
@@ -2417,10 +2417,10 @@ public:
 	}
 };
 
-template<> struct XE::Serializable< XE::Vec4 >
+template<> struct XE::Serializable< XE::Vec4f >
 {
 public:
-	static void Serialize( Archive & arc, XE::Vec4 * val )
+	static void Serialize( Archive & arc, XE::Vec4f * val )
 	{
 		std::string str = XE::ToString( *val );
 		auto nvp = XE::Archive::NVP( "@value", str );
@@ -2443,10 +2443,10 @@ public:
 	}
 };
 
-template<> struct XE::Serializable< XE::Mat3 >
+template<> struct XE::Serializable< XE::Mat3f >
 {
 public:
-	static void Serialize( Archive & arc, XE::Mat3 * val )
+	static void Serialize( Archive & arc, XE::Mat3f * val )
 	{
 		std::string str = XE::ToString( *val );
 		auto nvp = XE::Archive::NVP( "@value", str );
@@ -2456,10 +2456,10 @@ public:
 	}
 };
 
-template<> struct XE::Serializable< XE::Mat4 >
+template<> struct XE::Serializable< XE::Mat4f >
 {
 public:
-	static void Serialize( Archive & arc, XE::Mat4 * val )
+	static void Serialize( Archive & arc, XE::Mat4f * val )
 	{
 		std::string str = XE::ToString( *val );
 		auto nvp = XE::Archive::NVP( "@value", str );

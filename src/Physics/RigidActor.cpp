@@ -73,17 +73,17 @@ void XE::RigidActor::SetName( const XE::String & val )
 	_p->setName( val.ToCString() );
 }
 
-XE::Mat4 XE::RigidActor::GetWorldPose() const
+XE::Mat4f XE::RigidActor::GetWorldPose() const
 {
 	auto trans = _p->getGlobalPose();
 
-	return XE::Mathf::TRS( { trans.p.x,trans.p.y,trans.p.z }, { trans.q.x, trans.q.y, trans.q.z, trans.q.w }, XE::Vec3::One );
+	return XE::Mathf::TRS( { trans.p.x,trans.p.y,trans.p.z }, { trans.q.x, trans.q.y, trans.q.z, trans.q.w }, XE::Vec3f::One );
 }
 
-void XE::RigidActor::SetWorldPose( const XE::Mat4 & val )
+void XE::RigidActor::SetWorldPose( const XE::Mat4f & val )
 {
 	XE::Quat rot;
-	XE::Vec3 pos, scale;
+	XE::Vec3f pos, scale;
 
 	XE::Mathf::TRS( val, pos, rot, scale );
 

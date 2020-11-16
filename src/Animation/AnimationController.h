@@ -46,9 +46,9 @@ public:
 
 	void SetSkeleton( const XE::AssetPtr<XE::Skeleton> & val );
 
-	const XE::Array< XE::Mat4 > & GetSkeletonTransform() const;
+	const XE::Array< XE::Mat4f > & GetSkeletonTransform() const;
 
-	void SetSkeletonTransform( const XE::Array< XE::Mat4 > & val );
+	void SetSkeletonTransform( const XE::Array< XE::Mat4f > & val );
 
 	const XE::Array< XE::AnimationLayerPtr > & GetAnimationLayers() const;
 
@@ -74,7 +74,7 @@ private:
 	XE::String _Name;
 	XE::AssetPtr<XE::Skeleton> _Skeleton;
 	XE::Map<XE::String, XE::Variant> _Keys;
-	XE::Array< XE::Mat4 > _SkeletonTransform;
+	XE::Array< XE::Mat4f > _SkeletonTransform;
 	XE::Array< XE::AnimationLayerPtr > _Layers;
 	ProcessEventCallback _ProcessEventCallback;
 };

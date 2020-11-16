@@ -185,52 +185,52 @@ const XE::AABB & XE::SceneComponent::GetBoundingBox()
 	return _BoundingBox;
 }
 
-XE::Vec3 XE::SceneComponent::GetWorldUp()
+XE::Vec3f XE::SceneComponent::GetWorldUp()
 {
 	if( _Dirty )
 	{
 		UpdateTransform();
 	}
 
-	return Mathf::Rotate( _WorldRotation, Vec3::Up );
+	return Mathf::Rotate( _WorldRotation, Vec3f::Up );
 }
 
-XE::Vec3 XE::SceneComponent::GetWorldRight()
+XE::Vec3f XE::SceneComponent::GetWorldRight()
 {
 	if( _Dirty )
 	{
 		UpdateTransform();
 	}
 
-	return Mathf::Rotate( _WorldRotation, Vec3::Right );
+	return Mathf::Rotate( _WorldRotation, Vec3f::Right );
 }
 
-XE::Vec3 XE::SceneComponent::GetWorldForward()
+XE::Vec3f XE::SceneComponent::GetWorldForward()
 {
 	if( _Dirty )
 	{
 		UpdateTransform();
 	}
 
-	return Mathf::Rotate( _WorldRotation, Vec3::Forward );
+	return Mathf::Rotate( _WorldRotation, Vec3f::Forward );
 }
 
-XE::Vec3 XE::SceneComponent::GetRelativeUp() const
+XE::Vec3f XE::SceneComponent::GetRelativeUp() const
 {
-	return Mathf::Rotate( _RelativeRotation, Vec3::Up );
+	return Mathf::Rotate( _RelativeRotation, Vec3f::Up );
 }
 
-XE::Vec3 XE::SceneComponent::GetRelativeRight() const
+XE::Vec3f XE::SceneComponent::GetRelativeRight() const
 {
-	return Mathf::Rotate( _RelativeRotation, Vec3::Right );
+	return Mathf::Rotate( _RelativeRotation, Vec3f::Right );
 }
 
-XE::Vec3 XE::SceneComponent::GetRelativeForward() const
+XE::Vec3f XE::SceneComponent::GetRelativeForward() const
 {
-	return Mathf::Rotate( _RelativeRotation, Vec3::Forward );
+	return Mathf::Rotate( _RelativeRotation, Vec3f::Forward );
 }
 
-const XE::Vec3 & XE::SceneComponent::GetWorldScale()
+const XE::Vec3f & XE::SceneComponent::GetWorldScale()
 {
 	if( _Dirty )
 	{
@@ -240,13 +240,13 @@ const XE::Vec3 & XE::SceneComponent::GetWorldScale()
 	return _WorldScale;
 }
 
-void XE::SceneComponent::SetWorldScale( const Vec3 & val )
+void XE::SceneComponent::SetWorldScale( const Vec3f & val )
 {
 	_WorldScale = val;
 	SetRelativeScale( GetParent() ? val / GetParent()->GetWorldScale() : val );
 }
 
-const XE::Vec3 & XE::SceneComponent::GetWorldPosition()
+const XE::Vec3f & XE::SceneComponent::GetWorldPosition()
 {
 	if( _Dirty )
 	{
@@ -256,7 +256,7 @@ const XE::Vec3 & XE::SceneComponent::GetWorldPosition()
 	return _WorldPosition;
 }
 
-void XE::SceneComponent::SetWorldPosition( const Vec3 & val )
+void XE::SceneComponent::SetWorldPosition( const Vec3f & val )
 {
 	_WorldPosition = val;
 	SetRelativePosition( GetParent() ? val - GetParent()->GetWorldPosition() : val );
@@ -278,12 +278,12 @@ void XE::SceneComponent::SetWorldRotation( const Quat & val )
 	SetRelativeRotation( GetParent() ? Mathf::Inverse( GetParent()->GetWorldRotation() ) * val : val );
 }
 
-const XE::Vec3 & XE::SceneComponent::GetRelativeScale() const
+const XE::Vec3f & XE::SceneComponent::GetRelativeScale() const
 {
 	return _RelativeScale;
 }
 
-void XE::SceneComponent::SetRelativeScale( const Vec3 & val )
+void XE::SceneComponent::SetRelativeScale( const Vec3f & val )
 {
 	if( _RelativeScale != val )
 	{
@@ -293,12 +293,12 @@ void XE::SceneComponent::SetRelativeScale( const Vec3 & val )
 	}
 }
 
-const XE::Vec3 & XE::SceneComponent::GetRelativePosition() const
+const XE::Vec3f & XE::SceneComponent::GetRelativePosition() const
 {
 	return _RelativePosition;
 }
 
-void XE::SceneComponent::SetRelativePosition( const Vec3 & val )
+void XE::SceneComponent::SetRelativePosition( const Vec3f & val )
 {
 	if( _RelativePosition != val )
 	{
@@ -323,24 +323,24 @@ void XE::SceneComponent::SetRelativeRotation( const Quat & val )
 	}
 }
 
-const XE::Mat4 & XE::SceneComponent::GetWorldTransform() const
+const XE::Mat4f & XE::SceneComponent::GetWorldTransform() const
 {
 	return _WorldTransform;
 }
 
-void XE::SceneComponent::SetWorldTransform( const Mat4 & val )
+void XE::SceneComponent::SetWorldTransform( const Mat4f & val )
 {
 	_WorldTransform = val;
 
 	Mathf::TRS( _WorldTransform, _WorldPosition, _WorldRotation, _WorldScale );
 }
 
-const XE::Mat4 & XE::SceneComponent::GetRelativeTransform() const
+const XE::Mat4f & XE::SceneComponent::GetRelativeTransform() const
 {
 	return _RelativeTransform;
 }
 
-void XE::SceneComponent::SetRelativeTransform( const Mat4 & val )
+void XE::SceneComponent::SetRelativeTransform( const Mat4f & val )
 {
 	_RelativeTransform = val;
 

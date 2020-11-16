@@ -150,12 +150,12 @@ void XE::AnimationController::SetSkeleton( const XE::AssetPtr<XE::Skeleton> & va
 	_Skeleton = val;
 }
 
-const XE::Array< XE::Mat4 > & XE::AnimationController::GetSkeletonTransform() const
+const XE::Array< XE::Mat4f > & XE::AnimationController::GetSkeletonTransform() const
 {
 	return _SkeletonTransform;
 }
 
-void XE::AnimationController::SetSkeletonTransform( const XE::Array< XE::Mat4 > & val )
+void XE::AnimationController::SetSkeletonTransform( const XE::Array< XE::Mat4f > & val )
 {
 	_SkeletonTransform = val;
 }

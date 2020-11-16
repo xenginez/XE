@@ -95,7 +95,7 @@ private:
 			if( depth < _Depth )
 			{
 
-				Vec2 center = _Nodes[node].Box.GetCenter();
+				Vec2f center = _Nodes[node].Box.GetCenter();
 
 				XE::uint64 children = _Nodes.size();
 
@@ -124,11 +124,11 @@ private:
 				for( int i = 0; i < 4; ++i )
 				{
 					_Nodes[children + i].Box = Rect(
-						Vec2(
+						Vec2f(
 							( i & 1 ) ? center.x : _Nodes[node].Box.GetMin().x,
 							( i & 2 ) ? center.y : _Nodes[node].Box.GetMin().y
 						),
-						Vec2(
+						Vec2f(
 							( i & 1 ) ? _Nodes[node].Box.GetMax().x : center.x,
 							( i & 2 ) ? _Nodes[node].Box.GetMax().y : center.y
 						)

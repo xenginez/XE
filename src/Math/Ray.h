@@ -16,13 +16,13 @@ BEG_XE_NAMESPACE
 class XE_API alignas( 16 ) Ray
 {
 public:
-	Vec3 origin;
-	Vec3 direction;
+	Vec3f origin;
+	Vec3f direction;
 
 public:
 	Ray();
 
-	Ray( const Vec3& origin, const Vec3& direction );
+	Ray( const Vec3f& origin, const Vec3f& direction );
 
 public:
 	Ray& operator=( const Ray & val );
@@ -32,7 +32,7 @@ public:
 	bool operator !=( const Ray& val ) const;
 
 public:
-	Vec3 GetPoint( XE::float32 val ) const;
+	Vec3f GetPoint( XE::float32 val ) const;
 
 public:
 	std::pair<bool, XE::float32> Intersect( const OBB& val ) const;
@@ -49,12 +49,12 @@ public:
 
 	std::pair<bool, XE::float32> Intersect( const Ray& ray, bool discardInside = true ) const;
 
-	std::pair<bool, XE::float32> Intersect( const Vec3& a, const Vec3& b, const Vec3& c, const Vec3& normal, bool positiveSide = true, bool negativeSide = true ) const;
+	std::pair<bool, XE::float32> Intersect( const Vec3f& a, const Vec3f& b, const Vec3f& c, const Vec3f& normal, bool positiveSide = true, bool negativeSide = true ) const;
 
 public:
-	void Transform( const Mat4& val );
+	void Transform( const Mat4f& val );
 
-	void TransformAffine( const Mat4& val );
+	void TransformAffine( const Mat4f& val );
 
 };
 DECL_META_CLASS( XE_API, Ray );

@@ -35,11 +35,11 @@ public:
 	void Clearup() override;
 
 public:
-	XE::Array< XE::Vec3 > FindRoute( const XE::OBB & geometry, const XE::Vec3 & start, const XE::Vec3 & end ) override;
+	XE::Array< XE::Vec3f > FindRoute( const XE::OBB & geometry, const XE::Vec3f & start, const XE::Vec3f & end ) override;
 
-	XE::Array< XE::Vec3 > FindRoute( const XE::AABB & geometry, const XE::Vec3 & start, const XE::Vec3 & end ) override;
+	XE::Array< XE::Vec3f > FindRoute( const XE::AABB & geometry, const XE::Vec3f & start, const XE::Vec3f & end ) override;
 
-	XE::Array< XE::Vec3 > FindRoute( const XE::Capsule & geometry, const XE::Vec3 & start, const XE::Vec3 & end ) override;
+	XE::Array< XE::Vec3f > FindRoute( const XE::Capsule & geometry, const XE::Vec3f & start, const XE::Vec3f & end ) override;
 
 public:
 	XE::NavMeshHandle AddNavMeshTile( const XE::FileSystem::Path & val ) override;

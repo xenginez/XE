@@ -39,9 +39,9 @@ public:
 
 	void SetName( const XE::String & val );
 
-	XE::Mat4 GetWorldPose() const;
+	XE::Mat4f GetWorldPose() const;
 
-	void SetWorldPose( const XE::Mat4 & val );
+	void SetWorldPose( const XE::Mat4f & val );
 
 	XE::RigidActorFlags GetRigidActorFlags() const;
 

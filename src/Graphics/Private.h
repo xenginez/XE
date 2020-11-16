@@ -285,8 +285,8 @@ public:
 	XE::Flags<ClearFlags> Flag = ClearFlags::NONE;
 	XE::Rect ViewRect;
 	XE::Rect ViewScissor;
-	XE::Mat4 ViewMat;
-	XE::Mat4 ProjMat;
+	XE::Mat4f ViewMat;
+	XE::Mat4f ProjMat;
 	ViewMode Mode = XE::ViewMode::DEFAULT;
 	FrameBufferHandle Handle;
 };
@@ -428,7 +428,7 @@ public:
 	std::mutex PrevCmdMutex;
 
 	std::atomic<XE::uint64> TransformsSize = 0;
-	std::array<XE::Mat4, GFX_MAX_TRANSFORM> Transforms = {};
+	std::array<XE::Mat4f, GFX_MAX_TRANSFORM> Transforms = {};
 
 	std::atomic<XE::uint64> RenderOcclusionSize = 0;
 	std::array<XE::int32, GFX_MAX_OCCLUSION> Occlusions = {};

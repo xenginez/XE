@@ -72,7 +72,7 @@ void XE::AudioService::Update()
 {
 	ALfloat orientation[6];
 	std::memcpy( orientation, GetListenerOrientation().d, sizeof( ALfloat ) * 3 );
-	std::memcpy( orientation + sizeof( ALfloat ) * 3, XE::Vec3::Up.d, sizeof( ALfloat ) * 3 );
+	std::memcpy( orientation + sizeof( ALfloat ) * 3, XE::Vec3f::Up.d, sizeof( ALfloat ) * 3 );
 
 	alListenerfv( AL_ORIENTATION, orientation );
 	alListenerfv( AL_POSITION, GetListenerPosition().d );

@@ -144,13 +144,6 @@ void XE::Gfx::Render()
 	_p->_Context->Render();
 }
 
-void XE::Gfx::DebugTextPrint( XE::uint32 x, XE::uint32 y, const XE::Color & color, const std::string & text )
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	_p->_Context->DebugTextPrint( x, y, color, text );
-}
-
 XE::IndexBufferHandle XE::Gfx::CreateIndexBuffer( const XE::String & name, XE::MemoryView mem, XE::Flags< XE::BufferFlags > flags /*= XE::BufferFlag::NONE */ )
 {
 	XE_ASSERT( _p->_Context != nullptr );
@@ -408,13 +401,6 @@ XE::uint32 XE::Gfx::ReadTexture( TextureHandle handle, XE::uint8 * data, XE::uin
 	return _p->_Context->ReadTexture( handle, data, mip );
 }
 
-XE::uint8 * XE::Gfx::GetDirectAccess( TextureHandle handle )
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	return _p->_Context->GetDirectAccess( handle );
-}
-
 XE::FrameBufferHandle XE::Gfx::CreateFrameBuffer( const XE::String & name, XE::uint32 width, XE::uint32 height, TextureFormat format, XE::Flags< XE::SamplerFlags > samplers )
 {
 	XE_ASSERT( _p->_Context != nullptr );
@@ -527,7 +513,7 @@ void XE::Gfx::SetViewFrameBuffer( ViewHandle handle, FrameBufferHandle frame )
 	_p->_Context->SetViewFrameBuffer( handle, frame );
 }
 
-void XE::Gfx::SetViewTransform( ViewHandle handle, const XE::Mat4 & view, const XE::Mat4 & proj )
+void XE::Gfx::SetViewTransform( ViewHandle handle, const XE::Mat4f & view, const XE::Mat4f & proj )
 {
 	XE_ASSERT( _p->_Context != nullptr );
 

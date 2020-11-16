@@ -13,44 +13,77 @@
 
 BEG_XE_NAMESPACE
 
-class XE_API alignas( 16 ) Vec4
+template< typename T > class alignas( 16 ) Vec4
 {
+public:
+	using value_type = T;
+
 public:
 	static const Vec4 One;
 	static const Vec4 Zero;
-	static const Vec4 Infinity;
 
 public:
 	union
 	{
-		struct { XE::float32 x, y, z, w; };
-		XE::float32 d[4];
+		struct { value_type x, y, z, w; };
+		value_type d[4];
 	};
 
 public:
-	Vec4();
+	Vec4()
+		:x( 0 ), y( 0 ), z( 0 ), w( 0 )
+	{
+	}
 
-	Vec4( XE::float32 x, XE::float32 y, XE::float32 z, XE::float32 w );
+	template< typename U > Vec4( const Vec4< U > & val )
+		: x( val.x ), y( val.y ), z( val.z ), w( val.w )
+	{
+	}
 
-	Vec4( const Vec4& val );
+	Vec4( value_type x, value_type y, value_type z, value_type w )
+		: x( x ), y( y ), z( z ), w( w )
+	{
+	}
 
 public:
-	Vec4& operator=( const Vec4& val );
+	Vec4 & operator=( const Vec4 & val )
+	{
+		x = val.x;
+		y = val.y;
+		z = val.z;
+		w = val.w;
+
+		return *this;
+	}
 
 public:
-	XE::float32& operator[]( XE::uint64 val )
+	value_type& operator[]( XE::uint64 val )
 	{
 		XE_ASSERT( val < 4 );
+
 		return d[val];
 	}
 
-	XE::float32 operator[]( XE::uint64 val ) const
+	value_type operator[]( XE::uint64 val ) const
 	{
 		XE_ASSERT( val < 4 );
+
 		return d[val];
 	}
 };
-DECL_META_CLASS( XE_API, Vec4 );
+
+template< typename T >
+const XE::Vec4< T > XE::Vec4< T >::One = { 1, 1, 1, 1 };
+template< typename T >
+const XE::Vec4< T > XE::Vec4< T >::Zero = { 0, 0, 0, 0 };
+
+using Vec4i = Vec4< XE::int32 >;
+using Vec4f = Vec4< XE::float32 >;
+using Vec4d = Vec4< XE::float64 >;
+
+DECL_META_CLASS( XE_API, Vec4i );
+DECL_META_CLASS( XE_API, Vec4f );
+DECL_META_CLASS( XE_API, Vec4d );
 
 END_XE_NAMESPACE
 

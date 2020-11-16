@@ -37,9 +37,9 @@ public:
 	XE::PhysicsSceneHandle GetHandle() const;
 
 public:
-	XE::Vec3 GetGravity() const;
+	XE::Vec3f GetGravity() const;
 
-	void SetGravity( const XE::Vec3 & val );
+	void SetGravity( const XE::Vec3f & val );
 
 	XE::uint32 GetCCDMaxPasses() const;
 
@@ -62,15 +62,15 @@ public:
 				  const QueryHitCallback & callback, const XE::Layer & layer = {},
 				  XE::PhysicsQueryFlags query = XE::MakeFlags( XE::PhysicsQueryFlag::STATIC, XE::PhysicsQueryFlag::DYNAMIC ) );
 
-	bool Sweep( const XE::AABB & box, const XE::Vec3 & dir, XE::float32 distance,
+	bool Sweep( const XE::AABB & box, const XE::Vec3f & dir, XE::float32 distance,
 				const QueryHitCallback & callback, const XE::Layer & layer = {},
 				XE::PhysicsQueryFlags query = XE::MakeFlags( XE::PhysicsQueryFlag::STATIC, XE::PhysicsQueryFlag::DYNAMIC ) );
 
-	bool Sweep( const XE::Sphere & sphere, const XE::Vec3 & dir, XE::float32 distance,
+	bool Sweep( const XE::Sphere & sphere, const XE::Vec3f & dir, XE::float32 distance,
 				const QueryHitCallback & callback, const XE::Layer & layer = {},
 				XE::PhysicsQueryFlags query = XE::MakeFlags( XE::PhysicsQueryFlag::STATIC, XE::PhysicsQueryFlag::DYNAMIC ) );
 
-	bool Sweep( const XE::Capsule & capsule, const XE::Vec3 & dir, XE::float32 distance,
+	bool Sweep( const XE::Capsule & capsule, const XE::Vec3f & dir, XE::float32 distance,
 				const QueryHitCallback & callback, const XE::Layer & layer = {},
 				XE::PhysicsQueryFlags query = XE::MakeFlags( XE::PhysicsQueryFlag::STATIC, XE::PhysicsQueryFlag::DYNAMIC ) );
 

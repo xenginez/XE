@@ -16,15 +16,15 @@ BEG_XE_NAMESPACE
 class XE_API alignas( 16 ) AABB
 {
 public:
-	Vec3 min;
-	Vec3 max;
+	Vec3f min;
+	Vec3f max;
 
 public:
 	AABB();
 
 	AABB( const AABB& val );
 
-	AABB( const Vec3& min, const Vec3& max );
+	AABB( const Vec3f& min, const Vec3f& max );
 
 public:
 	AABB& operator =( const AABB& val );
@@ -34,32 +34,32 @@ public:
 	bool operator !=( const AABB& val ) const;
 
 public:
-	Vec3 GetSize() const;
+	Vec3f GetSize() const;
 
-	Vec3 GetCenter() const;
+	Vec3f GetCenter() const;
 
 	XE::float32 GetRadius() const;
 
 	XE::float32 GetVolume() const;
 
-	Vec3 GetFarLeftTop() const;
+	Vec3f GetFarLeftTop() const;
 
-	Vec3 GetFarRightTop() const;
+	Vec3f GetFarRightTop() const;
 
-	Vec3 GetFarLeftBottom() const;
+	Vec3f GetFarLeftBottom() const;
 
-	Vec3 GetFarRightBottom() const;
+	Vec3f GetFarRightBottom() const;
 
-	Vec3 GetNearLeftTop() const;
+	Vec3f GetNearLeftTop() const;
 
-	Vec3 GetNearRightTop() const;
+	Vec3f GetNearRightTop() const;
 
-	Vec3 GetNearLeftBottom() const;
+	Vec3f GetNearLeftBottom() const;
 
-	Vec3 GetNearRightBottom() const;
+	Vec3f GetNearRightBottom() const;
 
 public:
-	bool Contains( const Vec3& val ) const;
+	bool Contains( const Vec3f& val ) const;
 
 	bool Contains( const AABB& val ) const;
 
@@ -81,17 +81,17 @@ public:
 public:
 	void Scale( XE::float32 val );
 
-	void Scale( const Vec3& val );
+	void Scale( const Vec3f& val );
 
 public:
-	void Merge( const Vec3& val );
+	void Merge( const Vec3f& val );
 
 	void Merge( const AABB& val );
 
 public:
-	void Transform( const Mat4& val );
+	void Transform( const Mat4f& val );
 
-	void TransformAffine( const Mat4& val );
+	void TransformAffine( const Mat4f& val );
 
 };
 DECL_META_CLASS( XE_API, AABB );

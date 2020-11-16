@@ -15,7 +15,7 @@ XE::Ray::Ray()
 {
 }
 
-XE::Ray::Ray( const XE::Vec3& origin, const XE::Vec3& direction )
+XE::Ray::Ray( const XE::Vec3f& origin, const XE::Vec3f& direction )
 	:origin( origin ), direction( direction )
 {
 
@@ -38,7 +38,7 @@ bool XE::Ray::operator!=( const Ray& val ) const
 	return origin != val.origin || direction != val.direction;
 }
 
-XE::Vec3 XE::Ray::GetPoint( XE::float32 val ) const
+XE::Vec3f XE::Ray::GetPoint( XE::float32 val ) const
 {
 	return origin + ( direction * val );
 }
@@ -58,7 +58,7 @@ std::pair<bool, XE::float32> XE::Ray::Intersect( const Sphere& val ) const
 	return val.Intersect( *this );
 }
 
-std::pair<bool, XE::float32> XE::Ray::Intersect( const Vec3& a, const Vec3& b, const Vec3& c, const Vec3& normal, bool positiveSide /*= true*/, bool negativeSide /*= true */ ) const
+std::pair<bool, XE::float32> XE::Ray::Intersect( const Vec3f& a, const Vec3f& b, const Vec3f& c, const Vec3f& normal, bool positiveSide /*= true*/, bool negativeSide /*= true */ ) const
 {
 	XE::float32 t;
 	{
@@ -134,9 +134,9 @@ std::pair<bool, XE::float32> XE::Ray::Intersect( const Vec3& a, const Vec3& b, c
 	return std::pair<bool, XE::float32>( true, t );
 }
 
-void XE::Ray::Transform( const Mat4& val )
+void XE::Ray::Transform( const Mat4f& val )
 {
-	Vec3 end = GetPoint( 1.0f );
+	Vec3f end = GetPoint( 1.0f );
 
 	origin = val * origin;
 	end = val * end;
@@ -144,9 +144,9 @@ void XE::Ray::Transform( const Mat4& val )
 	direction = Mathf::Normalize( end - origin );
 }
 
-void XE::Ray::TransformAffine( const Mat4& val )
+void XE::Ray::TransformAffine( const Mat4f& val )
 {
-	Vec3 end = GetPoint( 1.0f );
+	Vec3f end = GetPoint( 1.0f );
 
 	origin = Mathf::MultiplyAffine( val, origin );
 	end = Mathf::MultiplyAffine( val, end );

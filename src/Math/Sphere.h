@@ -19,7 +19,7 @@ public:
 	static const Sphere Zero;
 
 public:
-	Vec3 center;
+	Vec3f center;
 	XE::float32 radius;
 
 public:
@@ -27,7 +27,7 @@ public:
 
 	Sphere( const Sphere& val );
 
-	Sphere( const Vec3&center, XE::float32 radius );
+	Sphere( const Vec3f&center, XE::float32 radius );
 
 public:
 	Sphere& operator=( const Sphere & val );
@@ -37,7 +37,7 @@ public:
 	bool operator !=( const Sphere& val ) const;
 
 public:
-	bool Contains( const Vec3& val ) const;
+	bool Contains( const Vec3f& val ) const;
 
 public:
 	bool Intersect( const OBB& val ) const;
@@ -55,12 +55,12 @@ public:
 	std::pair<bool, XE::float32> Intersect( const Ray& ray, bool discardInside = true ) const;
 
 public:
-	void Merge( const Vec3& val );
+	void Merge( const Vec3f& val );
 
 	void Merge( const Sphere& val );
 
 public:
-	void Transform( const Mat4& val );
+	void Transform( const Mat4f& val );
 };
 DECL_META_CLASS( XE_API, Sphere );
 

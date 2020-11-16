@@ -32,21 +32,21 @@ void XE::RigidBody::SetMass( XE::float32 val )
 	_p->setMass( val );
 }
 
-XE::Vec3 XE::RigidBody::GetMassSpaceInertiaTensor() const
+XE::Vec3f XE::RigidBody::GetMassSpaceInertiaTensor() const
 {
 	auto v = _p->getMassSpaceInertiaTensor();
 
 	return { v.x, v.y, v.z };
 }
 
-XE::Vec3 XE::RigidBody::GetMassSpaceInvInertiaTensor() const
+XE::Vec3f XE::RigidBody::GetMassSpaceInvInertiaTensor() const
 {
 	auto v = _p->getMassSpaceInvInertiaTensor();
 
 	return { v.x, v.y, v.z };
 }
 
-void XE::RigidBody::SetMassSpaceInertiaTensor( const XE::Vec3 & val )
+void XE::RigidBody::SetMassSpaceInertiaTensor( const XE::Vec3f & val )
 {
 	_p->setMassSpaceInertiaTensor( { val.x, val.y, val.z } );
 }
@@ -81,41 +81,41 @@ void XE::RigidBody::SetMaxContactImpulse( XE::float32 val )
 	_p->setMaxContactImpulse( val );
 }
 
-XE::Vec3 XE::RigidBody::GetLienarVelocity() const
+XE::Vec3f XE::RigidBody::GetLienarVelocity() const
 {
 	auto v = _p->getLinearVelocity();
 
 	return { v.x, v.y, v.z };
 }
 
-void XE::RigidBody::SetLinearVelocity( const XE::Vec3 & val )
+void XE::RigidBody::SetLinearVelocity( const XE::Vec3f & val )
 {
 	_p->setLinearVelocity( { val.x, val.y, val.z } );
 }
 
-XE::Vec3 XE::RigidBody::GetAngularVelocity() const
+XE::Vec3f XE::RigidBody::GetAngularVelocity() const
 {
 	auto v = _p->getAngularVelocity();
 
 	return { v.x, v.y, v.z };
 }
 
-void XE::RigidBody::SetAngularVelocity( const XE::Vec3 & val )
+void XE::RigidBody::SetAngularVelocity( const XE::Vec3f & val )
 {
 	_p->setAngularVelocity( { val.x, val.y, val.z } );
 }
 
-XE::Mat4 XE::RigidBody::GetCMassLocalPose() const
+XE::Mat4f XE::RigidBody::GetCMassLocalPose() const
 {
 	auto trans = _p->getCMassLocalPose();
 
-	return XE::Mathf::TRS( { trans.p.x,trans.p.y,trans.p.z }, { trans.q.x, trans.q.y, trans.q.z, trans.q.w }, XE::Vec3::One );
+	return XE::Mathf::TRS( { trans.p.x,trans.p.y,trans.p.z }, { trans.q.x, trans.q.y, trans.q.z, trans.q.w }, XE::Vec3f::One );
 }
 
-void XE::RigidBody::SetCMassLocalPose( const XE::Mat4 & val )
+void XE::RigidBody::SetCMassLocalPose( const XE::Mat4f & val )
 {
 	XE::Quat rot;
-	XE::Vec3 pos, scale;
+	XE::Vec3f pos, scale;
 
 	XE::Mathf::TRS( val, pos, rot, scale );
 
@@ -172,12 +172,12 @@ void XE::RigidBody::SetMaxDepenetrationVelocity( XE::float32 val )
 	_p->setMaxDepenetrationVelocity( val );
 }
 
-void XE::RigidBody::AddForce( const XE::Vec3 & force, ForceMode mode /*= ForceMode::FORCE */ )
+void XE::RigidBody::AddForce( const XE::Vec3f & force, ForceMode mode /*= ForceMode::FORCE */ )
 {
 	_p->addForce( { force.x, force.y, force.z }, static_cast< physx::PxForceMode::Enum >( mode ) );
 }
 
-void XE::RigidBody::AddTorque( const XE::Vec3 & torque, ForceMode mode /*= ForceMode::FORCE */ )
+void XE::RigidBody::AddTorque( const XE::Vec3f & torque, ForceMode mode /*= ForceMode::FORCE */ )
 {
 	_p->addTorque( { torque.x, torque.y, torque.z }, static_cast< physx::PxForceMode::Enum >( mode ) );
 }
@@ -192,7 +192,7 @@ void XE::RigidBody::ClearTorque( ForceMode mode /*= ForceMode::FORCE */ )
 	_p->clearTorque( static_cast< physx::PxForceMode::Enum >( mode ) );
 }
 
-void XE::RigidBody::SetForceAndTorque( const XE::Vec3 & force, const XE::Vec3 & torque, ForceMode mode /*= ForceMode::FORCE */ )
+void XE::RigidBody::SetForceAndTorque( const XE::Vec3f & force, const XE::Vec3f & torque, ForceMode mode /*= ForceMode::FORCE */ )
 {
 	_p->setForceAndTorque( { force.x, force.y, force.z }, { torque.x, torque.y, torque.z }, static_cast< physx::PxForceMode::Enum >( mode ) );
 }

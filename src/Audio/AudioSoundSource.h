@@ -51,17 +51,17 @@ public:
 
 	void SetPitch( XE::float32 val );
 
-	const XE::Vec3 & GetPosition() const;
+	const XE::Vec3f & GetPosition() const;
 
-	void SetPosition( const XE::Vec3 & val );
+	void SetPosition( const XE::Vec3f & val );
 
-	const XE::Vec3 & GetVelocity() const;
+	const XE::Vec3f & GetVelocity() const;
 
-	void SetVelocity( const XE::Vec3 & val );
+	void SetVelocity( const XE::Vec3f & val );
 
-	const XE::Vec3 & GetDirection() const;
+	const XE::Vec3f & GetDirection() const;
 
-	void SetDirection( const XE::Vec3 & val );
+	void SetDirection( const XE::Vec3f & val );
 
 	XE::float32 GetMinDistacne() const;
 
@@ -78,9 +78,9 @@ private:
     bool _Loop = false;
     XE::float32 _Gain = 0.0f;
     XE::float32 _Pitch = 1.0f;
-	XE::Vec3 _Position = {};
-	XE::Vec3 _Velocity = {};
-	XE::Vec3 _Direction = {};
+	XE::Vec3f _Position = {};
+	XE::Vec3f _Velocity = {};
+	XE::Vec3f _Direction = {};
 	XE::float32 _MinDistance = 1.0f;
 	XE::float32 _MaxDistance = 1000.0f;
 	XE::String _SoundPath;

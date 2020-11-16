@@ -33,17 +33,17 @@ public:
 	virtual void Suspend() = 0;
 
 public:
-	const XE::Vec3 & GetListenerPosition() const;
+	const XE::Vec3f & GetListenerPosition() const;
 
-	void SetListenerPosition( const XE::Vec3 & val );
+	void SetListenerPosition( const XE::Vec3f & val );
 
-	const XE::Vec3 & GetListenerVelocity() const;
+	const XE::Vec3f & GetListenerVelocity() const;
 
-	void SetListenerVelocity( const XE::Vec3 & val );
+	void SetListenerVelocity( const XE::Vec3f & val );
 
-	const XE::Vec3 & GetListenerOrientation() const;
+	const XE::Vec3f & GetListenerOrientation() const;
 
-	void SetListenerOrientation( const XE::Vec3 & val );
+	void SetListenerOrientation( const XE::Vec3f & val );
 
 private:
 	Private * _p;

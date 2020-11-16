@@ -25,7 +25,7 @@ XE::OBB::OBB( const AABB& box, const Quat& orient )
 
 }
 
-XE::OBB::OBB( const Vec3& center, const Vec3& extent, const Quat& orient )
+XE::OBB::OBB( const Vec3f& center, const Vec3f& extent, const Quat& orient )
 	: center( center ), rotation( orient ), extent( extent )
 {
 

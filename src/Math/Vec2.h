@@ -13,49 +13,90 @@
 
 BEG_XE_NAMESPACE
 
-class XE_API alignas( 16 ) Vec2
+template< typename T > class alignas( 16 ) Vec2
 {
 public:
-	static const Vec2 One;
-	static const Vec2 Zero;
-	static const Vec2 Infinity;
+	using value_type = T;
+
+public:
+	static const Vec2< T > One;
+	static const Vec2< T > Zero;
 
 public:
 	union
 	{
-		XE::float32 d[2];
-		struct { XE::float32 x, y; };
+		value_type d[2];
+		struct { value_type x, y; };
 	};
 
 public:
-	Vec2();
+	Vec2()
+		:x( 0 ), y( 0 )
+	{
 
-	Vec2( XE::float32 val );
+	}
 
-	Vec2( const Vec2& val );
+	Vec2( value_type val )
+		: x( val ), y( val )
+	{
 
-	Vec2( XE::float32 x, XE::float32 y );
+	}
+
+	Vec2( value_type x, value_type y )
+		: x( x ), y( y )
+	{
+
+	}
+
+	template< typename U > Vec2( const Vec2< U > & val )
+		: x( val.x ), y( val.y )
+	{
+
+	}
 
 public:
-	Vec2& operator=( XE::float32 val );
+	Vec2 & operator=( value_type val )
+	{
+		x = val;
+		y = val;
+		return *this;
+	}
 
-	Vec2& operator=( const Vec2& val );
+	Vec2 & operator=( const Vec2 & val )
+	{
+		x = val.x;
+		y = val.y;
+		return *this;
+	}
 
 public:
-	XE::float32& operator[]( XE::uint64 val )
+	value_type & operator[]( XE::uint64 val )
 	{
 		XE_ASSERT( val < 2 );
+
 		return d[val];
 	}
 
-	XE::float32 operator[]( XE::uint64 val ) const
+	value_type operator[]( XE::uint64 val ) const
 	{
 		XE_ASSERT( val < 2 );
+
 		return d[val];
 	}
-
 };
-DECL_META_CLASS( XE_API, Vec2 );
+
+template< typename T >
+const XE::Vec2<T> XE::Vec2<T>::One = { 1 , 1 };
+template< typename T >
+const XE::Vec2<T> XE::Vec2<T>::Zero = { 0 , 0 };
+
+using Vec2i = Vec2<XE::int32>;
+using Vec2f = Vec2<XE::float32>;
+using Vec2d = Vec2<XE::float64>;
+
+DECL_META_CLASS( XE_API, Vec2i );
+DECL_META_CLASS( XE_API, Vec2f );
+DECL_META_CLASS( XE_API, Vec2d );
 
 END_XE_NAMESPACE
 

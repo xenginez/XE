@@ -23,11 +23,11 @@ public:
 	~INavigationService() override;
 
 public:
-	virtual XE::Array< XE::Vec3 > FindRoute( const XE::OBB & geometry, const XE::Vec3 & start, const XE::Vec3 & end ) = 0;
+	virtual XE::Array< XE::Vec3f > FindRoute( const XE::OBB & geometry, const XE::Vec3f & start, const XE::Vec3f & end ) = 0;
 
-	virtual XE::Array< XE::Vec3 > FindRoute( const XE::AABB & geometry, const XE::Vec3 & start, const XE::Vec3 & end ) = 0;
+	virtual XE::Array< XE::Vec3f > FindRoute( const XE::AABB & geometry, const XE::Vec3f & start, const XE::Vec3f & end ) = 0;
 
-	virtual XE::Array< XE::Vec3 > FindRoute( const XE::Capsule & geometry, const XE::Vec3 & start, const XE::Vec3 & end ) = 0;
+	virtual XE::Array< XE::Vec3f > FindRoute( const XE::Capsule & geometry, const XE::Vec3f & start, const XE::Vec3f & end ) = 0;
 
 public:
 	virtual XE::NavMeshHandle AddNavMeshTile( const XE::FileSystem::Path & val ) = 0;

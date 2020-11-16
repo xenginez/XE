@@ -31,52 +31,52 @@ public:
 	void SetType( GameObjectType val );
 
 public:
-	Vec3 GetWorldUp();
+	Vec3f GetWorldUp();
 
-	Vec3 GetWorldRight();
+	Vec3f GetWorldRight();
 
-	Vec3 GetWorldForward();
+	Vec3f GetWorldForward();
 
-	Vec3 GetRelativeUp() const;
+	Vec3f GetRelativeUp() const;
 
-	Vec3 GetRelativeRight() const;
+	Vec3f GetRelativeRight() const;
 
-	Vec3 GetRelativeForward() const;
+	Vec3f GetRelativeForward() const;
 
 public:
-	const Vec3 & GetWorldScale();
+	const Vec3f & GetWorldScale();
 
-	void SetWorldScale( const Vec3 & val );
+	void SetWorldScale( const Vec3f & val );
 
-	const Vec3 & GetWorldPosition();
+	const Vec3f & GetWorldPosition();
 
-	void SetWorldPosition( const Vec3 & val );
+	void SetWorldPosition( const Vec3f & val );
 
 	const Quat & GetWorldRotation();
 
 	void SetWorldRotation( const Quat & val );
 
 public:
-	const Vec3 & GetRelativeScale() const;
+	const Vec3f & GetRelativeScale() const;
 
-	void SetRelativeScale( const Vec3 & val );
+	void SetRelativeScale( const Vec3f & val );
 
-	const Vec3 & GetRelativePosition() const;
+	const Vec3f & GetRelativePosition() const;
 
-	void SetRelativePosition( const Vec3 & val );
+	void SetRelativePosition( const Vec3f & val );
 
 	const Quat & GetRelativeRotation() const;
 
 	void SetRelativeRotation( const Quat & val );
 
 public:
-	const Mat4 & GetWorldTransform() const;
+	const Mat4f & GetWorldTransform() const;
 
-	void SetWorldTransform( const Mat4 & val );
+	void SetWorldTransform( const Mat4f & val );
 
-	const Mat4 & GetRelativeTransform() const;
+	const Mat4f & GetRelativeTransform() const;
 
-	void SetRelativeTransform( const Mat4 & val );
+	void SetRelativeTransform( const Mat4f & val );
 
 public:
 	SceneComponentPtr AddSceneComponent( IMetaClassPtr val, const SceneComponentPtr& parent );

@@ -10,7 +10,7 @@ type->Property( "center", &Sphere::center );
 type->Property( "radius", &Sphere::radius );
 END_META()
 
-const XE::Sphere XE::Sphere::Zero = { Vec3::Zero, 0.0f };
+const XE::Sphere XE::Sphere::Zero = { Vec3f::Zero, 0.0f };
 
 XE::Sphere::Sphere()
 	: radius( 0 )
@@ -24,7 +24,7 @@ XE::Sphere::Sphere( const Sphere& val )
 
 }
 
-XE::Sphere::Sphere( const Vec3&center, XE::float32 radius )
+XE::Sphere::Sphere( const Vec3f&center, XE::float32 radius )
 	: center( center ), radius( radius )
 {
 
@@ -47,7 +47,7 @@ bool XE::Sphere::operator!=( const Sphere& val ) const
 	return ( Mathf::Abs( radius - val.radius ) > Mathf::Epsilon ) || center != val.center;
 }
 
-void XE::Sphere::Merge( const Vec3& val )
+void XE::Sphere::Merge( const Vec3f& val )
 {
 	XE::float32 dist = Mathf::Distance( val, center );
 	radius = Mathf::Max( radius, dist );
@@ -55,7 +55,7 @@ void XE::Sphere::Merge( const Vec3& val )
 
 void XE::Sphere::Merge( const Sphere& val )
 {
-	Vec3 newCenter = ( center + val.center ) * 0.5f;
+	Vec3f newCenter = ( center + val.center ) * 0.5f;
 
 	XE::float32 newRadiusA = Mathf::Distance( newCenter, center ) + radius;
 	XE::float32 newRadiusB = Mathf::Distance( newCenter, val.center ) + val.radius;
@@ -64,7 +64,7 @@ void XE::Sphere::Merge( const Sphere& val )
 	radius = Mathf::Max( newRadiusA, newRadiusB );
 }
 
-bool XE::Sphere::Contains( const Vec3& val ) const
+bool XE::Sphere::Contains( const Vec3f& val ) const
 {
 	return Mathf::SqrLength( val - center ) <= Mathf::Sqrt( radius );
 }
@@ -86,8 +86,8 @@ bool XE::Sphere::Intersect( const Sphere& val ) const
 
 std::pair<bool, XE::float32> XE::Sphere::Intersect( const Ray& ray, bool discardInside /*= true */ ) const
 {
-	const Vec3& raydir = ray.direction;
-	const Vec3& rayorig = ray.origin - center;
+	const Vec3f& raydir = ray.direction;
+	const Vec3f& rayorig = ray.origin - center;
 
 	if ( Mathf::SqrLength( rayorig ) <= radius * radius && discardInside )
 	{
@@ -113,12 +113,12 @@ std::pair<bool, XE::float32> XE::Sphere::Intersect( const Ray& ray, bool discard
 	}
 }
 
-void XE::Sphere::Transform( const Mat4& val )
+void XE::Sphere::Transform( const Mat4f& val )
 {
 	XE::float32 lengthSqrd[3];
 	for ( XE::uint32 i = 0; i < 3; i++ )
 	{
-		Vec3 column( val[0][i], val[1][i], val[2][i] );
+		Vec3f column( val[0][i], val[1][i], val[2][i] );
 		lengthSqrd[i] = Mathf::Dot( column, column );
 	}
 

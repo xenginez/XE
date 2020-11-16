@@ -131,35 +131,35 @@ void XE::Joint::SetRigidActorHandle( const XE::Pair<XE::RigidActorHandle, XE::Ri
 	_p->setActors( reinterpret_cast< physx::PxRigidActor * >( val.first.GetValue() ), reinterpret_cast< physx::PxRigidActor * >( val.second.GetValue() ) );
 }
 
-XE::Mat4 XE::Joint::GetRelativeTransform() const
+XE::Mat4f XE::Joint::GetRelativeTransform() const
 {
 	auto trans = _p->getRelativeTransform();
 
-	return XE::Mathf::TRS( { trans.p.x,trans.p.y,trans.p.z }, { trans.q.x, trans.q.y, trans.q.z, trans.q.w }, XE::Vec3::One );
+	return XE::Mathf::TRS( { trans.p.x,trans.p.y,trans.p.z }, { trans.q.x, trans.q.y, trans.q.z, trans.q.w }, XE::Vec3f::One );
 }
 
-XE::Mat4 XE::Joint::GetFirstRigidActorPose() const
+XE::Mat4f XE::Joint::GetFirstRigidActorPose() const
 {
 	auto trans = _p->getLocalPose( physx::PxJointActorIndex::eACTOR0 );
 
-	return XE::Mathf::TRS( { trans.p.x,trans.p.y,trans.p.z }, { trans.q.x, trans.q.y, trans.q.z, trans.q.w }, XE::Vec3::One );
+	return XE::Mathf::TRS( { trans.p.x,trans.p.y,trans.p.z }, { trans.q.x, trans.q.y, trans.q.z, trans.q.w }, XE::Vec3f::One );
 }
 
-XE::Mat4 XE::Joint::GetSecondRigidActorPose() const
+XE::Mat4f XE::Joint::GetSecondRigidActorPose() const
 {
 	auto trans = _p->getLocalPose( physx::PxJointActorIndex::eACTOR1 );
 
-	return XE::Mathf::TRS( { trans.p.x,trans.p.y,trans.p.z }, { trans.q.x, trans.q.y, trans.q.z, trans.q.w }, XE::Vec3::One );
+	return XE::Mathf::TRS( { trans.p.x,trans.p.y,trans.p.z }, { trans.q.x, trans.q.y, trans.q.z, trans.q.w }, XE::Vec3f::One );
 }
 
-XE::Vec3 XE::Joint::GetRelativeLinearVelocity() const
+XE::Vec3f XE::Joint::GetRelativeLinearVelocity() const
 {
 	auto linear = _p->getRelativeLinearVelocity();
 
 	return { linear.x, linear.y, linear.z };
 }
 
-XE::Vec3 XE::Joint::GetRelativeAngularVelocity() const
+XE::Vec3f XE::Joint::GetRelativeAngularVelocity() const
 {
 	auto angular = _p->getRelativeAngularVelocity();
 

@@ -69,15 +69,15 @@ public:
 	void SetRigidActorHandle( const XE::Pair<XE::RigidActorHandle, XE::RigidActorHandle> & val );
 
 public:
-	XE::Mat4 GetRelativeTransform() const;
+	XE::Mat4f GetRelativeTransform() const;
 
-	XE::Mat4 GetFirstRigidActorPose() const;
+	XE::Mat4f GetFirstRigidActorPose() const;
 
-	XE::Mat4 GetSecondRigidActorPose() const;
+	XE::Mat4f GetSecondRigidActorPose() const;
 
-	XE::Vec3 GetRelativeLinearVelocity() const;
+	XE::Vec3f GetRelativeLinearVelocity() const;
 
-	XE::Vec3 GetRelativeAngularVelocity() const;
+	XE::Vec3f GetRelativeAngularVelocity() const;
 
 	XE::PhysicsSceneHandle GetSceneHandle() const;
 

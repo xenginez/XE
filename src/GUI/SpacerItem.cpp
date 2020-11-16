@@ -34,17 +34,17 @@ void XE::SpacerItem::SetOrientation( XE::Orientation val )
 	_Orientation = val;
 }
 
-const XE::Vec2 & XE::SpacerItem::GetSizeHint() const
+const XE::Vec2f & XE::SpacerItem::GetSizeHint() const
 {
 	return _SizeHint;
 }
 
-void XE::SpacerItem::SetSizeHint( const XE::Vec2 & val )
+void XE::SpacerItem::SetSizeHint( const XE::Vec2f & val )
 {
 	_SizeHint = val;
 }
 
-XE::Vec2 XE::SpacerItem::SizeHint() const
+XE::Vec2f XE::SpacerItem::SizeHint() const
 {
 	if (_SizePolicy == XE::SizePolicy::FIXED)
 	{

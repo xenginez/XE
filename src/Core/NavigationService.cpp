@@ -64,21 +64,21 @@ void XE::NavigationService::Clearup()
 	_p->_NavMeshs.clear();
 }
 
-XE::Array< XE::Vec3 > XE::NavigationService::FindRoute( const XE::OBB & geometry, const XE::Vec3 & start, const XE::Vec3 & end )
+XE::Array< XE::Vec3f > XE::NavigationService::FindRoute( const XE::OBB & geometry, const XE::Vec3f & start, const XE::Vec3f & end )
 {
 	dtNavMeshQuery query;
 
 	return {};
 }
 
-XE::Array< XE::Vec3 > XE::NavigationService::FindRoute( const XE::AABB & geometry, const XE::Vec3 & start, const XE::Vec3 & end )
+XE::Array< XE::Vec3f > XE::NavigationService::FindRoute( const XE::AABB & geometry, const XE::Vec3f & start, const XE::Vec3f & end )
 {
 	dtNavMeshQuery query;
 
 	return {};
 }
 
-XE::Array< XE::Vec3 > XE::NavigationService::FindRoute( const XE::Capsule & geometry, const XE::Vec3 & start, const XE::Vec3 & end )
+XE::Array< XE::Vec3f > XE::NavigationService::FindRoute( const XE::Capsule & geometry, const XE::Vec3f & start, const XE::Vec3f & end )
 {
 	dtNavMeshQuery query;
 
@@ -127,8 +127,8 @@ XE::NavObstacleHandle XE::NavigationService::AddObstacle( const XE::OBB & geomet
 	{
 		const dtNavMeshParams * param = it.second->getParams();
 
-		XE::AABB box( XE::Vec3( param->orig[0], param->orig[1] - ( param->orig[1] / 2 ), param->orig[2] ),
-					  XE::Vec3( param->orig[0] + ( param->maxTiles * param->tileWidth ), param->orig[1] + ( param->orig[1] / 2 ), param->orig[2] + ( param->maxTiles * param->tileHeight ) ) );
+		XE::AABB box( XE::Vec3f( param->orig[0], param->orig[1] - ( param->orig[1] / 2 ), param->orig[2] ),
+					  XE::Vec3f( param->orig[0] + ( param->maxTiles * param->tileWidth ), param->orig[1] + ( param->orig[1] / 2 ), param->orig[2] + ( param->maxTiles * param->tileHeight ) ) );
 
 		if( box.Intersect( geometry ) )
 		{
