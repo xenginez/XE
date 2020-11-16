@@ -300,7 +300,7 @@ public:
 	~GreaterCalcElement() override;
 
 protected:
-	XE::Variant GetOutputValue( const XE::String & val ) override;
+	void OnExecute() override;
 
 };
 
@@ -314,7 +314,7 @@ public:
 	~LessCalcElement() override;
 
 protected:
-	XE::Variant GetOutputValue( const XE::String & val ) override;
+	void OnExecute() override;
 
 };
 
@@ -328,7 +328,7 @@ public:
 	~GreaterEqualCalcElement() override;
 
 protected:
-	XE::Variant GetOutputValue( const XE::String & val ) override;
+	void OnExecute() override;
 
 };
 
@@ -342,7 +342,7 @@ public:
 	~LessEqualCalcElement() override;
 
 protected:
-	XE::Variant GetOutputValue( const XE::String & val ) override;
+	void OnExecute() override;
 
 };
 
@@ -356,7 +356,7 @@ public:
 	~EqualCalcElement() override;
 
 protected:
-	XE::Variant GetOutputValue( const XE::String & val ) override;
+	void OnExecute() override;
 
 };
 
@@ -370,7 +370,7 @@ public:
 	~NotEqualCalcElement() override;
 
 protected:
-	XE::Variant GetOutputValue( const XE::String & val ) override;
+	void OnExecute() override;
 
 };
 

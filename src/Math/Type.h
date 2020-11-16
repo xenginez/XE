@@ -13,14 +13,14 @@
 
 BEG_XE_NAMESPACE
 
+class Quat;
+class Rect;
 class float16;
 template< typename T > class Vec2;
 template< typename T > class Vec3;
 template< typename T > class Vec4;
 template< typename T > class Mat3;
-template< typename T > class Mat4f;
-class Quat;
-class Rect;
+template< typename T > class Mat4;
 
 class Color;
 class FColor;

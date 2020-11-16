@@ -428,6 +428,132 @@ void XE::OrCalcElement::OnExecute()
 	}
 }
 
+IMPLEMENT_META( XE::GreaterCalcElement )
+
+XE::GreaterCalcElement::GreaterCalcElement()
+{
+	SetInputPort( XE::MakeShared<XE::VariantPairInputPort>() );
+	SetOutputPort( XE::MakeShared<XE::BoolOutputPort>() );
+}
+
+XE::GreaterCalcElement::~GreaterCalcElement()
+{
+
+}
+
+void XE::GreaterCalcElement::OnExecute()
+{
+	if( auto input = SP_CAST<XE::VariantPairInputPort>( GetInputPort() ) )
+	{
+		SP_CAST<XE::BoolOutputPort>( GetOutputPort() )->Result = input->First > input->Second;
+	}
+}
+
+IMPLEMENT_META( XE::LessCalcElement )
+
+XE::LessCalcElement::LessCalcElement()
+{
+	SetInputPort( XE::MakeShared<XE::VariantPairInputPort>() );
+	SetOutputPort( XE::MakeShared<XE::BoolOutputPort>() );
+}
+
+XE::LessCalcElement::~LessCalcElement()
+{
+
+}
+
+void XE::LessCalcElement::OnExecute()
+{
+	if( auto input = SP_CAST<XE::VariantPairInputPort>( GetInputPort() ) )
+	{
+		SP_CAST<XE::BoolOutputPort>( GetOutputPort() )->Result = input->First < input->Second;
+	}
+}
+
+IMPLEMENT_META( XE::GreaterEqualCalcElement )
+
+XE::GreaterEqualCalcElement::GreaterEqualCalcElement()
+{
+	SetInputPort( XE::MakeShared<XE::VariantPairInputPort>() );
+	SetOutputPort( XE::MakeShared<XE::BoolOutputPort>() );
+}
+
+XE::GreaterEqualCalcElement::~GreaterEqualCalcElement()
+{
+
+}
+
+void XE::GreaterEqualCalcElement::OnExecute()
+{
+	if( auto input = SP_CAST<XE::VariantPairInputPort>( GetInputPort() ) )
+	{
+		SP_CAST<XE::BoolOutputPort>( GetOutputPort() )->Result = input->First >= input->Second;
+	}
+}
+
+IMPLEMENT_META( XE::LessEqualCalcElement )
+
+XE::LessEqualCalcElement::LessEqualCalcElement()
+{
+	SetInputPort( XE::MakeShared<XE::VariantPairInputPort>() );
+	SetOutputPort( XE::MakeShared<XE::BoolOutputPort>() );
+}
+
+XE::LessEqualCalcElement::~LessEqualCalcElement()
+{
+
+}
+
+void XE::LessEqualCalcElement::OnExecute()
+{
+	if( auto input = SP_CAST<XE::VariantPairInputPort>( GetInputPort() ) )
+	{
+		SP_CAST<XE::BoolOutputPort>( GetOutputPort() )->Result = input->First != input->Second;
+	}
+}
+
+IMPLEMENT_META( XE::EqualCalcElement )
+
+XE::EqualCalcElement::EqualCalcElement()
+{
+	SetInputPort( XE::MakeShared<XE::VariantPairInputPort>() );
+	SetOutputPort( XE::MakeShared<XE::BoolOutputPort>() );
+}
+
+XE::EqualCalcElement::~EqualCalcElement()
+{
+
+}
+
+void XE::EqualCalcElement::OnExecute()
+{
+	if( auto input = SP_CAST<XE::VariantPairInputPort>( GetInputPort() ) )
+	{
+		SP_CAST<XE::BoolOutputPort>( GetOutputPort() )->Result = input->First == input->Second;
+	}
+}
+
+IMPLEMENT_META( XE::NotEqualCalcElement )
+
+XE::NotEqualCalcElement::NotEqualCalcElement()
+{
+	SetInputPort( XE::MakeShared<XE::VariantPairInputPort>() );
+	SetOutputPort( XE::MakeShared<XE::BoolOutputPort>() );
+}
+
+XE::NotEqualCalcElement::~NotEqualCalcElement()
+{
+
+}
+
+void XE::NotEqualCalcElement::OnExecute()
+{
+	if( auto input = SP_CAST<XE::VariantPairInputPort>( GetInputPort() ) )
+	{
+		SP_CAST<XE::BoolOutputPort>( GetOutputPort() )->Result = input->First == input->Second;
+	}
+}
+
 IMPLEMENT_META( XE::LogicElement )
 
 XE::LogicElement::LogicElement()
@@ -490,7 +616,7 @@ void XE::ForLogicElement::OnExecute()
 	auto blueprint = GetBlueprint();
 	auto input = SP_CAST<XE::IntegerPairInputPort>( GetInputPort() );
 	auto output = SP_CAST<XE::IntegerOutputPort>( GetOutputPort() );
-	for( XE::uint64 i = input->First; i < input->Second; ++i )
+	for( XE::int64 i = input->First; i < input->Second; ++i )
 	{
 		output->Result = i;
 		if( _LoopOutput.Handle ) blueprint->GetElement( _LoopOutput.Handle )->Execute();
@@ -635,6 +761,8 @@ void XE::EventElement::OnExecute()
 	auto output = SP_CAST<XE::VariantOutputPort>( GetOutputPort() );
 
 	if( _Output.Handle ) blueprint->GetElement( _Output.Handle )->Execute();
+
+	output->Result.Reset();
 }
 
 BEG_META( XE::ActionElement )

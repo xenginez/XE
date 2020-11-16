@@ -67,7 +67,7 @@ void XE::Blueprint::Update( XE::float32 dt )
 
 	for( auto event : _Updates )
 	{
-		event->SetValue( dt );
+		SP_CAST<XE::VariantOutputPort>( event->GetOutputPort() )->Result = dt;
 
 		event->Execute();
 	}
@@ -132,7 +132,7 @@ void XE::Blueprint::ProcessEvent( const EventPtr & val )
 		{
 			if( event->GetListenerEvent() == val->handle )
 			{
-				event->SetValue( val->parameter );
+				SP_CAST<XE::VariantOutputPort>( event->GetOutputPort() )->Result = val->parameter;
 
 				event->Execute();
 			}

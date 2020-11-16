@@ -50,14 +50,6 @@ public:
 		std::memcpy( d, val, sizeof( value_type ) * 16 );
 	}
 
-	template< typename U > Mat4( const Mat3< U > & val )
-		:m00( val.m00 ), m01( val.m01 ), m02( val.m02 ), m03( 0 )
-		, m10( val.m10 ), m11( val.m11 ), m12( val.m12 ), m13( 0 )
-		, m20( val.m20 ), m21( val.m21 ), m22( val.m22 ), m23( 0 )
-		, m30( 0 ), m31( 0 ), m32( 0 ), m33( 1 )
-	{
-	}
-
 	template< typename U > Mat4( const Mat4< U > & val )
 		:m00( val.m00 ), m01( val.m01 ), m02( val.m02 ), m03( val.m03 )
 		, m10( val.m10 ), m11( val.m11 ), m12( val.m12 ), m13( val.m13 )
@@ -75,16 +67,6 @@ public:
 	}
 
 public:
-	template< typename U > Mat4 & operator = ( const Mat3< U > & val )
-	{
-		m00 = val.m00; m01 = val.m01; m02 = val.m02; m03 = 0;
-		m10 = val.m10; m11 = val.m11; m12 = val.m12; m13 = 0;
-		m20 = val.m20; m21 = val.m21; m22 = val.m22; m23 = 0;
-		m30 = 0; m31 = 0; m32 = 0; m33 = 1;
-
-		return *this;
-	}
-
 	template< typename U > Mat4 & operator = ( const Mat4< U > & val )
 	{
 		m00 = val.m00; m01 = val.m01; m02 = val.m02; m03 = val.m03;
@@ -99,12 +81,14 @@ public:
 	value_type * operator []( XE::uint64 val )
 	{
 		XE_ASSERT( val < 4 );
+
 		return m[val];
 	}
 
 	const value_type * operator []( XE::uint64 val ) const
 	{
 		XE_ASSERT( val < 4 );
+
 		return m[val];
 	}
 

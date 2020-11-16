@@ -160,9 +160,9 @@ class XE_API IntegerPairInputPort : public XE::AIInputPort
 	OBJECT( IntegerInputPort, AIInputPort )
 
 public:
-	IntegerInputPort() = default;
+	IntegerPairInputPort() = default;
 
-	~IntegerInputPort() override = default;
+	~IntegerPairInputPort() override = default;
 
 public:
 	XE::int64 First;
@@ -203,8 +203,17 @@ public:
 	void Init( const XE::IMetaMethodPtr & method );
 
 public:
-	XE::Map< XE::String, XE::Variant > Parameter;
-
+	XE::Variant This;
+	XE::Variant Arg_0;
+	XE::Variant Arg_1;
+	XE::Variant Arg_2;
+	XE::Variant Arg_3;
+	XE::Variant Arg_4;
+	XE::Variant Arg_5;
+	XE::Variant Arg_6;
+	XE::Variant Arg_7;
+	XE::Variant Arg_8;
+	XE::Variant Arg_9;
 private:
 	XE::IMetaClassPtr _Meta;
 };

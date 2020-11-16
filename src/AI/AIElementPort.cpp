@@ -83,13 +83,33 @@ void XE::InvokeInputPort::Init( const XE::IMetaMethodPtr & method )
 
 	if (!method->IsStatic())
 	{
-		p->Property( "This", [this]()->XE::Variant { return Parameter["This"]; }, [this]( XE::Variant val ) { Parameter["This"] = val; } );
+		p->Property( "This", &XE::InvokeInputPort::This );
 	}
-	auto parameter = method->GetParameter();
-	for( int i = 0; i < parameter.size(); ++i )
+
+	switch( method->GetParameter().size() )
 	{
-		XE::String name = XE::StringUtils::Format( "Arg_%1", i );
-		p->Property( name, [this, name]()->XE::Variant { return Parameter[name]; }, [this, name]( XE::Variant val ) { Parameter[name] = val; } );
+	case 9:
+		p->Property( "Arg_9", &XE::InvokeInputPort::Arg_9 );
+	case 8:
+		p->Property( "Arg_8", &XE::InvokeInputPort::Arg_8 );
+	case 7:
+		p->Property( "Arg_7", &XE::InvokeInputPort::Arg_7 );
+	case 6:
+		p->Property( "Arg_6", &XE::InvokeInputPort::Arg_6 );
+	case 5:
+		p->Property( "Arg_5", &XE::InvokeInputPort::Arg_5 );
+	case 4:
+		p->Property( "Arg_4", &XE::InvokeInputPort::Arg_4 );
+	case 3:
+		p->Property( "Arg_3", &XE::InvokeInputPort::Arg_3 );
+	case 2:
+		p->Property( "Arg_2", &XE::InvokeInputPort::Arg_2 );
+	case 1:
+		p->Property( "Arg_1", &XE::InvokeInputPort::Arg_1 );
+	case 0:
+		p->Property( "Arg_0", &XE::InvokeInputPort::Arg_0 );
+	default:
+		break;
 	}
 
 	_Meta = p;

@@ -80,12 +80,6 @@ public:
 
 	}
 
-	template< typename U > Mat3( const Mat4f< U > & val )
-		: m00( val.m00 ), m01( val.m01 ), m02( val.m02 ), m10( val.m10 ), m11( val.m11 ), m12( val.m12 ), m20( val.m20 ), m21( val.m21 ), m22( val.m22 )
-	{
-
-	}
-
 	Mat3( value_type m00, value_type m01, value_type m02, value_type m10, value_type m11, value_type m12, value_type m20, value_type m21, value_type m22 )
 		:m00( m00 ), m01( m01 ), m02( m02 ), m10( m10 ), m11( m11 ), m12( m12 ), m20( m20 ), m21( m21 ), m22( m22 )
 	{

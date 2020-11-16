@@ -1907,7 +1907,13 @@ public:
 
 	static XE_INLINE Mat4f Rotation( const Quat & val )
 	{
-		return { MatFromQuat( val ) };
+		auto mat3 = MatFromQuat( val );
+		return {
+				  mat3.m00, mat3.m01, mat3.m02, 0,
+				  mat3.m10, mat3.m11, mat3.m12, 0,
+				  mat3.m20, mat3.m21, mat3.m22, 0,
+				  0, 0, 0, 1
+		};
 	}
 
 	static XE_INLINE Mat4f Scale( const Vec3f & val )
@@ -2026,7 +2032,13 @@ public:
 		Mat3f rotT = Transpose( rot );
 		Vec3f trans = ( -rotT ) * ( position );
 
-		m = rotT;
+		m = {
+				  rotT.m00, rotT.m01, rotT.m02, 0,
+				  rotT.m10, rotT.m11, rotT.m12, 0,
+				  rotT.m20, rotT.m21, rotT.m22, 0,
+				  0, 0, 0, 1
+		};
+
 		m[0][3] = trans.x;
 		m[1][3] = trans.y;
 		m[2][3] = trans.z;
@@ -2050,10 +2062,15 @@ public:
 
 	static XE_INLINE void TRS( const Mat4f & m, Vec3f & position, Quat & rotation, Vec3f & scale )
 	{
-		Mat3f m3x3( m );
-
+		Mat3f m3x3;
 		Mat3f matQ;
 		Vec3f vecU;
+
+		m3x3 = {
+				  m.m00, m.m01, m.m02,
+				  m.m10, m.m11, m.m12,
+				  m.m20, m.m21, m.m22
+		};
 
 		XE::float32 invLength = RSqrt( m[0][0] * m[0][0] + m[1][0] * m[1][0] + m[2][0] * m[2][0] );
 		matQ[0][0] = m[0][0] * invLength;
