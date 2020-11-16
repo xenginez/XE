@@ -277,11 +277,7 @@ XE::Variant XE::Variant::operator~() const
 {
 	if( _Flag == Flag::FUNDAMENTAL )
 	{
-		if( _Type == TypeID<bool>::Get() )
-		{
-			return ~_Data.b;
-		}
-		else if( _Type == TypeID<XE::int8>::Get() )
+		if( _Type == TypeID<XE::int8>::Get() )
 		{
 			return ~_Data.i8;
 		}
@@ -337,22 +333,6 @@ XE::Variant XE::Variant::operator-() const
 		else if( _Type == TypeID<XE::int64>::Get() )
 		{
 			return -_Data.i64;
-		}
-		else if( _Type == TypeID<XE::uint8>::Get() )
-		{
-			return -_Data.u8;
-		}
-		else if( _Type == TypeID<XE::uint16>::Get() )
-		{
-			return -_Data.u16;
-		}
-		else if( _Type == TypeID<XE::uint32>::Get() )
-		{
-			return -_Data.u32;
-		}
-		else if( _Type == TypeID<XE::uint64>::Get() )
-		{
-			return -_Data.u64;
 		}
 	}
 

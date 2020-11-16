@@ -1,7 +1,5 @@
 #include "Reflection.h"
 
-#define _p XE::Reflection::Instance()->_p
-
 template<> struct XE::MetaDataCollector<XE::Reflection>
 {
 	MetaDataCollector()
@@ -88,6 +86,8 @@ XE::Reflection::~Reflection()
 {
 	delete _p;
 }
+
+#define _p XE::Reflection::Instance()->_p
 
 void XE::Reflection::Clear()
 {

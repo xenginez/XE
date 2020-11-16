@@ -10,6 +10,7 @@
 #define __SPHERE_H__06E9A06D_DAE8_4648_8E21_51748C5A3BC7
 
 #include "Vec3.h"
+#include "Mat4.h"
 
 BEG_XE_NAMESPACE
 

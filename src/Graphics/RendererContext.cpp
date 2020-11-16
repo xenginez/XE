@@ -51,10 +51,10 @@ void XE::RendererContext::Init( const InitInfo & val )
 {
 	_p->_Init = val;
 
-	_p->_Caps.TransientIbSize = val.transientIbSize;
-	_p->_Caps.TransientVbSize = val.transientVbSize;
 	_p->_Caps.VendorId = val.vendorId;
 	_p->_Caps.DeviceId = val.deviceId;
+	_p->_Caps.TransientIbSize = val.transientIbSize;
+	_p->_Caps.TransientVbSize = val.transientVbSize;
 
 	_p->_SubmitFrame = &_p->_Frames[0];
 	_p->_RenderFrame = &_p->_Frames[1];
@@ -113,64 +113,61 @@ XE::InitInfo & XE::RendererContext::GetInit()
 	return _p->_Init;
 }
 
-XE::IndexBufferHandle XE::RendererContext::CreateIndexBuffer( const XE::String & name, XE::MemoryView mem, XE::Flags< XE::BufferFlags > flags )
+XE::IndexBufferHandle XE::RendererContext::CreateIndexBuffer( const BufferDesc & desc, XE::MemoryView Data )
 {
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
-
 	auto handle = _p->_IndexBufferHandleAlloc.Alloc();
+
+	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
 
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_INDEX_BUFFER );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
-	_p->_SubmitFrame->PrevCmd.Wirte( name );
-	_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( mem ) );
-	_p->_SubmitFrame->PrevCmd.Wirte( flags );
+	_p->_SubmitFrame->PrevCmd.Wirte( desc );
+	_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( Data ) );
 
 	return handle;
 }
 
-XE::TransientIndexBufferHandle XE::RendererContext::CreateTransientIndexBuffer( XE::MemoryView mem, XE::Flags< XE::BufferFlags > flags )
+XE::TransientIndexBufferHandle XE::RendererContext::CreateTransientIndexBuffer( const BufferDesc & desc, XE::MemoryView Data )
 {
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
-
 	auto handle = _p->_SubmitFrame->TransientIndexBufferHandleAlloc.Alloc();
+
+	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
 
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_TRANSIENT_INDEX_BUFFER );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
-	_p->_SubmitFrame->PrevCmd.Wirte( mem );
-	_p->_SubmitFrame->PrevCmd.Wirte( flags );
+	_p->_SubmitFrame->PrevCmd.Wirte( desc );
+	_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( Data ) );
 
 	return handle;
 }
 
 void XE::RendererContext::Destory( IndexBufferHandle handle )
 {
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
-	_p->_SubmitFrame->PostCmd.Wirte( CommandType::DESTROY_INDEX_BUFFER );
-	_p->_SubmitFrame->PostCmd.Wirte( handle );
+	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->DestoryCmdMutex );
+	DestoryHandle des = { DestoryHandle::DestoryType::DESTROY_INDEX_BUFFER, handle };
+	_p->_SubmitFrame->DestoryCmd.Wirte( des );
 }
 
-XE::VertexLayoutHandle XE::RendererContext::CreateVertexLayout( const XE::Array<VertexLayout> & layouts )
+XE::VertexLayoutHandle XE::RendererContext::CreateVertexLayout( const VertexLayoutDesc & val )
 {
 	auto handle = _p->_VertexLayoutHandleAlloc.Alloc();
-
-	XE::MemoryView view( ( const char * )layouts.data(), layouts.size() * sizeof( VertexLayout ) );
 
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_VERTEX_LAYOUT );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
-	_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( view ) );
+	_p->_SubmitFrame->PrevCmd.Wirte( val );
 
 	return handle;
 }
 
 void XE::RendererContext::Destory( VertexLayoutHandle handle )
 {
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
-	_p->_SubmitFrame->PostCmd.Wirte( CommandType::DESTROY_VERTEX_LAYOUT );
-	_p->_SubmitFrame->PostCmd.Wirte( handle );
+	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->DestoryCmdMutex );
+	DestoryHandle des = { DestoryHandle::DestoryType::DESTROY_VERTEX_LAYOUT , handle };
+	_p->_SubmitFrame->DestoryCmd.Wirte( des );
 }
 
-XE::VertexBufferHandle XE::RendererContext::CreateVertexBuffer( const XE::String & name, XE::MemoryView mem, VertexLayoutHandle layout, XE::Flags< XE::BufferFlags > flags )
+XE::VertexBufferHandle XE::RendererContext::CreateVertexBuffer( const VertexBufferDesc & desc, XE::MemoryView Data )
 {
 	auto handle = _p->_VertexBufferHandleAlloc.Alloc();
 
@@ -178,15 +175,13 @@ XE::VertexBufferHandle XE::RendererContext::CreateVertexBuffer( const XE::String
 
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_VERTEX_BUFFER );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
-	_p->_SubmitFrame->PrevCmd.Wirte( name );
-	_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( mem ) );
-	_p->_SubmitFrame->PrevCmd.Wirte( layout );
-	_p->_SubmitFrame->PrevCmd.Wirte( flags );
+	_p->_SubmitFrame->PrevCmd.Wirte( desc );
+	_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( Data ) );
 
 	return handle;
 }
 
-XE::TransientVertexBufferHandle XE::RendererContext::CreateTransientVertexBuffer( XE::MemoryView mem, VertexLayoutHandle layout, XE::Flags< XE::BufferFlags > flags )
+XE::TransientVertexBufferHandle XE::RendererContext::CreateTransientVertexBuffer( const VertexBufferDesc & desc, XE::MemoryView Data )
 {
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
 
@@ -194,21 +189,20 @@ XE::TransientVertexBufferHandle XE::RendererContext::CreateTransientVertexBuffer
 
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_TRANSIENT_VERTEX_BUFFER );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
-	_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( mem ) );
-	_p->_SubmitFrame->PrevCmd.Wirte( layout );
-	_p->_SubmitFrame->PrevCmd.Wirte( flags );
+	_p->_SubmitFrame->PrevCmd.Wirte( desc );
+	_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( Data ) );
 
 	return handle;
 }
 
 void XE::RendererContext::Destory( VertexBufferHandle handle )
 {
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
-	_p->_SubmitFrame->PostCmd.Wirte( CommandType::DESTROY_VERTEX_BUFFER );
-	_p->_SubmitFrame->PostCmd.Wirte( handle );
+	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->DestoryCmdMutex );
+	DestoryHandle des = { DestoryHandle::DestoryType::DESTROY_VERTEX_BUFFER, handle };
+	_p->_SubmitFrame->DestoryCmd.Wirte( des );
 }
 
-XE::DynamicIndexBufferHandle XE::RendererContext::CreateDynamicIndexBuffer( XE::uint64 size, XE::Flags< XE::BufferFlags > flags )
+XE::DynamicIndexBufferHandle XE::RendererContext::CreateDynamicIndexBuffer( const BufferDesc & desc, XE::MemoryView Data )
 {
 	auto handle = _p->_DynamicIndexBufferHandleAlloc.Alloc();
 
@@ -216,22 +210,8 @@ XE::DynamicIndexBufferHandle XE::RendererContext::CreateDynamicIndexBuffer( XE::
 
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_DYNAMIC_INDEX_BUFFER );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
-	_p->_SubmitFrame->PrevCmd.Wirte( size );
-	_p->_SubmitFrame->PrevCmd.Wirte( flags );
-
-	return handle;
-}
-
-XE::DynamicIndexBufferHandle XE::RendererContext::CreateDynamicIndexBuffer( XE::MemoryView mem, XE::Flags< XE::BufferFlags > flags )
-{
-	auto handle = _p->_DynamicIndexBufferHandleAlloc.Alloc();
-
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
-
-	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_INDEX_BUFFER );
-	_p->_SubmitFrame->PrevCmd.Wirte( handle );
-	_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( mem ) );
-	_p->_SubmitFrame->PrevCmd.Wirte( flags );
+	_p->_SubmitFrame->PrevCmd.Wirte( desc );
+	_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( Data ) );
 
 	return handle;
 }
@@ -248,12 +228,12 @@ void XE::RendererContext::Update( DynamicIndexBufferHandle handle, XE::uint64 st
 
 void XE::RendererContext::Destory( DynamicIndexBufferHandle handle )
 {
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
-	_p->_SubmitFrame->PostCmd.Wirte( CommandType::DESTROY_DYNAMIC_INDEX_BUFFER );
-	_p->_SubmitFrame->PostCmd.Wirte( handle );
+	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->DestoryCmdMutex );
+	DestoryHandle des = { DestoryHandle::DestoryType::DESTROY_DYNAMIC_INDEX_BUFFER, handle };
+	_p->_SubmitFrame->DestoryCmd.Wirte( des );
 }
 
-XE::DynamicVertexBufferHandle XE::RendererContext::CreateDynamicVertexBuffer( XE::uint64 size, VertexLayoutHandle layout, XE::Flags< XE::BufferFlags > flags )
+XE::DynamicVertexBufferHandle XE::RendererContext::CreateDynamicVertexBuffer( const VertexBufferDesc & desc, XE::MemoryView Data )
 {
 	auto handle = _p->_DynamicVertexBufferHandleAlloc.Alloc();
 
@@ -261,24 +241,8 @@ XE::DynamicVertexBufferHandle XE::RendererContext::CreateDynamicVertexBuffer( XE
 
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_DYNAMIC_VERTEX_BUFFER );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
-	_p->_SubmitFrame->PrevCmd.Wirte( size );
-	_p->_SubmitFrame->PrevCmd.Wirte( layout );
-	_p->_SubmitFrame->PrevCmd.Wirte( flags );
-
-	return handle;
-}
-
-XE::DynamicVertexBufferHandle XE::RendererContext::CreateDynamicVertexBuffer( XE::MemoryView mem, VertexLayoutHandle layout, XE::Flags< XE::BufferFlags > flags )
-{
-	auto handle = _p->_DynamicVertexBufferHandleAlloc.Alloc();
-
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
-
-	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_DYNAMIC_VERTEX_BUFFER );
-	_p->_SubmitFrame->PrevCmd.Wirte( handle );
-	_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( mem ) );
-	_p->_SubmitFrame->PrevCmd.Wirte( layout );
-	_p->_SubmitFrame->PrevCmd.Wirte( flags );
+	_p->_SubmitFrame->PrevCmd.Wirte( desc );
+	_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( Data ) );
 
 	return handle;
 }
@@ -295,9 +259,9 @@ void XE::RendererContext::Update( DynamicVertexBufferHandle handle, XE::uint64 s
 
 void XE::RendererContext::Destory( DynamicVertexBufferHandle handle )
 {
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
-	_p->_SubmitFrame->PostCmd.Wirte( CommandType::DESTROY_DYNAMIC_VERTEX_BUFFER );
-	_p->_SubmitFrame->PostCmd.Wirte( handle );
+	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->DestoryCmdMutex );
+	DestoryHandle des = { DestoryHandle::DestoryType::DESTROY_DYNAMIC_VERTEX_BUFFER, handle };
+	_p->_SubmitFrame->DestoryCmd.Wirte( des );
 }
 
 XE::IndirectBufferHandle XE::RendererContext::CreateIndirectBuffer( XE::uint64 num )
@@ -320,12 +284,12 @@ XE::IndirectBufferHandle XE::RendererContext::CreateIndirectBuffer( XE::uint64 n
 
 void XE::RendererContext::Destory( IndirectBufferHandle handle )
 {
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
-	_p->_SubmitFrame->PostCmd.Wirte( CommandType::DESTROY_DYNAMIC_VERTEX_BUFFER );
-	_p->_SubmitFrame->PostCmd.Wirte( handle );
+	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->DestoryCmdMutex );
+	DestoryHandle des = { DestoryHandle::DestoryType::DESTROY_DYNAMIC_VERTEX_BUFFER, handle };
+	_p->_SubmitFrame->DestoryCmd.Wirte( des );
 }
 
-XE::ShaderHandle XE::RendererContext::CreateShader( const XE::String & name, ShaderType type, XE::MemoryView mem )
+XE::ShaderHandle XE::RendererContext::CreateShader( const ShaderDesc & val )
 {
 	auto handle = _p->_ShaderHandleAlloc.Alloc();
 
@@ -333,18 +297,18 @@ XE::ShaderHandle XE::RendererContext::CreateShader( const XE::String & name, Sha
 
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_SHADER );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
-	_p->_SubmitFrame->PrevCmd.Wirte( name );
-	_p->_SubmitFrame->PrevCmd.Wirte( type );
-	_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( mem ) );
+	_p->_SubmitFrame->PrevCmd.Wirte( val.Name );
+	_p->_SubmitFrame->PrevCmd.Wirte( val.Type );
+	_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( val.Data ) );
 
 	return handle;
 }
 
 void XE::RendererContext::Destory( ShaderHandle handle )
 {
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
-	_p->_SubmitFrame->PostCmd.Wirte( CommandType::DESTROY_SHADER );
-	_p->_SubmitFrame->PostCmd.Wirte( handle );
+	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->DestoryCmdMutex );
+	DestoryHandle des = { DestoryHandle::DestoryType::DESTROY_SHADER , handle };
+	_p->_SubmitFrame->DestoryCmd.Wirte( des );
 }
 
 XE::Array<XE::UniformHandle> XE::RendererContext::GetShaderUniforms( ShaderHandle handle )
@@ -397,265 +361,52 @@ XE::ProgramHandle XE::RendererContext::CreateProgram( ShaderHandle cs, bool des_
 
 void XE::RendererContext::Destory( ProgramHandle handle )
 {
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
-	_p->_SubmitFrame->PostCmd.Wirte( CommandType::DESTROY_PROGRAM );
-	_p->_SubmitFrame->PostCmd.Wirte( handle );
+	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->DestoryCmdMutex );
+	DestoryHandle des = { DestoryHandle::DestoryType::DESTROY_PROGRAM , handle };
+	_p->_SubmitFrame->DestoryCmd.Wirte( des );
 }
 
-XE::TextureHandle XE::RendererContext::CreateTexture2D( const XE::String & name, XE::uint32 width, XE::uint32 height, bool hasmips, XE::uint16 layers, TextureFormat format, XE::Flags< XE::TextureFlags > flags, XE::Flags< XE::SamplerFlags > sampler, std::optional< XE::MemoryView > mem )
+XE::TextureHandle XE::RendererContext::CreateTexture( const TextureDesc & desc, XE::MemoryView Data )
 {
 	auto handle = _p->_TextureHandleAlloc.Alloc();
 
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
 
-	_p->_Textures[handle].Name = name;
-	_p->_Textures[handle].StorageSize = 0;
-	_p->_Textures[handle].Width = width;
-	_p->_Textures[handle].Height = height;
-	_p->_Textures[handle].Depth = 0;
-	_p->_Textures[handle].NumLayers = std::max<XE::uint16>( layers, 1 );
-	_p->_Textures[handle].NumMips = hasmips ? 1 + uint32_t( std::log2( float( std::max( width, height ) ) ) ) : 0;
-	_p->_Textures[handle].BitsPerPixel = 0;
-	_p->_Textures[handle].CubeMap = false;
-	_p->_Textures[handle].Format = format;
-
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_TEXTURE );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
-	_p->_SubmitFrame->PrevCmd.Wirte( TextureType::TEXTURE_2D );
-	_p->_SubmitFrame->PrevCmd.Wirte( name );
-	_p->_SubmitFrame->PrevCmd.Wirte( width );
-	_p->_SubmitFrame->PrevCmd.Wirte( height );
-	_p->_SubmitFrame->PrevCmd.Wirte( hasmips );
-	_p->_SubmitFrame->PrevCmd.Wirte( layers );
-	_p->_SubmitFrame->PrevCmd.Wirte( format );
-	_p->_SubmitFrame->PrevCmd.Wirte( flags );
-	_p->_SubmitFrame->PrevCmd.Wirte( sampler );
-	if( mem != std::nullopt )
-	{
-		_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( *mem ) );
-	}
-	else
-	{
-		_p->_SubmitFrame->PrevCmd.Wirte( XE::MemoryView() );
-	}
+	_p->_SubmitFrame->PrevCmd.Wirte( desc );
+	_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( Data ) );
 
 	return handle;
 }
 
-XE::TextureHandle XE::RendererContext::CreateTexture2D( const XE::String & name, XE::BackbufferRatio ratio, bool hasmips, XE::uint16 layers, TextureFormat format, XE::Flags< XE::TextureFlags > flags, XE::Flags< XE::SamplerFlags > sampler )
-{
-	auto handle = _p->_TextureHandleAlloc.Alloc();
-
-	XE::uint32 width = _p->_Init.width;
-	XE::uint32 height = _p->_Init.height;
-
-	switch( ratio )
-	{
-	case BackbufferRatio::HALF:
-		width /= 2;
-		height /= 2;
-		break;
-	case BackbufferRatio::QUARTER:
-		width /= 4;
-		height /= 4;
-		break;
-	case BackbufferRatio::EIGHTH:
-		width /= 8;
-		height /= 8;
-		break;
-	case BackbufferRatio::SIXTEENTH:
-		width /= 16;
-		height /= 16;
-		break;
-	case BackbufferRatio::DOUBLE:
-		width *= 2;
-		height *= 2;
-		break;
-	default:
-		break;
-	}
-
-	width = std::max<XE::uint32>( 1, width );
-	height = std::max<XE::uint32>( 1, height );
-
-	_p->_Textures[handle].Name = name;
-	_p->_Textures[handle].StorageSize = 0;
-	_p->_Textures[handle].Width = width;
-	_p->_Textures[handle].Height = height;
-	_p->_Textures[handle].Depth = 0;
-	_p->_Textures[handle].NumLayers = std::max<XE::uint16>( layers, 1 );
-	_p->_Textures[handle].NumMips = hasmips ? 1 + uint32_t( std::log2( float( std::max( width, height ) ) ) ) : 0;
-	_p->_Textures[handle].BitsPerPixel = 0;
-	_p->_Textures[handle].CubeMap = false;
-	_p->_Textures[handle].Format = format;
-
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
-
-	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_TEXTURE );
-	_p->_SubmitFrame->PrevCmd.Wirte( handle );
-	_p->_SubmitFrame->PrevCmd.Wirte( TextureType::TEXTURE_2D );
-	_p->_SubmitFrame->PrevCmd.Wirte( name );
-	_p->_SubmitFrame->PrevCmd.Wirte( width );
-	_p->_SubmitFrame->PrevCmd.Wirte( height );
-	_p->_SubmitFrame->PrevCmd.Wirte( hasmips );
-	_p->_SubmitFrame->PrevCmd.Wirte( layers );
-	_p->_SubmitFrame->PrevCmd.Wirte( format );
-	_p->_SubmitFrame->PrevCmd.Wirte( flags );
-	_p->_SubmitFrame->PrevCmd.Wirte( sampler );
-	_p->_SubmitFrame->PrevCmd.Wirte( XE::MemoryView() );
-
-	return handle;
-}
-
-XE::TextureHandle XE::RendererContext::CreateTexture3D( const XE::String & name, XE::uint32 width, XE::uint32 height, XE::uint32 depth, bool hasmips, TextureFormat format, XE::Flags< XE::TextureFlags > flags, XE::Flags< XE::SamplerFlags > sampler, std::optional< XE::MemoryView > mem )
-{
-	auto handle = _p->_TextureHandleAlloc.Alloc();
-
-	width = std::max<XE::uint32>( 1, width );
-	height = std::max<XE::uint32>( 1, height );
-
-	_p->_Textures[handle].Name = name;
-	_p->_Textures[handle].StorageSize = 0;
-	_p->_Textures[handle].Width = width;
-	_p->_Textures[handle].Height = height;
-	_p->_Textures[handle].Depth = depth;
-	_p->_Textures[handle].NumLayers = 1;
-	_p->_Textures[handle].NumMips = hasmips ? 1 + uint32_t( std::log2( float( std::max( width, std::max( height, depth ) ) ) ) ) : 0;
-	_p->_Textures[handle].BitsPerPixel = 0;
-	_p->_Textures[handle].CubeMap = false;
-	_p->_Textures[handle].Format = format;
-
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
-
-	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_TEXTURE );
-	_p->_SubmitFrame->PrevCmd.Wirte( handle );
-	_p->_SubmitFrame->PrevCmd.Wirte( TextureType::TEXTURE_3D );
-	_p->_SubmitFrame->PrevCmd.Wirte( name );
-	_p->_SubmitFrame->PrevCmd.Wirte( width );
-	_p->_SubmitFrame->PrevCmd.Wirte( height );
-	_p->_SubmitFrame->PrevCmd.Wirte( depth );
-	_p->_SubmitFrame->PrevCmd.Wirte( hasmips );
-	_p->_SubmitFrame->PrevCmd.Wirte( format );
-	_p->_SubmitFrame->PrevCmd.Wirte( flags );
-	_p->_SubmitFrame->PrevCmd.Wirte( sampler );
-	if( mem != std::nullopt )
-	{
-		_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( *mem ) );
-	}
-	else
-	{
-		_p->_SubmitFrame->PrevCmd.Wirte( XE::MemoryView() );
-	}
-
-	return handle;
-}
-
-XE::TextureHandle XE::RendererContext::CreateTextureCube( const XE::String & name, XE::uint32 size, bool hasmips, XE::uint16 layers, TextureFormat format, XE::Flags< XE::TextureFlags > flags, XE::Flags< XE::SamplerFlags > sampler, std::optional< XE::MemoryView > mem )
-{
-	auto handle = _p->_TextureHandleAlloc.Alloc();
-
-	_p->_Textures[handle].Name = name;
-	_p->_Textures[handle].StorageSize = 0;
-	_p->_Textures[handle].Width = size;
-	_p->_Textures[handle].Height = size;
-	_p->_Textures[handle].Depth = 0;
-	_p->_Textures[handle].NumLayers = std::max<XE::uint16>( layers, 1 );
-	_p->_Textures[handle].NumMips = hasmips ? 1 + uint32_t( std::log2( float( std::max( size, size ) ) ) ) : 0;
-	_p->_Textures[handle].BitsPerPixel = 0;
-	_p->_Textures[handle].CubeMap = true;
-	_p->_Textures[handle].Format = format;
-
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
-
-	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_TEXTURE );
-	_p->_SubmitFrame->PrevCmd.Wirte( handle );
-	_p->_SubmitFrame->PrevCmd.Wirte( TextureType::TEXTURE_CUBE );
-	_p->_SubmitFrame->PrevCmd.Wirte( name );
-	_p->_SubmitFrame->PrevCmd.Wirte( size );
-	_p->_SubmitFrame->PrevCmd.Wirte( hasmips );
-	_p->_SubmitFrame->PrevCmd.Wirte( layers );
-	_p->_SubmitFrame->PrevCmd.Wirte( format );
-	_p->_SubmitFrame->PrevCmd.Wirte( flags );
-	_p->_SubmitFrame->PrevCmd.Wirte( sampler );
-	if( mem != std::nullopt )
-	{
-		_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( *mem ) );
-	}
-	else
-	{
-		_p->_SubmitFrame->PrevCmd.Wirte( XE::MemoryView() );
-	}
-
-	return handle;
-}
-
-void XE::RendererContext::UpdateTexture2D( TextureHandle handle, XE::uint16 layer, XE::uint8 mip, XE::uint32 x, XE::uint32 y, XE::uint32 width, XE::uint32 height, XE::MemoryView mem, XE::uint32 pitch )
+void XE::RendererContext::Update( const UpdateTextureDesc & desc, XE::MemoryView Data )
 {
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
 
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::UPDATE_TEXTURE );
-	_p->_SubmitFrame->PrevCmd.Wirte( handle );
-	_p->_SubmitFrame->PrevCmd.Wirte( TextureType::TEXTURE_2D );
-	_p->_SubmitFrame->PrevCmd.Wirte( layer );
-	_p->_SubmitFrame->PrevCmd.Wirte( mip );
-	_p->_SubmitFrame->PrevCmd.Wirte( x );
-	_p->_SubmitFrame->PrevCmd.Wirte( y );
-	_p->_SubmitFrame->PrevCmd.Wirte( width );
-	_p->_SubmitFrame->PrevCmd.Wirte( height );
-	_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( mem ) );
-	_p->_SubmitFrame->PrevCmd.Wirte( pitch );
+	_p->_SubmitFrame->PrevCmd.Wirte( desc );
+	_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( Data ) );
 }
 
-void XE::RendererContext::UpdateTexture3D( TextureHandle handle, XE::uint8 mip, XE::uint32 x, XE::uint32 y, XE::uint32 z, XE::uint32 width, XE::uint32 height, XE::uint32 depth, XE::MemoryView mem )
+void XE::RendererContext::ReadTexture( TextureHandle handle, XE::uint8 * data, XE::uint8 mip )
 {
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
 
-	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::UPDATE_TEXTURE );
+	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::READ_TEXTURE );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
-	_p->_SubmitFrame->PrevCmd.Wirte( TextureType::TEXTURE_3D );
+	_p->_SubmitFrame->PrevCmd.Wirte( data );
 	_p->_SubmitFrame->PrevCmd.Wirte( mip );
-	_p->_SubmitFrame->PrevCmd.Wirte( x );
-	_p->_SubmitFrame->PrevCmd.Wirte( y );
-	_p->_SubmitFrame->PrevCmd.Wirte( z );
-	_p->_SubmitFrame->PrevCmd.Wirte( width );
-	_p->_SubmitFrame->PrevCmd.Wirte( height );
-	_p->_SubmitFrame->PrevCmd.Wirte( depth );
-	_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( mem ) );
-}
-
-void XE::RendererContext::UpdateTextureCube( TextureHandle handle, XE::uint16 layer, XE::uint8 side, XE::uint8 mip, XE::uint32 x, XE::uint32 y, XE::uint32 z, XE::uint32 width, XE::uint32 height, XE::uint32 depth, XE::MemoryView mem )
-{
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
-
-	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::UPDATE_TEXTURE );
-	_p->_SubmitFrame->PrevCmd.Wirte( handle );
-	_p->_SubmitFrame->PrevCmd.Wirte( TextureType::TEXTURE_CUBE );
-	_p->_SubmitFrame->PrevCmd.Wirte( layer );
-	_p->_SubmitFrame->PrevCmd.Wirte( side );
-	_p->_SubmitFrame->PrevCmd.Wirte( mip );
-	_p->_SubmitFrame->PrevCmd.Wirte( x );
-	_p->_SubmitFrame->PrevCmd.Wirte( y );
-	_p->_SubmitFrame->PrevCmd.Wirte( z );
-	_p->_SubmitFrame->PrevCmd.Wirte( width );
-	_p->_SubmitFrame->PrevCmd.Wirte( height );
-	_p->_SubmitFrame->PrevCmd.Wirte( depth );
-	_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( mem ) );
-}
-
-XE::uint32 XE::RendererContext::ReadTexture( TextureHandle handle, XE::uint8 * data, XE::uint8 mip )
-{
-	// TODO: 
-	return {};
 }
 
 void XE::RendererContext::Destory( TextureHandle handle )
 {
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
-	_p->_SubmitFrame->PostCmd.Wirte( CommandType::DESTROY_TEXTURE );
-	_p->_SubmitFrame->PostCmd.Wirte( handle );
+	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->DestoryCmdMutex );
+	DestoryHandle des = { DestoryHandle::DestoryType::DESTROY_TEXTURE , handle };
+	_p->_SubmitFrame->DestoryCmd.Wirte( des );
 }
 
-XE::FrameBufferHandle XE::RendererContext::CreateFrameBuffer( const XE::String & name, XE::uint32 width, XE::uint32 height, TextureFormat format, XE::Flags< XE::SamplerFlags > sampler )
+XE::FrameBufferHandle XE::RendererContext::CreateFrameBuffer( const FrameBufferDesc & val )
 {
 	auto handle = _p->_FrameBufferHandleAlloc.Alloc();
 
@@ -663,16 +414,12 @@ XE::FrameBufferHandle XE::RendererContext::CreateFrameBuffer( const XE::String &
 
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_FRAME_BUFFER );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
-	_p->_SubmitFrame->PrevCmd.Wirte( name );
-	_p->_SubmitFrame->PrevCmd.Wirte( width );
-	_p->_SubmitFrame->PrevCmd.Wirte( height );
-	_p->_SubmitFrame->PrevCmd.Wirte( format );
-	_p->_SubmitFrame->PrevCmd.Wirte( sampler );
+	_p->_SubmitFrame->PrevCmd.Wirte( val );
 
 	return handle;
 }
 
-XE::FrameBufferHandle XE::RendererContext::CreateFrameBuffer( const XE::String & name, XE::BackbufferRatio ratio, TextureFormat format, XE::Flags< XE::SamplerFlags > sampler )
+XE::FrameBufferHandle XE::RendererContext::CreateFrameBuffer( const FrameBufferFromWindowDesc & val )
 {
 	auto handle = _p->_FrameBufferHandleAlloc.Alloc();
 
@@ -680,15 +427,12 @@ XE::FrameBufferHandle XE::RendererContext::CreateFrameBuffer( const XE::String &
 
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_FRAME_BUFFER );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
-	_p->_SubmitFrame->PrevCmd.Wirte( name );
-	_p->_SubmitFrame->PrevCmd.Wirte( ratio );
-	_p->_SubmitFrame->PrevCmd.Wirte( format );
-	_p->_SubmitFrame->PrevCmd.Wirte( sampler );
+	_p->_SubmitFrame->PrevCmd.Wirte( val );
 
 	return handle;
 }
 
-XE::FrameBufferHandle XE::RendererContext::CreateFrameBuffer( const XE::String & name, const XE::Array< TextureHandle > handles, bool des_texture )
+XE::FrameBufferHandle XE::RendererContext::CreateFrameBuffer( const FrameBufferFromTextureDesc & val )
 {
 	auto handle = _p->_FrameBufferHandleAlloc.Alloc();
 
@@ -696,45 +440,12 @@ XE::FrameBufferHandle XE::RendererContext::CreateFrameBuffer( const XE::String &
 
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_FRAME_BUFFER );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
-	_p->_SubmitFrame->PrevCmd.Wirte( name );
-	_p->_SubmitFrame->PrevCmd.Wirte( handles );
-
-	if( des_texture )
-	{
-		for( auto tex : handles )
-		{
-			Destory( tex );
-		}
-	}
+	_p->_SubmitFrame->PrevCmd.Wirte( val );
 
 	return handle;
 }
 
-XE::FrameBufferHandle XE::RendererContext::CreateFrameBuffer( const XE::String & name, const XE::Array< Attachment > attachments, bool des_texture )
-{
-	auto handle = _p->_FrameBufferHandleAlloc.Alloc();
-
-	XE::MemoryView view( ( const char * )attachments.data(), attachments.size() );
-
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
-
-	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_FRAME_BUFFER );
-	_p->_SubmitFrame->PrevCmd.Wirte( handle );
-	_p->_SubmitFrame->PrevCmd.Wirte( name );
-	_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( view ) );
-
-	if( des_texture )
-	{
-		for( const auto & tex : attachments )
-		{
-			Destory( tex.handle );
-		}
-	}
-
-	return handle;
-}
-
-XE::FrameBufferHandle XE::RendererContext::CreateFrameBuffer( const XE::String & name, WindowHandle window, XE::uint32 width, XE::uint32 height, TextureFormat color_format, TextureFormat depth_format )
+XE::FrameBufferHandle XE::RendererContext::CreateFrameBuffer( const FrameBufferFromAttachmentDesc & val )
 {
 	auto handle = _p->_FrameBufferHandleAlloc.Alloc();
 
@@ -742,11 +453,7 @@ XE::FrameBufferHandle XE::RendererContext::CreateFrameBuffer( const XE::String &
 
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_FRAME_BUFFER );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
-	_p->_SubmitFrame->PrevCmd.Wirte( name );
-	_p->_SubmitFrame->PrevCmd.Wirte( width );
-	_p->_SubmitFrame->PrevCmd.Wirte( height );
-	_p->_SubmitFrame->PrevCmd.Wirte( color_format );
-	_p->_SubmitFrame->PrevCmd.Wirte( depth_format );
+	_p->_SubmitFrame->PrevCmd.Wirte( val );
 
 	return handle;
 }
@@ -763,9 +470,9 @@ XE::TextureHandle XE::RendererContext::GetTexture( FrameBufferHandle handle, XE:
 
 void XE::RendererContext::Destory( FrameBufferHandle handle )
 {
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
-	_p->_SubmitFrame->PostCmd.Wirte( CommandType::DESTROY_FRAMEBUFFER );
-	_p->_SubmitFrame->PostCmd.Wirte( handle );
+	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->DestoryCmdMutex );
+	DestoryHandle des = { DestoryHandle::DestoryType::DESTROY_FRAMEBUFFER , handle };
+	_p->_SubmitFrame->DestoryCmd.Wirte( des );
 }
 
 XE::UniformHandle XE::RendererContext::CreateUniform( const XE::String & name, UniformType type, XE::uint16 num )
@@ -790,9 +497,9 @@ const XE::Uniform & XE::RendererContext::GetUniformInfo( UniformHandle handle )
 
 void XE::RendererContext::Destory( UniformHandle handle )
 {
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
-	_p->_SubmitFrame->PostCmd.Wirte( CommandType::DESTROY_UNIFORM );
-	_p->_SubmitFrame->PostCmd.Wirte( handle );
+	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->DestoryCmdMutex );
+	DestoryHandle des = { DestoryHandle::DestoryType::DESTROY_UNIFORM , handle };
+	_p->_SubmitFrame->DestoryCmd.Wirte( des );
 }
 
 XE::OcclusionQueryHandle XE::RendererContext::CreateOcclusionQuery()
@@ -819,14 +526,43 @@ std::optional<XE::uint32> XE::RendererContext::GetOcclusionQueryValue( Occlusion
 
 void XE::RendererContext::Destory( OcclusionQueryHandle handle )
 {
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
-	_p->_SubmitFrame->PostCmd.Wirte( CommandType::DESTROY_OCCLUSION_QUERY );
-	_p->_SubmitFrame->PostCmd.Wirte( handle );
+	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->DestoryCmdMutex );
+	DestoryHandle des = { DestoryHandle::DestoryType::DESTROY_OCCLUSION_QUERY , handle };
+	_p->_SubmitFrame->DestoryCmd.Wirte( des );
 }
 
-XE::ViewHandle XE::RendererContext::CreateView()
+void XE::RendererContext::Destory( XE::TransientIndexBufferHandle handle )
 {
-	return _p->_ViewHandleAlloc.Alloc();
+	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->DestoryCmdMutex );
+	DestoryHandle des = { DestoryHandle::DestoryType::DESTROY_TRANSIENT_INDEX_BUFFER, handle };
+	_p->_SubmitFrame->DestoryCmd.Wirte( des );
+}
+
+void XE::RendererContext::Destory( XE::TransientVertexBufferHandle handle )
+{
+	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->DestoryCmdMutex );
+	DestoryHandle des = { DestoryHandle::DestoryType::DESTROY_TRANSIENT_VERTEX_BUFFER, handle };
+	_p->_SubmitFrame->DestoryCmd.Wirte( des );
+}
+
+XE::ViewHandle XE::RendererContext::CreateView( const ViewDesc & val )
+{
+	auto handle = _p->_ViewHandleAlloc.Alloc();
+
+	_p->_Views[handle].Name = val.Name;
+	_p->_Views[handle].ClearColor = val.ClearColor;
+	_p->_Views[handle].ClearDepth = val.ClearDepth;
+	_p->_Views[handle].ClearStencil = val.ClearStencil;
+	_p->_Views[handle].Flags = val.Flags;
+	_p->_Views[handle].ViewRect = val.ViewRect;
+	_p->_Views[handle].ViewScissor = val.ViewScissor;
+	_p->_Views[handle].ModelMat = val.ModelMat;
+	_p->_Views[handle].ViewMat = val.ViewMat;
+	_p->_Views[handle].ProjMat = val.ProjMat;
+	_p->_Views[handle].Mode = val.Mode;
+	_p->_Views[handle].Handle = val.FrameBuffer;
+
+	return handle;
 }
 
 void XE::RendererContext::SetViewName( ViewHandle handle, const XE::String & name )
@@ -844,25 +580,12 @@ void XE::RendererContext::SetViewScissor( ViewHandle handle, const XE::Rect & sc
 	_p->_Views[handle].ViewScissor = scissor;
 }
 
-void XE::RendererContext::SetViewClear( ViewHandle handle, std::optional<XE::Color> color, std::optional<XE::float32> depth, std::optional<XE::uint8> stencil )
+void XE::RendererContext::SetViewClear( const ViewClearDesc & val )
 {
-	if (color != std::nullopt)
-	{
-		_p->_Views[handle].ClearColor = *color;
-		_p->_Views[handle].Flag |= ClearFlags::COLOR;
-	}
-
-	if (depth != std::nullopt)
-	{
-		_p->_Views[handle].ClearColor = *depth;
-		_p->_Views[handle].Flag |= ClearFlags::DEPTH;
-	}
-
-	if (stencil != std::nullopt)
-	{
-		_p->_Views[handle].ClearStencil = *stencil;
-		_p->_Views[handle].Flag |= ClearFlags::STENCIL;
-	}
+	_p->_Views[val.Handle].ClearColor = val.Color;
+	_p->_Views[val.Handle].ClearDepth = val.Depth;
+	_p->_Views[val.Handle].ClearStencil = val.Stencil;
+	_p->_Views[val.Handle].Flags = val.Flags;
 }
 
 void XE::RendererContext::SetViewMode( ViewHandle handle, XE::ViewMode mode )
@@ -875,15 +598,26 @@ void XE::RendererContext::SetViewFrameBuffer( ViewHandle handle, FrameBufferHand
 	_p->_Views[handle].Handle = frame;
 }
 
-void XE::RendererContext::SetViewTransform( ViewHandle handle, const XE::Mat4f & view, const XE::Mat4f & proj )
+void XE::RendererContext::SetViewTransform( ViewHandle handle, const XE::Mat4f & model, const XE::Mat4f & view, const XE::Mat4f & proj )
 {
+	_p->_Views[handle].ModelMat = model;
 	_p->_Views[handle].ViewMat = view;
 	_p->_Views[handle].ProjMat = proj;
 }
 
-void XE::RendererContext::ResetView( ViewHandle handle )
+void XE::RendererContext::ResetView( ViewHandle handle, const ViewDesc & val )
 {
-	_p->_Views[handle] = {};
+	_p->_Views[handle].Name = val.Name;
+	_p->_Views[handle].ClearColor = val.ClearColor;
+	_p->_Views[handle].ClearDepth = val.ClearDepth;
+	_p->_Views[handle].ClearStencil = val.ClearStencil;
+	_p->_Views[handle].Flags = val.Flags;
+	_p->_Views[handle].ViewRect = val.ViewRect;
+	_p->_Views[handle].ViewScissor = val.ViewScissor;
+	_p->_Views[handle].ModelMat = val.ModelMat;
+	_p->_Views[handle].ViewMat = val.ViewMat;
+	_p->_Views[handle].ProjMat = val.ProjMat;
+	_p->_Views[handle].Mode = val.Mode;
 }
 
 void XE::RendererContext::Destory( ViewHandle handle )
@@ -904,13 +638,9 @@ XE::MemoryView XE::RendererContext::CopyToFrame( XE::MemoryView mem ) const
 {
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->TransientBufferMutex );
 
-	auto pos = _p->_SubmitFrame->TransientBuffers.WirtePos();
-	_p->_SubmitFrame->TransientBuffers.Wirte( mem );
+	auto pos = _p->_SubmitFrame->TransientBuffers.View().data() + _p->_SubmitFrame->TransientBuffers.WirtePos();
 
-	return XE::MemoryView( ( const char * )pos, mem.size() );
-}
+	_p->_SubmitFrame->TransientBuffers.Wirte( mem.data(), mem.size() );
 
-void XE::RendererContext::ResizeTexture( TextureHandle handle, XE::uint32 layers, XE::uint32 mips, XE::uint32 width, XE::uint32 height )
-{
-
+	return XE::MemoryView( pos, mem.size() );
 }

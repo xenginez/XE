@@ -9,7 +9,8 @@
 #ifndef __RECT_H__CFAED4A1_7564_4C31_AC1F_E7BD88EE9157
 #define __RECT_H__CFAED4A1_7564_4C31_AC1F_E7BD88EE9157
 
-#include "Type.h"
+#include "Vec2.h"
+#include "Mat4.h"
 
 BEG_XE_NAMESPACE
 
@@ -29,7 +30,7 @@ public:
 
 	Rect( const Rect& val );
 
-	Rect( const Vec2f& center, const Vec2f& size );
+	Rect( const Vec2f & center, const Vec2f & size );
 
 	Rect( XE::float32 x, XE::float32 y, XE::float32 w, XE::float32 h );
 

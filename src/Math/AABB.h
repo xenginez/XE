@@ -10,6 +10,7 @@
 #define __AABB_H__7996BEAA_3FEA_4C40_B467_F2323FDC0382
 
 #include "Vec3.h"
+#include "Mat4.h"
 
 BEG_XE_NAMESPACE
 

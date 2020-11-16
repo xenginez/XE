@@ -817,18 +817,18 @@ public:
 struct XE_API BufferDesc
 {
 	XE::String Name;
-	XE::MemoryView Data;
+	XE::uint64 Size = 0;
 	XE::Flags< XE::BufferFlags > Flags = XE::BufferFlags::NONE;
 };
 
 struct XE_API VertexLayoutDesc
 {
-	XE::Array<VertexLayout> Layouts;
+	VertexLayout Layouts[8];
 };
 
 struct XE_API VertexBufferDesc : public XE::BufferDesc
 {
-	VertexLayoutDesc LayoutDesc;
+	XE::VertexLayoutHandle Layout;
 };
 
 struct XE_API ShaderDesc
@@ -850,7 +850,20 @@ struct XE_API TextureDesc
 	TextureFormat Format = TextureFormat::RGBA8;
 	XE::Flags< XE::TextureFlags > Flags = XE::TextureFlags::NONE;
 	XE::Flags< XE::SamplerFlags > Samplers = XE::SamplerFlags::NONE;
-	XE::MemoryView Data;
+};
+
+struct XE_API UpdateTextureDesc
+{
+	TextureHandle Handle;
+	XE::uint16 Layer = 0;
+	XE::uint8 Side = 0;
+	XE::uint8 Mip = 0;
+	XE::uint32 X = 0;
+	XE::uint32 Y = 0;
+	XE::uint32 Z = 0;
+	XE::uint32 Width = 0;
+	XE::uint32 Height = 0;
+	XE::uint32 Depth = 0;
 };
 
 struct XE_API FrameBufferDesc
@@ -860,6 +873,16 @@ struct XE_API FrameBufferDesc
 	XE::uint32 Height = 0;
 	TextureFormat Format = TextureFormat::RGBA8;
 	XE::Flags< XE::SamplerFlags > Samplers = XE::SamplerFlags::NONE;
+};
+
+struct XE_API FrameBufferFromWindowDesc
+{
+	XE::String Name;
+	XE::uint32 Width = 0;
+	XE::uint32 Height = 0;
+	XE::WindowHandle Window;
+	TextureFormat ColorFormat = TextureFormat::RGBA8;
+	TextureFormat DepthFormat = TextureFormat::D24S8;
 };
 
 struct XE_API FrameBufferFromTextureDesc
@@ -876,38 +899,29 @@ struct XE_API FrameBufferFromAttachmentDesc
 	bool DestoryTexture = false;
 };
 
-struct XE_API FrameBufferFromWindowDesc
+struct XE_API ViewDesc
 {
 	XE::String Name;
-	XE::uint32 Width = 0;
-	XE::uint32 Height = 0;
-	XE::WindowHandle Window;
-	TextureFormat ColorFormat = TextureFormat::RGBA8;
-	TextureFormat DepthFormat = TextureFormat::D24S8;
+	XE::Color ClearColor = XE::Color::Black;
+	XE::float32 ClearDepth = 0.0f;
+	XE::uint8 ClearStencil = 1;
+	XE::Flags<ClearFlags> Flags = ClearFlags::NONE;
+	XE::Rect ViewRect;
+	XE::Rect ViewScissor;
+	XE::Mat4f ModelMat;
+	XE::Mat4f ViewMat;
+	XE::Mat4f ProjMat;
+	ViewMode Mode = XE::ViewMode::DEFAULT;
+	XE::FrameBufferHandle FrameBuffer;
 };
 
 struct XE_API ViewClearDesc
 {
 	ViewHandle Handle;
-	XE::uint8 Stencil = 1;
 	XE::float32 Depth = 0.0f;
+	XE::uint8 Stencil = 1;
 	XE::Color Color = XE::Color::Black;
 	XE::Flags< XE::ClearFlags > Flags = XE::MakeFlags( XE::ClearFlags::COLOR, XE::ClearFlags::DEPTH, XE::ClearFlags::STENCIL );
-};
-
-struct XE_API UpdateTextureDesc
-{
-	TextureHandle Handle;
-	XE::uint16 Layer = 0;
-	XE::uint8 Side = 0;
-	XE::uint8 Mip = 0;
-	XE::uint32 X = 0;
-	XE::uint32 Y = 0;
-	XE::uint32 Z = 0;
-	XE::uint32 Width = 0;
-	XE::uint32 Height = 0;
-	XE::uint32 Depth = 0;
-	XE::MemoryView Data;
 };
 
 END_XE_NAMESPACE

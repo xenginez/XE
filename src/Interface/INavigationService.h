@@ -9,6 +9,10 @@
 #ifndef __INAVIGATIONSERVICE_H__D91CFCA9_BDF3_4CDF_B51C_77FAC3CEDAD3
 #define __INAVIGATIONSERVICE_H__D91CFCA9_BDF3_4CDF_B51C_77FAC3CEDAD3
 
+#include "Math/OBB.h"
+#include "Math/AABB.h"
+#include "Math/Capsule.h"
+
 #include "IService.h"
 
 BEG_XE_NAMESPACE

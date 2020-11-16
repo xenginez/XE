@@ -40,18 +40,7 @@ enum class CommandType : XE::uint8
 	CREATE_UNIFORM,
 	CREATE_OCCLUSION_QUERY,
 	END,
-	DESTROY_VERTEX_LAYOUT,
-	DESTROY_INDEX_BUFFER,
-	DESTROY_VERTEX_BUFFER,
-	DESTROY_DYNAMIC_INDEX_BUFFER,
-	DESTROY_DYNAMIC_VERTEX_BUFFER,
-	DESTROY_SHADER,
-	DESTROY_PROGRAM,
-	DESTROY_TEXTURE,
-	DESTROY_FRAMEBUFFER,
-	DESTROY_UNIFORM,
 	READ_TEXTURE,
-	DESTROY_OCCLUSION_QUERY,
 	REQUEST_SCREEN_SHOT,
 };
 
@@ -181,7 +170,7 @@ public:
 	TextureHandle Textures[GFX_MAX_ATTACHMENTS];
 };
 
-class IndexBuffer
+class IndexBuffer : public RefCount
 {
 public:
 	enum HandleType
@@ -198,7 +187,7 @@ public:
 	XE::uint32 NumIndices;
 };
 
-class VertexBuffer
+class VertexBuffer : public RefCount
 {
 public:
 	enum HandleType
@@ -216,12 +205,12 @@ public:
 	VertexLayoutHandle LayoutHandle;
 };
 
-class UniformBuffer
+class UniformBuffer : public RefCount
 {
 
 };
 
-class InstanceDataBuffer
+class InstanceDataBuffer : public RefCount
 {
 public:
 	XE::MemoryView data;
@@ -231,7 +220,7 @@ public:
 	VertexBufferHandle handle;
 };
 
-class TransientIndexBuffer
+class TransientIndexBuffer : public RefCount
 {
 public:
 	XE::MemoryView data;
@@ -239,7 +228,7 @@ public:
 	IndexBufferHandle handle;
 };
 
-class TransientVertexBuffer
+class TransientVertexBuffer : public RefCount
 {
 public:
 	XE::MemoryView data;
@@ -248,7 +237,6 @@ public:
 	VertexBufferHandle handle;
 	VertexLayoutHandle layoutHandle;
 };
-
 
 class PredefinedUniform
 {
@@ -275,16 +263,17 @@ public:
 	uint16_t _Count;
 };
 
-class View
+class View : public RefCount
 {
 public:
 	XE::String Name;
 	XE::Color ClearColor;
 	XE::float32 ClearDepth = 0.0f;
 	XE::uint8 ClearStencil = 1;
-	XE::Flags<ClearFlags> Flag = ClearFlags::NONE;
+	XE::Flags<ClearFlags> Flags = ClearFlags::NONE;
 	XE::Rect ViewRect;
 	XE::Rect ViewScissor;
+	XE::Mat4f ModelMat;
 	XE::Mat4f ViewMat;
 	XE::Mat4f ProjMat;
 	ViewMode Mode = XE::ViewMode::DEFAULT;
@@ -418,6 +407,45 @@ public:
 	};
 };
 
+class DestoryHandle
+{
+public:
+	enum DestoryType
+	{
+		DESTROY_SHADER,
+		DESTROY_TEXTURE,
+		DESTROY_UNIFORM,
+		DESTROY_PROGRAM,
+		DESTROY_FRAMEBUFFER,
+		DESTROY_INDEX_BUFFER,
+		DESTROY_VERTEX_BUFFER,
+		DESTROY_VERTEX_LAYOUT,
+		DESTROY_OCCLUSION_QUERY,
+		DESTROY_DYNAMIC_INDEX_BUFFER,
+		DESTROY_DYNAMIC_VERTEX_BUFFER,
+		DESTROY_TRANSIENT_INDEX_BUFFER,
+		DESTROY_TRANSIENT_VERTEX_BUFFER,
+	};
+
+	DestoryType Type;
+	union
+	{
+		XE::ShaderHandle					_ShaderHandle;
+		XE::TextureHandle					_TextureHandle;
+		XE::UniformHandle					_UniformHandle;
+		XE::ProgramHandle					_ProgramHandle;
+		XE::FrameBufferHandle				_FrameBufferHandle;
+		XE::IndexBufferHandle				_IndexBufferHandle;
+		XE::VertexBufferHandle				_VertexBufferHandle;
+		XE::VertexLayoutHandle				_VertexLayoutHandle;
+		XE::OcclusionQueryHandle			_OcclusionQueryHandle;
+		XE::DynamicIndexBufferHandle		_DynamicIndexBufferHandle;
+		XE::DynamicVertexBufferHandle		_DynamicVertexBufferHandle;
+		XE::TransientIndexBufferHandle		_TransientIndexBufferHandle;
+		XE::TransientVertexBufferHandle		_TransientVertexBufferHandle;
+	};
+};
+
 class Frame
 {
 public:
@@ -450,6 +478,9 @@ public:
 
 	XE::Buffer PostCmd;
 	std::mutex PostCmdMutex;
+
+	XE::Buffer DestoryCmd;
+	std::mutex DestoryCmdMutex;
 
 	XE::Buffer UniformBuffers;
 	std::mutex UniformBufferMutex;

@@ -49,108 +49,112 @@ public:
 	XE::InitInfo & GetInit();
 
 public:
-	IndexBufferHandle CreateIndexBuffer( const BufferDesc & val );
+	XE::OcclusionQueryHandle CreateOcclusionQuery();
 
-	TransientIndexBufferHandle CreateTransientIndexBuffer( const BufferDesc & val );
+	XE::ShaderHandle CreateShader( const XE::ShaderDesc & val );
 
-	void Destory( IndexBufferHandle handle );
+	XE::ProgramHandle CreateProgram( XE::ShaderHandle cs, bool des_shader );
 
-	VertexLayoutHandle CreateVertexLayout( const VertexLayoutDesc & val );
+	XE::ProgramHandle CreateProgram( XE::ShaderHandle vs, XE::ShaderHandle fs, bool des_shader );
 
-	void Destory( VertexLayoutHandle handle );
+	XE::UniformHandle CreateUniform( const XE::String & name, XE::UniformType type, XE::uint16 num );
 
-	VertexBufferHandle CreateVertexBuffer( const VertexBufferDesc & val );
+	XE::IndirectBufferHandle CreateIndirectBuffer( XE::uint64 num );
 
-	TransientVertexBufferHandle CreateTransientVertexBuffer( const VertexBufferDesc & val );
+	XE::VertexLayoutHandle CreateVertexLayout( const XE::VertexLayoutDesc & val );
 
-	void Destory( VertexBufferHandle handle );
+	XE::TextureHandle CreateTexture( const XE::TextureDesc & desc, XE::MemoryView data );
 
-	DynamicIndexBufferHandle CreateDynamicIndexBuffer( const BufferDesc & val );
+	XE::IndexBufferHandle CreateIndexBuffer( const XE::BufferDesc & desc, XE::MemoryView data );
 
-	void Update( DynamicIndexBufferHandle handle, XE::uint64 start, XE::MemoryView mem );
+	XE::VertexBufferHandle CreateVertexBuffer( const XE::VertexBufferDesc & desc, XE::MemoryView data );
 
-	void Destory( DynamicIndexBufferHandle handle );
+	XE::DynamicIndexBufferHandle CreateDynamicIndexBuffer( const XE::BufferDesc & desc, XE::MemoryView data );
 
-	DynamicVertexBufferHandle CreateDynamicVertexBuffer( const VertexBufferDesc & val );
+	XE::DynamicVertexBufferHandle CreateDynamicVertexBuffer( const XE::VertexBufferDesc & desc, XE::MemoryView data );
 
-	void Update( DynamicVertexBufferHandle handle, XE::uint64 start, XE::MemoryView mem );
+	XE::TransientIndexBufferHandle CreateTransientIndexBuffer( const XE::BufferDesc & desc, XE::MemoryView data );
 
-	void Destory( DynamicVertexBufferHandle handle );
+	XE::TransientVertexBufferHandle CreateTransientVertexBuffer( const XE::VertexBufferDesc & desc, XE::MemoryView data );
 
-	IndirectBufferHandle CreateIndirectBuffer( XE::uint64 num );
+	XE::FrameBufferHandle CreateFrameBuffer( const XE::FrameBufferDesc & val );
 
-	void Destory( IndirectBufferHandle handle );
+	XE::FrameBufferHandle CreateFrameBuffer( const XE::FrameBufferFromWindowDesc & val );
 
-	ShaderHandle CreateShader( const ShaderDesc & val );
+	XE::FrameBufferHandle CreateFrameBuffer( const XE::FrameBufferFromTextureDesc & val );
 
-	void Destory( ShaderHandle handle );
-
-	XE::Array<UniformHandle> GetShaderUniforms( ShaderHandle handle );
-
-	ProgramHandle CreateProgram( ShaderHandle vs, ShaderHandle fs, bool des_shader );
-
-	ProgramHandle CreateProgram( ShaderHandle cs, bool des_shader );
-
-	void Destory( ProgramHandle handle );
-
-	TextureHandle CreateTexture( const TextureDesc & val );
-
-	void UpdateTexture( const UpdateTextureDesc & val );
-
-	XE::uint32 ReadTexture( TextureHandle handle, XE::uint8 * data, XE::uint8 mip );
-
-	void Destory( TextureHandle handle );
-
-	FrameBufferHandle CreateFrameBuffer( const FrameBufferDesc & val );
-
-	FrameBufferHandle CreateFrameBuffer( const FrameBufferFromWindowDesc & val );
-
-	FrameBufferHandle CreateFrameBuffer( const FrameBufferFromTextureDesc & val );
-
-	FrameBufferHandle CreateFrameBuffer( const FrameBufferFromAttachmentDesc & val );
-
-	TextureHandle GetTexture( FrameBufferHandle handle, XE::uint8 attachment );
-
-	void Destory( FrameBufferHandle handle );
-
-	UniformHandle CreateUniform( const XE::String & name, UniformType type, XE::uint16 num );
-
-	const Uniform & GetUniformInfo( UniformHandle handle );
-
-	void Destory( UniformHandle handle );
-
-	OcclusionQueryHandle CreateOcclusionQuery();
-
-	std::optional<XE::uint32> GetOcclusionQueryValue( OcclusionQueryHandle handle );
-
-	void Destory( OcclusionQueryHandle handle );
+	XE::FrameBufferHandle CreateFrameBuffer( const XE::FrameBufferFromAttachmentDesc & val );
 
 public:
-	ViewHandle CreateView();
+	void Update( const XE::UpdateTextureDesc & desc, XE::MemoryView data );
 
-	void SetViewName( ViewHandle handle, const XE::String & name );
+	void Update( XE::DynamicIndexBufferHandle handle, XE::uint64 start, XE::MemoryView data );
 
-	void SetViewRect( ViewHandle handle, const XE::Rect & rect );
-
-	void SetViewScissor( ViewHandle handle, const XE::Rect & scissor );
-
-	void SetViewClear( const ViewClearDesc & val );
-
-	void SetViewMode( ViewHandle handle, XE::ViewMode mode );
-
-	void SetViewFrameBuffer( ViewHandle handle, FrameBufferHandle frame );
-
-	void SetViewTransform( ViewHandle handle, const XE::Mat4f & view, const XE::Mat4f & proj );
-
-	void ResetView( ViewHandle handle );
-
-	void Destory( ViewHandle handle );
+	void Update( XE::DynamicVertexBufferHandle handle, XE::uint64 start, XE::MemoryView data );
 
 public:
-	void RequestScreenShot( FrameBufferHandle handle, const XE::FileSystem::Path & path );
+	void ReadTexture( XE::TextureHandle handle, XE::uint8 * data, XE::uint8 mip );
 
-protected:
-	void ResizeTexture( TextureHandle handle, XE::uint32 layers, XE::uint32 mips, XE::uint32 width, XE::uint32 height );
+	XE::TextureHandle GetTexture( XE::FrameBufferHandle handle, XE::uint8 attachment );
+
+	const XE::Uniform & GetUniformInfo( XE::UniformHandle handle );
+
+	XE::Array<UniformHandle> GetShaderUniforms( XE::ShaderHandle handle );
+
+	std::optional<XE::uint32> GetOcclusionQueryValue( XE::OcclusionQueryHandle handle );
+
+public:
+	void Destory( XE::ShaderHandle handle );
+
+	void Destory( XE::ProgramHandle handle );
+
+	void Destory( XE::TextureHandle handle );
+
+	void Destory( XE::UniformHandle handle );
+
+	void Destory( XE::FrameBufferHandle handle );
+
+	void Destory( XE::IndexBufferHandle handle );
+
+	void Destory( XE::VertexLayoutHandle handle );
+
+	void Destory( XE::VertexBufferHandle handle );
+
+	void Destory( XE::IndirectBufferHandle handle );
+
+	void Destory( XE::OcclusionQueryHandle handle );
+
+	void Destory( XE::DynamicIndexBufferHandle handle );
+
+	void Destory( XE::DynamicVertexBufferHandle handle );
+
+	void Destory( XE::TransientIndexBufferHandle handle );
+
+	void Destory( XE::TransientVertexBufferHandle handle );
+
+public:
+	XE::ViewHandle CreateView( const XE::ViewDesc & val );
+
+	void SetViewName( XE::ViewHandle handle, const XE::String & name );
+
+	void SetViewRect( XE::ViewHandle handle, const XE::Rect & rect );
+
+	void SetViewScissor( XE::ViewHandle handle, const XE::Rect & scissor );
+
+	void SetViewClear( const XE::ViewClearDesc & val );
+
+	void SetViewMode( XE::ViewHandle handle, XE::ViewMode mode );
+
+	void SetViewFrameBuffer( XE::ViewHandle handle, XE::FrameBufferHandle frame );
+
+	void SetViewTransform( XE::ViewHandle handle, const XE::Mat4f & model, const XE::Mat4f & view, const XE::Mat4f & proj );
+
+	void ResetView( XE::ViewHandle handle, const XE::ViewDesc & val );
+
+	void Destory( XE::ViewHandle handle );
+
+public:
+	void RequestScreenShot( XE::FrameBufferHandle handle, const XE::FileSystem::Path & path );
 
 private:
 	XE::MemoryView CopyToFrame( XE::MemoryView mem ) const;

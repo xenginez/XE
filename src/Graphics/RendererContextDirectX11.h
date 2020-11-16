@@ -31,55 +31,6 @@ protected:
 	void OnRender( XE::Frame * val ) override;
 
 private:
-	void RenderItems( XE::Frame * val );
-
-	void RenderBlits( XE::Frame * val );
-
-	void ExecCommand( XE::Buffer & buffer );
-
-private:
-	void Blit( const RenderBlit & blit );
-
-	void Draw( const RenderDraw & draw, const RenderBind & bind );
-
-	void Compute( const RenderCompute & compute, const RenderBind & bind );
-
-private:
-	void EXEC_RENDERER_INIT( XE::Buffer & buffer );
-	void EXEC_RENDERER_SHUTDOWN( XE::Buffer & buffer );
-	void EXEC_CREATE_VERTEX_LAYOUT( XE::Buffer & buffer );
-	void EXEC_CREATE_INDEX_BUFFER( XE::Buffer & buffer );
-	void EXEC_CREATE_VERTEX_BUFFER(XE::Buffer & buffer );
-	void EXEC_CREATE_DYNAMIC_INDEX_BUFFER(XE::Buffer & buffer );
-	void EXEC_UPDATE_DYNAMIC_INDEX_BUFFER(XE::Buffer & buffer );
-	void EXEC_CREATE_DYNAMIC_VERTEX_BUFFER(XE::Buffer & buffer );
-	void EXEC_UPDATE_DYNAMIC_VERTEX_BUFFER(XE::Buffer & buffer );
-	void EXEC_CREATE_TRANSIENT_INDEX_BUFFER(XE::Buffer & buffer );
-	void EXEC_CREATE_TRANSIENT_VERTEX_BUFFER(XE::Buffer & buffer );
-	void EXEC_CREATE_SHADER(XE::Buffer & buffer );
-	void EXEC_CREATE_PROGRAM(XE::Buffer & buffer );
-	void EXEC_CREATE_TEXTURE(XE::Buffer & buffer );
-	void EXEC_UPDATE_TEXTURE(XE::Buffer & buffer );
-	void EXEC_RESIZE_TEXTURE(XE::Buffer & buffer );
-	void EXEC_CREATE_FRAME_BUFFER(XE::Buffer & buffer );
-	void EXEC_CREATE_UNIFORM(XE::Buffer & buffer );
-	void EXEC_CREATE_OCCLUSION_QUERY(XE::Buffer & buffer );
-	void EXEC_END(XE::Buffer & buffer );
-	void EXEC_DESTROY_VERTEX_LAYOUT(XE::Buffer & buffer );
-	void EXEC_DESTROY_INDEX_BUFFER(XE::Buffer & buffer );
-	void EXEC_DESTROY_VERTEX_BUFFER(XE::Buffer & buffer );
-	void EXEC_DESTROY_DYNAMIC_INDEX_BUFFER(XE::Buffer & buffer );
-	void EXEC_DESTROY_DYNAMIC_VERTEX_BUFFER(XE::Buffer & buffer );
-	void EXEC_DESTROY_SHADER(XE::Buffer & buffer );
-	void EXEC_DESTROY_PROGRAM(XE::Buffer & buffer );
-	void EXEC_DESTROY_TEXTURE(XE::Buffer & buffer );
-	void EXEC_DESTROY_FRAMEBUFFER(XE::Buffer & buffer );
-	void EXEC_DESTROY_UNIFORM(XE::Buffer & buffer );
-	void EXEC_READ_TEXTURE(XE::Buffer & buffer );
-	void EXEC_DESTROY_OCCLUSION_QUERY(XE::Buffer & buffer );
-	void EXEC_REQUEST_SCREEN_SHOT(XE::Buffer & buffer );
-
-private:
     Private * _p;
 };
 

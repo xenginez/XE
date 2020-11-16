@@ -10,6 +10,7 @@
 #define __RAY_H__5874E305_1881_4FDF_B7EE_44A07BD36195
 
 #include "Vec3.h"
+#include "Mat4.h"
 
 BEG_XE_NAMESPACE
 
