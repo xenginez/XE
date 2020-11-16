@@ -114,6 +114,7 @@ void XE::Frame::Reset()
 
 	PrevCmd.Reset();
 	PostCmd.Reset();
+	DestoryCmd.Reset();
 	TransientBuffers.Reset();
 	TransientIndexBufferHandleAlloc.Reset();
 	TransientVertexBufferHandleAlloc.Reset();

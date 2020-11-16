@@ -1,5 +1,6 @@
 #include "Gfx.h"
 
+#include "RendererContextNull.h"
 #include "RendererContextMetal.h"
 #include "RendererContextOpenGL.h"
 #include "RendererContextVulkan.h"
@@ -55,6 +56,7 @@ XE::Array<XE::RendererContextType> XE::Gfx::GetSupportedContext()
 #endif
 
 	ret.push_back( XE::RendererContextType::SOFTWARE );
+	ret.push_back( XE::RendererContextType::NIL );
 
 	return ret;
 }
@@ -63,7 +65,7 @@ void XE::Gfx::Init( const XE::InitInfo & val )
 {
 	auto type = val.type;
 
-	if( type == RendererContextType::NOOP )
+	if( type == RendererContextType::NONE )
 	{
 		type = GetSupportedContext().front();
 	}
@@ -89,6 +91,9 @@ void XE::Gfx::Init( const XE::InitInfo & val )
 		break;
 	case XE::RendererContextType::SOFTWARE:
 		_p->_Context = XE::CreateRendererContextSoftware();
+		break;
+	case XE::RendererContextType::NIL:
+		_p->_Context = XE::CreateRendererContextNull();
 		break;
 	default:
 		break;

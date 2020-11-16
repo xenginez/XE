@@ -434,7 +434,8 @@ enum class Access
 
 enum class RendererContextType
 {
-	NOOP,         //!< No rendering.
+	NONE,         //!< No rendering.
+	NIL,          //!< No rendering.
 	METAL,        //!< Metal
 	VULKAN,       //!< Vulkan
 	GLES2,		  //!< OpenGLES 2.0
