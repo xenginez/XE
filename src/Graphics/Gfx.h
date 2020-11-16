@@ -37,8 +37,6 @@ public:
 
 	void Shutdown();
 
-	void Reset( XE::uint32 width, XE::uint32 height, XE::Flags<XE::ResetFlags> flags = XE::ResetFlags::NONE, XE::TextureFormat format = XE::TextureFormat::COUNT );
-
 public:
 	XE::Encoder * Begin();
 

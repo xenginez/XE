@@ -85,27 +85,6 @@ void XE::RendererContext::Shutdown()
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::RENDERER_SHUTDOWN );
 }
 
-void XE::RendererContext::Reset( XE::uint32 width, XE::uint32 height, XE::Flags<XE::ResetFlags> flags, XE::TextureFormat format )
-{
-	_p->_Init.format = format;
-	_p->_Init.width = width;
-	_p->_Init.height = height;
-	_p->_Init.reset = flags;
-
-	for( auto & view : _p->_Views )
-	{
-		view.Handle = FrameBufferHandle::Invalid;
-	}
-
-	for( XE::uint64 i = 0; i < GFX_MAX_TEXTURES; ++i )
-	{
-		if( _p->_Textures[i].Count != 0 )
-		{
-			ResizeTexture( i, _p->_Textures[i].NumLayers, _p->_Textures[i].NumMips, _p->_Init.width, _p->_Init.height );
-		}
-	}
-}
-
 XE::Encoder * XE::RendererContext::Begin()
 {
 	thread_local Encoder encoder;
