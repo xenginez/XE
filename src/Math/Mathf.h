@@ -19,6 +19,7 @@
 #include "Quat.h"
 #include "Rect.h"
 #include "float16.h"
+#include "SIMD_SSE.h"
 
 BEG_XE_NAMESPACE
 

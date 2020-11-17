@@ -732,7 +732,7 @@ enum class RenderGroup : XE::uint8
 class XE_API CapsInfo
 {
 public:
-	RendererContextType ContextType = RendererContextType::NOOP;
+	RendererContextType ContextType = RendererContextType::NONE;
 
 	XE::Flags<CapsFlags> Supported;
 	XE::Flags<CapsFormatFlags> SupportFormat;
@@ -776,7 +776,7 @@ public:
 class XE_API InitInfo
 {
 public:
-	RendererContextType type = RendererContextType::NOOP;
+	RendererContextType type = RendererContextType::NONE;
 
 	PciIdFlags vendorId = PciIdFlags::NONE;
 	uint16_t deviceId = 0;
