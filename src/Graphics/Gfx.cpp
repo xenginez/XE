@@ -420,14 +420,14 @@ void XE::Gfx::SetViewName( ViewHandle handle, const XE::String & name )
 	_p->_Context->SetViewName( handle, name );
 }
 
-void XE::Gfx::SetViewRect( ViewHandle handle, const XE::Rect & rect )
+void XE::Gfx::SetViewRect( ViewHandle handle, const XE::Rectf & rect )
 {
 	XE_ASSERT( _p->_Context != nullptr );
 
 	_p->_Context->SetViewRect( handle, rect );
 }
 
-void XE::Gfx::SetViewScissor( ViewHandle handle, const XE::Rect & scissor )
+void XE::Gfx::SetViewScissor( ViewHandle handle, const XE::Rectf & scissor )
 {
 	XE_ASSERT( _p->_Context != nullptr );
 

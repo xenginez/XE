@@ -41,7 +41,7 @@ namespace std
 		static constexpr bool value = true;
 	};
 
-	template< typename T > inline constexpr bool is_weak_ptr_v = is_weak_ptr<T>::value;
+	template< typename T > XE_INLINE constexpr bool is_weak_ptr_v = is_weak_ptr<T>::value;
 
 	template< typename T > struct is_shared_ptr
 	{
@@ -55,7 +55,7 @@ namespace std
 		static constexpr bool value = true;
 	};
 
-	template< typename T > inline constexpr bool is_shared_ptr_v = is_shared_ptr<T>::value;
+	template< typename T > XE_INLINE constexpr bool is_shared_ptr_v = is_shared_ptr<T>::value;
 
 };
 
@@ -72,77 +72,77 @@ using uint64 = unsigned long long;
 using float32 = float;
 using float64 = double;
 
-inline std::string ToString( bool _Val )
+XE_INLINE std::string ToString( bool _Val )
 {
 	return _Val ? "true" : "false";
 }
 
-inline std::string ToString( char _Val )
+XE_INLINE std::string ToString( char _Val )
 {
 	return { 1, _Val };
 }
 
-inline std::string ToString( uint8 _Val )
+XE_INLINE std::string ToString( uint8 _Val )
 {
 	return std::to_string( ( int32 ) _Val );
 }
 
-inline std::string ToString( int16 _Val )
+XE_INLINE std::string ToString( int16 _Val )
 {
 	return std::to_string( _Val );
 }
 
-inline std::string ToString( uint16 _Val )
+XE_INLINE std::string ToString( uint16 _Val )
 {
 	return std::to_string( _Val );
 }
 
-inline std::string ToString( int32 _Val )
+XE_INLINE std::string ToString( int32 _Val )
 {
 	return std::to_string( _Val );
 }
 
-inline std::string ToString( uint32 _Val )
+XE_INLINE std::string ToString( uint32 _Val )
 {
 	return std::to_string( _Val );
 }
 
-inline std::string ToString( int64 _Val )
+XE_INLINE std::string ToString( int64 _Val )
 {
 	return std::to_string( _Val );
 }
 
-inline std::string ToString( uint64 _Val )
+XE_INLINE std::string ToString( uint64 _Val )
 {
 	return std::to_string( _Val );
 }
 
-inline std::string ToString( float32 _Val )
+XE_INLINE std::string ToString( float32 _Val )
 {
 	return std::to_string( _Val );
 }
 
-inline std::string ToString( float64 _Val )
+XE_INLINE std::string ToString( float64 _Val )
 {
 	return std::to_string( _Val );
 }
 
-inline std::string ToString( char * _Val )
+XE_INLINE std::string ToString( char * _Val )
 {
 	return _Val;
 }
 
-inline std::string ToString( const char * _Val )
+XE_INLINE std::string ToString( const char * _Val )
 {
 	return _Val;
 }
 
-inline std::string ToString( const std::string & _Val )
+XE_INLINE std::string ToString( const std::string & _Val )
 {
 	return _Val;
 }
 
-inline std::string ToString( const std::chrono::system_clock::time_point & _Val )
+XE_INLINE std::string ToString( const std::chrono::system_clock::time_point & _Val )
 {
 	std::tm _tm;
 	std::ostringstream _oss;
@@ -160,7 +160,7 @@ inline std::string ToString( const std::chrono::system_clock::time_point & _Val 
 }
 
 
-inline bool FromString( const std::string & _Str, bool & _Val )
+XE_INLINE bool FromString( const std::string & _Str, bool & _Val )
 {
 	if( _Str == "true" || _Str == "false" )
 	{
@@ -171,7 +171,7 @@ inline bool FromString( const std::string & _Str, bool & _Val )
 	return false;
 }
 
-inline bool FromString( const std::string & _Str, XE::int8 & _Val )
+XE_INLINE bool FromString( const std::string & _Str, XE::int8 & _Val )
 {
 	size_t size = 0;
 
@@ -180,7 +180,7 @@ inline bool FromString( const std::string & _Str, XE::int8 & _Val )
 	return size > 0;
 }
 
-inline bool FromString( const std::string & _Str, XE::int16 & _Val )
+XE_INLINE bool FromString( const std::string & _Str, XE::int16 & _Val )
 {
 	size_t size = 0;
 
@@ -189,7 +189,7 @@ inline bool FromString( const std::string & _Str, XE::int16 & _Val )
 	return size > 0;
 }
 
-inline bool FromString( const std::string & _Str, XE::int32 & _Val )
+XE_INLINE bool FromString( const std::string & _Str, XE::int32 & _Val )
 {
 	size_t size = 0;
 
@@ -198,7 +198,7 @@ inline bool FromString( const std::string & _Str, XE::int32 & _Val )
 	return size > 0;
 }
 
-inline bool FromString( const std::string & _Str, XE::int64 & _Val )
+XE_INLINE bool FromString( const std::string & _Str, XE::int64 & _Val )
 {
 	size_t size = 0;
 
@@ -207,7 +207,7 @@ inline bool FromString( const std::string & _Str, XE::int64 & _Val )
 	return size > 0;
 }
 
-inline bool FromString( const std::string & _Str, XE::uint8 & _Val )
+XE_INLINE bool FromString( const std::string & _Str, XE::uint8 & _Val )
 {
 	size_t size = 0;
 
@@ -216,7 +216,7 @@ inline bool FromString( const std::string & _Str, XE::uint8 & _Val )
 	return size > 0;
 }
 
-inline bool FromString( const std::string & _Str, XE::uint16 & _Val )
+XE_INLINE bool FromString( const std::string & _Str, XE::uint16 & _Val )
 {
 	size_t size = 0;
 
@@ -225,7 +225,7 @@ inline bool FromString( const std::string & _Str, XE::uint16 & _Val )
 	return size > 0;
 }
 
-inline bool FromString( const std::string & _Str, XE::uint32 & _Val )
+XE_INLINE bool FromString( const std::string & _Str, XE::uint32 & _Val )
 {
 	size_t size = 0;
 
@@ -234,7 +234,7 @@ inline bool FromString( const std::string & _Str, XE::uint32 & _Val )
 	return size > 0;
 }
 
-inline bool FromString( const std::string & _Str, XE::uint64 & _Val )
+XE_INLINE bool FromString( const std::string & _Str, XE::uint64 & _Val )
 {
 	size_t size = 0;
 
@@ -243,7 +243,7 @@ inline bool FromString( const std::string & _Str, XE::uint64 & _Val )
 	return size > 0;
 }
 
-inline bool FromString( const std::string & _Str, XE::float32 & _Val )
+XE_INLINE bool FromString( const std::string & _Str, XE::float32 & _Val )
 {
 	size_t size = 0;
 
@@ -252,7 +252,7 @@ inline bool FromString( const std::string & _Str, XE::float32 & _Val )
 	return size > 0;
 }
 
-inline bool FromString( const std::string & _Str, XE::float64 & _Val )
+XE_INLINE bool FromString( const std::string & _Str, XE::float64 & _Val )
 {
 	size_t size = 0;
 
@@ -261,14 +261,14 @@ inline bool FromString( const std::string & _Str, XE::float64 & _Val )
 	return size > 0;
 }
 
-inline bool FromString( const std::string & _Str, std::string & _Val )
+XE_INLINE bool FromString( const std::string & _Str, std::string & _Val )
 {
 	_Val = _Str;
 
 	return true;
 }
 
-inline bool FromString( const std::string & _Str, std::chrono::system_clock::time_point & _Val )
+XE_INLINE bool FromString( const std::string & _Str, std::chrono::system_clock::time_point & _Val )
 {
 	if( _Str.size() == 18 )
 	{

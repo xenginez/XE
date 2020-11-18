@@ -760,12 +760,12 @@ namespace FileSystem
 
 };
 
-inline std::string ToString( const XE::FileSystem::Path & _Val )
+XE_INLINE std::string ToString( const XE::FileSystem::Path & _Val )
 {
 	return _Val.u8string();
 }
 
-inline bool FromString( const std::string & _Str, XE::FileSystem::Path & _Val )
+XE_INLINE bool FromString( const std::string & _Str, XE::FileSystem::Path & _Val )
 {
 	_Val = _Str;
 }

@@ -49,7 +49,7 @@ template< typename ... Types >ParameterType MakeParameterType()
 	return ret;
 }
 
-inline std::string ToString( const ParameterType & _Val )
+XE_INLINE std::string ToString( const ParameterType & _Val )
 {
 	std::string ret = "(";
 

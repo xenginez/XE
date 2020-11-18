@@ -7,7 +7,7 @@
 #endif
 
 BEG_XE_NAMESPACE
-inline std::string ToString( XE::LoggerLevel _Val )
+XE_INLINE std::string ToString( XE::LoggerLevel _Val )
 {
 	switch( _Val )
 	{

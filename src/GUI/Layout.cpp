@@ -86,11 +86,11 @@ void XE::Layout::SetStretch( XE::uint64 index, XE::uint8 val )
 	_Children.at( index ).second = val;
 }
 
-XE::Rect XE::Layout::GetContentsRect() const
+XE::Rectf XE::Layout::GetContentsRect() const
 {
-	const Rect & rect = GetGeometry();
+	const Rectf & rect = GetGeometry();
 
-	return Rect( rect.x + _LeftMargin, rect.y + _TopMargin, rect.width - _RightMargin, rect.height - _BottomMargin );
+	return Rectf( rect.x + _LeftMargin, rect.y + _TopMargin, rect.width - _RightMargin, rect.height - _BottomMargin );
 }
 
 XE::uint64 XE::Layout::ChildCount() const

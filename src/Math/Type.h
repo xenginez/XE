@@ -14,7 +14,7 @@
 BEG_XE_NAMESPACE
 
 class Quat;
-class Rect;
+class Rectf;
 class float16;
 template< typename T > class Vec2;
 template< typename T > class Vec3;

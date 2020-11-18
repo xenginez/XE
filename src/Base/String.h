@@ -136,7 +136,7 @@ private:
 	std::string_view _View;
 };
 
-inline std::string ToString( const XE::String & _Val )
+XE_INLINE std::string ToString( const XE::String & _Val )
 {
 	return _Val.ToStdString();
 }

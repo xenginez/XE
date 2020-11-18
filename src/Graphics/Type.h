@@ -907,8 +907,8 @@ struct XE_API ViewDesc
 	XE::float32 ClearDepth = 0.0f;
 	XE::uint8 ClearStencil = 1;
 	XE::Flags<ClearFlags> Flags = ClearFlags::NONE;
-	XE::Rect ViewRect;
-	XE::Rect ViewScissor;
+	XE::Rectf ViewRect;
+	XE::Rectf ViewScissor;
 	XE::Mat4f ModelMat;
 	XE::Mat4f ViewMat;
 	XE::Mat4f ProjMat;

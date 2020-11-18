@@ -55,7 +55,7 @@ void XE::Encoder::SetStencil( XE::Flags<XE::StencilFlags> front, XE::Flags<XE::S
 	_p->_Draw.BackStencilFlags = back;
 }
 
-void XE::Encoder::SetScissor( const XE::Rect & scissor )
+void XE::Encoder::SetScissor( const XE::Rectf & scissor )
 {
 	_p->_Draw.Scissor = scissor;
 }

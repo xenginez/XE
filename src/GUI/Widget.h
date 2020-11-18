@@ -56,9 +56,9 @@ public:
 
 	void SetPosition( const XE::Vec2f & val );
 
-	const XE::Rect & GetGeometry() const;
+	const XE::Rectf & GetGeometry() const;
 
-	void SetGeometry( const XE::Rect & val );
+	void SetGeometry( const XE::Rectf & val );
 
 	const XE::Vec2f & GetMinimumSize() const;
 
@@ -78,7 +78,7 @@ public:
 	virtual XE::Vec2f SizeHint() const;
 
 public:
-	XE::Signal<const XE::Rect&> GeometryChanged;
+	XE::Signal<const XE::Rectf&> GeometryChanged;
 
 private:
 	bool _Enable;
@@ -87,7 +87,7 @@ private:
 	WidgetHandle _ParentHandle;
 	XE::Vec2f _MinSize;
 	XE::Vec2f _MaxSize;
-	XE::Rect _Geometry;
+	XE::Rectf _Geometry;
 	UserInterfacePtr _UI;
 };
 

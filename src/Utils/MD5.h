@@ -60,7 +60,7 @@ private:
 };
 DECL_META_CLASS( XE_API, MD5 );
 
-inline std::string ToString( const XE::MD5 & _Val )
+XE_INLINE std::string ToString( const XE::MD5 & _Val )
 {
 	return _Val.To32String();
 }

@@ -112,12 +112,12 @@ void XE::Widget::SetMaximunSize( const XE::Vec2f & val )
 	_MaxSize = val;
 }
 
-const XE::Rect & XE::Widget::GetGeometry() const
+const XE::Rectf & XE::Widget::GetGeometry() const
 {
 	return _Geometry;
 }
 
-void XE::Widget::SetGeometry( const XE::Rect & val )
+void XE::Widget::SetGeometry( const XE::Rectf & val )
 {
 	_Geometry = val;
 

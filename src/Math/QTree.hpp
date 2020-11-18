@@ -26,7 +26,7 @@ public:
 public:
 	struct Node
 	{
-		XE::Rect Box;
+		XE::Rectf Box;
 		XE::uint32 Depth = 0;
 		XE::uint32 Children = 0;
 		Array< ValueType > _Objects;
@@ -123,7 +123,7 @@ private:
 
 				for( int i = 0; i < 4; ++i )
 				{
-					_Nodes[children + i].Box = Rect(
+					_Nodes[children + i].Box = Rectf(
 						Vec2f(
 							( i & 1 ) ? center.x : _Nodes[node].Box.GetMin().x,
 							( i & 2 ) ? center.y : _Nodes[node].Box.GetMin().y

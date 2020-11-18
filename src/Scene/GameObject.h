@@ -148,13 +148,13 @@ public:
 template<> class MakeRect< GameObjectPtr >
 {
 public:
-	XE::Rect operator()( const GameObjectPtr & val ) const
+	XE::Rectf operator()( const GameObjectPtr & val ) const
 	{
 		AABB box = val->GetBoundingBox();
 		auto center = box.GetCenter();
 		auto size = box.GetSize();
 
-		return Rect( center.x, center.y, size.x, size.y );
+		return Rectf( center.x, center.y, size.x, size.y );
 	}
 };
 

@@ -12,7 +12,7 @@ XE::HBoxLayout::~HBoxLayout()
 
 }
 
-void XE::HBoxLayout::OnGeometryChanged( const XE::Rect & val )
+void XE::HBoxLayout::OnGeometryChanged( const XE::Rectf & val )
 {
 	if( ChildCount() == 0 )
 	{

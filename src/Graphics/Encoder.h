@@ -32,7 +32,7 @@ public:
 
 	void SetStencil( XE::Flags<XE::StencilFlags> front, XE::Flags<XE::StencilFlags> back = XE::StencilFlags::NONE );
 
-	void SetScissor( const XE::Rect & scissor );
+	void SetScissor( const XE::Rectf & scissor );
 
 	void SetTransform( XE::MemoryView transform );
 

@@ -271,8 +271,8 @@ public:
 	XE::float32 ClearDepth = 0.0f;
 	XE::uint8 ClearStencil = 1;
 	XE::Flags<ClearFlags> Flags = ClearFlags::NONE;
-	XE::Rect ViewRect;
-	XE::Rect ViewScissor;
+	XE::Rectf ViewRect;
+	XE::Rectf ViewScissor;
 	XE::Mat4f ModelMat;
 	XE::Mat4f ViewMat;
 	XE::Mat4f ProjMat;
@@ -326,7 +326,7 @@ public:
 	XE::uint16 StartIndirect;
 	XE::uint16 NumIndirect;
 
-	XE::Rect Scissor;
+	XE::Rectf Scissor;
 	XE::uint8 SubmitFlags;
 	XE::uint8 StreamMask;
 

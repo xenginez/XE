@@ -23,7 +23,7 @@ public:
 	~HBoxLayout() override;
 
 private:
-	void OnGeometryChanged( const XE::Rect & val ) override;
+	void OnGeometryChanged( const XE::Rectf & val ) override;
 
 };
 

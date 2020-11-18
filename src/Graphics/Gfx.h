@@ -135,9 +135,9 @@ public:
 
 	void SetViewName( XE::ViewHandle handle, const XE::String & name );
 
-	void SetViewRect( XE::ViewHandle handle, const XE::Rect & rect );
+	void SetViewRect( XE::ViewHandle handle, const XE::Rectf & rect );
 
-	void SetViewScissor( XE::ViewHandle handle, const XE::Rect & scissor );
+	void SetViewScissor( XE::ViewHandle handle, const XE::Rectf & scissor );
 
 	void SetViewClear( const XE::ViewClearDesc & val );
 

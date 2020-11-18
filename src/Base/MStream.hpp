@@ -1137,28 +1137,28 @@ END_XE_NAMESPACE
 namespace std
 {
 	template <class _Elem, class _Traits = std::char_traits<_Elem>, class _Alloc = std::allocator<_Elem>>
-	inline void swap( XE::BasicMemoryBuf<_Elem, _Traits, _Alloc> & _Left,
+	XE_INLINE void swap( XE::BasicMemoryBuf<_Elem, _Traits, _Alloc> & _Left,
 					  XE::BasicMemoryBuf<_Elem, _Traits, _Alloc> & _Right )
 	{
 		_Left.swap( _Right );
 	}
 
 	template <class _Elem, class _Traits = std::char_traits<_Elem>, class _Alloc = std::allocator<_Elem>>
-	inline void swap( XE::BasicIMemoryStream<_Elem, _Traits, _Alloc> & _Left,
+	XE_INLINE void swap( XE::BasicIMemoryStream<_Elem, _Traits, _Alloc> & _Left,
 					  XE::BasicIMemoryStream<_Elem, _Traits, _Alloc> & _Right )
 	{
 		_Left.swap( _Right );
 	}
 
 	template <class _Elem, class _Traits = std::char_traits<_Elem>, class _Alloc = std::allocator<_Elem>>
-	inline void swap( XE::BasicOMemoryStream<_Elem, _Traits, _Alloc> & _Left,
+	XE_INLINE void swap( XE::BasicOMemoryStream<_Elem, _Traits, _Alloc> & _Left,
 					  XE::BasicOMemoryStream<_Elem, _Traits, _Alloc> & _Right )
 	{
 		_Left.swap( _Right );
 	}
 
 	template <class _Elem, class _Traits = std::char_traits<_Elem>, class _Alloc = std::allocator<_Elem>>
-	inline void swap( XE::BasicMemoryStream<_Elem, _Traits, _Alloc> & _Left,
+	XE_INLINE void swap( XE::BasicMemoryStream<_Elem, _Traits, _Alloc> & _Left,
 					  XE::BasicMemoryStream<_Elem, _Traits, _Alloc> & _Right )
 	{
 		_Left.swap( _Right );

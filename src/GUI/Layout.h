@@ -53,7 +53,7 @@ public:
 	void SetStretch( XE::uint64 index, XE::uint8 val );
 
 public:
-	XE::Rect GetContentsRect() const;
+	XE::Rectf GetContentsRect() const;
 
 public:
 	XE::uint64 ChildCount() const;
@@ -73,7 +73,7 @@ public:
 	void Render() override;
 
 private:
-	virtual void OnGeometryChanged( const XE::Rect & val ) = 0;
+	virtual void OnGeometryChanged( const XE::Rectf & val ) = 0;
 
 private:
 	XE::float32 _LeftMargin;
@@ -82,7 +82,7 @@ private:
 	XE::float32 _RightMargin;
 	XE::float32 _WidgetSpacing;
 	SizeConstraint _SizeConstraint;
-	XE::Slot<const XE::Rect &> _OnGeometryChanged;
+	XE::Slot<const XE::Rectf &> _OnGeometryChanged;
 	XE::Array< XE::Pair< WidgetHandle, XE::uint8> > _Children;
 };
 

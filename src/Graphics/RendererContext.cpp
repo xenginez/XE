@@ -570,12 +570,12 @@ void XE::RendererContext::SetViewName( ViewHandle handle, const XE::String & nam
 	_p->_Views[handle].Name = name;
 }
 
-void XE::RendererContext::SetViewRect( ViewHandle handle, const XE::Rect & rect )
+void XE::RendererContext::SetViewRect( ViewHandle handle, const XE::Rectf & rect )
 {
 	_p->_Views[handle].ViewRect = rect;
 }
 
-void XE::RendererContext::SetViewScissor( ViewHandle handle, const XE::Rect & scissor )
+void XE::RendererContext::SetViewScissor( ViewHandle handle, const XE::Rectf & scissor )
 {
 	_p->_Views[handle].ViewScissor = scissor;
 }

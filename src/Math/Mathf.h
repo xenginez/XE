@@ -750,9 +750,9 @@ XE_INLINE bool operator !=( const XE::Mat4f & left, const XE::Mat4f & right )
 class XE_API Mathf
 {
 public:
-	static constexpr XE::float32 Pi = ( XE::float32 )3.14159265358979323846;
-	static constexpr XE::float32 Pi2 = ( XE::float32 )1.57079632679489661923;
-	static constexpr XE::float32 Pi4 = ( XE::float32 )0.785398163397448309616;
+	static constexpr XE::float32 Pi = 3.14159265358979323846f;
+	static constexpr XE::float32 Pi2 = 1.57079632679489661923f;
+	static constexpr XE::float32 Pi4 = 0.785398163397448309616f;
 	static constexpr XE::float32 Nan = std::numeric_limits<XE::float32>::quiet_NaN();
 	static constexpr XE::float32 Epsilon = std::numeric_limits<XE::float32>::epsilon();
 	static constexpr XE::float32 Infinity = std::numeric_limits<XE::float32>::infinity();
@@ -2189,46 +2189,80 @@ public:
 DECL_META_CLASS( XE_API, Mathf );
 
 
-inline std::string ToString( const XE::Vec2f & _Val )
+XE_INLINE std::string ToString( const XE::Quat & _Val )
+{
+	return XE::StringUtils::Format( "%1, %2, %3, %4", _Val.x, _Val.y, _Val.z, _Val.w );
+}
+
+XE_INLINE std::string ToString( const XE::float16 & _Val )
+{
+	return ToString( _Val.ToFloat32() );
+}
+
+template< typename T > XE_INLINE std::string ToString( const XE::Vec2< T > & _Val )
 {
 	return XE::StringUtils::Format( "%1, %2", _Val.x, _Val.y );
 }
 
-inline std::string ToString( const XE::Vec3f & _Val )
+template< typename T > XE_INLINE std::string ToString( const XE::Vec3< T > & _Val )
 {
 	return XE::StringUtils::Format( "%1, %2, %3", _Val.x, _Val.y, _Val.z );
 }
 
-inline std::string ToString( const XE::Vec4f & _Val )
+template< typename T > XE_INLINE std::string ToString( const XE::Vec4< T > & _Val )
 {
 	return XE::StringUtils::Format( "%1, %2, %3, %4", _Val.x, _Val.y, _Val.z, _Val.w );
 }
 
-inline std::string ToString( const XE::Quat & _Val )
-{
-	return XE::StringUtils::Format( "%1, %2, %3, %4", _Val.x, _Val.y, _Val.z, _Val.w );
-}
-
-inline std::string ToString( const XE::Mat3f & _Val )
+template< typename T > XE_INLINE std::string ToString( const XE::Mat3< T > & _Val )
 {
 	return XE::StringUtils::Format( "%1, %2, %3, %4, %5, %6, %7, %8, %9",
 									_Val[0][0], _Val[0][1], _Val[0][2], _Val[1][0], _Val[1][1], _Val[1][2],
 									_Val[2][0], _Val[2][1], _Val[2][2] );
 }
 
-inline std::string ToString( const XE::Mat4f & _Val )
+template< typename T > XE_INLINE std::string ToString( const XE::Mat4< T > & _Val )
 {
 	return XE::StringUtils::Format( "%1, %2, %3, %4, %5, %6, %7, %8, %9, %10, %11, %12, %13, %14, %15, %16",
 									_Val[0][0], _Val[0][1], _Val[0][2], _Val[0][3], _Val[1][0], _Val[1][1], _Val[1][2], _Val[1][3],
 									_Val[2][0], _Val[2][1], _Val[2][2], _Val[2][3], _Val[3][0], _Val[3][1], _Val[3][2], _Val[3][3] );
 }
 
-inline std::string ToString( const XE::float16 & _Val )
+XE_INLINE bool FromString( const std::string & _Str, XE::Quat & _Val )
 {
-	return ToString( _Val.ToFloat32() );
+	auto list = XE::StringUtils::Split( _Str, ", " );
+
+	if( XE::FromString( list[0], _Val.x ) )
+	{
+		if( XE::FromString( list[1], _Val.y ) )
+		{
+			if( XE::FromString( list[2], _Val.z ) )
+			{
+				if( XE::FromString( list[3], _Val.w ) )
+				{
+					return true;
+				}
+			}
+		}
+	}
+
+	return false;
 }
 
-inline bool FromString( const std::string & _Str, XE::Vec2f & _Val )
+XE_INLINE bool FromString( const std::string & _Str, XE::float16 & _Val )
+{
+	XE::float32 f;
+
+	if( FromString( _Str, f ) )
+	{
+		_Val.FormFloat32( f );
+		return true;
+	}
+
+	return false;
+}
+
+template< typename T > XE_INLINE bool FromString( const std::string & _Str, XE::Vec2< T > & _Val )
 {
 	auto list = XE::StringUtils::Split( _Str, ", " );
 
@@ -2243,7 +2277,7 @@ inline bool FromString( const std::string & _Str, XE::Vec2f & _Val )
 	return false;
 }
 
-inline bool FromString( const std::string & _Str, XE::Vec3f & _Val )
+template< typename T > XE_INLINE bool FromString( const std::string & _Str, XE::Vec3< T > & _Val )
 {
 	auto list = XE::StringUtils::Split( _Str, ", " );
 
@@ -2261,7 +2295,7 @@ inline bool FromString( const std::string & _Str, XE::Vec3f & _Val )
 	return false;
 }
 
-inline bool FromString( const std::string & _Str, XE::Vec4f & _Val )
+template< typename T > XE_INLINE bool FromString( const std::string & _Str, XE::Vec4< T > & _Val )
 {
 	auto list = XE::StringUtils::Split( _Str, ", " );
 
@@ -2282,28 +2316,7 @@ inline bool FromString( const std::string & _Str, XE::Vec4f & _Val )
 	return false;
 }
 
-inline bool FromString( const std::string & _Str, XE::Quat & _Val )
-{
-	auto list = XE::StringUtils::Split( _Str, ", " );
-
-	if( XE::FromString( list[0], _Val.x ) )
-	{
-		if( XE::FromString( list[1], _Val.y ) )
-		{
-			if( XE::FromString( list[2], _Val.z ) )
-			{
-				if( XE::FromString( list[3], _Val.w ) )
-				{
-					return true;
-				}
-			}
-		}
-	}
-
-	return false;
-}
-
-inline bool FromString( const std::string & _Str, XE::Mat3f & _Val )
+template< typename T > XE_INLINE bool FromString( const std::string & _Str, XE::Mat3< T > & _Val )
 {
 	auto list = XE::StringUtils::Split( _Str, ", " );
 
@@ -2339,7 +2352,7 @@ inline bool FromString( const std::string & _Str, XE::Mat3f & _Val )
 	return false;
 }
 
-inline bool FromString( const std::string & _Str, XE::Mat4f & _Val )
+template< typename T > XE_INLINE bool FromString( const std::string & _Str, XE::Mat4< T > & _Val )
 {
 	auto list = XE::StringUtils::Split( _Str, ", " );
 
@@ -2396,88 +2409,10 @@ inline bool FromString( const std::string & _Str, XE::Mat4f & _Val )
 	return false;
 }
 
-inline bool FromString( const std::string & _Str, XE::float16 & _Val )
-{
-	XE::float32 f;
-
-	if( FromString( _Str, f ) )
-	{
-		_Val.FormFloat32( f );
-		return true;
-	}
-
-	return false;
-}
-
-template<> struct XE::Serializable< XE::Vec2f >
-{
-public:
-	static void Serialize( Archive & arc, XE::Vec2f * val )
-	{
-		std::string str = XE::ToString( *val );
-		auto nvp = XE::Archive::NVP( "@value", str );
-		arc & nvp;
-
-		XE::FromString( nvp.Value, *val );
-	}
-};
-
-template<> struct XE::Serializable< XE::Vec3f >
-{
-public:
-	static void Serialize( Archive & arc, XE::Vec3f * val )
-	{
-		std::string str = XE::ToString( *val );
-		auto nvp = XE::Archive::NVP( "@value", str );
-		arc & nvp;
-
-		XE::FromString( nvp.Value, *val );
-	}
-};
-
-template<> struct XE::Serializable< XE::Vec4f >
-{
-public:
-	static void Serialize( Archive & arc, XE::Vec4f * val )
-	{
-		std::string str = XE::ToString( *val );
-		auto nvp = XE::Archive::NVP( "@value", str );
-		arc & nvp;
-
-		XE::FromString( nvp.Value, *val );
-	}
-};
-
 template<> struct XE::Serializable< XE::Quat >
 {
 public:
 	static void Serialize( Archive & arc, XE::Quat * val )
-	{
-		std::string str = XE::ToString( *val );
-		auto nvp = XE::Archive::NVP( "@value", str );
-		arc & nvp;
-
-		XE::FromString( nvp.Value, *val );
-	}
-};
-
-template<> struct XE::Serializable< XE::Mat3f >
-{
-public:
-	static void Serialize( Archive & arc, XE::Mat3f * val )
-	{
-		std::string str = XE::ToString( *val );
-		auto nvp = XE::Archive::NVP( "@value", str );
-		arc & nvp;
-
-		XE::FromString( nvp.Value, *val );
-	}
-};
-
-template<> struct XE::Serializable< XE::Mat4f >
-{
-public:
-	static void Serialize( Archive & arc, XE::Mat4f * val )
 	{
 		std::string str = XE::ToString( *val );
 		auto nvp = XE::Archive::NVP( "@value", str );
@@ -2497,6 +2432,71 @@ public:
 		arc & nvp;
 
 		val->FormFloat32( nvp.Value );
+	}
+};
+
+template< typename T > struct XE::Serializable< XE::Vec2< T > >
+{
+public:
+	static void Serialize( Archive & arc, XE::Vec2< T > * val )
+	{
+		std::string str = XE::ToString( *val );
+		auto nvp = XE::Archive::NVP( "@value", str );
+		arc & nvp;
+
+		XE::FromString( nvp.Value, *val );
+	}
+};
+
+template< typename T > struct XE::Serializable< XE::Vec3< T > >
+{
+public:
+	static void Serialize( Archive & arc, XE::Vec3< T > * val )
+	{
+		std::string str = XE::ToString( *val );
+		auto nvp = XE::Archive::NVP( "@value", str );
+		arc & nvp;
+
+		XE::FromString( nvp.Value, *val );
+	}
+};
+
+template< typename T > struct XE::Serializable< XE::Vec4< T > >
+{
+public:
+	static void Serialize( Archive & arc, XE::Vec4< T > * val )
+	{
+		std::string str = XE::ToString( *val );
+		auto nvp = XE::Archive::NVP( "@value", str );
+		arc & nvp;
+
+		XE::FromString( nvp.Value, *val );
+	}
+};
+
+template< typename T > struct XE::Serializable< XE::Mat3< T > >
+{
+public:
+	static void Serialize( Archive & arc, XE::Mat3< T > * val )
+	{
+		std::string str = XE::ToString( *val );
+		auto nvp = XE::Archive::NVP( "@value", str );
+		arc & nvp;
+
+		XE::FromString( nvp.Value, *val );
+	}
+};
+
+template< typename T > struct XE::Serializable< XE::Mat4< T > >
+{
+public:
+	static void Serialize( Archive & arc, XE::Mat4< T > * val )
+	{
+		std::string str = XE::ToString( *val );
+		auto nvp = XE::Archive::NVP( "@value", str );
+		arc & nvp;
+
+		XE::FromString( nvp.Value, *val );
 	}
 };
 
