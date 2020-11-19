@@ -34,9 +34,19 @@ private:
     Private * _p;
 };
 
-#endif
+XE_INLINE XE::RendererContext * CreateRendererContextDirectX11()
+{
+	return new XE::RendererContextDirectX11();
+}
 
-XE::RendererContext * CreateRendererContextDirectX11();
+#else
+
+XE_INLINE XE::RendererContext * XE::CreateRendererContextDirectX11()
+{
+	return nullptr;
+}
+
+#endif
 
 END_XE_NAMESPACE
 

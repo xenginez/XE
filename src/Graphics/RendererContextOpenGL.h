@@ -27,7 +27,11 @@ private:
 
 };
 
-XE::RendererContext * CreateRendererContextGL();
+XE_INLINE XE::RendererContext * CreateRendererContextGL()
+{
+	return new XE::RendererContextGL();
+}
+
 
 END_XE_NAMESPACE
 

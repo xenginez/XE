@@ -29,9 +29,19 @@ private:
 
 };
 
-#endif
+XE_INLINE XE::RendererContext * CreateRendererContextVulkan()
+{
+	return new XE::RendererContextVulkan();
+}
 
-XE::RendererContext * CreateRendererContextVulkan();
+#else
+
+XE_INLINE XE::RendererContext * CreateRendererContextVulkan()
+{
+	return nullptr;
+}
+
+#endif
 
 END_XE_NAMESPACE
 

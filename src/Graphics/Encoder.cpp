@@ -229,7 +229,7 @@ void XE::Encoder::Submit( ViewHandle handle, RenderGroup group, ProgramHandle pr
 
 	auto & item = _p->_Frame->RenderItems[index];
 	item.Type = RenderItem::ItemType::DRAW;
-	item.Draw = std::move( _p->_Draw );
+	item.Draw = _p->_Draw;
 
 	_p->_Frame->RenderBinds[index] = std::move( _p->_Bind );
 

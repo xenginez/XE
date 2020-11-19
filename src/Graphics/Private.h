@@ -69,6 +69,8 @@ public:
 
 	SortKey( const SortKey & val );
 
+	SortKey & operator=( const SortKey & val );
+
 public:
 	bool operator <( const SortKey & val ) const;
 
@@ -125,6 +127,13 @@ public:
 class Shader : public RefCount
 {
 public:
+	Shader();
+
+	Shader( const Shader & val );
+
+	Shader & operator=( const Shader & val );
+
+public:
 	XE::String Name;
 	XE::uint32 HashIn;
 	XE::uint32 HashOut;
@@ -133,6 +142,13 @@ public:
 
 class Texture : public RefCount
 {
+public:
+	Texture();
+
+	Texture( const Texture & val );
+
+	Texture & operator=( const Texture & val );
+
 public:
 	XE::String Name;
 	XE::uint32 StorageSize = 0;
@@ -149,6 +165,13 @@ public:
 class Uniform : public RefCount
 {
 public:
+	Uniform();
+
+	Uniform( const Uniform & val );
+
+	Uniform & operator=( const Uniform & val );
+
+public:
 	XE::String Name;
 	XE::uint16 Num = 0;
 	UniformType Type = UniformType::COUNT;
@@ -157,6 +180,13 @@ public:
 class Program : public RefCount
 {
 public:
+	Program();
+
+	Program( const Program & val );
+
+	Program & operator=( const Program & val );
+
+public:
 	ShaderHandle VS;
 	ShaderHandle FS;
 	ShaderHandle CS;
@@ -164,6 +194,13 @@ public:
 
 class FrameBuffer : public RefCount
 {
+public:
+	FrameBuffer();
+
+	FrameBuffer( const FrameBuffer & val );
+
+	FrameBuffer & operator=( const FrameBuffer & val );
+
 public:
 	XE::String Name;
 	WindowHandle Window;
@@ -179,6 +216,13 @@ public:
 		DYNAMIC,
 		TRANSIENT,
 	};
+
+public:
+	IndexBuffer();
+
+	IndexBuffer( const IndexBuffer & val );
+
+	IndexBuffer & operator=( const IndexBuffer & val );
 
 public:
 	HandleType Type;
@@ -198,6 +242,13 @@ public:
 	};
 
 public:
+	VertexBuffer();
+
+	VertexBuffer( const VertexBuffer & val );
+
+	VertexBuffer & operator=( const VertexBuffer & val );
+
+public:
 	HandleType Type;
 	XE::uint64 Handle;
 	XE::uint32 StartVertex;
@@ -207,11 +258,24 @@ public:
 
 class UniformBuffer : public RefCount
 {
+public:
+	UniformBuffer();
+
+	UniformBuffer( const UniformBuffer & val );
+
+	UniformBuffer & operator=( const UniformBuffer & val );
 
 };
 
 class InstanceDataBuffer : public RefCount
 {
+public:
+	InstanceDataBuffer();
+
+	InstanceDataBuffer( const InstanceDataBuffer & val );
+
+	InstanceDataBuffer & operator=( const InstanceDataBuffer & val );
+
 public:
 	XE::MemoryView data;
 	uint32_t offset = 0;
@@ -223,6 +287,13 @@ public:
 class TransientIndexBuffer : public RefCount
 {
 public:
+	TransientIndexBuffer();
+
+	TransientIndexBuffer( const TransientIndexBuffer & val );
+
+	TransientIndexBuffer & operator=( const TransientIndexBuffer & val );
+
+public:
 	XE::MemoryView data;
 	uint32_t startIndex = 0;
 	IndexBufferHandle handle;
@@ -230,6 +301,13 @@ public:
 
 class TransientVertexBuffer : public RefCount
 {
+public:
+	TransientVertexBuffer();
+
+	TransientVertexBuffer( const TransientVertexBuffer & val );
+
+	TransientVertexBuffer & operator=( const TransientVertexBuffer & val );
+
 public:
 	XE::MemoryView data;
 	uint32_t startVertex = 0;
@@ -258,6 +336,14 @@ public:
 		COUNT
 	};
 
+public:
+	PredefinedUniform();
+
+	PredefinedUniform( const PredefinedUniform & val );
+
+	PredefinedUniform & operator=( const PredefinedUniform & val );
+
+public:
 	Type _Type;
 	uint32_t _Loc;
 	uint16_t _Count;
@@ -265,6 +351,13 @@ public:
 
 class View : public RefCount
 {
+public:
+	View();
+
+	View( const View & val );
+
+	View & operator=( const View & val );
+
 public:
 	XE::String Name;
 	XE::Color ClearColor;
@@ -303,32 +396,47 @@ public:
 		XE::uint8 Mip;
 	};
 
+public:
+	RenderBind();
+
+	RenderBind( const RenderBind & val );
+
+	RenderBind & operator=( const RenderBind & val );
+
+public:
 	std::array<Binding, GFX_MAX_TEXTURE_SAMPLERS> Binds;
 };
 
 class RenderDraw
 {
 public:
+	RenderDraw();
+
+	RenderDraw( const RenderDraw & val );
+
+	RenderDraw & operator=( const RenderDraw & val );
+
+public:
 	IndexBuffer Indices;
 	VertexBuffer Vertices[GFX_MAX_VERTEXS];
 
-	XE::Color Rgba;
+	XE::Color Rgba = XE::Color::Black;
 
-	XE::uint32 UniformBegin;
-	XE::uint32 UniformEnd;
+	XE::uint32 UniformBegin = 0;
+	XE::uint32 UniformEnd = 0;
 
-	XE::uint32 StartMatrix;
-	XE::uint16 NumMatrices;
+	XE::uint32 StartMatrix = 0;
+	XE::uint16 NumMatrices = 0;
 
-	XE::uint32 InstanceDataOffset;
-	XE::uint32 NumInstances;
+	XE::uint32 InstanceDataOffset = 0;
+	XE::uint32 NumInstances = 0;
 
-	XE::uint16 StartIndirect;
-	XE::uint16 NumIndirect;
+	XE::uint16 StartIndirect = 0;
+	XE::uint16 NumIndirect = 0;
 
-	XE::Rectf Scissor;
-	XE::uint8 SubmitFlags;
-	XE::uint8 StreamMask;
+	XE::Rectf Scissor = XE::Rectf::Zero;
+	XE::uint8 SubmitFlags = 0;
+	XE::uint8 StreamMask = 0;
 
 	XE::VertexBufferHandle InstanceDataBuffer;
 	XE::DynamicVertexBufferHandle DynamicInstanceDataBuffer;
@@ -338,12 +446,19 @@ public:
 	XE::OcclusionQueryHandle OcclusionQuery;
 
 	XE::Flags<XE::StateFlags> StateFlags = XE::StateFlags::NONE;
-	XE::Flags <XE::StencilFlags> FrontStencilFlags = XE::StencilFlags::NONE;
-	XE::Flags <XE::StencilFlags> BackStencilFlags = XE::StencilFlags::NONE;
+	XE::Flags<XE::StencilFlags> FrontStencilFlags = XE::StencilFlags::NONE;
+	XE::Flags<XE::StencilFlags> BackStencilFlags = XE::StencilFlags::NONE;
 };
 
 class RenderBlit
 {
+public:
+	RenderBlit();
+
+	RenderBlit( const RenderBlit & val );
+
+	RenderBlit & operator=( const RenderBlit & val );
+
 public:
 	XE::uint32 SrcX = 0;
 	XE::uint32 SrcY = 0;
@@ -363,6 +478,13 @@ public:
 
 class RenderCompute
 {
+public:
+	RenderCompute();
+
+	RenderCompute( const RenderCompute & val );
+
+	RenderCompute & operator=( const RenderCompute & val );
+
 public:
 	XE::uint32 UniformBegin = 0;
 	XE::uint32 UniformEnd = 0;
@@ -392,9 +514,9 @@ public:
 public:
 	RenderItem();
 
-	RenderItem( RenderItem && val );
+	RenderItem( const RenderItem & val );
 
-	RenderItem & operator=( RenderItem && val );
+	RenderItem & operator=( const RenderItem & val );
 
 	~RenderItem();
 

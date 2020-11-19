@@ -17,13 +17,4 @@ void XE::RendererContextVulkan::OnRender( XE::Frame* val )
 
 }
 
-XE::RendererContext * XE::CreateRendererContextVulkan()
-{
-	return new XE::RendererContextVulkan();
-}
-#else
-XE::RendererContext * XE::CreateRendererContextVulkan()
-{
-	return nullptr;
-}
 #endif

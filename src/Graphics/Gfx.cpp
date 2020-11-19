@@ -64,39 +64,44 @@ XE::Array<XE::RendererContextType> XE::Gfx::GetSupportedContext()
 void XE::Gfx::Init( const XE::InitInfo & val )
 {
 	auto type = val.type;
+	auto contexts = GetSupportedContext();
 
-	if( type == RendererContextType::NONE )
+	while( _p->_Context == nullptr )
 	{
-		type = GetSupportedContext().front();
-	}
+		switch( type )
+		{
+		case XE::RendererContextType::METAL:
+			_p->_Context = XE::CreateRendererContextMetal();
+			break;
+		case XE::RendererContextType::VULKAN:
+			_p->_Context = XE::CreateRendererContextVulkan();
+			break;
+		case XE::RendererContextType::GLES2:
+		case XE::RendererContextType::GLES3:
+		case XE::RendererContextType::OPENGL:
+			_p->_Context = XE::CreateRendererContextGL();
+			break;
+		case XE::RendererContextType::DIRECT3D11:
+			_p->_Context = XE::CreateRendererContextDirectX11();
+			break;
+		case XE::RendererContextType::DIRECT3D12:
+			_p->_Context = XE::CreateRendererContextDirectX12();
+			break;
+		case XE::RendererContextType::SOFTWARE:
+			_p->_Context = XE::CreateRendererContextSoftware();
+			break;
+		case XE::RendererContextType::NIL:
+			_p->_Context = XE::CreateRendererContextNull();
+			break;
+		default:
+			break;
+		}
 
-	switch( type )
-	{
-	case XE::RendererContextType::METAL:
-		_p->_Context = XE::CreateRendererContextMetal();
-		break;
-	case XE::RendererContextType::VULKAN:
-		_p->_Context = XE::CreateRendererContextVulkan();
-		break;
-	case XE::RendererContextType::GLES2:
-	case XE::RendererContextType::GLES3:
-	case XE::RendererContextType::OPENGL:
-		_p->_Context = XE::CreateRendererContextGL();
-		break;
-	case XE::RendererContextType::DIRECT3D11:
-		_p->_Context = XE::CreateRendererContextDirectX11();
-		break;
-	case XE::RendererContextType::DIRECT3D12:
-		_p->_Context = XE::CreateRendererContextDirectX12();
-		break;
-	case XE::RendererContextType::SOFTWARE:
-		_p->_Context = XE::CreateRendererContextSoftware();
-		break;
-	case XE::RendererContextType::NIL:
-		_p->_Context = XE::CreateRendererContextNull();
-		break;
-	default:
-		break;
+		if( type == RendererContextType::NONE && !contexts.empty() )
+		{
+			type = contexts.front();
+			contexts.erase( contexts.begin() );
+		}
 	}
 
 	XE_ASSERT( _p->_Context == nullptr );

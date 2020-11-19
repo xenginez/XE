@@ -21,14 +21,4 @@ void XE::RendererContextDirectX12::OnRender( XE::Frame* val )
 
 }
 
-
-XE::RendererContext * XE::CreateRendererContextDirectX12()
-{
-	return new XE::RendererContextDirectX12();
-}
-#else
-XE::RendererContext * XE::CreateRendererContextDirectX12()
-{
-	return nullptr;
-}
 #endif

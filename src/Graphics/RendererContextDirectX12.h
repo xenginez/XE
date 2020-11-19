@@ -29,9 +29,19 @@ private:
 
 };
 
-#endif
+XE_INLINE XE::RendererContext * CreateRendererContextDirectX12()
+{
+	return new XE::RendererContextDirectX12();
+}
 
-XE::RendererContext * CreateRendererContextDirectX12();
+#else
+
+XE_INLINE XE::RendererContext * CreateRendererContextDirectX12()
+{
+	return nullptr;
+}
+
+#endif
 
 END_XE_NAMESPACE
 

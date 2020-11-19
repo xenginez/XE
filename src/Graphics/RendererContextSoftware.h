@@ -19,7 +19,10 @@ private:
 
 };
 
-XE::RendererContext * CreateRendererContextSoftware();
+XE_INLINE XE::RendererContext * CreateRendererContextSoftware()
+{
+	return new XE::RendererContextSoftware();
+}
 
 END_XE_NAMESPACE
 

@@ -247,7 +247,6 @@ public:
 };
 
 template< typename T > const XE::Rect< T > XE::Rect< T >::Zero = { 0, 0, 0, 0 };
-template< typename T > const XE::Rect< T > XE::Rect< T >::Zero = { 0, 0, 0, 0 };
 
 using Recti = Rect< XE::int32 >;
 using Rectf = Rect< XE::float32 >;

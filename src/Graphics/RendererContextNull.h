@@ -27,7 +27,10 @@ private:
 
 };
 
-XE::RendererContext * CreateRendererContextNull();
+XE_INLINE XE::RendererContext * CreateRendererContextNull()
+{
+	return new XE::RendererContextNull();
+}
 
 END_XE_NAMESPACE
 

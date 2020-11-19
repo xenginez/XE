@@ -26,13 +26,4 @@ void XE::RendererContextDirectX11::OnRender( XE::Frame * val )
 
 }
 
-XE::RendererContext * XE::CreateRendererContextDirectX11()
-{
-	return new XE::RendererContextDirectX11();
-}
-#else
-XE::RendererContext * XE::CreateRendererContextDirectX11()
-{
-	return nullptr;
-}
 #endif

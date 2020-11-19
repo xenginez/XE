@@ -41,7 +41,7 @@ namespace std
 		static constexpr bool value = true;
 	};
 
-	template< typename T > XE_INLINE constexpr bool is_weak_ptr_v = is_weak_ptr<T>::value;
+	template< typename T > inline constexpr bool is_weak_ptr_v = is_weak_ptr<T>::value;
 
 	template< typename T > struct is_shared_ptr
 	{
@@ -55,7 +55,7 @@ namespace std
 		static constexpr bool value = true;
 	};
 
-	template< typename T > XE_INLINE constexpr bool is_shared_ptr_v = is_shared_ptr<T>::value;
+	template< typename T > inline constexpr bool is_shared_ptr_v = is_shared_ptr<T>::value;
 
 };
 

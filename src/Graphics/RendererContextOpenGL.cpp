@@ -22,8 +22,3 @@ void XE::RendererContextGL::OnRender( XE::Frame* val )
 {
 
 }
-
-XE::RendererContext * XE::CreateRendererContextGL()
-{
-	return new XE::RendererContextGL();
-}

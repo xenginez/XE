@@ -29,9 +29,19 @@ private:
 
 };
 
-#endif
+XE_INLINE XE::RendererContext * CreateRendererContextMetal()
+{
+	return new XE::RendererContextMetal();
+}
 
-XE::RendererContext * CreateRendererContextMetal();
+#else
+
+XE_INLINE XE::RendererContext * CreateRendererContextMetal()
+{
+	return nullptr;
+}
+
+#endif
 
 END_XE_NAMESPACE
 
