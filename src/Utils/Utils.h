@@ -26,5 +26,6 @@
 #include "Platform.h"
 #include "Handle.hpp"
 #include "Signals.hpp"
+#include "RefCount.hpp"
 
 #endif // UTILS_H__836D437C_196C_4DE7_8062_D8A3F6CEC7D3

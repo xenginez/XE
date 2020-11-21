@@ -12,7 +12,7 @@ XE::RendererContextVulkan::~RendererContextVulkan()
 
 }
 
-void XE::RendererContextVulkan::OnRender( XE::Frame* val )
+void XE::RendererContextVulkan::OnRender( XE::RenderFrame* val )
 {
 
 }

@@ -4,7 +4,7 @@
 
 #include "Private.h"
 
-XE::MemoryView CopyToFrame( XE::Frame * frame, XE::MemoryView mem )
+XE::MemoryView CopyToFrame( XE::RenderFrame * frame, XE::MemoryView mem )
 {
 	std::unique_lock<std::mutex> lock( frame->TransientBufferMutex );
 
@@ -16,7 +16,7 @@ XE::MemoryView CopyToFrame( XE::Frame * frame, XE::MemoryView mem )
 
 struct XE::Encoder::Private
 {
-	XE::Frame * _Frame;
+	XE::RenderFrame * _Frame;
 	XE::RenderBind _Bind;
 	XE::RenderDraw _Draw;
 	XE::RenderCompute _Compute;
@@ -34,7 +34,7 @@ XE::Encoder::~Encoder()
 	delete _p;
 }
 
-void XE::Encoder::SetFrame( Frame* val )
+void XE::Encoder::SetFrame( RenderFrame* val )
 {
 	_p->_Frame = val;
 }
@@ -79,7 +79,7 @@ void XE::Encoder::SetUniform( UniformHandle handle, XE::MemoryView mem )
 
 void XE::Encoder::SetIndexBuffer( IndexBufferHandle handle, XE::uint32 first, XE::uint32 num )
 {
-	_p->_Draw.Indices.Type = IndexBuffer::HandleType::INDEX;
+	_p->_Draw.Indices.Type = PIndexBuffer::HandleType::INDEX;
 	_p->_Draw.Indices.Handle = handle.GetValue();
 	_p->_Draw.Indices.StartIndex = first;
 	_p->_Draw.Indices.NumIndices = num;
@@ -87,7 +87,7 @@ void XE::Encoder::SetIndexBuffer( IndexBufferHandle handle, XE::uint32 first, XE
 
 void XE::Encoder::SetIndexBuffer( DynamicIndexBufferHandle handle, XE::uint32 first, XE::uint32 num )
 {
-	_p->_Draw.Indices.Type = IndexBuffer::HandleType::DYNAMIC;
+	_p->_Draw.Indices.Type = PIndexBuffer::HandleType::DYNAMIC;
 	_p->_Draw.Indices.Handle = handle.GetValue();
 	_p->_Draw.Indices.StartIndex = first;
 	_p->_Draw.Indices.NumIndices = num;
@@ -95,7 +95,7 @@ void XE::Encoder::SetIndexBuffer( DynamicIndexBufferHandle handle, XE::uint32 fi
 
 void XE::Encoder::SetIndexBuffer( TransientIndexBufferHandle handle, XE::uint32 first, XE::uint32 num )
 {
-	_p->_Draw.Indices.Type = IndexBuffer::HandleType::TRANSIENT;
+	_p->_Draw.Indices.Type = PIndexBuffer::HandleType::TRANSIENT;
 	_p->_Draw.Indices.Handle = handle.GetValue();
 	_p->_Draw.Indices.StartIndex = first;
 	_p->_Draw.Indices.NumIndices = num;
@@ -103,7 +103,7 @@ void XE::Encoder::SetIndexBuffer( TransientIndexBufferHandle handle, XE::uint32 
 
 void XE::Encoder::SetVertexBuffer( XE::uint8 stream, VertexBufferHandle handle, XE::uint32 first, XE::uint32 num, VertexLayoutHandle layout /*= VertexLayoutHandle::Invalid */ )
 {
-	_p->_Draw.Vertices[stream].Type = VertexBuffer::HandleType::VERTEX;
+	_p->_Draw.Vertices[stream].Type = PVertexBuffer::HandleType::VERTEX;
 	_p->_Draw.Vertices[stream].Handle = handle.GetValue();
 	_p->_Draw.Vertices[stream].LayoutHandle = layout;
 	_p->_Draw.Vertices[stream].StartVertex = first;
@@ -112,7 +112,7 @@ void XE::Encoder::SetVertexBuffer( XE::uint8 stream, VertexBufferHandle handle, 
 
 void XE::Encoder::SetVertexBuffer( XE::uint8 stream, DynamicVertexBufferHandle handle, XE::uint32 first, XE::uint32 num, VertexLayoutHandle layout /*= VertexLayoutHandle::Invalid */ )
 {
-	_p->_Draw.Vertices[stream].Type = VertexBuffer::HandleType::DYNAMIC;
+	_p->_Draw.Vertices[stream].Type = PVertexBuffer::HandleType::DYNAMIC;
 	_p->_Draw.Vertices[stream].Handle = handle.GetValue();
 	_p->_Draw.Vertices[stream].LayoutHandle = layout;
 	_p->_Draw.Vertices[stream].StartVertex = first;
@@ -121,7 +121,7 @@ void XE::Encoder::SetVertexBuffer( XE::uint8 stream, DynamicVertexBufferHandle h
 
 void XE::Encoder::SetVertexBuffer( XE::uint8 stream, TransientVertexBufferHandle handle, XE::uint32 first, XE::uint32 num, VertexLayoutHandle layout /*= VertexLayoutHandle::Invalid */ )
 {
-	_p->_Draw.Vertices[stream].Type = VertexBuffer::HandleType::TRANSIENT;
+	_p->_Draw.Vertices[stream].Type = PVertexBuffer::HandleType::TRANSIENT;
 	_p->_Draw.Vertices[stream].Handle = handle.GetValue();
 	_p->_Draw.Vertices[stream].LayoutHandle = layout;
 	_p->_Draw.Vertices[stream].StartVertex = first;

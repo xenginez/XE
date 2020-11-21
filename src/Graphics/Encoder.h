@@ -60,7 +60,7 @@ public:
 
 	void SetBuffer( XE::uint8 stage, VertexBufferHandle handle, Access access );
 
-	void SetImage( XE::uint8 stage, TextureHandle handle, XE::uint8 mip, Access access, TextureFormat format = TextureFormat::COUNT );
+	void SetImage( XE::uint8 stage, TextureHandle handle, XE::uint8 mip, Access access, TextureFormat format = TextureFormat::RGBA8 );
 
 public:
 	void Discard();
@@ -80,7 +80,7 @@ public:
 			   XE::uint32 width, XE::uint32 height, XE::uint32 depth );
 
 private:
-	void SetFrame( Frame * val );
+	void SetFrame( RenderFrame * val );
 
 private:
 	Private * _p;

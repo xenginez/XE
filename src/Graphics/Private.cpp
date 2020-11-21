@@ -113,7 +113,22 @@ void XE::SortKey::SetKey( XE::uint64 val )
 	_Key = val;
 }
 
-void XE::Frame::Reset()
+XE::uint32 XE::GfxRefCount::Inc()
+{
+	return ++_Count;
+}
+
+XE::uint32 XE::GfxRefCount::Dec()
+{
+	return --_Count;
+}
+
+void XE::GfxRefCount::Reset()
+{
+	_Count = 0;
+}
+
+void XE::RenderFrame::Reset()
 {
 	RenderItemSize = 0;
 	RenderBlitSize = 0;
@@ -167,207 +182,148 @@ XE::RenderItem & XE::RenderItem::operator=( const RenderItem & val )
 	return *this;
 }
 
-XE::uint32 XE::RefCount::Inc()
-{
-	return ++Count;
-}
-
-XE::uint32 XE::RefCount::Dec()
-{
-	return --Count;
-}
-
-XE::Shader::Shader()
+XE::PShader::PShader()
 {
 
 }
 
-XE::Shader::Shader( const Shader & val )
+XE::PShader::PShader( const PShader & val )
 {
 
 }
 
-XE::Shader & XE::Shader::operator=( const Shader & val )
+XE::PShader & XE::PShader::operator=( const PShader & val )
 {
 
 	return *this;
 }
 
-XE::Texture::Texture()
+XE::PTexture::PTexture()
 {
 
 }
 
-XE::Texture::Texture( const Texture & val )
+XE::PTexture::PTexture( const PTexture & val )
 {
 
 }
 
-XE::Texture & XE::Texture::operator=( const Texture & val )
-{
-
-	return *this;
-}
-
-XE::Uniform::Uniform()
-{
-
-}
-
-XE::Uniform::Uniform( const Uniform & val )
-{
-
-}
-
-XE::Uniform & XE::Uniform::operator=( const Uniform & val )
+XE::PTexture & XE::PTexture::operator=( const PTexture & val )
 {
 
 	return *this;
 }
 
-XE::Program::Program()
+XE::PProgram::PProgram()
 {
 
 }
 
-XE::Program::Program( const Program & val )
+XE::PProgram::PProgram( const PProgram & val )
 {
 
 }
 
-XE::Program & XE::Program::operator=( const Program & val )
-{
-
-	return *this;
-}
-
-XE::FrameBuffer::FrameBuffer()
-{
-
-}
-
-XE::FrameBuffer::FrameBuffer( const FrameBuffer & val )
-{
-
-}
-
-XE::FrameBuffer & XE::FrameBuffer::operator=( const FrameBuffer & val )
+XE::PProgram & XE::PProgram::operator=( const PProgram & val )
 {
 
 	return *this;
 }
 
-XE::IndexBuffer::IndexBuffer()
+XE::PVertexLayout::PVertexLayout()
 {
 
 }
 
-XE::IndexBuffer::IndexBuffer( const IndexBuffer & val )
+XE::PVertexLayout::PVertexLayout( const PInstanceDataBuffer & val )
 {
 
 }
 
-XE::IndexBuffer & XE::IndexBuffer::operator=( const IndexBuffer & val )
-{
-
-	return *this;
-}
-
-XE::VertexBuffer::VertexBuffer()
+XE::PVertexLayout & XE::PVertexLayout::operator=( const PVertexLayout & val )
 {
 
 }
 
-XE::VertexBuffer::VertexBuffer( const VertexBuffer & val )
+XE::PFrameBuffer::PFrameBuffer()
 {
 
 }
 
-XE::VertexBuffer & XE::VertexBuffer::operator=( const VertexBuffer & val )
-{
-
-	return *this;
-}
-
-XE::UniformBuffer::UniformBuffer()
+XE::PFrameBuffer::PFrameBuffer( const PFrameBuffer & val )
 {
 
 }
 
-XE::UniformBuffer::UniformBuffer( const UniformBuffer & val )
-{
-
-}
-
-XE::UniformBuffer & XE::UniformBuffer::operator=( const UniformBuffer & val )
+XE::PFrameBuffer & XE::PFrameBuffer::operator=( const PFrameBuffer & val )
 {
 
 	return *this;
 }
 
-XE::InstanceDataBuffer::InstanceDataBuffer()
+XE::PIndexBuffer::PIndexBuffer()
 {
 
 }
 
-XE::InstanceDataBuffer::InstanceDataBuffer( const InstanceDataBuffer & val )
+XE::PIndexBuffer::PIndexBuffer( const PIndexBuffer & val )
 {
 
 }
 
-XE::InstanceDataBuffer & XE::InstanceDataBuffer::operator=( const InstanceDataBuffer & val )
-{
-
-	return *this;
-}
-
-XE::TransientIndexBuffer::TransientIndexBuffer()
-{
-
-}
-
-XE::TransientIndexBuffer::TransientIndexBuffer( const TransientIndexBuffer & val )
-{
-
-}
-
-XE::TransientIndexBuffer & XE::TransientIndexBuffer::operator=( const TransientIndexBuffer & val )
+XE::PIndexBuffer & XE::PIndexBuffer::operator=( const PIndexBuffer & val )
 {
 
 	return *this;
 }
 
-XE::TransientVertexBuffer::TransientVertexBuffer()
+XE::PVertexBuffer::PVertexBuffer()
 {
 
 }
 
-XE::TransientVertexBuffer::TransientVertexBuffer( const TransientVertexBuffer & val )
+XE::PVertexBuffer::PVertexBuffer( const PVertexBuffer & val )
 {
 
 }
 
-XE::TransientVertexBuffer & XE::TransientVertexBuffer::operator=( const TransientVertexBuffer & val )
+XE::PVertexBuffer & XE::PVertexBuffer::operator=( const PVertexBuffer & val )
+{
+
+	return *this;
+}
+
+XE::PIndirectBuffer::PIndirectBuffer()
+{
+
+}
+
+XE::PIndirectBuffer::PIndirectBuffer( const PIndirectBuffer & val )
+{
+
+}
+
+XE::PIndirectBuffer & XE::PIndirectBuffer::operator=( const PIndirectBuffer & val )
+{
+
+}
+
+XE::PInstanceDataBuffer::PInstanceDataBuffer()
+{
+
+}
+
+XE::PInstanceDataBuffer::PInstanceDataBuffer( const PInstanceDataBuffer & val )
+{
+
+}
+
+XE::PInstanceDataBuffer & XE::PInstanceDataBuffer::operator=( const PInstanceDataBuffer & val )
 {
 
 	return *this;
 }
 
-XE::PredefinedUniform::PredefinedUniform()
-{
-
-}
-
-XE::PredefinedUniform::PredefinedUniform( const PredefinedUniform & val )
-{
-
-}
-
-XE::PredefinedUniform & XE::PredefinedUniform::operator=( const PredefinedUniform & val )
-{
-
-	return *this;
-}
 
 XE::View::View()
 {

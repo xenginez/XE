@@ -10,7 +10,7 @@ XE::RendererContextNull::~RendererContextNull()
 
 }
 
-void XE::RendererContextNull::OnRender( XE::Frame * val )
+void XE::RendererContextNull::OnRender( XE::RenderFrame * val )
 {
 
 }

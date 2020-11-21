@@ -18,7 +18,7 @@ XE::RendererContextGL::~RendererContextGL()
 
 }
 
-void XE::RendererContextGL::OnRender( XE::Frame* val )
+void XE::RendererContextGL::OnRender( XE::RenderFrame* val )
 {
 
 }

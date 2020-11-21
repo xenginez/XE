@@ -13,7 +13,7 @@ public:
 	~RendererContextSoftware();
 
 protected:
-	void OnRender( XE::Frame* val ) override;
+	void OnRender( XE::RenderFrame* val ) override;
 
 private:
 

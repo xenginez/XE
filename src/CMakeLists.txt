@@ -23,22 +23,23 @@ target_link_libraries(XE
 		)
 
 set(INC_DIRS 
-AI
-Animation
-Audio
-Base
-Component
-Core
-GC
-Graphics
-GUI
-Interface
-Math
-Physics
-Reflect
-Render
-Scene
-Utils)
+		AI
+		Animation
+		Audio
+		Base
+		Component
+		Core
+		GC
+		Graphics
+		GUI
+		Interface
+		Math
+		Physics
+		Reflect
+		Render
+		Scene
+		Utils
+)
 
 add_custom_command(TARGET XE
 				POST_BUILD

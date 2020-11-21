@@ -21,7 +21,7 @@ XE::RendererContextDirectX11::~RendererContextDirectX11()
 
 }
 
-void XE::RendererContextDirectX11::OnRender( XE::Frame * val )
+void XE::RendererContextDirectX11::OnRender( XE::RenderFrame * val )
 {
 
 }

@@ -21,7 +21,7 @@ public:
 	~RendererContextGL() override;
 
 protected:
-	void OnRender( XE::Frame* val ) override;
+	void OnRender( XE::RenderFrame* val ) override;
 
 private:
 

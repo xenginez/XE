@@ -10,7 +10,7 @@ XE::RendererContextSoftware::~RendererContextSoftware()
 
 }
 
-void XE::RendererContextSoftware::OnRender( XE::Frame* val )
+void XE::RendererContextSoftware::OnRender( XE::RenderFrame* val )
 {
 
 }

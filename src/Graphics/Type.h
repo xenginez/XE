@@ -16,7 +16,7 @@
 
 BEG_XE_NAMESPACE
 
-class Frame;
+class RenderFrame;
 
 DECL_PTR( Encoder );
 DECL_PTR( RendererContext );
@@ -24,7 +24,6 @@ DECL_PTR( RendererContext );
 DECL_HANDLE( XE_API, View );
 DECL_HANDLE( XE_API, Shader );
 DECL_HANDLE( XE_API, Texture );
-DECL_HANDLE( XE_API, Uniform );
 DECL_HANDLE( XE_API, Program );
 DECL_HANDLE( XE_API, FrameBuffer );
 DECL_HANDLE( XE_API, IndexBuffer );
@@ -40,7 +39,6 @@ DECL_HANDLE( XE_API, TransientVertexBuffer );
 static constexpr XE::uint32 GFX_MAX_VIEW = 256;
 static constexpr XE::uint32 GFX_MAX_VERTEXS = 4;
 static constexpr XE::uint32 GFX_MAX_SHADERS = 512;
-static constexpr XE::uint32 GFX_MAX_UNIFORMS = 512;
 static constexpr XE::uint32 GFX_MAX_PROGRAMS = 512;
 static constexpr XE::uint32 GFX_MAX_TEXTURES = 4096;
 static constexpr XE::uint32 GFX_MAX_OCCLUSION = 256;
@@ -55,8 +53,6 @@ static constexpr XE::uint32 GFX_MAX_VERTEX_LAYOUTS = 64;
 static constexpr XE::uint32 GFX_MAX_TEXTURE_SAMPLERS = 16;
 static constexpr XE::uint32 GFX_MAX_DRAW_INDIRECT_STRIDE = 32;
 static constexpr XE::uint32 GFX_MAX_DRAW_INDIRECT_BUFFERS = 1024;
-static constexpr XE::uint32 GFX_MAX_DYNAMIC_INDEX_BUFFERS = 4096;
-static constexpr XE::uint32 GFX_MAX_DYNAMIC_VERTEX_BUFFERS = 4096;
 
 enum class CapsFlags : XE::uint64
 {
@@ -95,10 +91,10 @@ enum class CapsFlags : XE::uint64
 enum class PciIdFlags : XE::uint64
 {
 	NONE = 0X0000,
-	SOFTWARERASTERIZER = 0X0001,
 	AMD = 0X1002,
 	INTEL = 0X8086,
 	NVIDIA = 0X10DE,
+	SOFTWARERASTERIZER = 0X0001,
 };
 
 enum class ResetFlags : XE::uint64
@@ -213,16 +209,6 @@ enum class ClearFlags : XE::uint64
 	COLOR_USE_PALETTE = 0X8000,
 	DISCARDCOLORMASK = 0X07F8,
 	DISCARDMASK = 0X1FF8,
-};
-
-enum class DebugFlags : XE::uint64
-{
-	NONE = 0X00000000,
-	WIREFRAME = 0X00000001,
-	IFH = 0X00000002,
-	STATS = 0X00000004,
-	TEXT = 0X00000008,
-	PROFILER = 0X00000010,
 };
 
 enum class BufferFlags : XE::uint64
@@ -412,17 +398,6 @@ enum class CapsFormatFlags : XE::uint64
 	TEXTUREMIPAUTOGEN = 0X4000,
 };
 
-enum class Fatal
-{
-	DEBUGCHECK,
-	INVALIDSHADER,
-	UNABLETOINITIALIZE,
-	UNABLETOCREATETEXTURE,
-	DEVICELOST,
-
-	COUNT
-};
-
 enum class Access
 {
 	READ,      //!< Read
@@ -483,26 +458,15 @@ enum class AttributeType
 
 enum class UniformType
 {
+	INT,
+	UINT,
+	FLOAT,
+	VEC2f,
+	VEC3f,
+	VEC4f,
+	MAT3f,
+	MAT4f,
 	SAMPLER,
-	END,
-
-	VEC4,
-	MAT3,
-	MAT4,
-
-	COUNT
-};
-
-enum class BackbufferRatio
-{
-	EQUAL,
-	HALF,
-	QUARTER,
-	EIGHTH,
-	SIXTEENTH,
-	DOUBLE,
-
-	COUNT
 };
 
 enum class Topology
@@ -580,8 +544,6 @@ enum class TextureFormat
 	ASTC8x6,      //!< ASTC 8x6 2.67 BPP
 	ASTC10x5,     //!< ASTC 10x5 2.56 BPP
 
-	UNKNOWN,      // Compressed formats above.
-
 	R1,
 	A8,
 	R8,
@@ -631,8 +593,6 @@ enum class TextureFormat
 	RGB5A1,
 	RGB10A2,
 	RG11B10F,
-
-	UNKNOWN_DEPTH, // Depth formats below.
 
 	D16,
 	D24,
@@ -729,7 +689,7 @@ enum class RenderGroup : XE::uint8
 	OVERLAY = 6,			// this render group is meant for overlay effects.
 };
 
-class XE_API CapsInfo
+struct XE_API CapsInfo
 {
 public:
 	RendererContextType ContextType = RendererContextType::NONE;
@@ -769,36 +729,9 @@ public:
 	uint32_t MaxDynamicVertexBuffers = GFX_MAX_DYNAMIC_VERTEX_BUFFERS;
 	uint32_t MaxUniforms = GFX_MAX_UNIFORMS;
 	uint32_t MaxOcclusionQueries = GFX_MAX_OCCLUSION;
-	uint32_t TransientVbSize = 0;
-	uint32_t TransientIbSize = 0;
 };
 
-class XE_API InitInfo
-{
-public:
-	RendererContextType type = RendererContextType::NONE;
-
-	PciIdFlags vendorId = PciIdFlags::NONE;
-	uint16_t deviceId = 0;
-
-	bool debug = false;
-	bool profile = false;
-
-	WindowHandle window;
-
-	TextureFormat format = TextureFormat::COUNT;
-	uint32_t width = 0;
-	uint32_t height = 0;
-	XE::Flags<ResetFlags> reset;
-	uint8_t  numBackBuffers = 0;
-	uint8_t  maxFrameLatency = 0;
-
-	uint16_t maxEncoders = 0;
-	uint32_t transientVbSize = 0;
-	uint32_t transientIbSize = 0;
-};
-
-class XE_API Attachment
+struct XE_API Attachment
 {
 public:
 	Access access = Access::COUNT;
@@ -808,96 +741,29 @@ public:
 	bool auto_gen_mips = false;
 };
 
-class XE_API VertexLayout
+struct XE_API VertexLayout
 {
 public:
 	Attribute Attr;
 	AttributeType Type;
 };
 
-struct XE_API BufferDesc
+struct XE_API InitDesc
 {
-	XE::String Name;
-	XE::uint64 Size = 0;
-	XE::Flags< XE::BufferFlags > Flags = XE::BufferFlags::NONE;
-};
+public:
+	RendererContextType type = RendererContextType::NONE;
 
-struct XE_API VertexLayoutDesc
-{
-	VertexLayout Layouts[8];
-};
+	PciIdFlags vendorId = PciIdFlags::NONE;
+	uint16_t deviceId = 0;
 
-struct XE_API VertexBufferDesc : public XE::BufferDesc
-{
-	XE::VertexLayoutHandle Layout;
-};
+	WindowHandle window;
 
-struct XE_API ShaderDesc
-{
-	XE::String Name;
-	ShaderType Type;
-	XE::MemoryView Data;
-};
-
-struct XE_API TextureDesc
-{
-	XE::String Name;
-	TextureType Type;
-	XE::uint32 Width = 0;
-	XE::uint32 Height = 0;
-	XE::uint32 Depth = 0;
-	bool HasMaps = false;
-	XE::uint16 Layers = 0;
-	TextureFormat Format = TextureFormat::RGBA8;
-	XE::Flags< XE::TextureFlags > Flags = XE::TextureFlags::NONE;
-	XE::Flags< XE::SamplerFlags > Samplers = XE::SamplerFlags::NONE;
-};
-
-struct XE_API UpdateTextureDesc
-{
-	TextureHandle Handle;
-	XE::uint16 Layer = 0;
-	XE::uint8 Side = 0;
-	XE::uint8 Mip = 0;
-	XE::uint32 X = 0;
-	XE::uint32 Y = 0;
-	XE::uint32 Z = 0;
-	XE::uint32 Width = 0;
-	XE::uint32 Height = 0;
-	XE::uint32 Depth = 0;
-};
-
-struct XE_API FrameBufferDesc
-{
-	XE::String Name;
-	XE::uint32 Width = 0;
-	XE::uint32 Height = 0;
-	TextureFormat Format = TextureFormat::RGBA8;
-	XE::Flags< XE::SamplerFlags > Samplers = XE::SamplerFlags::NONE;
-};
-
-struct XE_API FrameBufferFromWindowDesc
-{
-	XE::String Name;
-	XE::uint32 Width = 0;
-	XE::uint32 Height = 0;
-	XE::WindowHandle Window;
-	TextureFormat ColorFormat = TextureFormat::RGBA8;
-	TextureFormat DepthFormat = TextureFormat::D24S8;
-};
-
-struct XE_API FrameBufferFromTextureDesc
-{
-	XE::String Name;
-	TextureHandle Textures[8];
-	bool DestoryTexture = false;
-};
-
-struct XE_API FrameBufferFromAttachmentDesc
-{
-	XE::String Name;
-	Attachment Attachments[8];
-	bool DestoryTexture = false;
+	uint32_t width = 0;
+	uint32_t height = 0;
+	TextureFormat format = TextureFormat::RGBA8;
+	XE::Flags<ResetFlags> reset;
+	uint8_t  numBackBuffers = 0;
+	uint8_t  maxFrameLatency = 0;
 };
 
 struct XE_API ViewDesc
@@ -914,6 +780,105 @@ struct XE_API ViewDesc
 	XE::Mat4f ProjMat;
 	ViewMode Mode = XE::ViewMode::DEFAULT;
 	XE::FrameBufferHandle FrameBuffer;
+};
+
+struct XE_API ShaderDesc
+{
+	XE::String Name;
+	ShaderType Type;
+};
+
+struct XE_API BufferDesc
+{
+	XE::String Name;
+	XE::uint64 Size = 0;
+	XE::Flags< XE::BufferFlags > Flags = XE::BufferFlags::NONE;
+};
+
+struct XE_API UniformDesc
+{
+public:
+	XE::String Name;
+	XE::uint16 Num;
+	UniformType Type;
+};
+
+struct XE_API TextureDesc
+{
+	XE::String Name;
+	TextureType Type;
+	XE::uint32 Width = 0;
+	XE::uint32 Height = 0;
+	XE::uint32 Depth = 0;
+	bool HasMaps = false;
+	XE::uint16 Layers = 0;
+	TextureFormat Format = TextureFormat::RGBA8;
+	XE::Flags< XE::TextureFlags > Flags = XE::TextureFlags::NONE;
+	XE::Flags< XE::SamplerFlags > Samplers = XE::SamplerFlags::NONE;
+};
+
+struct XE_API ProgramDesc
+{
+	XE::ShaderHandle VS;
+	XE::ShaderHandle FS;
+	XE::ShaderHandle CS;
+};
+
+struct XE_API FrameBufferDesc
+{
+	XE::String Name;
+	XE::uint32 Width = 0;
+	XE::uint32 Height = 0;
+	TextureFormat Format = TextureFormat::RGBA8;
+	XE::Flags< XE::SamplerFlags > Samplers = XE::SamplerFlags::NONE;
+};
+
+struct XE_API VertexLayoutDesc
+{
+	VertexLayout Layouts[GFX_MAX_VERTEX_LAYOUTS];
+};
+
+struct XE_API VertexBufferDesc : public XE::BufferDesc
+{
+	XE::VertexLayoutHandle Layout;
+};
+
+struct XE_API UpdateTextureDesc
+{
+	TextureHandle Handle;
+	XE::uint16 Layer = 0;
+	XE::uint8 Side = 0;
+	XE::uint8 Mip = 0;
+	XE::uint32 X = 0;
+	XE::uint32 Y = 0;
+	XE::uint32 Z = 0;
+	XE::uint32 Width = 0;
+	XE::uint32 Height = 0;
+	XE::uint32 Depth = 0;
+};
+
+struct XE_API FrameBufferFromWindowDesc
+{
+	XE::String Name;
+	XE::uint32 Width = 0;
+	XE::uint32 Height = 0;
+	XE::WindowHandle Window;
+	TextureFormat ColorFormat = TextureFormat::RGBA8;
+	TextureFormat DepthFormat = TextureFormat::D24S8;
+};
+
+struct XE_API FrameBufferFromTextureDesc
+{
+	XE::String Name;
+	TextureHandle Textures[GFX_MAX_ATTACHMENTS];
+	bool DestoryTexture = false;
+};
+
+struct XE_API FrameBufferFromAttachmentDesc
+{
+	XE::String Name;
+	Attachment Attachments[GFX_MAX_ATTACHMENTS];
+	bool DestoryTexture = false;
 };
 
 struct XE_API ViewClearDesc

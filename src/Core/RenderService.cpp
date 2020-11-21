@@ -54,11 +54,11 @@ void XE::RenderService::Prepare()
 
 bool XE::RenderService::Startup()
 {
-	XE::InitInfo info = {};
+	XE::InitDesc info = {};
 
 	Gfx::Instance()->Init( info );
 
-	Gfx::Instance()->Frame();
+	Gfx::Instance()->Present();
 
 // 	GfxDesc desc = { 0 };
 // 
@@ -78,7 +78,7 @@ void XE::RenderService::Update()
 		
 	}
 
-	Gfx::Instance()->Frame();
+	Gfx::Instance()->Present();
 
 // 	for (auto & camera : _p->_Cameras)
 // 	{

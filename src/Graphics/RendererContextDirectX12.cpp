@@ -16,7 +16,7 @@ XE::RendererContextDirectX12::~RendererContextDirectX12()
 
 }
 
-void XE::RendererContextDirectX12::OnRender( XE::Frame* val )
+void XE::RendererContextDirectX12::OnRender( XE::RenderFrame* val )
 {
 
 }

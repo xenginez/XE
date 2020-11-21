@@ -61,7 +61,7 @@ XE::Array<XE::RendererContextType> XE::Gfx::GetSupportedContext()
 	return ret;
 }
 
-void XE::Gfx::Init( const XE::InitInfo & val )
+void XE::Gfx::Init( const XE::InitDesc & val )
 {
 	auto type = val.type;
 	auto contexts = GetSupportedContext();
@@ -135,266 +135,11 @@ void XE::Gfx::End( XE::Encoder * val )
 	_p->_Context->End( val );
 }
 
-void XE::Gfx::Frame( bool capture /*= false */ )
+void XE::Gfx::Present()
 {
 	XE_ASSERT( _p->_Context != nullptr );
 
-	_p->_Context->Frame( capture );
-}
-
-void XE::Gfx::Render()
-{
-	_p->_Context->Render();
-}
-
-XE::IndexBufferHandle XE::Gfx::CreateIndexBuffer( const BufferDesc & desc, XE::MemoryView data )
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	return _p->_Context->CreateIndexBuffer( desc, data );
-}
-
-XE::TransientIndexBufferHandle XE::Gfx::CreateTransientIndexBuffer( const BufferDesc & desc, XE::MemoryView data )
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	return _p->_Context->CreateTransientIndexBuffer( desc, data );
-}
-
-void XE::Gfx::Destory( IndexBufferHandle handle )
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	_p->_Context->Destory( handle );
-}
-
-void XE::Gfx::Destory( VertexLayoutHandle handle )
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	_p->_Context->Destory( handle );
-}
-
-void XE::Gfx::Destory( VertexBufferHandle handle )
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	_p->_Context->Destory( handle );
-}
-
-void XE::Gfx::Destory( DynamicIndexBufferHandle handle )
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	_p->_Context->Destory( handle );
-}
-
-void XE::Gfx::Destory( DynamicVertexBufferHandle handle )
-{
-
-}
-
-void XE::Gfx::Destory( IndirectBufferHandle handle )
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	_p->_Context->Destory( handle );
-}
-
-void XE::Gfx::Destory( ShaderHandle handle )
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	_p->_Context->Destory( handle );
-}
-
-void XE::Gfx::Destory( ProgramHandle handle )
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	_p->_Context->Destory( handle );
-}
-
-void XE::Gfx::Destory( TextureHandle handle )
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	_p->_Context->Destory( handle );
-}
-
-void XE::Gfx::Destory( FrameBufferHandle handle )
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	_p->_Context->Destory( handle );
-}
-
-void XE::Gfx::Destory( UniformHandle handle )
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	_p->_Context->Destory( handle );
-}
-
-void XE::Gfx::Destory( OcclusionQueryHandle handle )
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	_p->_Context->Destory( handle );
-}
-
-void XE::Gfx::Destory( ViewHandle handle )
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	_p->_Context->Destory( handle );
-}
-
-XE::VertexLayoutHandle XE::Gfx::CreateVertexLayout( const VertexLayoutDesc & val )
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	return _p->_Context->CreateVertexLayout( val );
-}
-
-XE::VertexBufferHandle XE::Gfx::CreateVertexBuffer( const VertexBufferDesc & desc, XE::MemoryView data )
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	return _p->_Context->CreateVertexBuffer( desc, data );
-}
-
-XE::TransientVertexBufferHandle XE::Gfx::CreateTransientVertexBuffer( const VertexBufferDesc & desc, XE::MemoryView data )
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	return _p->_Context->CreateTransientVertexBuffer( desc, data );
-}
-
-void XE::Gfx::Update( DynamicIndexBufferHandle handle, XE::uint64 start, XE::MemoryView mem )
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	_p->_Context->Update( handle, start, mem );
-}
-
-void XE::Gfx::Update( DynamicVertexBufferHandle handle, XE::uint64 start, XE::MemoryView mem )
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	_p->_Context->Update( handle, start, mem );
-}
-
-XE::DynamicIndexBufferHandle XE::Gfx::CreateDynamicIndexBuffer( const BufferDesc & desc, XE::MemoryView data )
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	return _p->_Context->CreateDynamicIndexBuffer( desc, data );
-}
-
-XE::DynamicVertexBufferHandle XE::Gfx::CreateDynamicVertexBuffer( const VertexBufferDesc & desc, XE::MemoryView data )
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	return _p->_Context->CreateDynamicVertexBuffer( desc, data );
-}
-
-XE::IndirectBufferHandle XE::Gfx::CreateIndirectBuffer( XE::uint64 num )
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	return _p->_Context->CreateIndirectBuffer( num );
-}
-
-XE::ShaderHandle XE::Gfx::CreateShader( const ShaderDesc & val )
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	return _p->_Context->CreateShader( val );
-}
-
-XE::Array<XE::UniformHandle> XE::Gfx::GetShaderUniforms( ShaderHandle handle )
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	return _p->_Context->GetShaderUniforms( handle );
-}
-
-XE::ProgramHandle XE::Gfx::CreateProgram( ShaderHandle vs, ShaderHandle fs, bool des_shader /*= false */ )
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	return _p->_Context->CreateProgram( vs, fs, des_shader );
-}
-
-XE::ProgramHandle XE::Gfx::CreateProgram( ShaderHandle cs, bool des_shader /*= false */ )
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	return _p->_Context->CreateProgram( cs, des_shader );
-}
-
-XE::TextureHandle XE::Gfx::CreateTexture( const TextureDesc & desc, XE::MemoryView data )
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	return _p->_Context->CreateTexture( desc, data );
-}
-
-void XE::Gfx::Update( const UpdateTextureDesc & desc, XE::MemoryView data )
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	return _p->_Context->Update( desc, data );
-}
-
-void XE::Gfx::ReadTexture( TextureHandle handle, XE::uint8 * data, XE::uint8 mip /*= 0 */ )
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	return _p->_Context->ReadTexture( handle, data, mip );
-}
-
-XE::FrameBufferHandle XE::Gfx::CreateFrameBuffer( const FrameBufferDesc & val )
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	return _p->_Context->CreateFrameBuffer( val );
-}
-
-XE::FrameBufferHandle XE::Gfx::CreateFrameBuffer( const FrameBufferFromWindowDesc & val )
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	return _p->_Context->CreateFrameBuffer( val );
-}
-
-XE::FrameBufferHandle XE::Gfx::CreateFrameBuffer( const FrameBufferFromTextureDesc & val )
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	return _p->_Context->CreateFrameBuffer( val );
-}
-
-XE::FrameBufferHandle XE::Gfx::CreateFrameBuffer( const FrameBufferFromAttachmentDesc & val )
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	return _p->_Context->CreateFrameBuffer( val );
-}
-
-XE::TextureHandle XE::Gfx::GetTexture( FrameBufferHandle handle, XE::uint8 attachment /*= 0 */ )
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	return _p->_Context->GetTexture( handle, attachment );
-}
-
-XE::UniformHandle XE::Gfx::CreateUniform( const XE::String & name, UniformType type, XE::uint16 num /*= 1 */ )
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	return _p->_Context->CreateUniform( name, type, num );
+	_p->_Context->Present();
 }
 
 XE::OcclusionQueryHandle XE::Gfx::CreateOcclusionQuery()
@@ -404,13 +149,6 @@ XE::OcclusionQueryHandle XE::Gfx::CreateOcclusionQuery()
 	return _p->_Context->CreateOcclusionQuery();
 }
 
-std::optional<XE::uint32> XE::Gfx::GetOcclusionQueryValue( OcclusionQueryHandle handle )
-{
-	XE_ASSERT( _p->_Context != nullptr );
-
-	return _p->_Context->GetOcclusionQueryValue( handle );
-}
-
 XE::ViewHandle XE::Gfx::CreateView( const XE::ViewDesc & val )
 {
 	XE_ASSERT( _p->_Context != nullptr );
@@ -418,56 +156,301 @@ XE::ViewHandle XE::Gfx::CreateView( const XE::ViewDesc & val )
 	return _p->_Context->CreateView( val );
 }
 
-void XE::Gfx::SetViewName( ViewHandle handle, const XE::String & name )
+XE::UniformHandle XE::Gfx::CreateUniform( const XE::UniformDesc & desc )
+{
+	XE_ASSERT( _p->_Context != nullptr );
+
+	return _p->_Context->CreateUniform( desc );
+}
+
+XE::ProgramHandle XE::Gfx::CreateProgram( const XE::ProgramDesc & desc )
+{
+	XE_ASSERT( _p->_Context != nullptr );
+
+	return _p->_Context->CreateProgram( desc );
+}
+
+XE::IndirectBufferHandle XE::Gfx::CreateIndirectBuffer( const XE::BufferDesc & desc )
+{
+	XE_ASSERT( _p->_Context != nullptr );
+
+	return _p->_Context->CreateIndirectBuffer( desc );
+}
+
+XE::VertexLayoutHandle XE::Gfx::CreateVertexLayout( const XE::VertexLayoutDesc & desc )
+{
+	XE_ASSERT( _p->_Context != nullptr );
+
+	return _p->_Context->CreateVertexLayout( desc );
+}
+
+XE::ShaderHandle XE::Gfx::CreateShader( const XE::ShaderDesc & desc, XE::MemoryView data )
+{
+	XE_ASSERT( _p->_Context != nullptr );
+
+	return _p->_Context->CreateShader( desc, data );
+}
+
+XE::TextureHandle XE::Gfx::CreateTexture( const XE::TextureDesc & desc, XE::MemoryView data )
+{
+	XE_ASSERT( _p->_Context != nullptr );
+
+	return _p->_Context->CreateTexture( desc, data );
+}
+
+XE::FrameBufferHandle XE::Gfx::CreateFrameBuffer( const XE::FrameBufferDesc & desc )
+{
+	XE_ASSERT( _p->_Context != nullptr );
+
+	return _p->_Context->CreateFrameBuffer( desc );
+}
+
+XE::FrameBufferHandle XE::Gfx::CreateFrameBuffer( const XE::FrameBufferFromWindowDesc & desc )
+{
+	XE_ASSERT( _p->_Context != nullptr );
+
+	return _p->_Context->CreateFrameBuffer( desc );
+}
+
+XE::FrameBufferHandle XE::Gfx::CreateFrameBuffer( const XE::FrameBufferFromTextureDesc & desc )
+{
+	XE_ASSERT( _p->_Context != nullptr );
+
+	return _p->_Context->CreateFrameBuffer( desc );
+}
+
+XE::FrameBufferHandle XE::Gfx::CreateFrameBuffer( const XE::FrameBufferFromAttachmentDesc & desc )
+{
+	XE_ASSERT( _p->_Context != nullptr );
+
+	return _p->_Context->CreateFrameBuffer( desc );
+}
+
+XE::IndexBufferHandle XE::Gfx::CreateIndexBuffer( const XE::BufferDesc & desc, XE::MemoryView data )
+{
+	XE_ASSERT( _p->_Context != nullptr );
+
+	return _p->_Context->CreateIndexBuffer( desc, data );
+}
+
+XE::VertexBufferHandle XE::Gfx::CreateVertexBuffer( const XE::VertexBufferDesc & desc, XE::MemoryView data )
+{
+	XE_ASSERT( _p->_Context != nullptr );
+
+	return _p->_Context->CreateVertexBuffer( desc, data );
+}
+
+XE::DynamicIndexBufferHandle XE::Gfx::CreateDynamicIndexBuffer( const XE::BufferDesc & desc, XE::MemoryView data )
+{
+	XE_ASSERT( _p->_Context != nullptr );
+
+	return _p->_Context->CreateDynamicIndexBuffer( desc, data );
+}
+
+XE::DynamicVertexBufferHandle XE::Gfx::CreateDynamicVertexBuffer( const XE::VertexBufferDesc & desc, XE::MemoryView data )
+{
+	XE_ASSERT( _p->_Context != nullptr );
+
+	return _p->_Context->CreateDynamicVertexBuffer( desc, data );
+}
+
+void XE::Gfx::Destory( XE::ViewHandle handle )
+{
+	XE_ASSERT( _p->_Context != nullptr );
+
+	_p->_Context->Destory( handle );
+}
+
+void XE::Gfx::Destory( XE::ShaderHandle handle )
+{
+	XE_ASSERT( _p->_Context != nullptr );
+
+	_p->_Context->Destory( handle );
+}
+
+void XE::Gfx::Destory( XE::ProgramHandle handle )
+{
+	XE_ASSERT( _p->_Context != nullptr );
+
+	_p->_Context->Destory( handle );
+}
+
+void XE::Gfx::Destory( XE::TextureHandle handle )
+{
+	XE_ASSERT( _p->_Context != nullptr );
+
+	_p->_Context->Destory( handle );
+}
+
+void XE::Gfx::Destory( XE::UniformHandle handle )
+{
+	XE_ASSERT( _p->_Context != nullptr );
+
+	_p->_Context->Destory( handle );
+}
+
+void XE::Gfx::Destory( XE::FrameBufferHandle handle )
+{
+	XE_ASSERT( _p->_Context != nullptr );
+
+	_p->_Context->Destory( handle );
+}
+
+void XE::Gfx::Destory( XE::IndexBufferHandle handle )
+{
+	XE_ASSERT( _p->_Context != nullptr );
+
+	_p->_Context->Destory( handle );
+}
+
+void XE::Gfx::Destory( XE::VertexLayoutHandle handle )
+{
+	XE_ASSERT( _p->_Context != nullptr );
+
+	_p->_Context->Destory( handle );
+}
+
+void XE::Gfx::Destory( XE::VertexBufferHandle handle )
+{
+	XE_ASSERT( _p->_Context != nullptr );
+
+	_p->_Context->Destory( handle );
+}
+
+void XE::Gfx::Destory( XE::IndirectBufferHandle handle )
+{
+	XE_ASSERT( _p->_Context != nullptr );
+
+	_p->_Context->Destory( handle );
+}
+
+void XE::Gfx::Destory( XE::OcclusionQueryHandle handle )
+{
+	XE_ASSERT( _p->_Context != nullptr );
+
+	_p->_Context->Destory( handle );
+}
+
+void XE::Gfx::Destory( XE::DynamicIndexBufferHandle handle )
+{
+	XE_ASSERT( _p->_Context != nullptr );
+
+	_p->_Context->Destory( handle );
+}
+
+void XE::Gfx::Destory( XE::DynamicVertexBufferHandle handle )
+{
+	XE_ASSERT( _p->_Context != nullptr );
+
+	_p->_Context->Destory( handle );
+}
+
+void XE::Gfx::Update( const XE::UpdateTextureDesc & desc, XE::MemoryView data )
+{
+	XE_ASSERT( _p->_Context != nullptr );
+
+	return _p->_Context->Update( desc, data );
+}
+
+void XE::Gfx::Update( XE::DynamicIndexBufferHandle handle, XE::uint64 start, XE::MemoryView mem )
+{
+	XE_ASSERT( _p->_Context != nullptr );
+
+	_p->_Context->Update( handle, start, mem );
+}
+
+void XE::Gfx::Update( XE::DynamicVertexBufferHandle handle, XE::uint64 start, XE::MemoryView mem )
+{
+	XE_ASSERT( _p->_Context != nullptr );
+
+	_p->_Context->Update( handle, start, mem );
+}
+
+XE::Array<XE::UniformDesc> XE::Gfx::GetShaderUniforms( XE::ShaderHandle handle )
+{
+	XE_ASSERT( _p->_Context != nullptr );
+
+	return _p->_Context->GetShaderUniforms( handle );
+}
+
+void XE::Gfx::ReadTexture( XE::TextureHandle handle, XE::uint8 * data, XE::uint8 mip /*= 0 */ )
+{
+	XE_ASSERT( _p->_Context != nullptr );
+
+	return _p->_Context->ReadTexture( handle, data, mip );
+}
+
+XE::TextureHandle XE::Gfx::GetTexture( XE::FrameBufferHandle handle, XE::uint8 attachment /*= 0 */ )
+{
+	XE_ASSERT( _p->_Context != nullptr );
+
+	return _p->_Context->GetTexture( handle, attachment );
+}
+
+std::optional<XE::uint32> XE::Gfx::GetOcclusionQueryValue( XE::OcclusionQueryHandle handle )
+{
+	XE_ASSERT( _p->_Context != nullptr );
+
+	return _p->_Context->GetOcclusionQueryValue( handle );
+}
+
+void XE::Gfx::SetViewName( XE::ViewHandle handle, const XE::String & name )
 {
 	XE_ASSERT( _p->_Context != nullptr );
 
 	_p->_Context->SetViewName( handle, name );
 }
 
-void XE::Gfx::SetViewRect( ViewHandle handle, const XE::Rectf & rect )
+void XE::Gfx::SetViewRect( XE::ViewHandle handle, const XE::Rectf & rect )
 {
 	XE_ASSERT( _p->_Context != nullptr );
 
 	_p->_Context->SetViewRect( handle, rect );
 }
 
-void XE::Gfx::SetViewScissor( ViewHandle handle, const XE::Rectf & scissor )
+void XE::Gfx::SetViewScissor( XE::ViewHandle handle, const XE::Rectf & scissor )
 {
 	XE_ASSERT( _p->_Context != nullptr );
 
 	_p->_Context->SetViewScissor( handle, scissor );
 }
 
-void XE::Gfx::SetViewClear( const ViewClearDesc & val )
+void XE::Gfx::SetViewClear( const XE::ViewClearDesc & desc )
 {
 	XE_ASSERT( _p->_Context != nullptr );
 
-	_p->_Context->SetViewClear( val );
+	_p->_Context->SetViewClear( desc );
 }
 
-void XE::Gfx::SetViewMode( ViewHandle handle, XE::ViewMode mode /*= ViewMode::Default */ )
+void XE::Gfx::SetViewMode( XE::ViewHandle handle, XE::ViewMode mode /*= ViewMode::Default */ )
 {
 	XE_ASSERT( _p->_Context != nullptr );
 
 	_p->_Context->SetViewMode( handle, mode );
 }
 
-void XE::Gfx::SetViewFrameBuffer( ViewHandle handle, FrameBufferHandle frame )
+void XE::Gfx::SetViewFrameBuffer( XE::ViewHandle handle, FrameBufferHandle frame )
 {
 	XE_ASSERT( _p->_Context != nullptr );
 
 	_p->_Context->SetViewFrameBuffer( handle, frame );
 }
 
-void XE::Gfx::SetViewTransform( ViewHandle handle, const XE::Mat4f & model, const XE::Mat4f & view, const XE::Mat4f & proj )
+void XE::Gfx::SetViewTransform( XE::ViewHandle handle, const XE::Mat4f & model, const XE::Mat4f & view, const XE::Mat4f & proj )
 {
 	XE_ASSERT( _p->_Context != nullptr );
 
 	_p->_Context->SetViewTransform( handle, model, view, proj );
 }
 
-void XE::Gfx::RequestScreenShot( FrameBufferHandle handle, const XE::FileSystem::Path & path )
+void XE::Gfx::ResetView( XE::ViewHandle handle, const XE::ViewDesc & desc )
+{
+	XE_ASSERT( _p->_Context != nullptr );
+
+	_p->_Context->ResetView( handle, desc );
+}
+
+void XE::Gfx::RequestScreenShot( XE::FrameBufferHandle handle, const XE::FileSystem::Path & path )
 {
 	XE_ASSERT( _p->_Context != nullptr );
 

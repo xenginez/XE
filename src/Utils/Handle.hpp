@@ -13,6 +13,8 @@
 
 BEG_XE_NAMESPACE
 
+template< typename T > class Handle;
+template< typename T > class RefHandle;
 template< typename T > class HandleAllocator;
 template< typename T, XE::uint64 _Max = std::numeric_limits<XE::uint64>::max() > class QueueHandleAllocator;
 template< typename T, XE::uint64 _Max = std::numeric_limits<XE::uint64>::max() > class ConcurrentHandleAllocator;
@@ -130,6 +132,122 @@ public:
 private:
 	XE::uint64 _value;
 };
+
+
+template< typename T > class RefHandle< XE::Handle< T > >
+{
+public:
+	using value_type = XE::Handle< T >;
+	using inc_function_type = std::function< void( XE::Handle< T > ) >;
+	using dec_function_type = std::function< void( XE::Handle< T > ) >;
+
+public:
+	RefHandle()
+	{
+	}
+
+	RefHandle( std::nullptr_t )
+	{
+	}
+
+	RefHandle( const value_type & val, const inc_function_type & inc, const dec_function_type & dec )
+		:_Value( val ), _Inc( inc ), _Dec( dec )
+	{
+		_Inc( _Value );
+	}
+
+	RefHandle( const RefHandle & val )
+		:_Value( val._Value ), _Inc( val._Inc ), _Dec( val._Dec )
+	{
+		_Inc( _Value );
+	}
+
+	~RefHandle()
+	{
+		_Dec( _Value );
+	}
+
+public:
+	RefHandle & operator=( std::nullptr_t )
+	{
+		if( _Value )
+		{
+			_Dec( _Value );
+		}
+
+		_Inc = nullptr;
+		_Dec = nullptr;
+		_Value = value_type::Invalid;
+	}
+
+	RefHandle & operator=( const RefHandle & val )
+	{
+		if( _Value )
+		{
+			_Dec( _Value );
+		}
+
+		_Inc = val._Inc;
+		_Dec = val._Dec;
+		_Value = val._Value;
+
+		if( _Value )
+		{
+			_Inc( _Value );
+		}
+
+		return *this;
+	}
+
+	value_type & operator*()
+	{
+		return get();
+	}
+
+	const value_type & operator*() const
+	{
+		return get();
+	}
+
+	operator value_type & ( )
+	{
+		return get();
+	}
+
+	operator const value_type & ( ) const
+	{
+		return get();
+	}
+
+public:
+	value_type & get()
+	{
+		return _Value;
+	}
+
+	const value_type & get() const
+	{
+		return _Value;
+	}
+
+	void reset()
+	{
+		if( _Value )
+		{
+			_Dec( _Value );
+		}
+
+		_Inc = nullptr;
+		_Dec = nullptr;
+		_Value = value_type::Invalid;
+	}
+
+private:
+	value_type _Value;
+	inc_function_type _Inc;
+	dec_function_type _Dec;
+};
+
 
 template< typename T > struct VariantCreate< Handle< T > >
 {
