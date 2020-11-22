@@ -38,7 +38,7 @@ XE::Array<XE::RendererContextType> XE::Gfx::GetSupportedContext()
 	ret.push_back( XE::RendererContextType::DIRECT3D11 );
 	ret.push_back( XE::RendererContextType::VULKAN );
 	ret.push_back( XE::RendererContextType::OPENGL );
-#elif PLATFORM_OS & (OS_XBOXONE)
+#elif PLATFORM_OS & (OS_XBOX)
 	ret.push_back( XE::RendererContextType::DIRECT3D12 );
 #elif PLATFORM_OS & (OS_MAC)
 	ret.push_back( XE::RendererContextType::METAL );

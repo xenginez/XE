@@ -58,10 +58,11 @@
 #define OS_MAC			1 << 2
 #define OS_IOS			1 << 3
 #define OS_ANDROID		1 << 4
-#define OS_LINUX		1 << 5
-#define OS_UNIX			1 << 6
-#define OS_PS4			1 << 7
-#define OS_XBOXONE		1 << 8
+#define OS_PLAY_STATION	1 << 5
+#define OS_XBOX			1 << 6
+#define OS_NINTENDO		1 << 7
+#define OS_LINUX		1 << 8
+#define OS_UNIX			1 << 9
 
 #ifdef _WIN32
 #		define PLATFORM_OS OS_WINDOWS
@@ -79,7 +80,7 @@
 #elif __linux__
 #		define PLATFORM_OS OS_LINUX
 #elif __unix__
-#		define PLATFORM_OS OS_PS4
+#		define PLATFORM_OS OS_UNIX
 #else
 #   error "unknown platform"
 #endif
@@ -163,7 +164,7 @@
 
 #if PLATFORM_OS & OS_WINDOWS
 #	define DLL_EXT_NAME ".dll"
-#elif PLATFORM_OS & OS_XBOXONE
+#elif PLATFORM_OS & OS_XBOX
 #	define DLL_EXT_NAME ".dll"
 #elif PLATFORM_OS & OS_ANDROID
 #	define DLL_EXT_NAME ".so"
@@ -173,7 +174,7 @@
 #	define DLL_EXT_NAME ".dylib"
 #elif PLATFORM_OS & OS_MAC
 #	define DLL_EXT_NAME ".dylib"
-#elif PLATFORM_OS & OS_PS4
+#elif PLATFORM_OS & OS_PLAY_STATION
 #	define DLL_EXT_NAME ".so"
 #endif
 

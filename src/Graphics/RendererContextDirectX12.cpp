@@ -1,6 +1,6 @@
 #include "RendererContextDirectX12.h"
 
-#if PLATFORM_OS & (OS_WINDOWS | OS_XBOXONE)
+#if PLATFORM_OS & (OS_WINDOWS | OS_XBOX)
 
 #include <d3d12.h>
 

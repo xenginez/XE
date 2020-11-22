@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-#if PLATFORM_OS & (OS_WINDOWS | OS_XBOXONE)
+#if PLATFORM_OS & (OS_WINDOWS | OS_XBOX)
 
 class RendererContextDirectX12 : public XE::RendererContext
 {
