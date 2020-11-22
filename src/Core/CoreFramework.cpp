@@ -2,8 +2,8 @@
 
 #include <fstream>
 
-#include <rapidjson/rapidjson.h>
 #include <rapidjson/document.h>
+#include <rapidjson/rapidjson.h>
 #include <rapidjson/prettywriter.h>
 #include <rapidjson/istreamwrapper.h>
 #include <rapidjson/ostreamwrapper.h>
@@ -319,6 +319,8 @@ void XE::CoreFramework::LoadModules()
 
 void XE::CoreFramework::LoadServices()
 {
+	LoadBaseServices();
+
 	auto services = StringUtils::Split( GetString("System/Services"), "," );
 	for( auto service : services )
 	{
@@ -330,6 +332,21 @@ void XE::CoreFramework::LoadServices()
 			}
 		}
 	}
+}
+
+void XE::CoreFramework::LoadBaseServices()
+{
+	_p->_Services.push_back( XE::MakeShared< XE::TimerService >() );
+	_p->_Services.push_back( XE::MakeShared< XE::EventService >() );
+	_p->_Services.push_back( XE::MakeShared< XE::ThreadService >() );
+	_p->_Services.push_back( XE::MakeShared< XE::InputService >() );
+	_p->_Services.push_back( XE::MakeShared< XE::AudioService >() );
+	_p->_Services.push_back( XE::MakeShared< XE::WorldService >() );
+	_p->_Services.push_back( XE::MakeShared< XE::RenderService >() );
+	_p->_Services.push_back( XE::MakeShared< XE::AssetsService >() );
+	_p->_Services.push_back( XE::MakeShared< XE::PhysicsService >() );
+	_p->_Services.push_back( XE::MakeShared< XE::NavigationService >() );
+	_p->_Services.push_back( XE::MakeShared< XE::LocalizationService >() );
 }
 
 void XE::CoreFramework::Save()

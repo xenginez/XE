@@ -90,6 +90,8 @@ protected:
 
 	virtual void LoadServices();
 
+	virtual void LoadBaseServices();
+
 public:
 	void Save() override;
 
