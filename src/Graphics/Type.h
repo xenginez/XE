@@ -359,7 +359,7 @@ enum class StencilFlags : XE::uint64
 	OPPASSZMASK = 0XF0000000,
 };
 
-enum class CubeMapFlags
+enum class CubeMapFlags : XE::uint64
 {
 	NONE = 0X00000000,
 	POSITIVEX = 0X00000000,
@@ -696,10 +696,10 @@ public:
 	XE::Flags<CapsFormatFlags> SupportFormat;
 
 	PciIdFlags VendorId = PciIdFlags::NONE;
-	uint16_t DeviceId = 0;
+	XE::uint16 DeviceId = 0;
 	bool     homogeneousDepth = false;
 	bool     originBottomLeft = false;
-	uint8_t  numGPUs = 0;
+	XE::uint8  numGPUs = 0;
 
 	struct
 	{
@@ -707,26 +707,26 @@ public:
 		uint16_t DeviceId = 0;
 	} gpu[4];
 
-	uint32_t MaxDrawCalls = GFX_MAX_DRAW_CALLS;
-	uint32_t MaxBlits = GFX_MAX_BLITITEMS;
-	uint32_t MaxViews = GFX_MAX_VIEW;
-	uint32_t MaxFrameBuffers = GFX_MAX_FRAME_BUFFERS;
-	uint32_t MaxAttachments = GFX_MAX_ATTACHMENTS;
-	uint32_t MaxPrograms = GFX_MAX_PROGRAMS;
-	uint32_t MaxShaders = GFX_MAX_SHADERS;
-	uint32_t MaxTextures = GFX_MAX_TEXTURES;
-	uint32_t MaxVertexLayouts = GFX_MAX_VERTEX_LAYOUTS;
-	uint32_t MaxIndexBuffers = GFX_MAX_INDEX_BUFFERS;
-	uint32_t MaxVertexBuffers = GFX_MAX_VERTEX_BUFFERS;
-	uint32_t MaxOcclusionQueries = GFX_MAX_OCCLUSION;
+	XE::uint32 MaxDrawCalls = GFX_MAX_DRAW_CALLS;
+	XE::uint32 MaxBlits = GFX_MAX_BLITITEMS;
+	XE::uint32 MaxViews = GFX_MAX_VIEW;
+	XE::uint32 MaxFrameBuffers = GFX_MAX_FRAME_BUFFERS;
+	XE::uint32 MaxAttachments = GFX_MAX_ATTACHMENTS;
+	XE::uint32 MaxPrograms = GFX_MAX_PROGRAMS;
+	XE::uint32 MaxShaders = GFX_MAX_SHADERS;
+	XE::uint32 MaxTextures = GFX_MAX_TEXTURES;
+	XE::uint32 MaxVertexLayouts = GFX_MAX_VERTEX_LAYOUTS;
+	XE::uint32 MaxIndexBuffers = GFX_MAX_INDEX_BUFFERS;
+	XE::uint32 MaxVertexBuffers = GFX_MAX_VERTEX_BUFFERS;
+	XE::uint32 MaxOcclusionQueries = GFX_MAX_OCCLUSION;
 };
 
 struct XE_API Attachment
 {
 public:
 	TextureHandle handle;
-	uint16_t mip = 0;
-	uint16_t layer = 0;
+	XE::uint16 mip = 0;
+	XE::uint16 layer = 0;
 	bool auto_gen_mips = false;
 	Access access = Access::COUNT;
 };
@@ -744,16 +744,16 @@ public:
 	RendererContextType type = RendererContextType::NONE;
 
 	PciIdFlags vendorId = PciIdFlags::NONE;
-	uint16_t deviceId = 0;
+	XE::uint16 deviceId = 0;
 
 	WindowHandle window;
 
-	uint32_t width = 0;
-	uint32_t height = 0;
+	XE::uint32 width = 0;
+	XE::uint32 height = 0;
 	TextureFormat format = TextureFormat::RGBA8;
 	XE::Flags<ResetFlags> reset;
-	uint8_t  numBackBuffers = 0;
-	uint8_t  maxFrameLatency = 0;
+	XE::uint8  numBackBuffers = 0;
+	XE::uint8  maxFrameLatency = 0;
 };
 
 struct XE_API ViewDesc
@@ -881,8 +881,8 @@ struct XE_API DynamicVertexBufferDesc : public XE::VertexBufferDesc
 struct XE_API ViewClearDesc
 {
 	ViewHandle Handle;
-	XE::float32 Depth = 0.0f;
 	XE::uint8 Stencil = 1;
+	XE::float32 Depth = 0.0f;
 	XE::Color Color = XE::Color::Black;
 	XE::Flags< XE::ClearFlags > Flags = XE::MakeFlags( XE::ClearFlags::COLOR, XE::ClearFlags::DEPTH, XE::ClearFlags::STENCIL );
 };
