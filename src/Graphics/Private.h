@@ -45,7 +45,7 @@ enum class CommandType : XE::uint8
 	REQUEST_SCREEN_SHOT,
 };
 
-class SortKey
+struct SortKey
 {
 	// SortKey FORMAT
 	// 64bit:
@@ -111,7 +111,7 @@ private:
 };
 
 
-class GfxRefCount
+struct GfxRefCount
 {
 public:
 	virtual ~GfxRefCount() = default;
@@ -127,15 +127,8 @@ private:
 	std::atomic<XE::uint32> _Count = 0;
 };
 
-class PShader : public GfxRefCount
+struct PShader : public GfxRefCount
 {
-public:
-	PShader();
-
-	PShader( const PShader & val );
-
-	PShader & operator=( const PShader & val );
-
 public:
 	XE::uint32 HashIn;
 	XE::uint32 HashOut;
@@ -143,15 +136,8 @@ public:
 	XE::Array< UniformDesc > Uniforms;
 };
 
-class PTexture : public GfxRefCount
+struct PTexture : public GfxRefCount
 {
-public:
-	PTexture();
-
-	PTexture( const PTexture & val );
-
-	PTexture & operator=( const PTexture & val );
-
 public:
 	XE::TextureDesc Desc;
 	XE::uint32 StorageSize = 0;
@@ -159,84 +145,35 @@ public:
 	TextureFormat Format = TextureFormat::RGBA8;
 };
 
-class PProgram : public GfxRefCount
+struct PProgram : public GfxRefCount
 {
-public:
-	PProgram();
-
-	PProgram( const PProgram & val );
-
-	PProgram & operator=( const PProgram & val );
-
 public:
 	XE::ProgramDesc Desc;
 };
 
-class PFrameBuffer : public GfxRefCount
+struct PFrameBuffer : public GfxRefCount
 {
-public:
-	PFrameBuffer();
-
-	PFrameBuffer( const PFrameBuffer & val );
-
-	PFrameBuffer & operator=( const PFrameBuffer & val );
-
 public:
 	XE::FrameBufferDesc Desc;
 };
 
-class PIndexBuffer : public GfxRefCount
+struct PIndexBuffer : public GfxRefCount
 {
 public:
-	enum HandleType
-	{
-		INDEX,
-		DYNAMIC,
-		TRANSIENT,
-	};
-
-public:
-	PIndexBuffer();
-
-	PIndexBuffer( const PIndexBuffer & val );
-
-	PIndexBuffer & operator=( const PIndexBuffer & val );
-
-public:
-	HandleType Type;
 	XE::uint64 Handle;
 	XE::uint32 StartIndex;
 	XE::uint32 NumIndices;
-	union
-	{
-		XE::IndexBufferDesc Desc;
-		XE::DynamicIndexBufferDesc DDesc;
-	};
+	XE::IndexBufferDesc Desc;
 };
 
-class PVertexLayout : public GfxRefCount
+struct PVertexLayout : public GfxRefCount
 {
-public:
-	PVertexLayout();
-
-	PVertexLayout( const PVertexLayout & val );
-
-	PVertexLayout & operator=( const PVertexLayout & val );
-
 public:
 	XE::VertexLayoutDesc Desc;
 };
 
-class PVertexBuffer : public GfxRefCount
+struct PVertexBuffer : public GfxRefCount
 {
-public:
-	enum HandleType
-	{
-		VERTEX,
-		DYNAMIC,
-		TRANSIENT,
-	};
-
 public:
 	PVertexBuffer();
 
@@ -245,27 +182,15 @@ public:
 	PVertexBuffer & operator=( const PVertexBuffer & val );
 
 public:
-	HandleType Type;
 	XE::uint64 Handle;
 	XE::uint32 StartVertex;
 	XE::uint32 NumVertices;
 	VertexLayoutHandle LayoutHandle;
-	union
-	{
-		XE::VertexBufferDesc Desc;
-		XE::DynamicVertexBufferDesc DDesc;
-	};
+	XE::VertexBufferDesc Desc;
 };
 
-class PIndirectBuffer : public GfxRefCount
+struct PIndirectBuffer : public GfxRefCount
 {
-public:
-	PIndirectBuffer();
-
-	PIndirectBuffer( const PIndirectBuffer & val );
-
-	PIndirectBuffer & operator=( const PIndirectBuffer & val );
-
 public:
 	XE::uint64 Handle;
 	XE::uint32 StartIndex;
@@ -273,23 +198,35 @@ public:
 	XE::IndirectBufferDesc Desc;
 };
 
-class POcclusionQuery : public GfxRefCount
+struct POcclusionQuery : public GfxRefCount
 {
 public:
 	std::optional<XE::uint32> Value;
 	XE::OcclusionQueryDesc Desc;
 };
 
-
-class PView : public GfxRefCount
+struct PDynamicIndexBuffer : public GfxRefCount
 {
 public:
-	PView();
+	XE::uint64 Handle;
+	XE::uint32 StartIndex;
+	XE::uint32 NumIndices;
+	XE::DynamicIndexBufferDesc Desc;
+};
 
-	PView( const PView & val );
+struct PDynamicVertexBuffer : public GfxRefCount
+{
+public:
+	XE::uint64 Handle;
+	XE::uint32 StartVertex;
+	XE::uint32 NumVertices;
+	VertexLayoutHandle LayoutHandle;
+	XE::DynamicVertexBufferDesc Desc;
+};
 
-	PView & operator=( const PView & val );
 
+struct PView : public GfxRefCount
+{
 public:
 	XE::String Name;
 	XE::Color ClearColor;
@@ -307,7 +244,7 @@ public:
 };
 
 
-class RenderBind
+struct RenderBind
 {
 public:
 	enum BindType : XE::uint8
@@ -316,43 +253,29 @@ public:
 		INDEXBUFFER,
 		VERTEXBUFFER,
 		TEXTURE,
-
-		COUNT
 	};
 
 	struct Binding
 	{
-		XE::uint32 SamplerFlags;
-		XE::uint64 Handle;
 		BindType Type;
-		XE::TextureFormat Format;
-		XE::Access Access;
 		XE::uint8 Mip;
+		XE::uint64 Handle;
+		XE::Access Access;
+		XE::uint32 SamplerFlags;
+		XE::TextureFormat Format;
 	};
-
-public:
-	RenderBind();
-
-	RenderBind( const RenderBind & val );
-
-	RenderBind & operator=( const RenderBind & val );
 
 public:
 	std::array<Binding, GFX_MAX_TEXTURE_SAMPLERS> Binds;
 };
 
-class RenderDraw
+struct RenderDraw
 {
 public:
-	RenderDraw();
-
-	RenderDraw( const RenderDraw & val );
-
-	RenderDraw & operator=( const RenderDraw & val );
-
-public:
+	bool IsDynamicIndices;
 	PIndexBuffer Indices;
-	PVertexBuffer Vertices[GFX_MAX_VERTEXS];
+	bool IsDynamicVertices;
+	PVertexBuffer Vertices;
 
 	XE::Color Rgba = XE::Color::Black;
 
@@ -384,15 +307,8 @@ public:
 	XE::Flags<XE::StencilFlags> BackStencilFlags = XE::StencilFlags::NONE;
 };
 
-class RenderBlit
+struct RenderBlit
 {
-public:
-	RenderBlit();
-
-	RenderBlit( const RenderBlit & val );
-
-	RenderBlit & operator=( const RenderBlit & val );
-
 public:
 	XE::uint32 SrcX = 0;
 	XE::uint32 SrcY = 0;
@@ -410,15 +326,8 @@ public:
 	TextureHandle Dst;
 };
 
-class RenderCompute
+struct RenderCompute
 {
-public:
-	RenderCompute();
-
-	RenderCompute( const RenderCompute & val );
-
-	RenderCompute & operator=( const RenderCompute & val );
-
 public:
 	XE::uint32 UniformBegin = 0;
 	XE::uint32 UniformEnd = 0;
@@ -436,7 +345,7 @@ public:
 	XE::IndirectBufferHandle IndirectBuffer;
 };
 
-class RenderItem
+struct RenderItem
 {
 public:
 	enum class ItemType
@@ -446,24 +355,11 @@ public:
 	};
 
 public:
-	RenderItem();
-
-	RenderItem( const RenderItem & val );
-
-	RenderItem & operator=( const RenderItem & val );
-
-	~RenderItem();
-
-public:
 	ItemType Type;
-	union
-	{
-		RenderDraw Draw;
-		RenderCompute Compute;
-	};
+	XE::uint8 Data[sizeof( RenderDraw )];
 };
 
-class DestoryHandle
+struct DestoryHandle
 {
 public:
 	enum DestoryType
@@ -495,12 +391,10 @@ public:
 		XE::OcclusionQueryHandle			_OcclusionQueryHandle;
 		XE::DynamicIndexBufferHandle		_DynamicIndexBufferHandle;
 		XE::DynamicVertexBufferHandle		_DynamicVertexBufferHandle;
-		XE::TransientIndexBufferHandle		_TransientIndexBufferHandle;
-		XE::TransientVertexBufferHandle		_TransientVertexBufferHandle;
 	};
 };
 
-class RenderFrame
+struct RenderFrame
 {
 public:
 	void Reset();
@@ -509,10 +403,13 @@ public:
 	XE::Buffer PrevCmd;
 	std::mutex PrevCmdMutex;
 
-	std::atomic<XE::uint64> RenderOcclusionSize = 0;
+	std::atomic<XE::uint32> TransformsSize = 0;
+	std::array<XE::Mat4f, GFX_MAX_TRANSFORM> Transforms = {};
+
+	std::atomic<XE::uint32> RenderOcclusionSize = 0;
 	std::array<XE::int32, GFX_MAX_OCCLUSION> Occlusions = {};
 
-	std::atomic<XE::uint64> RenderItemSize = 0;
+	std::atomic<XE::uint32> RenderItemSize = 0;
 	std::array<RenderItem, GFX_MAX_DRAW_CALLS> RenderItems = {};
 	std::array<RenderBind, GFX_MAX_DRAW_CALLS> RenderBinds = {};
 	std::array<XE::uint64, GFX_MAX_DRAW_CALLS> RenderItemKeys = {};

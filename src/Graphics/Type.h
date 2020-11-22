@@ -39,6 +39,7 @@ static constexpr XE::uint32 GFX_MAX_VERTEXS = 4;
 static constexpr XE::uint32 GFX_MAX_SHADERS = 512;
 static constexpr XE::uint32 GFX_MAX_PROGRAMS = 512;
 static constexpr XE::uint32 GFX_MAX_TEXTURES = 4096;
+static constexpr XE::uint32 GFX_MAX_TRANSFORM = 512;
 static constexpr XE::uint32 GFX_MAX_OCCLUSION = 256;
 static constexpr XE::uint32 GFX_MAX_TRANSFORM = 256;
 static constexpr XE::uint32 GFX_MAX_BLITITEMS = 1024;
@@ -51,6 +52,8 @@ static constexpr XE::uint32 GFX_MAX_VERTEX_LAYOUTS = 64;
 static constexpr XE::uint32 GFX_MAX_TEXTURE_SAMPLERS = 16;
 static constexpr XE::uint32 GFX_MAX_DRAW_INDIRECT_STRIDE = 32;
 static constexpr XE::uint32 GFX_MAX_DRAW_INDIRECT_BUFFERS = 1024;
+static constexpr XE::uint32 GFX_MAX_DYNAMIC_INDEX_BUFFERS = 1024;
+static constexpr XE::uint32 GFX_MAX_DYNAMIC_VERTEX_BUFFERS = 1024;
 
 enum class CapsFlags : XE::uint64
 {

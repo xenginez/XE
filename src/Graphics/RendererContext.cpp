@@ -28,6 +28,8 @@ struct XE::RendererContext::Private
 	std::array<PVertexLayout, GFX_MAX_VERTEX_LAYOUTS> _VertexLayouts;
 	std::array<PVertexBuffer, GFX_MAX_VERTEX_BUFFERS> _VertexBuffers;
 	std::array<PIndirectBuffer, GFX_MAX_DRAW_INDIRECT_BUFFERS> _IndirectBuffers;
+	std::array<PDynamicIndexBuffer, GFX_MAX_INDEX_BUFFERS> _DynamicIndexBuffers;
+	std::array<PDynamicVertexBuffer, GFX_MAX_VERTEX_BUFFERS> _DynamicVertexBuffers;
 
 	XE::ConcurrentHandleAllocator<XE::ViewHandle, GFX_MAX_VIEW> _ViewHandleAlloc;
 	XE::ConcurrentHandleAllocator<XE::ShaderHandle, GFX_MAX_SHADERS> _ShaderHandleAlloc;
@@ -39,6 +41,8 @@ struct XE::RendererContext::Private
 	XE::ConcurrentHandleAllocator<XE::VertexLayoutHandle, GFX_MAX_VERTEX_LAYOUTS> _VertexLayoutHandleAlloc;
 	XE::ConcurrentHandleAllocator<XE::VertexBufferHandle, GFX_MAX_VERTEX_BUFFERS> _VertexBufferHandleAlloc;
 	XE::ConcurrentHandleAllocator<XE::IndirectBufferHandle, GFX_MAX_DRAW_INDIRECT_BUFFERS> _IndirectBufferHandleAlloc;
+	XE::ConcurrentHandleAllocator<XE::DynamicIndexBufferHandle, GFX_MAX_DYNAMIC_INDEX_BUFFERS>  _DynamicIndexBufferHandleAlloc;
+	XE::ConcurrentHandleAllocator<XE::DynamicVertexBufferHandle, GFX_MAX_DYNAMIC_VERTEX_BUFFERS> _DynamicVertexBufferHandleAlloc;
 };
 
 XE::RendererContext::RendererContext()
@@ -438,34 +442,94 @@ XE::VertexBufferHandle XE::RendererContext::Create( const XE::VertexBufferDesc &
 
 XE::DynamicIndexBufferHandle XE::RendererContext::Create( const XE::DynamicIndexBufferDesc & desc, XE::MemoryView Data )
 {
-	auto handle = _p->_IndexBufferHandleAlloc.Alloc();
+	auto handle = _p->_DynamicIndexBufferHandleAlloc.Alloc();
 
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
 
-	_p->_IndexBuffers[handle].Reset();
+	_p->_DynamicIndexBuffers[handle].Reset();
 
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_DYNAMIC_INDEX_BUFFER );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
 	_p->_SubmitFrame->PrevCmd.Wirte( desc );
 	_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( Data ) );
 
-	return handle.GetValue();
+	return handle;
 }
 
 XE::DynamicVertexBufferHandle XE::RendererContext::Create( const XE::DynamicVertexBufferDesc & desc, XE::MemoryView Data )
 {
-	auto handle = _p->_VertexBufferHandleAlloc.Alloc();
+	auto handle = _p->_DynamicVertexBufferHandleAlloc.Alloc();
 
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
 
-	_p->_VertexBuffers[handle].Reset();
+	_p->_DynamicVertexBuffers[handle].Reset();
 
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_DYNAMIC_VERTEX_BUFFER );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
 	_p->_SubmitFrame->PrevCmd.Wirte( desc );
 	_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( Data ) );
 
-	return handle.GetValue();
+	return handle;
+}
+
+const XE::ViewDesc & XE::RendererContext::GetDesc( XE::ViewHandle handle )
+{
+	return _p->_Views[handle].Desc;
+}
+
+const XE::ShaderDesc & XE::RendererContext::GetDesc( XE::ShaderHandle handle )
+{
+	return _p->_Shaders[handle].Desc;
+}
+
+const XE::ProgramDesc & XE::RendererContext::GetDesc( XE::ProgramHandle handle )
+{
+	return _p->_Programs[handle].Desc;
+}
+
+const XE::TextureDesc & XE::RendererContext::GetDesc( XE::TextureHandle handle )
+{
+	return _p->_Textures[handle].Desc;
+}
+
+const XE::FrameBufferDesc & XE::RendererContext::GetDesc( XE::FrameBufferHandle handle )
+{
+	return _p->_FrameBuffers[handle].Desc;
+}
+
+const XE::IndexBufferDesc & XE::RendererContext::GetDesc( XE::IndexBufferHandle handle )
+{
+	return _p->_IndexBuffers[handle].Desc;
+}
+
+const XE::VertexLayoutDesc & XE::RendererContext::GetDesc( XE::VertexLayoutHandle handle )
+{
+	return _p->_VertexLayouts[handle].Desc;
+}
+
+const XE::VertexBufferDesc & XE::RendererContext::GetDesc( XE::VertexBufferHandle handle )
+{
+	return _p->_VertexBuffers[handle].Desc;
+}
+
+const XE::IndirectBufferDesc & XE::RendererContext::GetDesc( XE::IndirectBufferHandle handle )
+{
+	return _p->_IndirectBuffers[handle].Desc;
+}
+
+const XE::OcclusionQueryDesc & XE::RendererContext::GetDesc( XE::OcclusionQueryHandle handle )
+{
+	return _p->_Occlusions[handle].Desc;
+}
+
+const XE::DynamicIndexBufferDesc & XE::RendererContext::GetDesc( XE::DynamicIndexBufferHandle handle )
+{
+	return _p->_DynamicIndexBuffers[handle].Desc;
+}
+
+const XE::DynamicVertexBufferDesc & XE::RendererContext::GetDesc( XE::DynamicVertexBufferHandle handle )
+{
+	return _p->_DynamicVertexBuffers[handle].Desc;
 }
 
 void XE::RendererContext::Destory( XE::ViewHandle handle )
@@ -709,64 +773,4 @@ XE::MemoryView XE::RendererContext::CopyToFrame( XE::MemoryView mem ) const
 	_p->_SubmitFrame->TransientBuffers.Wirte( mem.data(), mem.size() );
 
 	return XE::MemoryView( pos, mem.size() );
-}
-
-const XE::ViewDesc & XE::RendererContext::GetDesc( XE::ViewHandle handle )
-{
-	return _p->_Views[handle].Desc;
-}
-
-const XE::ShaderDesc & XE::RendererContext::GetDesc( XE::ShaderHandle handle )
-{
-	return _p->_Shaders[handle].Desc;
-}
-
-const XE::ProgramDesc & XE::RendererContext::GetDesc( XE::ProgramHandle handle )
-{
-	return _p->_Programs[handle].Desc;
-}
-
-const XE::TextureDesc & XE::RendererContext::GetDesc( XE::TextureHandle handle )
-{
-	return _p->_Textures[handle].Desc;
-}
-
-const XE::FrameBufferDesc & XE::RendererContext::GetDesc( XE::FrameBufferHandle handle )
-{
-	return _p->_FrameBuffers[handle].Desc;
-}
-
-const XE::IndexBufferDesc & XE::RendererContext::GetDesc( XE::IndexBufferHandle handle )
-{
-	return _p->_IndexBuffers[handle].Desc;
-}
-
-const XE::VertexLayoutDesc & XE::RendererContext::GetDesc( XE::VertexLayoutHandle handle )
-{
-	return _p->_VertexLayouts[handle].Desc;
-}
-
-const XE::VertexBufferDesc & XE::RendererContext::GetDesc( XE::VertexBufferHandle handle )
-{
-	return _p->_VertexBuffers[handle].Desc;
-}
-
-const XE::IndirectBufferDesc & XE::RendererContext::GetDesc( XE::IndirectBufferHandle handle )
-{
-	return _p->_IndirectBuffers[handle].Desc;
-}
-
-const XE::OcclusionQueryDesc & XE::RendererContext::GetDesc( XE::OcclusionQueryHandle handle )
-{
-	return _p->_Occlusions[handle].Desc;
-}
-
-const XE::DynamicIndexBufferDesc & XE::RendererContext::GetDesc( XE::DynamicIndexBufferHandle handle )
-{
-	return _p->_IndexBuffers[handle].DDesc;
-}
-
-const XE::DynamicVertexBufferDesc & XE::RendererContext::GetDesc( XE::DynamicVertexBufferHandle handle )
-{
-	return _p->_VertexBuffers[handle].DDesc;
 }
