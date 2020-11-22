@@ -62,7 +62,8 @@
 #define OS_XBOX			1 << 6
 #define OS_NINTENDO		1 << 7
 #define OS_LINUX		1 << 8
-#define OS_UNIX			1 << 9
+#define OS_BSD			1 << 9
+#define OS_HTML5		1 << 10
 
 #ifdef _WIN32
 #		define PLATFORM_OS OS_WINDOWS
@@ -79,8 +80,10 @@
 #		define PLATFORM_OS OS_ANDROID
 #elif __linux__
 #		define PLATFORM_OS OS_LINUX
-#elif __unix__
-#		define PLATFORM_OS OS_UNIX
+#elif __OpenBSD__
+#		define PLATFORM_OS OS_BSD
+#elif __EMSCRIPTEN__
+#		define PLATFORM_OS OS_HTML5
 #else
 #   error "unknown platform"
 #endif
