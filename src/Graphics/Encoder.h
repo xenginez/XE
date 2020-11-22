@@ -28,55 +28,81 @@ private:
 public:
 	void SetState( XE::Flags<XE::StateFlags> flags = XE::StateFlags::DEFAULT );
 
-	void SetCondition( OcclusionQueryHandle handle, bool visible );
+	void SetCondition( XE::OcclusionQueryHandle handle, bool visible );
 
 	void SetStencil( XE::Flags<XE::StencilFlags> front, XE::Flags<XE::StencilFlags> back = XE::StencilFlags::NONE );
 
 	void SetScissor( const XE::Rectf & scissor );
 
-	void SetTransform( XE::MemoryView transform );
+	void SetTransform( XE::BasicMemoryView<XE::Mat4f> transform );
 
-	void SetUniform( UniformHandle handle, XE::MemoryView mem );
+	void SetUniform( const XE::String & name, XE::int32 data );
 
-	void SetIndexBuffer( IndexBufferHandle handle, XE::uint32 first, XE::uint32 num );
+	void SetUniform( const XE::String & name, XE::uint32 data );
 
-	void SetIndexBuffer( DynamicIndexBufferHandle handle, XE::uint32 first, XE::uint32 num );
+	void SetUniform( const XE::String & name, XE::float32 data );
 
-	void SetIndexBuffer( TransientIndexBufferHandle handle, XE::uint32 first, XE::uint32 num );
+	void SetUniform( const XE::String & name, const XE::Vec2f & data );
 
-	void SetVertexBuffer( XE::uint8 stream, VertexBufferHandle handle, XE::uint32 first, XE::uint32 num, VertexLayoutHandle layout = VertexLayoutHandle::Invalid );
+	void SetUniform( const XE::String & name, const XE::Vec3f & data );
 
-	void SetVertexBuffer( XE::uint8 stream, DynamicVertexBufferHandle handle, XE::uint32 first, XE::uint32 num, VertexLayoutHandle layout = VertexLayoutHandle::Invalid );
+	void SetUniform( const XE::String & name, const XE::Vec4f & data );
 
-	void SetVertexBuffer( XE::uint8 stream, TransientVertexBufferHandle handle, XE::uint32 first, XE::uint32 num, VertexLayoutHandle layout = VertexLayoutHandle::Invalid );
+	void SetUniform( const XE::String & name, const XE::Mat3f & data );
 
-	void SetInstanceDataBuffer( VertexBufferHandle handle, XE::uint32 first, XE::uint32 num );
+	void SetUniform( const XE::String & name, const XE::Mat4f & data );
 
-	void SetInstanceDataBuffer( DynamicVertexBufferHandle handle, XE::uint32 first, XE::uint32 num );
+	void SetUniform( const XE::String & name, XE::BasicMemoryView<XE::int32> data );
 
-	void SetTexture( XE::uint8 stage, UniformHandle sampler, TextureHandle handle, bool sampler_shared = false);
+	void SetUniform( const XE::String & name, XE::BasicMemoryView <XE::uint32> data );
 
-	void SetBuffer( XE::uint8 stage, IndexBufferHandle handle, Access access );
+	void SetUniform( const XE::String & name, XE::BasicMemoryView <XE::float32> data );
 
-	void SetBuffer( XE::uint8 stage, VertexBufferHandle handle, Access access );
+	void SetUniform( const XE::String & name, XE::BasicMemoryView <XE::Vec2f> data );
 
-	void SetImage( XE::uint8 stage, TextureHandle handle, XE::uint8 mip, Access access, TextureFormat format = TextureFormat::RGBA8 );
+	void SetUniform( const XE::String & name, XE::BasicMemoryView <XE::Vec3f> data );
+
+	void SetUniform( const XE::String & name, XE::BasicMemoryView <XE::Vec4f> data );
+
+	void SetUniform( const XE::String & name, XE::BasicMemoryView <XE::Mat3f> data );
+
+	void SetUniform( const XE::String & name, XE::BasicMemoryView <XE::Mat4f> data );
+
+	void SetUniform( const XE::String & name, XE::TextureHandle data, XE::Flags<XE::SamplerFlags> flags );
+
+	void SetIndexBuffer( XE::IndexBufferHandle handle, XE::uint32 first, XE::uint32 num );
+
+	void SetIndexBuffer( XE::DynamicIndexBufferHandle handle, XE::uint32 first, XE::uint32 num );
+
+	void SetVertexBuffer( XE::uint8 stream, XE::VertexBufferHandle handle, XE::uint32 first, XE::uint32 num );
+
+	void SetVertexBuffer( XE::uint8 stream, XE::DynamicVertexBufferHandle handle, XE::uint32 first, XE::uint32 num );
+
+	void SetInstanceDataBuffer( XE::VertexBufferHandle handle, XE::uint32 first, XE::uint32 num );
+
+	void SetInstanceDataBuffer( XE::DynamicVertexBufferHandle handle, XE::uint32 first, XE::uint32 num );
+
+	void SetBuffer( XE::uint8 stage, XE::IndexBufferHandle handle, XE::Access access );
+
+	void SetBuffer( XE::uint8 stage, XE::VertexBufferHandle handle, XE::Access access );
+
+	void SetImage( XE::uint8 stage, XE::TextureHandle handle, XE::uint8 mip, XE::Access access, XE::TextureFormat format = XE::TextureFormat::RGBA8 );
 
 public:
 	void Discard();
 
-	void Submit( ViewHandle handle, RenderGroup group, ProgramHandle program, OcclusionQueryHandle query = OcclusionQueryHandle::Invalid, XE::uint32 depth = 0 );
+	void Submit( XE::ViewHandle handle, XE::RenderGroup group, XE::ProgramHandle program, XE::OcclusionQueryHandle query = XE::OcclusionQueryHandle::Invalid, XE::uint32 depth = 0 );
 
-	void Submit( ViewHandle handle, RenderGroup group, ProgramHandle program, IndirectBufferHandle indirect, XE::uint32 first, XE::uint32 num, XE::uint32 depth = 0 );
+	void Submit( XE::ViewHandle handle, XE::RenderGroup group, XE::ProgramHandle program, XE::IndirectBufferHandle indirect, XE::uint32 first, XE::uint32 num, XE::uint32 depth = 0 );
 
-	void Dispatch( ViewHandle handle, ProgramHandle program, XE::uint32 numX = 1, XE::uint32 numY = 1, XE::uint32 numZ = 1 );
+	void Dispatch( XE::ViewHandle handle, XE::ProgramHandle program, XE::uint32 numX = 1, XE::uint32 numY = 1, XE::uint32 numZ = 1 );
 
-	void Dispatch( ViewHandle handle, ProgramHandle program, IndirectBufferHandle indirect, XE::uint32 first, XE::uint32 num );
+	void Dispatch( XE::ViewHandle handle, XE::ProgramHandle program, XE::IndirectBufferHandle indirect, XE::uint32 first, XE::uint32 num );
 
 public:
-	void Blit( ViewHandle handle,
-			   TextureHandle dst, XE::uint8 dst_mip, XE::uint32 dst_x, XE::uint32 dst_y, XE::uint32 dst_z,
-			   TextureHandle src, XE::uint8 src_mip, XE::uint32 src_x, XE::uint32 src_y, XE::uint32 src_z,
+	void Blit( XE::ViewHandle handle,
+			   XE::TextureHandle dst, XE::uint8 dst_mip, XE::uint32 dst_x, XE::uint32 dst_y, XE::uint32 dst_z,
+			   XE::TextureHandle src, XE::uint8 src_mip, XE::uint32 src_x, XE::uint32 src_y, XE::uint32 src_z,
 			   XE::uint32 width, XE::uint32 height, XE::uint32 depth );
 
 private:
