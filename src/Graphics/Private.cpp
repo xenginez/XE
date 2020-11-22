@@ -138,8 +138,6 @@ void XE::RenderFrame::Reset()
 	PostCmd.Reset();
 	DestoryCmd.Reset();
 	TransientBuffers.Reset();
-	TransientIndexBufferHandleAlloc.Reset();
-	TransientVertexBufferHandleAlloc.Reset();
 }
 
 XE::RenderItem::RenderItem()
@@ -235,7 +233,7 @@ XE::PVertexLayout::PVertexLayout()
 
 }
 
-XE::PVertexLayout::PVertexLayout( const PInstanceDataBuffer & val )
+XE::PVertexLayout::PVertexLayout( const PVertexLayout & val )
 {
 
 }
@@ -308,34 +306,18 @@ XE::PIndirectBuffer & XE::PIndirectBuffer::operator=( const PIndirectBuffer & va
 
 }
 
-XE::PInstanceDataBuffer::PInstanceDataBuffer()
+
+XE::PView::PView()
 {
 
 }
 
-XE::PInstanceDataBuffer::PInstanceDataBuffer( const PInstanceDataBuffer & val )
+XE::PView::PView( const PView & val )
 {
 
 }
 
-XE::PInstanceDataBuffer & XE::PInstanceDataBuffer::operator=( const PInstanceDataBuffer & val )
-{
-
-	return *this;
-}
-
-
-XE::View::View()
-{
-
-}
-
-XE::View::View( const View & val )
-{
-
-}
-
-XE::View & XE::View::operator=( const View & val )
+XE::PView & XE::PView::operator=( const PView & val )
 {
 
 	return *this;

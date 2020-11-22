@@ -33,8 +33,6 @@ DECL_HANDLE( XE_API, IndirectBuffer );
 DECL_HANDLE( XE_API, OcclusionQuery );
 DECL_HANDLE( XE_API, DynamicIndexBuffer );
 DECL_HANDLE( XE_API, DynamicVertexBuffer );
-DECL_HANDLE( XE_API, TransientIndexBuffer );
-DECL_HANDLE( XE_API, TransientVertexBuffer );
 
 static constexpr XE::uint32 GFX_MAX_VIEW = 256;
 static constexpr XE::uint32 GFX_MAX_VERTEXS = 4;
@@ -711,34 +709,26 @@ public:
 
 	uint32_t MaxDrawCalls = GFX_MAX_DRAW_CALLS;
 	uint32_t MaxBlits = GFX_MAX_BLITITEMS;
-	uint32_t MaxTextureSize = 0;
-	uint32_t MaxTextureLayers = 1;
 	uint32_t MaxViews = GFX_MAX_VIEW;
 	uint32_t MaxFrameBuffers = GFX_MAX_FRAME_BUFFERS;
-	uint32_t MaxFBAttachments = GFX_MAX_ATTACHMENTS;
+	uint32_t MaxAttachments = GFX_MAX_ATTACHMENTS;
 	uint32_t MaxPrograms = GFX_MAX_PROGRAMS;
 	uint32_t MaxShaders = GFX_MAX_SHADERS;
 	uint32_t MaxTextures = GFX_MAX_TEXTURES;
-	uint32_t MaxTextureSamplers = GFX_MAX_TEXTURE_SAMPLERS;
-	uint32_t MaxComputeBindings = 0;
 	uint32_t MaxVertexLayouts = GFX_MAX_VERTEX_LAYOUTS;
-	uint32_t MaxVertexStreams = 1;
 	uint32_t MaxIndexBuffers = GFX_MAX_INDEX_BUFFERS;
 	uint32_t MaxVertexBuffers = GFX_MAX_VERTEX_BUFFERS;
-	uint32_t MaxDynamicIndexBuffers = GFX_MAX_DYNAMIC_INDEX_BUFFERS;
-	uint32_t MaxDynamicVertexBuffers = GFX_MAX_DYNAMIC_VERTEX_BUFFERS;
-	uint32_t MaxUniforms = GFX_MAX_UNIFORMS;
 	uint32_t MaxOcclusionQueries = GFX_MAX_OCCLUSION;
 };
 
 struct XE_API Attachment
 {
 public:
-	Access access = Access::COUNT;
 	TextureHandle handle;
 	uint16_t mip = 0;
 	uint16_t layer = 0;
 	bool auto_gen_mips = false;
+	Access access = Access::COUNT;
 };
 
 struct XE_API VertexLayout
@@ -829,8 +819,17 @@ struct XE_API FrameBufferDesc
 	XE::String Name;
 	XE::uint32 Width = 0;
 	XE::uint32 Height = 0;
-	TextureFormat Format = TextureFormat::RGBA8;
+	XE::WindowHandle Window;
+	Attachment Attachments[GFX_MAX_ATTACHMENTS];
+	TextureFormat DepthFormat = TextureFormat::D24S8;
 	XE::Flags< XE::SamplerFlags > Samplers = XE::SamplerFlags::NONE;
+};
+
+struct XE_API IndexBufferDesc
+{
+	XE::String Name;
+	XE::uint64 Size = 0;
+	XE::Flags< XE::BufferFlags > Flags = XE::BufferFlags::NONE;
 };
 
 struct XE_API VertexLayoutDesc
@@ -857,28 +856,26 @@ struct XE_API UpdateTextureDesc
 	XE::uint32 Depth = 0;
 };
 
-struct XE_API FrameBufferFromWindowDesc
+struct XE_API IndirectBufferDesc
 {
 	XE::String Name;
-	XE::uint32 Width = 0;
-	XE::uint32 Height = 0;
-	XE::WindowHandle Window;
-	TextureFormat ColorFormat = TextureFormat::RGBA8;
-	TextureFormat DepthFormat = TextureFormat::D24S8;
+	XE::uint64 Size = 0;
+	XE::Flags< XE::BufferFlags > Flags = XE::BufferFlags::NONE;
 };
 
-struct XE_API FrameBufferFromTextureDesc
+struct XE_API OcclusionQueryDesc
 {
-	XE::String Name;
-	TextureHandle Textures[GFX_MAX_ATTACHMENTS];
-	bool DestoryTexture = false;
+
 };
 
-struct XE_API FrameBufferFromAttachmentDesc
+struct XE_API DynamicIndexBufferDesc : public IndexBufferDesc
 {
-	XE::String Name;
-	Attachment Attachments[GFX_MAX_ATTACHMENTS];
-	bool DestoryTexture = false;
+
+};
+
+struct XE_API DynamicVertexBufferDesc : public XE::VertexBufferDesc
+{
+
 };
 
 struct XE_API ViewClearDesc

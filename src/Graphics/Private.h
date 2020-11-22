@@ -182,9 +182,7 @@ public:
 	PFrameBuffer & operator=( const PFrameBuffer & val );
 
 public:
-	XE::String Name;
-	WindowHandle Window;
-	TextureHandle Textures[GFX_MAX_ATTACHMENTS];
+	XE::FrameBufferDesc Desc;
 };
 
 class PIndexBuffer : public GfxRefCount
@@ -209,6 +207,11 @@ public:
 	XE::uint64 Handle;
 	XE::uint32 StartIndex;
 	XE::uint32 NumIndices;
+	union
+	{
+		XE::IndexBufferDesc Desc;
+		XE::DynamicIndexBufferDesc DDesc;
+	};
 };
 
 class PVertexLayout : public GfxRefCount
@@ -216,7 +219,7 @@ class PVertexLayout : public GfxRefCount
 public:
 	PVertexLayout();
 
-	PVertexLayout( const PInstanceDataBuffer & val );
+	PVertexLayout( const PVertexLayout & val );
 
 	PVertexLayout & operator=( const PVertexLayout & val );
 
@@ -247,6 +250,11 @@ public:
 	XE::uint32 StartVertex;
 	XE::uint32 NumVertices;
 	VertexLayoutHandle LayoutHandle;
+	union
+	{
+		XE::VertexBufferDesc Desc;
+		XE::DynamicVertexBufferDesc DDesc;
+	};
 };
 
 class PIndirectBuffer : public GfxRefCount
@@ -262,39 +270,25 @@ public:
 	XE::uint64 Handle;
 	XE::uint32 StartIndex;
 	XE::uint32 NumIndices;
+	XE::IndirectBufferDesc Desc;
 };
 
 class POcclusionQuery : public GfxRefCount
 {
 public:
 	std::optional<XE::uint32> Value;
-};
-
-class PInstanceDataBuffer : public GfxRefCount
-{
-public:
-	PInstanceDataBuffer();
-
-	PInstanceDataBuffer( const PInstanceDataBuffer & val );
-
-	PInstanceDataBuffer & operator=( const PInstanceDataBuffer & val );
-
-public:
-	uint32_t num = 0;
-	uint16_t stride = 0;
-	uint32_t offset = 0;
-	VertexBufferHandle handle;
+	XE::OcclusionQueryDesc Desc;
 };
 
 
-class View : public GfxRefCount
+class PView : public GfxRefCount
 {
 public:
-	View();
+	PView();
 
-	View( const View & val );
+	PView( const PView & val );
 
-	View & operator=( const View & val );
+	PView & operator=( const PView & val );
 
 public:
 	XE::String Name;
@@ -309,6 +303,7 @@ public:
 	XE::Mat4f ProjMat;
 	ViewMode Mode = XE::ViewMode::DEFAULT;
 	FrameBufferHandle Handle;
+	XE::ViewDesc Desc;
 };
 
 

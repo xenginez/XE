@@ -45,60 +45,54 @@ public:
 	void Present();
 
 public:
-	XE::OcclusionQueryHandle CreateOcclusionQuery();
+	XE::RefHandle < XE::ViewHandle > Create( const XE::ViewDesc & desc );
 
-	XE::ViewHandle CreateView( const XE::ViewDesc & val );
+	XE::RefHandle < XE::ProgramHandle > Create( const XE::ProgramDesc & desc );
 
-	XE::ProgramHandle CreateProgram( const XE::ProgramDesc & desc );
-	
-	XE::IndirectBufferHandle CreateIndirectBuffer( const XE::BufferDesc & desc );
+	XE::RefHandle < XE::FrameBufferHandle > Create( const XE::FrameBufferDesc & desc );
 
-	XE::VertexLayoutHandle CreateVertexLayout( const XE::VertexLayoutDesc & desc );
+	XE::RefHandle < XE::VertexLayoutHandle > Create( const XE::VertexLayoutDesc & desc );
 
-	XE::ShaderHandle CreateShader( const XE::ShaderDesc & desc, XE::MemoryView data );
+	XE::RefHandle < XE::OcclusionQueryHandle > Create( const OcclusionQueryDesc & desc );
 
-	XE::TextureHandle CreateTexture( const XE::TextureDesc & desc, XE::MemoryView data );
+	XE::RefHandle < XE::IndirectBufferHandle > Create( const XE::IndirectBufferDesc & desc );
 
-	XE::FrameBufferHandle CreateFrameBuffer( const XE::FrameBufferDesc & val );
+	XE::RefHandle < XE::ShaderHandle > Create( const XE::ShaderDesc & desc, XE::MemoryView data );
 
-	XE::FrameBufferHandle CreateFrameBuffer( const XE::FrameBufferFromWindowDesc & val );
+	XE::RefHandle < XE::TextureHandle > Create( const XE::TextureDesc & desc, XE::MemoryView data );
 
-	XE::FrameBufferHandle CreateFrameBuffer( const XE::FrameBufferFromTextureDesc & val );
+	XE::RefHandle < XE::IndexBufferHandle > Create( const XE::IndexBufferDesc & desc, XE::MemoryView data );
 
-	XE::FrameBufferHandle CreateFrameBuffer( const XE::FrameBufferFromAttachmentDesc & val );
+	XE::RefHandle < XE::VertexBufferHandle > Create( const XE::VertexBufferDesc & desc, XE::MemoryView data );
 
-	XE::IndexBufferHandle CreateIndexBuffer( const XE::BufferDesc & desc, XE::MemoryView data );
+	XE::RefHandle < XE::DynamicIndexBufferHandle > Create( const XE::DynamicIndexBufferDesc & desc, XE::MemoryView data );
 
-	XE::VertexBufferHandle CreateVertexBuffer( const XE::VertexBufferDesc & desc, XE::MemoryView data );
-
-	XE::DynamicIndexBufferHandle CreateDynamicIndexBuffer( const XE::BufferDesc & desc, XE::MemoryView data );
-
-	XE::DynamicVertexBufferHandle CreateDynamicVertexBuffer( const XE::VertexBufferDesc & desc, XE::MemoryView data );
+	XE::RefHandle < XE::DynamicVertexBufferHandle > Create( const XE::DynamicVertexBufferDesc & desc, XE::MemoryView data );
 
 public:
-	void Destory( XE::ViewHandle handle );
+	const XE::ViewDesc & GetDesc( XE::ViewHandle handle );
 
-	void Destory( XE::ShaderHandle handle );
+	const XE::ShaderDesc & GetDesc( XE::ShaderHandle handle );
 
-	void Destory( XE::ProgramHandle handle );
+	const XE::ProgramDesc & GetDesc( XE::ProgramHandle handle );
 
-	void Destory( XE::TextureHandle handle );
+	const XE::TextureDesc & GetDesc( XE::TextureHandle handle );
 
-	void Destory( XE::FrameBufferHandle handle );
+	const XE::FrameBufferDesc & GetDesc( XE::FrameBufferHandle handle );
 
-	void Destory( XE::IndexBufferHandle handle );
+	const XE::IndexBufferDesc & GetDesc( XE::IndexBufferHandle handle );
 
-	void Destory( XE::VertexLayoutHandle handle );
+	const XE::VertexLayoutDesc & GetDesc( XE::VertexLayoutHandle handle );
 
-	void Destory( XE::VertexBufferHandle handle );
+	const XE::VertexBufferDesc & GetDesc( XE::VertexBufferHandle handle );
 
-	void Destory( XE::IndirectBufferHandle handle );
+	const XE::IndirectBufferDesc & GetDesc( XE::IndirectBufferHandle handle );
 
-	void Destory( XE::OcclusionQueryHandle handle );
+	const XE::OcclusionQueryDesc & GetDesc( XE::OcclusionQueryHandle handle );
 
-	void Destory( XE::DynamicIndexBufferHandle handle );
+	const XE::DynamicIndexBufferDesc & GetDesc( XE::DynamicIndexBufferHandle handle );
 
-	void Destory( XE::DynamicVertexBufferHandle handle );
+	const XE::DynamicVertexBufferDesc & GetDesc( XE::DynamicVertexBufferHandle handle );
 
 public:
 	void Update( const XE::UpdateTextureDesc & desc, XE::MemoryView data );
