@@ -36,6 +36,7 @@ public:
 
 	void SetTransform( XE::BasicMemoryView<XE::Mat4f> transform );
 
+public:
 	void SetUniform( const XE::String & name, XE::int32 data );
 
 	void SetUniform( const XE::String & name, XE::uint32 data );
@@ -54,22 +55,21 @@ public:
 
 	void SetUniform( const XE::String & name, XE::BasicMemoryView<XE::int32> data );
 
-	void SetUniform( const XE::String & name, XE::BasicMemoryView <XE::uint32> data );
+	void SetUniform( const XE::String & name, XE::BasicMemoryView<XE::uint32> data );
 
-	void SetUniform( const XE::String & name, XE::BasicMemoryView <XE::float32> data );
+	void SetUniform( const XE::String & name, XE::BasicMemoryView<XE::float32> data );
 
-	void SetUniform( const XE::String & name, XE::BasicMemoryView <XE::Vec2f> data );
+	void SetUniform( const XE::String & name, XE::BasicMemoryView<XE::Vec2f> data );
 
-	void SetUniform( const XE::String & name, XE::BasicMemoryView <XE::Vec3f> data );
+	void SetUniform( const XE::String & name, XE::BasicMemoryView<XE::Vec3f> data );
 
-	void SetUniform( const XE::String & name, XE::BasicMemoryView <XE::Vec4f> data );
+	void SetUniform( const XE::String & name, XE::BasicMemoryView<XE::Vec4f> data );
 
-	void SetUniform( const XE::String & name, XE::BasicMemoryView <XE::Mat3f> data );
+	void SetUniform( const XE::String & name, XE::BasicMemoryView<XE::Mat3f> data );
 
-	void SetUniform( const XE::String & name, XE::BasicMemoryView <XE::Mat4f> data );
+	void SetUniform( const XE::String & name, XE::BasicMemoryView<XE::Mat4f> data );
 
-	void SetUniform( const XE::String & name, XE::TextureHandle data, XE::Flags<XE::SamplerFlags> flags );
-
+public:
 	void SetIndexBuffer( XE::IndexBufferHandle handle, XE::uint32 first, XE::uint32 num );
 
 	void SetIndexBuffer( XE::DynamicIndexBufferHandle handle, XE::uint32 first, XE::uint32 num );
@@ -82,11 +82,18 @@ public:
 
 	void SetInstanceDataBuffer( XE::DynamicVertexBufferHandle handle, XE::uint32 first, XE::uint32 num );
 
-	void SetBuffer( XE::uint8 stage, XE::IndexBufferHandle handle, XE::Access access );
+public:
+	void SetBind( XE::uint8 stage, XE::IndexBufferHandle handle, XE::Access access );
 
-	void SetBuffer( XE::uint8 stage, XE::VertexBufferHandle handle, XE::Access access );
+	void SetBind( XE::uint8 stage, XE::VertexBufferHandle handle, XE::Access access );
 
-	void SetImage( XE::uint8 stage, XE::TextureHandle handle, XE::uint8 mip, XE::Access access, XE::TextureFormat format = XE::TextureFormat::RGBA8 );
+	void SetBind( XE::uint8 stage, XE::DynamicIndexBufferHandle handle, XE::Access access );
+
+	void SetBind( XE::uint8 stage, XE::DynamicVertexBufferHandle handle, XE::Access access );
+
+	void SetBind( XE::uint8 stage, const XE::String & uniformname, XE::TextureHandle data, XE::Flags<XE::SamplerFlags> flags );
+
+	void SetBind( XE::uint8 stage, XE::TextureHandle handle, XE::uint8 mip, XE::Access access, XE::TextureFormat format = XE::TextureFormat::RGBA8 );
 
 public:
 	void Discard();

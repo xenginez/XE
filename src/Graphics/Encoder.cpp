@@ -20,7 +20,7 @@ struct XE::Encoder::Private
 	XE::RenderBind _Bind;
 	XE::RenderDraw _Draw;
 	XE::RenderCompute _Compute;
-	XE::Map<UniformHandle, XE::MemoryView> _Uniforms;
+	XE::Map<XE::String, XE::PUniform> _Uniforms;
 };
 
 XE::Encoder::Encoder()
@@ -60,9 +60,9 @@ void XE::Encoder::SetScissor( const XE::Rectf & scissor )
 	_p->_Draw.Scissor = scissor;
 }
 
-void XE::Encoder::SetTransform( XE::MemoryView transform )
+void XE::Encoder::SetTransform( XE::BasicMemoryView<XE::Mat4f>  transform )
 {
-	XE::uint64 start = _p->_Frame->TransformsSize;
+	XE::uint32 start = 0;
 
 	while( !_p->_Frame->TransformsSize.compare_exchange_weak( start, start + transform.size() ) );
 
@@ -72,60 +72,36 @@ void XE::Encoder::SetTransform( XE::MemoryView transform )
 	_p->_Draw.NumMatrices = transform.size();
 }
 
-void XE::Encoder::SetUniform( UniformHandle handle, XE::MemoryView mem )
-{
-	_p->_Uniforms[handle] = CopyToFrame( _p->_Frame, mem );
-}
-
 void XE::Encoder::SetIndexBuffer( IndexBufferHandle handle, XE::uint32 first, XE::uint32 num )
 {
-	_p->_Draw.Indices.Type = PIndexBuffer::HandleType::INDEX;
 	_p->_Draw.Indices.Handle = handle.GetValue();
 	_p->_Draw.Indices.StartIndex = first;
 	_p->_Draw.Indices.NumIndices = num;
+	_p->_Draw.IsDynamicIndices = false;
 }
 
 void XE::Encoder::SetIndexBuffer( DynamicIndexBufferHandle handle, XE::uint32 first, XE::uint32 num )
 {
-	_p->_Draw.Indices.Type = PIndexBuffer::HandleType::DYNAMIC;
 	_p->_Draw.Indices.Handle = handle.GetValue();
 	_p->_Draw.Indices.StartIndex = first;
 	_p->_Draw.Indices.NumIndices = num;
+	_p->_Draw.IsDynamicIndices = true;
 }
 
-void XE::Encoder::SetIndexBuffer( TransientIndexBufferHandle handle, XE::uint32 first, XE::uint32 num )
+void XE::Encoder::SetVertexBuffer( XE::uint8 stream, VertexBufferHandle handle, XE::uint32 first, XE::uint32 num )
 {
-	_p->_Draw.Indices.Type = PIndexBuffer::HandleType::TRANSIENT;
-	_p->_Draw.Indices.Handle = handle.GetValue();
-	_p->_Draw.Indices.StartIndex = first;
-	_p->_Draw.Indices.NumIndices = num;
-}
-
-void XE::Encoder::SetVertexBuffer( XE::uint8 stream, VertexBufferHandle handle, XE::uint32 first, XE::uint32 num, VertexLayoutHandle layout /*= VertexLayoutHandle::Invalid */ )
-{
-	_p->_Draw.Vertices[stream].Type = PVertexBuffer::HandleType::VERTEX;
 	_p->_Draw.Vertices[stream].Handle = handle.GetValue();
-	_p->_Draw.Vertices[stream].LayoutHandle = layout;
 	_p->_Draw.Vertices[stream].StartVertex = first;
 	_p->_Draw.Vertices[stream].NumVertices = num;
+	_p->_Draw.IsDynamicVertices[stream] = false;
 }
 
-void XE::Encoder::SetVertexBuffer( XE::uint8 stream, DynamicVertexBufferHandle handle, XE::uint32 first, XE::uint32 num, VertexLayoutHandle layout /*= VertexLayoutHandle::Invalid */ )
+void XE::Encoder::SetVertexBuffer( XE::uint8 stream, DynamicVertexBufferHandle handle, XE::uint32 first, XE::uint32 num )
 {
-	_p->_Draw.Vertices[stream].Type = PVertexBuffer::HandleType::DYNAMIC;
 	_p->_Draw.Vertices[stream].Handle = handle.GetValue();
-	_p->_Draw.Vertices[stream].LayoutHandle = layout;
 	_p->_Draw.Vertices[stream].StartVertex = first;
 	_p->_Draw.Vertices[stream].NumVertices = num;
-}
-
-void XE::Encoder::SetVertexBuffer( XE::uint8 stream, TransientVertexBufferHandle handle, XE::uint32 first, XE::uint32 num, VertexLayoutHandle layout /*= VertexLayoutHandle::Invalid */ )
-{
-	_p->_Draw.Vertices[stream].Type = PVertexBuffer::HandleType::TRANSIENT;
-	_p->_Draw.Vertices[stream].Handle = handle.GetValue();
-	_p->_Draw.Vertices[stream].LayoutHandle = layout;
-	_p->_Draw.Vertices[stream].StartVertex = first;
-	_p->_Draw.Vertices[stream].NumVertices = num;
+	_p->_Draw.IsDynamicVertices[stream] = true;
 }
 
 void XE::Encoder::SetInstanceDataBuffer( VertexBufferHandle handle, XE::uint32 first, XE::uint32 num )
@@ -133,23 +109,18 @@ void XE::Encoder::SetInstanceDataBuffer( VertexBufferHandle handle, XE::uint32 f
 	_p->_Draw.InstanceDataBuffer = handle;
 	_p->_Draw.InstanceDataOffset = first;
 	_p->_Draw.NumInstances = num;
+	_p->_Draw.IsDynamicInstanceDataBuffer = false;
 }
 
 void XE::Encoder::SetInstanceDataBuffer( DynamicVertexBufferHandle handle, XE::uint32 first, XE::uint32 num )
 {
-	_p->_Draw.DynamicInstanceDataBuffer = handle;
+	_p->_Draw.InstanceDataBuffer = handle.GetValue();
 	_p->_Draw.InstanceDataOffset = first;
 	_p->_Draw.NumInstances = num;
+	_p->_Draw.IsDynamicInstanceDataBuffer = true;
 }
 
-void XE::Encoder::SetTexture( XE::uint8 stage, UniformHandle sampler, TextureHandle handle, bool sampler_shared /*= false */ )
-{
-	_p->_Bind.Binds[stage].Handle = handle.GetValue();
-	_p->_Bind.Binds[stage].Type = RenderBind::BindType::TEXTURE;
-	_p->_Bind.Binds[stage].SamplerFlags = sampler_shared;
-}
-
-void XE::Encoder::SetBuffer( XE::uint8 stage, IndexBufferHandle handle, Access access )
+void XE::Encoder::SetBind( XE::uint8 stage, IndexBufferHandle handle, Access access )
 {
 	_p->_Bind.Binds[stage].Handle = handle.GetValue();
 	_p->_Bind.Binds[stage].Type = RenderBind::BindType::INDEXBUFFER;
@@ -157,7 +128,7 @@ void XE::Encoder::SetBuffer( XE::uint8 stage, IndexBufferHandle handle, Access a
 	_p->_Bind.Binds[stage].Mip = 0;
 }
 
-void XE::Encoder::SetBuffer( XE::uint8 stage, VertexBufferHandle handle, Access access )
+void XE::Encoder::SetBind( XE::uint8 stage, VertexBufferHandle handle, Access access )
 {
 	_p->_Bind.Binds[stage].Handle = handle.GetValue();
 	_p->_Bind.Binds[stage].Type = RenderBind::BindType::VERTEXBUFFER;
@@ -165,7 +136,32 @@ void XE::Encoder::SetBuffer( XE::uint8 stage, VertexBufferHandle handle, Access 
 	_p->_Bind.Binds[stage].Mip = 0;
 }
 
-void XE::Encoder::SetImage( XE::uint8 stage, TextureHandle handle, XE::uint8 mip, Access access, TextureFormat format /*= TextureFormat::COUNT */ )
+void XE::Encoder::SetBind( XE::uint8 stage, DynamicIndexBufferHandle handle, Access access )
+{
+	_p->_Bind.Binds[stage].Handle = handle.GetValue();
+	_p->_Bind.Binds[stage].Type = RenderBind::BindType::DYNAMICINDEXBUFFER;
+	_p->_Bind.Binds[stage].Access = access;
+	_p->_Bind.Binds[stage].Mip = 0;
+}
+
+void XE::Encoder::SetBind( XE::uint8 stage, DynamicVertexBufferHandle handle, Access access )
+{
+	_p->_Bind.Binds[stage].Handle = handle.GetValue();
+	_p->_Bind.Binds[stage].Type = RenderBind::BindType::DYNAMICVERTEXBUFFER;
+	_p->_Bind.Binds[stage].Access = access;
+	_p->_Bind.Binds[stage].Mip = 0;
+}
+
+void XE::Encoder::SetBind( XE::uint8 stage, const XE::String & uniformname, TextureHandle handle, XE::Flags<XE::SamplerFlags> flags )
+{
+	_p->_Bind.Binds[stage].Handle = handle.GetValue();
+	_p->_Bind.Binds[stage].Type = RenderBind::BindType::TEXTURE;
+	_p->_Bind.Binds[stage].SamplerFlags = flags.GetValue();
+
+	_p->_Uniforms[uniformname] = { uniformname, 1, ( XE::uint32 )stage, XE::UniformType::SAMPLER };
+}
+
+void XE::Encoder::SetBind( XE::uint8 stage, TextureHandle handle, XE::uint8 mip, Access access, TextureFormat format /*= TextureFormat::COUNT */ )
 {
 	_p->_Bind.Binds[stage].Handle = handle.GetValue();
 	_p->_Bind.Binds[stage].Type = RenderBind::BindType::IMAGE;
@@ -176,9 +172,9 @@ void XE::Encoder::SetImage( XE::uint8 stage, TextureHandle handle, XE::uint8 mip
 
 void XE::Encoder::Discard()
 {
-	_p->_Bind;
-	_p->_Draw = {};
-	_p->_Compute = {};
+	_p->_Bind.Reset();
+	_p->_Draw.Reset();
+	_p->_Compute.Reset();
 }
 
 void XE::Encoder::Submit( ViewHandle handle, RenderGroup group, ProgramHandle program, OcclusionQueryHandle query /*= OcclusionQueryHandle::Invalid*/, XE::uint32 depth /*= 0*/ )
@@ -192,21 +188,15 @@ void XE::Encoder::Submit( ViewHandle handle, RenderGroup group, ProgramHandle pr
 
 	if( query )
 	{
-//		_p->_Draw.StateFlags |= StateFlags::INTERNAL_OCCLUSION_QUERY;
 		_p->_Draw.OcclusionQuery = query;
 	}
 	
 	{
-		std::unique_lock<std::mutex> lock( _p->_Frame->UniformBufferMutex );
-
-		_p->_Draw.UniformBegin = _p->_Frame->UniformBuffers.WirtePos();
-		for( const auto & it : _p->_Uniforms )
+		int i = 0;
+		for( auto it = _p->_Uniforms.begin(); it != _p->_Uniforms.end(); ++it, ++i )
 		{
-			_p->_Frame->UniformBuffers.Wirte( it.first );
-			_p->_Frame->UniformBuffers.Wirte( it.second.size() );
-			_p->_Frame->UniformBuffers.Wirte( it.second.data(), it.second.size() );
+			_p->_Draw.Uniforms[i] = std::move( it->second );
 		}
-		_p->_Draw.UniformEnd = _p->_Frame->UniformBuffers.WirtePos();
 	}
 	
 	XE::uint64 key = 0;
@@ -229,8 +219,8 @@ void XE::Encoder::Submit( ViewHandle handle, RenderGroup group, ProgramHandle pr
 
 	auto & item = _p->_Frame->RenderItems[index];
 	item.Type = RenderItem::ItemType::DRAW;
-	item.Draw = _p->_Draw;
-
+	std::memcpy( item.Data, &_p->_Draw, sizeof( XE::RenderDraw ) );
+	
 	_p->_Frame->RenderBinds[index] = std::move( _p->_Bind );
 
 	Discard();
@@ -248,16 +238,11 @@ void XE::Encoder::Submit( ViewHandle handle, RenderGroup group, ProgramHandle pr
 void XE::Encoder::Dispatch( ViewHandle handle, ProgramHandle program, XE::uint32 numX /*= 1*/, XE::uint32 numY /*= 1*/, XE::uint32 numZ /*= 1 */ )
 {
 	{
-		std::unique_lock<std::mutex> lock( _p->_Frame->UniformBufferMutex );
-
-		_p->_Compute.UniformBegin = _p->_Frame->UniformBuffers.WirtePos();
-		for( const auto & it : _p->_Uniforms )
+		int i = 0;
+		for( auto it = _p->_Uniforms.begin(); it != _p->_Uniforms.end(); ++it, ++i )
 		{
-			_p->_Frame->UniformBuffers.Wirte( it.first );
-			_p->_Frame->UniformBuffers.Wirte( it.second.size() );
-			_p->_Frame->UniformBuffers.Wirte( it.second.data(), it.second.size() );
+			_p->_Draw.Uniforms[i] = std::move( it->second );
 		}
-		_p->_Compute.UniformEnd = _p->_Frame->UniformBuffers.WirtePos();
 	}
 
 	_p->_Compute.StartMatrix = _p->_Draw.StartMatrix;
@@ -286,7 +271,7 @@ void XE::Encoder::Dispatch( ViewHandle handle, ProgramHandle program, XE::uint32
 
 	auto & item = _p->_Frame->RenderItems[index];
 	item.Type = RenderItem::ItemType::COMPUTE;
-	item.Compute = std::move( _p->_Compute );
+	std::memcpy( item.Data, &_p->_Compute, sizeof( XE::RenderCompute ) );
 
 	_p->_Frame->RenderBinds[index] = std::move( _p->_Bind );
 
@@ -328,4 +313,177 @@ void XE::Encoder::Blit( ViewHandle handle, TextureHandle dst, XE::uint8 dst_mip,
 	XE::uint32 key = XE::uint32( handle.GetValue() << 24 ) | index;
 
 	_p->_Frame->RenderBlitKeys[index] = key;
+}
+
+void XE::Encoder::SetUniform( const XE::String & name, XE::int32 data )
+{
+	XE::PUniform uniform;
+	uniform.Name = name;
+	uniform.Size = 1;
+	uniform.i = data;
+	uniform.Type = UniformType::INT;
+	_p->_Uniforms[name] = std::move( uniform );
+}
+
+void XE::Encoder::SetUniform( const XE::String & name, XE::uint32 data )
+{
+	XE::PUniform uniform;
+	uniform.Name = name;
+	uniform.Size = 1;
+	uniform.u = data;
+	uniform.Type = UniformType::UINT;
+	_p->_Uniforms[name] = std::move( uniform );
+}
+
+void XE::Encoder::SetUniform( const XE::String & name, XE::float32 data )
+{
+	XE::PUniform uniform;
+	uniform.Name = name;
+	uniform.Size = 1;
+	uniform.f = data;
+	uniform.Type = UniformType::FLOAT;
+	_p->_Uniforms[name] = std::move( uniform );
+}
+
+void XE::Encoder::SetUniform( const XE::String & name, const XE::Vec2f & data )
+{
+	auto view = CopyToFrame( _p->_Frame, { ( const char * )&data, sizeof( data ) } );
+	XE::PUniform uniform;
+	uniform.Name = name;
+	uniform.Size = 1;
+	uniform.p = view.data();
+	uniform.Type = UniformType::VEC2f;
+	_p->_Uniforms[name] = std::move( uniform );
+}
+
+void XE::Encoder::SetUniform( const XE::String & name, const XE::Vec3f & data )
+{
+	auto view = CopyToFrame( _p->_Frame, { ( const char * )&data, sizeof( data ) } );
+	XE::PUniform uniform;
+	uniform.Name = name;
+	uniform.Size = 1;
+	uniform.p = view.data();
+	uniform.Type = UniformType::VEC3f;
+	_p->_Uniforms[name] = std::move( uniform );
+}
+
+void XE::Encoder::SetUniform( const XE::String & name, const XE::Vec4f & data )
+{
+	auto view = CopyToFrame( _p->_Frame, { ( const char * )&data, sizeof( data ) } );
+	XE::PUniform uniform;
+	uniform.Name = name;
+	uniform.Size = 1;
+	uniform.p = view.data();
+	uniform.Type = UniformType::VEC4f;
+	_p->_Uniforms[name] = std::move( uniform );
+}
+
+void XE::Encoder::SetUniform( const XE::String & name, const XE::Mat3f & data )
+{
+	auto view = CopyToFrame( _p->_Frame, { ( const char * )&data, sizeof( data ) } );
+	XE::PUniform uniform;
+	uniform.Name = name;
+	uniform.Size = 1;
+	uniform.p = view.data();
+	uniform.Type = UniformType::MAT3f;
+	_p->_Uniforms[name] = std::move( uniform );
+}
+
+void XE::Encoder::SetUniform( const XE::String & name, const XE::Mat4f & data )
+{
+	auto view = CopyToFrame( _p->_Frame, { ( const char * )&data, sizeof( data ) } );
+	XE::PUniform uniform;
+	uniform.Name = name;
+	uniform.Size = 1;
+	uniform.p = view.data();
+	uniform.Type = UniformType::MAT4f;
+	_p->_Uniforms[name] = std::move( uniform );
+}
+
+void XE::Encoder::SetUniform( const XE::String & name, XE::BasicMemoryView<XE::int32> data )
+{
+	auto view = CopyToFrame( _p->_Frame, { ( const char * )data.data(), sizeof( XE::int32 ) * data.size() } );
+	XE::PUniform uniform;
+	uniform.Name = name;
+	uniform.Size = data.size();
+	uniform.p = view.data();
+	uniform.Type = UniformType::INT;
+	_p->_Uniforms[name] = std::move( uniform );
+}
+
+void XE::Encoder::SetUniform( const XE::String & name, XE::BasicMemoryView<XE::uint32> data )
+{
+	auto view = CopyToFrame( _p->_Frame, { ( const char * )data.data(), sizeof( XE::uint32 ) * data.size() } );
+	XE::PUniform uniform;
+	uniform.Name = name;
+	uniform.Size = data.size();
+	uniform.p = view.data();
+	uniform.Type = UniformType::UINT;
+	_p->_Uniforms[name] = std::move( uniform );
+}
+
+void XE::Encoder::SetUniform( const XE::String & name, XE::BasicMemoryView<XE::float32> data )
+{
+	auto view = CopyToFrame( _p->_Frame, { ( const char * )data.data(), sizeof( XE::float32 ) * data.size() } );
+	XE::PUniform uniform;
+	uniform.Name = name;
+	uniform.Size = data.size();
+	uniform.p = view.data();
+	uniform.Type = UniformType::FLOAT;
+	_p->_Uniforms[name] = std::move( uniform );
+}
+
+void XE::Encoder::SetUniform( const XE::String & name, XE::BasicMemoryView<XE::Vec2f> data )
+{
+	auto view = CopyToFrame( _p->_Frame, { ( const char * )data.data(), sizeof( XE::Vec2f ) * data.size() } );
+	XE::PUniform uniform;
+	uniform.Name = name;
+	uniform.Size = data.size();
+	uniform.p = view.data();
+	uniform.Type = UniformType::VEC2f;
+	_p->_Uniforms[name] = std::move( uniform );
+}
+
+void XE::Encoder::SetUniform( const XE::String & name, XE::BasicMemoryView<XE::Vec3f> data )
+{
+	auto view = CopyToFrame( _p->_Frame, { ( const char * )data.data(), sizeof( XE::Vec3f ) * data.size() } );
+	XE::PUniform uniform;
+	uniform.Name = name;
+	uniform.Size = data.size();
+	uniform.p = view.data();
+	uniform.Type = UniformType::VEC3f;
+	_p->_Uniforms[name] = std::move( uniform );
+}
+
+void XE::Encoder::SetUniform( const XE::String & name, XE::BasicMemoryView<XE::Vec4f> data )
+{
+	auto view = CopyToFrame( _p->_Frame, { ( const char * )data.data(), sizeof( XE::Vec4f ) * data.size() } );
+	XE::PUniform uniform;
+	uniform.Name = name;
+	uniform.Size = data.size();
+	uniform.p = view.data();
+	uniform.Type = UniformType::VEC4f;
+	_p->_Uniforms[name] = std::move( uniform );
+}
+
+void XE::Encoder::SetUniform( const XE::String & name, XE::BasicMemoryView<XE::Mat3f> data )
+{
+	auto view = CopyToFrame( _p->_Frame, { ( const char * )data.data(), sizeof( XE::Mat3f ) * data.size() } );
+	XE::PUniform uniform;
+	uniform.Name = name;
+	uniform.Size = data.size();
+	uniform.p = view.data();
+	uniform.Type = UniformType::MAT3f;
+	_p->_Uniforms[name] = std::move( uniform );
+}
+
+void XE::Encoder::SetUniform( const XE::String & name, XE::BasicMemoryView<XE::Mat4f> data )
+{
+	auto view = CopyToFrame( _p->_Frame, { ( const char * )data.data(), sizeof( XE::Mat4f ) * data.size() } );
+	XE::PUniform uniform;
+	uniform.Name = name;
+	uniform.Size = data.size();
+	uniform.p = view.data();
+	uniform.Type = UniformType::MAT4f;
+	_p->_Uniforms[name] = std::move( uniform );
 }

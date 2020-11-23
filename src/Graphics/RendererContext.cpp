@@ -24,7 +24,6 @@ struct XE::RendererContext::Private
 	std::array<POcclusionQuery, GFX_MAX_OCCLUSION> _Occlusions;
 	std::array<PFrameBuffer, GFX_MAX_FRAME_BUFFERS> _FrameBuffers;
 	std::array<PIndexBuffer, GFX_MAX_INDEX_BUFFERS> _IndexBuffers;
-	std::array<PVertexBuffer, GFX_MAX_VERTEX_BUFFERS> _VertexBuffers;
 	std::array<PVertexLayout, GFX_MAX_VERTEX_LAYOUTS> _VertexLayouts;
 	std::array<PVertexBuffer, GFX_MAX_VERTEX_BUFFERS> _VertexBuffers;
 	std::array<PIndirectBuffer, GFX_MAX_DRAW_INDIRECT_BUFFERS> _IndirectBuffers;
@@ -56,12 +55,12 @@ XE::RendererContext::~RendererContext()
 	delete _p;
 }
 
-void XE::RendererContext::Init( const InitDesc & val )
+void XE::RendererContext::Init( const InitDesc & desc )
 {
-	_p->_Init = val;
+	_p->_Init = desc;
 
-	_p->_Caps.VendorId = val.vendorId;
-	_p->_Caps.DeviceId = val.deviceId;
+	_p->_Caps.VendorId = desc.vendorId;
+	_p->_Caps.DeviceId = desc.deviceId;
 
 	_p->_SubmitFrame = &_p->_Frames[0];
 	_p->_RenderFrame = &_p->_Frames[1];
@@ -278,24 +277,25 @@ void XE::RendererContext::Dec( XE::DynamicVertexBufferHandle handle )
 	}
 }
 
-XE::ViewHandle XE::RendererContext::Create( const ViewDesc & val )
+XE::ViewHandle XE::RendererContext::Create( const ViewDesc & desc )
 {
 	auto handle = _p->_ViewHandleAlloc.Alloc();
 
 	_p->_Views[handle].Reset();
 
-	_p->_Views[handle].Name = val.Name;
-	_p->_Views[handle].ClearColor = val.ClearColor;
-	_p->_Views[handle].ClearDepth = val.ClearDepth;
-	_p->_Views[handle].ClearStencil = val.ClearStencil;
-	_p->_Views[handle].Flags = val.Flags;
-	_p->_Views[handle].ViewRect = val.ViewRect;
-	_p->_Views[handle].ViewScissor = val.ViewScissor;
-	_p->_Views[handle].ModelMat = val.ModelMat;
-	_p->_Views[handle].ViewMat = val.ViewMat;
-	_p->_Views[handle].ProjMat = val.ProjMat;
-	_p->_Views[handle].Mode = val.Mode;
-	_p->_Views[handle].Handle = val.FrameBuffer;
+	_p->_Views[handle].Name = desc.Name;
+	_p->_Views[handle].ClearColor = desc.ClearColor;
+	_p->_Views[handle].ClearDepth = desc.ClearDepth;
+	_p->_Views[handle].ClearStencil = desc.ClearStencil;
+	_p->_Views[handle].Flags = desc.Flags;
+	_p->_Views[handle].ViewRect = desc.ViewRect;
+	_p->_Views[handle].ViewScissor = desc.ViewScissor;
+	_p->_Views[handle].ModelMat = desc.ModelMat;
+	_p->_Views[handle].ViewMat = desc.ViewMat;
+	_p->_Views[handle].ProjMat = desc.ProjMat;
+	_p->_Views[handle].Mode = desc.Mode;
+	_p->_Views[handle].Handle = desc.FrameBuffer;
+	_p->_Views[handle].Desc = desc;
 
 	return handle;
 }
@@ -308,7 +308,7 @@ XE::ProgramHandle XE::RendererContext::Create( const XE::ProgramDesc & desc )
 
 	_p->_Programs[handle].Reset();
 
-	_p->_Programs[handle];
+	_p->_Programs[handle].Desc = desc;
 
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_PROGRAM );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
@@ -325,6 +325,8 @@ XE::FrameBufferHandle XE::RendererContext::Create( const XE::FrameBufferDesc & d
 
 	_p->_FrameBuffers[handle].Reset();
 
+	_p->_FrameBuffers[handle].Desc = desc;
+
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_FRAME_BUFFER );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
 	_p->_SubmitFrame->PrevCmd.Wirte( desc );
@@ -337,6 +339,8 @@ XE::VertexLayoutHandle XE::RendererContext::Create( const XE::VertexLayoutDesc &
 	auto handle = _p->_VertexLayoutHandleAlloc.Alloc();
 
 	_p->_VertexLayouts[handle].Reset();
+
+	_p->_VertexLayouts[handle].Desc = desc;
 
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_VERTEX_LAYOUT );
@@ -354,6 +358,8 @@ XE::OcclusionQueryHandle XE::RendererContext::Create( const OcclusionQueryDesc &
 
 	_p->_Occlusions[handle].Reset();
 
+	_p->_Occlusions[handle].Desc = desc;
+
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_OCCLUSION_QUERY );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
 
@@ -367,6 +373,8 @@ XE::IndirectBufferHandle XE::RendererContext::Create( const XE::IndirectBufferDe
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
 
 	_p->_IndirectBuffers[handle].Reset();
+
+	_p->_IndirectBuffers[handle].Desc = desc;
 
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_DYNAMIC_VERTEX_BUFFER );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
@@ -382,6 +390,8 @@ XE::ShaderHandle XE::RendererContext::Create( const XE::ShaderDesc & desc, XE::M
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
 
 	_p->_Shaders[handle].Reset();
+
+	_p->_Shaders[handle].Desc = desc;
 
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_SHADER );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
@@ -400,6 +410,8 @@ XE::TextureHandle XE::RendererContext::Create( const XE::TextureDesc & desc, XE:
 
 	_p->_Textures[handle].Reset();
 
+	_p->_Textures[handle].Desc = desc;
+
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_TEXTURE );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
 	_p->_SubmitFrame->PrevCmd.Wirte( desc );
@@ -415,6 +427,8 @@ XE::IndexBufferHandle XE::RendererContext::Create( const XE::IndexBufferDesc & d
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
 
 	_p->_IndexBuffers[handle].Reset();
+
+	_p->_IndexBuffers[handle].Desc = desc;
 
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_INDEX_BUFFER );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
@@ -432,6 +446,8 @@ XE::VertexBufferHandle XE::RendererContext::Create( const XE::VertexBufferDesc &
 
 	_p->_VertexBuffers[handle].Reset();
 
+	_p->_VertexBuffers[handle].Desc = desc;
+
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_VERTEX_BUFFER );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
 	_p->_SubmitFrame->PrevCmd.Wirte( desc );
@@ -448,6 +464,8 @@ XE::DynamicIndexBufferHandle XE::RendererContext::Create( const XE::DynamicIndex
 
 	_p->_DynamicIndexBuffers[handle].Reset();
 
+	_p->_DynamicIndexBuffers[handle].Desc = desc;
+
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_DYNAMIC_INDEX_BUFFER );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
 	_p->_SubmitFrame->PrevCmd.Wirte( desc );
@@ -463,6 +481,8 @@ XE::DynamicVertexBufferHandle XE::RendererContext::Create( const XE::DynamicVert
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
 
 	_p->_DynamicVertexBuffers[handle].Reset();
+
+	_p->_DynamicVertexBuffers[handle].Desc = desc;
 
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_DYNAMIC_VERTEX_BUFFER );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );

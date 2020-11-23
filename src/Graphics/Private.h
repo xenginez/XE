@@ -129,7 +129,6 @@ private:
 
 struct PShader : public GfxRefCount
 {
-public:
 	XE::uint32 HashIn;
 	XE::uint32 HashOut;
 	XE::ShaderDesc Desc;
@@ -138,7 +137,6 @@ public:
 
 struct PTexture : public GfxRefCount
 {
-public:
 	XE::TextureDesc Desc;
 	XE::uint32 StorageSize = 0;
 	XE::uint8 BitsPerPixel = 0;
@@ -147,19 +145,30 @@ public:
 
 struct PProgram : public GfxRefCount
 {
-public:
 	XE::ProgramDesc Desc;
+};
+
+struct PUniform
+{
+	XE::String Name;
+	XE::uint32 Size;
+	union
+	{
+		XE::int32 i;
+		XE::uint32 u;
+		XE::float32 f;
+		const char * p;
+	};
+	XE::UniformType Type;
 };
 
 struct PFrameBuffer : public GfxRefCount
 {
-public:
 	XE::FrameBufferDesc Desc;
 };
 
 struct PIndexBuffer : public GfxRefCount
 {
-public:
 	XE::uint64 Handle;
 	XE::uint32 StartIndex;
 	XE::uint32 NumIndices;
@@ -168,30 +177,19 @@ public:
 
 struct PVertexLayout : public GfxRefCount
 {
-public:
 	XE::VertexLayoutDesc Desc;
 };
 
 struct PVertexBuffer : public GfxRefCount
 {
-public:
-	PVertexBuffer();
-
-	PVertexBuffer( const PVertexBuffer & val );
-
-	PVertexBuffer & operator=( const PVertexBuffer & val );
-
-public:
 	XE::uint64 Handle;
 	XE::uint32 StartVertex;
 	XE::uint32 NumVertices;
-	VertexLayoutHandle LayoutHandle;
 	XE::VertexBufferDesc Desc;
 };
 
 struct PIndirectBuffer : public GfxRefCount
 {
-public:
 	XE::uint64 Handle;
 	XE::uint32 StartIndex;
 	XE::uint32 NumIndices;
@@ -200,14 +198,12 @@ public:
 
 struct POcclusionQuery : public GfxRefCount
 {
-public:
-	std::optional<XE::uint32> Value;
 	XE::OcclusionQueryDesc Desc;
+	std::optional<XE::uint32> Value;
 };
 
 struct PDynamicIndexBuffer : public GfxRefCount
 {
-public:
 	XE::uint64 Handle;
 	XE::uint32 StartIndex;
 	XE::uint32 NumIndices;
@@ -216,18 +212,15 @@ public:
 
 struct PDynamicVertexBuffer : public GfxRefCount
 {
-public:
 	XE::uint64 Handle;
 	XE::uint32 StartVertex;
 	XE::uint32 NumVertices;
-	VertexLayoutHandle LayoutHandle;
 	XE::DynamicVertexBufferDesc Desc;
 };
 
 
 struct PView : public GfxRefCount
 {
-public:
 	XE::String Name;
 	XE::Color ClearColor;
 	XE::float32 ClearDepth = 0.0f;
@@ -246,13 +239,17 @@ public:
 
 struct RenderBind
 {
-public:
+	void Reset();
+
 	enum BindType : XE::uint8
 	{
+		NONE,
 		IMAGE,
+		TEXTURE,
 		INDEXBUFFER,
 		VERTEXBUFFER,
-		TEXTURE,
+		DYNAMICINDEXBUFFER,
+		DYNAMICVERTEXBUFFER,
 	};
 
 	struct Binding
@@ -265,22 +262,20 @@ public:
 		XE::TextureFormat Format;
 	};
 
-public:
 	std::array<Binding, GFX_MAX_TEXTURE_SAMPLERS> Binds;
 };
 
 struct RenderDraw
 {
-public:
-	bool IsDynamicIndices;
-	PIndexBuffer Indices;
-	bool IsDynamicVertices;
-	PVertexBuffer Vertices;
+	void Reset();
+
+	bool IsDynamicIndices = false;
+	PIndexBuffer Indices = {};
+	std::array<PUniform, GFX_MAX_UNIFORMS> Uniforms = {};
+	std::array<bool, GFX_MAX_VERTEXS> IsDynamicVertices = {};
+	std::array<PVertexBuffer, GFX_MAX_VERTEXS> Vertices = {};
 
 	XE::Color Rgba = XE::Color::Black;
-
-	XE::uint32 UniformBegin = 0;
-	XE::uint32 UniformEnd = 0;
 
 	XE::uint32 StartMatrix = 0;
 	XE::uint16 NumMatrices = 0;
@@ -295,8 +290,8 @@ public:
 	XE::uint8 SubmitFlags = 0;
 	XE::uint8 StreamMask = 0;
 
+	bool IsDynamicInstanceDataBuffer = false;
 	XE::VertexBufferHandle InstanceDataBuffer;
-	XE::DynamicVertexBufferHandle DynamicInstanceDataBuffer;
 
 	XE::IndirectBufferHandle IndirectBuffer;
 
@@ -309,7 +304,8 @@ public:
 
 struct RenderBlit
 {
-public:
+	void Reset();
+
 	XE::uint32 SrcX = 0;
 	XE::uint32 SrcY = 0;
 	XE::uint32 SrcZ = 0;
@@ -328,40 +324,37 @@ public:
 
 struct RenderCompute
 {
-public:
-	XE::uint32 UniformBegin = 0;
-	XE::uint32 UniformEnd = 0;
+	void Reset();
 
 	XE::uint32 StartMatrix = 0;
-	XE::uint16 NumMatrices = 0;
+	XE::uint32 NumMatrices = 0;
 
-	XE::uint16 StartIndirect = 0;
-	XE::uint16 NumIndirect = 0;
+	XE::uint32 StartIndirect = 0;
+	XE::uint32 NumIndirect = 0;
 
 	XE::uint32 NumX = 0;
 	XE::uint32 NumY = 0;
 	XE::uint32 NumZ = 0;
 
 	XE::IndirectBufferHandle IndirectBuffer;
+
+	std::array<PUniform, GFX_MAX_UNIFORMS> Uniforms = {};
 };
 
 struct RenderItem
 {
-public:
 	enum class ItemType
 	{
 		DRAW,
 		COMPUTE,
 	};
 
-public:
 	ItemType Type;
 	XE::uint8 Data[sizeof( RenderDraw )];
 };
 
 struct DestoryHandle
 {
-public:
 	enum DestoryType
 	{
 		DESTROY_SHADER,
@@ -402,6 +395,9 @@ public:
 public:
 	XE::Buffer PrevCmd;
 	std::mutex PrevCmdMutex;
+
+	std::atomic<XE::uint32> UniformsSize = 0;
+	std::array<XE::PUniform, GFX_MAX_UNIFORMS> Uniforms = {};
 
 	std::atomic<XE::uint32> TransformsSize = 0;
 	std::array<XE::Mat4f, GFX_MAX_TRANSFORM> Transforms = {};

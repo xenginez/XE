@@ -16,7 +16,7 @@
 
 BEG_XE_NAMESPACE
 
-class RenderFrame;
+struct RenderFrame;
 
 DECL_PTR( Encoder );
 DECL_PTR( RendererContext );
@@ -37,9 +37,9 @@ DECL_HANDLE( XE_API, DynamicVertexBuffer );
 static constexpr XE::uint32 GFX_MAX_VIEW = 256;
 static constexpr XE::uint32 GFX_MAX_VERTEXS = 4;
 static constexpr XE::uint32 GFX_MAX_SHADERS = 512;
+static constexpr XE::uint32 GFX_MAX_UNIFORMS = 64;
 static constexpr XE::uint32 GFX_MAX_PROGRAMS = 512;
 static constexpr XE::uint32 GFX_MAX_TEXTURES = 4096;
-static constexpr XE::uint32 GFX_MAX_TRANSFORM = 512;
 static constexpr XE::uint32 GFX_MAX_OCCLUSION = 256;
 static constexpr XE::uint32 GFX_MAX_TRANSFORM = 256;
 static constexpr XE::uint32 GFX_MAX_BLITITEMS = 1024;
@@ -734,13 +734,6 @@ public:
 	Access access = Access::COUNT;
 };
 
-struct XE_API VertexLayout
-{
-public:
-	Attribute Attr;
-	AttributeType Type;
-};
-
 struct XE_API InitDesc
 {
 public:
@@ -837,7 +830,8 @@ struct XE_API IndexBufferDesc
 
 struct XE_API VertexLayoutDesc
 {
-	VertexLayout Layouts[GFX_MAX_VERTEX_LAYOUTS];
+	Attribute Attr[GFX_MAX_VERTEX_LAYOUTS];
+	AttributeType Type[GFX_MAX_VERTEX_LAYOUTS];
 };
 
 struct XE_API VertexBufferDesc : public XE::BufferDesc
