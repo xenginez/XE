@@ -5,7 +5,7 @@
 
 BEG_XE_NAMESPACE
 
-class StackMemoryResource : public std::pmr::memory_resource
+class XE_API StackMemoryResource : public std::pmr::memory_resource
 {
 public:
 	StackMemoryResource();

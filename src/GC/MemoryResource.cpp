@@ -1,23 +1,22 @@
 #include "MemoryResource.h"
 
-#include "StackMemoryResource.h"
-#include "ObjectMemoryResource.h"
-
-std::pmr::memory_resource * XE::MemoryResource::GetStackMemoryResource()
+XE::StackMemoryResource * XE::MemoryResource::GetStackMemoryResource()
 {
 	thread_local XE::StackMemoryResource resource;
 
 	return &resource;
 }
 
-std::pmr::memory_resource * XE::MemoryResource::GetObjectMemoryResource()
+XE::ObjectMemoryResource * XE::MemoryResource::GetObjectMemoryResource()
 {
 	static ObjectMemoryResource resource;
 	
 	return &resource;
 }
 
-std::pmr::memory_resource * XE::MemoryResource::GetDefaultMemoryResource()
+XE::DefaultMemoryResource * XE::MemoryResource::GetDefaultMemoryResource()
 {
-	return std::pmr::get_default_resource();
+	static DefaultMemoryResource resource;
+
+	return &resource;
 }

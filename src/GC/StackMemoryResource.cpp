@@ -1,16 +1,18 @@
 #include "StackMemoryResource.h"
 
+#define MEM_SIZE (ONE_MBYTE * 8)
+
 XE::StackMemoryResource::StackMemoryResource()
 	:_Beg( nullptr ), _Ptr( nullptr ), _Space( 0 )
 {
-	_Beg = std::pmr::get_default_resource()->allocate( ONE_MBYTE * 2 );
+	_Beg = std::pmr::get_default_resource()->allocate( MEM_SIZE );
 	_Ptr = _Beg;
-	_Space = ONE_MBYTE * 2;
+	_Space = MEM_SIZE;
 }
 
 XE::StackMemoryResource::~StackMemoryResource() noexcept
 {
-	std::pmr::get_default_resource()->deallocate( _Beg, ONE_MBYTE * 2 );
+	std::pmr::get_default_resource()->deallocate( _Beg, MEM_SIZE );
 }
 
 void * XE::StackMemoryResource::do_allocate( size_t _Bytes, size_t _Align )

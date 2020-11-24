@@ -289,30 +289,37 @@ void XE::Encoder::Dispatch( ViewHandle handle, ProgramHandle program, IndirectBu
 
 void XE::Encoder::Blit( ViewHandle handle, TextureHandle dst, XE::uint8 dst_mip, XE::uint32 dst_x, XE::uint32 dst_y, XE::uint32 dst_z, TextureHandle src, XE::uint8 src_mip, XE::uint32 src_x, XE::uint32 src_y, XE::uint32 src_z, XE::uint32 width, XE::uint32 height, XE::uint32 depth )
 {
-	XE::uint32 index = _p->_Frame->RenderBlitSize++;
-	auto & b = _p->_Frame->RenderBlits[index];
+	XE::RenderBlit blit;
 
-	b.Src = src;
-	b.SrcX = src_x;
-	b.SrcY = src_y;
-	b.SrcZ = src_z;
-	b.SrcMip = src_mip;
+	blit.Src = src;
+	blit.SrcX = src_x;
+	blit.SrcY = src_y;
+	blit.SrcZ = src_z;
+	blit.SrcMip = src_mip;
 
-	b.Dst = dst;
-	b.DstX = dst_x;
-	b.DstY = dst_y;
-	b.DstZ = dst_z;
-	b.DstMip = dst_mip;
+	blit.Dst = dst;
+	blit.DstX = dst_x;
+	blit.DstY = dst_y;
+	blit.DstZ = dst_z;
+	blit.DstMip = dst_mip;
 
-	b.Width = width;
-	b.Height = height;
-	b.Depth = depth;
+	blit.Width = width;
+	blit.Height = height;
+	blit.Depth = depth;
 
-	b.Handle = handle;
+	blit.Handle = handle;
 
-	XE::uint32 key = XE::uint32( handle.GetValue() << 24 ) | index;
+	XE::uint32 key = XE::uint32( handle.GetValue() << 24 );
 
-	_p->_Frame->RenderBlitKeys[index] = key;
+	auto index = _p->_Frame->RenderItemSize++;
+
+	_p->_Frame->RenderItemKeys[index] = key;
+
+	auto & item = _p->_Frame->RenderItems[index];
+	item.Type = RenderItem::ItemType::BLIT;
+	std::memcpy( item.Data, &blit, sizeof( XE::RenderBlit ) );
+
+	Discard();
 }
 
 void XE::Encoder::SetUniform( const XE::String & name, XE::int32 data )

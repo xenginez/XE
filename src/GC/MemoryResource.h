@@ -2,17 +2,20 @@
 #define MEMORYRESOURCE_H__84074448_45AA_41EC_A082_4E1DA59DFEC6
 
 #include "Type.h"
+#include "StackMemoryResource.h"
+#include "ObjectMemoryResource.h"
+#include "DefaultMemoryResource.h"
 
 BEG_XE_NAMESPACE
 
 class XE_API MemoryResource
 {
 public:
-	static std::pmr::memory_resource * GetStackMemoryResource();
+	static XE::StackMemoryResource * GetStackMemoryResource();
 
-	static std::pmr::memory_resource * GetObjectMemoryResource();
+	static XE::ObjectMemoryResource * GetObjectMemoryResource();
 
-	static std::pmr::memory_resource * GetDefaultMemoryResource();
+	static XE::DefaultMemoryResource * GetDefaultMemoryResource();
 
 };
 

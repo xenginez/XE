@@ -2,6 +2,21 @@
 
 #include <tbb/scalable_allocator.h>
 
+struct XE::ObjectMemoryResource::Private
+{
+
+};
+
+XE::ObjectMemoryResource::ObjectMemoryResource()
+	:_p( new Private )
+{
+}
+
+XE::ObjectMemoryResource::~ObjectMemoryResource()
+{
+	delete _p;
+}
+
 void * XE::ObjectMemoryResource::do_allocate( size_t _Bytes, size_t _Align )
 {
 	std::size_t size = ( _Bytes + _Align - 1 ) & ~( _Align - 1 );

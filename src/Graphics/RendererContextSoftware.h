@@ -13,7 +13,18 @@ public:
 	~RendererContextSoftware();
 
 protected:
-	void OnRender( XE::RenderFrame * val ) override;
+	void OnRender( XE::RenderFrame * frame ) override;
+
+private:
+	void Init( XE::RenderFrame * frame );
+
+	void Shutdown( XE::RenderFrame * frame );
+
+	void BlitCall( const XE::RenderBlit * item );
+
+	void DrawCall( const XE::RenderDraw * item, const XE::RenderBind * bind );
+
+	void ComputeCall( const XE::RenderCompute * item, const XE::RenderBind * bind );
 
 private:
 	void CreateProgram( XE::RenderFrame * frame );
@@ -38,7 +49,6 @@ private:
 
 	void CreateDynamicVertexBuffer( XE::RenderFrame * frame );
 
-public:
 	void ReadTexture( XE::RenderFrame * frame );
 
 	void UpdateTexture( XE::RenderFrame * frame );
@@ -50,27 +60,27 @@ public:
 	void UpdateDynamicVertexBuffer( XE::RenderFrame * frame );
 
 public:
-	void Destory( XE::ShaderHandle handle );
+	void DestoryShader( XE::RenderFrame * frame );
 
-	void Destory( XE::ProgramHandle handle );
+	void DestoryProgram( XE::RenderFrame * frame );
 
-	void Destory( XE::TextureHandle handle );
+	void DestoryTexture( XE::RenderFrame * frame );
 
-	void Destory( XE::FrameBufferHandle handle );
+	void DestoryFrameBuffer( XE::RenderFrame * frame );
 
-	void Destory( XE::IndexBufferHandle handle );
+	void DestoryIndexBuffer( XE::RenderFrame * frame );
 
-	void Destory( XE::VertexLayoutHandle handle );
+	void DestoryVertexLayout( XE::RenderFrame * frame );
 
-	void Destory( XE::VertexBufferHandle handle );
+	void DestoryVertexBuffer( XE::RenderFrame * frame );
 
-	void Destory( XE::IndirectBufferHandle handle );
+	void DestoryIndirectBuffer( XE::RenderFrame * frame );
 
-	void Destory( XE::OcclusionQueryHandle handle );
+	void DestoryOcclusionQuery( XE::RenderFrame * frame );
 
-	void Destory( XE::DynamicIndexBufferHandle handle );
+	void DestoryDynamicIndexBuffer( XE::RenderFrame * frame );
 
-	void Destory( XE::DynamicVertexBufferHandle handle );
+	void DestoryDynamicVertexBuffer( XE::RenderFrame * frame );
 
 };
 

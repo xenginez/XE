@@ -5,15 +5,15 @@
 
 BEG_XE_NAMESPACE
 
-class ObjectMemoryResource : public std::pmr::memory_resource
+class XE_API ObjectMemoryResource : public std::pmr::memory_resource
 {
 private:
 	struct Private;
 
 public:
-	ObjectMemoryResource() = default;
+	ObjectMemoryResource();
 
-	~ObjectMemoryResource() noexcept override = default;
+	~ObjectMemoryResource() noexcept override;
 
 private:
 	void * do_allocate( size_t _Bytes, size_t _Align ) override;

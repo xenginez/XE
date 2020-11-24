@@ -31,17 +31,30 @@ enum class CommandType : XE::uint8
 	CREATE_INDEX_BUFFER,
 	CREATE_VERTEX_LAYOUT,
 	CREATE_VERTEX_BUFFER,
+	CREATE_INDIRECT_BUFFER,
 	CREATE_OCCLUSION_QUERY,
 	CREATE_DYNAMIC_INDEX_BUFFER,
 	CREATE_DYNAMIC_VERTEX_BUFFER,
 
+	READ_TEXTURE,
 	UPDATE_TEXTURE,
 	UPDATE_DYNAMIC_INDEX_BUFFER,
 	UPDATE_DYNAMIC_VERTEX_BUFFER,
 
 	END,
 
-	READ_TEXTURE,
+	DESTROY_SHADER,
+	DESTROY_TEXTURE,
+	DESTROY_PROGRAM,
+	DESTROY_FRAMEBUFFER,
+	DESTROY_INDEX_BUFFER,
+	DESTROY_VERTEX_LAYOUT,
+	DESTROY_VERTEX_BUFFER,
+	DESTROY_INDIRECT_BUFFER,
+	DESTROY_OCCLUSION_QUERY,
+	DESTROY_DYNAMIC_INDEX_BUFFER,
+	DESTROY_DYNAMIC_VERTEX_BUFFER,
+
 	REQUEST_SCREEN_SHOT,
 };
 
@@ -317,9 +330,9 @@ struct RenderBlit
 	XE::uint32 Depth = 0;
 	XE::uint32 SrcMip = 0;
 	XE::uint32 DstMip = 0;
-	ViewHandle Handle;
-	TextureHandle Src;
-	TextureHandle Dst;
+	XE::ViewHandle Handle;
+	XE::TextureHandle Src;
+	XE::TextureHandle Dst;
 };
 
 struct RenderCompute
@@ -338,55 +351,20 @@ struct RenderCompute
 
 	XE::IndirectBufferHandle IndirectBuffer;
 
-	std::array<PUniform, GFX_MAX_UNIFORMS> Uniforms = {};
+	std::array<XE::PUniform, GFX_MAX_UNIFORMS> Uniforms = {};
 };
 
 struct RenderItem
 {
 	enum class ItemType
 	{
+		BLIT,
 		DRAW,
 		COMPUTE,
 	};
 
 	ItemType Type;
 	XE::uint8 Data[sizeof( RenderDraw )];
-};
-
-struct DestoryHandle
-{
-	enum DestoryType
-	{
-		DESTROY_SHADER,
-		DESTROY_TEXTURE,
-		DESTROY_PROGRAM,
-		DESTROY_FRAMEBUFFER,
-		DESTROY_INDEX_BUFFER,
-		DESTROY_VERTEX_LAYOUT,
-		DESTROY_VERTEX_BUFFER,
-		DESTROY_INDIRECT_BUFFER,
-		DESTROY_OCCLUSION_QUERY,
-		DESTROY_OCCLUSION_QUERY,
-		DESTROY_DYNAMIC_INDEX_BUFFER,
-		DESTROY_DYNAMIC_VERTEX_BUFFER,
-	};
-
-	DestoryType Type;
-	union
-	{
-		
-		XE::ShaderHandle					_ShaderHandle;
-		XE::TextureHandle					_TextureHandle;
-		XE::ProgramHandle					_ProgramHandle;
-		XE::FrameBufferHandle				_FrameBufferHandle;
-		XE::IndexBufferHandle				_IndexBufferHandle;
-		XE::VertexBufferHandle				_VertexBufferHandle;
-		XE::VertexLayoutHandle				_VertexLayoutHandle;
-		XE::IndirectBufferHandle			_IndirectBufferHandle;
-		XE::OcclusionQueryHandle			_OcclusionQueryHandle;
-		XE::DynamicIndexBufferHandle		_DynamicIndexBufferHandle;
-		XE::DynamicVertexBufferHandle		_DynamicVertexBufferHandle;
-	};
 };
 
 struct RenderFrame
@@ -408,16 +386,9 @@ public:
 	std::array<XE::int32, GFX_MAX_OCCLUSION> Occlusions = {};
 
 	std::atomic<XE::uint32> RenderItemSize = 0;
-	std::array<RenderItem, GFX_MAX_DRAW_CALLS> RenderItems = {};
-	std::array<RenderBind, GFX_MAX_DRAW_CALLS> RenderBinds = {};
 	std::array<XE::uint64, GFX_MAX_DRAW_CALLS> RenderItemKeys = {};
-
-	std::atomic<XE::uint32> RenderBlitSize = 0;
-	std::array<RenderBlit, GFX_MAX_BLITITEMS> RenderBlits = {};
-	std::array<XE::uint32, GFX_MAX_BLITITEMS> RenderBlitKeys = {};
-
-	std::atomic<XE::uint32> DestoryHandleSize = 0;
-	std::array<XE::DestoryHandle, GFX_MAX_DESTORYS> DestoryHandles = {};
+	std::array<XE::RenderItem, GFX_MAX_DRAW_CALLS> RenderItems = {};
+	std::array<XE::RenderBind, GFX_MAX_DRAW_CALLS> RenderBinds = {};
 
 	XE::Buffer PostCmd;
 	std::mutex PostCmdMutex;
