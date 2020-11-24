@@ -202,10 +202,10 @@ void XE::RenderFrame::Reset()
 	TransformsSize = 0;
 	RenderItemSize = 0;
 	RenderBlitSize = 0;
+	DestoryHandleSize = 0;
 	RenderOcclusionSize = 0;
 
 	PrevCmd.Reset();
 	PostCmd.Reset();
-	DestoryCmd.Reset();
 	TransientBuffers.Reset();
 }
