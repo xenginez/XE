@@ -71,12 +71,22 @@ void XE::RendererContext::Init( const InitDesc & desc )
 void XE::RendererContext::Present()
 {
 	{
+		std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
+		_p->_SubmitFrame->PrevCmd.Wirte( XE::CommandType::END );
+	}
+
+	{
+		std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
+		_p->_SubmitFrame->PostCmd.Wirte( XE::CommandType::END );
+	}
+
+	{
 		std::unique_lock<std::mutex> lock( _p->_FrameMutex );
 
 		std::swap( _p->_SubmitFrame, _p->_RenderFrame );
-	}
 
-	XE::IFramework::GetCurrentFramework()->GetThreadService()->PostTask( XE::ThreadType::RENDER, std::bind( &XE::RendererContext::Render, this ) );
+		XE::IFramework::GetCurrentFramework()->GetThreadService()->PostTask( XE::ThreadType::RENDER, std::bind( &XE::RendererContext::Render, this ) );
+	}
 
 	_p->_SubmitFrame->Reset();
 }
@@ -559,99 +569,110 @@ void XE::RendererContext::Destory( XE::ViewHandle handle )
 
 void XE::RendererContext::Destory( XE::ShaderHandle handle )
 {
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->DestoryCmdMutex );
-	DestoryHandle des = { DestoryHandle::DestoryType::DESTROY_SHADER , handle };
-	_p->_SubmitFrame->DestoryCmd.Wirte( des );
+	auto index = _p->_SubmitFrame->DestoryHandleSize++;
+
+	_p->_SubmitFrame->DestoryHandles[index].Type = DestoryHandle::DESTROY_SHADER;
+	_p->_SubmitFrame->DestoryHandles[index]._ShaderHandle = handle;
 
 	_p->_ShaderHandleAlloc.Free( handle );
 }
 
 void XE::RendererContext::Destory( XE::ProgramHandle handle )
 {
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->DestoryCmdMutex );
-	DestoryHandle des = { DestoryHandle::DestoryType::DESTROY_PROGRAM , handle };
-	_p->_SubmitFrame->DestoryCmd.Wirte( des );
+	auto index = _p->_SubmitFrame->DestoryHandleSize++;
+
+	_p->_SubmitFrame->DestoryHandles[index].Type = DestoryHandle::DESTROY_PROGRAM;
+	_p->_SubmitFrame->DestoryHandles[index]._ProgramHandle = handle;
 
 	_p->_ProgramHandleAlloc.Free( handle );
 }
 
 void XE::RendererContext::Destory( XE::TextureHandle handle )
 {
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->DestoryCmdMutex );
-	DestoryHandle des = { DestoryHandle::DestoryType::DESTROY_TEXTURE , handle };
-	_p->_SubmitFrame->DestoryCmd.Wirte( des );
+	auto index = _p->_SubmitFrame->DestoryHandleSize++;
+
+	_p->_SubmitFrame->DestoryHandles[index].Type = DestoryHandle::DESTROY_TEXTURE;
+	_p->_SubmitFrame->DestoryHandles[index]._TextureHandle = handle;
 
 	_p->_TextureHandleAlloc.Free( handle );
 }
 
 void XE::RendererContext::Destory( XE::FrameBufferHandle handle )
 {
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->DestoryCmdMutex );
-	DestoryHandle des = { DestoryHandle::DestoryType::DESTROY_FRAMEBUFFER , handle };
-	_p->_SubmitFrame->DestoryCmd.Wirte( des );
+	auto index = _p->_SubmitFrame->DestoryHandleSize++;
+
+	_p->_SubmitFrame->DestoryHandles[index].Type = DestoryHandle::DESTROY_FRAMEBUFFER;
+	_p->_SubmitFrame->DestoryHandles[index]._FrameBufferHandle = handle;
 
 	_p->_FrameBufferHandleAlloc.Free( handle );
 }
 
 void XE::RendererContext::Destory( XE::IndexBufferHandle handle )
 {
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->DestoryCmdMutex );
-	DestoryHandle des = { DestoryHandle::DestoryType::DESTROY_INDEX_BUFFER, handle };
-	_p->_SubmitFrame->DestoryCmd.Wirte( des );
+	auto index = _p->_SubmitFrame->DestoryHandleSize++;
+
+	_p->_SubmitFrame->DestoryHandles[index].Type = DestoryHandle::DESTROY_INDEX_BUFFER
+	_p->_SubmitFrame->DestoryHandles[index]._IndexBufferHandle = handle;
 
 	_p->_IndexBufferHandleAlloc.Free( handle );
 }
 
 void XE::RendererContext::Destory( XE::VertexLayoutHandle handle )
 {
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->DestoryCmdMutex );
-	DestoryHandle des = { DestoryHandle::DestoryType::DESTROY_VERTEX_LAYOUT , handle };
-	_p->_SubmitFrame->DestoryCmd.Wirte( des );
+	auto index = _p->_SubmitFrame->DestoryHandleSize++;
+
+	_p->_SubmitFrame->DestoryHandles[index].Type = DestoryHandle::DESTROY_VERTEX_LAYOUT;
+	_p->_SubmitFrame->DestoryHandles[index]._VertexLayoutHandle = handle;
 
 	_p->_VertexLayoutHandleAlloc.Free( handle );
 }
 
 void XE::RendererContext::Destory( XE::VertexBufferHandle handle )
 {
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->DestoryCmdMutex );
-	DestoryHandle des = { DestoryHandle::DestoryType::DESTROY_VERTEX_BUFFER, handle };
-	_p->_SubmitFrame->DestoryCmd.Wirte( des );
+	auto index = _p->_SubmitFrame->DestoryHandleSize++;
+
+	_p->_SubmitFrame->DestoryHandles[index].Type = DestoryHandle::DESTROY_VERTEX_BUFFER;
+	_p->_SubmitFrame->DestoryHandles[index]._VertexBufferHandle = handle;
 
 	_p->_VertexBufferHandleAlloc.Free( handle );
 }
 
 void XE::RendererContext::Destory( XE::IndirectBufferHandle handle )
 {
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->DestoryCmdMutex );
-	DestoryHandle des = { DestoryHandle::DestoryType::DESTROY_DYNAMIC_VERTEX_BUFFER, handle };
-	_p->_SubmitFrame->DestoryCmd.Wirte( des );
+	auto index = _p->_SubmitFrame->DestoryHandleSize++;
+
+	_p->_SubmitFrame->DestoryHandles[index].Type = DestoryHandle::DESTROY_INDIRECT_BUFFER;
+	_p->_SubmitFrame->DestoryHandles[index]._IndirectBufferHandle = handle;
 
 	_p->_IndirectBufferHandleAlloc.Free( handle );
 }
 
 void XE::RendererContext::Destory( XE::OcclusionQueryHandle handle )
 {
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->DestoryCmdMutex );
-	DestoryHandle des = { DestoryHandle::DestoryType::DESTROY_OCCLUSION_QUERY , handle };
-	_p->_SubmitFrame->DestoryCmd.Wirte( des );
+	auto index = _p->_SubmitFrame->DestoryHandleSize++;
+
+	_p->_SubmitFrame->DestoryHandles[index].Type = DestoryHandle::DESTROY_OCCLUSION_QUERY;
+	_p->_SubmitFrame->DestoryHandles[index]._OcclusionQueryHandle = handle;
 
 	_p->_OcclusionHandleAlloc.Free( handle );
 }
 
 void XE::RendererContext::Destory( XE::DynamicIndexBufferHandle handle )
 {
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->DestoryCmdMutex );
-	DestoryHandle des = { DestoryHandle::DestoryType::DESTROY_DYNAMIC_INDEX_BUFFER, handle };
-	_p->_SubmitFrame->DestoryCmd.Wirte( des );
+	auto index = _p->_SubmitFrame->DestoryHandleSize++;
+
+	_p->_SubmitFrame->DestoryHandles[index].Type = DestoryHandle::DESTROY_DYNAMIC_INDEX_BUFFER;
+	_p->_SubmitFrame->DestoryHandles[index]._DynamicIndexBufferHandle = handle;
 
 	_p->_IndexBufferHandleAlloc.Free( handle.GetValue() );
 }
 
 void XE::RendererContext::Destory( XE::DynamicVertexBufferHandle handle )
 {
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->DestoryCmdMutex );
-	DestoryHandle des = { DestoryHandle::DestoryType::DESTROY_DYNAMIC_VERTEX_BUFFER, handle };
-	_p->_SubmitFrame->DestoryCmd.Wirte( des );
+	auto index = _p->_SubmitFrame->DestoryHandleSize++;
+
+	_p->_SubmitFrame->DestoryHandles[index].Type = DestoryHandle::DESTROY_DYNAMIC_VERTEX_BUFFER;
+	_p->_SubmitFrame->DestoryHandles[index]._DynamicVertexBufferHandle = handle;
 
 	_p->_VertexBufferHandleAlloc.Free( handle.GetValue() );
 }
@@ -696,7 +717,7 @@ void XE::RendererContext::ReadTexture( XE::TextureHandle handle, XE::uint8 * dat
 
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::READ_TEXTURE );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
-	_p->_SubmitFrame->PrevCmd.Wirte( data );
+	_p->_SubmitFrame->PrevCmd.Wirte( ( std::uintptr_t )data );
 	_p->_SubmitFrame->PrevCmd.Wirte( mip );
 }
 
@@ -793,4 +814,14 @@ XE::MemoryView XE::RendererContext::CopyToFrame( XE::MemoryView mem ) const
 	_p->_SubmitFrame->TransientBuffers.Wirte( mem.data(), mem.size() );
 
 	return XE::MemoryView( pos, mem.size() );
+}
+
+const XE::PView & XE::RendererContext::GetView( XE::ViewHandle handle )
+{
+	return _p->_Views[handle];
+}
+
+void XE::RendererContext::SetOcclusionQueryValue( XE::OcclusionQueryHandle handle, XE::uint32 value )
+{
+	_p->_Occlusions[handle].Value = value;
 }

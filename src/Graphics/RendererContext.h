@@ -209,6 +209,11 @@ public:
 public:
 	void RequestScreenShot( XE::FrameBufferHandle handle, const XE::FileSystem::Path & path );
 
+protected:
+	const XE::PView & GetView( XE::ViewHandle handle );
+
+	void SetOcclusionQueryValue( XE::OcclusionQueryHandle handle, XE::uint32 value );
+
 private:
 	XE::MemoryView CopyToFrame( XE::MemoryView mem ) const;
 

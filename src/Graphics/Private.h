@@ -362,18 +362,19 @@ struct DestoryHandle
 		DESTROY_PROGRAM,
 		DESTROY_FRAMEBUFFER,
 		DESTROY_INDEX_BUFFER,
-		DESTROY_VERTEX_BUFFER,
 		DESTROY_VERTEX_LAYOUT,
+		DESTROY_VERTEX_BUFFER,
+		DESTROY_INDIRECT_BUFFER,
+		DESTROY_OCCLUSION_QUERY,
 		DESTROY_OCCLUSION_QUERY,
 		DESTROY_DYNAMIC_INDEX_BUFFER,
 		DESTROY_DYNAMIC_VERTEX_BUFFER,
-		DESTROY_TRANSIENT_INDEX_BUFFER,
-		DESTROY_TRANSIENT_VERTEX_BUFFER,
 	};
 
 	DestoryType Type;
 	union
 	{
+		
 		XE::ShaderHandle					_ShaderHandle;
 		XE::TextureHandle					_TextureHandle;
 		XE::ProgramHandle					_ProgramHandle;
@@ -381,6 +382,7 @@ struct DestoryHandle
 		XE::IndexBufferHandle				_IndexBufferHandle;
 		XE::VertexBufferHandle				_VertexBufferHandle;
 		XE::VertexLayoutHandle				_VertexLayoutHandle;
+		XE::IndirectBufferHandle			_IndirectBufferHandle;
 		XE::OcclusionQueryHandle			_OcclusionQueryHandle;
 		XE::DynamicIndexBufferHandle		_DynamicIndexBufferHandle;
 		XE::DynamicVertexBufferHandle		_DynamicVertexBufferHandle;
@@ -414,11 +416,11 @@ public:
 	std::array<RenderBlit, GFX_MAX_BLITITEMS> RenderBlits = {};
 	std::array<XE::uint32, GFX_MAX_BLITITEMS> RenderBlitKeys = {};
 
+	std::atomic<XE::uint32> DestoryHandleSize = 0;
+	std::array<XE::DestoryHandle, GFX_MAX_DESTORYS> DestoryHandles = {};
+
 	XE::Buffer PostCmd;
 	std::mutex PostCmdMutex;
-
-	XE::Buffer DestoryCmd;
-	std::mutex DestoryCmdMutex;
 
 	XE::Buffer TransientBuffers;
 	std::mutex TransientBufferMutex;

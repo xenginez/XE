@@ -40,6 +40,7 @@ static constexpr XE::uint32 GFX_MAX_SHADERS = 512;
 static constexpr XE::uint32 GFX_MAX_UNIFORMS = 64;
 static constexpr XE::uint32 GFX_MAX_PROGRAMS = 512;
 static constexpr XE::uint32 GFX_MAX_TEXTURES = 4096;
+static constexpr XE::uint32 GFX_MAX_DESTORYS = 4096;
 static constexpr XE::uint32 GFX_MAX_OCCLUSION = 256;
 static constexpr XE::uint32 GFX_MAX_TRANSFORM = 256;
 static constexpr XE::uint32 GFX_MAX_BLITITEMS = 1024;
