@@ -7,6 +7,9 @@ BEG_XE_NAMESPACE
 
 class RendererContextSoftware : public XE::RendererContext
 {
+private:
+	struct Private;
+
 public:
 	RendererContextSoftware();
 
@@ -20,11 +23,12 @@ private:
 
 	void Shutdown( XE::RenderFrame * frame );
 
-	void BlitCall( const XE::RenderBlit * item );
+private:
+	void BlitCall( XE::RenderFrame * frame, XE::RenderBlit * item );
 
-	void DrawCall( const XE::RenderDraw * item, const XE::RenderBind * bind );
+	void DrawCall( XE::RenderFrame * frame, XE::RenderDraw * item, XE::RenderBind * bind );
 
-	void ComputeCall( const XE::RenderCompute * item, const XE::RenderBind * bind );
+	void ComputeCall( XE::RenderFrame * frame, XE::RenderCompute * item, XE::RenderBind * bind );
 
 private:
 	void CreateProgram( XE::RenderFrame * frame );
@@ -49,6 +53,7 @@ private:
 
 	void CreateDynamicVertexBuffer( XE::RenderFrame * frame );
 
+public:
 	void ReadTexture( XE::RenderFrame * frame );
 
 	void UpdateTexture( XE::RenderFrame * frame );
@@ -82,6 +87,8 @@ public:
 
 	void DestoryDynamicVertexBuffer( XE::RenderFrame * frame );
 
+private:
+	Private * _p;
 };
 
 XE_INLINE XE::RendererContext * CreateRendererContextSoftware()

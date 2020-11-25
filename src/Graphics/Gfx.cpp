@@ -45,11 +45,10 @@ XE::Array<XE::RendererContextType> XE::Gfx::GetSupportedContext()
 	ret.push_back( XE::RendererContextType::OPENGL );
 #elif PLATFORM_OS & (OS_IOS)
 	ret.push_back( XE::RendererContextType::METAL );
-	ret.push_back( XE::RendererContextType::GLES2 );
+	ret.push_back( XE::RendererContextType::OPENGL );
 #elif PLATFORM_OS & (OS_ANDROID)
 	ret.push_back( XE::RendererContextType::VULKAN );
-	ret.push_back( XE::RendererContextType::GLES3 );
-	ret.push_back( XE::RendererContextType::GLES2 );
+	ret.push_back( XE::RendererContextType::OPENGL );
 #elif PLATFORM_OS & (OS_LINUX)
 	ret.push_back( XE::RendererContextType::VULKAN );
 	ret.push_back( XE::RendererContextType::OPENGL );

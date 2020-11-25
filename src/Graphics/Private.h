@@ -303,6 +303,8 @@ struct RenderDraw
 	XE::uint8 SubmitFlags = 0;
 	XE::uint8 StreamMask = 0;
 
+	XE::ProgramHandle Program;
+
 	bool IsDynamicInstanceDataBuffer = false;
 	XE::VertexBufferHandle InstanceDataBuffer;
 
@@ -348,6 +350,8 @@ struct RenderCompute
 	XE::uint32 NumX = 0;
 	XE::uint32 NumY = 0;
 	XE::uint32 NumZ = 0;
+
+	XE::ProgramHandle Program;
 
 	XE::IndirectBufferHandle IndirectBuffer;
 

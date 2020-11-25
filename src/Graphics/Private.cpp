@@ -155,6 +155,7 @@ void XE::RenderDraw::Reset()
 	SubmitFlags = 0;
 	StreamMask = 0;
 	IsDynamicInstanceDataBuffer = false;
+	Program = XE::ProgramHandle::Invalid;
 	InstanceDataBuffer = XE::VertexBufferHandle::Invalid;
 	IndirectBuffer = XE::IndirectBufferHandle::Invalid;
 	OcclusionQuery = XE::OcclusionQueryHandle::Invalid;
@@ -193,6 +194,7 @@ void XE::RenderCompute::Reset()
 	NumY = 0;
 	NumZ = 0;
 
+	Program = XE::ProgramHandle::Invalid;
 	IndirectBuffer = XE::IndirectBufferHandle::Invalid;
 }
 
@@ -201,8 +203,6 @@ void XE::RenderFrame::Reset()
 	UniformsSize = 0;
 	TransformsSize = 0;
 	RenderItemSize = 0;
-	RenderBlitSize = 0;
-	DestoryHandleSize = 0;
 	RenderOcclusionSize = 0;
 
 	PrevCmd.Reset();

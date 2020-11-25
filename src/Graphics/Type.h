@@ -415,9 +415,7 @@ enum class RendererContextType
 	NIL,          //!< No rendering.
 	METAL,        //!< Metal
 	VULKAN,       //!< Vulkan
-	GLES2,		  //!< OpenGLES 2.0
-	GLES3,		  //!< OpenGLES 3.0
-	OPENGL,		  //!< OpenGL
+	OPENGL,		  //!< OpenGL OpenGLES
 	DIRECT3D11,   //!< Direct3D 11.0
 	DIRECT3D12,   //!< Direct3D 12.0
 	SOFTWARE,	  //!< Software

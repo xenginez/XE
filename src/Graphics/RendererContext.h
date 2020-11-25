@@ -45,9 +45,9 @@ public:
 	void End( XE::Encoder * val );
 
 public:
-	XE::CapsInfo & GetCaps();
+	const XE::CapsInfo & GetCaps() const;
 
-	XE::InitDesc & GetInit();
+	const XE::InitDesc & GetInit() const;
 
 public:
 	void Inc( XE::ViewHandle handle );
@@ -210,7 +210,7 @@ public:
 	void RequestScreenShot( XE::FrameBufferHandle handle, const XE::FileSystem::Path & path );
 
 protected:
-	const XE::PView & GetView( XE::ViewHandle handle );
+	void SetCaps( const XE::CapsInfo & val );
 
 	void SetOcclusionQueryValue( XE::OcclusionQueryHandle handle, XE::uint32 value );
 

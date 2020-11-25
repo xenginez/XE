@@ -179,7 +179,7 @@ void XE::Encoder::Discard()
 
 void XE::Encoder::Submit( ViewHandle handle, RenderGroup group, ProgramHandle program, OcclusionQueryHandle query /*= OcclusionQueryHandle::Invalid*/, XE::uint32 depth /*= 0*/ )
 {
-	if( _p->_Draw.Indices.Handle == IndexBufferHandle::Invalid.GetValue() )
+	if( !_p->_Draw.Indices.Handle )
 	{
 		Discard();
 
@@ -191,6 +191,11 @@ void XE::Encoder::Submit( ViewHandle handle, RenderGroup group, ProgramHandle pr
 		_p->_Draw.OcclusionQuery = query;
 	}
 	
+	if( program )
+	{
+		_p->_Draw.Program = program;
+	}
+
 	{
 		int i = 0;
 		for( auto it = _p->_Uniforms.begin(); it != _p->_Uniforms.end(); ++it, ++i )

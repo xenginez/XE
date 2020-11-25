@@ -19,8 +19,8 @@ struct XE::RendererContext::Private
 
 	std::array<PView, GFX_MAX_VIEW> _Views;
 	std::array<PShader, GFX_MAX_SHADERS> _Shaders;
-	std::array<PTexture, GFX_MAX_TEXTURES> _Textures;
 	std::array<PProgram, GFX_MAX_PROGRAMS> _Programs;
+	std::array<PTexture, GFX_MAX_TEXTURES> _Textures;
 	std::array<POcclusionQuery, GFX_MAX_OCCLUSION> _Occlusions;
 	std::array<PFrameBuffer, GFX_MAX_FRAME_BUFFERS> _FrameBuffers;
 	std::array<PIndexBuffer, GFX_MAX_INDEX_BUFFERS> _IndexBuffers;
@@ -123,12 +123,12 @@ void XE::RendererContext::End( XE::Encoder * val )
 	val->SetFrame( nullptr );
 }
 
-XE::CapsInfo & XE::RendererContext::GetCaps()
+const XE::CapsInfo & XE::RendererContext::GetCaps() const
 {
 	return _p->_Caps;
 }
 
-XE::InitDesc & XE::RendererContext::GetInit()
+const XE::InitDesc & XE::RendererContext::GetInit() const
 {
 	return _p->_Init;
 }
@@ -324,7 +324,6 @@ XE::ProgramHandle XE::RendererContext::Create( const XE::ProgramDesc & desc )
 
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_PROGRAM );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
-	_p->_SubmitFrame->PrevCmd.Wirte( desc );
 
 	return handle;
 }
@@ -341,7 +340,6 @@ XE::FrameBufferHandle XE::RendererContext::Create( const XE::FrameBufferDesc & d
 
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_FRAME_BUFFER );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
-	_p->_SubmitFrame->PrevCmd.Wirte( desc );
 
 	return handle;
 }
@@ -357,7 +355,6 @@ XE::VertexLayoutHandle XE::RendererContext::Create( const XE::VertexLayoutDesc &
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_VERTEX_LAYOUT );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
-	_p->_SubmitFrame->PrevCmd.Wirte( desc );
 
 	return handle;
 }
@@ -390,7 +387,6 @@ XE::IndirectBufferHandle XE::RendererContext::Create( const XE::IndirectBufferDe
 
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_INDIRECT_BUFFER );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
-	_p->_SubmitFrame->PrevCmd.Wirte( desc );
 
 	return handle;
 }
@@ -407,8 +403,6 @@ XE::ShaderHandle XE::RendererContext::Create( const XE::ShaderDesc & desc, XE::M
 
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_SHADER );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
-	_p->_SubmitFrame->PrevCmd.Wirte( desc.Name );
-	_p->_SubmitFrame->PrevCmd.Wirte( desc.Type );
 	_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( data ) );
 
 	return handle;
@@ -426,7 +420,6 @@ XE::TextureHandle XE::RendererContext::Create( const XE::TextureDesc & desc, XE:
 
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_TEXTURE );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
-	_p->_SubmitFrame->PrevCmd.Wirte( desc );
 	_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( Data ) );
 
 	return handle;
@@ -444,7 +437,6 @@ XE::IndexBufferHandle XE::RendererContext::Create( const XE::IndexBufferDesc & d
 
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_INDEX_BUFFER );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
-	_p->_SubmitFrame->PrevCmd.Wirte( desc );
 	_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( Data ) );
 
 	return handle;
@@ -462,7 +454,6 @@ XE::VertexBufferHandle XE::RendererContext::Create( const XE::VertexBufferDesc &
 
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_VERTEX_BUFFER );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
-	_p->_SubmitFrame->PrevCmd.Wirte( desc );
 	_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( Data ) );
 
 	return handle;
@@ -480,7 +471,6 @@ XE::DynamicIndexBufferHandle XE::RendererContext::Create( const XE::DynamicIndex
 
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_DYNAMIC_INDEX_BUFFER );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
-	_p->_SubmitFrame->PrevCmd.Wirte( desc );
 	_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( Data ) );
 
 	return handle;
@@ -498,7 +488,6 @@ XE::DynamicVertexBufferHandle XE::RendererContext::Create( const XE::DynamicVert
 
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_DYNAMIC_VERTEX_BUFFER );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
-	_p->_SubmitFrame->PrevCmd.Wirte( desc );
 	_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( Data ) );
 
 	return handle;
@@ -807,8 +796,23 @@ void XE::RendererContext::RequestScreenShot( XE::FrameBufferHandle handle, const
 	_p->_SubmitFrame->PostCmd.Wirte( path.u8string() );
 }
 
+void XE::RendererContext::SetCaps( const XE::CapsInfo & val )
+{
+	_p->_Caps = val;
+}
+
+void XE::RendererContext::SetOcclusionQueryValue( XE::OcclusionQueryHandle handle, XE::uint32 value )
+{
+	_p->_Occlusions[handle].Value = value;
+}
+
 XE::MemoryView XE::RendererContext::CopyToFrame( XE::MemoryView mem ) const
 {
+	if( mem.size() == 0 )
+	{
+		return mem;
+	}
+
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->TransientBufferMutex );
 
 	auto pos = _p->_SubmitFrame->TransientBuffers.View().data() + _p->_SubmitFrame->TransientBuffers.WirtePos();
@@ -816,14 +820,4 @@ XE::MemoryView XE::RendererContext::CopyToFrame( XE::MemoryView mem ) const
 	_p->_SubmitFrame->TransientBuffers.Wirte( mem.data(), mem.size() );
 
 	return XE::MemoryView( pos, mem.size() );
-}
-
-const XE::PView & XE::RendererContext::GetView( XE::ViewHandle handle )
-{
-	return _p->_Views[handle];
-}
-
-void XE::RendererContext::SetOcclusionQueryValue( XE::OcclusionQueryHandle handle, XE::uint32 value )
-{
-	_p->_Occlusions[handle].Value = value;
 }
