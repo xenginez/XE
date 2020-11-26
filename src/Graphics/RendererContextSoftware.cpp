@@ -434,8 +434,8 @@ void XE::RendererContextSoftware::RequestScreenShot( XE::RenderFrame * frame )
 	XE::TextureHandle handle;
 	std::string path;
 
-	frame->PrevCmd.Read( handle );
-	frame->PrevCmd.Read( path );
+	frame->PostCmd.Read( handle );
+	frame->PostCmd.Read( path );
 
 	stbi_write_png( path.c_str(), GetDesc( handle ).Width, GetDesc( handle ).Height, 4, _p->_Textures[handle], 0 );
 }
@@ -464,4 +464,115 @@ void XE::RendererContextSoftware::UpdateDynamicVertexBuffer( XE::RenderFrame * f
 	frame->PrevCmd.Read( data );
 
 	std::memcpy( _p->_DynamicVertexBuffers[handle], data.data() + start, GetDesc( handle ).Size );
+}
+
+void XE::RendererContextSoftware::DestoryShader( XE::RenderFrame * frame )
+{
+	XE::ShaderHandle handle;
+
+	frame->PostCmd.Read( handle );
+
+	if( _p->_Shaders[handle] )
+	{
+		delete _p->_Shaders[handle];
+		_p->_Shaders[handle] = nullptr;
+	}
+}
+
+void XE::RendererContextSoftware::DestoryTexture( XE::RenderFrame * frame )
+{
+	XE::TextureHandle handle;
+
+	frame->PostCmd.Read( handle );
+
+	if( _p->_Textures[handle] )
+	{
+		delete _p->_Textures[handle];
+		_p->_Textures[handle] = nullptr;
+	}
+}
+
+void XE::RendererContextSoftware::DestoryIndexBuffer( XE::RenderFrame * frame )
+{
+	XE::IndexBufferHandle handle;
+
+	frame->PostCmd.Read( handle );
+
+	if( _p->_IndexBuffers[handle] )
+	{
+		delete _p->_IndexBuffers[handle];
+		_p->_IndexBuffers[handle] = nullptr;
+	}
+}
+
+void XE::RendererContextSoftware::DestoryVertexBuffer( XE::RenderFrame * frame )
+{
+	XE::VertexBufferHandle handle;
+
+	frame->PostCmd.Read( handle );
+
+	if( _p->_VertexBuffers[handle] )
+	{
+		delete _p->_VertexBuffers[handle];
+		_p->_VertexBuffers[handle] = nullptr;
+	}
+}
+
+void XE::RendererContextSoftware::DestoryIndirectBuffer( XE::RenderFrame * frame )
+{
+	XE::IndirectBufferHandle handle;
+
+	frame->PostCmd.Read( handle );
+
+	if( _p->_IndirectBuffers[handle] )
+	{
+		delete _p->_IndirectBuffers[handle];
+		_p->_IndirectBuffers[handle] = nullptr;
+	}
+}
+
+void XE::RendererContextSoftware::DestoryDynamicIndexBuffer( XE::RenderFrame * frame )
+{
+	XE::DynamicIndexBufferHandle handle;
+
+	frame->PostCmd.Read( handle );
+
+	if( _p->_DynamicIndexBuffers[handle] )
+	{
+		delete _p->_DynamicIndexBuffers[handle];
+		_p->_DynamicIndexBuffers[handle] = nullptr;
+	}
+}
+
+void XE::RendererContextSoftware::DestoryDynamicVertexBuffer( XE::RenderFrame * frame )
+{
+	XE::DynamicVertexBufferHandle handle;
+
+	frame->PostCmd.Read( handle );
+
+	if( _p->_DynamicVertexBuffers[handle] )
+	{
+		delete _p->_DynamicVertexBuffers[handle];
+		_p->_DynamicVertexBuffers[handle] = nullptr;
+	}
+}
+
+void XE::RendererContextSoftware::DestoryProgram( XE::RenderFrame * frame )
+{
+	( void )( frame );
+}
+
+void XE::RendererContextSoftware::DestoryFrameBuffer( XE::RenderFrame * frame )
+{
+	( void )( frame );
+}
+
+void XE::RendererContextSoftware::DestoryVertexLayout( XE::RenderFrame * frame )
+{
+	( void )( frame );
+}
+
+void XE::RendererContextSoftware::DestoryOcclusionQuery( XE::RenderFrame * frame )
+{
+	( void )( frame );
 }
