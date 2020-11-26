@@ -2,6 +2,10 @@
 
 #include <tbb/parallel_for.h>
 
+#define STBI_WINDOWS_UTF8
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include <stb/stb_image_write.h>
+
 struct PTriangle
 {
 
@@ -395,4 +399,69 @@ void XE::RendererContextSoftware::CreateDynamicVertexBuffer( XE::RenderFrame * f
 	{
 		std::memcpy( _p->_DynamicVertexBuffers[handle], data.data(), data.size() );
 	}
+}
+
+void XE::RendererContextSoftware::ReadTexture( XE::RenderFrame * frame )
+{
+	XE::TextureHandle handle;
+	std::uintptr_t data;
+	XE::uint8 mip;
+	
+	frame->PrevCmd.Read( handle );
+	frame->PrevCmd.Read( data );
+	frame->PrevCmd.Read( mip );
+
+	XE::uint8 * p = ( XE::uint8 * )data;
+
+	std::memcpy( p, _p->_Textures[handle], GetDesc( handle ).Width * GetDesc( handle ).Height * GetDesc( handle ).Depth );
+}
+
+void XE::RendererContextSoftware::UpdateTexture( XE::RenderFrame * frame )
+{
+	XE::TextureHandle handle;
+	XE::UpdateTextureDesc desc;
+	XE::MemoryView data;
+
+	frame->PrevCmd.Read( handle );
+	frame->PrevCmd.Read( desc );
+	frame->PrevCmd.Read( data );
+
+	std::memcpy( _p->_Textures[handle], data.data(), data.size() );
+}
+
+void XE::RendererContextSoftware::RequestScreenShot( XE::RenderFrame * frame )
+{
+	XE::TextureHandle handle;
+	std::string path;
+
+	frame->PrevCmd.Read( handle );
+	frame->PrevCmd.Read( path );
+
+	stbi_write_png( path.c_str(), GetDesc( handle ).Width, GetDesc( handle ).Height, 4, _p->_Textures[handle], 0 );
+}
+
+void XE::RendererContextSoftware::UpdateDynamicIndexBuffer( XE::RenderFrame * frame )
+{
+	XE::DynamicIndexBufferHandle handle;
+	XE::uint64 start;
+	XE::MemoryView data;
+
+	frame->PrevCmd.Read( handle );
+	frame->PrevCmd.Read( start );
+	frame->PrevCmd.Read( data );
+
+	std::memcpy( _p->_DynamicIndexBuffers[handle], data.data() + start, GetDesc( handle ).Size );
+}
+
+void XE::RendererContextSoftware::UpdateDynamicVertexBuffer( XE::RenderFrame * frame )
+{
+	XE::DynamicVertexBufferHandle handle;
+	XE::uint64 start;
+	XE::MemoryView data;
+
+	frame->PrevCmd.Read( handle );
+	frame->PrevCmd.Read( start );
+	frame->PrevCmd.Read( data );
+
+	std::memcpy( _p->_DynamicVertexBuffers[handle], data.data() + start, GetDesc( handle ).Size );
 }
