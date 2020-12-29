@@ -264,7 +264,7 @@ cd %RD3_PATH%
 echo PROJECT(sqlite3) > %RD3_PATH%\sqlite3-cmake\CMakeLists.txt
 echo cmake_minimum_required(VERSION 2.8) >> %RD3_PATH%\sqlite3-cmake\CMakeLists.txt
 echo include_directories(${CMAKE_SOURCE_DIR}/src) >> %RD3_PATH%\sqlite3-cmake\CMakeLists.txt
-echo add_library(sqlite3 STATIC src/sqlite3.c src/sqlite3.h src/sqlite3ext.h) >> %RD3_PATH%\sqlite3-cmake\CMakeLists.txt
+echo add_library(sqlite3 SHARED src/sqlite3.c src/sqlite3.h src/sqlite3ext.h) >> %RD3_PATH%\sqlite3-cmake\CMakeLists.txt
 echo add_definitions(-DSQLITE_ENABLE_RTREE) >> %RD3_PATH%\sqlite3-cmake\CMakeLists.txt
 echo add_definitions(-DSQLITE_ENABLE_FTS4) >> %RD3_PATH%\sqlite3-cmake\CMakeLists.txt
 echo add_definitions(-DSQLITE_ENABLE_FTS5) >> %RD3_PATH%\sqlite3-cmake\CMakeLists.txt
@@ -273,7 +273,7 @@ echo add_definitions(-DSQLITE_ENABLE_RBU) >> %RD3_PATH%\sqlite3-cmake\CMakeLists
 echo add_definitions(-DSQLITE_ENABLE_STAT4) >> %RD3_PATH%\sqlite3-cmake\CMakeLists.txt
 echo #add_definitions(-DSQLITE_THREADSAFE=0) >> %RD3_PATH%\sqlite3-cmake\CMakeLists.txt
 echo install(FILES src/sqlite3.h src/sqlite3ext.h DESTINATION include) >> %RD3_PATH%\sqlite3-cmake\CMakeLists.txt
-echo install(TARGETS sqlite3 LIBRARY DESTINATION lib ARCHIVE DESTINATION lib) >> %RD3_PATH%\sqlite3-cmake\CMakeLists.txt
+echo install(TARGETS sqlite3 RUNTIME DESTINATION bin LIBRARY DESTINATION lib ARCHIVE DESTINATION lib) >> %RD3_PATH%\sqlite3-cmake\CMakeLists.txt
 
 mkdir .\sqlite3-cmake\build
 cd .\sqlite3-cmake\build
