@@ -28,6 +28,3 @@
 [submodule "3rdparty/ozz-animation"]
 	path = 3rdparty/ozz-animation
 	url = https://github.com/guillaumeblanc/ozz-animation.git
-[submodule "3rdparty/zip"]
-	path = 3rdparty/zip
-	url = https://github.com/kuba--/zip.git

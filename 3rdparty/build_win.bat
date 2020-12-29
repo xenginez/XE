@@ -58,7 +58,7 @@ xcopy %cd%\install\lib\ozz_animation.lib %RD3_PATH%\..\depend\lib\win\release\ /
 xcopy %cd%\install\lib\ozz_base.lib %RD3_PATH%\..\depend\lib\win\release\ /y
 xcopy %cd%\install\lib\ozz_geometry.lib %RD3_PATH%\..\depend\lib\win\release\ /y
 xcopy %cd%\install\lib\ozz_options.lib %RD3_PATH%\..\depend\lib\win\release\ /y
-xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\ /s /e /y
+xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\ /e /y
 del %cd%\install\ /f /s /q
 
 
@@ -75,8 +75,8 @@ msbuild.exe ".\INSTALL.vcxproj"  /m /nr:true ^
     /p:UseSubFolderForOutputDirDuringMultiPlatformBuild=false
 
 echo "copy tbb debug file to depend"
-xcopy %cd%\install\lib\*.* %RD3_PATH%\..\depend\lib\win\debug\ /s /e /y
-xcopy %cd%\install\bin\*.* %RD3_PATH%\..\depend\bin\win\debug\ /s /e /y
+xcopy %cd%\install\lib\*.* %RD3_PATH%\..\depend\lib\win\debug\ /e /y
+xcopy %cd%\install\bin\*.* %RD3_PATH%\..\depend\bin\win\debug\ /e /y
 del %cd%\install\ /f /s /q
 
 echo "build tbb release"
@@ -87,9 +87,9 @@ msbuild.exe ".\INSTALL.vcxproj"  /m /nr:true ^
     /p:UseSubFolderForOutputDirDuringMultiPlatformBuild=false
 
 echo "copy tbb release file to depend"
-xcopy %cd%\install\lib\*.* %RD3_PATH%\..\depend\lib\win\release\ /s /e /y
-xcopy %cd%\install\bin\*.* %RD3_PATH%\..\depend\bin\win\release\ /s /e /y
-xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\ /s /e /y
+xcopy %cd%\install\lib\*.* %RD3_PATH%\..\depend\lib\win\release\ /e /y
+xcopy %cd%\install\bin\*.* %RD3_PATH%\..\depend\bin\win\release\ /e /y
+xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\ /e /y
 del %cd%\install\ /f /s /q
 
 
@@ -106,8 +106,8 @@ msbuild.exe ".\INSTALL.vcxproj"  /m /nr:true ^
     /p:UseSubFolderForOutputDirDuringMultiPlatformBuild=false
 
 echo "copy recastnavigation debug file to depend"
-xcopy %cd%\install\lib\*.* %RD3_PATH%\..\depend\lib\win\debug\ /s /e /y
-xcopy %cd%\install\bin\*.* %RD3_PATH%\..\depend\bin\win\debug\ /s /e /y
+xcopy %cd%\install\lib\*.* %RD3_PATH%\..\depend\lib\win\debug\ /e /y
+xcopy %cd%\install\bin\*.* %RD3_PATH%\..\depend\bin\win\debug\ /e /y
 del %cd%\install\ /f /s /q
 
 echo "build recastnavigation release"
@@ -118,40 +118,9 @@ msbuild.exe ".\INSTALL.vcxproj"  /m /nr:true ^
     /p:UseSubFolderForOutputDirDuringMultiPlatformBuild=false
 
 echo "copy recastnavigation release file to depend"
-xcopy %cd%\install\lib\*.* %RD3_PATH%\..\depend\lib\win\release\ /s /e /y
-xcopy %cd%\install\bin\*.* %RD3_PATH%\..\depend\bin\win\release\ /s /e /y
-xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\recastnavigation\ /s /e /y
-del %cd%\install\ /f /s /q
-
-
-:BUILD_ZIP
-echo "build zip debug"
-cd %RD3_PATH%
-mkdir .\zip\build
-cd .\zip\build
-cmake -DCMAKE_INSTALL_PREFIX=.\install\ .. -G "Visual Studio 16 2019"
-msbuild.exe ".\INSTALL.vcxproj"  /m /nr:true ^
-    /p:Configuration=Debug ^
-    /p:Platform=x64 ^
-    /p:AppxBundlePlatforms=x64 ^
-    /p:UseSubFolderForOutputDirDuringMultiPlatformBuild=false
-    
-echo "copy zip debug file to depend"
-xcopy %cd%\install\lib\zip.lib %RD3_PATH%\..\depend\lib\win\debug\ /s /e /y
-del %cd%\install\ /f /s /q
-
-echo "build zip release"
-cd %RD3_PATH%
-mkdir .\zip\build
-cd .\zip\build
-msbuild.exe ".\INSTALL.vcxproj"  /m /nr:true ^
-    /p:Configuration=Release ^
-    /p:Platform=x64 ^
-    /p:AppxBundlePlatforms=x64 ^
-    /p:UseSubFolderForOutputDirDuringMultiPlatformBuild=false
-echo "copy zip release file to depend"
-xcopy %cd%\install\lib\zip.lib %RD3_PATH%\..\depend\lib\win\release\ /s /e /y
-xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\ /s /e /y
+xcopy %cd%\install\lib\*.* %RD3_PATH%\..\depend\lib\win\release\ /e /y
+xcopy %cd%\install\bin\*.* %RD3_PATH%\..\depend\bin\win\release\ /e /y
+xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\recastnavigation\ /e /y
 del %cd%\install\ /f /s /q
 
 
@@ -205,9 +174,9 @@ msbuild.exe "%cd%\PhysX\physx\compiler\vc16win64\INSTALL.vcxproj"  /m /nr:true ^
     /p:UseSubFolderForOutputDirDuringMultiPlatformBuild=false
 
 echo "copy phyxs release file to depend"
-xcopy %cd%\PhysX\physx\install\vc15win64\PhysX\bin\win.x86_64.vc142.md\release\*.dll %RD3_PATH%\..\depend\bin\win\release\ /s /e /y
-xcopy %cd%\PhysX\physx\install\vc15win64\PhysX\bin\win.x86_64.vc142.md\release\*.pdb %RD3_PATH%\..\depend\bin\win\release\ /s /e /y
-xcopy %cd%\PhysX\physx\install\vc15win64\PhysX\bin\win.x86_64.vc142.md\release\*.lib %RD3_PATH%\..\depend\lib\win\release\ /s /e /y
+xcopy %cd%\PhysX\physx\install\vc15win64\PhysX\bin\win.x86_64.vc142.md\release\*.dll %RD3_PATH%\..\depend\bin\win\release\ /e /y
+xcopy %cd%\PhysX\physx\install\vc15win64\PhysX\bin\win.x86_64.vc142.md\release\*.pdb %RD3_PATH%\..\depend\bin\win\release\ /e /y
+xcopy %cd%\PhysX\physx\install\vc15win64\PhysX\bin\win.x86_64.vc142.md\release\*.lib %RD3_PATH%\..\depend\lib\win\release\ /e /y
 
 xcopy %cd%\PhysX\physx\install\vc15win64\PhysX\bin\win.x86_64.vc142.md\release\PhysX_64.dll %RD3_PATH%\..\depend\bin\win\release\ /y
 xcopy %cd%\PhysX\physx\install\vc15win64\PhysX\bin\win.x86_64.vc142.md\release\PhysXCommon_64.dll %RD3_PATH%\..\depend\bin\win\release\ /y
@@ -219,8 +188,8 @@ xcopy %cd%\PhysX\physx\install\vc15win64\PhysX\bin\win.x86_64.vc142.md\release\P
 xcopy %cd%\PhysX\physx\install\vc15win64\PhysX\bin\win.x86_64.vc142.md\release\PhysXCommon_64.lib %RD3_PATH%\..\depend\lib\win\release\ /y
 xcopy %cd%\PhysX\physx\install\vc15win64\PhysX\bin\win.x86_64.vc142.md\release\PhysXFoundation_64.lib %RD3_PATH%\..\depend\lib\win\release\ /y
 
-xcopy %cd%\PhysX\physx\install\vc15win64\PhysX\include\*.* %RD3_PATH%\..\depend\include\PhysX\ /s /e /y
-xcopy %cd%\PhysX\physx\install\vc15win64\PxShared\include\*.* %RD3_PATH%\..\depend\include\PhysX\ /s /e /y
+xcopy %cd%\PhysX\physx\install\vc15win64\PhysX\include\*.* %RD3_PATH%\..\depend\include\PhysX\ /e /y
+xcopy %cd%\PhysX\physx\install\vc15win64\PxShared\include\*.* %RD3_PATH%\..\depend\include\PhysX\ /e /y
 del %cd%\PhysX\physx\install\ /f /s /q
 
 
@@ -253,7 +222,7 @@ msbuild.exe ".\INSTALL.vcxproj"  /m /nr:true ^
 echo "copy openal release file to depend"
 xcopy %cd%\install\lib\*.lib %RD3_PATH%\..\depend\lib\win\release\ /e /y
 xcopy %cd%\install\bin\*.dll %RD3_PATH%\..\depend\bin\win\release\ /e /y
-xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\ /s /e /y
+xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\ /e /y
 del %cd%\install\ /f /s /q
 
 
@@ -285,8 +254,9 @@ msbuild.exe ".\INSTALL.vcxproj"  /m /nr:true ^
     /p:UseSubFolderForOutputDirDuringMultiPlatformBuild=false
 
 echo "copy sqlite3-cmake debug file to depend"
-xcopy %cd%\install\lib\*.lib %RD3_PATH%\..\depend\lib\win\debug\ /s /e /y
-xcopy %cd%\install\bin\*.dll %RD3_PATH%\..\depend\bin\win\debug\ /s /e /y
+xcopy %cd%\install\lib\*.lib %RD3_PATH%\..\depend\lib\win\debug\ /e /y
+xcopy %cd%\install\bin\*.pdb %RD3_PATH%\..\depend\bin\win\debug\ /e /y
+xcopy %cd%\install\bin\*.dll %RD3_PATH%\..\depend\bin\win\debug\ /e /y
 del %cd%\install\ /f /s /q
 
 echo "build sqlite3-cmake release"
@@ -299,9 +269,9 @@ msbuild.exe ".\INSTALL.vcxproj"  /m /nr:true ^
     /p:AppxBundlePlatforms=x64 ^
     /p:UseSubFolderForOutputDirDuringMultiPlatformBuild=false
 echo "copy sqlite3-cmake release file to depend"
-xcopy %cd%\install\lib\*.lib %RD3_PATH%\..\depend\lib\win\release\ /s /e /y
-xcopy %cd%\install\bin\*.dll %RD3_PATH%\..\depend\bin\win\release\ /s /e /y
-xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\sqlite3\ /s /e /y
+xcopy %cd%\install\lib\*.lib %RD3_PATH%\..\depend\lib\win\release\ /e /y
+xcopy %cd%\install\bin\*.dll %RD3_PATH%\..\depend\bin\win\release\ /e /y
+xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\sqlite3\ /e /y
 del %cd%\install\ /f /s /q
 
 
@@ -329,13 +299,13 @@ xcopy %cd%\imgui\imstb_truetype.h %RD3_PATH%\..\src\GUI\ /y
 :BUILD_STB
 echo "copy stb head file to depend"
 cd %RD3_PATH%
-xcopy %cd%\stb\*.h %RD3_PATH%\..\depend\include\stb\ /s /e /y
+xcopy %cd%\stb\*.h %RD3_PATH%\..\depend\include\stb\ /e /y
 
 
 :BUILD_RAPIDJSON
 echo "copy rapidjson head file to depend"
 cd %RD3_PATH%
-xcopy %cd%\rapidjson\include\*.* %RD3_PATH%\..\depend\include\ /s /e /y
+xcopy %cd%\rapidjson\include\*.* %RD3_PATH%\..\depend\include\ /e /y
 
 :BUILD_MINIAUDIO
 echo "copy miniaudio head file to depend"
