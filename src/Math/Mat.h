@@ -31,7 +31,7 @@ public:
 public:
 	Mat()
 	{
-		std::memcpy( d, val, sizeof( value_type ) * value_size );
+		std::memset( d, 0, sizeof( value_type ) * value_size );
 	}
 
 	Mat( value_type * val )
@@ -39,13 +39,13 @@ public:
 		std::memcpy( d, val, sizeof( value_type ) * value_size );
 	}
 
-	template< typename U > Mat( const Mat< U > & val )
+	Mat( const Mat & val )
 	{
 		std::memcpy( d, val.d, sizeof( value_type ) * value_size );
 	}
 
 public:
-	Mat3 & operator = ( const Mat3 & val )
+	Mat & operator = ( const Mat & val )
 	{
 		std::memcpy( d, val.d, sizeof( value_type ) * value_size );
 

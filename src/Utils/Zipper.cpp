@@ -1,6 +1,6 @@
 #include "Zipper.h"
 
-#include <zip/zip.h>
+#include "zip.h"
 
 static constexpr XE::uint64 IO_BUFFER_SIZE = 65536;
 

@@ -23,10 +23,6 @@ public:
 	~RigidDynamic() override;
 
 public:
-	XE::Mat4f GetKinematicTarget() const;
-
-	void SetKinematicTarget( const XE::Mat4f & val );
-
 	XE::float32 GetSleepThreshold() const;
 
 	void SetSleepThreshold( XE::float32 val );
@@ -47,17 +43,29 @@ public:
 
 	void SetContactReportThreshold( XE::float32 val );
 
+	const XE::Mat4f & GetKinematicTarget() const;
+
+	void SetKinematicTarget( const XE::Mat4f & val );
+
 	XE::RigidDynamicLockFlags GetRigidDynamicLockFlags() const;
 
 	void SetRigidDynamicLockFlags( XE::RigidDynamicLockFlags val );
 
 public:
-	void Sleep();
+	virtual void Sleep() = 0;
 
-	void WakeUp();
+	virtual void WakeUp() = 0;
 
-	bool IsSleeping() const;
+	virtual bool IsSleeping() const = 0;
 
+private:
+	XE::float32 _SleepThreshold;
+	XE::uint32 _PositionIteration;
+	XE::uint32 _VelocityIteration;
+	XE::float32 _StabilizationThreshold;
+	XE::float32 _ContactReportThreshold;
+	XE::Mat4f _KinematicTarget;
+	XE::RigidDynamicLockFlags _RigidDynamicLockFlags;
 };
 
 END_XE_NAMESPACE

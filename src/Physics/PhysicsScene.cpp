@@ -1,10 +1,5 @@
 #include "PhysicsScene.h"
 
-#include <PhysX/PxPhysicsAPI.h>
-
-#include "Utils/Logger.h"
-#include "Interface/IFramework.h"
-#include "Interface/IPhysicsService.h"
 
 #define CAST() reinterpret_cast< physx::PxScene * >( GetHandle().GetValue() )
 
@@ -21,22 +16,62 @@ XE::PhysicsScene::~PhysicsScene()
 
 }
 
-bool XE::PhysicsScene::Startup()
+XE::uint32 XE::PhysicsScene::GetCCDMaxPasses() const
 {
-	_Handle = XE::IFramework::GetCurrentFramework()->GetPhysicsService()->CreateScene();
-
-	return true;
+	return _CCDMaxPasses;
 }
 
-void XE::PhysicsScene::Clearup()
+void XE::PhysicsScene::SetCCDMaxPasses( XE::uint32 val )
 {
-	if( _Handle )
-	{
-		XE::IFramework::GetCurrentFramework()->GetPhysicsService()->ReleaseScene( _Handle );
-	}
+	_CCDMaxPasses = val;
+}
+
+const XE::Vec3f & XE::PhysicsScene::GetGravity() const
+{
+	return _Gravity;
+}
+
+void XE::PhysicsScene::SetGravity( const XE::Vec3f & val )
+{
+	_Gravity = val;
+}
+
+XE::FrictionType XE::PhysicsScene::GetFrictionType() const
+{
+	return _FrictionType;
+}
+
+void XE::PhysicsScene::SetFrictionType( XE::FrictionType val )
+{
+	_FrictionType = val;
 }
 
 XE::PhysicsSceneHandle XE::PhysicsScene::GetHandle() const
 {
 	return _Handle;
+}
+
+void XE::PhysicsScene::SetHandle( XE::PhysicsSceneHandle val )
+{
+	_Handle = val;
+}
+
+XE::float32 XE::PhysicsScene::GetBounceThresholdVelocity() const
+{
+	return _BounceThresholdVelocity;
+}
+
+void XE::PhysicsScene::SetBounceThresholdVelocity( XE::float32 val )
+{
+	_BounceThresholdVelocity = val;
+}
+
+XE::PhysicsSceneFlags XE::PhysicsScene::GetPhysicsSceneFlags() const
+{
+	return _PhysicsSceneFlags;
+}
+
+void XE::PhysicsScene::SetPhysicsSceneFlags( XE::PhysicsSceneFlags val )
+{
+	_PhysicsSceneFlags = val;
 }

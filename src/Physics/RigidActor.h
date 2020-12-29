@@ -25,43 +25,47 @@ public:
 	~RigidActor() override;
 
 public:
-	static XE::RigidActorPtr CreateRigidActor( XE::RigidActorHandle val );
-
-public:
 	XE::RigidActorHandle GetHandle() const;
 
 	void SetHandle( XE::RigidActorHandle val );
 
-	XE::PhysicsSceneHandle GetSceneHandle() const;
+	XE::PhysicsSceneHandle GetPhysicsSceneHandle() const;
+
+	void SetPhysicsSceneHandle( XE::PhysicsSceneHandle val );
 
 public:
-	XE::String GetName() const;
+	const XE::String & GetName() const;
 
 	void SetName( const XE::String & val );
 
-	XE::Mat4f GetWorldPose() const;
+	const XE::Mat4f & GetWorldTransform() const;
 
-	void SetWorldPose( const XE::Mat4f & val );
+	void SetWorldTransform( const XE::Mat4f & val );
 
 	XE::RigidActorFlags GetRigidActorFlags() const;
 
 	void SetRigidActorFlags( XE::RigidActorFlags val );
 
 public:
-	XE::uint64 GetShapeCount() const;
+	virtual XE::uint64 GetShapeCount() const = 0;
 
-	XE::uint64 GetConstraintCount() const;
+	virtual XE::uint64 GetConstraintCount() const = 0;
 
-	void AttachShape( XE::ShapeHandle val );
+	virtual void AttachShape( XE::ShapeHandle val ) = 0;
 
-	void DetachShape( XE::ShapeHandle val );
+	virtual void DetachShape( XE::ShapeHandle val ) = 0;
 
-	XE::Array<XE::ShapeHandle> GetShapes() const;
+	virtual const XE::Array<XE::ShapeHandle> & GetShapes() const = 0;
 
-	XE::Array<XE::ConstraintHandle> GetConstraints() const;
+	virtual const XE::Array<XE::ConstraintHandle> & GetConstraints() const = 0;
 
 private:
+	XE::String _Name;
+	XE::Mat4f _WorldTransform;
+	XE::RigidActorFlags _RigidActorFlags;
+
 	XE::RigidActorHandle _Handle;
+	XE::PhysicsSceneHandle _PhysicsSceneHandle;
 };
 
 END_XE_NAMESPACE

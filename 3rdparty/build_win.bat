@@ -226,56 +226,6 @@ xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\ /e /y
 del %cd%\install\ /f /s /q
 
 
-:BUILD_SQLITE3
-echo "build sqlite3-cmake debug"
-cd %RD3_PATH%
-
-echo PROJECT(sqlite3) > %RD3_PATH%\sqlite3-cmake\CMakeLists.txt
-echo cmake_minimum_required(VERSION 2.8) >> %RD3_PATH%\sqlite3-cmake\CMakeLists.txt
-echo include_directories(${CMAKE_SOURCE_DIR}/src) >> %RD3_PATH%\sqlite3-cmake\CMakeLists.txt
-echo add_library(sqlite3 SHARED src/sqlite3.c src/sqlite3.h src/sqlite3ext.h) >> %RD3_PATH%\sqlite3-cmake\CMakeLists.txt
-echo add_definitions(-DSQLITE_ENABLE_RTREE) >> %RD3_PATH%\sqlite3-cmake\CMakeLists.txt
-echo add_definitions(-DSQLITE_ENABLE_FTS4) >> %RD3_PATH%\sqlite3-cmake\CMakeLists.txt
-echo add_definitions(-DSQLITE_ENABLE_FTS5) >> %RD3_PATH%\sqlite3-cmake\CMakeLists.txt
-echo add_definitions(-DSQLITE_ENABLE_JSON1) >> %RD3_PATH%\sqlite3-cmake\CMakeLists.txt
-echo add_definitions(-DSQLITE_ENABLE_RBU) >> %RD3_PATH%\sqlite3-cmake\CMakeLists.txt
-echo add_definitions(-DSQLITE_ENABLE_STAT4) >> %RD3_PATH%\sqlite3-cmake\CMakeLists.txt
-echo #add_definitions(-DSQLITE_THREADSAFE=0) >> %RD3_PATH%\sqlite3-cmake\CMakeLists.txt
-echo install(FILES src/sqlite3.h src/sqlite3ext.h DESTINATION include) >> %RD3_PATH%\sqlite3-cmake\CMakeLists.txt
-echo install(TARGETS sqlite3 RUNTIME DESTINATION bin LIBRARY DESTINATION lib ARCHIVE DESTINATION lib) >> %RD3_PATH%\sqlite3-cmake\CMakeLists.txt
-
-mkdir .\sqlite3-cmake\build
-cd .\sqlite3-cmake\build
-cmake -DCMAKE_INSTALL_PREFIX=.\install\ .. -G "Visual Studio 16 2019"
-msbuild.exe ".\INSTALL.vcxproj"  /m /nr:true ^
-    /p:Configuration=Debug ^
-    /p:Platform=x64 ^
-    /p:AppxBundlePlatforms=x64 ^
-    /p:UseSubFolderForOutputDirDuringMultiPlatformBuild=false
-
-echo "copy sqlite3-cmake debug file to depend"
-xcopy %cd%\install\lib\*.lib %RD3_PATH%\..\depend\lib\win\debug\ /e /y
-xcopy %cd%\install\bin\*.pdb %RD3_PATH%\..\depend\bin\win\debug\ /e /y
-xcopy %cd%\install\bin\*.dll %RD3_PATH%\..\depend\bin\win\debug\ /e /y
-del %cd%\install\ /f /s /q
-
-echo "build sqlite3-cmake release"
-cd %RD3_PATH%
-mkdir .\sqlite3-cmake\build
-cd .\sqlite3-cmake\build
-msbuild.exe ".\INSTALL.vcxproj"  /m /nr:true ^
-    /p:Configuration=Release ^
-    /p:Platform=x64 ^
-    /p:AppxBundlePlatforms=x64 ^
-    /p:UseSubFolderForOutputDirDuringMultiPlatformBuild=false
-echo "copy sqlite3-cmake release file to depend"
-xcopy %cd%\install\lib\*.lib %RD3_PATH%\..\depend\lib\win\release\ /e /y
-xcopy %cd%\install\bin\*.dll %RD3_PATH%\..\depend\bin\win\release\ /e /y
-xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\sqlite3\ /e /y
-del %cd%\install\ /f /s /q
-
-
-
 
 
 

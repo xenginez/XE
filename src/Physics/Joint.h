@@ -31,8 +31,16 @@ public:
 
 	void SetHandle( XE::JointHandle val );
 
+	XE::ConstraintHandle GetConstraintHandle() const;
+
+	void SetConstraintHandle( XE::ConstraintHandle val );
+
+	XE::PhysicsSceneHandle GetPhysicsSceneHandle() const;
+
+	void SetPhysicsSceneHandle( XE::PhysicsSceneHandle val );
+
 public:
-	XE::String GetName() const;
+	const XE::String & GetName() const;
 
 	void SetName( const XE::String & val );
 
@@ -64,27 +72,41 @@ public:
 
 	void SetConstraintFlags( XE::ConstraintFlags val );
 
-	XE::Pair<XE::RigidActorHandle, XE::RigidActorHandle> GetRigidActorHandle() const;
+	const XE::Pair<XE::RigidActorHandle, XE::RigidActorHandle> & GetRigidActorHandle() const;
 
 	void SetRigidActorHandle( const XE::Pair<XE::RigidActorHandle, XE::RigidActorHandle> & val );
 
 public:
-	XE::Mat4f GetRelativeTransform() const;
+	const XE::Mat4f & GetRelativeTransform() const;
 
-	XE::Mat4f GetFirstRigidActorPose() const;
+	void SetRelativeTransform( const XE::Mat4f & val );
 
-	XE::Mat4f GetSecondRigidActorPose() const;
+	const XE::Vec3f & GetRelativeLinearVelocity() const;
 
-	XE::Vec3f GetRelativeLinearVelocity() const;
+	void SetRelativeLinearVelocity( const XE::Vec3f & val );
 
-	XE::Vec3f GetRelativeAngularVelocity() const;
+	const XE::Vec3f & GetRelativeAngularVelocity() const;
 
-	XE::PhysicsSceneHandle GetSceneHandle() const;
-
-	XE::ConstraintHandle GetConstraintHandle() const;
+	void SetRelativeAngularVelocity( const XE::Vec3f & val );
 
 private:
+	XE::String _Name;
+	XE::float32 _BreakForce;
+	XE::float32 _BreakTorque;
+	XE::float32 _FirstInvMassScale;
+	XE::float32 _SecondInvMassScale;
+	XE::float32 _FirstInvInertiaScale;
+	XE::float32 _SecondInvInertiaScale;
+	XE::ConstraintFlags _ConstraintFlags;
+	XE::Pair<XE::RigidActorHandle, XE::RigidActorHandle> _RigidActor;
+
+	XE::Mat4f _RelativeTransform;
+	XE::Vec3f _RelativeLinearVelocity;
+	XE::Vec3f _RelativeAngularVelocity;
+
 	XE::JointHandle _Handle;
+	XE::ConstraintHandle _ConstraintHandle;
+	XE::PhysicsSceneHandle _PhysicsSceneHandle;
 };
 
 END_XE_NAMESPACE

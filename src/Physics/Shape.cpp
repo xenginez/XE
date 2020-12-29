@@ -1,9 +1,5 @@
 #include "Shape.h"
 
-#include <PhysX/PxPhysicsAPI.h>
-
-#define _p reinterpret_cast< physx::PxShape * >( GetHandle().GetValue() )
-
 BEG_META( XE::Shape )
 END_META()
 
@@ -17,45 +13,6 @@ XE::Shape::~Shape()
 
 }
 
-XE::ShapePtr XE::Shape::CreateShape( XE::ShapeHandle val )
-{
-	XE::ShapePtr res = nullptr;
-
-	switch( reinterpret_cast< physx::PxShape * >( val.GetValue() )->getGeometryType() )
-	{
-	case physx::PxGeometryType::eSPHERE:
-		res = XE::MakeShared<XE::SphereShape>();
-		break;
-	case physx::PxGeometryType::ePLANE:
-		res = XE::MakeShared<XE::PlaneShape>();
-		break;
-	case physx::PxGeometryType::eCAPSULE:
-		res = XE::MakeShared<XE::CapsuleShape>();
-		break;
-	case physx::PxGeometryType::eBOX:
-		res = XE::MakeShared<XE::BoxShape>();
-		break;
-	case physx::PxGeometryType::eCONVEXMESH:
-		res = XE::MakeShared<XE::ConvexMeshShape>();
-		break;
-	case physx::PxGeometryType::eHEIGHTFIELD:
-		res = XE::MakeShared<XE::HeightFieldShape>();
-		break;
-	case physx::PxGeometryType::eTRIANGLEMESH:
-	case physx::PxGeometryType::eGEOMETRY_COUNT:
-	case physx::PxGeometryType::eINVALID:
-	default:
-		break;
-	}
-
-	if( res )
-	{
-		res->SetHandle( val );
-	}
-
-	return res;
-}
-
 XE::ShapeHandle XE::Shape::GetHandle() const
 {
 	return _Handle;
@@ -66,150 +23,104 @@ void XE::Shape::SetHandle( XE::ShapeHandle val )
 	_Handle = val;
 }
 
-XE::String XE::Shape::GetName() const
+const XE::String & XE::Shape::GetName() const
 {
-	return _p->getName();
+	return _Name;
 }
 
 void XE::Shape::SetName( const XE::String & val )
 {
-	_p->setName( val.ToCString() );
+	_Name = val;
 }
 
-XE::Mat4f XE::Shape::GetLocalPose() const
+const XE::Mat4f & XE::Shape::GetLocalTransform() const
 {
-	auto trans = _p->getLocalPose();
-
-	return XE::Mathf::TRS( { trans.p.x,trans.p.y,trans.p.z }, { trans.q.x, trans.q.y, trans.q.z, trans.q.w }, XE::Vec3f::One );
+	return _LocalTransform;
 }
 
-void XE::Shape::SetLocalPose( const XE::Mat4f & val )
+void XE::Shape::SetLocalTransform( const XE::Mat4f & val )
 {
-	XE::Quat rot;
-	XE::Vec3f pos, scale;
-
-	XE::Mathf::TRS( val, pos, rot, scale );
-
-	_p->setLocalPose( physx::PxTransform( { pos.x, pos.y, pos.z }, { rot.x, rot.y, rot.z, rot.w } ) );
+	_LocalTransform = val;
 }
 
 XE::ShapeFlags XE::Shape::GetShapeFlags() const
 {
-	return XE::uint8( _p->getFlags() );
+	return _ShapeFlags;
 }
 
 void XE::Shape::SetShapeFlags( XE::ShapeFlags val )
 {
-	_p->setFlags( physx::PxShapeFlags( val.GetValue() ) );
+	_ShapeFlags = val;
 }
 
 XE::float32 XE::Shape::GetRestOffset() const
 {
-	return _p->getRestOffset();
+	return _RestOffset;
 }
 
 void XE::Shape::SetRestOffset( XE::float32 val )
 {
-	_p->setRestOffset( val );
+	_RestOffset = val;
 }
 
 XE::float32 XE::Shape::GetContactOffset() const
 {
-	return _p->getContactOffset();
+	return _ContactOffset;
 }
 
 void XE::Shape::SetContactOffset( XE::float32 val )
 {
-	_p->setContactOffset( val );
+	_ContactOffset = val;
 }
 
 XE::Layer XE::Shape::GetQueryFilter() const
 {
-	physx::PxFilterData data = _p->getQueryFilterData();
-
-	return XE::uint64( data.word0 ) || ( XE::uint64( data.word1 ) << 32 );
+	return _QueryFilter;
 }
 
 void XE::Shape::SetQueryFilter( const XE::Layer & val )
 {
-	physx::PxFilterData data;
-
-	data.word0 = val.GetValue() && 0xFFFFFFFF;
-	data.word1 = ( val.GetValue() >> 32 ) && 0xFFFFFFFF;
-
-	_p->setQueryFilterData( data );
+	_QueryFilter = val;
 }
 
 XE::Layer XE::Shape::GetSimulationFilter() const
 {
-	physx::PxFilterData data = _p->getSimulationFilterData();
-
-	return XE::uint64( data.word0 ) || ( XE::uint64( data.word1 ) << 32 );
+	return _SimulationFilter;
 }
 
 void XE::Shape::SetSimulationFilter( const XE::Layer & val )
 {
-	physx::PxFilterData data;
-
-	data.word0 = val.GetValue() && 0xFFFFFFFF;
-	data.word1 = ( val.GetValue() >> 32 ) && 0xFFFFFFFF;
-
-	_p->setSimulationFilterData( data );
+	_SimulationFilter = val;
 }
 
 XE::float32 XE::Shape::GetTorsionalPatchRadius() const
 {
-	return _p->getTorsionalPatchRadius();
+	return _TorsionalPatchRadius;
 }
 
 void XE::Shape::SetTorsionalPatchRadius( XE::float32 val )
 {
-	_p->setTorsionalPatchRadius( val );
+	_TorsionalPatchRadius = val;
 }
 
 XE::float32 XE::Shape::GetMinTorsionalPatchRadius() const
 {
-	return _p->getMinTorsionalPatchRadius();
+	return _MinTorsionalPatchRadius;
 }
 
 void XE::Shape::SetMinTorsionalPatchRadius( XE::float32 val )
 {
-	_p->setMinTorsionalPatchRadius( val );
+	_MinTorsionalPatchRadius = val;
 }
 
-XE::uint64 XE::Shape::GetPhysicsMaterialCount() const
+const XE::Array<XE::PhysicsMaterialHandle> & XE::Shape::GetPhysicsMaterials() const
 {
-	return _p->getNbMaterials();
-}
-
-XE::Array<XE::PhysicsMaterialHandle> XE::Shape::GetPhysicsMaterials() const
-{
-	XE::Array<XE::PhysicsMaterialHandle> res;
-
-	physx::PxMaterial * materials[1024];
-
-	auto size = _p->getMaterials( materials, 1024 );
-
-	for( XE::uint32 i = 0; i < size; ++i )
-	{
-		res.push_back( reinterpret_cast< XE::uint64 >( materials[i] ) );
-	}
-
-	return std::move( res );
-}
-
-XE::PhysicsMaterialHandle XE::Shape::GetPhysicsMaterial( XE::uint64 val ) const
-{
-	return reinterpret_cast< XE::uint64 >( _p->getMaterialFromInternalFaceIndex( val ) );
+	return _PhysicsMaterials;
 }
 
 void XE::Shape::SetPhysicsMaterials( const XE::Array<XE::PhysicsMaterialHandle> & val )
 {
-	physx::PxMaterial * materials[1024];
-
-	std::memcpy( materials, val.data(), val.size() * sizeof( physx::PxMaterial * ) );
-
-	_p->setMaterials( materials, val.size() );
+	_PhysicsMaterials = val;
 }
 
 BEG_META( XE::BoxShape )
@@ -225,20 +136,14 @@ XE::BoxShape::~BoxShape()
 
 }
 
-XE::AABB XE::BoxShape::GetBox() const
+const XE::AABB & XE::BoxShape::GetBox() const
 {
-	physx::PxBoxGeometry box;
-	if( _p->getBoxGeometry( box ) )
-	{
-		return { XE::Vec3f::Zero, { box.halfExtents.x * 2, box.halfExtents.y * 2, box.halfExtents.z * 2 } };
-	}
-
-	return {};
+	return _AABB;
 }
 
 void XE::BoxShape::SetBox( const XE::AABB & val )
 {
-	_p->setGeometry( physx::PxBoxGeometry( val.GetSize().x, val.GetSize().y, val.GetSize().z ) );
+	_AABB = val;
 }
 
 BEG_META( XE::PlaneShape )
@@ -254,20 +159,14 @@ XE::PlaneShape::~PlaneShape()
 
 }
 
-XE::Plane XE::PlaneShape::GetPlane() const
+const XE::Plane & XE::PlaneShape::GetPlane() const
 {
-	physx::PxPlaneGeometry plane;
-	if( _p->getPlaneGeometry( plane ) )
-	{
-		return { 1.0f, 0.0f, 0.0f, 0.0f };
-	}
-
-	return {};
+	return _Plane;
 }
 
 void XE::PlaneShape::SetPlane( const XE::Plane & val )
 {
-	_p->setGeometry( physx::PxPlaneGeometry() );
+	_Plane = val;
 }
 
 BEG_META( XE::SphereShape )
@@ -283,20 +182,14 @@ XE::SphereShape::~SphereShape()
 
 }
 
-XE::Sphere XE::SphereShape::GetSphere() const
+const XE::Sphere & XE::SphereShape::GetSphere() const
 {
-	physx::PxSphereGeometry sphere;
-	if( _p->getSphereGeometry( sphere ) )
-	{
-		return { { sphere.radius / 2.0f, sphere.radius / 2.0f, sphere.radius / 2.0f }, sphere.radius };
-	}
-
-	return {};
+	return _Sphere;
 }
 
 void XE::SphereShape::SetSphere( const XE::Sphere & val )
 {
-	_p->setGeometry( physx::PxSphereGeometry( val.radius ) );
+	_Sphere = val;
 }
 
 BEG_META( XE::CapsuleShape )
@@ -312,20 +205,14 @@ XE::CapsuleShape::~CapsuleShape()
 
 }
 
-XE::Capsule XE::CapsuleShape::GetCapsule() const
+const XE::Capsule & XE::CapsuleShape::GetCapsule() const
 {
-	physx::PxCapsuleGeometry capsule;
-	if( _p->getCapsuleGeometry( capsule ) )
-	{
-		return { capsule.radius, capsule.halfHeight * 2.0f };
-	}
-
-	return {};
+	return _Capsule;
 }
 
 void XE::CapsuleShape::SetCapsule( const XE::Capsule & val )
 {
-	_p->setGeometry( physx::PxCapsuleGeometry( val.radius, val.height / 2.0f ) );
+	_Capsule = val;
 }
 
 BEG_META( XE::ConvexMeshShape )
@@ -341,95 +228,44 @@ XE::ConvexMeshShape::~ConvexMeshShape()
 
 }
 
-XE::Vec3f XE::ConvexMeshShape::GetScale() const
+const XE::Vec3f & XE::ConvexMeshShape::GetScale() const
 {
-	physx::PxConvexMeshGeometry geometry;
-	if( _p->getConvexMeshGeometry( geometry ) )
-	{
-		return { geometry.scale.scale.x, geometry.scale.scale.y, geometry.scale.scale.z };
-	}
-
-	return {};
+	return _Scale;
 }
 
-XE::Quat XE::ConvexMeshShape::GetRotation() const
+void XE::ConvexMeshShape::SetScale( const XE::Vec3f & val )
 {
-	physx::PxConvexMeshGeometry geometry;
-	if( _p->getConvexMeshGeometry( geometry ) )
-	{
-		return { geometry.scale.rotation.x, geometry.scale.rotation.y, geometry.scale.rotation.z, geometry.scale.rotation.w };
-	}
-
-	return {};
+	_Scale = val;
 }
 
-XE::uint64 XE::ConvexMeshShape::GetVertexCount() const
+const XE::Quat & XE::ConvexMeshShape::GetRotation() const
 {
-	physx::PxConvexMeshGeometry geometry;
-	if( _p->getConvexMeshGeometry( geometry ) )
-	{
-		return geometry.convexMesh->getNbVertices();
-	}
-
-	return 0;
+	return _Rotation;
 }
 
-XE::uint64 XE::ConvexMeshShape::GetPolygonCount() const
+void XE::ConvexMeshShape::SetRotation( const XE::Quat & val )
 {
-	physx::PxConvexMeshGeometry geometry;
-	if( _p->getConvexMeshGeometry( geometry ) )
-	{
-		return geometry.convexMesh->getNbPolygons();
-	}
-
-	return 0;
+	_Rotation = val;
 }
 
-XE::BasicMemoryView<XE::Vec3f> XE::ConvexMeshShape::GetVertexBuffer() const
+const XE::Array<XE::uint8> & XE::ConvexMeshShape::GetIndexBuffer() const
 {
-	physx::PxConvexMeshGeometry geometry;
-	if( _p->getConvexMeshGeometry( geometry ) )
-	{
-		auto size = geometry.convexMesh->getNbVertices();
-		XE::Vec3f * p = ( XE::Vec3f * )geometry.convexMesh->getVertices();
-		return { p, size };
-	}
-
-	return {};
+	return _IndexBuffer;
 }
 
-XE::BasicMemoryView<XE::uint8> XE::ConvexMeshShape::GetIndexBuffer() const
+void XE::ConvexMeshShape::SetIndexBuffer( const XE::Array<XE::uint8> & val )
 {
-	physx::PxConvexMeshGeometry geometry;
-	if( _p->getConvexMeshGeometry( geometry ) )
-	{
-		auto size = geometry.convexMesh->getNbPolygons() * 4;
-		XE::uint8 * p = ( XE::uint8 * )geometry.convexMesh->getIndexBuffer();
-		return { p, size };
-	}
-
-	return {};
+	_IndexBuffer = val;
 }
 
-XE::HullPolygon XE::ConvexMeshShape::GetPolygonData( XE::uint64 val ) const
+const XE::Array<XE::Vec3f> & XE::ConvexMeshShape::GetVertexBuffer() const
 {
-	physx::PxConvexMeshGeometry geometry;
-	if( _p->getConvexMeshGeometry( geometry ) )
-	{
-		physx::PxHullPolygon p;
-		if( geometry.convexMesh->getPolygonData( val, p ) )
-		{
-			XE::HullPolygon res;
+	return _VertexBuffer;
+}
 
-			res.Plane = { p.mPlane[0], p.mPlane[1], p.mPlane[2], p.mPlane[3] };
-			res.IndexCount = p.mNbVerts;
-			res.IndexOffset = p.mIndexBase;
-
-			return res;
-		}
-	}
-
-	return {};
+void XE::ConvexMeshShape::SetVertexBuffer( const XE::Array<XE::Vec3f> & val )
+{
+	_VertexBuffer = val;
 }
 
 BEG_META( XE::HeightFieldShape )
@@ -447,111 +283,80 @@ XE::HeightFieldShape::~HeightFieldShape()
 
 XE::float32 XE::HeightFieldShape::GetRowCount() const
 {
-	physx::PxHeightFieldGeometry geometry;
-	if( _p->getHeightFieldGeometry( geometry ) )
-	{
-		return geometry.heightField->getNbRows();
-	}
+	return _Row;
+}
 
-	return 0;
+void XE::HeightFieldShape::SetRowCount( XE::float32 val )
+{
+	_Row = val;
 }
 
 XE::float32 XE::HeightFieldShape::GetColCount() const
 {
-	physx::PxHeightFieldGeometry geometry;
-	if( _p->getHeightFieldGeometry( geometry ) )
-	{
-		return geometry.heightField->getNbColumns();
-	}
+	return _Col;
+}
 
-	return 0;
+void XE::HeightFieldShape::SetColCount( XE::float32 val )
+{
+	_Col = val;
 }
 
 XE::float32 XE::HeightFieldShape::GetRowScale() const
 {
-	physx::PxHeightFieldGeometry geometry;
-	if( _p->getHeightFieldGeometry( geometry ) )
-	{
-		return geometry.rowScale;
-	}
+	return _RowScale;
+}
 
-	return 0;
+void XE::HeightFieldShape::SetRowScale( XE::float32 val )
+{
+	_RowScale = val;
 }
 
 XE::float32 XE::HeightFieldShape::GetColScale() const
 {
-	physx::PxHeightFieldGeometry geometry;
-	if( _p->getHeightFieldGeometry( geometry ) )
-	{
-		return geometry.columnScale;
-	}
+	return _ColScale;
+}
 
-	return 0;
+void XE::HeightFieldShape::SetColScale( XE::float32 val )
+{
+	_ColScale = val;
 }
 
 XE::float32 XE::HeightFieldShape::GetHeightScale() const
 {
-	physx::PxHeightFieldGeometry geometry;
-	if( _p->getHeightFieldGeometry( geometry ) )
-	{
-		return geometry.heightScale;
-	}
+	return _HeightScale;
+}
 
-	return 0;
+void XE::HeightFieldShape::SetHeightScale( XE::float32 val )
+{
+	_HeightScale = val;
 }
 
 XE::uint32 XE::HeightFieldShape::GetSampleStride() const
 {
-	physx::PxHeightFieldGeometry geometry;
-	if( _p->getHeightFieldGeometry( geometry ) )
-	{
-		return geometry.heightField->getSampleStride();
-	}
+	return _SampleStride;
+}
 
-	return 0;
+void XE::HeightFieldShape::SetSampleStride( XE::uint32 val )
+{
+	_SampleStride = val;
 }
 
 XE::float32 XE::HeightFieldShape::GetConvexEdgeThreshold() const
 {
-	physx::PxHeightFieldGeometry geometry;
-	if( _p->getHeightFieldGeometry( geometry ) )
-	{
-		return geometry.heightField->getConvexEdgeThreshold();
-	}
-
-	return 0;
+	return _ConvexEdgeThreshold;
 }
 
-XE::float32 XE::HeightFieldShape::GetHeight( XE::float32 x, XE::float32 y ) const
+void XE::HeightFieldShape::SetConvexEdgeThreshold( XE::float32 val )
 {
-	physx::PxHeightFieldGeometry geometry;
-	if( _p->getHeightFieldGeometry( geometry ) )
-	{
-		return geometry.heightField->getHeight( x, y );
-	}
-
-	return 0.0f;
+	_ConvexEdgeThreshold = val;
 }
 
-bool XE::HeightFieldShape::ModifySamples( XE::uint32 x, XE::uint32 y, XE::uint32 w, XE::uint32 h, XE::BasicMemoryView<XE::uint16> data, XE::float32 convex_edge_threshold )
+const XE::Array<XE::float32> & XE::HeightFieldShape::GetHeightData() const
 {
-	physx::PxHeightFieldGeometry geometry;
-	if( _p->getHeightFieldGeometry( geometry ) )
-	{
-		physx::PxStridedData samples;
-		samples.data = data.data();
-		samples.stride = sizeof( XE::uint16 );
+	return _HeightData;
+}
 
-		physx::PxHeightFieldDesc desc;
-		desc.nbRows = w;
-		desc.nbColumns = h;
-		desc.format = physx::PxHeightFieldFormat::eS16_TM;
-		desc.samples = samples;
-		desc.convexEdgeThreshold = convex_edge_threshold;
-		desc.flags = physx::PxHeightFieldFlags( physx::PxHeightFieldFlag::eNO_BOUNDARY_EDGES );
-
-		return geometry.heightField->modifySamples( x, y, desc );
-	}
-
-	return false;
+void XE::HeightFieldShape::SetHeightData( const XE::Array<XE::float32> & val )
+{
+	_HeightData = val;
 }

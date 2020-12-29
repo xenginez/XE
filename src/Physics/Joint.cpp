@@ -1,10 +1,6 @@
 #include "Joint.h"
 
-#include <PhysX/PxPhysicsAPI.h>
-
 #include "Math/Mathf.h"
-
-#define _p reinterpret_cast< physx::PxJoint * >( GetHandle().GetValue() )
 
 BEG_META( XE::Joint )
 END_META()
@@ -29,149 +25,142 @@ void XE::Joint::SetHandle( XE::JointHandle val )
 	_Handle = val;
 }
 
-XE::String XE::Joint::GetName() const
+XE::ConstraintHandle XE::Joint::GetConstraintHandle() const
 {
-	return _p->getName();
+	return _ConstraintHandle;
+}
+
+void XE::Joint::SetConstraintHandle( XE::ConstraintHandle val )
+{
+	_ConstraintHandle = val;
+}
+
+XE::PhysicsSceneHandle XE::Joint::GetPhysicsSceneHandle() const
+{
+	return _PhysicsSceneHandle;
+}
+
+void XE::Joint::SetPhysicsSceneHandle( XE::PhysicsSceneHandle val )
+{
+	_PhysicsSceneHandle = val;
+}
+
+const XE::String & XE::Joint::GetName() const
+{
+	return _Name;
 }
 
 void XE::Joint::SetName( const XE::String & val )
 {
-	_p->setName( val.ToCString() );
+	_Name = val;
 }
 
 XE::float32 XE::Joint::GetBreakForce() const
 {
-	XE::float32 force, torque;
-
-	_p->getBreakForce( force, torque );
-
-	return force;
+	return _BreakForce;
 }
 
 void XE::Joint::SetBreakForce( XE::float32 val )
 {
-	_p->setBreakForce( val, GetBreakTorque() );
+	_BreakForce = val;
 }
 
 XE::float32 XE::Joint::GetBreakTorque() const
 {
-	XE::float32 force, torque;
-
-	_p->getBreakForce( force, torque );
-
-	return torque;
+	return _BreakTorque;
 }
 
 void XE::Joint::SetBreakTorque( XE::float32 val )
 {
-	_p->setBreakForce( GetBreakForce(), val );
+	_BreakTorque = val;
 }
 
 XE::float32 XE::Joint::GetFirstInvMassScale() const
 {
-	return _p->getInvMassScale0();
+	return _FirstInvMassScale;
 }
 
 void XE::Joint::SetFirstInvMassScale( XE::float32 val )
 {
-	_p->setInvMassScale0( val );
+	_FirstInvMassScale = val;
 }
 
 XE::float32 XE::Joint::GetSecondInvMassScale() const
 {
-	return _p->getInvMassScale1();
+	return _SecondInvMassScale;
 }
 
 void XE::Joint::SetSecondInvMassScale( XE::float32 val )
 {
-	_p->setInvMassScale1( val );
+	_SecondInvMassScale = val;
 }
 
 XE::float32 XE::Joint::GetFirstInvInertiaScale() const
 {
-	return _p->getInvInertiaScale0();
+	return _FirstInvInertiaScale;
 }
 
 void XE::Joint::SetFirstInvInertiaScale( XE::float32 val )
 {
-	_p->setInvInertiaScale0( val );
+	_FirstInvInertiaScale = val;
 }
 
 XE::float32 XE::Joint::GetSecondInvInertiaScale() const
 {
-	return _p->getInvInertiaScale1();
+	return _SecondInvInertiaScale;
 }
 
 void XE::Joint::SetSecondInvInertiaScale( XE::float32 val )
 {
-	_p->setInvInertiaScale1( val );
+	_SecondInvInertiaScale = val;
 }
 
 XE::ConstraintFlags XE::Joint::GetConstraintFlags() const
 {
-	return { XE::uint16( _p->getConstraintFlags() ) };
+	return _ConstraintFlags;
 }
 
 void XE::Joint::SetConstraintFlags( XE::ConstraintFlags val )
 {
-	_p->setConstraintFlags( physx::PxConstraintFlags( val.GetValue() ) );
+	_ConstraintFlags = val;
 }
 
-XE::Pair<XE::RigidActorHandle, XE::RigidActorHandle> XE::Joint::GetRigidActorHandle() const
+const XE::Pair<XE::RigidActorHandle, XE::RigidActorHandle> & XE::Joint::GetRigidActorHandle() const
 {
-	physx::PxRigidActor * actor0, * actor1;
-	
-	_p->getActors( actor0, actor1 );
-
-	return { reinterpret_cast< XE::uint64 >( actor0 ), reinterpret_cast< XE::uint64 >( actor1 ) };
+	return _RigidActor;
 }
 
 void XE::Joint::SetRigidActorHandle( const XE::Pair<XE::RigidActorHandle, XE::RigidActorHandle> & val )
 {
-	_p->setActors( reinterpret_cast< physx::PxRigidActor * >( val.first.GetValue() ), reinterpret_cast< physx::PxRigidActor * >( val.second.GetValue() ) );
+	_RigidActor = val;
 }
 
-XE::Mat4f XE::Joint::GetRelativeTransform() const
+const XE::Mat4f & XE::Joint::GetRelativeTransform() const
 {
-	auto trans = _p->getRelativeTransform();
-
-	return XE::Mathf::TRS( { trans.p.x,trans.p.y,trans.p.z }, { trans.q.x, trans.q.y, trans.q.z, trans.q.w }, XE::Vec3f::One );
+	return _RelativeTransform;
 }
 
-XE::Mat4f XE::Joint::GetFirstRigidActorPose() const
+void XE::Joint::SetRelativeTransform( const XE::Mat4f & val )
 {
-	auto trans = _p->getLocalPose( physx::PxJointActorIndex::eACTOR0 );
-
-	return XE::Mathf::TRS( { trans.p.x,trans.p.y,trans.p.z }, { trans.q.x, trans.q.y, trans.q.z, trans.q.w }, XE::Vec3f::One );
+	_RelativeTransform = val;
 }
 
-XE::Mat4f XE::Joint::GetSecondRigidActorPose() const
+const XE::Vec3f & XE::Joint::GetRelativeLinearVelocity() const
 {
-	auto trans = _p->getLocalPose( physx::PxJointActorIndex::eACTOR1 );
-
-	return XE::Mathf::TRS( { trans.p.x,trans.p.y,trans.p.z }, { trans.q.x, trans.q.y, trans.q.z, trans.q.w }, XE::Vec3f::One );
+	return _RelativeLinearVelocity;
 }
 
-XE::Vec3f XE::Joint::GetRelativeLinearVelocity() const
+void XE::Joint::SetRelativeLinearVelocity( const XE::Vec3f & val )
 {
-	auto linear = _p->getRelativeLinearVelocity();
-
-	return { linear.x, linear.y, linear.z };
+	_RelativeLinearVelocity = val;
 }
 
-XE::Vec3f XE::Joint::GetRelativeAngularVelocity() const
+const XE::Vec3f & XE::Joint::GetRelativeAngularVelocity() const
 {
-	auto angular = _p->getRelativeAngularVelocity();
-
-	return { angular.x, angular.y, angular.z };
+	return _RelativeAngularVelocity;
 }
 
-XE::PhysicsSceneHandle XE::Joint::GetSceneHandle() const
+void XE::Joint::SetRelativeAngularVelocity( const XE::Vec3f & val )
 {
-	return reinterpret_cast< XE::uint64 >( _p->getScene() );
-}
-
-XE::ConstraintHandle XE::Joint::GetConstraintHandle() const
-{
-	return reinterpret_cast< XE::uint64 >( _p->getConstraint() );
+	_RelativeAngularVelocity = val;
 }

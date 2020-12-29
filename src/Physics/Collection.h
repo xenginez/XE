@@ -29,30 +29,30 @@ public:
 
 	void SetHandle( XE::CollectionHandle val );
 
-	XE::PhysicsSceneHandle GetSceneHandle() const;
+	XE::PhysicsSceneHandle GetPhysicsSceneHandle() const;
 
-	void GetSceneHandle( XE::PhysicsSceneHandle val );
-
-public:
-	void InsertRigidActor( XE::RigidActorHandle val );
-
-	void RemoveRigidActor( XE::RigidActorHandle val );
-
-	void ContainsRigidActor( XE::RigidActorHandle val );
-
-	XE::RigidActorHandle  FindRigidActor( const XE::String val );
+	void SetPhysicsSceneHandle( XE::PhysicsSceneHandle val );
 
 public:
-	XE::uint64 GetRigidActorCount() const;
+	virtual void InsertRigidActor( XE::RigidActorHandle val ) = 0;
 
-	XE::Array<XE::RigidActorHandle> GetRigidActors() const;
+	virtual void RemoveRigidActor( XE::RigidActorHandle val ) = 0;
 
-	XE::RigidActorHandle GetRigidActor( XE::uint64 val ) const;
+	virtual void ContainsRigidActor( XE::RigidActorHandle val ) = 0;
+
+	virtual XE::RigidActorHandle FindRigidActor( const XE::String & val ) = 0;
 
 public:
-	void InsertCollection( XE::CollectionHandle val );
+	virtual XE::uint64 GetRigidActorCount() const = 0;
 
-	void RemoveCollection( XE::CollectionHandle val );
+	virtual XE::Array<XE::RigidActorHandle> GetRigidActors() const = 0;
+
+	virtual XE::RigidActorHandle GetRigidActor( XE::uint64 val ) const = 0;
+
+public:
+	virtual void InsertCollection( XE::CollectionHandle val ) = 0;
+
+	virtual void RemoveCollection( XE::CollectionHandle val ) = 0;
 
 private:
 	XE::CollectionHandle _Handle;

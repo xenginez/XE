@@ -75,9 +75,8 @@ void XE::Gfx::Init( const XE::InitDesc & val )
 		case XE::RendererContextType::VULKAN:
 			_p->_Context = XE::CreateRendererContextVulkan();
 			break;
-		case XE::RendererContextType::GLES2:
-		case XE::RendererContextType::GLES3:
 		case XE::RendererContextType::OPENGL:
+		case XE::RendererContextType::OPENGLES:
 			_p->_Context = XE::CreateRendererContextGL();
 			break;
 		case XE::RendererContextType::DIRECT3D11:

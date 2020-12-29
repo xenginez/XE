@@ -43,19 +43,26 @@ public:
 
 	void SetDynamicFriction( XE::float32 val );
 
-	CombineMode	GetFrictionCombineMode() const;
+	XE::CombineMode	GetFrictionCombineMode() const;
 
-	void SetFrictionCombineMode( CombineMode val );
+	void SetFrictionCombineMode( XE::CombineMode val );
 
-	CombineMode	GetRestitutionCombineMode() const;
+	XE::CombineMode	GetRestitutionCombineMode() const;
 
-	void SetRestitutionCombineMode( CombineMode val );
+	void SetRestitutionCombineMode( XE::CombineMode val );
 
 	XE::PhysicsMaterialFlags GetPhysicsMaterialFlags() const;
 
 	void SetPhysicsMaterialFlags( XE::PhysicsMaterialFlags val );
 
 private:
+	XE::float32 _Restitution;
+	XE::float32 _StaticFriction;
+	XE::float32 _DynamicFriction;
+	XE::CombineMode _FrictionCombineMode;
+	XE::CombineMode _RestitutionCombineMode;
+	XE::PhysicsMaterialFlags _PhysicsMaterialFlags;
+
 	XE::PhysicsMaterialHandle _Handle;
 };
 

@@ -277,11 +277,12 @@
 /// IGNORED WARNING
 
 #if COMPILER == COMPILER_MSVC
+#	pragma warning(disable : 4091)
 #	pragma warning(disable : 4244)
 #	pragma warning(disable : 4251)
 #	pragma warning(disable : 4267)
+#	pragma warning(disable : 4275)
 #	pragma warning(disable : 4996)
-#	pragma warning(disable : 4091)
 #elif COMPILER == COMPILER_CLANG
 #	pragma clang diagnostic ignored"-Winconsistent-missing-override"
 #else

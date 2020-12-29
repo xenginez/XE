@@ -13,14 +13,10 @@
 
 #include "TimerService.h"
 #include "EventService.h"
-#include "AudioService.h"
 #include "InputService.h"
 #include "WorldService.h"
 #include "ThreadService.h"
-#include "RenderService.h"
 #include "AssetsService.h"
-#include "PhysicsService.h"
-#include "NavigationService.h"
 #include "LocalizationService.h"
 
 void nest_json( rapidjson::Value & parent, std::vector<std::string>::const_iterator beg, std::vector<std::string>::const_iterator end, const std::string & str, rapidjson::MemoryPoolAllocator<> & allocator )
@@ -319,7 +315,7 @@ void XE::CoreFramework::LoadModules()
 
 void XE::CoreFramework::LoadServices()
 {
-	LoadBaseServices();
+	LoadFirstServices();
 
 	auto services = StringUtils::Split( GetString("System/Services"), "," );
 	for( auto service : services )
@@ -332,21 +328,23 @@ void XE::CoreFramework::LoadServices()
 			}
 		}
 	}
+
+	LoadLastServices();
 }
 
-void XE::CoreFramework::LoadBaseServices()
+void XE::CoreFramework::LoadFirstServices()
 {
 	_p->_Services.push_back( XE::MakeShared< XE::TimerService >() );
 	_p->_Services.push_back( XE::MakeShared< XE::EventService >() );
 	_p->_Services.push_back( XE::MakeShared< XE::ThreadService >() );
 	_p->_Services.push_back( XE::MakeShared< XE::InputService >() );
-	_p->_Services.push_back( XE::MakeShared< XE::AudioService >() );
-	_p->_Services.push_back( XE::MakeShared< XE::WorldService >() );
-	_p->_Services.push_back( XE::MakeShared< XE::RenderService >() );
 	_p->_Services.push_back( XE::MakeShared< XE::AssetsService >() );
-	_p->_Services.push_back( XE::MakeShared< XE::PhysicsService >() );
-	_p->_Services.push_back( XE::MakeShared< XE::NavigationService >() );
 	_p->_Services.push_back( XE::MakeShared< XE::LocalizationService >() );
+}
+
+void XE::CoreFramework::LoadLastServices()
+{
+	_p->_Services.push_back( XE::MakeShared< XE::WorldService >() );
 }
 
 void XE::CoreFramework::Save()

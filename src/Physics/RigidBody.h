@@ -25,17 +25,8 @@ public:
 public:
 	XE::float32 GetMass() const;
 
-	XE::float32 GetInvMass() const;
-
 	void SetMass( XE::float32 val );
 
-	XE::Vec3f GetMassSpaceInertiaTensor() const;
-
-	XE::Vec3f GetMassSpaceInvInertiaTensor() const;
-
-	void SetMassSpaceInertiaTensor( const XE::Vec3f & val );
-
-public:
 	XE::float32 GetLinearDamping() const;
 
 	void SetLinearDamping( XE::float32 val );
@@ -48,15 +39,15 @@ public:
 
 	void SetMaxContactImpulse( XE::float32 val );
 
-	XE::Vec3f GetLienarVelocity() const;
+	const XE::Vec3f & GetLienarVelocity() const;
 
 	void SetLinearVelocity( const XE::Vec3f & val );
 
-	XE::Vec3f GetAngularVelocity() const;
+	const XE::Vec3f & GetAngularVelocity() const;
 
 	void SetAngularVelocity( const XE::Vec3f & val );
 
-	XE::Mat4f GetCMassLocalPose() const;
+	const XE::Mat4f & GetCMassLocalPose() const;
 
 	void SetCMassLocalPose( const XE::Mat4f & val );
 
@@ -80,17 +71,35 @@ public:
 
 	void SetMaxDepenetrationVelocity( XE::float32 val );
 
+	const XE::Vec3f & GetMassSpaceInertiaTensor() const;
+
+	void SetMassSpaceInertiaTensor( const XE::Vec3f & val );
+
 public:
-	void AddForce( const XE::Vec3f & force, ForceMode mode = ForceMode::FORCE );
+	virtual void AddForce( const XE::Vec3f & force, ForceMode mode = ForceMode::FORCE ) = 0;
 
-	void AddTorque( const XE::Vec3f & torque, ForceMode mode = ForceMode::FORCE );
+	virtual void AddTorque( const XE::Vec3f & torque, ForceMode mode = ForceMode::FORCE ) = 0;
 
-	void ClearForce( ForceMode mode = ForceMode::FORCE );
+	virtual void ClearForce( ForceMode mode = ForceMode::FORCE ) = 0;
 
-	void ClearTorque( ForceMode mode = ForceMode::FORCE );
+	virtual void ClearTorque( ForceMode mode = ForceMode::FORCE ) = 0;
 
-	void SetForceAndTorque( const XE::Vec3f & force, const XE::Vec3f & torque, ForceMode mode = ForceMode::FORCE );
+	virtual void SetForceAndTorque( const XE::Vec3f & force, const XE::Vec3f & torque, ForceMode mode = ForceMode::FORCE ) = 0;
 
+private:
+	XE::float32 _Mass;
+	XE::float32 _LinearDamping;
+	XE::float32 _AngularDamping;
+	XE::float32 _MaxContactImpulse;
+	XE::Vec3f _LienarVelocity;
+	XE::Vec3f _AngularVelocity;
+	XE::Mat4f _CMassLocalPose;
+	XE::float32 _MaxLienarVelocity;
+	XE::float32 _MaxAngularVelocity;
+	XE::RigidBodyFlags _RigidBodyFlags;
+	XE::float32 _MinCCDAdvanceCoefficient;
+	XE::float32 _MaxDepenetrationVelocity;
+	XE::Vec3f _MassSpaceInertiaTensor;
 };
 
 END_XE_NAMESPACE

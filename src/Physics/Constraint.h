@@ -30,25 +30,18 @@ public:
 
 	void SetHandle( XE::ConstraintHandle val );
 
-	XE::PhysicsSceneHandle GetSceneHandle() const;
+	XE::PhysicsSceneHandle GetPhysicsSceneHandle() const;
 
-	void GetSceneHandle( XE::PhysicsSceneHandle val );
-
-public:
-	XE::ConstraintFlags GetConstraintFlags() const;
-
-	void SetConstraintFlags( XE::ConstraintFlags val );
-
-	XE::Pair<XE::RigidActorHandle, XE::RigidActorHandle> GetRigidActorHandle() const;
-
-	void SetRigidActorHandle( const XE::Pair<XE::RigidActorHandle, XE::RigidActorHandle> & val );
+	void SetPhysicsSceneHandle( XE::PhysicsSceneHandle val );
 
 public:
-	bool IsValid() const;
+	const XE::Vec3f & GetForce() const;
 
-	XE::Vec3f GetForce() const;
+	void SetForce( const XE::Vec3f & val );
 
-	XE::Vec3f GetTorque() const;
+	const XE::Vec3f & GetTorque() const;
+
+	void SetTorque( const XE::Vec3f & val );
 
 	XE::float32 GetBreakForce() const;
 
@@ -62,7 +55,23 @@ public:
 
 	void SetMinResponseThreshold( XE::float32 val );
 
+	XE::ConstraintFlags GetConstraintFlags() const;
+
+	void SetConstraintFlags( XE::ConstraintFlags val );
+
+	const XE::Pair<XE::RigidActorHandle, XE::RigidActorHandle> & GetRigidActorHandle() const;
+
+	void SetRigidActorHandle( const XE::Pair<XE::RigidActorHandle, XE::RigidActorHandle> & val );
+
 private:
+	XE::Vec3f _Force;
+	XE::Vec3f _Torque;
+	XE::float32 _BreakForce;
+	XE::float32 _BreakTorque;
+	XE::float32 _MinResponseThreshold;
+	XE::ConstraintFlags _ConstraintFlags;
+	XE::Pair<XE::RigidActorHandle, XE::RigidActorHandle> _RigidActor;
+
 	XE::ConstraintHandle _Handle;
 	XE::PhysicsSceneHandle _SceneHandle;
 };

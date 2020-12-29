@@ -1,9 +1,5 @@
 #include "RigidBody.h"
 
-#include <PhysX/PxPhysicsAPI.h>
-
-#define _p reinterpret_cast< physx::PxRigidBody * >( GetHandle().GetValue() )
-
 BEG_META( XE::RigidBody )
 END_META()
 
@@ -19,180 +15,130 @@ XE::RigidBody::~RigidBody()
 
 XE::float32 XE::RigidBody::GetMass() const
 {
-	return _p->getMass();
-}
-
-XE::float32 XE::RigidBody::GetInvMass() const
-{
-	return _p->getInvMass();
+	return _Mass;
 }
 
 void XE::RigidBody::SetMass( XE::float32 val )
 {
-	_p->setMass( val );
-}
-
-XE::Vec3f XE::RigidBody::GetMassSpaceInertiaTensor() const
-{
-	auto v = _p->getMassSpaceInertiaTensor();
-
-	return { v.x, v.y, v.z };
-}
-
-XE::Vec3f XE::RigidBody::GetMassSpaceInvInertiaTensor() const
-{
-	auto v = _p->getMassSpaceInvInertiaTensor();
-
-	return { v.x, v.y, v.z };
-}
-
-void XE::RigidBody::SetMassSpaceInertiaTensor( const XE::Vec3f & val )
-{
-	_p->setMassSpaceInertiaTensor( { val.x, val.y, val.z } );
+	_Mass = val;
 }
 
 XE::float32 XE::RigidBody::GetLinearDamping() const
 {
-	return _p->getLinearDamping();
+	return _LinearDamping;
 }
 
 void XE::RigidBody::SetLinearDamping( XE::float32 val )
 {
-	_p->setLinearDamping( val );
+	_LinearDamping = val;
 }
 
 XE::float32 XE::RigidBody::GetAngularDamping() const
 {
-	return _p->getAngularDamping();
+	return _AngularDamping;
 }
 
 void XE::RigidBody::SetAngularDamping( XE::float32 val )
 {
-	_p->setAngularDamping( val );
+	_AngularDamping = val;
 }
 
 XE::float32 XE::RigidBody::GetMaxContactImpulse() const
 {
-	return _p->getMaxContactImpulse();
+	return _MaxContactImpulse;
 }
 
 void XE::RigidBody::SetMaxContactImpulse( XE::float32 val )
 {
-	_p->setMaxContactImpulse( val );
+	_MaxContactImpulse = val;
 }
 
-XE::Vec3f XE::RigidBody::GetLienarVelocity() const
+const XE::Vec3f & XE::RigidBody::GetLienarVelocity() const
 {
-	auto v = _p->getLinearVelocity();
-
-	return { v.x, v.y, v.z };
+	return _LienarVelocity;
 }
 
 void XE::RigidBody::SetLinearVelocity( const XE::Vec3f & val )
 {
-	_p->setLinearVelocity( { val.x, val.y, val.z } );
+	_LienarVelocity = val;
 }
 
-XE::Vec3f XE::RigidBody::GetAngularVelocity() const
+const XE::Vec3f & XE::RigidBody::GetAngularVelocity() const
 {
-	auto v = _p->getAngularVelocity();
-
-	return { v.x, v.y, v.z };
+	return _AngularVelocity;
 }
 
 void XE::RigidBody::SetAngularVelocity( const XE::Vec3f & val )
 {
-	_p->setAngularVelocity( { val.x, val.y, val.z } );
+	_AngularVelocity = val;
 }
 
-XE::Mat4f XE::RigidBody::GetCMassLocalPose() const
+const XE::Mat4f & XE::RigidBody::GetCMassLocalPose() const
 {
-	auto trans = _p->getCMassLocalPose();
-
-	return XE::Mathf::TRS( { trans.p.x,trans.p.y,trans.p.z }, { trans.q.x, trans.q.y, trans.q.z, trans.q.w }, XE::Vec3f::One );
+	return _CMassLocalPose;
 }
 
 void XE::RigidBody::SetCMassLocalPose( const XE::Mat4f & val )
 {
-	XE::Quat rot;
-	XE::Vec3f pos, scale;
-
-	XE::Mathf::TRS( val, pos, rot, scale );
-
-	_p->setCMassLocalPose( physx::PxTransform( { pos.x, pos.y, pos.z }, { rot.x, rot.y, rot.z, rot.w } ) );
+	_CMassLocalPose = val;
 }
 
 XE::float32 XE::RigidBody::GetMaxLienarVelocity() const
 {
-	return _p->getMaxLinearVelocity();
+	return _MaxLienarVelocity;
 }
 
 void XE::RigidBody::SetMaxLinearVelocity( const XE::float32 & val )
 {
-	_p->setMaxLinearVelocity( val );
+	_MaxLienarVelocity = val;
 }
 
 XE::float32 XE::RigidBody::GetMaxAngularVelocity() const
 {
-	return _p->getMaxAngularVelocity();
+	return _MaxAngularVelocity;
 }
 
 void XE::RigidBody::SetMaxAngularVelocity( const XE::float32 & val )
 {
-	_p->setMaxAngularVelocity( val );
+	_MaxAngularVelocity = val;
 }
 
 XE::RigidBodyFlags XE::RigidBody::GetRigidBodyFlags() const
 {
-	return XE::uint8( _p->getRigidBodyFlags() );
+	return _RigidBodyFlags;
 }
 
 void XE::RigidBody::SetRigidBodyFlags( XE::RigidBodyFlags val )
 {
-	_p->setRigidBodyFlags( physx::PxRigidBodyFlags( val.GetValue() ) );
+	_RigidBodyFlags = val;
 }
 
 XE::float32 XE::RigidBody::GetMinCCDAdvanceCoefficient() const
 {
-	return _p->getMinCCDAdvanceCoefficient();
+	return _MinCCDAdvanceCoefficient;
 }
 
 void XE::RigidBody::SetMinCCDAdvanceCoefficient( XE::float32 val )
 {
-	_p->setMinCCDAdvanceCoefficient( val );
+	_MinCCDAdvanceCoefficient = val;
 }
 
 XE::float32 XE::RigidBody::GetMaxDepenetrationVelocity() const
 {
-	return _p->getMaxDepenetrationVelocity();
+	return _MaxDepenetrationVelocity;
 }
 
 void XE::RigidBody::SetMaxDepenetrationVelocity( XE::float32 val )
 {
-	_p->setMaxDepenetrationVelocity( val );
+	_MaxDepenetrationVelocity = val;
 }
 
-void XE::RigidBody::AddForce( const XE::Vec3f & force, ForceMode mode /*= ForceMode::FORCE */ )
+const XE::Vec3f & XE::RigidBody::GetMassSpaceInertiaTensor() const
 {
-	_p->addForce( { force.x, force.y, force.z }, static_cast< physx::PxForceMode::Enum >( mode ) );
+	return _MassSpaceInertiaTensor;
 }
 
-void XE::RigidBody::AddTorque( const XE::Vec3f & torque, ForceMode mode /*= ForceMode::FORCE */ )
+void XE::RigidBody::SetMassSpaceInertiaTensor( const XE::Vec3f & val )
 {
-	_p->addTorque( { torque.x, torque.y, torque.z }, static_cast< physx::PxForceMode::Enum >( mode ) );
-}
-
-void XE::RigidBody::ClearForce( ForceMode mode /*= ForceMode::FORCE */ )
-{
-	_p->clearForce( static_cast< physx::PxForceMode::Enum >( mode ) );
-}
-
-void XE::RigidBody::ClearTorque( ForceMode mode /*= ForceMode::FORCE */ )
-{
-	_p->clearTorque( static_cast< physx::PxForceMode::Enum >( mode ) );
-}
-
-void XE::RigidBody::SetForceAndTorque( const XE::Vec3f & force, const XE::Vec3f & torque, ForceMode mode /*= ForceMode::FORCE */ )
-{
-	_p->setForceAndTorque( { force.x, force.y, force.z }, { torque.x, torque.y, torque.z }, static_cast< physx::PxForceMode::Enum >( mode ) );
+	_MassSpaceInertiaTensor = val;
 }

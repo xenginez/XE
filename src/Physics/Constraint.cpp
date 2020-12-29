@@ -1,9 +1,5 @@
 #include "Constraint.h"
 
-#include <PhysX/PxPhysicsAPI.h>
-
-#define _p reinterpret_cast< physx::PxConstraint * >( GetHandle().GetValue() )
-
 BEG_META( XE::Constraint )
 END_META()
 
@@ -27,97 +23,82 @@ void XE::Constraint::SetHandle( XE::ConstraintHandle val )
 	_Handle = val;
 }
 
-XE::PhysicsSceneHandle XE::Constraint::GetSceneHandle() const
+XE::PhysicsSceneHandle XE::Constraint::GetPhysicsSceneHandle() const
 {
 	return _SceneHandle;
 }
 
-void XE::Constraint::GetSceneHandle( XE::PhysicsSceneHandle val )
+void XE::Constraint::SetPhysicsSceneHandle( XE::PhysicsSceneHandle val )
 {
 	_SceneHandle = val;
 }
 
-XE::ConstraintFlags XE::Constraint::GetConstraintFlags() const
+const XE::Vec3f & XE::Constraint::GetForce() const
 {
-	return XE::ConstraintFlags( XE::uint16( _p->getFlags() ) );
+	return _Force;
 }
 
-void XE::Constraint::SetConstraintFlags( XE::ConstraintFlags val )
+void XE::Constraint::SetForce( const XE::Vec3f & val )
 {
-	_p->setFlags( physx::PxConstraintFlags( val.GetValue() ) );
+	_Force = val;
 }
 
-XE::Pair<XE::RigidActorHandle, XE::RigidActorHandle> XE::Constraint::GetRigidActorHandle() const
+const XE::Vec3f & XE::Constraint::GetTorque() const
 {
-	physx::PxRigidActor * actor0, * actor1;
-	
-	_p->getActors( actor0, actor1 );
-
-	return { reinterpret_cast< XE::uint64 >( actor0 ), reinterpret_cast< XE::uint64 >( actor1 ) };
+	return _Torque;
 }
 
-void XE::Constraint::SetRigidActorHandle( const XE::Pair<XE::RigidActorHandle, XE::RigidActorHandle> & val )
+void XE::Constraint::SetTorque( const XE::Vec3f & val )
 {
-	_p->setActors( reinterpret_cast< physx::PxRigidActor * >( val.first.GetValue() ), reinterpret_cast< physx::PxRigidActor * >( val.second.GetValue() ) );
-}
-
-bool XE::Constraint::IsValid() const
-{
-	return _p->isValid();
-}
-
-XE::Vec3f XE::Constraint::GetForce() const
-{
-	physx::PxVec3 linear, angular;
-
-	_p->getForce( linear, angular );
-
-	return { linear.x, linear.y, linear.z };
-}
-
-XE::Vec3f XE::Constraint::GetTorque() const
-{
-	physx::PxVec3 linear, angular;
-
-	_p->getForce( linear, angular );
-
-	return { angular.x, angular.y, angular.z };
+	_Torque = val;
 }
 
 XE::float32 XE::Constraint::GetBreakForce() const
 {
-	XE::float32 linear, angular;
-	
-	_p->getBreakForce( linear, angular );
-
-	return linear;
+	return _BreakForce;
 }
 
 void XE::Constraint::SetBreakForce( XE::float32 val )
 {
-	_p->setBreakForce( val, GetBreakTorque() );
+	_BreakForce = val;
 }
 
 XE::float32 XE::Constraint::GetBreakTorque() const
 {
-	XE::float32 linear, angular;
-
-	_p->getBreakForce( linear, angular );
-
-	return angular;
+	return _BreakTorque;
 }
 
 void XE::Constraint::SetBreakTorque( XE::float32 val )
 {
-	_p->setBreakForce( GetBreakForce(), val );
+	_BreakTorque = val;
 }
 
 XE::float32 XE::Constraint::GetMinResponseThreshold() const
 {
-	return _p->getMinResponseThreshold();
+	return _MinResponseThreshold;
 }
 
 void XE::Constraint::SetMinResponseThreshold( XE::float32 val )
 {
-	_p->setMinResponseThreshold( val );
+	_MinResponseThreshold = val;
+}
+
+XE::ConstraintFlags XE::Constraint::GetConstraintFlags() const
+{
+	return _ConstraintFlags;
+}
+
+void XE::Constraint::SetConstraintFlags( XE::ConstraintFlags val )
+{
+	_ConstraintFlags = val;
+}
+
+const XE::Pair<XE::RigidActorHandle, XE::RigidActorHandle> & XE::Constraint::GetRigidActorHandle() const
+{
+	return _RigidActor;
+}
+
+void XE::Constraint::SetRigidActorHandle( const XE::Pair<XE::RigidActorHandle, XE::RigidActorHandle> & val )
+{
+	_RigidActor = val;
 }

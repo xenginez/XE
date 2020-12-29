@@ -14,8 +14,6 @@
 
 #include "Type.h"
 
-struct ma_decoder;
-
 BEG_XE_NAMESPACE
 
 class XE_API AudioSoundSource : public XE::Object
@@ -23,20 +21,20 @@ class XE_API AudioSoundSource : public XE::Object
     OBJECT( AudioSoundSource, Object )
 
 public:
-	void Startup();
+	virtual void Startup() = 0;
 
-	void Update( XE::float32 dt );
+	virtual void Update( XE::float32 dt ) = 0;
 
-	void Clearup();
+	virtual void Clearup() = 0;
 
 public:
-    void Play();
+	virtual void Play() = 0;
 
-    void Stop();
+	virtual void Stop() = 0;
 
-    void Resume();
+	virtual void Resume() = 0;
 
-	void Suspend();
+	virtual void Suspend() = 0;
 
 public:
 	bool GetLoop() const;
@@ -72,9 +70,6 @@ public:
     void SetMaxDistance( XE::float32 val );
 
 private:
-	void SetAudioParam();
-
-private:
     bool _Loop = false;
     XE::float32 _Gain = 0.0f;
     XE::float32 _Pitch = 1.0f;
@@ -83,12 +78,7 @@ private:
 	XE::Vec3f _Direction = {};
 	XE::float32 _MinDistance = 1.0f;
 	XE::float32 _MaxDistance = 1000.0f;
-	XE::String _SoundPath;
-	bool _Dirty = false;
-private:
-    XE::uint32 _SourceID = 0;
 	XE::FileSystem::Path _Sound;
-	ma_decoder * _Decoder = nullptr;
 };
 
 END_XE_NAMESPACE

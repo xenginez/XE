@@ -6,28 +6,14 @@ add_library(XE ${XE_LIB_TYPE} ${SOURCE_FILES})
 target_compile_definitions(XE PRIVATE -DXE_EXPORT)
 
 target_link_libraries(XE
-		Detour
-		PhysX_64
-		PhysXCommon_64
-		PhysXFoundation_64
 		tbb${XE_TBB_POSTFIX}
 		tbbmalloc${XE_TBB_POSTFIX}
 		tbbmalloc_proxy${XE_TBB_POSTFIX}
-		zip
-		OpenAL32
-		sqlite3
-		ozz_animation
-		ozz_base
-		ozz_geometry
-		ozz_options
 		)
 
 set(INC_DIRS 
-		AI
-		Animation
 		Audio
 		Base
-		Component
 		Core
 		GC
 		Graphics

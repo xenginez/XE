@@ -1,9 +1,5 @@
 #include "PhysicsMaterial.h"
 
-#include <PhysX/PxPhysicsAPI.h>
-
-#define _p reinterpret_cast< physx::PxMaterial * >( GetHandle().GetValue() )
-
 BEG_META( XE::PhysicsMaterial )
 END_META()
 
@@ -29,60 +25,60 @@ void XE::PhysicsMaterial::SetHandle( XE::PhysicsMaterialHandle val )
 
 XE::float32 XE::PhysicsMaterial::GetRestitution() const
 {
-	return _p->getRestitution();
+	return _Restitution;
 }
 
 void XE::PhysicsMaterial::SetRestitution( XE::float32 val )
 {
-	_p->setRestitution( val );
+	_Restitution = val;
 }
 
 XE::float32 XE::PhysicsMaterial::GetStaticFriction() const
 {
-	return _p->getStaticFriction();
+	return _StaticFriction;
 }
 
 void XE::PhysicsMaterial::SetStaticFriction( XE::float32 val )
 {
-	_p->setStaticFriction( val );
+	_StaticFriction = val;
 }
 
 XE::float32 XE::PhysicsMaterial::GetDynamicFriction() const
 {
-	return _p->getDynamicFriction();
+	return _DynamicFriction;
 }
 
 void XE::PhysicsMaterial::SetDynamicFriction( XE::float32 val )
 {
-	_p->setDynamicFriction( val );
+	_DynamicFriction = val;
 }
 
 XE::CombineMode XE::PhysicsMaterial::GetFrictionCombineMode() const
 {
-	return static_cast< XE::CombineMode >( _p->getFrictionCombineMode() );
+	return _FrictionCombineMode;
 }
 
 void XE::PhysicsMaterial::SetFrictionCombineMode( XE::CombineMode val )
 {
-	_p->setFrictionCombineMode( static_cast< physx::PxCombineMode::Enum >( val ) );
+	_FrictionCombineMode = val;
 }
 
 XE::CombineMode XE::PhysicsMaterial::GetRestitutionCombineMode() const
 {
-	return static_cast< XE::CombineMode >( _p->getRestitutionCombineMode() );
+	return _RestitutionCombineMode;
 }
 
 void XE::PhysicsMaterial::SetRestitutionCombineMode( XE::CombineMode val )
 {
-	_p->setRestitutionCombineMode( static_cast< physx::PxCombineMode::Enum >( val ) );
+	_RestitutionCombineMode = val;
 }
 
 XE::PhysicsMaterialFlags XE::PhysicsMaterial::GetPhysicsMaterialFlags() const
 {
-	return XE::uint16( _p->getFlags() );
+	return _PhysicsMaterialFlags;
 }
 
 void XE::PhysicsMaterial::SetPhysicsMaterialFlags( XE::PhysicsMaterialFlags val )
 {
-	_p->setFlags( physx::PxMaterialFlags( val.GetValue() ) );
+	_PhysicsMaterialFlags = val;
 }

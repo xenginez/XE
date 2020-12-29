@@ -27,21 +27,18 @@ public:
 	~Shape() override;
 
 public:
-	static XE::ShapePtr CreateShape( XE::ShapeHandle val );
-
-public:
 	XE::ShapeHandle GetHandle() const;
 
 	void SetHandle( XE::ShapeHandle val );
 
 public:
-	XE::String GetName() const;
+	const XE::String & GetName() const;
 
 	void SetName( const XE::String & val );
 
-	XE::Mat4f GetLocalPose() const;
+	const XE::Mat4f & GetLocalTransform() const;
 
-	void SetLocalPose( const XE::Mat4f & val );
+	void SetLocalTransform( const XE::Mat4f & val );
 
 	XE::ShapeFlags GetShapeFlags() const;
 
@@ -71,16 +68,22 @@ public:
 
 	void SetMinTorsionalPatchRadius( XE::float32 val );
 
-public:
-	XE::uint64 GetPhysicsMaterialCount() const;
-
-	XE::Array<XE::PhysicsMaterialHandle> GetPhysicsMaterials() const;
-
-	XE::PhysicsMaterialHandle GetPhysicsMaterial( XE::uint64 val ) const;
+	const XE::Array<XE::PhysicsMaterialHandle> & GetPhysicsMaterials() const;
 
 	void SetPhysicsMaterials( const XE::Array<XE::PhysicsMaterialHandle> & val );
 
 private:
+	XE::String _Name;
+	XE::Mat4f _LocalTransform;
+	XE::ShapeFlags _ShapeFlags;
+	XE::float32 _RestOffset;
+	XE::float32 _ContactOffset;
+	XE::Layer _QueryFilter;
+	XE::Layer _SimulationFilter;
+	XE::float32 _TorsionalPatchRadius;
+	XE::float32 _MinTorsionalPatchRadius;
+	XE::Array<XE::PhysicsMaterialHandle> _PhysicsMaterials;
+
 	XE::ShapeHandle _Handle;
 };
 
@@ -94,10 +97,12 @@ public:
 	~BoxShape() override;
 
 public:
-	XE::AABB GetBox() const;
+	const XE::AABB & GetBox() const;
 
 	void SetBox( const XE::AABB & val );
 
+private:
+	XE::AABB _AABB;
 };
 
 class XE_API PlaneShape : public Shape
@@ -110,10 +115,12 @@ public:
 	~PlaneShape() override;
 
 public:
-	XE::Plane GetPlane() const;
+	const XE::Plane & GetPlane() const;
 
 	void SetPlane( const XE::Plane & val );
 
+private:
+	XE::Plane _Plane;
 };
 
 class XE_API SphereShape : public Shape
@@ -126,10 +133,12 @@ public:
 	~SphereShape() override;
 
 public:
-	XE::Sphere GetSphere() const;
+	const XE::Sphere & GetSphere() const;
 
 	void SetSphere( const XE::Sphere & val );
 
+private:
+	XE::Sphere _Sphere;
 };
 
 class XE_API CapsuleShape : public Shape
@@ -142,10 +151,12 @@ public:
 	~CapsuleShape() override;
 
 public:
-	XE::Capsule GetCapsule() const;
+	const XE::Capsule & GetCapsule() const;
 
 	void SetCapsule( const XE::Capsule & val );
 
+private:
+	XE::Capsule _Capsule;
 };
 
 class XE_API ConvexMeshShape : public Shape
@@ -158,21 +169,28 @@ public:
 	~ConvexMeshShape() override;
 
 public:
-	XE::Vec3f GetScale() const;
+	const XE::Vec3f & GetScale() const;
 
-	XE::Quat GetRotation() const;
+	void SetScale( const XE::Vec3f & val );
+
+	const XE::Quat & GetRotation() const;
+
+	void SetRotation( const XE::Quat & val );
 
 public:
-	XE::uint64 GetVertexCount() const;
+	const XE::Array<XE::uint8> & GetIndexBuffer() const;
 
-	XE::uint64 GetPolygonCount() const;
+	void SetIndexBuffer( const XE::Array<XE::uint8> & val );
 
-	XE::BasicMemoryView<XE::Vec3f> GetVertexBuffer() const;
+	const XE::Array<XE::Vec3f> & GetVertexBuffer() const;
 
-	XE::BasicMemoryView<XE::uint8> GetIndexBuffer() const;
+	void SetVertexBuffer( const XE::Array<XE::Vec3f> & val );
 
-	XE::HullPolygon GetPolygonData( XE::uint64 val ) const;
-
+private:
+	XE::Vec3f _Scale;
+	XE::Quat _Rotation;
+	XE::Array<XE::uint8> _IndexBuffer;
+	XE::Array<XE::Vec3f> _VertexBuffer;
 };
 
 class XE_API HeightFieldShape : public Shape
@@ -187,22 +205,45 @@ public:
 public:
 	XE::float32 GetRowCount() const;
 
+	void SetRowCount( XE::float32 val );
+
 	XE::float32 GetColCount() const;
+
+	void SetColCount( XE::float32 val );
 
 	XE::float32 GetRowScale() const;
 
+	void SetRowScale( XE::float32 val );
+
 	XE::float32 GetColScale() const;
+
+	void SetColScale( XE::float32 val );
 
 	XE::float32 GetHeightScale() const;
 
+	void SetHeightScale( XE::float32 val );
+
 	XE::uint32 GetSampleStride() const;
+
+	void SetSampleStride( XE::uint32 val );
 
 	XE::float32 GetConvexEdgeThreshold() const;
 
-	XE::float32 GetHeight( XE::float32 x, XE::float32 y ) const;
+	void SetConvexEdgeThreshold( XE::float32 val );
 
-	bool ModifySamples( XE::uint32 x, XE::uint32 y, XE::uint32 w, XE::uint32 h, XE::BasicMemoryView<XE::uint16> data, XE::float32 convex_edge_threshold );
+	const XE::Array<XE::float32> & GetHeightData() const;
 
+	void SetHeightData( const XE::Array<XE::float32> & val );
+
+private:
+	XE::float32 _Row;
+	XE::float32 _Col;
+	XE::float32 _RowScale;
+	XE::float32 _ColScale;
+	XE::float32 _HeightScale;
+	XE::uint32 _SampleStride;
+	XE::float32 _ConvexEdgeThreshold;
+	XE::Array<XE::float32> _HeightData;
 };
 
 END_XE_NAMESPACE
