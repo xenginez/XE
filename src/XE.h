@@ -20,7 +20,6 @@
 #include "Physics/Physics.h"
 #include "Graphics/Graphics.h"
 #include "Scene/Scene.h"
-#include "GUI/GUI.h"
 #include "Core/Core.h"
 
 #endif // XE_H__96F9903F_FF95_4563_BFEA_A114B0F55E46

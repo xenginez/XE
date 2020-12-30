@@ -10,7 +10,7 @@
 #define AUDIOSOUNDSOURCE_H__1D751335_F408_4FA5_9AB3_4EFEE45DF522
 
 #include "Math/Vec3.h"
-#include "Utils/Object.h"
+#include "Interface/Object.h"
 
 #include "Type.h"
 

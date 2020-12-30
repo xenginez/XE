@@ -56,6 +56,7 @@ public:
 
 	virtual ILocalizationServicePtr GetLocalizationService() const = 0;
 
+public:
 	virtual IServicePtr GetService( const IMetaClassPtr & val ) const = 0;
 
 	virtual bool RegisterService( const IMetaClassPtr & val ) = 0;

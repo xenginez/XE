@@ -10,7 +10,7 @@
 #define CONSTRAINT_H__FA4E88B6_1066_4795_A0C7_05765643C0B4
 
 #include "Math/Vec3.h"
-#include "Utils/Object.h"
+#include "Interface/Object.h"
 
 #include "Type.h"
 

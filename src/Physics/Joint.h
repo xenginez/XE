@@ -11,7 +11,7 @@
 
 #include "Math/Vec3.h"
 #include "Math/Mat4.h"
-#include "Utils/Object.h"
+#include "Interface/Object.h"
 
 #include "Type.h"
 

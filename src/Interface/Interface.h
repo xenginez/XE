@@ -23,4 +23,9 @@
 #include "INavigationService.h"
 #include "ILocalizationService.h"
 
+#include "Event.h"
+#include "Asset.h"
+#include "Object.h"
+#include "IUserInterface.h"
+
 #endif // INTERFACE_H__F027F37D_259E_4565_8851_20A77361A913

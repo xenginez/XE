@@ -15,8 +15,8 @@ type->Value( "SUCCESS", AI::AINodeStatus::SUCCESS );
 type->Value( "FAILURE", AI::AINodeStatus::FAILURE );
 END_META()
 
-IMPLEMENT_META( AI::AINodeHandle )
-IMPLEMENT_META( AI::AIStateHandle )
-IMPLEMENT_META( AI::AIElementHandle )
+IMPLEMENT_META( AI::NodeHandle )
+IMPLEMENT_META( AI::StateHandle )
+IMPLEMENT_META( AI::ElementHandle )
 
 IMPLEMENT_META_MODULE( AI );

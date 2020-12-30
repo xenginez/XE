@@ -9,7 +9,7 @@
 #ifndef __COMPONENT_H__42D4DE3A_B463_45F4_9181_C554B1A57D9E
 #define __COMPONENT_H__42D4DE3A_B463_45F4_9181_C554B1A57D9E
 
-#include "Utils/Object.h"
+#include "Interface/Object.h"
 
 #include "Type.h"
 

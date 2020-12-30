@@ -9,7 +9,7 @@
 #ifndef PHYSICSMATERIAL_H__6AD29062_3EA4_4E14_B361_D3FB8DBEE49B
 #define PHYSICSMATERIAL_H__6AD29062_3EA4_4E14_B361_D3FB8DBEE49B
 
-#include "Utils/Object.h"
+#include "Interface/Object.h"
 #include "Utils/Flags.hpp"
 
 #include "Type.h"

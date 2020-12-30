@@ -9,7 +9,7 @@
 #ifndef COLLECTION_H__53398583_89A5_42B5_978E_36A445CA6C63
 #define COLLECTION_H__53398583_89A5_42B5_978E_36A445CA6C63
 
-#include "Utils/Object.h"
+#include "Interface/Object.h"
 
 #include "Type.h"
 

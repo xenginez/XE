@@ -9,7 +9,7 @@
 #ifndef __IEVENTSERVICE_H__9F87BB9F_F399_497E_AECE_12A1C3D02ACE
 #define __IEVENTSERVICE_H__9F87BB9F_F399_497E_AECE_12A1C3D02ACE
 
-#include "Utils/Event.h"
+#include "Interface/Event.h"
 
 #include "IService.h"
 

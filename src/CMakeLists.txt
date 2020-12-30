@@ -17,7 +17,6 @@ set(INC_DIRS
 		Core
 		GC
 		Graphics
-		GUI
 		Interface
 		Math
 		Physics

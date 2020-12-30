@@ -10,7 +10,7 @@
 #define ENTITY_H__C84CE01E_E4FF_4530_B337_D1B9F4DBEF7A
 
 #include "Math/Math.h"
-#include "Utils/Object.h"
+#include "Interface/Object.h"
 
 #include "Type.h"
 

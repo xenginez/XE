@@ -30,6 +30,10 @@ DECL_PTR( INavigationService );
 DECL_PTR( ILocalizationService );
 class IFramework; typedef IFramework * IFrameworkPtr;
 
+DECL_PTR( Event );
+DECL_PTR( Object );
+DECL_PTR( IUserInterface );
+
 DECL_HANDLE( XE_API, NavMesh );
 DECL_HANDLE( XE_API, NavObstacle );
 
