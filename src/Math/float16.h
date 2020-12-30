@@ -87,7 +87,7 @@ public:
 	void FormFloat32( XE::float32 val );
 	
 };
-DECL_META_CLASS(XE_API, float16);
+DECL_META_CLASS( XE_API, float16 );
 
 END_XE_NAMESPACE
 

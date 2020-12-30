@@ -235,22 +235,25 @@ del %cd%\install\ /f /s /q
 :BUILD_IMGUI
 echo "copy imgui head file to depend"
 cd %RD3_PATH%
-xcopy %cd%\imgui\imgui.cpp %RD3_PATH%\..\src\GUI\ /y
-xcopy %cd%\imgui\imgui.h %RD3_PATH%\..\src\GUI\ /y
-xcopy %cd%\imgui\imgui_draw.cpp %RD3_PATH%\..\src\GUI\ /y
-xcopy %cd%\imgui\imgui_widgets.cpp %RD3_PATH%\..\src\GUI\ /y
-xcopy %cd%\imgui\imgui_internal.h %RD3_PATH%\..\src\GUI\ /y
-xcopy %cd%\imgui\imconfig.h %RD3_PATH%\..\src\GUI\ /y
-xcopy %cd%\imgui\imstb_rectpack.h %RD3_PATH%\..\src\GUI\ /y
-xcopy %cd%\imgui\imstb_textedit.h %RD3_PATH%\..\src\GUI\ /y
-xcopy %cd%\imgui\imstb_truetype.h %RD3_PATH%\..\src\GUI\ /y
+xcopy %cd%\imgui\imgui.cpp %RD3_PATH%\..\modules\GUI\ /y
+xcopy %cd%\imgui\imgui.h %RD3_PATH%\..\modules\GUI\ /y
+xcopy %cd%\imgui\imgui_draw.cpp %RD3_PATH%\..\modules\GUI\ /y
+xcopy %cd%\imgui\imgui_widgets.cpp %RD3_PATH%\..\modules\GUI\ /y
+xcopy %cd%\imgui\imgui_internal.h %RD3_PATH%\..\modules\GUI\ /y
+xcopy %cd%\imgui\imconfig.h %RD3_PATH%\..\modules\GUI\ /y
+xcopy %cd%\imgui\imstb_rectpack.h %RD3_PATH%\..\modules\GUI\ /y
+xcopy %cd%\imgui\imstb_textedit.h %RD3_PATH%\..\modules\GUI\ /y
+xcopy %cd%\imgui\imstb_truetype.h %RD3_PATH%\..\modules\GUI\ /y
 
+:BUILD_SSE2NEON
+echo "copy sse2neon head file to depend"
+cd %RD3_PATH%
+xcopy %cd%\sse2neon\sse2neon.h %RD3_PATH%\..\depend\include\sse2neon\ /e /y
 
 :BUILD_STB
 echo "copy stb head file to depend"
 cd %RD3_PATH%
 xcopy %cd%\stb\*.h %RD3_PATH%\..\depend\include\stb\ /e /y
-
 
 :BUILD_RAPIDJSON
 echo "copy rapidjson head file to depend"
