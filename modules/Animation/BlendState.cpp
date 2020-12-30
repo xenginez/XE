@@ -1,4 +1,4 @@
-#include "AnimationBlendState.h"
+#include "BlendState.h"
 
 #include <tbb/parallel_for.h>
 
@@ -6,30 +6,28 @@
 #include <ozz/animation/runtime/skeleton.h>
 #include <ozz/animation/runtime/blending_job.h>
 
-#include "Utils/Logger.h"
-
 #include "Skeleton.h"
-#include "AnimationLayer.h"
-#include "AnimationController.h"
+#include "Layer.h"
+#include "Controller.h"
 
-BEG_META( XE::AnimationBlendState )
-type->Property( "Loop", &XE::AnimationBlendState::_Loop );
-type->Property( "Speed", &XE::AnimationBlendState::_Speed );
-type->Property( "Layers", &XE::AnimationBlendState::_Layers );
+BEG_META( Animation::BlendState )
+type->Property( "Loop", &Animation::BlendState::_Loop );
+type->Property( "Speed", &Animation::BlendState::_Speed );
+type->Property( "Layers", &Animation::BlendState::_Layers );
 END_META()
 
-XE::AnimationBlendState::AnimationBlendState()
+Animation::BlendState::BlendState()
 	:_Loop( false ), _Speed( 1.0f )
 {
 
 }
 
-XE::AnimationBlendState::~AnimationBlendState()
+Animation::BlendState::~BlendState()
 {
 
 }
 
-void XE::AnimationBlendState::OnStartup()
+void Animation::BlendState::OnStartup()
 {
 	Super::OnStartup();
 
@@ -40,14 +38,14 @@ void XE::AnimationBlendState::OnStartup()
 	}
 }
 
-void XE::AnimationBlendState::OnEnter()
+void Animation::BlendState::OnEnter()
 {
 	Super::OnEnter();
 
 	_CurrentTime = 0;
 }
 
-void XE::AnimationBlendState::OnUpdate( XE::float32 dt )
+void Animation::BlendState::OnUpdate( XE::float32 dt )
 {
 	Super::OnUpdate( dt );
 
@@ -84,18 +82,18 @@ void XE::AnimationBlendState::OnUpdate( XE::float32 dt )
 	blend_job.output = ozz::make_span( *local );
 	if( !blend_job.Run() )
 	{
-		XE_LOG( LoggerLevel::Error, "%1 state blend job runing error", GetName() );
-		SetStatus( XE::AnimationStateStatus::FAILED );
+		XE_LOG( XE::LoggerLevel::Error, "%1 state blend job runing error", GetName() );
+		SetStatus( Animation::StateStatus::FAILED );
 		return;
 	}
 
 	if( _CurrentTime >= _MaxTime )
 	{
-		SetStatus( XE::AnimationStateStatus::SUCCESS );
+		SetStatus( Animation::StateStatus::SUCCESS );
 	}
 }
 
-void XE::AnimationBlendState::OnClearup()
+void Animation::BlendState::OnClearup()
 {
 	Super::OnClearup();
 
@@ -105,7 +103,7 @@ void XE::AnimationBlendState::OnClearup()
 	}
 }
 
-void XE::AnimationBlendState::AssetLoad()
+void Animation::BlendState::AssetLoad()
 {
 	Super::AssetLoad();
 
@@ -115,32 +113,32 @@ void XE::AnimationBlendState::AssetLoad()
 	}
 }
 
-bool XE::AnimationBlendState::GetLoop() const
+bool Animation::BlendState::GetLoop() const
 {
 	return _Loop;
 }
 
-void XE::AnimationBlendState::SetLoop( bool val )
+void Animation::BlendState::SetLoop( bool val )
 {
 	_Loop = val;
 }
 
-XE::float32 XE::AnimationBlendState::GetSpeed() const
+XE::float32 Animation::BlendState::GetSpeed() const
 {
 	return _Speed;
 }
 
-void XE::AnimationBlendState::SetSpeed( XE::float32 val )
+void Animation::BlendState::SetSpeed( XE::float32 val )
 {
 	_Speed = val;
 }
 
-XE::float32 XE::AnimationBlendState::GetThreshold() const
+XE::float32 Animation::BlendState::GetThreshold() const
 {
 	return _Threshold;
 }
 
-void XE::AnimationBlendState::SetThreshold( XE::float32 val )
+void Animation::BlendState::SetThreshold( XE::float32 val )
 {
 	_Threshold = val;
 }

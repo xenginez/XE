@@ -12,7 +12,7 @@
 #include "IMetaClass.h"
 
 #include "Archive.h"
-
+#include "IMetaModule.h"
 #include "CXXMetaMethod.hpp"
 #include "CXXMetaOperator.hpp"
 #include "CXXMetaProperty.hpp"
@@ -22,8 +22,8 @@ BEG_XE_NAMESPACE
 template< typename ClassType > class CXXMetaClass : public IMetaClass
 {
 public:
-	CXXMetaClass( const String& Name, IMetaClassPtr Super, IMetaInfoPtr Owner )
-		:IMetaClass( Name, sizeof( ClassType ), std::is_abstract_v<ClassType>, std::is_base_of<XE::Singleton<ClassType>, ClassType>::value, Super, Owner )
+	CXXMetaClass( const String& Name, IMetaClassPtr Super, IMetaInfoPtr Owner, IMetaModulePtr Module )
+		:IMetaClass( Name, sizeof( ClassType ), std::is_abstract_v<ClassType>, std::is_base_of<XE::Singleton<ClassType>, ClassType>::value, Super, Owner, Module )
 	{
 	}
 
@@ -72,121 +72,121 @@ public:
 public:
 	template< typename Result, typename T > void Method( const String& Name, Result( *Callback )( T ) )
 	{
-		auto method = XE::MakeShared< CXXMetaMethod< Result( *)( T )> >( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ) );
+		auto method = XE::MakeShared< CXXMetaMethod< Result( *)( T )> >( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ), GetModule() );
 		_RegisterMethod( method );
 	}
 
 	template< typename Result, typename T > void Method( const String& Name, Result( ClassType::*Callback )( T ) )
 	{
-		auto method = XE::MakeShared< CXXMetaMethod<Result( ClassType::* )( T )> >( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ) );
+		auto method = XE::MakeShared< CXXMetaMethod<Result( ClassType::* )( T )> >( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ), GetModule() );
 		_RegisterMethod( method );
 	}
 
 	template< typename Result, typename T > void Method( const String& Name, Result( ClassType::*Callback )( T ) const )
 	{
-		auto method = XE::MakeShared< CXXMetaMethod<Result( ClassType::* )( T ) const> >( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ) );
+		auto method = XE::MakeShared< CXXMetaMethod<Result( ClassType::* )( T ) const> >( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ), GetModule() );
 		_RegisterMethod( method );
 	}
 
 	template< typename Value > void Property( const String& Name, Value * Prop, XE::uint8 Flag = IMetaProperty::Default )
 	{
-		auto prop = XE::MakeShared<CXXMetaProperty<Value>>( Name, Prop, Flag, SP_CAST<IMetaClass>( shared_from_this() ) );
+		auto prop = XE::MakeShared<CXXMetaProperty<Value>>( Name, Prop, Flag, SP_CAST<IMetaClass>( shared_from_this() ), GetModule() );
 		_RegisterProperty( prop );
 	}
 
 	template< typename Value > void Property( const String& Name, Value( ClassType::*Prop ), XE::uint8 Flag = IMetaProperty::Default )
 	{
-		auto prop = XE::MakeShared<CXXMetaProperty<Value( ClassType::* )>>( Name, Prop, Flag, SP_CAST<IMetaClass>( shared_from_this() ) );
+		auto prop = XE::MakeShared<CXXMetaProperty<Value( ClassType::* )>>( Name, Prop, Flag, SP_CAST<IMetaClass>( shared_from_this() ), GetModule() );
 		_RegisterProperty( prop );
 	}
 
 	template< typename GetType, typename SetType > void Property( const String& Name, GetType( *Get )( ), void( *Set )( SetType ), XE::uint8 Flag = IMetaProperty::Default )
 	{
-		auto prop = XE::MakeShared<CXXMetaProperty<GetType( *)( ), void( *)( SetType )>>( Name, Get, Set, Flag, SP_CAST<IMetaClass>( shared_from_this() ) );
+		auto prop = XE::MakeShared<CXXMetaProperty<GetType( *)( ), void( *)( SetType )>>( Name, Get, Set, Flag, SP_CAST<IMetaClass>( shared_from_this() ), GetModule() );
 		_RegisterProperty( prop );
 	}
 
 	template< typename GetType, typename SetType > void Property( const String& Name, GetType( ClassType::*Get )( ), void( ClassType::*Set )( SetType ), XE::uint8 Flag = IMetaProperty::Default )
 	{
-		auto prop = XE::MakeShared<CXXMetaProperty<GetType( ClassType::* )( ), void( ClassType::* )( SetType )>>( Name, Get, Set, Flag, SP_CAST<IMetaClass>( shared_from_this() ) );
+		auto prop = XE::MakeShared<CXXMetaProperty<GetType( ClassType::* )( ), void( ClassType::* )( SetType )>>( Name, Get, Set, Flag, SP_CAST<IMetaClass>( shared_from_this() ), GetModule() );
 		_RegisterProperty( prop );
 	}
 
 	template< typename GetType, typename SetType > void Property( const String& Name, GetType( ClassType::*Get )( ) const, void( ClassType::*Set )( SetType ), XE::uint8 Flag = IMetaProperty::Default )
 	{
-		auto prop = XE::MakeShared<CXXMetaProperty<GetType( ClassType::* )( ) const, void( ClassType::* )( SetType )>>( Name, Get, Set, Flag, SP_CAST<IMetaClass>( shared_from_this() ) );
+		auto prop = XE::MakeShared<CXXMetaProperty<GetType( ClassType::* )( ) const, void( ClassType::* )( SetType )>>( Name, Get, Set, Flag, SP_CAST<IMetaClass>( shared_from_this() ), GetModule() );
 		_RegisterProperty( prop );
 	}
 
 	template< typename GetType > void Property( const String & Name, GetType( *Get )( ), XE::uint8 Flag = IMetaProperty::Default )
 	{
-		auto prop = XE::MakeShared<CXXMetaProperty<GetType( * )( )>>( Name, Get, Flag, SP_CAST<IMetaClass>( shared_from_this() ) );
+		auto prop = XE::MakeShared<CXXMetaProperty<GetType( * )( )>>( Name, Get, Flag, SP_CAST<IMetaClass>( shared_from_this() ), GetModule() );
 		_RegisterProperty( prop );
 	}
 
 	template< typename GetType > void Property( const String & Name, GetType( ClassType:: * Get )( ), XE::uint8 Flag = IMetaProperty::Default )
 	{
-		auto prop = XE::MakeShared<CXXMetaProperty<GetType( ClassType:: * )( )>>( Name, Get, Flag, SP_CAST<IMetaClass>( shared_from_this() ) );
+		auto prop = XE::MakeShared<CXXMetaProperty<GetType( ClassType:: * )( )>>( Name, Get, Flag, SP_CAST<IMetaClass>( shared_from_this() ), GetModule() );
 		_RegisterProperty( prop );
 	}
 
 	template< typename SetType > void Property( const String & Name, void( *Set )( SetType ), XE::uint8 Flag = IMetaProperty::Default )
 	{
-		auto prop = XE::MakeShared<CXXMetaProperty<void( * )( SetType )>>( Name, Set, Flag, SP_CAST<IMetaClass>( shared_from_this() ) );
+		auto prop = XE::MakeShared<CXXMetaProperty<void( * )( SetType )>>( Name, Set, Flag, SP_CAST<IMetaClass>( shared_from_this() ), GetModule() );
 		_RegisterProperty( prop );
 	}
 
 	template< typename SetType > void Property( const String & Name, void( ClassType:: * Set )( SetType ), XE::uint8 Flag = IMetaProperty::Default )
 	{
-		auto prop = XE::MakeShared<CXXMetaProperty<void( ClassType:: * )( SetType )>>( Name, Set, Flag, SP_CAST<IMetaClass>( shared_from_this() ) );
+		auto prop = XE::MakeShared<CXXMetaProperty<void( ClassType:: * )( SetType )>>( Name, Set, Flag, SP_CAST<IMetaClass>( shared_from_this() ), GetModule() );
 		_RegisterProperty( prop );
 	}
 
 	template< typename Result > void Operator( const String& Name, Result( ClassType::*Callback )( ) )
 	{
-		auto oper = XE::MakeShared<CXXMetaOperator<Result( ClassType::* )( )>>( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ) );
+		auto oper = XE::MakeShared<CXXMetaOperator<Result( ClassType::* )( )>>( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ), GetModule() );
 		_RegisterOperator( oper );
 	}
 
 	template< typename Result > void Operator( const String& Name, Result( ClassType::*Callback )( ) const )
 	{
-		auto oper = XE::MakeShared<CXXMetaOperator<Result( ClassType::* )( ) const>>( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ) );
+		auto oper = XE::MakeShared<CXXMetaOperator<Result( ClassType::* )( ) const>>( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ), GetModule() );
 		_RegisterOperator( oper );
 	}
 
 	template< typename Result, typename Right > void Operator( const String& Name, Result( ClassType::*Callback )( Right ) )
 	{
-		auto oper = XE::MakeShared<CXXMetaOperator<Result( ClassType::* )( Right )>>( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ) );
+		auto oper = XE::MakeShared<CXXMetaOperator<Result( ClassType::* )( Right )>>( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ), GetModule() );
 		_RegisterOperator( oper );
 	}
 
 	template< typename Result, typename Right > void Operator( const String& Name, Result( ClassType::*Callback )( Right ) const )
 	{
-		auto oper = XE::MakeShared<CXXMetaOperator<Result( ClassType::* )( Right ) const>>( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ) );
+		auto oper = XE::MakeShared<CXXMetaOperator<Result( ClassType::* )( Right ) const>>( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ), GetModule() );
 		_RegisterOperator( oper );
 	}
 
 	template< typename Result > void Operator( const String& Name, Result( *Callback )( ClassType * ) )
 	{
-		auto oper = XE::MakeShared<CXXMetaOperator<Result( *)( ClassType * )>>( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ) );
+		auto oper = XE::MakeShared<CXXMetaOperator<Result( *)( ClassType * )>>( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ), GetModule() );
 		_RegisterOperator( oper );
 	}
 
 	template< typename Result > void Operator( const String& Name, Result( *Callback )( ClassType & ) )
 	{
-		auto oper = XE::MakeShared<CXXMetaOperator<Result( *)( ClassType & )>>( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ) );
+		auto oper = XE::MakeShared<CXXMetaOperator<Result( *)( ClassType & )>>( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ), GetModule() );
 		_RegisterOperator( oper );
 	}
 
 	template< typename Result, typename Right > void Operator( const String& Name, Result( *Callback )( ClassType *, Right ) )
 	{
-		auto oper = XE::MakeShared<CXXMetaOperator<Result( *)( ClassType *, Right )>>( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ) );
+		auto oper = XE::MakeShared<CXXMetaOperator<Result( *)( ClassType *, Right )>>( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ), GetModule() );
 		_RegisterOperator( oper );
 	}
 
 	template< typename Result, typename Right > void Operator( const String& Name, Result( *Callback )( ClassType &, Right ) )
 	{
-		auto oper = XE::MakeShared<CXXMetaOperator<Result( *)( ClassType &, Right )>>( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ) );
+		auto oper = XE::MakeShared<CXXMetaOperator<Result( *)( ClassType &, Right )>>( Name, Callback, SP_CAST<IMetaClass>( shared_from_this() ), GetModule() );
 		_RegisterOperator( oper );
 	}
 
@@ -196,7 +196,7 @@ template< typename ClassType > class CXXMetaFundamental : public IMetaClass
 {
 public:
 	CXXMetaFundamental( const String& Name )
-		:IMetaClass( Name, sizeof( ClassType ), false, false, nullptr, nullptr, "" )
+		:IMetaClass( Name, sizeof( ClassType ), false, false, nullptr, nullptr, nullptr )
 	{
 	}
 
@@ -228,7 +228,7 @@ public:
 };
 
 
-template<> struct XE_API XE::ClassID< void >
+template<> struct XE_API ::XE_ClassID< void >
 {
 	static XE::IMetaClassPtr Get( const void * val = nullptr )
 	{
@@ -236,7 +236,7 @@ template<> struct XE_API XE::ClassID< void >
 	}
 };
 
-template<> struct XE_API XE::ClassID< std::nullptr_t >
+template<> struct XE_API ::XE_ClassID< std::nullptr_t >
 {
 	static XE::IMetaClassPtr Get( const std::nullptr_t * val = nullptr )
 	{
@@ -245,7 +245,7 @@ template<> struct XE_API XE::ClassID< std::nullptr_t >
 	}
 };
 
-template<> struct XE_API XE::ClassID< bool >
+template<> struct XE_API ::XE_ClassID< bool >
 {
 	static XE::IMetaClassPtr Get( const bool * val = nullptr )
 	{
@@ -254,7 +254,7 @@ template<> struct XE_API XE::ClassID< bool >
 	}
 };
 
-template<> struct XE_API XE::ClassID< XE::int8 >
+template<> struct XE_API ::XE_ClassID< XE::int8 >
 {
 	static XE::IMetaClassPtr Get( const XE::int8 * val = nullptr )
 	{
@@ -263,7 +263,7 @@ template<> struct XE_API XE::ClassID< XE::int8 >
 	}
 };
 
-template<> struct XE_API XE::ClassID< XE::int16 >
+template<> struct XE_API ::XE_ClassID< XE::int16 >
 {
 	static XE::IMetaClassPtr Get( const XE::int16 * val = nullptr )
 	{
@@ -272,7 +272,7 @@ template<> struct XE_API XE::ClassID< XE::int16 >
 	}
 };
 
-template<> struct XE_API XE::ClassID< XE::int32 >
+template<> struct XE_API ::XE_ClassID< XE::int32 >
 {
 	static XE::IMetaClassPtr Get( const XE::int32 * val = nullptr )
 	{
@@ -281,15 +281,15 @@ template<> struct XE_API XE::ClassID< XE::int32 >
 	}
 };
 
-template<> struct XE_API XE::ClassID< long >
+template<> struct XE_API ::XE_ClassID< long >
 {
 	static XE::IMetaClassPtr Get( const long * val = nullptr )
 	{
-		return ClassID< XE::int32 >::Get();
+		return ::XE_ClassID< XE::int32 >::Get();
 	}
 };
 
-template<> struct XE_API XE::ClassID< XE::int64 >
+template<> struct XE_API ::XE_ClassID< XE::int64 >
 {
 	static XE::IMetaClassPtr Get( const XE::int64 * val = nullptr )
 	{
@@ -298,7 +298,7 @@ template<> struct XE_API XE::ClassID< XE::int64 >
 	}
 };
 
-template<> struct XE_API XE::ClassID< XE::uint8 >
+template<> struct XE_API ::XE_ClassID< XE::uint8 >
 {
 	static XE::IMetaClassPtr Get( const XE::uint8 * val = nullptr )
 	{
@@ -307,7 +307,7 @@ template<> struct XE_API XE::ClassID< XE::uint8 >
 	}
 };
 
-template<> struct XE_API XE::ClassID< XE::uint16 >
+template<> struct XE_API ::XE_ClassID< XE::uint16 >
 {
 	static XE::IMetaClassPtr Get( const XE::uint16 * val = nullptr )
 	{
@@ -316,7 +316,7 @@ template<> struct XE_API XE::ClassID< XE::uint16 >
 	}
 };
 
-template<> struct XE_API XE::ClassID< XE::uint32 >
+template<> struct XE_API ::XE_ClassID< XE::uint32 >
 {
 	static XE::IMetaClassPtr Get( const XE::uint32 * val = nullptr )
 	{
@@ -325,15 +325,15 @@ template<> struct XE_API XE::ClassID< XE::uint32 >
 	}
 };
 
-template<> struct XE_API XE::ClassID< unsigned long >
+template<> struct XE_API ::XE_ClassID< unsigned long >
 {
 	static XE::IMetaClassPtr Get( const unsigned long * val = nullptr )
 	{
-		return ClassID< XE::uint32 >::Get();
+		return ::XE_ClassID< XE::uint32 >::Get();
 	}
 };
 
-template<> struct XE_API XE::ClassID< XE::uint64 >
+template<> struct XE_API ::XE_ClassID< XE::uint64 >
 {
 	static XE::IMetaClassPtr Get( const XE::uint64 * val = nullptr )
 	{
@@ -342,7 +342,7 @@ template<> struct XE_API XE::ClassID< XE::uint64 >
 	}
 };
 
-template<> struct XE_API XE::ClassID< XE::float32 >
+template<> struct XE_API ::XE_ClassID< XE::float32 >
 {
 	static XE::IMetaClassPtr Get( const XE::float32 * val = nullptr )
 	{
@@ -351,7 +351,7 @@ template<> struct XE_API XE::ClassID< XE::float32 >
 	}
 };
 
-template<> struct XE_API XE::ClassID< XE::float64 >
+template<> struct XE_API ::XE_ClassID< XE::float64 >
 {
 	static XE::IMetaClassPtr Get( const XE::float64 * val = nullptr )
 	{
@@ -360,16 +360,16 @@ template<> struct XE_API XE::ClassID< XE::float64 >
 	}
 };
 
-template<> struct XE_API XE::ClassID< XE::Variant >
+template<> struct XE_API ::XE_ClassID< XE::Variant >
 {
 	static XE::IMetaClassPtr Get( const XE::Variant * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::Variant> >( "Variant", nullptr, nullptr );
+		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::Variant> >( "Variant", nullptr, nullptr, GetModule() );
 		return meta;
 	}
 };
 
-template<> struct XE_API XE::TypeID< XE::Variant >
+template<> struct XE_API XE_TypeID< XE::Variant >
 {
 	static XE::IMetaTypePtr Get( const XE::Variant * val = nullptr )
 	{
@@ -378,325 +378,305 @@ template<> struct XE_API XE::TypeID< XE::Variant >
 			return val->GetType();
 		}
 
-		return XE::ClassID<XE::Variant>::Get();
+		return ::XE_ClassID<XE::Variant>::Get();
 	}
 };
 
 
-template<> struct XE_API XE::ClassID< XE::String >
+template<> struct XE_API ::XE_ClassID< XE::String >
 {
 	static XE::IMetaClassPtr Get( const XE::String * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::String> >( "String", nullptr, nullptr );
+		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::String> >( "String", nullptr, nullptr, GetModule() );
 		return meta;
 	}
 };
 
-template<> struct XE_API XE::ClassID< XE::FileSystem::Path >
+template<> struct XE_API ::XE_ClassID< XE::FileSystem::Path >
 {
 	static XE::IMetaClassPtr Get( const XE::FileSystem::Path * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::String> >( "Path", nullptr, nullptr );
+		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::String> >( "Path", nullptr, nullptr, GetModule() );
 		return meta;
 	}
 };
 
-template<> struct XE_API XE::ClassID< XE::VariantList >
+template<> struct XE_API ::XE_ClassID< XE::VariantList >
 {
 	static XE::IMetaClassPtr Get( const XE::VariantList * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::VariantList> >( "List", nullptr, nullptr );
+		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::VariantList> >( "List", nullptr, nullptr, GetModule() );
 		return meta;
 	}
 };
 
-template<> struct XE_API XE::ClassID< XE::VariantDeque >
+template<> struct XE_API ::XE_ClassID< XE::VariantDeque >
 {
 	static XE::IMetaClassPtr Get( const XE::VariantDeque * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::VariantDeque> >( "Deque", nullptr, nullptr );
+		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::VariantDeque> >( "Deque", nullptr, nullptr, GetModule() );
 		return meta;
 	}
 };
 
-template<> struct XE_API XE::ClassID< XE::VariantStack >
+template<> struct XE_API ::XE_ClassID< XE::VariantStack >
 {
 	static XE::IMetaClassPtr Get( const XE::VariantStack * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::VariantStack> >( "Stack", nullptr, nullptr );
+		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::VariantStack> >( "Stack", nullptr, nullptr, GetModule() );
 		return meta;
 	}
 };
 
-template<> struct XE_API XE::ClassID< XE::VariantQueue >
+template<> struct XE_API ::XE_ClassID< XE::VariantQueue >
 {
 	static XE::IMetaClassPtr Get( const XE::VariantQueue * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::VariantQueue> >( "Queue", nullptr, nullptr );
+		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::VariantQueue> >( "Queue", nullptr, nullptr, GetModule() );
 		return meta;
 	}
 };
 
-template<> struct XE_API XE::ClassID< XE::VariantArray >
+template<> struct XE_API ::XE_ClassID< XE::VariantArray >
 {
 	static XE::IMetaClassPtr Get( const XE::VariantArray * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::VariantArray> >( "Array", nullptr, nullptr );
+		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::VariantArray> >( "Array", nullptr, nullptr, GetModule() );
 		return meta;
 	}
 };
 
-template<> struct XE_API XE::ClassID< XE::VariantPair >
+template<> struct XE_API ::XE_ClassID< XE::VariantPair >
 {
 	static XE::IMetaClassPtr Get( const XE::VariantPair * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::VariantPair> >( "Pair", nullptr, nullptr );
+		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::VariantPair> >( "Pair", nullptr, nullptr, GetModule() );
 		return meta;
 	}
 };
 
-template<> struct XE_API XE::ClassID< XE::VariantSet >
+template<> struct XE_API ::XE_ClassID< XE::VariantSet >
 {
 	static XE::IMetaClassPtr Get( const XE::VariantSet * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::VariantSet> >( "Set", nullptr, nullptr );
+		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::VariantSet> >( "Set", nullptr, nullptr, GetModule() );
 		return meta;
 	}
 };
 
-template<> struct XE_API XE::ClassID< XE::VariantMap >
+template<> struct XE_API ::XE_ClassID< XE::VariantMap >
 {
 	static XE::IMetaClassPtr Get( const XE::VariantMap * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::VariantMap> >( "Map", nullptr, nullptr );
+		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::VariantMap> >( "Map", nullptr, nullptr, GetModule() );
 		return meta;
 	}
 };
 
-template<> struct XE_API XE::ClassID< XE::VariantMultiSet >
+template<> struct XE_API ::XE_ClassID< XE::VariantMultiSet >
 {
 	static XE::IMetaClassPtr Get( const XE::VariantMultiSet * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::VariantMultiSet> >( "MultiSet", nullptr, nullptr );
+		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::VariantMultiSet> >( "MultiSet", nullptr, nullptr, GetModule() );
 		return meta;
 	}
 };
 
-template<> struct XE_API XE::ClassID< XE::VariantMultiMap >
+template<> struct XE_API ::XE_ClassID< XE::VariantMultiMap >
 {
 	static XE::IMetaClassPtr Get( const XE::VariantMultiMap * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::VariantMultiMap> >( "MultiMap", nullptr, nullptr );
+		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::VariantMultiMap> >( "MultiMap", nullptr, nullptr, GetModule() );
 		return meta;
 	}
 };
 
-template<> struct XE_API XE::ClassID< XE::VariantUnorderedSet >
+template<> struct XE_API ::XE_ClassID< XE::VariantUnorderedSet >
 {
 	static XE::IMetaClassPtr Get( const XE::VariantUnorderedSet * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::VariantUnorderedSet> >( "UnorderedSet", nullptr, nullptr );
+		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::VariantUnorderedSet> >( "UnorderedSet", nullptr, nullptr, GetModule() );
 		return meta;
 	}
 };
 
-template<> struct XE_API XE::ClassID< XE::VariantUnorderedMap >
+template<> struct XE_API ::XE_ClassID< XE::VariantUnorderedMap >
 {
 	static XE::IMetaClassPtr Get( const XE::VariantUnorderedMap * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::VariantUnorderedMap> >( "UnorderedMap", nullptr, nullptr );
+		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::VariantUnorderedMap> >( "UnorderedMap", nullptr, nullptr, GetModule() );
 		return meta;
 	}
 };
 
-template<> struct XE_API XE::ClassID< XE::VariantUnorderedMultiSet >
+template<> struct XE_API ::XE_ClassID< XE::VariantUnorderedMultiSet >
 {
 	static XE::IMetaClassPtr Get( const XE::VariantUnorderedMultiSet * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::VariantUnorderedMultiSet> >( "UnorderedMultiSet", nullptr, nullptr );
+		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::VariantUnorderedMultiSet> >( "UnorderedMultiSet", nullptr, nullptr, GetModule() );
 		return meta;
 	}
 };
 
-template<> struct XE_API XE::ClassID< XE::VariantUnorderedMultiMap >
+template<> struct XE_API ::XE_ClassID< XE::VariantUnorderedMultiMap >
 {
 	static XE::IMetaClassPtr Get( const XE::VariantUnorderedMultiMap * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::VariantUnorderedMultiMap> >( "UnorderedMultiMap", nullptr, nullptr );
+		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::VariantUnorderedMultiMap> >( "UnorderedMultiMap", nullptr, nullptr, GetModule() );
 		return meta;
 	}
 };
 
 
-template<> struct XE_API XE::ClassID< XE::MemoryView >
+template<> struct XE_API ::XE_ClassID< XE::MemoryView >
 {
 	static XE::IMetaClassPtr Get( const XE::MemoryView * val = nullptr )
 	{
-		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::MemoryView> >( "MemoryView", nullptr, nullptr );
+		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::MemoryView> >( "MemoryView", nullptr, nullptr, GetModule() );
 		return meta;
 	}
 };
 
-template<typename T> struct XE::ClassID< XE::BasicMemoryView< T > >
+template<typename T> struct ::XE_ClassID< XE::BasicMemoryView< T > >
 {
 	static XE::IMetaClassPtr Get( const XE::BasicMemoryView< T > * val = nullptr )
 	{
-		return XE::ClassID< XE::MemoryView >::Get( nullptr );
+		return ::XE_ClassID< XE::MemoryView >::Get( nullptr );
 	}
 };
 
-template<typename T> struct XE::ClassID< std::basic_string<T> >
+template<typename T> struct ::XE_ClassID< std::basic_string<T> >
 {
 	static XE::IMetaClassPtr Get( const std::basic_string<T> * val = nullptr )
 	{
-		return XE::ClassID<XE::String>::Get();
+		return ::XE_ClassID<XE::String>::Get();
 	}
 };
 
-template<typename T> struct XE::ClassID< XE::List<T> >
+template<typename T> struct ::XE_ClassID< XE::List<T> >
 {
 	static XE::IMetaClassPtr Get( const XE::List<T> * val = nullptr )
 	{
-		return XE::ClassID<XE::VariantList>::Get();
+		return ::XE_ClassID<XE::VariantList>::Get();
 	}
 };
 
-template<typename T> struct XE::ClassID< XE::Deque<T> >
+template<typename T> struct ::XE_ClassID< XE::Deque<T> >
 {
 	static XE::IMetaClassPtr Get( const XE::Deque<T> * val = nullptr )
 	{
-		return XE::ClassID<XE::VariantDeque>::Get();
+		return ::XE_ClassID<XE::VariantDeque>::Get();
 	}
 };
 
-template<typename T> struct XE::ClassID< XE::Stack<T> >
+template<typename T> struct ::XE_ClassID< XE::Stack<T> >
 {
 	static XE::IMetaClassPtr Get( const XE::Stack<T> * val = nullptr )
 	{
-		return XE::ClassID<XE::VariantStack>::Get();
+		return ::XE_ClassID<XE::VariantStack>::Get();
 	}
 };
 
-template<typename T> struct XE::ClassID< XE::Queue<T> >
+template<typename T> struct ::XE_ClassID< XE::Queue<T> >
 {
 	static XE::IMetaClassPtr Get( const XE::Queue<T> * val = nullptr )
 	{
-		return XE::ClassID<XE::VariantQueue>::Get();
+		return ::XE_ClassID<XE::VariantQueue>::Get();
 	}
 };
 
-template<typename T, std::size_t N> struct XE::ClassID< std::array<T, N> >
+template<typename T, std::size_t N> struct ::XE_ClassID< std::array<T, N> >
 {
 	static XE::IMetaClassPtr Get( const std::array<T, N> * val = nullptr )
 	{
-		return XE::ClassID<XE::VariantArray>::Get();
+		return ::XE_ClassID<XE::VariantArray>::Get();
 	}
 };
 
-template<typename T> struct XE::ClassID< XE::Array<T> >
+template<typename T> struct ::XE_ClassID< XE::Array<T> >
 {
 	static XE::IMetaClassPtr Get( const XE::Array<T> * val = nullptr )
 	{
-		return XE::ClassID<XE::VariantArray>::Get();
+		return ::XE_ClassID<XE::VariantArray>::Get();
 	}
 };
 
-template<typename K, typename V> struct XE::ClassID< XE::Pair<K, V> >
+template<typename K, typename V> struct ::XE_ClassID< XE::Pair<K, V> >
 {
 	static XE::IMetaClassPtr Get( const XE::Pair<K, V> * val = nullptr )
 	{
-		return XE::ClassID<XE::VariantPair>::Get();
+		return ::XE_ClassID<XE::VariantPair>::Get();
 	}
 };
 
-template<typename T> struct XE::ClassID< XE::Set<T> >
+template<typename T> struct ::XE_ClassID< XE::Set<T> >
 {
 	static XE::IMetaClassPtr Get( const XE::Set<T> * val = nullptr )
 	{
-		return XE::ClassID<XE::VariantSet>::Get();
+		return ::XE_ClassID<XE::VariantSet>::Get();
 	}
 };
 
-template<typename K, typename V> struct XE::ClassID< XE::Map<K, V> >
+template<typename K, typename V> struct ::XE_ClassID< XE::Map<K, V> >
 {
 	static XE::IMetaClassPtr Get( const XE::Map<K, V> * val = nullptr )
 	{
-		return XE::ClassID<XE::VariantMap>::Get();
+		return ::XE_ClassID<XE::VariantMap>::Get();
 	}
 };
 
-template<typename T> struct XE::ClassID< XE::MultiSet<T> >
+template<typename T> struct ::XE_ClassID< XE::MultiSet<T> >
 {
 	static XE::IMetaClassPtr Get( const XE::MultiSet<T> * val = nullptr )
 	{
-		return XE::ClassID<XE::VariantMultiSet>::Get();
+		return ::XE_ClassID<XE::VariantMultiSet>::Get();
 	}
 };
 
-template<typename K, typename V> struct XE::ClassID< XE::MultiMap<K, V> >
+template<typename K, typename V> struct ::XE_ClassID< XE::MultiMap<K, V> >
 {
 	static XE::IMetaClassPtr Get( const XE::MultiMap<K, V> * val = nullptr )
 	{
-		return XE::ClassID<XE::VariantMultiMap>::Get();
+		return ::XE_ClassID<XE::VariantMultiMap>::Get();
 	}
 };
 
-template<typename T> struct XE::ClassID< XE::UnorderedMultiSet<T> >
+template<typename T> struct ::XE_ClassID< XE::UnorderedMultiSet<T> >
 {
 	static XE::IMetaClassPtr Get( const XE::UnorderedMultiSet<T> * val = nullptr )
 	{
-		return XE::ClassID<XE::VariantUnorderedMultiSet>::Get();
+		return ::XE_ClassID<XE::VariantUnorderedMultiSet>::Get();
 	}
 };
 
-template<typename K, typename V> struct XE::ClassID< XE::UnorderedMultiMap<K, V> >
+template<typename K, typename V> struct ::XE_ClassID< XE::UnorderedMultiMap<K, V> >
 {
 	static XE::IMetaClassPtr Get( const XE::UnorderedMultiMap<K, V> * val = nullptr )
 	{
-		return XE::ClassID<XE::VariantUnorderedMultiMap>::Get();
+		return ::XE_ClassID<XE::VariantUnorderedMultiMap>::Get();
 	}
 };
 
 END_XE_NAMESPACE
 
 #define DECL_META_CLASS_3(_DLL_EXPORT, _CLASS, _SUPER) \
-template<> struct _DLL_EXPORT XE::ClassID<_CLASS> \
+template<> struct _DLL_EXPORT ::XE_ClassID<_CLASS> \
 { \
 	static XE::IMetaClassPtr Get( const _CLASS * val = nullptr ) \
 	{ \
-		static auto p = XE::MakeShared< XE::CXXMetaClass<_CLASS> >( #_CLASS, XE::ClassID<_SUPER>::Get(), nullptr ); \
+		static auto p = XE::MakeShared< XE::CXXMetaClass<_CLASS> >( #_CLASS, ::XE_ClassID<_SUPER>::Get(), nullptr, GetModule() ); \
 		return p; \
 	} \
 }
 #define DECL_META_CLASS_2(_DLL_EXPORT, _CLASS) \
-template<> struct _DLL_EXPORT XE::ClassID<_CLASS> \
+template<> struct _DLL_EXPORT ::XE_ClassID<_CLASS> \
 { \
 	static XE::IMetaClassPtr Get( const _CLASS * val = nullptr ) \
 	{ \
-		static auto p = XE::MakeShared< XE::CXXMetaClass<_CLASS> >( #_CLASS, nullptr, nullptr ); \
+		static auto p = XE::MakeShared< XE::CXXMetaClass<_CLASS> >( #_CLASS, nullptr, nullptr, GetModule() ); \
 		return p; \
 	} \
 }
 #define DECL_META_CLASS(...)            MACRO_EXP_(MACRO_GLUE(DECL_META_CLASS_,MACRO_ARGS_CONTER(__VA_ARGS__))(__VA_ARGS__))
-
-#define DECL_META_CLASS_P_2(_CLASS, _SUPER) \
-template<> struct XE::ClassID<_CLASS> \
-{ \
-	static XE::IMetaClassPtr Get( const _CLASS * val = nullptr ) \
-	{ \
-		static auto p = XE::MakeShared< XE::CXXMetaClass<_CLASS> >( #_CLASS, XE::ClassID<_SUPER>::Get(), nullptr ); \
-		return p; \
-	} \
-}
-#define DECL_META_CLASS_P_1(_CLASS) \
-template<> struct XE::ClassID<_CLASS> \
-{ \
-	static XE::IMetaClassPtr Get( const _CLASS * val = nullptr ) \
-	{ \
-		static auto p = XE::MakeShared< XE::CXXMetaClass<_CLASS> >( #_CLASS, nullptr, nullptr ); \
-		return p; \
-	} \
-}
-#define DECL_META_CLASS_P(...)            MACRO_EXP_(MACRO_GLUE(DECL_META_CLASS_P_,MACRO_ARGS_CONTER(__VA_ARGS__))(__VA_ARGS__))
 
 #endif // __CXXMETACLASS_HPP__B0EBC0E5_97E9_4A1F_B8EE_EF87D334D01A

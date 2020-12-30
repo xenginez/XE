@@ -32,7 +32,7 @@ bool XE::LocalizationService::Startup()
 	}
 	else
 	{
-		_p->_Language = (Language)( EnumID<Language>::Get()->FindValue( LanguageName ).Value<Language>() );
+		_p->_Language = (Language)( ::XE_EnumID<Language>::Get()->FindValue( LanguageName ).Value<Language>() );
 	}
 
 	UpdateLocalized();
@@ -59,7 +59,7 @@ void XE::LocalizationService::SetCurrentLanguage( XE::Language val )
 {
 	_p->_Language = val;
 
-	GetFramework()->SetString( "System/Language", EnumID<Language>::Get()->FindName( (XE::int64)_p->_Language ) );
+	GetFramework()->SetString( "System/Language", ::XE_EnumID<Language>::Get()->FindName( (XE::int64)_p->_Language ) );
 
 	UpdateLocalized();
 }

@@ -30,7 +30,7 @@ public:
 public:
 	template< typename T > XE::SharedPtr< T > GetServiceT() const
 	{
-		return SP_CAST< T >( GetService( ClassID< typename T >::Get() ) );
+		return SP_CAST< T >( GetService( ::XE_ClassID< typename T >::Get() ) );
 	}
 
 public:

@@ -9,13 +9,11 @@
 #ifndef BLACKBOARDKEY_H__039DE917_DC54_42D8_9A9D_0F3B8F39069A
 #define BLACKBOARDKEY_H__039DE917_DC54_42D8_9A9D_0F3B8F39069A
 
-#include "Utils/Object.h"
-
 #include "Type.h"
 
-BEG_XE_NAMESPACE
+BEG_AI_NAMESPACE
 
-class XE_API BlackboardKey
+class AI_API BlackboardKey
 {
 public:
 	BlackboardKey();
@@ -47,7 +45,7 @@ public:
 private:
 	XE::String _Key;
 };
-DECL_META_CLASS( XE_API, BlackboardKey );
+DECL_META_CLASS( AI_API, BlackboardKey );
 
 template< typename T > class BlackboardKeyPtr : public XE::BlackboardKey
 {
@@ -75,16 +73,16 @@ public:
 	}
 
 private:
-	XE::SharedPtr< XE::AIModulePtr > _Module;
+	AI::ModulePtr _Module;
 };
 
-END_XE_NAMESPACE
+END_AI_NAMESPACE
 
-template< typename T > struct XE::ClassID< XE::BlackboardKeyPtr< T > >
+template< typename T > struct ::XE_ClassID< AI::BlackboardKeyPtr< T > >
 {
-	static XE::IMetaClassPtr Get( const XE::BlackboardKeyPtr< T > * val = nullptr )
+	static XE::IMetaClassPtr Get( const AI::BlackboardKeyPtr< T > * val = nullptr )
 	{
-		return XE::ClassID< XE::BlackboardKey >::Get();
+		return ::XE_ClassID< AI::BlackboardKey >::Get();
 	}
 };
 

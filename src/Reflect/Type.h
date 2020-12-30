@@ -18,6 +18,7 @@ DECL_PTR( IMetaInfo );
 DECL_PTR( IMetaType );
 DECL_PTR( IMetaEnum );
 DECL_PTR( IMetaClass );
+DECL_PTR( IMetaModule );
 DECL_PTR( IMetaMethod );
 DECL_PTR( IMetaProperty );
 DECL_PTR( IMetaOperator );
@@ -26,6 +27,7 @@ enum class MetaType
 {
 	ENUM,
 	CLASS,
+	MODULE,
 	METHOD,
 	PROPERTY,
 	OPERATOR,

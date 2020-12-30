@@ -2,8 +2,8 @@
 
 
 
-XE::IMetaEnum::IMetaEnum( const String & Name, XE::uint64 Size, IMetaInfoPtr Owner, const String & ModuleName /*= "XE" */ )
-	:IMetaType( Name, MetaType::ENUM, Size, Owner, ModuleName )
+XE::IMetaEnum::IMetaEnum( const String & Name, XE::uint64 Size, IMetaInfoPtr Owner, IMetaModulePtr Module )
+	:IMetaType( Name, MetaType::ENUM, Size, Owner, Module )
 {
 
 }

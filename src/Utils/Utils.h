@@ -22,7 +22,6 @@
 #include "Zipper.h"
 #include "Flags.hpp"
 #include "Library.h"
-#include "Declare.h"
 #include "Platform.h"
 #include "Handle.hpp"
 #include "Signals.hpp"

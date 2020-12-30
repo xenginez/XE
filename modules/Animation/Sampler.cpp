@@ -1,4 +1,4 @@
-#include "AnimationSampler.h"
+#include "Sampler.h"
 
 #include <ozz/base/maths/vec_float.h>
 #include <ozz/base/containers/vector.h>
@@ -10,18 +10,18 @@
 #include "Skeleton.h"
 #include "SkeletonAnimation.h"
 
-XE::AnimationSampler::AnimationSampler()
+Animation::Sampler::Sampler()
 	:_Local( nullptr ), _Cache( nullptr )
 {
 
 }
 
-XE::AnimationSampler::~AnimationSampler()
+Animation::Sampler::~Sampler()
 {
 
 }
 
-void XE::AnimationSampler::Startup( XE::SkeletonPtr skeleton, XE::SkeletonAnimationPtr animation )
+void Animation::Sampler::Startup( Animation::SkeletonPtr skeleton, Animation::SkeletonAnimationPtr animation )
 {
 	_Skeleton = skeleton;
 	_Animation = animation;
@@ -32,7 +32,7 @@ void XE::AnimationSampler::Startup( XE::SkeletonPtr skeleton, XE::SkeletonAnimat
 	_Local = new XE::Array< ozz::math::SoaTransform >( skel->num_soa_joints() );
 }
 
-bool XE::AnimationSampler::Update( XE::float32 time )
+bool Animation::Sampler::Update( XE::float32 time )
 {
 	auto cache = reinterpret_cast< ozz::animation::SamplingCache * >( _Cache );
 	auto local = reinterpret_cast< XE::Array<ozz::math::SoaTransform> * >( _Local );
@@ -53,7 +53,7 @@ bool XE::AnimationSampler::Update( XE::float32 time )
 	return true;
 }
 
-void XE::AnimationSampler::Clearup()
+void Animation::Sampler::Clearup()
 {
 	auto cache = reinterpret_cast< ozz::animation::SamplingCache * >( _Cache );
 	delete cache;
@@ -66,7 +66,7 @@ void XE::AnimationSampler::Clearup()
 	_Animation = nullptr;
 }
 
-void * XE::AnimationSampler::GetLocal() const
+void * Animation::Sampler::GetLocal() const
 {
 	return _Local;
 }

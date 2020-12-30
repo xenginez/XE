@@ -28,7 +28,7 @@ public:
 	static constexpr XE::uint8 NoWirte = 1 << 6;
 
 public:
-	IMetaProperty( const String& Name, XE::uint8 Flag, bool IsStatic, bool IsConst, bool IsObject, bool IsPointer, bool IsSharedPtr, bool IsReference, IMetaInfoPtr Value, IMetaClassPtr Owner, const String & ModuleName = "XE" );
+	IMetaProperty( const String& Name, XE::uint8 Flag, bool IsStatic, bool IsConst, bool IsObject, bool IsPointer, bool IsSharedPtr, bool IsReference, IMetaInfoPtr Value, IMetaClassPtr Owner, IMetaModulePtr Module );
 
 	~IMetaProperty();
 

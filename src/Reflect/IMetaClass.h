@@ -20,7 +20,7 @@ class Archive;
 class XE_API IMetaClass : public IMetaType
 {
 public:
-	IMetaClass( const String& Name, XE::uint64 Size, bool IsAbs, bool IsSin, IMetaClassPtr Super, IMetaInfoPtr Owner, const String & ModuleName = "XE" );
+	IMetaClass( const String& Name, XE::uint64 Size, bool IsAbs, bool IsSin, IMetaClassPtr Super, IMetaInfoPtr Owner, IMetaModulePtr Module );
 
 	~IMetaClass();
 

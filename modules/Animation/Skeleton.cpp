@@ -1,19 +1,19 @@
 #include "Skeleton.h"
 
-BEG_META( XE::Skeleton )
+BEG_META( Animation::Skeleton )
 END_META()
 
-XE::Skeleton::Skeleton()
+Animation::Skeleton::Skeleton()
 {
 
 }
 
-XE::Skeleton::~Skeleton()
+Animation::Skeleton::~Skeleton()
 {
 
 }
 
-XE::SkeletonHandle XE::Skeleton::GetHandle() const
+Animation::SkeletonHandle Animation::Skeleton::GetHandle() const
 {
 	return _Handle;
 }

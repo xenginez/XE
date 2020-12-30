@@ -1,63 +1,61 @@
 /*!
- * \file	AIElement.h
+ * \file	Element.h
  *
  * \author	ZhengYuanQing
  * \date	2020/11/10
  * \email	zhengyuanqing.95@gmail.com
  *
  */
-#ifndef AIELEMENT_H__7AD331C3_9C5F_41AE_8D41_DE75C3114690
-#define AIELEMENT_H__7AD331C3_9C5F_41AE_8D41_DE75C3114690
+#ifndef ELEMENT_H__7AD331C3_9C5F_41AE_8D41_DE75C3114690
+#define ELEMENT_H__7AD331C3_9C5F_41AE_8D41_DE75C3114690
 
-#include "Utils/Asset.h"
+#include "ElementPort.h"
 
-#include "AIElementPort.h"
+BEG_AI_NAMESPACE
 
-BEG_XE_NAMESPACE
-
-class XE_API AIElement : public XE::Object
+class AI_API Element : public XE::Object
 {
-	OBJECT( AIElement, Object )
+	OBJECT( Element, Object )
 
 	friend class Blueprint;
 
 public:
-	AIElement();
+	Element();
 
-	~AIElement() override;
+	~Element() override;
 
 public:
-	XE::AIElementType GetType() const;
+	AI::AIElementType GetType() const;
 
 	BlueprintPtr GetBlueprint() const;
 
-	XE::AIElementHandle GetHandle() const;
+	AI::ElementHandle GetHandle() const;
 
 public:
 	const XE::String & GetName() const;
 
 	void SetName( const XE::String & val );
 
-	const XE::Array< XE::AISlot > & GetSlots() const;
+	const XE::Array< AI::AISlot > & GetSlots() const;
 
-	void SetSlots( const XE::Array< XE::AISlot > & val );
+	void SetSlots( const XE::Array< AI::AISlot > & val );
 
 protected:
-	void SetType( XE::AIElementType val );
+	void SetType( AI::AIElementType val );
 
 private:
 	void SetBlueprint( BlueprintPtr val );
 
-	void SetHandle( XE::AIElementHandle val );
+	void SetHandle( AI::ElementHandle val );
 
 protected:
-	const XE::AIInputPortPtr & GetInputPort() const;
+	const AI::InputPortPtr & GetInputPort() const;
 
-	void SetInputPort( const XE::AIInputPortPtr & val );
+	void SetInputPort( const AI::InputPortPtr & val );
 
-	const XE::AIOutputPortPtr & GetOutputPort() const;
+	const AI::OutputPortPtr & GetOutputPort() const;
 
-	void SetOutputPort( const XE::AIOutputPortPtr & val );
+	void SetOutputPort( const AI::OutputPortPtr & val );
 
 public:
 	void Startup();
@@ -75,18 +73,18 @@ protected:
 
 private:
 	XE::String _Name;
-	XE::AIElementType _Type;
-	XE::AIElementHandle _Handle;
-	XE::AIInputPortPtr _InputPort;
-	XE::AIOutputPortPtr _OutputPort;
-	XE::Array< XE::AISlot > _Slots;
+	AI::AIElementType _Type;
+	AI::ElementHandle _Handle;
+	AI::InputPortPtr _InputPort;
+	AI::OutputPortPtr _OutputPort;
+	XE::Array< AI::AISlot > _Slots;
 
-	XE::BlueprintWPtr _Blueprint;
+	AI::BlueprintWPtr _Blueprint;
 };
 
-class XE_API DataElement : public XE::AIElement
+class AI_API DataElement : public AI::Element
 {
-	OBJECT( DataElement, AIElement )
+	OBJECT( DataElement, Element )
 
 public:
 	DataElement();
@@ -97,9 +95,9 @@ protected:
 	void OnStartup() override;
 };
 
-class XE_API CalcElement : public XE::AIElement
+class AI_API CalcElement : public AI::Element
 {
-	OBJECT( CalcElement, AIElement )
+	OBJECT( CalcElement, Element )
 
 public:
 	CalcElement();
@@ -108,7 +106,7 @@ public:
 
 };
 
-class XE_API NotCalcElement : public XE::CalcElement
+class AI_API NotCalcElement : public AI::CalcElement
 {
 	OBJECT( NotCalcElement, CalcElement )
 
@@ -122,7 +120,7 @@ protected:
 
 };
 
-class XE_API RevCalcElement : public XE::CalcElement
+class AI_API RevCalcElement : public AI::CalcElement
 {
 	OBJECT( RevCalcElement, CalcElement )
 
@@ -136,7 +134,7 @@ protected:
 
 };
 
-class XE_API IncCalcElement : public XE::CalcElement
+class AI_API IncCalcElement : public AI::CalcElement
 {
 	OBJECT( IncCalcElement, CalcElement )
 
@@ -150,7 +148,7 @@ protected:
 
 };
 
-class XE_API DecCalcElement : public XE::CalcElement
+class AI_API DecCalcElement : public AI::CalcElement
 {
 	OBJECT( DecCalcElement, CalcElement )
 
@@ -164,7 +162,7 @@ protected:
 
 };
 
-class XE_API NegCalcElement : public XE::CalcElement
+class AI_API NegCalcElement : public AI::CalcElement
 {
 	OBJECT( NegCalcElement, CalcElement )
 
@@ -178,7 +176,7 @@ protected:
 
 };
 
-class XE_API AddCalcElement : public XE::CalcElement
+class AI_API AddCalcElement : public AI::CalcElement
 {
 	OBJECT( AddCalcElement, CalcElement )
 
@@ -192,7 +190,7 @@ protected:
 
 };
 
-class XE_API SubCalcElement : public XE::CalcElement
+class AI_API SubCalcElement : public AI::CalcElement
 {
 	OBJECT( SubCalcElement, CalcElement )
 
@@ -206,7 +204,7 @@ protected:
 
 };
 
-class XE_API MulCalcElement : public XE::CalcElement
+class AI_API MulCalcElement : public AI::CalcElement
 {
 	OBJECT( MulCalcElement, CalcElement )
 
@@ -220,7 +218,7 @@ protected:
 
 };
 
-class XE_API DivCalcElement : public XE::CalcElement
+class AI_API DivCalcElement : public AI::CalcElement
 {
 	OBJECT( DivCalcElement, CalcElement )
 
@@ -234,7 +232,7 @@ protected:
 
 };
 
-class XE_API ModCalcElement : public XE::CalcElement
+class AI_API ModCalcElement : public AI::CalcElement
 {
 	OBJECT( AddCalcElement, CalcElement )
 
@@ -248,7 +246,7 @@ protected:
 
 };
 
-class XE_API XorCalcElement : public XE::CalcElement
+class AI_API XorCalcElement : public AI::CalcElement
 {
 	OBJECT( AddCalcElement, CalcElement )
 
@@ -262,7 +260,7 @@ protected:
 
 };
 
-class XE_API AndCalcElement : public XE::CalcElement
+class AI_API AndCalcElement : public AI::CalcElement
 {
 	OBJECT( AndCalcElement, CalcElement )
 
@@ -276,7 +274,7 @@ protected:
 
 };
 
-class XE_API OrCalcElement : public XE::CalcElement
+class AI_API OrCalcElement : public AI::CalcElement
 {
 	OBJECT( OrCalcElement, CalcElement )
 
@@ -290,7 +288,7 @@ protected:
 
 };
 
-class XE_API GreaterCalcElement : public XE::CalcElement
+class AI_API GreaterCalcElement : public AI::CalcElement
 {
 	OBJECT( GreaterCalcElement, CalcElement )
 
@@ -304,7 +302,7 @@ protected:
 
 };
 
-class XE_API LessCalcElement : public XE::CalcElement
+class AI_API LessCalcElement : public AI::CalcElement
 {
 	OBJECT( LessCalcElement, CalcElement )
 
@@ -318,7 +316,7 @@ protected:
 
 };
 
-class XE_API GreaterEqualCalcElement : public XE::CalcElement
+class AI_API GreaterEqualCalcElement : public AI::CalcElement
 {
 	OBJECT( GreaterEqualCalcElement, CalcElement )
 
@@ -332,7 +330,7 @@ protected:
 
 };
 
-class XE_API LessEqualCalcElement : public XE::CalcElement
+class AI_API LessEqualCalcElement : public AI::CalcElement
 {
 	OBJECT( LessEqualCalcElement, CalcElement )
 
@@ -346,7 +344,7 @@ protected:
 
 };
 
-class XE_API EqualCalcElement : public XE::CalcElement
+class AI_API EqualCalcElement : public AI::CalcElement
 {
 	OBJECT( EqualCalcElement, CalcElement )
 
@@ -360,7 +358,7 @@ protected:
 
 };
 
-class XE_API NotEqualCalcElement : public XE::CalcElement
+class AI_API NotEqualCalcElement : public AI::CalcElement
 {
 	OBJECT( NotEqualCalcElement, CalcElement )
 
@@ -374,9 +372,9 @@ protected:
 
 };
 
-class XE_API LogicElement : public XE::AIElement
+class AI_API LogicElement : public AI::Element
 {
-	OBJECT( LogicElement, AIElement )
+	OBJECT( LogicElement, Element )
 
 public:
 	LogicElement();
@@ -385,7 +383,7 @@ public:
 
 };
 
-class XE_API IfLogicElement : public XE::LogicElement
+class AI_API IfLogicElement : public AI::LogicElement
 {
 	OBJECT( IfLogicElement, LogicElement )
 
@@ -398,11 +396,11 @@ protected:
 	void OnExecute() override;
 
 private:
-	XE::AIOutput _IfOutput;
-	XE::AIOutput _ElseOutput;
+	AI::AIOutput _IfOutput;
+	AI::AIOutput _ElseOutput;
 };
 
-class XE_API ForLogicElement : public XE::LogicElement
+class AI_API ForLogicElement : public AI::LogicElement
 {
 	OBJECT( ForLogicElement, LogicElement )
 
@@ -415,11 +413,11 @@ protected:
 	void OnExecute() override;
 
 private:
-	XE::AIOutput _LoopOutput;
-	XE::AIOutput _CompletedOutput;
+	AI::AIOutput _LoopOutput;
+	AI::AIOutput _CompletedOutput;
 };
 
-class XE_API SwitchLogicElement : public XE::LogicElement
+class AI_API SwitchLogicElement : public AI::LogicElement
 {
 	OBJECT( SwitchLogicElement, LogicElement )
 
@@ -432,20 +430,20 @@ protected:
 	void OnExecute() override;
 
 private:
-	XE::AIOutput _CaseOutput0;
-	XE::AIOutput _CaseOutput1;
-	XE::AIOutput _CaseOutput2;
-	XE::AIOutput _CaseOutput3;
-	XE::AIOutput _CaseOutput4;
-	XE::AIOutput _CaseOutput5;
-	XE::AIOutput _CaseOutput6;
-	XE::AIOutput _CaseOutput7;
-	XE::AIOutput _CaseOutput8;
-	XE::AIOutput _CaseOutput9;
-	XE::AIOutput _DefaultOutput;
+	AI::AIOutput _CaseOutput0;
+	AI::AIOutput _CaseOutput1;
+	AI::AIOutput _CaseOutput2;
+	AI::AIOutput _CaseOutput3;
+	AI::AIOutput _CaseOutput4;
+	AI::AIOutput _CaseOutput5;
+	AI::AIOutput _CaseOutput6;
+	AI::AIOutput _CaseOutput7;
+	AI::AIOutput _CaseOutput8;
+	AI::AIOutput _CaseOutput9;
+	AI::AIOutput _DefaultOutput;
 };
 
-class XE_API SequenceLogicElement : public XE::LogicElement
+class AI_API SequenceLogicElement : public AI::LogicElement
 {
 	OBJECT( SequenceLogicElement, LogicElement )
 
@@ -458,21 +456,21 @@ protected:
 	void OnExecute() override;
 
 private:
-	XE::AIOutput _Output0;
-	XE::AIOutput _Output1;
-	XE::AIOutput _Output2;
-	XE::AIOutput _Output3;
-	XE::AIOutput _Output4;
-	XE::AIOutput _Output5;
-	XE::AIOutput _Output6;
-	XE::AIOutput _Output7;
-	XE::AIOutput _Output8;
-	XE::AIOutput _Output9;
+	AI::AIOutput _Output0;
+	AI::AIOutput _Output1;
+	AI::AIOutput _Output2;
+	AI::AIOutput _Output3;
+	AI::AIOutput _Output4;
+	AI::AIOutput _Output5;
+	AI::AIOutput _Output6;
+	AI::AIOutput _Output7;
+	AI::AIOutput _Output8;
+	AI::AIOutput _Output9;
 };
 
-class XE_API EventElement : public XE::AIElement
+class AI_API EventElement : public AI::Element
 {
-	OBJECT( EventElement, AIElement )
+	OBJECT( EventElement, Element )
 
 public:
 	EventElement();
@@ -488,13 +486,13 @@ protected:
 	void OnExecute() override;
 
 private:
-	XE::AIOutput _Output;
+	AI::AIOutput _Output;
 	XE::EventHandle _ListenerEvent;
 };
 
-class XE_API ActionElement : public XE::AIElement
+class AI_API ActionElement : public AI::Element
 {
-	OBJECT( ActionElement, AIElement )
+	OBJECT( ActionElement, Element )
 
 public:
 	ActionElement();
@@ -512,13 +510,13 @@ protected:
 	void OnExecute() override;
 
 private:
-	XE::AIOutput _Output;
+	AI::AIOutput _Output;
 	XE::String _MethodFullName;
 };
 
-class XE_API VariableElement : public XE::AIElement
+class AI_API VariableElement : public AI::Element
 {
-	OBJECT( VariableElement, AIElement )
+	OBJECT( VariableElement, Element )
 
 public:
 	VariableElement();
@@ -526,7 +524,7 @@ public:
 	~VariableElement() override;
 };
 
-class XE_API SetVariableElement : public XE::VariableElement
+class AI_API SetVariableElement : public AI::VariableElement
 {
 	OBJECT( SetVariableElement, VariableElement )
 
@@ -536,9 +534,9 @@ public:
 	~SetVariableElement() override;
 
 public:
-	const XE::AIOutput & GetOutput() const;
+	const AI::AIOutput & GetOutput() const;
 
-	void SetOutput( const XE::AIOutput & val );
+	void SetOutput( const AI::AIOutput & val );
 
 	const XE::String & GetPropertyFullName() const;
 
@@ -548,11 +546,11 @@ protected:
 	void OnExecute() override;
 
 private:
-	XE::AIOutput _Output;
+	AI::AIOutput _Output;
 	XE::String _PropertyFullName;
 };
 
-class XE_API GetVariableElement : public XE::VariableElement
+class AI_API GetVariableElement : public AI::VariableElement
 {
 	OBJECT( GetVariableElement, VariableElement )
 
@@ -573,7 +571,7 @@ private:
 	XE::String _PropertyFullName;
 };
 
-class XE_API SetBlackboardKeyElement : public XE::VariableElement
+class AI_API SetBlackboardKeyElement : public AI::VariableElement
 {
 	OBJECT( SetBlackboardKeyElement, VariableElement )
 
@@ -583,23 +581,23 @@ public:
 	~SetBlackboardKeyElement() override;
 
 public:
-	const XE::AIOutput & GetOutput() const;
+	const AI::AIOutput & GetOutput() const;
 
-	void SetOutput( const XE::AIOutput & val );
+	void SetOutput( const AI::AIOutput & val );
 
-	const XE::BlackboardKey & GetBlackboardKey() const;
+	const AI::BlackboardKey & GetBlackboardKey() const;
 
-	void SetBlackboardKey( const XE::BlackboardKey & val );
+	void SetBlackboardKey( const AI::BlackboardKey & val );
 
 protected:
 	void OnExecute() override;
 
 private:
-	XE::AIOutput _Output;
-	XE::BlackboardKey _BlackboardKey;
+	AI::AIOutput _Output;
+	AI::BlackboardKey _BlackboardKey;
 };
 
-class XE_API GetBlackboardKeyElement : public XE::VariableElement
+class AI_API GetBlackboardKeyElement : public AI::VariableElement
 {
 	OBJECT( GetBlackboardKeyElement, VariableElement )
 
@@ -609,17 +607,17 @@ public:
 	~GetBlackboardKeyElement() override;
 
 public:
-	const XE::BlackboardKey & GetBlackboardKey() const;
+	const AI::BlackboardKey & GetBlackboardKey() const;
 
-	void SetBlackboardKey( const XE::BlackboardKey & val );
+	void SetBlackboardKey( const AI::BlackboardKey & val );
 
 protected:
 	void OnExecute() override;
 
 private:
-	XE::BlackboardKey _BlackboardKey;
+	AI::BlackboardKey _BlackboardKey;
 };
 
-END_XE_NAMESPACE
+END_AI_NAMESPACE
 
-#endif // AIELEMENT_H__7AD331C3_9C5F_41AE_8D41_DE75C3114690
+#endif // ELEMENT_H__7AD331C3_9C5F_41AE_8D41_DE75C3114690

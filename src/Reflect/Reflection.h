@@ -11,6 +11,7 @@
 
 #include "Type.h"
 
+#include "IMetaModule.h"
 #include "CXXMetaEnum.hpp"
 #include "CXXMetaClass.hpp"
 
@@ -33,7 +34,7 @@ public:
 	{
 		static XE::SharedPtr<CXXMetaEnum<T>> Get()
 		{
-			return SP_CAST<CXXMetaEnum<T>>( EnumID<T>::Get() );
+			return SP_CAST<CXXMetaEnum<T>>( ::XE_EnumID< T >::Get() );
 		}
 	};
 
@@ -41,7 +42,7 @@ public:
 	{
 		static XE::SharedPtr<CXXMetaClass<T>> Get()
 		{
-			return SP_CAST<CXXMetaClass<T>>( ClassID<T>::Get() );
+			return SP_CAST<CXXMetaClass<T>>( ::XE_ClassID< T >::Get() );
 		}
 	};
 
@@ -60,6 +61,8 @@ public:
 
 	static void VisitClass( const std::function<void( IMetaClassPtr )> & val );
 
+	static void VisitModule( const std::function<void( IMetaModulePtr )> & val );
+
 	static void VisitMethod( const  std::function<void( IMetaMethodPtr )> & val );
 
 	static void VisitProperty( const std::function<void( IMetaPropertyPtr )> & val );
@@ -73,7 +76,9 @@ public:
 
 	static IMetaEnumPtr FindEnum( const String& FullName );
 
-	static IMetaClassPtr FindClass( const String& FullName );
+	static IMetaClassPtr FindClass( const String & FullName );
+
+	static IMetaModulePtr FindModule( const String & FullName );
 
 	static IMetaMethodPtr FindMethod( const String & FullName );
 
@@ -119,7 +124,7 @@ public: \
     typedef _SUPER Super; \
 	static XE::IMetaClassPtr GetMetaClassStatic() \
 	{ \
-		static auto p = XE::MakeShared< XE::CXXMetaClass<_CLASS> >( #_CLASS, XE::ClassID<_SUPER>::Get(), nullptr ); \
+		static auto p = XE::MakeShared< XE::CXXMetaClass<_CLASS> >( #_CLASS, ::XE_ClassID<_SUPER>::Get(), nullptr, GetModule() ); \
 		return p; \
 	} \
 	virtual XE::IMetaClassPtr GetMetaClass() const \
@@ -132,7 +137,7 @@ private:
 public: \
 	static XE::IMetaClassPtr GetMetaClassStatic() \
 	{ \
-		static auto p = XE::MakeShared< XE::CXXMetaClass<_CLASS> >( #_CLASS, nullptr, nullptr ); \
+		static auto p = XE::MakeShared< XE::CXXMetaClass<_CLASS> >( #_CLASS, nullptr, nullptr, GetModule() ); \
 		return p; \
 	} \
 	virtual XE::IMetaClassPtr GetMetaClass() const \

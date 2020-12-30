@@ -9,16 +9,16 @@
 #ifndef __BEHAVIORTREE_H__26CB8C79_ABF7_4B28_ADE3_283D2FF378F8
 #define __BEHAVIORTREE_H__26CB8C79_ABF7_4B28_ADE3_283D2FF378F8
 
-#include "AIModule.h"
+#include "Module.h"
 
-BEG_XE_NAMESPACE
+BEG_AI_NAMESPACE
 
 class CompositeNode;
 class ConditionNode;
 
-class XE_API BehaviorTree : public XE::AIModule
+class AI_API BehaviorTree : public AI::Module
 {
-	OBJECT( BehaviorTree, AIModule )
+	OBJECT( BehaviorTree, Module )
 
 	friend class CompositeNode;
 	friend class ConditionNode;
@@ -44,30 +44,30 @@ public:
 	bool IsStopped() const override;
 
 public:
-	XE::AINodePtr GetNode( XE::AINodeHandle val ) const;
+	AI::NodePtr GetNode( AI::NodeHandle val ) const;
 
 public:
-	XE::AINodeHandle GetRoot() const;
+	AI::NodeHandle GetRoot() const;
 
-	void SetRoot( XE::AINodeHandle val );
+	void SetRoot( AI::NodeHandle val );
 
-	const XE::Array< XE::AINodePtr > & GetNodes() const;
+	const XE::Array< AI::NodePtr > & GetNodes() const;
 
-	void SetNodes( const XE::Array< XE::AINodePtr > & val );
+	void SetNodes( const XE::Array< AI::NodePtr > & val );
 
 private:
-	void PushCompositeNode( XE::CompositeNode * val );
+	void PushCompositeNode( AI::CompositeNode * val );
 
-	void PushConditionNode( XE::ConditionNode * val );
+	void PushConditionNode( AI::ConditionNode * val );
 
 public:
-	XE::AINodeHandle _Root;
-	XE::Array< XE::AINodePtr > _Nodes;
+	AI::NodeHandle _Root;
+	XE::Array< AI::NodePtr > _Nodes;
 
-	XE::Deque< XE::AINode * > _RunningNodes;
-	XE::Deque< XE::AINodeHandle > _CompositeNodes;
+	XE::Deque< AI::Node * > _RunningNodes;
+	XE::Deque< AI::NodeHandle > _CompositeNodes;
 };
 
-END_XE_NAMESPACE
+END_AI_NAMESPACE
 
 #endif // __BEHAVIORTREE_H__26CB8C79_ABF7_4B28_ADE3_283D2FF378F8

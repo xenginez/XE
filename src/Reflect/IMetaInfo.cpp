@@ -1,17 +1,21 @@
 #include "IMetaInfo.h"
 
+#include "IMetaModule.h"
 
-
-XE::IMetaInfo::IMetaInfo( const String & Name, MetaType Type, IMetaInfoPtr Owner, const String & ModuleName /*= "XE" */ )
-	:_Type( Type ), _Name( Name ), _FullName( Name ), _Owner( Owner ), _ModuleName( ModuleName )
+XE::IMetaInfo::IMetaInfo( const String & Name, MetaType Type, IMetaInfoPtr Owner, IMetaModulePtr Module )
+	:_Type( Type ), _Name( Name ), _FullName( Name ), _Owner( Owner ), _Module( Module )
 {
-	if( auto owner = _Owner.lock() )
+	if( Owner )
 	{
-		_FullName = owner->GetFullName() + "." + _Name;
+		_FullName = Owner->GetFullName() + "." + _Name;
+	}
+	else if( Module )
+	{
+		_FullName = Module->GetFullName() + "." + _Name;
 	}
 	else
 	{
-		_FullName = ( _ModuleName != "" ? _ModuleName + "." : _ModuleName ) + _Name;
+		_FullName = _Name;
 	}
 }
 
@@ -40,7 +44,7 @@ XE::IMetaInfoPtr XE::IMetaInfo::GetOwner() const
 	return _Owner.lock();
 }
 
-const XE::String & XE::IMetaInfo::GetModuleName() const
+XE::IMetaModulePtr XE::IMetaInfo::GetModule() const
 {
-	return _ModuleName;
+	return _Module.lock();
 }

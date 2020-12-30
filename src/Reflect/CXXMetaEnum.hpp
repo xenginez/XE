@@ -18,8 +18,8 @@ BEG_XE_NAMESPACE
 template< typename T > class CXXMetaEnum : public IMetaEnum
 {
 public:
-	CXXMetaEnum( const String& Name, IMetaInfoPtr Owner )
-		:IMetaEnum( Name, sizeof( T ), Owner )
+	CXXMetaEnum( const String& Name, IMetaInfoPtr Owner, IMetaModulePtr Module )
+		:IMetaEnum( Name, sizeof( T ), Owner, Module )
 	{
 
 	}
@@ -33,22 +33,12 @@ public:
 
 END_XE_NAMESPACE
 
-#define DECL_META_ENUM(_DLL_EXPORT, ENUM) \
-template<> struct _DLL_EXPORT XE::EnumID<ENUM> \
+#define DECL_META_ENUM(_DLL_EXPORT, _ENUM) \
+template<> struct _DLL_EXPORT ::XE_EnumID< _ENUM > \
 { \
-	static XE::IMetaEnumPtr Get( const ENUM * val = nullptr ) \
+	static XE::IMetaEnumPtr Get( const _ENUM * val = nullptr ) \
 	{ \
-		static auto p = XE::MakeShared< XE::CXXMetaEnum<ENUM> >( #ENUM, nullptr ); \
-		return p; \
-	} \
-}
-
-#define DECL_META_ENUM_P(ENUM) \
-template<> struct XE::EnumID<ENUM> \
-{ \
-	static XE::IMetaEnumPtr Get( const ENUM * val = nullptr ) \
-	{ \
-		static auto p = XE::MakeShared< XE::CXXMetaEnum<ENUM> >( #ENUM, nullptr ); \
+		static auto p = XE::MakeShared< XE::CXXMetaEnum< _ENUM > >( #_ENUM, nullptr, GetModule() ); \
 		return p; \
 	} \
 }

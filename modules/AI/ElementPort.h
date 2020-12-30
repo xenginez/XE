@@ -1,57 +1,57 @@
 /*!
- * \file	AIElementPort.h
+ * \file	ElementPort.h
  *
  * \author	ZhengYuanQing
  * \date	2020/11/15
  * \email	zhengyuanqing.95@gmail.com
  *
  */
-#ifndef AIELEMENTPORT_H__F61060C8_B876_4765_BA29_CC7D0AFB0400
-#define AIELEMENTPORT_H__F61060C8_B876_4765_BA29_CC7D0AFB0400
+#ifndef ELEMENTPORT_H__F61060C8_B876_4765_BA29_CC7D0AFB0400
+#define ELEMENTPORT_H__F61060C8_B876_4765_BA29_CC7D0AFB0400
 
 #include "BlackboardKey.h"
 
-BEG_XE_NAMESPACE
+BEG_AI_NAMESPACE
 
-class XE_API AISlot
+class AI_API AISlot
 {
 public:
 	XE::String InputPortName;
 	XE::String OutputPortName;
-	XE::AIElementHandle OutputHandle;
+	AI::ElementHandle OutputHandle;
 };
-DECL_META_CLASS( XE_API, AISlot );
+DECL_META_CLASS( AI_API, AISlot );
 
-class XE_API AIOutput
+class AI_API AIOutput
 {
 public:
-	XE::AIElementHandle Handle;
+	AI::ElementHandle Handle;
 };
-DECL_META_CLASS( XE_API, AIOutput );
+DECL_META_CLASS( AI_API, AIOutput );
 
-class XE_API AIInputPort : public XE::Object
+class AI_API InputPort : public XE::Object
 {
-	OBJECT( AIInputPort, Object )
+	OBJECT( InputPort, Object )
 
 public:
-	AIInputPort() = default;
+	InputPort() = default;
 
-	~AIInputPort() override = default;
+	~InputPort() override = default;
 };
 
-class XE_API AIOutputPort : public XE::Object
+class AI_API OutputPort : public XE::Object
 {
-	OBJECT( AIOutputPort, Object )
+	OBJECT( OutputPort, Object )
 
 public:
-	AIOutputPort() = default;
+	OutputPort() = default;
 
-	~AIOutputPort() override = default;
+	~OutputPort() override = default;
 };
 
-class XE_API VariantInputPort : public XE::AIInputPort
+class AI_API VariantInputPort : public AI::InputPort
 {
-	OBJECT( VariantInputPort, AIInputPort )
+	OBJECT( VariantInputPort, InputPort )
 
 public:
 	VariantInputPort() = default;
@@ -62,9 +62,9 @@ public:
 	XE::Variant Value;
 };
 
-class XE_API VariantOutputPort : public XE::AIOutputPort
+class AI_API VariantOutputPort : public AI::OutputPort
 {
-	OBJECT( VariantOutputPort, AIOutputPort )
+	OBJECT( VariantOutputPort, OutputPort )
 
 public:
 	VariantOutputPort() = default;
@@ -75,9 +75,9 @@ public:
 	XE::Variant Result;
 };
 
-class XE_API VariantPairInputPort : public XE::AIInputPort
+class AI_API VariantPairInputPort : public AI::InputPort
 {
-	OBJECT( VariantPairInputPort, AIInputPort )
+	OBJECT( VariantPairInputPort, InputPort )
 
 public:
 	VariantPairInputPort() = default;
@@ -89,9 +89,9 @@ public:
 	XE::Variant Second;
 };
 
-class XE_API VariantPairOutputPort : public XE::AIOutputPort
+class AI_API VariantPairOutputPort : public AI::OutputPort
 {
-	OBJECT( VariantPairOutputPort, AIOutputPort )
+	OBJECT( VariantPairOutputPort, OutputPort )
 
 public:
 	VariantPairOutputPort() = default;
@@ -103,9 +103,9 @@ public:
 	XE::Variant Second;
 };
 
-class XE_API BoolInputPort : public XE::AIInputPort
+class AI_API BoolInputPort : public AI::InputPort
 {
-	OBJECT( BoolInputPort, AIInputPort )
+	OBJECT( BoolInputPort, InputPort )
 
 public:
 	BoolInputPort() = default;
@@ -116,9 +116,9 @@ public:
 	bool Value;
 };
 
-class XE_API BoolOutputPort : public XE::AIOutputPort
+class AI_API BoolOutputPort : public AI::OutputPort
 {
-	OBJECT( BoolOutputPort, AIOutputPort )
+	OBJECT( BoolOutputPort, OutputPort )
 
 public:
 	BoolOutputPort() = default;
@@ -129,9 +129,9 @@ public:
 	bool Result;
 };
 
-class XE_API IntegerInputPort : public XE::AIInputPort
+class AI_API IntegerInputPort : public AI::InputPort
 {
-	OBJECT( IntegerInputPort, AIInputPort )
+	OBJECT( IntegerInputPort, InputPort )
 
 public:
 	IntegerInputPort() = default;
@@ -142,9 +142,9 @@ public:
 	XE::int64 Value;
 };
 
-class XE_API IntegerOutputPort : public XE::AIOutputPort
+class AI_API IntegerOutputPort : public AI::OutputPort
 {
-	OBJECT( IntegerOutputPort, AIOutputPort )
+	OBJECT( IntegerOutputPort, OutputPort )
 
 public:
 	IntegerOutputPort() = default;
@@ -155,9 +155,9 @@ public:
 	XE::int64 Result;
 };
 
-class XE_API IntegerPairInputPort : public XE::AIInputPort
+class AI_API IntegerPairInputPort : public AI::InputPort
 {
-	OBJECT( IntegerInputPort, AIInputPort )
+	OBJECT( IntegerInputPort, InputPort )
 
 public:
 	IntegerPairInputPort() = default;
@@ -169,9 +169,9 @@ public:
 	XE::int64 Second;
 };
 
-class XE_API IntegerPairOutputPort : public XE::AIOutputPort
+class AI_API IntegerPairOutputPort : public AI::OutputPort
 {
-	OBJECT( IntegerPairOutputPort, AIOutputPort )
+	OBJECT( IntegerPairOutputPort, OutputPort )
 
 public:
 	IntegerPairOutputPort() = default;
@@ -183,12 +183,12 @@ public:
 	XE::int64 Second;
 };
 
-class XE_API InvokeInputPort : public XE::AIInputPort
+class AI_API InvokeInputPort : public AI::InputPort
 {
 	template< typename InvokeInputPort > friend struct XE::MetaDataCollector;
 
 public:
-	typedef AIInputPort Super;
+	typedef InputPort Super;
 	
 	static XE::IMetaClassPtr GetMetaClassStatic();
 
@@ -218,9 +218,9 @@ private:
 	XE::IMetaClassPtr _Meta;
 };
 
-class XE_API SetVariableInputPort : public XE::AIInputPort
+class AI_API SetVariableInputPort : public AI::InputPort
 {
-	OBJECT( SetVariableInputPort, AIInputPort )
+	OBJECT( SetVariableInputPort, InputPort )
 
 public:
 	SetVariableInputPort() = default;
@@ -232,9 +232,9 @@ public:
 	XE::Variant Value;
 };
 
-class XE_API GetVariableInputPort : public XE::AIInputPort
+class AI_API GetVariableInputPort : public AI::InputPort
 {
-	OBJECT( GetVariableInputPort, AIInputPort )
+	OBJECT( GetVariableInputPort, InputPort )
 
 public:
 	GetVariableInputPort() = default;
@@ -245,6 +245,6 @@ public:
 	XE::Variant This;
 };
 
-END_XE_NAMESPACE
+END_AI_NAMESPACE
 
-#endif // AIELEMENTPORT_H__F61060C8_B876_4765_BA29_CC7D0AFB0400
+#endif // ELEMENTPORT_H__F61060C8_B876_4765_BA29_CC7D0AFB0400

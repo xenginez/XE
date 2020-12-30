@@ -183,7 +183,7 @@ public:
 		}
 		else
 		{
-			_Type = TypeID<type>::Get( val );
+			_Type = ::XE_TypeID< type >::Get( val );
 			_Data.p = (void * )val;
 			_Flag = Variant::Flag::POINTER;
 		}
@@ -409,13 +409,13 @@ template< typename T > struct VariantCreate
 	{
 		if constexpr( std::is_enum_v<T> )
 		{
-			var->_Type = TypeID<T>::Get();
+			var->_Type = ::XE_TypeID< T >::Get();
 			var->_Data.i64 = ( XE::int64 )val;
 			var->_Flag = Variant::Flag::ENUM;
 		}
 		else if constexpr( std::is_shared_ptr_v<T> )
 		{
-			var->_Type = TypeID<T>::Get( &val );
+			var->_Type = ::XE_TypeID< T >::Get( &val );
 			if( val.get() )
 			{
 				var->_Data.sp = Variant::RegisterSharedPtr( val );
@@ -424,7 +424,7 @@ template< typename T > struct VariantCreate
 		}
 		else
 		{
-			var->_Type = TypeID<T>::Get( &val );
+			var->_Type = ::XE_TypeID< T >::Get( &val );
 			var->_Data.pp = new Variant::PrivatePtrTpl<T>( val );
 			var->_Flag = Variant::Flag::PRIVATEPTR;
 		}
@@ -445,7 +445,7 @@ template< typename T > struct VariantCreate< XE::BasicMemoryView< T > >
 {
 	static void Create( Variant * var, const XE::BasicMemoryView< T > & val )
 	{
-		var->_Type = TypeID<XE::MemoryView>::Get( nullptr );
+		var->_Type = ::XE_TypeID< XE::MemoryView >::Get( nullptr );
 		var->_Data.pp = new Variant::PrivatePtrTpl<XE::MemoryView>( XE::MemoryView( ( const char * )( val.data() ), val.size() * sizeof( T ) ) );
 		var->_Flag = Variant::Flag::PRIVATEPTR;
 	}
@@ -470,7 +470,7 @@ template< typename T > struct VariantCreate< XE::List< T > >
 			list.push_back( it );
 		}
 
-		var->_Type = TypeID<VariantList>::Get();
+		var->_Type = ::XE_TypeID< VariantList >::Get();
 		var->_Data = new Variant::PrivatePtrTpl<VariantList>( list );
 		var->_Flag = Variant::Flag::CONTAINER;
 	}
@@ -487,7 +487,7 @@ template< typename T > struct VariantCreate< XE::Deque< T > >
 			deque.push_back( it );
 		}
 
-		var->_Type = TypeID<VariantDeque>::Get();
+		var->_Type = ::XE_TypeID< VariantDeque >::Get();
 		var->_Data = new Variant::PrivatePtrTpl<VariantDeque>( deque );
 		var->_Flag = Variant::Flag::CONTAINER;
 	}
@@ -504,7 +504,7 @@ template< typename T > struct VariantCreate< XE::Stack< T > >
 			stack.push( it );
 		}
 
-		var->_Type = TypeID<VariantStack>::Get();
+		var->_Type = ::XE_TypeID< VariantStack >::Get();
 		var->_Data = new Variant::PrivatePtrTpl<VariantStack>( stack );
 		var->_Flag = Variant::Flag::CONTAINER;
 	}
@@ -521,7 +521,7 @@ template< typename T > struct VariantCreate< XE::Queue< T > >
 			queue.push( it );
 		}
 
-		var->_Type = TypeID<VariantQueue>::Get();
+		var->_Type = ::XE_TypeID< VariantQueue >::Get();
 		var->_Data = new Variant::PrivatePtrTpl<VariantQueue>( queue );
 		var->_Flag = Variant::Flag::CONTAINER;
 	}
@@ -538,7 +538,7 @@ template< typename T > struct VariantCreate< XE::Array< T > >
 			array.push_back( it );
 		}
 
-		var->_Type = TypeID<VariantArray>::Get();
+		var->_Type = ::XE_TypeID< VariantArray >::Get();
 		var->_Data = new Variant::PrivatePtrTpl<VariantArray>( array );
 		var->_Flag = Variant::Flag::CONTAINER;
 	}
@@ -553,7 +553,7 @@ template< typename K, typename V > struct VariantCreate< XE::Pair< K, V > >
 		pair.first = val.first;
 		pair.second = val.second;
 
-		var->_Type = TypeID<VariantPair>::Get();
+		var->_Type = ::XE_TypeID< VariantPair >::Get();
 		var->_Data = new Variant::PrivatePtrTpl<VariantPair>( pair );
 		var->_Flag = Variant::Flag::CONTAINER;
 	}
@@ -570,7 +570,7 @@ template< typename T > struct VariantCreate< XE::Set< T > >
 			set.insert( it );
 		}
 
-		var->_Type = TypeID<VariantSet>::Get();
+		var->_Type = ::XE_TypeID< VariantSet >::Get();
 		var->_Data = new Variant::PrivatePtrTpl<VariantSet>( set );
 		var->_Flag = Variant::Flag::CONTAINER;
 	}
@@ -592,7 +592,7 @@ template< typename K, typename V > struct VariantCreate< XE::Map< K, V > >
 			map.insert( pair );
 		}
 
-		var->_Type = TypeID<VariantMap>::Get();
+		var->_Type = ::XE_TypeID< VariantMap >::Get();
 		var->_Data = new Variant::PrivatePtrTpl<VariantMap>( map );
 		var->_Flag = Variant::Flag::CONTAINER;
 	}
@@ -609,7 +609,7 @@ template< typename T > struct VariantCreate< XE::MultiSet< T > >
 			multiset.insert( it );
 		}
 
-		var->_Type = TypeID<VariantMultiSet>::Get();
+		var->_Type = ::XE_TypeID< VariantMultiSet >::Get();
 		var->_Data = new Variant::PrivatePtrTpl<VariantMultiSet>( multiset );
 		var->_Flag = Variant::Flag::CONTAINER;
 	}
@@ -631,7 +631,7 @@ template< typename K, typename V > struct VariantCreate< XE::MultiMap< K, V > >
 			multimap.insert( pair );
 		}
 
-		var->_Type = TypeID<VariantMultiMap>::Get();
+		var->_Type = ::XE_TypeID< VariantMultiMap >::Get();
 		var->_Data = new Variant::PrivatePtrTpl<VariantMultiMap>( multimap );
 		var->_Flag = Variant::Flag::CONTAINER;
 	}
@@ -648,7 +648,7 @@ template< typename T > struct VariantCreate< XE::UnorderedSet< T > >
 			set.insert( it );
 		}
 
-		var->_Type = TypeID<VariantUnorderedSet>::Get();
+		var->_Type = ::XE_TypeID< VariantUnorderedSet >::Get();
 		var->_Data = new Variant::PrivatePtrTpl<VariantUnorderedSet>( set );
 		var->_Flag = Variant::Flag::CONTAINER;
 	}
@@ -670,7 +670,7 @@ template< typename K, typename V > struct VariantCreate< XE::UnorderedMap< K, V 
 			map.insert( pair );
 		}
 
-		var->_Type = TypeID<VariantUnorderedMap>::Get();
+		var->_Type = ::XE_TypeID< VariantUnorderedMap >::Get();
 		var->_Data = new Variant::PrivatePtrTpl<VariantUnorderedMap>( map );
 		var->_Flag = Variant::Flag::CONTAINER;
 	}
@@ -687,7 +687,7 @@ template< typename T > struct VariantCreate< XE::UnorderedMultiSet< T > >
 			multiset.insert( it );
 		}
 
-		var->_Type = TypeID<VariantUnorderedMultiSet>::Get();
+		var->_Type = ::XE_TypeID< VariantUnorderedMultiSet >::Get();
 		var->_Data = new Variant::PrivatePtrTpl<VariantUnorderedMultiSet>( multiset );
 		var->_Flag = Variant::Flag::CONTAINER;
 	}
@@ -709,7 +709,7 @@ template< typename K, typename V > struct VariantCreate< XE::UnorderedMultiMap< 
 			multimap.insert( pair );
 		}
 
-		var->_Type = TypeID<VariantUnorderedMultiMap>::Get();
+		var->_Type = ::XE_TypeID< VariantUnorderedMultiMap >::Get();
 		var->_Data = new Variant::PrivatePtrTpl<VariantUnorderedMultiMap>( multimap );
 		var->_Flag = Variant::Flag::CONTAINER;
 	}
@@ -722,7 +722,7 @@ template< typename T > struct VariantCast
 	{
 		if constexpr( std::is_enum_v<T> )
 		{
-			if( val->GetFlag() == XE::Variant::Flag::ENUM && TypeID<T>::Get() == val->GetType() )
+			if( val->GetFlag() == XE::Variant::Flag::ENUM && ::XE_TypeID< T >::Get() == val->GetType() )
 			{
 				return (T )( val->_Data.i64 );
 			}
@@ -759,7 +759,7 @@ template< typename T > struct VariantCast<T *>
 	{
 		using type = typename TypeTraits<T>::raw_t;
 
-		if( ( val->IsPointer() || val->IsSharedPtr() || val->IsPrivatePtr() ) && val->IsCanConvert( TypeID< type >::Get() ) )
+		if( ( val->IsPointer() || val->IsSharedPtr() || val->IsPrivatePtr() ) && val->IsCanConvert( ::XE_TypeID< type >::Get() ) )
 		{
 			return (T * )val->ToPointer();
 		}
@@ -782,7 +782,7 @@ template< typename T > struct VariantCast<XE::SharedPtr<T>>
 	{
 		using type = typename TypeTraits<T>::raw_t;
 
-		if( val->IsSharedPtr() && val->IsCanConvert( TypeID< type >::Get() ) )
+		if( val->IsSharedPtr() && val->IsCanConvert( ::XE_TypeID< type >::Get() ) )
 		{
 			return SP_CAST<T>( *( val->_Data.sp ) );
 		}
@@ -797,7 +797,7 @@ template< typename T > struct VariantCast<XE::SharedPtr<T> &>
 	{
 		using type = typename TypeTraits<T>::raw_t;
 
-		if( val->IsSharedPtr() && val->IsCanConvert( TypeID< type >::Get() ) )
+		if( val->IsSharedPtr() && val->IsCanConvert( ::XE_TypeID< type >::Get() ) )
 		{
 			return *( ( XE::SharedPtr<T> * )( val->_Data.sp ) );
 		}
@@ -812,7 +812,7 @@ template< typename T > struct VariantCast<const XE::SharedPtr<T> &>
 	{
 		using type = typename TypeTraits<T>::raw_t;
 
-		if( val->IsSharedPtr() && val->IsCanConvert( TypeID< type >::Get() ) )
+		if( val->IsSharedPtr() && val->IsCanConvert( ::XE_TypeID< type >::Get() ) )
 		{
 			return *( ( XE::SharedPtr<T> * )( val->_Data.sp ) );
 		}

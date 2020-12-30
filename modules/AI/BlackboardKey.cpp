@@ -1,67 +1,67 @@
 #include "BlackboardKey.h"
 
-BEG_META( XE::BlackboardKey )
-type->Property( "Key", &BlackboardKey::GetKey, &BlackboardKey::SetKey );
+BEG_META( AI::BlackboardKey )
+type->Property( "Key", &AI::BlackboardKey::GetKey, &AI::BlackboardKey::SetKey );
 END_META()
 
-XE::BlackboardKey::BlackboardKey()
+AI::BlackboardKey::BlackboardKey()
 {
 
 }
 
-XE::BlackboardKey::BlackboardKey( const XE::BlackboardKey & val )
+AI::BlackboardKey::BlackboardKey( const AI::BlackboardKey & val )
 	:_Key( val._Key )
 {
 
 }
 
-XE::BlackboardKey::BlackboardKey( const XE::String & val )
+AI::BlackboardKey::BlackboardKey( const XE::String & val )
 	: _Key( val )
 {
 
 }
 
-XE::BlackboardKey::~BlackboardKey()
+AI::BlackboardKey::~BlackboardKey()
 {
 
 }
 
-const XE::String & XE::BlackboardKey::GetKey() const
+const XE::String & AI::BlackboardKey::GetKey() const
 {
 	return _Key;
 }
 
-void XE::BlackboardKey::SetKey( const XE::String & val )
+void AI::BlackboardKey::SetKey( const XE::String & val )
 {
 	_Key = val;
 }
 
-bool XE::BlackboardKey::operator<( const XE::BlackboardKey & val ) const
+bool AI::BlackboardKey::operator<( const AI::BlackboardKey & val ) const
 {
 	return _Key < val._Key;
 }
 
-bool XE::BlackboardKey::operator>( const XE::BlackboardKey & val ) const
+bool AI::BlackboardKey::operator>( const AI::BlackboardKey & val ) const
 {
 	return _Key > val._Key;
 }
 
-bool XE::BlackboardKey::operator<=( const XE::BlackboardKey & val ) const
+bool AI::BlackboardKey::operator<=( const AI::BlackboardKey & val ) const
 {
 	return _Key <= val._Key;
 }
 
-bool XE::BlackboardKey::operator>=( const XE::BlackboardKey & val ) const
+bool AI::BlackboardKey::operator>=( const AI::BlackboardKey & val ) const
 {
 	return _Key >= val._Key;
 }
 
-bool XE::BlackboardKey::operator==( const XE::BlackboardKey & val ) const
+bool AI::BlackboardKey::operator==( const AI::BlackboardKey & val ) const
 {
 	return _Key == val._Key;
 }
 
-bool XE::BlackboardKey::operator!=( const XE::BlackboardKey & val ) const
+bool AI::BlackboardKey::operator!=( const AI::BlackboardKey & val ) const
 {
 	return _Key != val._Key;
 }

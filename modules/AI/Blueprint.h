@@ -9,15 +9,15 @@
 #ifndef BLUEPRINT_H__8940906E_DDA9_470B_B409_B962E67B7A58
 #define BLUEPRINT_H__8940906E_DDA9_470B_B409_B962E67B7A58
 
-#include "AIModule.h"
+#include "Module.h"
 
-BEG_XE_NAMESPACE
+BEG_AI_NAMESPACE
 
 class EventElement;
 
-class XE_API Blueprint : public XE::AIModule
+class AI_API Blueprint : public AI::Module
 {
-	OBJECT( Blueprint, AIModule )
+	OBJECT( Blueprint, Module )
 
 public:
 	Blueprint();
@@ -39,27 +39,26 @@ public:
 
 	void AssetLoad() override;
 
-	void ProcessEvent( const EventPtr & val ) override;
+	void ProcessEvent( const XE::EventPtr & val ) override;
 
 public:
-	const XE::Array< XE::AIElementPtr > & GetElements() const;
+	const XE::Array< AI::ElementPtr > & GetElements() const;
 
-	void SetElements( const XE::Array< XE::AIElementPtr > & val );
+	void SetElements( const XE::Array< AI::ElementPtr > & val );
 
-	XE::AIElementPtr GetElement( XE::AIElementHandle val ) const;
+	AI::ElementPtr GetElement( AI::ElementHandle val ) const;
 
-	template< typename T > XE::SharedPtr< T > GetElementT( XE::AIElementHandle val ) const
+	template< typename T > XE::SharedPtr< T > GetElementT( AI::ElementHandle val ) const
 	{
 		return DP_CAST< T >( GetElement( val ) );
 	}
 
 public:
-	XE::Array< XE::AIElementPtr > _Elements;
-
-	XE::Array< XE::EventElement * > _Events;
-	XE::Array< XE::EventElement * > _Updates;
+	XE::Array< AI::ElementPtr > _Elements;
+	XE::Array< AI::EventElement * > _Events;
+	XE::Array< AI::EventElement * > _Updates;
 };
 
-END_XE_NAMESPACE
+END_AI_NAMESPACE
 
 #endif // BLUEPRINT_H__8940906E_DDA9_470B_B409_B962E67B7A58

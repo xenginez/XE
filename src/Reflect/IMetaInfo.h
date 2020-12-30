@@ -16,7 +16,7 @@ BEG_XE_NAMESPACE
 class XE_API IMetaInfo : public std::enable_shared_from_this< IMetaInfo >
 {
 public:
-	IMetaInfo( const String & Name, MetaType Type, IMetaInfoPtr Owner, const String & ModuleName = "XE" );
+	IMetaInfo( const String & Name, MetaType Type, IMetaInfoPtr Owner, IMetaModulePtr Module );
 
 	virtual ~IMetaInfo();
 
@@ -27,17 +27,17 @@ public:
 
 	const String & GetFullName() const;
 
-	const String & GetModuleName() const;
-
 public:
 	IMetaInfoPtr GetOwner() const;
+
+	IMetaModulePtr GetModule() const;
 
 private:
 	MetaType _Type;
 	String _Name;
 	String _FullName;
-	String _ModuleName;
 	IMetaInfoWPtr _Owner;
+	IMetaModuleWPtr _Module;
 };
 
 END_XE_NAMESPACE

@@ -107,73 +107,73 @@ XE::Variant::Variant()
 }
 
 XE::Variant::Variant( std::nullptr_t )
-	: _Data( ( void * )nullptr ), _Type( TypeID<std::nullptr_t>::Get() ), _Flag( Flag::NIL )
+	: _Data( ( void * )nullptr ), _Type( ::XE_TypeID<std::nullptr_t>::Get() ), _Flag( Flag::NIL )
 {
 
 }
 
 XE::Variant::Variant( bool val )
-	: _Data( val ), _Type( TypeID<bool>::Get() ), _Flag( Flag::FUNDAMENTAL )
+	: _Data( val ), _Type( ::XE_TypeID<bool>::Get() ), _Flag( Flag::FUNDAMENTAL )
 {
 
 }
 
 XE::Variant::Variant( XE::int8 val )
-	: _Data( val ), _Type( TypeID<XE::int8>::Get() ), _Flag( Flag::FUNDAMENTAL )
+	: _Data( val ), _Type( ::XE_TypeID<XE::int8>::Get() ), _Flag( Flag::FUNDAMENTAL )
 {
 
 }
 
 XE::Variant::Variant( XE::int16 val )
-	: _Data( val ), _Type( TypeID<XE::int16>::Get() ), _Flag( Flag::FUNDAMENTAL )
+	: _Data( val ), _Type( ::XE_TypeID<XE::int16>::Get() ), _Flag( Flag::FUNDAMENTAL )
 {
 
 }
 
 XE::Variant::Variant( XE::int32 val )
-	: _Data( val ), _Type( TypeID<XE::int32>::Get() ), _Flag( Flag::FUNDAMENTAL )
+	: _Data( val ), _Type( ::XE_TypeID<XE::int32>::Get() ), _Flag( Flag::FUNDAMENTAL )
 {
 
 }
 
 XE::Variant::Variant( XE::int64 val )
-	: _Data( val ), _Type( TypeID<XE::int64>::Get() ), _Flag( Flag::FUNDAMENTAL )
+	: _Data( val ), _Type( ::XE_TypeID<XE::int64>::Get() ), _Flag( Flag::FUNDAMENTAL )
 {
 
 }
 
 XE::Variant::Variant( XE::uint8 val )
-	: _Data( val ), _Type( TypeID<XE::uint8>::Get() ), _Flag( Flag::FUNDAMENTAL )
+	: _Data( val ), _Type( ::XE_TypeID<XE::uint8>::Get() ), _Flag( Flag::FUNDAMENTAL )
 {
 
 }
 
 XE::Variant::Variant( XE::uint16 val )
-	: _Data( val ), _Type( TypeID<XE::uint16>::Get() ), _Flag( Flag::FUNDAMENTAL )
+	: _Data( val ), _Type( ::XE_TypeID<XE::uint16>::Get() ), _Flag( Flag::FUNDAMENTAL )
 {
 
 }
 
 XE::Variant::Variant( XE::uint32 val )
-	: _Data( val ), _Type( TypeID<XE::uint32>::Get() ), _Flag( Flag::FUNDAMENTAL )
+	: _Data( val ), _Type( ::XE_TypeID<XE::uint32>::Get() ), _Flag( Flag::FUNDAMENTAL )
 {
 
 }
 
 XE::Variant::Variant( XE::uint64 val )
-	: _Data( val ), _Type( TypeID<XE::uint64>::Get() ), _Flag( Flag::FUNDAMENTAL )
+	: _Data( val ), _Type( ::XE_TypeID<XE::uint64>::Get() ), _Flag( Flag::FUNDAMENTAL )
 {
 
 }
 
 XE::Variant::Variant( XE::float32 val )
-	: _Data( val ), _Type( TypeID<XE::float32>::Get() ), _Flag( Flag::FUNDAMENTAL )
+	: _Data( val ), _Type( ::XE_TypeID<XE::float32>::Get() ), _Flag( Flag::FUNDAMENTAL )
 {
 
 }
 
 XE::Variant::Variant( XE::float64 val )
-	: _Data( val ), _Type( TypeID<XE::float64>::Get() ), _Flag( Flag::FUNDAMENTAL )
+	: _Data( val ), _Type( ::XE_TypeID<XE::float64>::Get() ), _Flag( Flag::FUNDAMENTAL )
 {
 
 }
@@ -232,39 +232,39 @@ XE::Variant XE::Variant::operator!() const
 {
 	if( _Flag == Flag::FUNDAMENTAL )
 	{
-		if( _Type == TypeID<bool>::Get() )
+		if( _Type == ::XE_TypeID<bool>::Get() )
 		{
 			return !_Data.b;
 		}
-		else if( _Type == TypeID<XE::int8>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int8>::Get() )
 		{
 			return !_Data.i8;
 		}
-		else if( _Type == TypeID<XE::int16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int16>::Get() )
 		{
 			return !_Data.i16;
 		}
-		else if( _Type == TypeID<XE::int32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int32>::Get() )
 		{
 			return !_Data.i32;
 		}
-		else if( _Type == TypeID<XE::int64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int64>::Get() )
 		{
 			return !_Data.i64;
 		}
-		else if( _Type == TypeID<XE::uint8>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint8>::Get() )
 		{
 			return !_Data.u8;
 		}
-		else if( _Type == TypeID<XE::uint16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint16>::Get() )
 		{
 			return !_Data.u16;
 		}
-		else if( _Type == TypeID<XE::uint32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint32>::Get() )
 		{
 			return !_Data.u32;
 		}
-		else if( _Type == TypeID<XE::uint64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint64>::Get() )
 		{
 			return !_Data.u64;
 		}
@@ -277,35 +277,35 @@ XE::Variant XE::Variant::operator~() const
 {
 	if( _Flag == Flag::FUNDAMENTAL )
 	{
-		if( _Type == TypeID<XE::int8>::Get() )
+		if( _Type == ::XE_TypeID<XE::int8>::Get() )
 		{
 			return ~_Data.i8;
 		}
-		else if( _Type == TypeID<XE::int16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int16>::Get() )
 		{
 			return ~_Data.i16;
 		}
-		else if( _Type == TypeID<XE::int32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int32>::Get() )
 		{
 			return ~_Data.i32;
 		}
-		else if( _Type == TypeID<XE::int64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int64>::Get() )
 		{
 			return ~_Data.i64;
 		}
-		else if( _Type == TypeID<XE::uint8>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint8>::Get() )
 		{
 			return ~_Data.u8;
 		}
-		else if( _Type == TypeID<XE::uint16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint16>::Get() )
 		{
 			return ~_Data.u16;
 		}
-		else if( _Type == TypeID<XE::uint32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint32>::Get() )
 		{
 			return ~_Data.u32;
 		}
-		else if( _Type == TypeID<XE::uint64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint64>::Get() )
 		{
 			return ~_Data.u64;
 		}
@@ -318,19 +318,19 @@ XE::Variant XE::Variant::operator-() const
 {
 	if( _Flag == Flag::FUNDAMENTAL )
 	{
-		if( _Type == TypeID<XE::int8>::Get() )
+		if( _Type == ::XE_TypeID<XE::int8>::Get() )
 		{
 			return -_Data.i8;
 		}
-		else if( _Type == TypeID<XE::int16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int16>::Get() )
 		{
 			return -_Data.i16;
 		}
-		else if( _Type == TypeID<XE::int32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int32>::Get() )
 		{
 			return -_Data.i32;
 		}
-		else if( _Type == TypeID<XE::int64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int64>::Get() )
 		{
 			return -_Data.i64;
 		}
@@ -343,35 +343,35 @@ XE::Variant XE::Variant::operator++()
 {
 	if( _Flag == Flag::FUNDAMENTAL )
 	{
-		if( _Type == TypeID<XE::int8>::Get() )
+		if( _Type == ::XE_TypeID<XE::int8>::Get() )
 		{
 			return ++_Data.i8;
 		}
-		else if( _Type == TypeID<XE::int16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int16>::Get() )
 		{
 			return ++_Data.i16;
 		}
-		else if( _Type == TypeID<XE::int32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int32>::Get() )
 		{
 			return ++_Data.i32;
 		}
-		else if( _Type == TypeID<XE::int64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int64>::Get() )
 		{
 			return ++_Data.i64;
 		}
-		else if( _Type == TypeID<XE::uint8>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint8>::Get() )
 		{
 			return ++_Data.u8;
 		}
-		else if( _Type == TypeID<XE::uint16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint16>::Get() )
 		{
 			return ++_Data.u16;
 		}
-		else if( _Type == TypeID<XE::uint32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint32>::Get() )
 		{
 			return ++_Data.u32;
 		}
-		else if( _Type == TypeID<XE::uint64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint64>::Get() )
 		{
 			return ++_Data.u64;
 		}
@@ -384,35 +384,35 @@ XE::Variant XE::Variant::operator++( int )
 {
 	if( _Flag == Flag::FUNDAMENTAL )
 	{
-		if( _Type == TypeID<XE::int8>::Get() )
+		if( _Type == ::XE_TypeID<XE::int8>::Get() )
 		{
 			return _Data.i8++;
 		}
-		else if( _Type == TypeID<XE::int16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int16>::Get() )
 		{
 			return _Data.i16++;
 		}
-		else if( _Type == TypeID<XE::int32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int32>::Get() )
 		{
 			return _Data.i32++;
 		}
-		else if( _Type == TypeID<XE::int64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int64>::Get() )
 		{
 			return _Data.i64++;
 		}
-		else if( _Type == TypeID<XE::uint8>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint8>::Get() )
 		{
 			return _Data.u8++;
 		}
-		else if( _Type == TypeID<XE::uint16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint16>::Get() )
 		{
 			return _Data.u16++;
 		}
-		else if( _Type == TypeID<XE::uint32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint32>::Get() )
 		{
 			return _Data.u32++;
 		}
-		else if( _Type == TypeID<XE::uint64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint64>::Get() )
 		{
 			return _Data.u64++;
 		}
@@ -425,35 +425,35 @@ XE::Variant XE::Variant::operator--()
 {
 	if( _Flag == Flag::FUNDAMENTAL )
 	{
-		if( _Type == TypeID<XE::int8>::Get() )
+		if( _Type == ::XE_TypeID<XE::int8>::Get() )
 		{
 			return --_Data.i8;
 		}
-		else if( _Type == TypeID<XE::int16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int16>::Get() )
 		{
 			return --_Data.i16;
 		}
-		else if( _Type == TypeID<XE::int32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int32>::Get() )
 		{
 			return --_Data.i32;
 		}
-		else if( _Type == TypeID<XE::int64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int64>::Get() )
 		{
 			return --_Data.i64;
 		}
-		else if( _Type == TypeID<XE::uint8>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint8>::Get() )
 		{
 			return --_Data.u8;
 		}
-		else if( _Type == TypeID<XE::uint16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint16>::Get() )
 		{
 			return --_Data.u16;
 		}
-		else if( _Type == TypeID<XE::uint32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint32>::Get() )
 		{
 			return --_Data.u32;
 		}
-		else if( _Type == TypeID<XE::uint64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint64>::Get() )
 		{
 			return --_Data.u64;
 		}
@@ -466,35 +466,35 @@ XE::Variant XE::Variant::operator--( int )
 {
 	if( _Flag == Flag::FUNDAMENTAL )
 	{
-		if( _Type == TypeID<XE::int8>::Get() )
+		if( _Type == ::XE_TypeID<XE::int8>::Get() )
 		{
 			return _Data.i8--;
 		}
-		else if( _Type == TypeID<XE::int16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int16>::Get() )
 		{
 			return _Data.i16--;
 		}
-		else if( _Type == TypeID<XE::int32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int32>::Get() )
 		{
 			return _Data.i32--;
 		}
-		else if( _Type == TypeID<XE::int64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int64>::Get() )
 		{
 			return _Data.i64--;
 		}
-		else if( _Type == TypeID<XE::uint8>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint8>::Get() )
 		{
 			return _Data.u8--;
 		}
-		else if( _Type == TypeID<XE::uint16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint16>::Get() )
 		{
 			return _Data.u16--;
 		}
-		else if( _Type == TypeID<XE::uint32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint32>::Get() )
 		{
 			return _Data.u32--;
 		}
-		else if( _Type == TypeID<XE::uint64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint64>::Get() )
 		{
 			return _Data.u64--;
 		}
@@ -507,43 +507,43 @@ XE::Variant XE::Variant::operator+( const Variant & val ) const
 {
 	if( _Flag == Flag::FUNDAMENTAL && val._Flag == Flag::FUNDAMENTAL )
 	{
-		if( _Type == TypeID<XE::int8>::Get() )
+		if( _Type == ::XE_TypeID<XE::int8>::Get() )
 		{
 			return _Data.i8 + val._Data.i8;
 		}
-		else if( _Type == TypeID<XE::int16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int16>::Get() )
 		{
 			return _Data.i16 + val._Data.i16;
 		}
-		else if( _Type == TypeID<XE::int32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int32>::Get() )
 		{
 			return _Data.i32 + val._Data.i32;
 		}
-		else if( _Type == TypeID<XE::int64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int64>::Get() )
 		{
 			return _Data.i64 + val._Data.i64;
 		}
-		else if( _Type == TypeID<XE::uint8>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint8>::Get() )
 		{
 			return _Data.u8 + val._Data.u8;
 		}
-		else if( _Type == TypeID<XE::uint16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint16>::Get() )
 		{
 			return _Data.u16 + val._Data.u16;
 		}
-		else if( _Type == TypeID<XE::uint32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint32>::Get() )
 		{
 			return _Data.u32 + val._Data.u32;
 		}
-		else if( _Type == TypeID<XE::uint64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint64>::Get() )
 		{
 			return _Data.u64 + val._Data.u64;
 		}
-		else if( _Type == TypeID<XE::float32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::float32>::Get() )
 		{
 			return _Data.f + val._Data.f;
 		}
-		else if( _Type == TypeID<XE::float64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::float64>::Get() )
 		{
 			return _Data.d + val._Data.d;
 		}
@@ -556,43 +556,43 @@ XE::Variant XE::Variant::operator-( const Variant & val ) const
 {
 	if( _Flag == Flag::FUNDAMENTAL && val._Flag == Flag::FUNDAMENTAL )
 	{
-		if( _Type == TypeID<XE::int8>::Get() )
+		if( _Type == ::XE_TypeID<XE::int8>::Get() )
 		{
 			return _Data.i8 - val._Data.i8;
 		}
-		else if( _Type == TypeID<XE::int16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int16>::Get() )
 		{
 			return _Data.i16 - val._Data.i16;
 		}
-		else if( _Type == TypeID<XE::int32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int32>::Get() )
 		{
 			return _Data.i32 - val._Data.i32;
 		}
-		else if( _Type == TypeID<XE::int64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int64>::Get() )
 		{
 			return _Data.i64 - val._Data.i64;
 		}
-		else if( _Type == TypeID<XE::uint8>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint8>::Get() )
 		{
 			return _Data.u8 - val._Data.u8;
 		}
-		else if( _Type == TypeID<XE::uint16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint16>::Get() )
 		{
 			return _Data.u16 - val._Data.u16;
 		}
-		else if( _Type == TypeID<XE::uint32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint32>::Get() )
 		{
 			return _Data.u32 - val._Data.u32;
 		}
-		else if( _Type == TypeID<XE::uint64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint64>::Get() )
 		{
 			return _Data.u64 - val._Data.u64;
 		}
-		else if( _Type == TypeID<XE::float32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::float32>::Get() )
 		{
 			return _Data.f - val._Data.f;
 		}
-		else if( _Type == TypeID<XE::float64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::float64>::Get() )
 		{
 			return _Data.d - val._Data.d;
 		}
@@ -605,43 +605,43 @@ XE::Variant XE::Variant::operator*( const Variant & val ) const
 {
 	if( _Flag == Flag::FUNDAMENTAL && val._Flag == Flag::FUNDAMENTAL )
 	{
-		if( _Type == TypeID<XE::int8>::Get() )
+		if( _Type == ::XE_TypeID<XE::int8>::Get() )
 		{
 			return _Data.i8 * val._Data.i8;
 		}
-		else if( _Type == TypeID<XE::int16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int16>::Get() )
 		{
 			return _Data.i16 * val._Data.i16;
 		}
-		else if( _Type == TypeID<XE::int32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int32>::Get() )
 		{
 			return _Data.i32 * val._Data.i32;
 		}
-		else if( _Type == TypeID<XE::int64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int64>::Get() )
 		{
 			return _Data.i64 * val._Data.i64;
 		}
-		else if( _Type == TypeID<XE::uint8>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint8>::Get() )
 		{
 			return _Data.u8 * val._Data.u8;
 		}
-		else if( _Type == TypeID<XE::uint16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint16>::Get() )
 		{
 			return _Data.u16 * val._Data.u16;
 		}
-		else if( _Type == TypeID<XE::uint32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint32>::Get() )
 		{
 			return _Data.u32 * val._Data.u32;
 		}
-		else if( _Type == TypeID<XE::uint64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint64>::Get() )
 		{
 			return _Data.u64 * val._Data.u64;
 		}
-		else if( _Type == TypeID<XE::float32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::float32>::Get() )
 		{
 			return _Data.f * val._Data.f;
 		}
-		else if( _Type == TypeID<XE::float64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::float64>::Get() )
 		{
 			return _Data.d * val._Data.d;
 		}
@@ -654,43 +654,43 @@ XE::Variant XE::Variant::operator/( const Variant & val ) const
 {
 	if( _Flag == Flag::FUNDAMENTAL && val._Flag == Flag::FUNDAMENTAL )
 	{
-		if( _Type == TypeID<XE::int8>::Get() )
+		if( _Type == ::XE_TypeID<XE::int8>::Get() )
 		{
 			return _Data.i8 / val._Data.i8;
 		}
-		else if( _Type == TypeID<XE::int16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int16>::Get() )
 		{
 			return _Data.i16 / val._Data.i16;
 		}
-		else if( _Type == TypeID<XE::int32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int32>::Get() )
 		{
 			return _Data.i32 / val._Data.i32;
 		}
-		else if( _Type == TypeID<XE::int64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int64>::Get() )
 		{
 			return _Data.i64 / val._Data.i64;
 		}
-		else if( _Type == TypeID<XE::uint8>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint8>::Get() )
 		{
 			return _Data.u8 / val._Data.u8;
 		}
-		else if( _Type == TypeID<XE::uint16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint16>::Get() )
 		{
 			return _Data.u16 / val._Data.u16;
 		}
-		else if( _Type == TypeID<XE::uint32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint32>::Get() )
 		{
 			return _Data.u32 / val._Data.u32;
 		}
-		else if( _Type == TypeID<XE::uint64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint64>::Get() )
 		{
 			return _Data.u64 / val._Data.u64;
 		}
-		else if( _Type == TypeID<XE::float32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::float32>::Get() )
 		{
 			return _Data.f / val._Data.f;
 		}
-		else if( _Type == TypeID<XE::float64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::float64>::Get() )
 		{
 			return _Data.d / val._Data.d;
 		}
@@ -703,35 +703,35 @@ XE::Variant XE::Variant::operator%( const Variant & val ) const
 {
 	if( _Flag == Flag::FUNDAMENTAL && val._Flag == Flag::FUNDAMENTAL )
 	{
-		if( _Type == TypeID<XE::int8>::Get() )
+		if( _Type == ::XE_TypeID<XE::int8>::Get() )
 		{
 			return _Data.i8 % val._Data.i8;
 		}
-		else if( _Type == TypeID<XE::int16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int16>::Get() )
 		{
 			return _Data.i16 % val._Data.i16;
 		}
-		else if( _Type == TypeID<XE::int32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int32>::Get() )
 		{
 			return _Data.i32 % val._Data.i32;
 		}
-		else if( _Type == TypeID<XE::int64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int64>::Get() )
 		{
 			return _Data.i64 % val._Data.i64;
 		}
-		else if( _Type == TypeID<XE::uint8>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint8>::Get() )
 		{
 			return _Data.u8 % val._Data.u8;
 		}
-		else if( _Type == TypeID<XE::uint16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint16>::Get() )
 		{
 			return _Data.u16 % val._Data.u16;
 		}
-		else if( _Type == TypeID<XE::uint32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint32>::Get() )
 		{
 			return _Data.u32 % val._Data.u32;
 		}
-		else if( _Type == TypeID<XE::uint64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint64>::Get() )
 		{
 			return _Data.u64 % val._Data.u64;
 		}
@@ -744,35 +744,35 @@ XE::Variant XE::Variant::operator^( const Variant & val ) const
 {
 	if( _Flag == Flag::FUNDAMENTAL && val._Flag == Flag::FUNDAMENTAL )
 	{
-		if( _Type == TypeID<XE::int8>::Get() )
+		if( _Type == ::XE_TypeID<XE::int8>::Get() )
 		{
 			return _Data.i8 ^ val._Data.i8;
 		}
-		else if( _Type == TypeID<XE::int16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int16>::Get() )
 		{
 			return _Data.i16 ^ val._Data.i16;
 		}
-		else if( _Type == TypeID<XE::int32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int32>::Get() )
 		{
 			return _Data.i32 ^ val._Data.i32;
 		}
-		else if( _Type == TypeID<XE::int64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int64>::Get() )
 		{
 			return _Data.i64 ^ val._Data.i64;
 		}
-		else if( _Type == TypeID<XE::uint8>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint8>::Get() )
 		{
 			return _Data.u8 ^ val._Data.u8;
 		}
-		else if( _Type == TypeID<XE::uint16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint16>::Get() )
 		{
 			return _Data.u16 ^ val._Data.u16;
 		}
-		else if( _Type == TypeID<XE::uint32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint32>::Get() )
 		{
 			return _Data.u32 ^ val._Data.u32;
 		}
-		else if( _Type == TypeID<XE::uint64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint64>::Get() )
 		{
 			return _Data.u64 ^ val._Data.u64;
 		}
@@ -785,35 +785,35 @@ XE::Variant XE::Variant::operator&( const Variant & val ) const
 {
 	if( _Flag == Flag::FUNDAMENTAL && val._Flag == Flag::FUNDAMENTAL )
 	{
-		if( _Type == TypeID<XE::int8>::Get() )
+		if( _Type == ::XE_TypeID<XE::int8>::Get() )
 		{
 			return _Data.i8 & val._Data.i8;
 		}
-		else if( _Type == TypeID<XE::int16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int16>::Get() )
 		{
 			return _Data.i16 & val._Data.i16;
 		}
-		else if( _Type == TypeID<XE::int32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int32>::Get() )
 		{
 			return _Data.i32 & val._Data.i32;
 		}
-		else if( _Type == TypeID<XE::int64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int64>::Get() )
 		{
 			return _Data.i64 & val._Data.i64;
 		}
-		else if( _Type == TypeID<XE::uint8>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint8>::Get() )
 		{
 			return _Data.u8 & val._Data.u8;
 		}
-		else if( _Type == TypeID<XE::uint16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint16>::Get() )
 		{
 			return _Data.u16 & val._Data.u16;
 		}
-		else if( _Type == TypeID<XE::uint32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint32>::Get() )
 		{
 			return _Data.u32 & val._Data.u32;
 		}
-		else if( _Type == TypeID<XE::uint64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint64>::Get() )
 		{
 			return _Data.u64 & val._Data.u64;
 		}
@@ -826,35 +826,35 @@ XE::Variant XE::Variant::operator|( const Variant & val ) const
 {
 	if( _Flag == Flag::FUNDAMENTAL && val._Flag == Flag::FUNDAMENTAL )
 	{
-		if( _Type == TypeID<XE::int8>::Get() )
+		if( _Type == ::XE_TypeID<XE::int8>::Get() )
 		{
 			return _Data.i8 | val._Data.i8;
 		}
-		else if( _Type == TypeID<XE::int16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int16>::Get() )
 		{
 			return _Data.i16 | val._Data.i16;
 		}
-		else if( _Type == TypeID<XE::int32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int32>::Get() )
 		{
 			return _Data.i32 | val._Data.i32;
 		}
-		else if( _Type == TypeID<XE::int64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int64>::Get() )
 		{
 			return _Data.i64 | val._Data.i64;
 		}
-		else if( _Type == TypeID<XE::uint8>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint8>::Get() )
 		{
 			return _Data.u8 | val._Data.u8;
 		}
-		else if( _Type == TypeID<XE::uint16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint16>::Get() )
 		{
 			return _Data.u16 | val._Data.u16;
 		}
-		else if( _Type == TypeID<XE::uint32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint32>::Get() )
 		{
 			return _Data.u32 | val._Data.u32;
 		}
-		else if( _Type == TypeID<XE::uint64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint64>::Get() )
 		{
 			return _Data.u64 | val._Data.u64;
 		}
@@ -984,47 +984,47 @@ bool XE::Variant::ToBool() const
 {
 	if( ( _Flag == Flag::FUNDAMENTAL ) && !( _Flag == Flag::POINTER ) )
 	{
-		if( _Type == TypeID<bool>::Get() )
+		if( _Type == ::XE_TypeID<bool>::Get() )
 		{
 			return _Data.b;
 		}
-		else if( _Type == TypeID<XE::int8>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int8>::Get() )
 		{
 			return _Data.i8 != 0;
 		}
-		else if( _Type == TypeID<XE::int16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int16>::Get() )
 		{
 			return _Data.i16 != 0;
 		}
-		else if( _Type == TypeID<XE::int32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int32>::Get() )
 		{
 			return _Data.i32 != 0;
 		}
-		else if( _Type == TypeID<XE::int64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int64>::Get() )
 		{
 			return _Data.i64 != 0;
 		}
-		else if( _Type == TypeID<XE::uint8>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint8>::Get() )
 		{
 			return _Data.u8 != 0;
 		}
-		else if( _Type == TypeID<XE::uint16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint16>::Get() )
 		{
 			return _Data.u16 != 0;
 		}
-		else if( _Type == TypeID<XE::uint32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint32>::Get() )
 		{
 			return _Data.u32 != 0;
 		}
-		else if( _Type == TypeID<XE::uint64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint64>::Get() )
 		{
 			return _Data.u64 != 0;
 		}
-		else if( _Type == TypeID<XE::float32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::float32>::Get() )
 		{
 			return _Data.f > FLT_EPSILON || _Data.f < -FLT_EPSILON;
 		}
-		else if( _Type == TypeID<XE::float64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::float64>::Get() )
 		{
 			return _Data.f > DBL_EPSILON || _Data.f < -DBL_EPSILON;
 		}
@@ -1037,47 +1037,47 @@ XE::int8 XE::Variant::ToInt8() const
 {
 	if( ( _Flag == Flag::FUNDAMENTAL ) && !( _Flag == Flag::POINTER ) )
 	{
-		if( _Type == TypeID<bool>::Get() )
+		if( _Type == ::XE_TypeID<bool>::Get() )
 		{
 			return _Data.b ? 1 : 0;
 		}
-		else if( _Type == TypeID<XE::int8>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int8>::Get() )
 		{
 			return _Data.i8;
 		}
-		else if( _Type == TypeID<XE::int16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int16>::Get() )
 		{
 			return _Data.i16;
 		}
-		else if( _Type == TypeID<XE::int32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int32>::Get() )
 		{
 			return _Data.i32;
 		}
-		else if( _Type == TypeID<XE::int64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int64>::Get() )
 		{
 			return _Data.i64;
 		}
-		else if( _Type == TypeID<XE::uint8>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint8>::Get() )
 		{
 			return _Data.u8;
 		}
-		else if( _Type == TypeID<XE::uint16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint16>::Get() )
 		{
 			return _Data.u16;
 		}
-		else if( _Type == TypeID<XE::uint32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint32>::Get() )
 		{
 			return _Data.u32;
 		}
-		else if( _Type == TypeID<XE::uint64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint64>::Get() )
 		{
 			return _Data.u64;
 		}
-		else if( _Type == TypeID<XE::float32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::float32>::Get() )
 		{
 			return _Data.f;
 		}
-		else if( _Type == TypeID<XE::float64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::float64>::Get() )
 		{
 			return _Data.d;
 		}
@@ -1090,47 +1090,47 @@ XE::int16 XE::Variant::ToInt16() const
 {
 	if( ( _Flag == Flag::FUNDAMENTAL ) && !( _Flag == Flag::POINTER ) )
 	{
-		if( _Type == TypeID<bool>::Get() )
+		if( _Type == ::XE_TypeID<bool>::Get() )
 		{
 			return _Data.b ? 1 : 0;
 		}
-		else if( _Type == TypeID<XE::int8>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int8>::Get() )
 		{
 			return _Data.i8;
 		}
-		else if( _Type == TypeID<XE::int16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int16>::Get() )
 		{
 			return _Data.i16;
 		}
-		else if( _Type == TypeID<XE::int32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int32>::Get() )
 		{
 			return _Data.i32;
 		}
-		else if( _Type == TypeID<XE::int64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int64>::Get() )
 		{
 			return _Data.i64;
 		}
-		else if( _Type == TypeID<XE::uint8>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint8>::Get() )
 		{
 			return _Data.u8;
 		}
-		else if( _Type == TypeID<XE::uint16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint16>::Get() )
 		{
 			return _Data.u16;
 		}
-		else if( _Type == TypeID<XE::uint32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint32>::Get() )
 		{
 			return _Data.u32;
 		}
-		else if( _Type == TypeID<XE::uint64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint64>::Get() )
 		{
 			return _Data.u64;
 		}
-		else if( _Type == TypeID<XE::float32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::float32>::Get() )
 		{
 			return _Data.f;
 		}
-		else if( _Type == TypeID<XE::float64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::float64>::Get() )
 		{
 			return _Data.d;
 		}
@@ -1143,47 +1143,47 @@ XE::int32 XE::Variant::ToInt32() const
 {
 	if( ( _Flag == Flag::FUNDAMENTAL ) && !( _Flag == Flag::POINTER ) )
 	{
-		if( _Type == TypeID<bool>::Get() )
+		if( _Type == ::XE_TypeID<bool>::Get() )
 		{
 			return _Data.b ? 1 : 0;
 		}
-		else if( _Type == TypeID<XE::int8>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int8>::Get() )
 		{
 			return _Data.i8;
 		}
-		else if( _Type == TypeID<XE::int16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int16>::Get() )
 		{
 			return _Data.i16;
 		}
-		else if( _Type == TypeID<XE::int32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int32>::Get() )
 		{
 			return _Data.i32;
 		}
-		else if( _Type == TypeID<XE::int64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int64>::Get() )
 		{
 			return _Data.i64;
 		}
-		else if( _Type == TypeID<XE::uint8>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint8>::Get() )
 		{
 			return _Data.u8;
 		}
-		else if( _Type == TypeID<XE::uint16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint16>::Get() )
 		{
 			return _Data.u16;
 		}
-		else if( _Type == TypeID<XE::uint32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint32>::Get() )
 		{
 			return _Data.u32;
 		}
-		else if( _Type == TypeID<XE::uint64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint64>::Get() )
 		{
 			return _Data.u64;
 		}
-		else if( _Type == TypeID<XE::float32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::float32>::Get() )
 		{
 			return _Data.f;
 		}
-		else if( _Type == TypeID<XE::float64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::float64>::Get() )
 		{
 			return _Data.d;
 		}
@@ -1201,47 +1201,47 @@ XE::int64 XE::Variant::ToInt64() const
 
 	if( ( _Flag == Flag::FUNDAMENTAL ) && !( _Flag == Flag::POINTER ) )
 	{
-		if( _Type == TypeID<bool>::Get() )
+		if( _Type == ::XE_TypeID<bool>::Get() )
 		{
 			return _Data.b ? 1 : 0;
 		}
-		else if( _Type == TypeID<XE::int8>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int8>::Get() )
 		{
 			return _Data.i8;
 		}
-		else if( _Type == TypeID<XE::int16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int16>::Get() )
 		{
 			return _Data.i16;
 		}
-		else if( _Type == TypeID<XE::int32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int32>::Get() )
 		{
 			return _Data.i32;
 		}
-		else if( _Type == TypeID<XE::int64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int64>::Get() )
 		{
 			return _Data.i64;
 		}
-		else if( _Type == TypeID<XE::uint8>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint8>::Get() )
 		{
 			return _Data.u8;
 		}
-		else if( _Type == TypeID<XE::uint16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint16>::Get() )
 		{
 			return _Data.u16;
 		}
-		else if( _Type == TypeID<XE::uint32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint32>::Get() )
 		{
 			return _Data.u32;
 		}
-		else if( _Type == TypeID<XE::uint64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint64>::Get() )
 		{
 			return _Data.u64;
 		}
-		else if( _Type == TypeID<XE::float32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::float32>::Get() )
 		{
 			return _Data.f;
 		}
-		else if( _Type == TypeID<XE::float64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::float64>::Get() )
 		{
 			return _Data.d;
 		}
@@ -1254,47 +1254,47 @@ XE::uint8 XE::Variant::ToUInt8() const
 {
 	if( ( _Flag == Flag::FUNDAMENTAL ) && !( _Flag == Flag::POINTER ) )
 	{
-		if( _Type == TypeID<bool>::Get() )
+		if( _Type == ::XE_TypeID<bool>::Get() )
 		{
 			return _Data.b ? 1 : 0;
 		}
-		else if( _Type == TypeID<XE::int8>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int8>::Get() )
 		{
 			return _Data.i8;
 		}
-		else if( _Type == TypeID<XE::int16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int16>::Get() )
 		{
 			return _Data.i16;
 		}
-		else if( _Type == TypeID<XE::int32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int32>::Get() )
 		{
 			return _Data.i32;
 		}
-		else if( _Type == TypeID<XE::int64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int64>::Get() )
 		{
 			return _Data.i64;
 		}
-		else if( _Type == TypeID<XE::uint8>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint8>::Get() )
 		{
 			return _Data.u8;
 		}
-		else if( _Type == TypeID<XE::uint16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint16>::Get() )
 		{
 			return _Data.u16;
 		}
-		else if( _Type == TypeID<XE::uint32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint32>::Get() )
 		{
 			return _Data.u32;
 		}
-		else if( _Type == TypeID<XE::uint64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint64>::Get() )
 		{
 			return _Data.u64;
 		}
-		else if( _Type == TypeID<XE::float32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::float32>::Get() )
 		{
 			return _Data.f;
 		}
-		else if( _Type == TypeID<XE::float64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::float64>::Get() )
 		{
 			return _Data.d;
 		}
@@ -1307,47 +1307,47 @@ XE::uint16 XE::Variant::ToUInt16() const
 {
 	if( ( _Flag == Flag::FUNDAMENTAL ) && !( _Flag == Flag::POINTER ) )
 	{
-		if( _Type == TypeID<bool>::Get() )
+		if( _Type == ::XE_TypeID<bool>::Get() )
 		{
 			return _Data.b ? 1 : 0;
 		}
-		else if( _Type == TypeID<XE::int8>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int8>::Get() )
 		{
 			return _Data.i8;
 		}
-		else if( _Type == TypeID<XE::int16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int16>::Get() )
 		{
 			return _Data.i16;
 		}
-		else if( _Type == TypeID<XE::int32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int32>::Get() )
 		{
 			return _Data.i32;
 		}
-		else if( _Type == TypeID<XE::int64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int64>::Get() )
 		{
 			return _Data.i64;
 		}
-		else if( _Type == TypeID<XE::uint8>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint8>::Get() )
 		{
 			return _Data.u8;
 		}
-		else if( _Type == TypeID<XE::uint16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint16>::Get() )
 		{
 			return _Data.u16;
 		}
-		else if( _Type == TypeID<XE::uint32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint32>::Get() )
 		{
 			return _Data.u32;
 		}
-		else if( _Type == TypeID<XE::uint64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint64>::Get() )
 		{
 			return _Data.u64;
 		}
-		else if( _Type == TypeID<XE::float32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::float32>::Get() )
 		{
 			return _Data.f;
 		}
-		else if( _Type == TypeID<XE::float64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::float64>::Get() )
 		{
 			return _Data.d;
 		}
@@ -1360,47 +1360,47 @@ XE::int32 XE::Variant::ToUInt32() const
 {
 	if( ( _Flag == Flag::FUNDAMENTAL ) && !( _Flag == Flag::POINTER ) )
 	{
-		if( _Type == TypeID<bool>::Get() )
+		if( _Type == ::XE_TypeID<bool>::Get() )
 		{
 			return _Data.b ? 1 : 0;
 		}
-		else if( _Type == TypeID<XE::int8>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int8>::Get() )
 		{
 			return _Data.i8;
 		}
-		else if( _Type == TypeID<XE::int16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int16>::Get() )
 		{
 			return _Data.i16;
 		}
-		else if( _Type == TypeID<XE::int32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int32>::Get() )
 		{
 			return _Data.i32;
 		}
-		else if( _Type == TypeID<XE::int64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int64>::Get() )
 		{
 			return _Data.i64;
 		}
-		else if( _Type == TypeID<XE::uint8>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint8>::Get() )
 		{
 			return _Data.u8;
 		}
-		else if( _Type == TypeID<XE::uint16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint16>::Get() )
 		{
 			return _Data.u16;
 		}
-		else if( _Type == TypeID<XE::uint32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint32>::Get() )
 		{
 			return _Data.u32;
 		}
-		else if( _Type == TypeID<XE::uint64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint64>::Get() )
 		{
 			return _Data.u64;
 		}
-		else if( _Type == TypeID<XE::float32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::float32>::Get() )
 		{
 			return _Data.f;
 		}
-		else if( _Type == TypeID<XE::float64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::float64>::Get() )
 		{
 			return _Data.d;
 		}
@@ -1418,47 +1418,47 @@ XE::uint64 XE::Variant::ToUInt64() const
 
 	if( ( _Flag == Flag::FUNDAMENTAL ) && !( _Flag == Flag::POINTER ) )
 	{
-		if( _Type == TypeID<bool>::Get() )
+		if( _Type == ::XE_TypeID<bool>::Get() )
 		{
 			return _Data.b ? 1 : 0;
 		}
-		else if( _Type == TypeID<XE::int8>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int8>::Get() )
 		{
 			return _Data.i8;
 		}
-		else if( _Type == TypeID<XE::int16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int16>::Get() )
 		{
 			return _Data.i16;
 		}
-		else if( _Type == TypeID<XE::int32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int32>::Get() )
 		{
 			return _Data.i32;
 		}
-		else if( _Type == TypeID<XE::int64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int64>::Get() )
 		{
 			return _Data.i64;
 		}
-		else if( _Type == TypeID<XE::uint8>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint8>::Get() )
 		{
 			return _Data.u8;
 		}
-		else if( _Type == TypeID<XE::uint16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint16>::Get() )
 		{
 			return _Data.u16;
 		}
-		else if( _Type == TypeID<XE::uint32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint32>::Get() )
 		{
 			return _Data.u32;
 		}
-		else if( _Type == TypeID<XE::uint64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint64>::Get() )
 		{
 			return _Data.u64;
 		}
-		else if( _Type == TypeID<XE::float32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::float32>::Get() )
 		{
 			return _Data.f;
 		}
-		else if( _Type == TypeID<XE::float64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::float64>::Get() )
 		{
 			return _Data.d;
 		}
@@ -1471,47 +1471,47 @@ XE::float32 XE::Variant::ToFloat32() const
 {
 	if( ( _Flag == Flag::FUNDAMENTAL ) && !( _Flag == Flag::POINTER ) )
 	{
-		if( _Type == TypeID<bool>::Get() )
+		if( _Type == ::XE_TypeID<bool>::Get() )
 		{
 			return _Data.b ? 1 : 0;
 		}
-		else if( _Type == TypeID<XE::int8>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int8>::Get() )
 		{
 			return _Data.i8;
 		}
-		else if( _Type == TypeID<XE::int16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int16>::Get() )
 		{
 			return _Data.i16;
 		}
-		else if( _Type == TypeID<XE::int32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int32>::Get() )
 		{
 			return _Data.i32;
 		}
-		else if( _Type == TypeID<XE::int64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int64>::Get() )
 		{
 			return _Data.i64;
 		}
-		else if( _Type == TypeID<XE::uint8>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint8>::Get() )
 		{
 			return _Data.u8;
 		}
-		else if( _Type == TypeID<XE::uint16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint16>::Get() )
 		{
 			return _Data.u16;
 		}
-		else if( _Type == TypeID<XE::uint32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint32>::Get() )
 		{
 			return _Data.u32;
 		}
-		else if( _Type == TypeID<XE::uint64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint64>::Get() )
 		{
 			return _Data.u64;
 		}
-		else if( _Type == TypeID<XE::float32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::float32>::Get() )
 		{
 			return _Data.f;
 		}
-		else if( _Type == TypeID<XE::float64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::float64>::Get() )
 		{
 			return _Data.d;
 		}
@@ -1524,47 +1524,47 @@ XE::float64 XE::Variant::ToFloat64() const
 {
 	if( ( _Flag == Flag::FUNDAMENTAL ) && !( _Flag == Flag::POINTER ) )
 	{
-		if( _Type == TypeID<bool>::Get() )
+		if( _Type == ::XE_TypeID<bool>::Get() )
 		{
 			return _Data.b ? 1 : 0;
 		}
-		else if( _Type == TypeID<XE::int8>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int8>::Get() )
 		{
 			return _Data.i8;
 		}
-		else if( _Type == TypeID<XE::int16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int16>::Get() )
 		{
 			return _Data.i16;
 		}
-		else if( _Type == TypeID<XE::int32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int32>::Get() )
 		{
 			return _Data.i32;
 		}
-		else if( _Type == TypeID<XE::int64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int64>::Get() )
 		{
 			return _Data.i64;
 		}
-		else if( _Type == TypeID<XE::uint8>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint8>::Get() )
 		{
 			return _Data.u8;
 		}
-		else if( _Type == TypeID<XE::uint16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint16>::Get() )
 		{
 			return _Data.u16;
 		}
-		else if( _Type == TypeID<XE::uint32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint32>::Get() )
 		{
 			return _Data.u32;
 		}
-		else if( _Type == TypeID<XE::uint64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint64>::Get() )
 		{
 			return _Data.u64;
 		}
-		else if( _Type == TypeID<XE::float32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::float32>::Get() )
 		{
 			return _Data.f;
 		}
-		else if( _Type == TypeID<XE::float64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::float64>::Get() )
 		{
 			return _Data.d;
 		}
@@ -1597,47 +1597,47 @@ void * XE::Variant::ToPointer() const
 
 	if( _Flag == Flag::FUNDAMENTAL )
 	{
-		if( _Type == TypeID<bool>::Get() )
+		if( _Type == ::XE_TypeID<bool>::Get() )
 		{
 			return (void * )( &( _Data.b ) );
 		}
-		else if( _Type == TypeID<XE::int8>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int8>::Get() )
 		{
 			return (void * )( &( _Data.i8 ) );
 		}
-		else if( _Type == TypeID<XE::int16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int16>::Get() )
 		{
 			return (void * )( &( _Data.i16 ) );
 		}
-		else if( _Type == TypeID<XE::int32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int32>::Get() )
 		{
 			return (void * )( &( _Data.i32 ) );
 		}
-		else if( _Type == TypeID<XE::int64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::int64>::Get() )
 		{
 			return (void * )( &( _Data.i64 ) );
 		}
-		else if( _Type == TypeID<XE::uint8>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint8>::Get() )
 		{
 			return (void * )( &( _Data.u8 ) );
 		}
-		else if( _Type == TypeID<XE::uint16>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint16>::Get() )
 		{
 			return (void * )( &( _Data.u16 ) );
 		}
-		else if( _Type == TypeID<XE::uint32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint32>::Get() )
 		{
 			return (void * )( &( _Data.u32 ) );
 		}
-		else if( _Type == TypeID<XE::uint64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::uint64>::Get() )
 		{
 			return (void * )( &( _Data.u64 ) );
 		}
-		else if( _Type == TypeID<XE::float32>::Get() )
+		else if( _Type == ::XE_TypeID<XE::float32>::Get() )
 		{
 			return (void * )( &( _Data.f ) );
 		}
-		else if( _Type == TypeID<XE::float64>::Get() )
+		else if( _Type == ::XE_TypeID<XE::float64>::Get() )
 		{
 			return (void * )( &( _Data.d ) );
 		}
@@ -1652,7 +1652,7 @@ XE::Array<XE::Variant> XE::Variant::ToArray() const
 	{
 		XE::VariantArray ret;
 
-		if( GetType() == TypeID<VariantList>::Get() )
+		if( GetType() == ::XE_TypeID<VariantList>::Get() )
 		{
 			auto p = (VariantList * )ToPointer();
 			for( const auto & it : *p )
@@ -1660,7 +1660,7 @@ XE::Array<XE::Variant> XE::Variant::ToArray() const
 				ret.push_back( it );
 			}
 		}
-		if( GetType() == TypeID<VariantDeque>::Get() )
+		if( GetType() == ::XE_TypeID<VariantDeque>::Get() )
 		{
 			auto p = (VariantDeque * )ToPointer();
 			for( const auto & it : *p )
@@ -1668,7 +1668,7 @@ XE::Array<XE::Variant> XE::Variant::ToArray() const
 				ret.push_back( it );
 			}
 		}
-		if( GetType() == TypeID<VariantStack>::Get() )
+		if( GetType() == ::XE_TypeID<VariantStack>::Get() )
 		{
 			VariantArray arr;
 			auto p = (VariantStack * )ToPointer();
@@ -1679,7 +1679,7 @@ XE::Array<XE::Variant> XE::Variant::ToArray() const
 			}
 			ret.insert( ret.end(), arr.rbegin(), arr.rend() );
 		}
-		if( GetType() == TypeID<VariantQueue>::Get() )
+		if( GetType() == ::XE_TypeID<VariantQueue>::Get() )
 		{
 			auto p = (VariantQueue * )ToPointer();
 			for( ; p->size() != 0; )
@@ -1688,18 +1688,18 @@ XE::Array<XE::Variant> XE::Variant::ToArray() const
 				p->pop();
 			}
 		}
-		if( GetType() == TypeID<VariantArray>::Get() )
+		if( GetType() == ::XE_TypeID<VariantArray>::Get() )
 		{
 			auto p = (VariantArray * )ToPointer();
 			ret = *p;
 		}
-		if( GetType() == TypeID<VariantPair>::Get() )
+		if( GetType() == ::XE_TypeID<VariantPair>::Get() )
 		{
 			auto p = (VariantPair * )ToPointer();
 			ret.push_back( p->first );
 			ret.push_back( p->second );
 		}
-		if( GetType() == TypeID<VariantSet>::Get() )
+		if( GetType() == ::XE_TypeID<VariantSet>::Get() )
 		{
 			auto p = (VariantSet * )ToPointer();
 			for( const auto & it : *p )
@@ -1707,7 +1707,7 @@ XE::Array<XE::Variant> XE::Variant::ToArray() const
 				ret.push_back( it );
 			}
 		}
-		if( GetType() == TypeID<VariantMap>::Get() )
+		if( GetType() == ::XE_TypeID<VariantMap>::Get() )
 		{
 			auto p = (VariantMap * )ToPointer();
 			for( const auto & it : *p )
@@ -1715,7 +1715,7 @@ XE::Array<XE::Variant> XE::Variant::ToArray() const
 				ret.push_back( it );
 			}
 		}
-		if( GetType() == TypeID<VariantMultiSet>::Get() )
+		if( GetType() == ::XE_TypeID<VariantMultiSet>::Get() )
 		{
 			auto p = (VariantMultiSet * )ToPointer();
 			for( const auto & it : *p )
@@ -1723,7 +1723,7 @@ XE::Array<XE::Variant> XE::Variant::ToArray() const
 				ret.push_back( it );
 			}
 		}
-		if( GetType() == TypeID<VariantMultiMap>::Get() )
+		if( GetType() == ::XE_TypeID<VariantMultiMap>::Get() )
 		{
 			auto p = (VariantMultiMap * )ToPointer();
 			for( const auto & it : *p )
@@ -1731,7 +1731,7 @@ XE::Array<XE::Variant> XE::Variant::ToArray() const
 				ret.push_back( it );
 			}
 		}
-		if( GetType() == TypeID<VariantUnorderedSet>::Get() )
+		if( GetType() == ::XE_TypeID<VariantUnorderedSet>::Get() )
 		{
 			auto p = (VariantUnorderedSet * )ToPointer();
 			for( const auto & it : *p )
@@ -1739,7 +1739,7 @@ XE::Array<XE::Variant> XE::Variant::ToArray() const
 				ret.push_back( it );
 			}
 		}
-		if( GetType() == TypeID<VariantUnorderedMap>::Get() )
+		if( GetType() == ::XE_TypeID<VariantUnorderedMap>::Get() )
 		{
 			auto p = (VariantUnorderedMap * )ToPointer();
 			for( const auto & it : *p )
@@ -1747,7 +1747,7 @@ XE::Array<XE::Variant> XE::Variant::ToArray() const
 				ret.push_back( it );
 			}
 		}
-		if( GetType() == TypeID<VariantUnorderedMultiSet>::Get() )
+		if( GetType() == ::XE_TypeID<VariantUnorderedMultiSet>::Get() )
 		{
 			auto p = (VariantUnorderedMultiSet * )ToPointer();
 			for( const auto & it : *p )
@@ -1755,7 +1755,7 @@ XE::Array<XE::Variant> XE::Variant::ToArray() const
 				ret.push_back( it );
 			}
 		}
-		if( GetType() == TypeID<VariantUnorderedMultiMap>::Get() )
+		if( GetType() == ::XE_TypeID<VariantUnorderedMultiMap>::Get() )
 		{
 			auto p = (VariantUnorderedMultiMap * )ToPointer();
 			for( const auto & it : *p )

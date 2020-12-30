@@ -184,19 +184,19 @@ protected:
 
 END_XE_NAMESPACE
 
-template< typename T > struct XE::ClassID< XE::AssetPtr< T > >
+template< typename T > struct ::XE_ClassID< XE::AssetPtr< T > >
 {
 	static XE::IMetaClassPtr Get( const XE::AssetPtr< T > * val = nullptr )
 	{
-		return XE::ClassID< XE::Asset >::Get();
+		return ::XE_ClassID< XE::Asset >::Get();
 	}
 };
 
-template< typename T > struct XE::ClassID< XE::AssetInstance< T > >
+template< typename T > struct ::XE_ClassID< XE::AssetInstance< T > >
 {
 	static XE::IMetaClassPtr Get( const XE::AssetInstance< T > * val = nullptr )
 	{
-		return XE::ClassID< XE::Asset >::Get();
+		return ::XE_ClassID< XE::Asset >::Get();
 	}
 };
 

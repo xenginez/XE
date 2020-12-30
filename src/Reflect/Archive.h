@@ -180,7 +180,7 @@ template< typename T > struct Cloneable
 public:
 	static T * Clone( T * val )
 	{
-		if( auto cls = ClassID<T>::Get( val ) )
+		if( auto cls = XE_ClassID<T>::Get( val ) )
 		{
 			return cls->Clone( val ).Value<T *>();
 		}
@@ -190,7 +190,7 @@ public:
 
 	static XE::SharedPtr<T> Clone( XE::SharedPtr<T> val )
 	{
-		if( auto cls = ClassID<T>::Get( val.get() ) )
+		if( auto cls = XE_ClassID<T>::Get( val.get() ) )
 		{
 			return XE::SharedPtr<T>( cls->Clone( val.get() ).Value<T *>() );
 		}
@@ -223,7 +223,7 @@ public:
 		}
 		else
 		{
-			if( auto cls = ClassID<T>::Get( val ) )
+			if( auto cls = ::XE_ClassID< T >::Get( val ) )
 			{
 				cls->VisitProperty( [&]( IMetaPropertyPtr prop )
 									{

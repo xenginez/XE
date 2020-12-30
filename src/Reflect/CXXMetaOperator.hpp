@@ -23,8 +23,8 @@ public:
 	using OperatorType = ResultType( *)( ClassType );
 
 public:
-	CXXMetaOperator( const String& Name, OperatorType Oper, IMetaClassPtr Owner )
-		:IMetaOperator( Name, TypeID<typename TypeTraits<ResultType>::raw_t>::Get(), nullptr, Owner ), _Oper( Oper )
+	CXXMetaOperator( const String& Name, OperatorType Oper, IMetaClassPtr Owner, IMetaModulePtr Module )
+		:IMetaOperator( Name, TypeID<typename TypeTraits<ResultType>::raw_t>::Get(), nullptr, Owner, Module ), _Oper( Oper )
 	{
 	}
 
@@ -44,8 +44,8 @@ public:
 	using OperatorType = ResultType( *)( RightType );
 
 public:
-	CXXMetaOperator( const String& Name, OperatorType Oper, IMetaClassPtr Owner )
-		:IMetaOperator( Name, TypeID<typename TypeTraits<ResultType>::raw_t>::Get(), TypeID<typename TypeTraits<RightType>::raw_t>::Get(), Owner ), _Oper( Oper )
+	CXXMetaOperator( const String& Name, OperatorType Oper, IMetaClassPtr Owner, IMetaModulePtr Module )
+		:IMetaOperator( Name, TypeID<typename TypeTraits<ResultType>::raw_t>::Get(), TypeID<typename TypeTraits<RightType>::raw_t>::Get(), Owner, Module ), _Oper( Oper )
 	{
 	}
 
@@ -65,8 +65,8 @@ public:
 	using OperatorType = ResultType( ClassType::* )( );
 
 public:
-	CXXMetaOperator( const String& Name, OperatorType Oper, IMetaClassPtr Owner )
-		:IMetaOperator( Name, TypeID<typename TypeTraits<ResultType>::raw_t>::Get(), nullptr, Owner ), _Oper( Oper )
+	CXXMetaOperator( const String& Name, OperatorType Oper, IMetaClassPtr Owner, IMetaModulePtr Module )
+		:IMetaOperator( Name, TypeID<typename TypeTraits<ResultType>::raw_t>::Get(), nullptr, Owner, Module ), _Oper( Oper )
 	{
 	}
 
@@ -86,8 +86,8 @@ public:
 	using OperatorType = ResultType( ClassType::* )( ) const;
 
 public:
-	CXXMetaOperator( const String& Name, OperatorType Oper, IMetaClassPtr Owner )
-		:IMetaOperator( Name, TypeID<typename TypeTraits<ResultType>::raw_t>::Get(), nullptr, Owner ), _Oper( Oper )
+	CXXMetaOperator( const String& Name, OperatorType Oper, IMetaClassPtr Owner, IMetaModulePtr Module )
+		:IMetaOperator( Name, TypeID<typename TypeTraits<ResultType>::raw_t>::Get(), nullptr, Owner, Module ), _Oper( Oper )
 	{
 	}
 
@@ -107,8 +107,8 @@ public:
 	using OperatorType = ResultType( ClassType::* )( RightType );
 
 public:
-	CXXMetaOperator( const String& Name, OperatorType Oper, IMetaClassPtr Owner )
-		:IMetaOperator( Name, TypeID<typename TypeTraits<ResultType>::raw_t>::Get(), TypeID<typename TypeTraits<RightType>::raw_t>::Get(), Owner ), _Oper( Oper )
+	CXXMetaOperator( const String& Name, OperatorType Oper, IMetaClassPtr Owner, IMetaModulePtr Module )
+		:IMetaOperator( Name, TypeID<typename TypeTraits<ResultType>::raw_t>::Get(), TypeID<typename TypeTraits<RightType>::raw_t>::Get(), Owner, Module ), _Oper( Oper )
 	{
 	}
 
@@ -128,8 +128,8 @@ public:
 	using OperatorType = ResultType( ClassType::* )( RightType ) const;
 
 public:
-	CXXMetaOperator( const String& Name, OperatorType Oper, IMetaClassPtr Owner )
-		:IMetaOperator( Name, TypeID<typename TypeTraits<ResultType>::raw_t>::Get(), TypeID<typename TypeTraits<RightType>::raw_t>::Get(), Owner ), _Oper( Oper )
+	CXXMetaOperator( const String& Name, OperatorType Oper, IMetaClassPtr Owner, IMetaModulePtr Module )
+		:IMetaOperator( Name, TypeID<typename TypeTraits<ResultType>::raw_t>::Get(), TypeID<typename TypeTraits<RightType>::raw_t>::Get(), Owner, Module ), _Oper( Oper )
 	{
 	}
 

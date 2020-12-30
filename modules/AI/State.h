@@ -9,13 +9,11 @@
 #ifndef __STATE_H__0F576F56_4DD5_458C_8B62_10766BAE42AF
 #define __STATE_H__0F576F56_4DD5_458C_8B62_10766BAE42AF
 
-#include "Utils/Asset.h"
-
 #include "BlackboardKey.h"
 
-BEG_XE_NAMESPACE
+BEG_AI_NAMESPACE
 
-class XE_API Condition : public XE::Object
+class AI_API Condition : public XE::Object
 {
 	OBJECT( Condition, Object )
 
@@ -28,43 +26,43 @@ public:
 	virtual bool Judgment() const;
 
 public:
-	const XE::AIModulePtr & GetAIModule() const;
+	const AI::ModulePtr & GetAIModule() const;
 
-	void SetAIModule( const XE::AIModulePtr & val );
+	void SetAIModule( const AI::ModulePtr & val );
 
-	XE::AIStateHandle GetNextStateHandle() const;
+	AI::StateHandle GetNextStateHandle() const;
 
-	void SetNextStateHandle( XE::AIStateHandle val );
+	void SetNextStateHandle( AI::StateHandle val );
 
 private:
-	XE::AIModulePtr _AIModule;
-	XE::AIStateHandle _NextState;
+	AI::ModulePtr _AIModule;
+	AI::StateHandle _NextState;
 };
 
-class XE_API AIState : public XE::Object
+class AI_API State : public XE::Object
 {
-	OBJECT( AIState, Object )
+	OBJECT( State, Object )
 
 public:
 	friend class StateMachine;
 
 public:
-	AIState();
+	State();
 
-	~AIState();
+	~State();
 
 public:
-	AIStateHandle GetHandle() const;
+	AI::StateHandle GetHandle() const;
 
-	void SetHandle( XE::AIStateHandle val );
+	void SetHandle( AI::StateHandle val );
 
 	const XE::String & GetName() const;
 
 	void SetName( const XE::String & val );
 
-	const XE::Array< XE::Condition > & GetConditions() const;
+	const XE::Array< AI::Condition > & GetConditions() const;
 
-	void SetConditions( const XE::Array< XE::Condition > & val );
+	void SetConditions( const XE::Array< AI::Condition > & val );
 
 public:
 	const StateMachinePtr & GetStateMachine() const;
@@ -96,14 +94,14 @@ protected:
 
 private:
 	XE::String _Name;
-	XE::AIStateHandle _Handle;
-	XE::StateMachinePtr _StateMachine;
-	XE::Array< XE::Condition > _Conditions;
+	AI::StateHandle _Handle;
+	AI::StateMachinePtr _StateMachine;
+	XE::Array< AI::Condition > _Conditions;
 };
 
-class XE_API SubState : public XE::AIState
+class AI_API SubState : public AI::State
 {
-	OBJECT( SubState, AIState )
+	OBJECT( SubState, State )
 
 public:
 	SubState();
@@ -111,9 +109,9 @@ public:
 	~SubState();
 
 public:
-	const XE::Map<XE::BlackboardKey, XE::BlackboardKey> & GetConnectKeys() const;
+	const XE::Map<AI::BlackboardKey, AI::BlackboardKey> & GetConnectKeys() const;
 
-	void SetConnectKeys( const XE::Map<XE::BlackboardKey, XE::BlackboardKey> & val );
+	void SetConnectKeys( const XE::Map<AI::BlackboardKey, AI::BlackboardKey> & val );
 
 protected:
 	void OnStartup() override;
@@ -129,10 +127,10 @@ protected:
 	void AssetLoad() override;
 
 private:
-	XE::AssetInstance< XE::AIModule > _AIModule;
-	XE::Map<XE::BlackboardKey, XE::BlackboardKey> _ConnectKeys;
+	XE::AssetInstance< AI::Module > _AIModule;
+	XE::Map<AI::BlackboardKey, AI::BlackboardKey> _ConnectKeys;
 };
 
-END_XE_NAMESPACE
+END_AI_NAMESPACE
 
 #endif // __STATE_H__0F576F56_4DD5_458C_8B62_10766BAE42AF

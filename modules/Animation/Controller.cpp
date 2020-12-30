@@ -1,4 +1,4 @@
-#include "AnimationController.h"
+#include "Controller.h"
 
 #include <tbb/parallel_for.h>
 
@@ -8,40 +8,38 @@
 #include <ozz/animation/runtime/blending_job.h>
 #include <ozz/animation/runtime/local_to_model_job.h>
 
-#include "Utils/Logger.h"
-
 #include "Skeleton.h"
-#include "AnimationLayer.h"
+#include "Layer.h"
 
-BEG_META( XE::AnimationController )
-type->Property( "Keys", &XE::AnimationController::_Keys );
-type->Property( "Layers", &XE::AnimationController::_Layers );
-type->Property( "Skeleton", &XE::AnimationController::_Skeleton );
+BEG_META( Animation::Controller )
+type->Property( "Keys", &Animation::Controller::_Keys );
+type->Property( "Layers", &Animation::Controller::_Layers );
+type->Property( "Skeleton", &Animation::Controller::_Skeleton );
 END_META()
 
-XE::AnimationController::AnimationController()
+Animation::Controller::Controller()
 {
 
 }
 
-XE::AnimationController::~AnimationController()
+Animation::Controller::~Controller()
 {
 
 }
 
-void XE::AnimationController::Startup()
+void Animation::Controller::Startup()
 {
 	auto skeleton = reinterpret_cast< ozz::animation::Skeleton * >( _Skeleton->GetHandle().GetValue() );
 	_SkeletonTransform.resize( skeleton->num_joints() );
 
 	for( auto & layer : _Layers )
 	{
-		layer->SetAnimationController( XE_THIS( XE::AnimationController ) );
+		layer->SetAnimationController( XE_THIS( Animation::Controller ) );
 		layer->Startup();
 	}
 }
 
-void XE::AnimationController::Update( XE::float32 dt )
+void Animation::Controller::Update( XE::float32 dt )
 {
 	for( auto & layer : _Layers )
 	{
@@ -68,7 +66,7 @@ void XE::AnimationController::Update( XE::float32 dt )
 	blend_job.output = ozz::make_span( local );
 	if( !blend_job.Run() )
 	{
-		XE_LOG( LoggerLevel::Error, "%1 animation controller runing blend job error", GetName() );
+		XE_LOG( XE::LoggerLevel::Error, "%1 animation controller runing blend job error", GetName() );
 		return;
 	}
 
@@ -80,7 +78,7 @@ void XE::AnimationController::Update( XE::float32 dt )
 
 	if( !ltm_job.Run() )
 	{
-		XE_LOG( LoggerLevel::Error, "%1 animation controller runing local to model job error", GetName() );
+		XE_LOG( XE::LoggerLevel::Error, "%1 animation controller runing local to model job error", GetName() );
 		return;
 	}
 
@@ -108,7 +106,7 @@ void XE::AnimationController::Update( XE::float32 dt )
 	}
 }
 
-void XE::AnimationController::Clearup()
+void Animation::Controller::Clearup()
 {
 	for( auto & layer : _Layers )
 	{
@@ -118,7 +116,7 @@ void XE::AnimationController::Clearup()
 	_Skeleton = nullptr;
 }
 
-void XE::AnimationController::AssetLoad()
+void Animation::Controller::AssetLoad()
 {
 	Super::AssetLoad();
 
@@ -130,47 +128,47 @@ void XE::AnimationController::AssetLoad()
 	}
 }
 
-const XE::String & XE::AnimationController::GetName() const
+const XE::String & Animation::Controller::GetName() const
 {
 	return _Name;
 }
 
-void XE::AnimationController::SetName( const XE::String & val )
+void Animation::Controller::SetName( const XE::String & val )
 {
 	_Name = val;
 }
 
-const XE::AssetPtr<XE::Skeleton> & XE::AnimationController::GetSkeleton() const
+const XE::AssetPtr<Animation::Skeleton> & Animation::Controller::GetSkeleton() const
 {
 	return _Skeleton;
 }
 
-void XE::AnimationController::SetSkeleton( const XE::AssetPtr<XE::Skeleton> & val )
+void Animation::Controller::SetSkeleton( const XE::AssetPtr<Animation::Skeleton> & val )
 {
 	_Skeleton = val;
 }
 
-const XE::Array< XE::Mat4f > & XE::AnimationController::GetSkeletonTransform() const
+const XE::Array< XE::Mat4f > & Animation::Controller::GetSkeletonTransform() const
 {
 	return _SkeletonTransform;
 }
 
-void XE::AnimationController::SetSkeletonTransform( const XE::Array< XE::Mat4f > & val )
+void Animation::Controller::SetSkeletonTransform( const XE::Array< XE::Mat4f > & val )
 {
 	_SkeletonTransform = val;
 }
 
-const XE::Array< XE::AnimationLayerPtr > & XE::AnimationController::GetAnimationLayers() const
+const XE::Array< Animation::LayerPtr > & Animation::Controller::GetAnimationLayers() const
 {
 	return _Layers;
 }
 
-void XE::AnimationController::SetAnimationLayers( const XE::Array< XE::AnimationLayerPtr > & val )
+void Animation::Controller::SetAnimationLayers( const XE::Array< Animation::LayerPtr > & val )
 {
 	_Layers = val;
 }
 
-XE::Variant XE::AnimationController::GetKey( const XE::String & val ) const
+XE::Variant Animation::Controller::GetKey( const XE::String & val ) const
 {
 	auto it = _Keys.find( val );
 
@@ -182,22 +180,22 @@ XE::Variant XE::AnimationController::GetKey( const XE::String & val ) const
 	return {};
 }
 
-void XE::AnimationController::SetKey( const XE::String & key, const XE::Variant & val )
+void Animation::Controller::SetKey( const XE::String & key, const XE::Variant & val )
 {
 	_Keys[key] = val;
 }
 
-const XE::Map<XE::String, XE::Variant> & XE::AnimationController::GetKeys() const
+const XE::Map<XE::String, XE::Variant> & Animation::Controller::GetKeys() const
 {
 	return _Keys;
 }
 
-void XE::AnimationController::SetKeys( const XE::Map<XE::String, XE::Variant> & val )
+void Animation::Controller::SetKeys( const XE::Map<XE::String, XE::Variant> & val )
 {
 	_Keys = val;
 }
 
-void XE::AnimationController::PostEvent( const XE::EventPtr & val )
+void Animation::Controller::PostEvent( const XE::EventPtr & val )
 {
 	if( _ProcessEventCallback )
 	{
@@ -209,7 +207,7 @@ void XE::AnimationController::PostEvent( const XE::EventPtr & val )
 	}
 }
 
-void XE::AnimationController::ProcessEvent( const EventPtr & val )
+void Animation::Controller::ProcessEvent( const XE::EventPtr & val )
 {
 	for( auto & layer : _Layers )
 	{
@@ -217,7 +215,7 @@ void XE::AnimationController::ProcessEvent( const EventPtr & val )
 	}
 }
 
-void XE::AnimationController::SetProcessEventCallback( const ProcessEventCallback & val )
+void Animation::Controller::SetProcessEventCallback( const ProcessEventCallback & val )
 {
 	_ProcessEventCallback = val;
 }

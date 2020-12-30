@@ -9,13 +9,13 @@
 #ifndef __STATEMACHINE_H__3DD22731_F659_468F_92EE_F7E7F88C3CFE
 #define __STATEMACHINE_H__3DD22731_F659_468F_92EE_F7E7F88C3CFE
 
-#include "AIModule.h"
+#include "Module.h"
 
-BEG_XE_NAMESPACE
+BEG_AI_NAMESPACE
 
-class XE_API StateMachine :  public XE::AIModule
+class AI_API StateMachine :  public AI::Module
 {
-	OBJECT( StateMachine, AIModule )
+	OBJECT( StateMachine, Module )
 
 public:
 	StateMachine();
@@ -36,24 +36,24 @@ public:
 	void AssetLoad() override;
 
 public:
-	XE::AIStateHandle GetRoot() const;
+	AI::StateHandle GetRoot() const;
 
-	void SetRoot( XE::AIStateHandle val );
+	void SetRoot( AI::StateHandle val );
 
-	XE::AIStatePtr GetCurrentState() const;
+	AI::StatePtr GetCurrentState() const;
 
-	XE::AIStatePtr GetState( XE::AIStateHandle val );
+	AI::StatePtr GetState( AI::StateHandle val );
 
-	const XE::Array< XE::AIStatePtr > & GetStates() const;
+	const XE::Array< AI::StatePtr > & GetStates() const;
 
-	void SetStates( const XE::Array< XE::AIStatePtr > & val );
+	void SetStates( const XE::Array< AI::StatePtr > & val );
 
 private:
-	AIStateHandle _Root;
-	AIStateHandle _Current;
-	Array< AIStatePtr > _States;
+	AI::StateHandle _Root;
+	AI::StateHandle _Current;
+	XE::Array< AI::StatePtr > _States;
 };
 
-END_XE_NAMESPACE
+END_AI_NAMESPACE
 
 #endif // __STATEMACHINE_H__3DD22731_F659_468F_92EE_F7E7F88C3CFE

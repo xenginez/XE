@@ -240,7 +240,7 @@ void XE::ThreadService::Prepare()
 
 bool XE::ThreadService::Startup()
 {
-	_p->_Threads.resize( EnumID<XE::ThreadType>::Get()->GetEnumCount() );
+	_p->_Threads.resize( ::XE_EnumID<XE::ThreadType>::Get()->GetEnumCount() );
 
 	_p->_Threads[( XE::uint64 )XE::ThreadType::IO] = new XEPSpecialThread();
 	_p->_Threads[( XE::uint64 )XE::ThreadType::GAME] = new XEPMainThread();

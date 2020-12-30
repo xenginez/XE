@@ -10,7 +10,7 @@
 #define ANIMATION_H__2DF5C375_5088_41EB_8C3F_CEA376A63895
 
 #include "Skeleton.h"
+#include "Controller.h"
 #include "SkeletonAnimation.h"
-#include "AnimationController.h"
 
 #endif // ANIMATION_H__2DF5C375_5088_41EB_8C3F_CEA376A63895

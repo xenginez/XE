@@ -1,32 +1,29 @@
 /*!
- * \file	AnimationController.h
+ * \file	Controller.h
  *
  * \author	ZhengYuanQing
  * \date	2020/10/22
  * \email	zhengyuanqing.95@gmail.com
  *
  */
-#ifndef ANIMATIONCONTROLLER_H__791BB598_7A96_4DEC_B252_90E6EF8ACCAC
-#define ANIMATIONCONTROLLER_H__791BB598_7A96_4DEC_B252_90E6EF8ACCAC
-
-#include "Utils/Asset.h"
-#include "Utils/Object.h"
+#ifndef CONTROLLER_H__791BB598_7A96_4DEC_B252_90E6EF8ACCAC
+#define CONTROLLER_H__791BB598_7A96_4DEC_B252_90E6EF8ACCAC
 
 #include "Type.h"
 
-BEG_XE_NAMESPACE
+BEG_ANIMATION_NAMESPACE
 
-class XE_API AnimationController : public XE::Object
+class ANIMATION_API Controller : public XE::Object
 {
-	OBJECT( AnimationController, Object )
+	OBJECT( Controller, Object )
 
 public:
 	using ProcessEventCallback = std::function<void( const XE::EventPtr & )>;
 
 public:
-	AnimationController();
+	Controller();
 
-	~AnimationController() override;
+	~Controller() override;
 
 public:
 	void Startup();
@@ -42,17 +39,17 @@ public:
 
 	void SetName( const XE::String & val );
 
-	const XE::AssetPtr<XE::Skeleton> & GetSkeleton() const;
-
-	void SetSkeleton( const XE::AssetPtr<XE::Skeleton> & val );
-
 	const XE::Array< XE::Mat4f > & GetSkeletonTransform() const;
 
 	void SetSkeletonTransform( const XE::Array< XE::Mat4f > & val );
 
-	const XE::Array< XE::AnimationLayerPtr > & GetAnimationLayers() const;
+	const XE::AssetPtr<Animation::Skeleton> & GetSkeleton() const;
 
-	void SetAnimationLayers( const XE::Array< XE::AnimationLayerPtr > & val );
+	void SetSkeleton( const XE::AssetPtr<Animation::Skeleton> & val );
+
+	const XE::Array< Animation::LayerPtr > & GetAnimationLayers() const;
+
+	void SetAnimationLayers( const XE::Array< Animation::LayerPtr > & val );
 
 public:
 	XE::Variant GetKey( const XE::String & val ) const;
@@ -66,19 +63,19 @@ public:
 public:
 	void PostEvent( const XE::EventPtr & val );
 
-	void ProcessEvent( const EventPtr & val ) override;
+	void ProcessEvent( const XE::EventPtr & val ) override;
 
 	void SetProcessEventCallback( const ProcessEventCallback & val );
 
 private:
 	XE::String _Name;
-	XE::AssetPtr<XE::Skeleton> _Skeleton;
 	XE::Map<XE::String, XE::Variant> _Keys;
+	XE::Array< Animation::LayerPtr > _Layers;
 	XE::Array< XE::Mat4f > _SkeletonTransform;
-	XE::Array< XE::AnimationLayerPtr > _Layers;
 	ProcessEventCallback _ProcessEventCallback;
+	XE::AssetPtr<Animation::Skeleton> _Skeleton;
 };
 
-END_XE_NAMESPACE
+END_ANIMATION_NAMESPACE
 
-#endif // ANIMATIONCONTROLLER_H__791BB598_7A96_4DEC_B252_90E6EF8ACCAC
+#endif // CONTROLLER_H__791BB598_7A96_4DEC_B252_90E6EF8ACCAC

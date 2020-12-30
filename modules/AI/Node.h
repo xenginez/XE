@@ -11,38 +11,36 @@
 
 #include <random>
 
-#include "Utils/Asset.h"
-
 #include "BlackboardKey.h"
 
-BEG_XE_NAMESPACE
+BEG_AI_NAMESPACE
 
-class XE_API AINode : public XE::Object
+class AI_API Node : public XE::Object
 {
-	OBJECT( AINode, Object )
+	OBJECT( Node, Object )
 
 private:
 	friend class BehaviorTree;
 
 public:
-	AINode();
+	Node();
 
-	~AINode();
+	~Node();
 
 public:
-	XE::AINodeType GetType() const;
+	AI::AINodeType GetType() const;
 
 	AINodeStatus GetStatus() const;
 
 	void SetStatus( AINodeStatus val );
 
-	AINodeHandle GetHandle() const;
+	AI::NodeHandle GetHandle() const;
 
-	void SetHandle( AINodeHandle val );
+	void SetHandle( AI::NodeHandle val );
 
-	AINodeHandle GetParent() const;
+	AI::NodeHandle GetParent() const;
 
-	void SetParent( AINodeHandle val );
+	void SetParent( AI::NodeHandle val );
 
 	const XE::String & GetName() const;
 
@@ -51,7 +49,7 @@ public:
 	BehaviorTreePtr GetBehaviorTree() const;
 
 protected:
-	void SetType( XE::AINodeType val );
+	void SetType( AI::AINodeType val );
 
 private:
 	void SetBehaviorTree( BehaviorTreePtr val );
@@ -80,17 +78,17 @@ protected:
 
 private:
 	XE::String _Name;
-	XE::AINodeType _Type;
+	AI::AINodeType _Type;
 	AINodeStatus _Status;
-	AINodeHandle _Handle;
-	AINodeHandle _Parent;
+	AI::NodeHandle _Handle;
+	AI::NodeHandle _Parent;
 
 	BehaviorTreeWPtr _BehaviorTree;
 };
 
-class XE_API SubNode : public XE::AINode
+class AI_API SubNode : public AI::Node
 {
-	OBJECT( SubNode, AINode )
+	OBJECT( SubNode, Node )
 
 public:
 	SubNode();
@@ -98,9 +96,9 @@ public:
 	~SubNode();
 
 public:
-	const XE::Map<XE::BlackboardKey, XE::BlackboardKey> & GetConnectKeys() const;
+	const XE::Map<AI::BlackboardKey, AI::BlackboardKey> & GetConnectKeys() const;
 
-	void SetConnectKeys( const XE::Map<XE::BlackboardKey, XE::BlackboardKey> & val );
+	void SetConnectKeys( const XE::Map<AI::BlackboardKey, AI::BlackboardKey> & val );
 
 protected:
 	void OnStartup() override;
@@ -114,13 +112,13 @@ protected:
 	void OnClearup() override;
 
 private:
-	XE::AssetInstance< XE::AIModule > _AIModule;
-	XE::Map<XE::BlackboardKey, XE::BlackboardKey> _ConnectKeys;
+	XE::AssetInstance< AI::Module > _AIModule;
+	XE::Map<AI::BlackboardKey, AI::BlackboardKey> _ConnectKeys;
 };
 
-class XE_API ActionNode : public AINode
+class AI_API ActionNode : public Node
 {
-	OBJECT( ActionNode, AINode )
+	OBJECT( ActionNode, Node )
 
 public:
 	ActionNode();
@@ -129,9 +127,9 @@ public:
 
 };
 
-class XE_API CompositeNode : public AINode
+class AI_API CompositeNode : public Node
 {
-	OBJECT( CompositeNode, AINode )
+	OBJECT( CompositeNode, Node )
 
 public:
 	CompositeNode();
@@ -144,15 +142,15 @@ protected:
 	void OnQuit() override;
 
 public:
-	const XE::Array<XE::AINodeHandle> & GetChildren() const;
+	const XE::Array<AI::NodeHandle> & GetChildren() const;
 
-	void SetChildren( const XE::Array<XE::AINodeHandle> & val );
+	void SetChildren( const XE::Array<AI::NodeHandle> & val );
 
 private:
-	XE::Array<XE::AINodeHandle> _Children;
+	XE::Array<AI::NodeHandle> _Children;
 };
 
-class XE_API SequenceNode : public CompositeNode
+class AI_API SequenceNode : public CompositeNode
 {
 	OBJECT( SequenceNode, CompositeNode )
 
@@ -170,7 +168,7 @@ private:
 	XE::uint64 _Current;
 };
 
-class XE_API SelectorNode : public CompositeNode
+class AI_API SelectorNode : public CompositeNode
 {
 	OBJECT( SelectorNode, CompositeNode )
 
@@ -188,7 +186,7 @@ private:
 	XE::uint64 _Current;
 };
 
-class XE_API RandomSelectorNode : public CompositeNode
+class AI_API RandomSelectorNode : public CompositeNode
 {
 	OBJECT( RandomSelectorNode, CompositeNode )
 
@@ -209,7 +207,7 @@ private:
 	std::uniform_int_distribution<XE::uint64> _Uniform;
 };
 
-class XE_API ParallelSequenceNode : public CompositeNode
+class AI_API ParallelSequenceNode : public CompositeNode
 {
 	OBJECT( ParallelSequenceNode, CompositeNode )
 
@@ -223,7 +221,7 @@ protected:
 
 };
 
-class XE_API ParallelSelectorNode : public CompositeNode
+class AI_API ParallelSelectorNode : public CompositeNode
 {
 	OBJECT( ParallelSelectorNode, CompositeNode )
 
@@ -237,9 +235,9 @@ protected:
 
 };
 
-class XE_API ConditionNode : public XE::AINode
+class AI_API ConditionNode : public AI::Node
 {
-	OBJECT( ConditionNode, AINode )
+	OBJECT( ConditionNode, Node )
 
 public:
 	ConditionNode();
@@ -247,9 +245,9 @@ public:
 	~ConditionNode();
 
 public:
-	XE::AINodeHandle GetChild() const;
+	AI::NodeHandle GetChild() const;
 
-	void SetChild( XE::AINodeHandle val );
+	void SetChild( AI::NodeHandle val );
 
 public:
 	void OnEnter() override;
@@ -266,12 +264,12 @@ public:
 
 private:
 	bool _CurJudgment;
-	XE::AINodeHandle _Child;
+	AI::NodeHandle _Child;
 };
 
-class XE_API DecoratorNode : public AINode
+class AI_API DecoratorNode : public Node
 {
-	OBJECT( DecoratorNode, AINode )
+	OBJECT( DecoratorNode, Node )
 
 public:
 	DecoratorNode();
@@ -279,9 +277,9 @@ public:
 	~DecoratorNode();
 
 public:
-	XE::AINodeHandle GetChild() const;
+	AI::NodeHandle GetChild() const;
 
-	void SetChild( XE::AINodeHandle val );
+	void SetChild( AI::NodeHandle val );
 
 public:
 	void OnEnter() override;
@@ -291,10 +289,10 @@ public:
 	void OnQuit() override;
 
 private:
-	AINodeHandle _Child;
+	AI::NodeHandle _Child;
 };
 
-class XE_API RepeatNode : public DecoratorNode
+class AI_API RepeatNode : public DecoratorNode
 {
 	OBJECT( RepeatNode, DecoratorNode )
 
@@ -313,7 +311,7 @@ private:
 	XE::uint64 _Tally;
 };
 
-class XE_API SuccessNode : public DecoratorNode
+class AI_API SuccessNode : public DecoratorNode
 {
 	OBJECT( SuccessNode, DecoratorNode )
 
@@ -329,7 +327,7 @@ public:
 
 };
 
-class XE_API FailureNode : public DecoratorNode
+class AI_API FailureNode : public DecoratorNode
 {
 	OBJECT( FailureNode, DecoratorNode )
 
@@ -345,7 +343,7 @@ public:
 
 };
 
-class XE_API ReversedNode : public DecoratorNode
+class AI_API ReversedNode : public DecoratorNode
 {
 	OBJECT( ReversedNode, DecoratorNode )
 
@@ -361,7 +359,7 @@ public:
 
 };
 
-class XE_API DelayNode : public DecoratorNode
+class AI_API DelayNode : public DecoratorNode
 {
 	OBJECT( DelayNode, DecoratorNode )
 
@@ -380,6 +378,6 @@ private:
 	XE::float32 _Dt;
 };
 
-END_XE_NAMESPACE
+END_AI_NAMESPACE
 
 #endif // __NODE_H__4E15E329_D9A1_4F5D_B63A_CA4079844C18

@@ -1,22 +1,22 @@
 #include "Blueprint.h"
 
-#include "AIElement.h"
+#include "Element.h"
 
-BEG_META( XE::Blueprint )
-type->Property( "Elements", &Blueprint::_Elements, IMetaProperty::NoDesign );
+BEG_META( AI::Blueprint )
+type->Property( "Elements", &AI::Blueprint::_Elements, XE::IMetaProperty::NoDesign );
 END_META()
 
-XE::Blueprint::Blueprint()
+AI::Blueprint::Blueprint()
 {
 
 }
 
-XE::Blueprint::~Blueprint()
+AI::Blueprint::~Blueprint()
 {
 
 }
 
-void XE::Blueprint::Startup()
+void AI::Blueprint::Startup()
 {
 	Super::Startup();
 
@@ -26,9 +26,9 @@ void XE::Blueprint::Startup()
 
 		element->Startup();
 
-		if( element->GetType() == XE::AIElementType::EVENT_ELEMENET )
+		if( element->GetType() == AI::AIElementType::EVENT_ELEMENET )
 		{
-			auto event = static_cast< XE::EventElement * >( element.get() );
+			auto event = static_cast< AI::EventElement * >( element.get() );
 			
 			if( event->GetListenerEvent() == EVENT_UPDATE )
 			{
@@ -48,7 +48,7 @@ void XE::Blueprint::Startup()
 	}
 }
 
-void XE::Blueprint::Enter()
+void AI::Blueprint::Enter()
 {
 	Super::Enter();
 
@@ -61,19 +61,19 @@ void XE::Blueprint::Enter()
 	}
 }
 
-void XE::Blueprint::Update( XE::float32 dt )
+void AI::Blueprint::Update( XE::float32 dt )
 {
 	Super::Update( dt );
 
 	for( auto event : _Updates )
 	{
-		SP_CAST<XE::VariantOutputPort>( event->GetOutputPort() )->Result = dt;
+		SP_CAST<AI::VariantOutputPort>( event->GetOutputPort() )->Result = dt;
 
 		event->Execute();
 	}
 }
 
-void XE::Blueprint::Quit()
+void AI::Blueprint::Quit()
 {
 	for( auto event : _Events )
 	{
@@ -86,7 +86,7 @@ void XE::Blueprint::Quit()
 	Super::Quit();
 }
 
-void XE::Blueprint::Clearup()
+void AI::Blueprint::Clearup()
 {
 	for( auto event : _Events )
 	{
@@ -109,12 +109,12 @@ void XE::Blueprint::Clearup()
 	Super::Clearup();
 }
 
-bool XE::Blueprint::IsStopped() const
+bool AI::Blueprint::IsStopped() const
 {
 	return _Events.size() == 0;
 }
 
-void XE::Blueprint::AssetLoad()
+void AI::Blueprint::AssetLoad()
 {
 	Super::AssetLoad();
 
@@ -124,7 +124,7 @@ void XE::Blueprint::AssetLoad()
 	}
 }
 
-void XE::Blueprint::ProcessEvent( const EventPtr & val )
+void AI::Blueprint::ProcessEvent( const XE::EventPtr & val )
 {
 	if( val && !val->accept )
 	{
@@ -132,7 +132,7 @@ void XE::Blueprint::ProcessEvent( const EventPtr & val )
 		{
 			if( event->GetListenerEvent() == val->handle )
 			{
-				SP_CAST<XE::VariantOutputPort>( event->GetOutputPort() )->Result = val->parameter;
+				SP_CAST<AI::VariantOutputPort>( event->GetOutputPort() )->Result = val->parameter;
 
 				event->Execute();
 			}
@@ -145,17 +145,17 @@ void XE::Blueprint::ProcessEvent( const EventPtr & val )
 	}
 }
 
-const XE::Array< XE::AIElementPtr > & XE::Blueprint::GetElements() const
+const XE::Array< AI::ElementPtr > & AI::Blueprint::GetElements() const
 {
 	return _Elements;
 }
 
-void XE::Blueprint::SetElements( const XE::Array< XE::AIElementPtr > & val )
+void AI::Blueprint::SetElements( const XE::Array< AI::ElementPtr > & val )
 {
 	_Elements = val;
 }
 
-XE::AIElementPtr XE::Blueprint::GetElement( XE::AIElementHandle val ) const
+AI::ElementPtr AI::Blueprint::GetElement( AI::ElementHandle val ) const
 {
 	XE_ASSERT( val.GetValue() <= _Elements.size() );
 

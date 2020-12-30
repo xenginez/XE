@@ -147,53 +147,53 @@ void XE::JsonSaveArchive::Serialize( NameValue & val )
 {
 	std::string name = val.Name == "" ? "@item" : val.Name;
 
-	if( val.Value.GetType() == TypeID<bool>::Get() )
+	if( val.Value.GetType() == ::XE_TypeID<bool>::Get() )
 	{
 		rapidjson::Value value( rapidjson::kFalseType );
 		value.SetBool( val.Value.Value<bool>() );
 		_p->Values.top()->AddMember( rapidjson::Value( name.c_str(), _p->Doc.GetAllocator() ).Move(), value, _p->Doc.GetAllocator() );
 	}
-	else if( val.Value.GetType() == TypeID<XE::int8>::Get() ||
-			 val.Value.GetType() == TypeID<XE::int16>::Get() ||
-			 val.Value.GetType() == TypeID<XE::int32>::Get() )
+	else if( val.Value.GetType() == ::XE_TypeID<XE::int8>::Get() ||
+			 val.Value.GetType() == ::XE_TypeID<XE::int16>::Get() ||
+			 val.Value.GetType() == ::XE_TypeID<XE::int32>::Get() )
 	{
 		rapidjson::Value value( rapidjson::kNumberType );
 		value.SetInt( val.Value.Value<XE::int32>() );
 		_p->Values.top()->AddMember( rapidjson::Value( name.c_str(), _p->Doc.GetAllocator() ).Move(), value, _p->Doc.GetAllocator() );
 	}
-	else if( val.Value.GetType() == TypeID<XE::int64>::Get() )
+	else if( val.Value.GetType() == ::XE_TypeID<XE::int64>::Get() )
 	{
 		rapidjson::Value value( rapidjson::kNumberType );
 		value.SetInt64( val.Value.Value<XE::int64>() );
 		_p->Values.top()->AddMember( rapidjson::Value( name.c_str(), _p->Doc.GetAllocator() ).Move(), value, _p->Doc.GetAllocator() );
 	}
-	else if( val.Value.GetType() == TypeID<XE::uint8>::Get() ||
-			 val.Value.GetType() == TypeID<XE::uint16>::Get() ||
-			 val.Value.GetType() == TypeID<XE::uint32>::Get() )
+	else if( val.Value.GetType() == ::XE_TypeID<XE::uint8>::Get() ||
+			 val.Value.GetType() == ::XE_TypeID<XE::uint16>::Get() ||
+			 val.Value.GetType() == ::XE_TypeID<XE::uint32>::Get() )
 	{
 		rapidjson::Value value( rapidjson::kNumberType );
 		value.SetUint( val.Value.Value<XE::uint32>() );
 		_p->Values.top()->AddMember( rapidjson::Value( name.c_str(), _p->Doc.GetAllocator() ).Move(), value, _p->Doc.GetAllocator() );
 	}
-	else if( val.Value.GetType() == TypeID<XE::uint64>::Get() )
+	else if( val.Value.GetType() == ::XE_TypeID<XE::uint64>::Get() )
 	{
 		rapidjson::Value value( rapidjson::kNumberType );
 		value.SetUint64( val.Value.Value<XE::uint64>() );
 		_p->Values.top()->AddMember( rapidjson::Value( name.c_str(), _p->Doc.GetAllocator() ).Move(), value, _p->Doc.GetAllocator() );
 	}
-	else if( val.Value.GetType() == TypeID<XE::float32>::Get() )
+	else if( val.Value.GetType() == ::XE_TypeID<XE::float32>::Get() )
 	{
 		rapidjson::Value value( rapidjson::kNumberType );
 		value.SetFloat( val.Value.Value<XE::float32>() );
 		_p->Values.top()->AddMember( rapidjson::Value( name.c_str(), _p->Doc.GetAllocator() ).Move(), value, _p->Doc.GetAllocator() );
 	}
-	else if( val.Value.GetType() == TypeID<XE::float64>::Get() )
+	else if( val.Value.GetType() == ::XE_TypeID<XE::float64>::Get() )
 	{
 		rapidjson::Value value( rapidjson::kNumberType );
 		value.SetDouble( val.Value.Value<XE::float64>() );
 		_p->Values.top()->AddMember( rapidjson::Value( name.c_str(), _p->Doc.GetAllocator() ).Move(), value, _p->Doc.GetAllocator() );
 	}
-	else if( val.Value.GetType() == TypeID<String>::Get() )
+	else if( val.Value.GetType() == ::XE_TypeID<String>::Get() )
 	{
 		rapidjson::Value value( rapidjson::kStringType );
 		value.SetString( val.Value.Value<String>().ToCString(), _p->Doc.GetAllocator() );
@@ -279,52 +279,52 @@ void XE::BinaryLoadArchive::Serialize( NameValue & val )
 	{
 		if( flag == ( XE::uint32 )Variant::Flag::FUNDAMENTAL )
 		{
-			if( type == TypeID<std::nullptr_t>::Get() )
+			if( type == ::XE_TypeID<std::nullptr_t>::Get() )
 			{
 				val.Value = nullptr;
 			}
-			else if( type == TypeID<bool>::Get() )
+			else if( type == ::XE_TypeID<bool>::Get() )
 			{
 				bool v = false;
 				_p->Stream >> v; val.Value = v;
 			}
-			else if( type == TypeID<XE::int8>::Get() )
+			else if( type == ::XE_TypeID<XE::int8>::Get() )
 			{
 				XE::int8 v = 0; _p->Stream >> v; val.Value = v;
 			}
-			else if( type == TypeID<XE::int16>::Get() )
+			else if( type == ::XE_TypeID<XE::int16>::Get() )
 			{
 				XE::int16 v = 0; _p->Stream >> v; val.Value = v;
 			}
-			else if( type == TypeID<XE::int32>::Get() )
+			else if( type == ::XE_TypeID<XE::int32>::Get() )
 			{
 				XE::int32 v = 0; _p->Stream >> v; val.Value = v;
 			}
-			else if( type == TypeID<XE::int64>::Get() )
+			else if( type == ::XE_TypeID<XE::int64>::Get() )
 			{
 				XE::int64 v = 0; _p->Stream >> v; val.Value = v;
 			}
-			else if( type == TypeID<XE::uint8>::Get() )
+			else if( type == ::XE_TypeID<XE::uint8>::Get() )
 			{
 				XE::uint8 v = 0; _p->Stream >> v; val.Value = v;
 			}
-			else if( type == TypeID<XE::uint16>::Get() )
+			else if( type == ::XE_TypeID<XE::uint16>::Get() )
 			{
 				XE::uint16 v = 0; _p->Stream >> v; val.Value = v;
 			}
-			else if( type == TypeID<XE::uint32>::Get() )
+			else if( type == ::XE_TypeID<XE::uint32>::Get() )
 			{
 				XE::uint32 v = 0; _p->Stream >> v; val.Value = v;
 			}
-			else if( type == TypeID<XE::uint64>::Get() )
+			else if( type == ::XE_TypeID<XE::uint64>::Get() )
 			{
 				XE::uint64 v = 0; _p->Stream >> v; val.Value = v;
 			}
-			else if( type == TypeID<XE::float32>::Get() )
+			else if( type == ::XE_TypeID<XE::float32>::Get() )
 			{
 				XE::float32 v = 0; _p->Stream >> v; val.Value = v;
 			}
-			else if( type == TypeID<XE::float32>::Get() )
+			else if( type == ::XE_TypeID<XE::float32>::Get() )
 			{
 				XE::float64 v = 0; _p->Stream >> v; val.Value = v;
 			}
@@ -392,51 +392,51 @@ void XE::BinarySaveArchive::Serialize( NameValue & val )
 	{
 		if( flag == ( XE::uint32 )Variant::Flag::FUNDAMENTAL )
 		{
-			if( type == TypeID<std::nullptr_t>::Get() )
+			if( type == ::XE_TypeID<std::nullptr_t>::Get() )
 			{
 
 			}
-			else if( type == TypeID<bool>::Get() )
+			else if( type == ::XE_TypeID<bool>::Get() )
 			{
 				_p->Stream << val.Value.Value<bool>();
 			}
-			else if( type == TypeID<XE::int8>::Get() )
+			else if( type == ::XE_TypeID<XE::int8>::Get() )
 			{
 				_p->Stream << val.Value.Value<XE::int8>();
 			}
-			else if( type == TypeID<XE::int16>::Get() )
+			else if( type == ::XE_TypeID<XE::int16>::Get() )
 			{
 				_p->Stream << val.Value.Value<XE::int16>();
 			}
-			else if( type == TypeID<XE::int32>::Get() )
+			else if( type == ::XE_TypeID<XE::int32>::Get() )
 			{
 				_p->Stream << val.Value.Value<XE::int32>();
 			}
-			else if( type == TypeID<XE::int64>::Get() )
+			else if( type == ::XE_TypeID<XE::int64>::Get() )
 			{
 				_p->Stream << val.Value.Value<XE::int64>();
 			}
-			else if( type == TypeID<XE::uint8>::Get() )
+			else if( type == ::XE_TypeID<XE::uint8>::Get() )
 			{
 				_p->Stream << val.Value.Value<XE::uint8>();
 			}
-			else if( type == TypeID<XE::uint16>::Get() )
+			else if( type == ::XE_TypeID<XE::uint16>::Get() )
 			{
 				_p->Stream << val.Value.Value<XE::uint16>();
 			}
-			else if( type == TypeID<XE::uint32>::Get() )
+			else if( type == ::XE_TypeID<XE::uint32>::Get() )
 			{
 				_p->Stream << val.Value.Value<XE::uint32>();
 			}
-			else if( type == TypeID<XE::uint64>::Get() )
+			else if( type == ::XE_TypeID<XE::uint64>::Get() )
 			{
 				_p->Stream << val.Value.Value<XE::uint64>();
 			}
-			else if( type == TypeID<XE::float32>::Get() )
+			else if( type == ::XE_TypeID<XE::float32>::Get() )
 			{
 				_p->Stream << val.Value.Value<XE::float32>();
 			}
-			else if( type == TypeID<XE::float32>::Get() )
+			else if( type == ::XE_TypeID<XE::float32>::Get() )
 			{
 				_p->Stream << val.Value.Value<XE::float64>();
 			}

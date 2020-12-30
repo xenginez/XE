@@ -4,25 +4,25 @@
 
 #define _p reinterpret_cast<ozz::animation::Animation*>(_Handle.GetValue())
 
-BEG_META( XE::SkeletonAnimation )
+BEG_META( Animation::SkeletonAnimation )
 END_META()
 
-XE::SkeletonAnimation::SkeletonAnimation()
+Animation::SkeletonAnimation::SkeletonAnimation()
 {
 
 }
 
-XE::SkeletonAnimation::~SkeletonAnimation()
+Animation::SkeletonAnimation::~SkeletonAnimation()
 {
 
 }
 
-XE::SkeletonAnimationHandle XE::SkeletonAnimation::GetHandle() const
+Animation::SkeletonAnimationHandle Animation::SkeletonAnimation::GetHandle() const
 {
 	return _Handle;
 }
 
-XE::float32 XE::SkeletonAnimation::GetDuration() const
+XE::float32 Animation::SkeletonAnimation::GetDuration() const
 {
 	return _p->duration();
 }

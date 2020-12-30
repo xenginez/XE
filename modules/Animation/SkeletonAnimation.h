@@ -9,13 +9,11 @@
 #ifndef SKELETONANIMATION_H__9E0377FC_ACF8_42A6_8311_5FEA82308F78
 #define SKELETONANIMATION_H__9E0377FC_ACF8_42A6_8311_5FEA82308F78
 
-#include "Utils/Object.h"
-
 #include "Type.h"
 
-BEG_XE_NAMESPACE
+BEG_ANIMATION_NAMESPACE
 
-class XE_API SkeletonAnimation : public XE::Object
+class ANIMATION_API SkeletonAnimation : public XE::Object
 {
 	OBJECT( SkeletonAnimation, Object )
 
@@ -25,15 +23,15 @@ public:
 	~SkeletonAnimation() override;
 
 public:
-	XE::SkeletonAnimationHandle GetHandle() const;
+	Animation::SkeletonAnimationHandle GetHandle() const;
 
 public:
 	XE::float32 GetDuration() const;
 
 private:
-	XE::SkeletonAnimationHandle _Handle;
+	Animation::SkeletonAnimationHandle _Handle;
 };
 
-END_XE_NAMESPACE
+END_ANIMATION_NAMESPACE
 
 #endif // SKELETONANIMATION_H__9E0377FC_ACF8_42A6_8311_5FEA82308F78

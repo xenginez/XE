@@ -1,23 +1,23 @@
 #include "BehaviorTree.h"
 
-#include "AINode.h"
+#include "Node.h"
 
-BEG_META( XE::BehaviorTree )
-type->Property( "Root", &BehaviorTree::_Root, IMetaProperty::NoDesign );
-type->Property( "Nodes", &BehaviorTree::_Nodes, IMetaProperty::NoDesign );
+BEG_META( AI::BehaviorTree )
+type->Property( "Root", &AI::BehaviorTree::_Root, IMetaProperty::NoDesign );
+type->Property( "Nodes", &AI::BehaviorTree::_Nodes, IMetaProperty::NoDesign );
 END_META()
 
-XE::BehaviorTree::BehaviorTree()
+AI::BehaviorTree::BehaviorTree()
 {
 
 }
 
-XE::BehaviorTree::~BehaviorTree()
+AI::BehaviorTree::~BehaviorTree()
 {
 
 }
 
-void XE::BehaviorTree::Startup()
+void AI::BehaviorTree::Startup()
 {
 	Super::Startup();
 
@@ -28,14 +28,14 @@ void XE::BehaviorTree::Startup()
 	}
 }
 
-void XE::BehaviorTree::Enter()
+void AI::BehaviorTree::Enter()
 {
 	Super::Enter();
 
 	_Nodes[_Root]->Enter();
 }
 
-void XE::BehaviorTree::Update( XE::float32 dt )
+void AI::BehaviorTree::Update( XE::float32 dt )
 {
 	Super::Update( dt );
 
@@ -44,13 +44,13 @@ void XE::BehaviorTree::Update( XE::float32 dt )
 		return;
 	}
 
-	XE::AINodeHandle handle;
+	AI::NodeHandle handle;
 
 	for( auto it = _RunningNodes.begin(); it != _RunningNodes.end(); ++it )
 	{
-		if( ( *it )->GetType() == XE::AINodeType::CONDITION_NODE )
+		if( ( *it )->GetType() == AI::AINodeType::CONDITION_NODE )
 		{
-			auto cond = static_cast< XE::ConditionNode * >( ( *it ) );
+			auto cond = static_cast< AI::ConditionNode * >( ( *it ) );
 			if( cond->JudgmentChanged() )
 			{
 				if( handle )
@@ -70,7 +70,7 @@ void XE::BehaviorTree::Update( XE::float32 dt )
 		}
 		else
 		{
-			handle = static_cast< XE::CompositeNode * >( ( *it ) )->GetHandle();
+			handle = static_cast< AI::CompositeNode * >( ( *it ) )->GetHandle();
 			break;
 		}
 	}
@@ -80,7 +80,7 @@ void XE::BehaviorTree::Update( XE::float32 dt )
 	{
 		if( !_RunningNodes.empty() )
 		{
-			handle = static_cast< XE::ConditionNode * >( _RunningNodes.back() )->GetChild();
+			handle = static_cast< AI::ConditionNode * >( _RunningNodes.back() )->GetChild();
 		}
 		else
 		{
@@ -92,13 +92,13 @@ void XE::BehaviorTree::Update( XE::float32 dt )
 
 	switch( current->GetStatus() )
 	{
-	case XE::AINodeStatus::NONE:
+	case AI::AINodeStatus::NONE:
 		current->Enter();
-	case XE::AINodeStatus::RUNNING:
+	case AI::AINodeStatus::RUNNING:
 		current->Update( dt );
 		break;
-	case XE::AINodeStatus::FAILURE:
-	case XE::AINodeStatus::SUCCESS:
+	case AI::AINodeStatus::FAILURE:
+	case AI::AINodeStatus::SUCCESS:
 		_Nodes[_Root]->Quit();
 		_RunningNodes.clear();
 		break;
@@ -107,14 +107,14 @@ void XE::BehaviorTree::Update( XE::float32 dt )
 	}
 }
 
-void XE::BehaviorTree::Quit()
+void AI::BehaviorTree::Quit()
 {
 	_Nodes[_Root]->Quit();
 
 	Super::Quit();
 }
 
-void XE::BehaviorTree::Clearup()
+void AI::BehaviorTree::Clearup()
 {
 	_RunningNodes.clear();
 
@@ -127,7 +127,7 @@ void XE::BehaviorTree::Clearup()
 	Super::Clearup();
 }
 
-void XE::BehaviorTree::AssetLoad()
+void AI::BehaviorTree::AssetLoad()
 {
 	Super::AssetLoad();
 
@@ -137,44 +137,44 @@ void XE::BehaviorTree::AssetLoad()
 	}
 }
 
-bool XE::BehaviorTree::IsStopped() const
+bool AI::BehaviorTree::IsStopped() const
 {
 	return _Nodes[_Root]->GetStatus() == AINodeStatus::SUCCESS || _Nodes[_Root]->GetStatus() == AINodeStatus::FAILURE;
 }
 
-XE::AINodeHandle XE::BehaviorTree::GetRoot() const
+AI::NodeHandle AI::BehaviorTree::GetRoot() const
 {
 	return _Root;
 }
 
-void XE::BehaviorTree::SetRoot( XE::AINodeHandle val )
+void AI::BehaviorTree::SetRoot( AI::NodeHandle val )
 {
 	_Root = val;
 }
 
-XE::AINodePtr XE::BehaviorTree::GetNode( AINodeHandle val ) const
+AI::NodePtr AI::BehaviorTree::GetNode( AI::NodeHandle val ) const
 {
 	XE_ASSERT( val.GetValue() <= _Nodes.size() );
 
 	return _Nodes[val.GetValue()];
 }
 
-const XE::Array< XE::AINodePtr > & XE::BehaviorTree::GetNodes() const
+const XE::Array< AI::NodePtr > & AI::BehaviorTree::GetNodes() const
 {
 	return _Nodes;
 }
 
-void XE::BehaviorTree::SetNodes( const XE::Array< XE::AINodePtr > & val )
+void AI::BehaviorTree::SetNodes( const XE::Array< AI::NodePtr > & val )
 {
 	_Nodes = val;
 }
 
-void XE::BehaviorTree::PushCompositeNode( XE::CompositeNode * val )
+void AI::BehaviorTree::PushCompositeNode( AI::CompositeNode * val )
 {
 	_RunningNodes.push_back( val );
 }
 
-void XE::BehaviorTree::PushConditionNode( XE::ConditionNode * val )
+void AI::BehaviorTree::PushConditionNode( AI::ConditionNode * val )
 {
 	_RunningNodes.push_back( val );
 }

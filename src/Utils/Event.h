@@ -40,6 +40,6 @@ DECL_META_CLASS( XE_API, Event );
 END_XE_NAMESPACE
 
 #define DECL_EVENT( NAME, DESC, ... ) \
-DLL_VAR_WEAK extern const XE::Handle<XE::Event> EVENT_##NAME = XE::Order::RegisterOrder< XE::EventGroup >( #NAME, DESC, XE::TypeID< __VA_ARGS__ >::Get() )
+DLL_VAR_WEAK extern const XE::Handle<XE::Event> EVENT_##NAME = XE::Order::RegisterOrder< XE::EventGroup >( #NAME, DESC, XE_TypeID< __VA_ARGS__ >::Get() )
 
 #endif // EVENT_H__297F9FF1_F984_41D3_8EFF_6E87D3E265B5

@@ -11,11 +11,11 @@
 
 #include "BlackboardKey.h"
 
-BEG_XE_NAMESPACE
+BEG_AI_NAMESPACE
 
-class XE_API AIModule : public XE::Object
+class AI_API Module : public XE::Object
 {
-	OBJECT( AIModule, Object )
+	OBJECT( Module, Object )
 
 	friend class BehaviorTree;
 	friend class StateMachine;
@@ -24,9 +24,9 @@ public:
 	using ProcessEventCallback = std::function<void( const XE::EventPtr & )>;
 
 public:
-	AIModule();
+	Module();
 
-	~AIModule();
+	~Module();
 
 public:
 	virtual void Startup();
@@ -80,6 +80,6 @@ private:
 	ProcessEventCallback _ProcessEventCallback;
 };
 
-END_XE_NAMESPACE
+END_AI_NAMESPACE
 
 #endif // __AIMODULE_H__A590ED03_BAEC_4291_90B5_DBFC9EB9A475

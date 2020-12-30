@@ -2,8 +2,6 @@
 
 #include "Reflection.h"
 
-
-
 template<> struct XE::MetaDataCollector< XE::ReflectObject >
 {
 	typedef ReflectObject ThisType;
@@ -29,7 +27,7 @@ XE::ReflectObject::~ReflectObject()
 
 XE::IMetaClassPtr XE::ReflectObject::GetMetaClassStatic()
 {
-	static auto p = XE::MakeShared< CXXMetaClass<ReflectObject> >( "Object", nullptr, nullptr );
+	static auto p = XE::MakeShared< CXXMetaClass<ReflectObject> >( "Object", nullptr, nullptr, GetModule() );
 	return p;
 }
 

@@ -7,7 +7,10 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELE
 
 FILE(GLOB SOURCE_FILES *.*)
 add_library(Animation SHARED ${SOURCE_FILES})
+target_compile_definitions(Animation PRIVATE -DANIMATION_EXPORT)
 
 target_link_libraries(Animation 
 	XE
+	ozz_base
+	ozz_animation
 	)

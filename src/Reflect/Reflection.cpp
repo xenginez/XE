@@ -48,6 +48,7 @@ struct XE::Reflection::Private
 {
 	XE::Map<String, IMetaEnumPtr> Enums;
 	XE::Map<String, IMetaClassPtr> Classes;
+	XE::Map<String, IMetaModulePtr> Modules;
 	XE::Map<String, IMetaMethodPtr> Methods;
 	XE::Map<String, IMetaPropertyPtr> Propertys;
 	XE::Map<String, IMetaOperatorPtr> Operators;
@@ -56,30 +57,30 @@ struct XE::Reflection::Private
 XE::Reflection::Reflection()
 	:_p( new Private )
 {
-	_p->Classes.insert( { TypeID<std::nullptr_t>::Get()->GetFullName(), ClassID<std::nullptr_t>::Get() } );
-	_p->Classes.insert( { TypeID<bool>::Get()->GetFullName(), ClassID<bool>::Get() } );
-	_p->Classes.insert( { TypeID<XE::int8>::Get()->GetFullName(), ClassID<XE::int8>::Get() } );
-	_p->Classes.insert( { TypeID<XE::int16>::Get()->GetFullName(), ClassID<XE::int16>::Get() } );
-	_p->Classes.insert( { TypeID<XE::int32>::Get()->GetFullName(), ClassID<XE::int32>::Get() } );
-	_p->Classes.insert( { TypeID<XE::int64>::Get()->GetFullName(), ClassID<XE::int64>::Get() } );
-	_p->Classes.insert( { TypeID<XE::uint8>::Get()->GetFullName(), ClassID<XE::uint8>::Get() } );
-	_p->Classes.insert( { TypeID<XE::uint16>::Get()->GetFullName(), ClassID<XE::uint16>::Get() } );
-	_p->Classes.insert( { TypeID<XE::uint32>::Get()->GetFullName(), ClassID<XE::uint32>::Get() } );
-	_p->Classes.insert( { TypeID<XE::uint64>::Get()->GetFullName(), ClassID<XE::uint64>::Get() } );
-	_p->Classes.insert( { TypeID<XE::float32>::Get()->GetFullName(), ClassID<XE::float32>::Get() } );
-	_p->Classes.insert( { TypeID<XE::float64>::Get()->GetFullName(), ClassID<XE::float64>::Get() } );
+	_p->Classes.insert( { ::XE_TypeID<std::nullptr_t>::Get()->GetFullName(), ::XE_ClassID<std::nullptr_t>::Get() } );
+	_p->Classes.insert( { ::XE_TypeID<bool>::Get()->GetFullName(), ::XE_ClassID<bool>::Get() } );
+	_p->Classes.insert( { ::XE_TypeID<XE::int8>::Get()->GetFullName(), ::XE_ClassID<XE::int8>::Get() } );
+	_p->Classes.insert( { ::XE_TypeID<XE::int16>::Get()->GetFullName(), ::XE_ClassID<XE::int16>::Get() } );
+	_p->Classes.insert( { ::XE_TypeID<XE::int32>::Get()->GetFullName(), ::XE_ClassID<XE::int32>::Get() } );
+	_p->Classes.insert( { ::XE_TypeID<XE::int64>::Get()->GetFullName(), ::XE_ClassID<XE::int64>::Get() } );
+	_p->Classes.insert( { ::XE_TypeID<XE::uint8>::Get()->GetFullName(), ::XE_ClassID<XE::uint8>::Get() } );
+	_p->Classes.insert( { ::XE_TypeID<XE::uint16>::Get()->GetFullName(), ::XE_ClassID<XE::uint16>::Get() } );
+	_p->Classes.insert( { ::XE_TypeID<XE::uint32>::Get()->GetFullName(), ::XE_ClassID<XE::uint32>::Get() } );
+	_p->Classes.insert( { ::XE_TypeID<XE::uint64>::Get()->GetFullName(), ::XE_ClassID<XE::uint64>::Get() } );
+	_p->Classes.insert( { ::XE_TypeID<XE::float32>::Get()->GetFullName(), ::XE_ClassID<XE::float32>::Get() } );
+	_p->Classes.insert( { ::XE_TypeID<XE::float64>::Get()->GetFullName(), ::XE_ClassID<XE::float64>::Get() } );
 
-	_p->Classes.insert( { TypeID<XE::String>::Get()->GetFullName(), ClassID<XE::String>::Get() } );
-	_p->Classes.insert( { TypeID<XE::VariantList>::Get()->GetFullName(), ClassID<XE::VariantList>::Get() } );
-	_p->Classes.insert( { TypeID<XE::VariantDeque>::Get()->GetFullName(), ClassID<XE::VariantDeque>::Get() } );
-	_p->Classes.insert( { TypeID<XE::VariantStack>::Get()->GetFullName(), ClassID<XE::VariantStack>::Get() } );
-	_p->Classes.insert( { TypeID<XE::VariantQueue>::Get()->GetFullName(), ClassID<XE::VariantQueue>::Get() } );
-	_p->Classes.insert( { TypeID<XE::VariantArray>::Get()->GetFullName(), ClassID<XE::VariantArray>::Get() } );
-	_p->Classes.insert( { TypeID<XE::VariantPair>::Get()->GetFullName(), ClassID<XE::VariantPair>::Get() } );
-	_p->Classes.insert( { TypeID<XE::VariantSet>::Get()->GetFullName(), ClassID<XE::VariantSet>::Get() } );
-	_p->Classes.insert( { TypeID<XE::VariantMap>::Get()->GetFullName(), ClassID<XE::VariantMap>::Get() } );
-	_p->Classes.insert( { TypeID<XE::VariantMultiSet>::Get()->GetFullName(), ClassID<XE::VariantMultiSet>::Get() } );
-	_p->Classes.insert( { TypeID<XE::VariantMultiMap>::Get()->GetFullName(), ClassID<XE::VariantMultiMap>::Get() } );
+	_p->Classes.insert( { ::XE_TypeID<XE::String>::Get()->GetFullName(), ::XE_ClassID<XE::String>::Get() } );
+	_p->Classes.insert( { ::XE_TypeID<XE::VariantList>::Get()->GetFullName(), ::XE_ClassID<XE::VariantList>::Get() } );
+	_p->Classes.insert( { ::XE_TypeID<XE::VariantDeque>::Get()->GetFullName(), ::XE_ClassID<XE::VariantDeque>::Get() } );
+	_p->Classes.insert( { ::XE_TypeID<XE::VariantStack>::Get()->GetFullName(), ::XE_ClassID<XE::VariantStack>::Get() } );
+	_p->Classes.insert( { ::XE_TypeID<XE::VariantQueue>::Get()->GetFullName(), ::XE_ClassID<XE::VariantQueue>::Get() } );
+	_p->Classes.insert( { ::XE_TypeID<XE::VariantArray>::Get()->GetFullName(), ::XE_ClassID<XE::VariantArray>::Get() } );
+	_p->Classes.insert( { ::XE_TypeID<XE::VariantPair>::Get()->GetFullName(), ::XE_ClassID<XE::VariantPair>::Get() } );
+	_p->Classes.insert( { ::XE_TypeID<XE::VariantSet>::Get()->GetFullName(), ::XE_ClassID<XE::VariantSet>::Get() } );
+	_p->Classes.insert( { ::XE_TypeID<XE::VariantMap>::Get()->GetFullName(), ::XE_ClassID<XE::VariantMap>::Get() } );
+	_p->Classes.insert( { ::XE_TypeID<XE::VariantMultiSet>::Get()->GetFullName(), ::XE_ClassID<XE::VariantMultiSet>::Get() } );
+	_p->Classes.insert( { ::XE_TypeID<XE::VariantMultiMap>::Get()->GetFullName(), ::XE_ClassID<XE::VariantMultiMap>::Get() } );
 }
 
 XE::Reflection::~Reflection()
@@ -107,6 +108,9 @@ void XE::Reflection::RegisterMetaInfo( IMetaInfoPtr val )
 	{
 	case MetaType::ENUM:
 		_p->Enums.insert( std::make_pair( val->GetFullName(), SP_CAST<IMetaEnum>( val ) ) );
+		break;
+	case MetaType::MODULE:
+		_p->Modules.insert( std::make_pair( val->GetFullName(), SP_CAST<IMetaModule>( val ) ) );
 		break;
 	case MetaType::METHOD:
 		_p->Methods.insert( std::make_pair( val->GetFullName(), SP_CAST<IMetaMethod>( val ) ) );
@@ -153,6 +157,11 @@ void XE::Reflection::VisitMeta( const std::function<void( IMetaInfoPtr )> & val 
 					val( var );
 				} );
 
+	VisitModule( [&]( IMetaModulePtr var )
+				{
+					val( var );
+				} );
+
 	VisitMethod( [&]( IMetaMethodPtr var )
 				 {
 					 val( var );
@@ -193,6 +202,14 @@ void XE::Reflection::VisitEnum( const std::function<void( IMetaEnumPtr )> & val 
 void XE::Reflection::VisitClass( const std::function<void( IMetaClassPtr )> & val )
 {
 	for( auto var : _p->Classes )
+	{
+		val( var.second );
+	}
+}
+
+void XE::Reflection::VisitModule( const std::function<void( IMetaModulePtr )> & val )
+{
+	for( auto var : _p->Modules )
 	{
 		val( var.second );
 	}
@@ -284,6 +301,18 @@ XE::IMetaClassPtr XE::Reflection::FindClass( const String & FullName )
 	auto it = _p->Classes.find( FullName );
 
 	if( it != _p->Classes.end() )
+	{
+		return it->second;
+	}
+
+	return nullptr;
+}
+
+XE::IMetaModulePtr XE::Reflection::FindModule( const String & FullName )
+{
+	auto it = _p->Modules.find( FullName );
+
+	if( it != _p->Modules.end() )
 	{
 		return it->second;
 	}

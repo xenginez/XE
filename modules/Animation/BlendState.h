@@ -1,27 +1,27 @@
 /*!
- * \file	AnimationBlendState.h
+ * \file	BlendState.h
  *
  * \author	ZhengYuanQing
  * \date	2020/10/28
  * \email	zhengyuanqing.95@gmail.com
  *
  */
-#ifndef ANIMATIONBLENDSTATE_H__F3212467_4377_48FA_908A_AD7FA5CBEABA
-#define ANIMATIONBLENDSTATE_H__F3212467_4377_48FA_908A_AD7FA5CBEABA
+#ifndef BLENDSTATE_H__F3212467_4377_48FA_908A_AD7FA5CBEABA
+#define BLENDSTATE_H__F3212467_4377_48FA_908A_AD7FA5CBEABA
 
-#include "AnimationState.h"
-#include "AnimationBlendLayer.h"
+#include "State.h"
+#include "BlendLayer.h"
 
-BEG_XE_NAMESPACE
+BEG_ANIMATION_NAMESPACE
 
-class XE_API AnimationBlendState : public XE::AnimationState
+class ANIMATION_API BlendState : public Animation::State
 {
-	OBJECT( AnimationBlendState, AnimationState )
+	OBJECT( BlendState, State )
 
 public:
-	AnimationBlendState();
+	BlendState();
 
-	~AnimationBlendState() override;
+	~BlendState() override;
 
 protected:
 	void OnStartup() override;
@@ -51,12 +51,12 @@ private:
 	bool _Loop;
 	XE::float32 _Speed;
 	XE::float32 _Threshold;
-	XE::Array< XE::AnimationBlendLayer > _Layers;
+	XE::Array< Animation::BlendLayer > _Layers;
 
 	XE::float32 _CurrentTime;
 	XE::float32 _MaxTime;
 };
 
-END_XE_NAMESPACE
+END_ANIMATION_NAMESPACE
 
-#endif // ANIMATIONBLENDSTATE_H__F3212467_4377_48FA_908A_AD7FA5CBEABA
+#endif // BLENDSTATE_H__F3212467_4377_48FA_908A_AD7FA5CBEABA

@@ -1,23 +1,23 @@
 #include "StateMachine.h"
 
-#include "AIState.h"
+#include "State.h"
 
-BEG_META( XE::StateMachine )
-type->Property( "Root", &StateMachine::_Root );
-type->Property( "States", &StateMachine::_States );
+BEG_META( AI::StateMachine )
+type->Property( "Root", &AI::StateMachine::_Root );
+type->Property( "States", &AI::StateMachine::_States );
 END_META()
 
-XE::StateMachine::StateMachine()
+AI::StateMachine::StateMachine()
 {
 
 }
 
-XE::StateMachine::~StateMachine()
+AI::StateMachine::~StateMachine()
 {
 
 }
 
-void XE::StateMachine::Startup()
+void AI::StateMachine::Startup()
 {
 	Super::Startup();
 
@@ -28,12 +28,12 @@ void XE::StateMachine::Startup()
 
 		for( auto & cond : state->_Conditions )
 		{
-			cond.SetAIModule( XE_THIS( AIModule ) );
+			cond.SetAIModule( XE_THIS( Module ) );
 		}
 	}
 }
 
-void XE::StateMachine::Enter()
+void AI::StateMachine::Enter()
 {
 	Super::Enter();
 
@@ -42,7 +42,7 @@ void XE::StateMachine::Enter()
 	_States[_Current.GetValue()]->Enter();
 }
 
-void XE::StateMachine::Update( XE::float32 dt )
+void AI::StateMachine::Update( XE::float32 dt )
 {
 	Super::Update( dt );
 
@@ -65,14 +65,14 @@ void XE::StateMachine::Update( XE::float32 dt )
 	_States[_Current.GetValue()]->Update( dt );
 }
 
-void XE::StateMachine::Quit()
+void AI::StateMachine::Quit()
 {
 	_States[_Current.GetValue()]->Quit();
 
 	Super::Quit();
 }
 
-void XE::StateMachine::Clearup()
+void AI::StateMachine::Clearup()
 {
 	for( auto & state : _States )
 	{
@@ -88,39 +88,39 @@ void XE::StateMachine::Clearup()
 	Super::Clearup();
 }
 
-XE::AIStateHandle XE::StateMachine::GetRoot() const
+AI::StateHandle AI::StateMachine::GetRoot() const
 {
 	return _Root;
 }
 
-void XE::StateMachine::SetRoot( XE::AIStateHandle val )
+void AI::StateMachine::SetRoot( AI::StateHandle val )
 {
 	_Root = val;
 }
 
-XE::AIStatePtr XE::StateMachine::GetCurrentState() const
+AI::StatePtr AI::StateMachine::GetCurrentState() const
 {
 	return _States[_Current.GetValue()];
 }
 
-XE::AIStatePtr XE::StateMachine::GetState( XE::AIStateHandle val )
+AI::StatePtr AI::StateMachine::GetState( AI::StateHandle val )
 {
 	XE_ASSERT( val.GetValue() <= _States.size() );
 
 	return _States[val.GetValue()];
 }
 
-const XE::Array< XE::AIStatePtr > & XE::StateMachine::GetStates() const
+const XE::Array< AI::StatePtr > & AI::StateMachine::GetStates() const
 {
 	return _States;
 }
 
-void XE::StateMachine::SetStates( const XE::Array< XE::AIStatePtr > & val )
+void AI::StateMachine::SetStates( const XE::Array< AI::StatePtr > & val )
 {
 	_States = val;
 }
 
-void XE::StateMachine::AssetLoad()
+void AI::StateMachine::AssetLoad()
 {
 	Super::AssetLoad();
 

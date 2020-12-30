@@ -1,13 +1,13 @@
 #include "Type.h"
 
-BEG_META( XE::AnimationBlendMode )
-type->Value( "ADDITIVE", XE::AnimationBlendMode::ADDITIVE );
-type->Value( "OVERRIDE", XE::AnimationBlendMode::OVERRIDE );
+BEG_META( Animation::BlendMode )
+type->Value( "ADDITIVE", Animation::BlendMode::ADDITIVE );
+type->Value( "OVERRIDE", Animation::BlendMode::OVERRIDE );
 END_META()
 
-BEG_META( XE::AnimationStateStatus )
-type->Value( "NONE", XE::AnimationStateStatus::NONE );
-type->Value( "RUNNING", XE::AnimationStateStatus::RUNNING );
-type->Value( "FAILED", XE::AnimationStateStatus::FAILED );
-type->Value( "SUCCESS", XE::AnimationStateStatus::SUCCESS );
+BEG_META( Animation::StateStatus )
+type->Value( "NONE", Animation::StateStatus::NONE );
+type->Value( "RUNNING", Animation::StateStatus::RUNNING );
+type->Value( "FAILED", Animation::StateStatus::FAILED );
+type->Value( "SUCCESS", Animation::StateStatus::SUCCESS );
 END_META()
