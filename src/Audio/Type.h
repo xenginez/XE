@@ -13,7 +13,17 @@
 
 BEG_XE_NAMESPACE
 
-DECL_PTR( AudioSoundSource );
+DECL_PTR( AudioClip );
+DECL_PTR( AudioSource );
+DECL_PTR( AudioMixer );
+
+enum class AudioFormat
+{
+	PCM,
+	MP3,
+	OGG,
+};
+DECL_META_ENUM( XE_API, AudioFormat );
 
 END_XE_NAMESPACE
 

@@ -138,7 +138,13 @@ bool XE::AssetsService::Startup()
 
 void XE::AssetsService::Update()
 {
-
+	for( auto it = _p->_ObjectCache.begin(); it != _p->_ObjectCache.end(); ++it )
+	{
+		if( it->second.expired() )
+		{
+			_p->_ObjectCache.erase( it->first );
+		}
+	}
 }
 
 void XE::AssetsService::Clearup()

@@ -10,25 +10,28 @@
 #define AUDIOSOUNDSOURCE_H__1D751335_F408_4FA5_9AB3_4EFEE45DF522
 
 #include "Math/Vec3.h"
+#include "Interface/Asset.h"
 #include "Interface/Object.h"
 
-#include "Type.h"
+#include "AudioClip.h"
 
 BEG_XE_NAMESPACE
 
-class XE_API AudioSoundSource : public XE::Object
+class XE_API AudioSource : public XE::Object
 {
-    OBJECT( AudioSoundSource, Object )
+    OBJECT( AudioSource, Object )
 
 public:
-	virtual void Startup() = 0;
+	virtual void Startup();
 
-	virtual void Update( XE::float32 dt ) = 0;
+	virtual void Update( XE::float32 dt );
 
-	virtual void Clearup() = 0;
+	virtual void Clearup();
 
 public:
 	virtual void Play() = 0;
+
+	virtual void Mute() = 0;
 
 	virtual void Stop() = 0;
 
@@ -40,6 +43,10 @@ public:
 	bool GetLoop() const;
 
     void SetLoop( bool val );
+
+	bool GetPlayOnStart() const;
+
+	void SetPlayOnStart( bool val );
 
 	XE::float32  GetGain() const;
 
@@ -69,8 +76,13 @@ public:
 
     void SetMaxDistance( XE::float32 val );
 
+	const XE::AudioClipPtr & GetAudioClip() const;
+
+	void SetAudioClip( const XE::AudioClipPtr & val );
+
 private:
     bool _Loop = false;
+	bool _PlayOnStart = false;
     XE::float32 _Gain = 0.0f;
     XE::float32 _Pitch = 1.0f;
 	XE::Vec3f _Position = {};
@@ -78,7 +90,7 @@ private:
 	XE::Vec3f _Direction = {};
 	XE::float32 _MinDistance = 1.0f;
 	XE::float32 _MaxDistance = 1000.0f;
-	std::filesystem::path _Sound;
+	XE::AudioClipPtr _AudioClip = nullptr;
 };
 
 END_XE_NAMESPACE
