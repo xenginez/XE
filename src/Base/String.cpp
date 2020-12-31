@@ -2,57 +2,13 @@
 #include "Singleton.hpp"
 #include "StringUtils.h"
 
-#include <tbb/concurrent_unordered_set.h>
-
-
-
-class ConstStringPool : public XE::Singleton<ConstStringPool>
-{
-public:
-	ConstStringPool()
-	{
-		_Strings.insert( "" );
-		_Strings.insert( "1" );
-		_Strings.insert( "2" );
-		_Strings.insert( "3" );
-		_Strings.insert( "4" );
-		_Strings.insert( "5" );
-		_Strings.insert( "6" );
-		_Strings.insert( "7" );
-		_Strings.insert( "8" );
-		_Strings.insert( "9" );
-		_Strings.insert( "0" );
-	}
-
-	~ConstStringPool()
-	{
-	}
-
-public:
-	const std::string & Register( const std::string & val )
-	{
-		tbb::concurrent_unordered_set<std::string>::const_iterator it = Instance()->_Strings.find( val );
-
-		if( it != _Strings.end() )
-		{
-			return ( *it );
-		}
-
-		return ( *( _Strings.insert( val ).first ) );
-	}
-
-private:
-	tbb::concurrent_unordered_set<std::string> _Strings;
-};
-
 XE::String::String()
-	:_View( ConstStringPool::Instance()->Register( "" ) )
 {
 
 }
 
 XE::String::String( const char * val )
-	: _View( ConstStringPool::Instance()->Register( val ) )
+	: _View( std::make_shared< std::string >( val ) )
 {
 
 }
@@ -64,7 +20,7 @@ XE::String::String( const String & val )
 }
 
 XE::String::String( const std::string & val )
-	: _View( ConstStringPool::Instance()->Register( val ) )
+	: _View( std::make_shared< std::string >( val ) )
 {
 
 }
@@ -158,7 +114,7 @@ bool XE::String::operator!=( const char * val ) const
 
 bool XE::String::operator!=( const XE::String & val ) const
 {
-	return _View != val._View;
+	return *_View != *val._View;
 }
 
 bool XE::String::operator!=( const std::string & val ) const
@@ -173,7 +129,7 @@ bool XE::String::operator==( const char * val ) const
 
 bool XE::String::operator==( const XE::String & val ) const
 {
-	return _View == val._View;
+	return *_View == *val._View;
 }
 
 bool XE::String::operator==( const std::string & val ) const
@@ -188,7 +144,7 @@ bool XE::String::operator>=( const char * val ) const
 
 bool XE::String::operator>=( const XE::String & val ) const
 {
-	return _View >= val._View;
+	return *_View >= *val._View;
 }
 
 bool XE::String::operator>=( const std::string & val ) const
@@ -203,7 +159,7 @@ bool XE::String::operator<=( const char * val ) const
 
 bool XE::String::operator<=( const XE::String & val ) const
 {
-	return _View <= val._View;
+	return *_View <= *val._View;
 }
 
 bool XE::String::operator<=( const std::string & val ) const
@@ -218,7 +174,7 @@ bool XE::String::operator>( const char * val ) const
 
 bool XE::String::operator>( const XE::String & val ) const
 {
-	return _View > val._View;
+	return *_View > *val._View;
 }
 
 bool XE::String::operator>( const std::string & val ) const
@@ -233,7 +189,7 @@ bool XE::String::operator<( const char * val ) const
 
 bool XE::String::operator<( const XE::String & val ) const
 {
-	return _View < val._View;
+	return *_View < *val._View;
 }
 
 bool XE::String::operator<( const std::string & val ) const
@@ -243,65 +199,47 @@ bool XE::String::operator<( const std::string & val ) const
 
 char XE::String::operator[]( XE::uint64 val ) const
 {
-	return _View[val];
+	return _View->at( val );
 }
 
 XE::String::operator const char * () const
 {
-	return _View.data();
+	return _View->c_str();
 }
 
-XE::String::operator std::string ( ) const
+XE::String::operator std::string_view() const
 {
-	return ConstStringPool::Instance()->Register( _View.data() );
+	return std::string_view( *_View );
 }
 
 XE::String::operator const std::string & () const
 {
-	return ConstStringPool::Instance()->Register( _View.data() );
-}
-
-XE::String::operator const std::string_view & () const
-{
-	return _View;
+	return *_View;
 }
 
 const char * XE::String::ToCString() const
 {
-	return _View.data();
-}
-
-XE::String & XE::String::FromCString( const char * val )
-{
-	_View = ConstStringPool::Instance()->Register( val );
-
-	return *this;
+	return _View->c_str();
 }
 
 std::string XE::String::ToStdString() const
 {
-	return _View.data();
-}
-
-XE::String & XE::String::FromStdString( const std::string & val )
-{
-	_View = ConstStringPool::Instance()->Register( val );
-	return *this;
+	return *_View;
 }
 
 void XE::String::Clear()
 {
-	_View = { nullptr, 0 };
+	_View = nullptr;
 }
 
 bool XE::String::Empty() const
 {
-	return _View.empty();
+	return _View == nullptr;
 }
 
 XE::uint64 XE::String::Size() const
 {
-	return _View.size();
+	return _View->size();
 }
 
 XE::uint64 XE::String::Count() const
@@ -311,19 +249,17 @@ XE::uint64 XE::String::Count() const
 
 XE::uint64 XE::String::Find( const XE::String & val ) const
 {
-	return _View.find( val._View );
+	return _View->find( *val._View );
 }
 
 bool XE::String::Contains( const XE::String & val ) const
 {
-	return _View.find( val._View ) != npos;
+	return _View->find( *val._View ) != npos;
 }
 
 XE::String XE::String::SubString( XE::uint64 offset /*= 0*/, XE::uint64 count /*= npos */ ) const
 {
-	XE::String str;
-
-	str._View = _View.substr( offset, count );
+	XE::String str( _View->substr( offset, count ) );
 
 	return str;
 }
@@ -386,10 +322,10 @@ XE::String operator+( XE::float64 val1, const XE::String & val2 )
 
 XE::String operator+( const char * val1, const XE::String & val2 )
 {
-	return XE::String( val1 ) + val2;
+	return XE::String( val1 + val2.ToStdString() );
 }
 
 XE::String operator+( const std::string & val1, const XE::String & val2 )
 {
-	return XE::String( val1 ) + val2;
+	return XE::String( val1 + val2.ToStdString() );
 }
