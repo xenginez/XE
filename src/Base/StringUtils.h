@@ -35,6 +35,8 @@ public:
 
 	static std::vector<std::string> Split( const std::string & src, const std::string & sep );
 
+	static std::string Replace( const std::string & src, const std::string & sep, const std::string & dst );
+
 public:
 	static std::string Format( const std::string & fmt )
 	{

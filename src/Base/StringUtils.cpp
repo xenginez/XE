@@ -134,3 +134,10 @@ XE::uint64 XE::StringUtils::UTF8CharacterCount( const std::string & val )
 
 	return ret;
 }
+
+std::string XE::StringUtils::Replace( const std::string & src, const std::string & sep, const std::string & dst )
+{
+	std::regex regex( sep );
+
+	return std::regex_replace( src, regex, dst );
+}
