@@ -156,7 +156,7 @@ std::pair<bool, XE::float32> XE::Plane::Intersect( const Ray& val, bool discardI
 
 XE::Vec3f XE::Plane::Project( const Vec3f& val ) const
 {
-	Mat3f xform;
+	Mat3x3f xform;
 	xform[0][0] = 1.0f - normal.x * normal.x;
 	xform[0][1] = -normal.x * normal.y;
 	xform[0][2] = -normal.x * normal.z;

@@ -84,25 +84,25 @@ void Animation::Controller::Update( XE::float32 dt )
 
 	for( XE::uint64 i = 0; i < models.size(); ++i )
 	{
-		_SkeletonTransform[i].m00 = ozz::math::GetX( models[i].cols[0] );
-		_SkeletonTransform[i].m10 = ozz::math::GetY( models[i].cols[0] );
-		_SkeletonTransform[i].m20 = ozz::math::GetZ( models[i].cols[0] );
-		_SkeletonTransform[i].m30 = ozz::math::GetW( models[i].cols[0] );
+		_SkeletonTransform[i][0][0] = ozz::math::GetX( models[i].cols[0] );
+		_SkeletonTransform[i][1][0] = ozz::math::GetY( models[i].cols[0] );
+		_SkeletonTransform[i][2][0] = ozz::math::GetZ( models[i].cols[0] );
+		_SkeletonTransform[i][3][0] = ozz::math::GetW( models[i].cols[0] );
 
-		_SkeletonTransform[i].m01 = ozz::math::GetX( models[i].cols[1] );
-		_SkeletonTransform[i].m11 = ozz::math::GetY( models[i].cols[1] );
-		_SkeletonTransform[i].m21 = ozz::math::GetZ( models[i].cols[1] );
-		_SkeletonTransform[i].m31 = ozz::math::GetW( models[i].cols[1] );
+		_SkeletonTransform[i][0][1] = ozz::math::GetX( models[i].cols[1] );
+		_SkeletonTransform[i][1][1] = ozz::math::GetY( models[i].cols[1] );
+		_SkeletonTransform[i][2][1] = ozz::math::GetZ( models[i].cols[1] );
+		_SkeletonTransform[i][3][1] = ozz::math::GetW( models[i].cols[1] );
 
-		_SkeletonTransform[i].m02 = ozz::math::GetX( models[i].cols[2] );
-		_SkeletonTransform[i].m12 = ozz::math::GetY( models[i].cols[2] );
-		_SkeletonTransform[i].m22 = ozz::math::GetZ( models[i].cols[2] );
-		_SkeletonTransform[i].m32 = ozz::math::GetW( models[i].cols[2] );
+		_SkeletonTransform[i][0][2] = ozz::math::GetX( models[i].cols[2] );
+		_SkeletonTransform[i][1][2] = ozz::math::GetY( models[i].cols[2] );
+		_SkeletonTransform[i][2][2] = ozz::math::GetZ( models[i].cols[2] );
+		_SkeletonTransform[i][3][2] = ozz::math::GetW( models[i].cols[2] );
 
-		_SkeletonTransform[i].m03 = ozz::math::GetX( models[i].cols[3] );
-		_SkeletonTransform[i].m13 = ozz::math::GetY( models[i].cols[3] );
-		_SkeletonTransform[i].m23 = ozz::math::GetZ( models[i].cols[3] );
-		_SkeletonTransform[i].m33 = ozz::math::GetW( models[i].cols[3] );
+		_SkeletonTransform[i][0][3] = ozz::math::GetX( models[i].cols[3] );
+		_SkeletonTransform[i][1][3] = ozz::math::GetY( models[i].cols[3] );
+		_SkeletonTransform[i][2][3] = ozz::math::GetZ( models[i].cols[3] );
+		_SkeletonTransform[i][3][3] = ozz::math::GetW( models[i].cols[3] );
 	}
 }
 
@@ -148,12 +148,12 @@ void Animation::Controller::SetSkeleton( const XE::AssetPtr<Animation::Skeleton>
 	_Skeleton = val;
 }
 
-const XE::Array< XE::Mat4f > & Animation::Controller::GetSkeletonTransform() const
+const XE::Array< XE::Mat4x4f > & Animation::Controller::GetSkeletonTransform() const
 {
 	return _SkeletonTransform;
 }
 
-void Animation::Controller::SetSkeletonTransform( const XE::Array< XE::Mat4f > & val )
+void Animation::Controller::SetSkeletonTransform( const XE::Array< XE::Mat4x4f > & val )
 {
 	_SkeletonTransform = val;
 }

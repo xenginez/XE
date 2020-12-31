@@ -34,7 +34,7 @@ public:
 
 	void SetScissor( const XE::Rectf & scissor );
 
-	void SetTransform( XE::BasicMemoryView<XE::Mat4f> transform );
+	void SetTransform( XE::BasicMemoryView<XE::Mat4x4f> transform );
 
 public:
 	void SetUniform( const XE::String & name, XE::int32 data );
@@ -49,9 +49,9 @@ public:
 
 	void SetUniform( const XE::String & name, const XE::Vec4f & data );
 
-	void SetUniform( const XE::String & name, const XE::Mat3f & data );
+	void SetUniform( const XE::String & name, const XE::Mat3x3f & data );
 
-	void SetUniform( const XE::String & name, const XE::Mat4f & data );
+	void SetUniform( const XE::String & name, const XE::Mat4x4f & data );
 
 	void SetUniform( const XE::String & name, XE::BasicMemoryView<XE::int32> data );
 
@@ -65,9 +65,9 @@ public:
 
 	void SetUniform( const XE::String & name, XE::BasicMemoryView<XE::Vec4f> data );
 
-	void SetUniform( const XE::String & name, XE::BasicMemoryView<XE::Mat3f> data );
+	void SetUniform( const XE::String & name, XE::BasicMemoryView<XE::Mat3x3f> data );
 
-	void SetUniform( const XE::String & name, XE::BasicMemoryView<XE::Mat4f> data );
+	void SetUniform( const XE::String & name, XE::BasicMemoryView<XE::Mat4x4f> data );
 
 public:
 	void SetIndexBuffer( XE::IndexBufferHandle handle, XE::uint32 first, XE::uint32 num );

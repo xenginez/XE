@@ -70,13 +70,13 @@ public:
 	void SetRelativeRotation( const Quat & val );
 
 public:
-	const Mat4f & GetWorldTransform() const;
+	const Mat4x4f & GetWorldTransform() const;
 
-	void SetWorldTransform( const Mat4f & val );
+	void SetWorldTransform( const Mat4x4f & val );
 
-	const Mat4f & GetRelativeTransform() const;
+	const Mat4x4f & GetRelativeTransform() const;
 
-	void SetRelativeTransform( const Mat4f & val );
+	void SetRelativeTransform( const Mat4x4f & val );
 
 public:
 	SceneComponentPtr AddSceneComponent( IMetaClassPtr val, const SceneComponentPtr& parent );

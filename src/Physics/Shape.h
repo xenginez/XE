@@ -36,9 +36,9 @@ public:
 
 	void SetName( const XE::String & val );
 
-	const XE::Mat4f & GetLocalTransform() const;
+	const XE::Mat4x4f & GetLocalTransform() const;
 
-	void SetLocalTransform( const XE::Mat4f & val );
+	void SetLocalTransform( const XE::Mat4x4f & val );
 
 	XE::ShapeFlags GetShapeFlags() const;
 
@@ -74,7 +74,7 @@ public:
 
 private:
 	XE::String _Name;
-	XE::Mat4f _LocalTransform;
+	XE::Mat4x4f _LocalTransform;
 	XE::ShapeFlags _ShapeFlags;
 	XE::float32 _RestOffset;
 	XE::float32 _ContactOffset;

@@ -63,12 +63,12 @@ void XE::RigidDynamic::SetContactReportThreshold( XE::float32 val )
 	_ContactReportThreshold = val;
 }
 
-const XE::Mat4f & XE::RigidDynamic::GetKinematicTarget() const
+const XE::Mat4x4f & XE::RigidDynamic::GetKinematicTarget() const
 {
 	return _KinematicTarget;
 }
 
-void XE::RigidDynamic::SetKinematicTarget( const XE::Mat4f & val )
+void XE::RigidDynamic::SetKinematicTarget( const XE::Mat4x4f & val )
 {
 	_KinematicTarget = val;
 }

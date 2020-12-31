@@ -40,7 +40,7 @@ public:
 
 	static bool Close( XE::LibraryHandle handle );
 
-	static void RegisterEnvPath( const XE::FileSystem::Path & path );
+	static void RegisterEnvPath( const std::filesystem::path & path );
 
 private:
 	Private * _p;

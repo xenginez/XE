@@ -78,7 +78,7 @@ private:
 	XE::Vec3f _Direction = {};
 	XE::float32 _MinDistance = 1.0f;
 	XE::float32 _MaxDistance = 1000.0f;
-	XE::FileSystem::Path _Sound;
+	std::filesystem::path _Sound;
 };
 
 END_XE_NAMESPACE

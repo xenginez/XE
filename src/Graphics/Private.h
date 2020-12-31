@@ -241,9 +241,9 @@ struct PView : public GfxRefCount
 	XE::Flags<ClearFlags> Flags = ClearFlags::NONE;
 	XE::Rectf ViewRect;
 	XE::Rectf ViewScissor;
-	XE::Mat4f ModelMat;
-	XE::Mat4f ViewMat;
-	XE::Mat4f ProjMat;
+	XE::Mat4x4f ModelMat;
+	XE::Mat4x4f ViewMat;
+	XE::Mat4x4f ProjMat;
 	ViewMode Mode = XE::ViewMode::DEFAULT;
 	FrameBufferHandle Handle;
 	XE::ViewDesc Desc;
@@ -384,7 +384,7 @@ public:
 	std::array<XE::PUniform, GFX_MAX_UNIFORMS> Uniforms = {};
 
 	std::atomic<XE::uint32> TransformsSize = 0;
-	std::array<XE::Mat4f, GFX_MAX_TRANSFORM> Transforms = {};
+	std::array<XE::Mat4x4f, GFX_MAX_TRANSFORM> Transforms = {};
 
 	std::atomic<XE::uint32> RenderOcclusionSize = 0;
 	std::array<XE::int32, GFX_MAX_OCCLUSION> Occlusions = {};

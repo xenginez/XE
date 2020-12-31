@@ -47,12 +47,12 @@ void XE::RigidActor::SetName( const XE::String & val )
 	_Name = val;
 }
 
-const XE::Mat4f & XE::RigidActor::GetWorldTransform() const
+const XE::Mat4x4f & XE::RigidActor::GetWorldTransform() const
 {
 	return _WorldTransform;
 }
 
-void XE::RigidActor::SetWorldTransform( const XE::Mat4f & val )
+void XE::RigidActor::SetWorldTransform( const XE::Mat4x4f & val )
 {
 	_WorldTransform = val;
 }

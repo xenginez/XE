@@ -328,7 +328,7 @@ void XE::AABB::Merge( const AABB& val )
 	min = Mathf::Min( min, val.min );
 }
 
-void XE::AABB::Transform( const Mat4f& matrix )
+void XE::AABB::Transform( const Mat4x4f& matrix )
 {
 	Vec3f corner;
 	Vec3f old_min = min;
@@ -359,7 +359,7 @@ void XE::AABB::Transform( const Mat4f& matrix )
 	Merge( Mathf::MultiplyAffine( matrix, corner ) );
 }
 
-void XE::AABB::TransformAffine( const Mat4f& val )
+void XE::AABB::TransformAffine( const Mat4x4f& val )
 {
 	Vec3f min = Mathf::Translation( val );
 	Vec3f max = Mathf::Translation( val );

@@ -9,8 +9,8 @@
 #ifndef __RECT_H__CFAED4A1_7564_4C31_AC1F_E7BD88EE9157
 #define __RECT_H__CFAED4A1_7564_4C31_AC1F_E7BD88EE9157
 
+#include "Mat.h"
 #include "Vec2.h"
-#include "Mat4.h"
 
 BEG_XE_NAMESPACE
 

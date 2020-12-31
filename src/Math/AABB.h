@@ -9,8 +9,8 @@
 #ifndef __AABB_H__7996BEAA_3FEA_4C40_B467_F2323FDC0382
 #define __AABB_H__7996BEAA_3FEA_4C40_B467_F2323FDC0382
 
+#include "Mat.h"
 #include "Vec3.h"
-#include "Mat4.h"
 
 BEG_XE_NAMESPACE
 
@@ -90,9 +90,9 @@ public:
 	void Merge( const AABB& val );
 
 public:
-	void Transform( const Mat4f& val );
+	void Transform( const Mat4x4f& val );
 
-	void TransformAffine( const Mat4f& val );
+	void TransformAffine( const Mat4x4f& val );
 
 };
 DECL_META_CLASS( XE_API, AABB );

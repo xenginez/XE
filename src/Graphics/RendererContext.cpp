@@ -765,7 +765,7 @@ void XE::RendererContext::SetViewFrameBuffer( XE::ViewHandle handle, FrameBuffer
 	_p->_Views[handle].Handle = frame;
 }
 
-void XE::RendererContext::SetViewTransform( XE::ViewHandle handle, const XE::Mat4f & model, const XE::Mat4f & view, const XE::Mat4f & proj )
+void XE::RendererContext::SetViewTransform( XE::ViewHandle handle, const XE::Mat4x4f & model, const XE::Mat4x4f & view, const XE::Mat4x4f & proj )
 {
 	_p->_Views[handle].ModelMat = model;
 	_p->_Views[handle].ViewMat = view;
@@ -787,7 +787,7 @@ void XE::RendererContext::ResetView( XE::ViewHandle handle, const XE::ViewDesc &
 	_p->_Views[handle].Mode = desc.Mode;
 }
 
-void XE::RendererContext::RequestScreenShot( XE::FrameBufferHandle handle, const XE::FileSystem::Path & path )
+void XE::RendererContext::RequestScreenShot( XE::FrameBufferHandle handle, const std::filesystem::path & path )
 {
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
 

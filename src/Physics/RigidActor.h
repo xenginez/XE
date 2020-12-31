@@ -38,9 +38,9 @@ public:
 
 	void SetName( const XE::String & val );
 
-	const XE::Mat4f & GetWorldTransform() const;
+	const XE::Mat4x4f & GetWorldTransform() const;
 
-	void SetWorldTransform( const XE::Mat4f & val );
+	void SetWorldTransform( const XE::Mat4x4f & val );
 
 	XE::RigidActorFlags GetRigidActorFlags() const;
 
@@ -61,7 +61,7 @@ public:
 
 private:
 	XE::String _Name;
-	XE::Mat4f _WorldTransform;
+	XE::Mat4x4f _WorldTransform;
 	XE::RigidActorFlags _RigidActorFlags;
 
 	XE::RigidActorHandle _Handle;

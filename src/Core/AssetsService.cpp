@@ -152,7 +152,7 @@ void XE::AssetsService::Clearup()
 	_p->_Packages.clear();
 }
 
-XE::MemoryView XE::AssetsService::Load( const XE::FileSystem::Path & path )
+XE::MemoryView XE::AssetsService::Load( const std::filesystem::path & path )
 {
 	auto handle = _p->_MemoryCache[path.u8string()];
 	if( handle && handle.value().view() )
@@ -178,7 +178,7 @@ XE::MemoryView XE::AssetsService::Load( const XE::FileSystem::Path & path )
 	return nullptr;
 }
 
-void XE::AssetsService::AsyncLoad( const XE::FileSystem::Path & path, const LoadFinishCallback & callback )
+void XE::AssetsService::AsyncLoad( const std::filesystem::path & path, const LoadFinishCallback & callback )
 {
 	CHECK_THREAD( ThreadType::IO ) ? callback( Load( path ) ) : GetFramework()->GetThreadService()->PostTask( ThreadType::IO, [=]()
 																											  {
@@ -186,7 +186,7 @@ void XE::AssetsService::AsyncLoad( const XE::FileSystem::Path & path, const Load
 																											  } );
 }
 
-XE::ObjectPtr XE::AssetsService::LoadObject( const XE::FileSystem::Path & path )
+XE::ObjectPtr XE::AssetsService::LoadObject( const std::filesystem::path & path )
 {
 	tbb::concurrent_hash_map<XE::String, XE::ObjectWPtr, StringHashCompare >::accessor it;
 	if( _p->_ObjectCache.find( it, path.u8string() ) )
@@ -215,7 +215,7 @@ XE::ObjectPtr XE::AssetsService::LoadObject( const XE::FileSystem::Path & path )
 	return nullptr;
 }
 
-void XE::AssetsService::AsyncLoadObject( const XE::FileSystem::Path & path, const LoadObjectFinishCallback & callback )
+void XE::AssetsService::AsyncLoadObject( const std::filesystem::path & path, const LoadObjectFinishCallback & callback )
 {
 	CHECK_THREAD( ThreadType::IO ) ? callback( LoadObject( path ) ) : GetFramework()->GetThreadService()->PostTask( ThreadType::IO, [=]()
 																													{

@@ -25,6 +25,8 @@ public:
 
 	String( const String & val );
 
+	String( std::string && val );
+
 	String( const std::string & val );
 
 	~String();

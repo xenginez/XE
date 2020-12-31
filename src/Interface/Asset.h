@@ -43,16 +43,16 @@ public:
 	void AsyncLoad();
 
 public:
-	const XE::FileSystem::Path & GetAssetPath() const;
+	const std::filesystem::path & GetAssetPath() const;
 
-	void SetAssetPath( const XE::FileSystem::Path & val );
+	void SetAssetPath( const std::filesystem::path & val );
 
 protected:
 	virtual void LoadFinish( const XE::ObjectPtr & val );
 
 protected:
 	XE::ObjectPtr _Ptr;
-	XE::FileSystem::Path _AssetPath;
+	std::filesystem::path _AssetPath;
 };
 DECL_META_CLASS( XE_API, Asset );
 

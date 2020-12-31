@@ -34,7 +34,7 @@ public:
 	virtual XE::Array< XE::Vec3f > FindRoute( const XE::Capsule & geometry, const XE::Vec3f & start, const XE::Vec3f & end ) = 0;
 
 public:
-	virtual XE::NavMeshHandle AddNavMeshTile( const XE::FileSystem::Path & val ) = 0;
+	virtual XE::NavMeshHandle AddNavMeshTile( const std::filesystem::path & val ) = 0;
 
 	virtual void RemvoeNavMesh( XE::NavMeshHandle val ) = 0;
 

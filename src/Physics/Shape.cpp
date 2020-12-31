@@ -33,12 +33,12 @@ void XE::Shape::SetName( const XE::String & val )
 	_Name = val;
 }
 
-const XE::Mat4f & XE::Shape::GetLocalTransform() const
+const XE::Mat4x4f & XE::Shape::GetLocalTransform() const
 {
 	return _LocalTransform;
 }
 
-void XE::Shape::SetLocalTransform( const XE::Mat4f & val )
+void XE::Shape::SetLocalTransform( const XE::Mat4x4f & val )
 {
 	_LocalTransform = val;
 }

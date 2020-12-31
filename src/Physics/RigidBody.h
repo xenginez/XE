@@ -47,9 +47,9 @@ public:
 
 	void SetAngularVelocity( const XE::Vec3f & val );
 
-	const XE::Mat4f & GetCMassLocalPose() const;
+	const XE::Mat4x4f & GetCMassLocalPose() const;
 
-	void SetCMassLocalPose( const XE::Mat4f & val );
+	void SetCMassLocalPose( const XE::Mat4x4f & val );
 
 	XE::float32 GetMaxLienarVelocity() const;
 
@@ -93,7 +93,7 @@ private:
 	XE::float32 _MaxContactImpulse;
 	XE::Vec3f _LienarVelocity;
 	XE::Vec3f _AngularVelocity;
-	XE::Mat4f _CMassLocalPose;
+	XE::Mat4x4f _CMassLocalPose;
 	XE::float32 _MaxLienarVelocity;
 	XE::float32 _MaxAngularVelocity;
 	XE::RigidBodyFlags _RigidBodyFlags;

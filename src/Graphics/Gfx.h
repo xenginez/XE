@@ -123,12 +123,12 @@ public:
 
 	void SetViewFrameBuffer( XE::ViewHandle handle, XE::FrameBufferHandle frame );
 
-	void SetViewTransform( XE::ViewHandle handle, const XE::Mat4f & model, const XE::Mat4f & view, const XE::Mat4f & proj );
+	void SetViewTransform( XE::ViewHandle handle, const XE::Mat4x4f & model, const XE::Mat4x4f & view, const XE::Mat4x4f & proj );
 
 	void ResetView( XE::ViewHandle handle, const XE::ViewDesc & desc );
 
 public:
-	void RequestScreenShot( XE::FrameBufferHandle handle, const XE::FileSystem::Path & path );
+	void RequestScreenShot( XE::FrameBufferHandle handle, const std::filesystem::path & path );
 
 private:
 	Private * _p;

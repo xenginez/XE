@@ -43,9 +43,9 @@ public:
 
 	void SetContactReportThreshold( XE::float32 val );
 
-	const XE::Mat4f & GetKinematicTarget() const;
+	const XE::Mat4x4f & GetKinematicTarget() const;
 
-	void SetKinematicTarget( const XE::Mat4f & val );
+	void SetKinematicTarget( const XE::Mat4x4f & val );
 
 	XE::RigidDynamicLockFlags GetRigidDynamicLockFlags() const;
 
@@ -64,7 +64,7 @@ private:
 	XE::uint32 _VelocityIteration;
 	XE::float32 _StabilizationThreshold;
 	XE::float32 _ContactReportThreshold;
-	XE::Mat4f _KinematicTarget;
+	XE::Mat4x4f _KinematicTarget;
 	XE::RigidDynamicLockFlags _RigidDynamicLockFlags;
 };
 

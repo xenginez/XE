@@ -323,24 +323,24 @@ void XE::SceneComponent::SetRelativeRotation( const Quat & val )
 	}
 }
 
-const XE::Mat4f & XE::SceneComponent::GetWorldTransform() const
+const XE::Mat4x4f & XE::SceneComponent::GetWorldTransform() const
 {
 	return _WorldTransform;
 }
 
-void XE::SceneComponent::SetWorldTransform( const Mat4f & val )
+void XE::SceneComponent::SetWorldTransform( const Mat4x4f & val )
 {
 	_WorldTransform = val;
 
 	Mathf::TRS( _WorldTransform, _WorldPosition, _WorldRotation, _WorldScale );
 }
 
-const XE::Mat4f & XE::SceneComponent::GetRelativeTransform() const
+const XE::Mat4x4f & XE::SceneComponent::GetRelativeTransform() const
 {
 	return _RelativeTransform;
 }
 
-void XE::SceneComponent::SetRelativeTransform( const Mat4f & val )
+void XE::SceneComponent::SetRelativeTransform( const Mat4x4f & val )
 {
 	_RelativeTransform = val;
 

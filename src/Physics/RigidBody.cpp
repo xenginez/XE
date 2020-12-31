@@ -73,12 +73,12 @@ void XE::RigidBody::SetAngularVelocity( const XE::Vec3f & val )
 	_AngularVelocity = val;
 }
 
-const XE::Mat4f & XE::RigidBody::GetCMassLocalPose() const
+const XE::Mat4x4f & XE::RigidBody::GetCMassLocalPose() const
 {
 	return _CMassLocalPose;
 }
 
-void XE::RigidBody::SetCMassLocalPose( const XE::Mat4f & val )
+void XE::RigidBody::SetCMassLocalPose( const XE::Mat4x4f & val )
 {
 	_CMassLocalPose = val;
 }

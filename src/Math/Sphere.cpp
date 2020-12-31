@@ -113,7 +113,7 @@ std::pair<bool, XE::float32> XE::Sphere::Intersect( const Ray& ray, bool discard
 	}
 }
 
-void XE::Sphere::Transform( const Mat4f& val )
+void XE::Sphere::Transform( const Mat4x4f& val )
 {
 	XE::float32 lengthSqrd[3];
 	for ( XE::uint32 i = 0; i < 3; i++ )

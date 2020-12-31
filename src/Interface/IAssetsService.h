@@ -28,17 +28,17 @@ public:
 	~IAssetsService() override;
 
 public:
-    virtual XE::MemoryView Load( const XE::FileSystem::Path & path ) = 0;
+    virtual XE::MemoryView Load( const std::filesystem::path & path ) = 0;
 
-    virtual void AsyncLoad( const XE::FileSystem::Path & path, const LoadFinishCallback & callback ) = 0;
-
-public:
-	virtual XE::ObjectPtr LoadObject( const XE::FileSystem::Path & path ) = 0;
-
-	virtual void AsyncLoadObject( const XE::FileSystem::Path & path, const LoadObjectFinishCallback & callback ) = 0;
+    virtual void AsyncLoad( const std::filesystem::path & path, const LoadFinishCallback & callback ) = 0;
 
 public:
-	template< typename T > T LoadObjectT( const XE::FileSystem::Path & path )
+	virtual XE::ObjectPtr LoadObject( const std::filesystem::path & path ) = 0;
+
+	virtual void AsyncLoadObject( const std::filesystem::path & path, const LoadObjectFinishCallback & callback ) = 0;
+
+public:
+	template< typename T > T LoadObjectT( const std::filesystem::path & path )
 	{
 		return DP_CAST<T::value_type>( LoadObject( path ) );
 	}

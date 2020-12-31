@@ -135,12 +135,12 @@ void XE::Joint::SetRigidActorHandle( const XE::Pair<XE::RigidActorHandle, XE::Ri
 	_RigidActor = val;
 }
 
-const XE::Mat4f & XE::Joint::GetRelativeTransform() const
+const XE::Mat4x4f & XE::Joint::GetRelativeTransform() const
 {
 	return _RelativeTransform;
 }
 
-void XE::Joint::SetRelativeTransform( const XE::Mat4f & val )
+void XE::Joint::SetRelativeTransform( const XE::Mat4x4f & val )
 {
 	_RelativeTransform = val;
 }

@@ -9,8 +9,8 @@
 #ifndef __SPHERE_H__06E9A06D_DAE8_4648_8E21_51748C5A3BC7
 #define __SPHERE_H__06E9A06D_DAE8_4648_8E21_51748C5A3BC7
 
+#include "Mat.h"
 #include "Vec3.h"
-#include "Mat4.h"
 
 BEG_XE_NAMESPACE
 
@@ -61,7 +61,7 @@ public:
 	void Merge( const Sphere& val );
 
 public:
-	void Transform( const Mat4f& val );
+	void Transform( const Mat4x4f& val );
 };
 DECL_META_CLASS( XE_API, Sphere );
 

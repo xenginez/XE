@@ -19,6 +19,12 @@ XE::String::String( const String & val )
 
 }
 
+XE::String::String( std::string && val )
+	: _View( std::make_shared< std::string >( std::forward< std::string >( val ) ) )
+{
+
+}
+
 XE::String::String( const std::string & val )
 	: _View( std::make_shared< std::string >( val ) )
 {

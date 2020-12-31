@@ -74,12 +74,12 @@ void XE::Asset::LoadFinish( const XE::ObjectPtr & val )
 	_Ptr = val;
 }
 
-const XE::FileSystem::Path & XE::Asset::GetAssetPath() const
+const std::filesystem::path & XE::Asset::GetAssetPath() const
 {
 	return _AssetPath;
 }
 
-void XE::Asset::SetAssetPath( const XE::FileSystem::Path & val )
+void XE::Asset::SetAssetPath( const std::filesystem::path & val )
 {
 	_AssetPath = val;
 }

@@ -6,8 +6,8 @@
  * \email	zhengyuanqing.95@gmail.com
  *
  */
-#ifndef MAT_H__265D4806_2D3D_4557_B44F_80A8A7ACE9F4
-#define MAT_H__265D4806_2D3D_4557_B44F_80A8A7ACE9F4
+#ifndef __MAT_H__265D4806_2D3D_4557_B44F_80A8A7ACE9F4
+#define __MAT_H__265D4806_2D3D_4557_B44F_80A8A7ACE9F4
 
 #include "Type.h"
 
@@ -20,6 +20,10 @@ public:
 	static constexpr XE::uint64 row_size = R;
 	static constexpr XE::uint64 col_size = C;
 	static constexpr XE::uint64 value_size = row_size * col_size;
+
+public:
+	static const Mat< T, R, C > Zero;
+	static const Mat< T, R, C > Identity;
 
 public:
 	union
@@ -42,6 +46,15 @@ public:
 	Mat( const Mat & val )
 	{
 		std::memcpy( d, val.d, sizeof( value_type ) * value_size );
+	}
+
+	Mat( std::initializer_list< value_type > val )
+	{
+		int i = 0;
+		for( auto it = val.begin(); it != val.end(); ++it, ++i )
+		{
+			d[i] = *it;
+		}
 	}
 
 public:
@@ -68,26 +81,25 @@ public:
 	}
 };
 
+using Mat2x2f = XE::Mat< XE::float32, 2, 2 >;
+using Mat2x3f = XE::Mat< XE::float32, 2, 3 >;
+using Mat2x4f = XE::Mat< XE::float32, 2, 4 >;
+using Mat3x2f = XE::Mat< XE::float32, 3, 2 >;
+using Mat3x3f = XE::Mat< XE::float32, 3, 3 >;
+using Mat3x4f = XE::Mat< XE::float32, 3, 4 >;
+using Mat4x2f = XE::Mat< XE::float32, 4, 2 >;
+using Mat4x3f = XE::Mat< XE::float32, 4, 3 >;
+using Mat4x4f = XE::Mat< XE::float32, 4, 4 >;
 
-using Mat2x2f = Mat< XE::float32, 2, 2 >;
-using Mat2x3f = Mat< XE::float32, 2, 3 >;
-using Mat2x4f = Mat< XE::float32, 2, 4 >;
-using Mat3x2f = Mat< XE::float32, 3, 2 >;
-using Mat3x3f = Mat< XE::float32, 3, 3 >;
-using Mat3x4f = Mat< XE::float32, 3, 4 >;
-using Mat4x2f = Mat< XE::float32, 4, 2 >;
-using Mat4x3f = Mat< XE::float32, 4, 3 >;
-using Mat4x4f = Mat< XE::float32, 4, 4 >;
-
-using Mat2x2d = Mat< XE::float64, 2, 2 >;
-using Mat2x3d = Mat< XE::float64, 2, 3 >;
-using Mat2x4d = Mat< XE::float64, 2, 4 >;
-using Mat3x2d = Mat< XE::float64, 3, 2 >;
-using Mat3x3d = Mat< XE::float64, 3, 3 >;
-using Mat3x4d = Mat< XE::float64, 3, 4 >;
-using Mat4x2d = Mat< XE::float64, 4, 2 >;
-using Mat4x3d = Mat< XE::float64, 4, 3 >;
-using Mat4x4d = Mat< XE::float64, 4, 4 >;
+using Mat2x2d = XE::Mat< XE::float64, 2, 2 >;
+using Mat2x3d = XE::Mat< XE::float64, 2, 3 >;
+using Mat2x4d = XE::Mat< XE::float64, 2, 4 >;
+using Mat3x2d = XE::Mat< XE::float64, 3, 2 >;
+using Mat3x3d = XE::Mat< XE::float64, 3, 3 >;
+using Mat3x4d = XE::Mat< XE::float64, 3, 4 >;
+using Mat4x2d = XE::Mat< XE::float64, 4, 2 >;
+using Mat4x3d = XE::Mat< XE::float64, 4, 3 >;
+using Mat4x4d = XE::Mat< XE::float64, 4, 4 >;
 
 DECL_META_CLASS( XE_API, Mat2x2f );
 DECL_META_CLASS( XE_API, Mat2x3f );
@@ -111,4 +123,152 @@ DECL_META_CLASS( XE_API, Mat4x4d );
 
 END_XE_NAMESPACE
 
-#endif // MAT_H__265D4806_2D3D_4557_B44F_80A8A7ACE9F4
+
+template<> const XE::Mat< XE::float32, 2, 2 > XE::Mat< XE::float32, 2, 2 >::Zero = {
+	0, 0,
+	0, 0 };
+template<> const XE::Mat< XE::float32, 2, 2 > XE::Mat< XE::float32, 2, 2 >::Identity = {
+	1, 0,
+	0, 1 };
+template<> const XE::Mat< XE::float32, 2, 3 > XE::Mat< XE::float32, 2, 3 >::Zero = {
+	0, 0, 0,
+	0, 0, 0 };
+template<> const XE::Mat< XE::float32, 2, 3 > XE::Mat< XE::float32, 2, 3 >::Identity = {
+	1, 0, 0,
+	0, 1, 0 };
+template<> const XE::Mat< XE::float32, 2, 4 > XE::Mat< XE::float32, 2, 4 >::Zero = {
+	0, 0, 0, 0,
+	0, 0, 0, 0 };
+template<> const XE::Mat< XE::float32, 2, 4 > XE::Mat< XE::float32, 2, 4 >::Identity = {
+	1, 0, 0, 0,
+	0, 1, 0, 0 };
+template<> const XE::Mat< XE::float32, 3, 2 > XE::Mat< XE::float32, 3, 2 >::Zero = {
+	0, 0,
+	0, 0,
+	0, 0 };
+template<> const XE::Mat< XE::float32, 3, 2 > XE::Mat< XE::float32, 3, 2 >::Identity = {
+	1, 0,
+	0, 1,
+	0, 0 };
+template<> const XE::Mat< XE::float32, 3, 3 > XE::Mat< XE::float32, 3, 3 >::Zero = {
+	0, 0, 0,
+	0, 0, 0,
+	0, 0, 0 };
+template<> const XE::Mat< XE::float32, 3, 3 > XE::Mat< XE::float32, 3, 3 >::Identity = {
+	1, 0, 0,
+	0, 1, 0,
+	0, 0, 1 };
+template<> const XE::Mat< XE::float32, 3, 4 > XE::Mat< XE::float32, 3, 4 >::Zero = {
+	0, 0, 0, 0,
+	0, 0, 0, 0,
+	0, 0, 0, 0 };
+template<> const XE::Mat< XE::float32, 3, 4 > XE::Mat< XE::float32, 3, 4 >::Identity = {
+	1, 0, 0, 0,
+	0, 1, 0, 0,
+	0, 0, 1, 0 };
+template<> const XE::Mat< XE::float32, 4, 2 > XE::Mat< XE::float32, 4, 2 >::Zero = {
+	0, 0,
+	0, 0,
+	0, 0,
+	0, 0 };
+template<> const XE::Mat< XE::float32, 4, 2 > XE::Mat< XE::float32, 4, 2 >::Identity = {
+	1, 0,
+	0, 1,
+	0, 0,
+	0, 0 };
+template<> const XE::Mat< XE::float32, 4, 3 > XE::Mat< XE::float32, 4, 3 >::Zero = {
+	0, 0, 0,
+	0, 0, 0,
+	0, 0, 0,
+	0, 0, 0 };
+template<> const XE::Mat< XE::float32, 4, 3 > XE::Mat< XE::float32, 4, 3 >::Identity = {
+	1, 0, 0,
+	0, 1, 0,
+	0, 0, 1,
+	0, 0, 0 };
+template<> const XE::Mat< XE::float32, 4, 4 > XE::Mat< XE::float32, 4, 4 >::Zero = {
+	0, 0, 0, 0,
+	0, 0, 0, 0,
+	0, 0, 0, 0,
+	0, 0, 0, 0 };
+template<> const XE::Mat< XE::float32, 4, 4 > XE::Mat< XE::float32, 4, 4 >::Identity = {
+	1, 0, 0, 0,
+	0, 1, 0, 0,
+	0, 0, 1, 0,
+	0, 0, 0, 1 };
+
+
+template<> const XE::Mat< XE::float64, 2, 2 > XE::Mat< XE::float64, 2, 2 >::Zero = {
+	0, 0,
+	0, 0 };
+template<> const XE::Mat< XE::float64, 2, 2 > XE::Mat< XE::float64, 2, 2 >::Identity = {
+	1, 0,
+	0, 1 };
+template<> const XE::Mat< XE::float64, 2, 3 > XE::Mat< XE::float64, 2, 3 >::Zero = {
+	0, 0, 0,
+	0, 0, 0 };
+template<> const XE::Mat< XE::float64, 2, 3 > XE::Mat< XE::float64, 2, 3 >::Identity = {
+	1, 0, 0,
+	0, 1, 0 };
+template<> const XE::Mat< XE::float64, 2, 4 > XE::Mat< XE::float64, 2, 4 >::Zero = {
+	0, 0, 0, 0,
+	0, 0, 0, 0 };
+template<> const XE::Mat< XE::float64, 2, 4 > XE::Mat< XE::float64, 2, 4 >::Identity = {
+	1, 0, 0, 0,
+	0, 1, 0, 0 };
+template<> const XE::Mat< XE::float64, 3, 2 > XE::Mat< XE::float64, 3, 2 >::Zero = {
+	0, 0,
+	0, 0,
+	0, 0 };
+template<> const XE::Mat< XE::float64, 3, 2 > XE::Mat< XE::float64, 3, 2 >::Identity = {
+	1, 0,
+	0, 1,
+	0, 0 };
+template<> const XE::Mat< XE::float64, 3, 3 > XE::Mat< XE::float64, 3, 3 >::Zero = {
+	0, 0, 0,
+	0, 0, 0,
+	0, 0, 0 };
+template<> const XE::Mat< XE::float64, 3, 3 > XE::Mat< XE::float64, 3, 3 >::Identity = {
+	1, 0, 0,
+	0, 1, 0,
+	0, 0, 1 };
+template<> const XE::Mat< XE::float64, 3, 4 > XE::Mat< XE::float64, 3, 4 >::Zero = {
+	0, 0, 0, 0,
+	0, 0, 0, 0,
+	0, 0, 0, 0 };
+template<> const XE::Mat< XE::float64, 3, 4 > XE::Mat< XE::float64, 3, 4 >::Identity = {
+	1, 0, 0, 0,
+	0, 1, 0, 0,
+	0, 0, 1, 0 };
+template<> const XE::Mat< XE::float64, 4, 2 > XE::Mat< XE::float64, 4, 2 >::Zero = {
+	0, 0,
+	0, 0,
+	0, 0,
+	0, 0 };
+template<> const XE::Mat< XE::float64, 4, 2 > XE::Mat< XE::float64, 4, 2 >::Identity = {
+	1, 0,
+	0, 1,
+	0, 0,
+	0, 0 };
+template<> const XE::Mat< XE::float64, 4, 3 > XE::Mat< XE::float64, 4, 3 >::Zero = {
+	0, 0, 0,
+	0, 0, 0,
+	0, 0, 0,
+	0, 0, 0 };
+template<> const XE::Mat< XE::float64, 4, 3 > XE::Mat< XE::float64, 4, 3 >::Identity = {
+	1, 0, 0,
+	0, 1, 0,
+	0, 0, 1,
+	0, 0, 0 };
+template<> const XE::Mat< XE::float64, 4, 4 > XE::Mat< XE::float64, 4, 4 >::Zero = {
+	0, 0, 0, 0,
+	0, 0, 0, 0,
+	0, 0, 0, 0,
+	0, 0, 0, 0 };
+template<> const XE::Mat< XE::float64, 4, 4 > XE::Mat< XE::float64, 4, 4 >::Identity = {
+	1, 0, 0, 0,
+	0, 1, 0, 0,
+	0, 0, 1, 0,
+	0, 0, 0, 1 };
+
+#endif // __MAT_H__265D4806_2D3D_4557_B44F_80A8A7ACE9F4

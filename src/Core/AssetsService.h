@@ -35,14 +35,14 @@ public:
 	void Clearup() override;
 
 public:
-	XE::MemoryView Load( const XE::FileSystem::Path & path ) override;
+	XE::MemoryView Load( const std::filesystem::path & path ) override;
 
-	void AsyncLoad( const XE::FileSystem::Path & path, const LoadFinishCallback & callback ) override;
+	void AsyncLoad( const std::filesystem::path & path, const LoadFinishCallback & callback ) override;
 
 public:
-	XE::ObjectPtr LoadObject( const XE::FileSystem::Path & path ) override;
+	XE::ObjectPtr LoadObject( const std::filesystem::path & path ) override;
 
-	void AsyncLoadObject( const XE::FileSystem::Path & path, const LoadObjectFinishCallback & callback ) override;
+	void AsyncLoadObject( const std::filesystem::path & path, const LoadObjectFinishCallback & callback ) override;
 
 private:
 	Private * _p;

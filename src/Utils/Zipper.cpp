@@ -80,7 +80,7 @@ bool XE::Zipper::Open( const std::string & zipname )
 {
 	Close();
 
-	if( XE::FileSystem::exists( zipname ) )
+	if( std::filesystem::exists( zipname ) )
 	{
 		zip_open( zipname.c_str(), ZIP_DEFAULT_COMPRESSION_LEVEL, 'a' );
 	}

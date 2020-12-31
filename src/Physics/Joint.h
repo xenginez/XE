@@ -9,8 +9,8 @@
 #ifndef JOINT_H__E597880A_FE98_41A0_9AFB_C6EBEA13CCB1
 #define JOINT_H__E597880A_FE98_41A0_9AFB_C6EBEA13CCB1
 
+#include "Math/Mat.h"
 #include "Math/Vec3.h"
-#include "Math/Mat4.h"
 #include "Interface/Object.h"
 
 #include "Type.h"
@@ -77,9 +77,9 @@ public:
 	void SetRigidActorHandle( const XE::Pair<XE::RigidActorHandle, XE::RigidActorHandle> & val );
 
 public:
-	const XE::Mat4f & GetRelativeTransform() const;
+	const XE::Mat4x4f & GetRelativeTransform() const;
 
-	void SetRelativeTransform( const XE::Mat4f & val );
+	void SetRelativeTransform( const XE::Mat4x4f & val );
 
 	const XE::Vec3f & GetRelativeLinearVelocity() const;
 
@@ -100,7 +100,7 @@ private:
 	XE::ConstraintFlags _ConstraintFlags;
 	XE::Pair<XE::RigidActorHandle, XE::RigidActorHandle> _RigidActor;
 
-	XE::Mat4f _RelativeTransform;
+	XE::Mat4x4f _RelativeTransform;
 	XE::Vec3f _RelativeLinearVelocity;
 	XE::Vec3f _RelativeAngularVelocity;
 

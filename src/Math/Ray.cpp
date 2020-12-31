@@ -134,7 +134,7 @@ std::pair<bool, XE::float32> XE::Ray::Intersect( const Vec3f& a, const Vec3f& b,
 	return std::pair<bool, XE::float32>( true, t );
 }
 
-void XE::Ray::Transform( const Mat4f& val )
+void XE::Ray::Transform( const Mat4x4f& val )
 {
 	Vec3f end = GetPoint( 1.0f );
 
@@ -144,7 +144,7 @@ void XE::Ray::Transform( const Mat4f& val )
 	direction = Mathf::Normalize( end - origin );
 }
 
-void XE::Ray::TransformAffine( const Mat4f& val )
+void XE::Ray::TransformAffine( const Mat4x4f& val )
 {
 	Vec3f end = GetPoint( 1.0f );
 

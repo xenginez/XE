@@ -14,6 +14,7 @@
 #include <chrono>
 #include <sstream>
 #include <iomanip>
+#include <filesystem>
 
 #include "Base/Config.h"
 
@@ -142,6 +143,11 @@ XE_INLINE std::string ToString( const std::string & _Val )
 	return _Val;
 }
 
+XE_INLINE std::string ToString( const std::filesystem::path & _Val )
+{
+	return _Val.u8string();
+}
+
 XE_INLINE std::string ToString( const std::chrono::system_clock::time_point & _Val )
 {
 	std::tm _tm;
@@ -262,6 +268,13 @@ XE_INLINE bool FromString( const std::string & _Str, XE::float64 & _Val )
 }
 
 XE_INLINE bool FromString( const std::string & _Str, std::string & _Val )
+{
+	_Val = _Str;
+
+	return true;
+}
+
+XE_INLINE bool FromString( const std::string & _Str, std::filesystem::path & _Val )
 {
 	_Val = _Str;
 

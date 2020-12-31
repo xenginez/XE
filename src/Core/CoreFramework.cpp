@@ -213,24 +213,24 @@ XE::Language XE::CoreFramework::GetSystemLanguage() const
 	return Platform::GetDefaultLanguage();
 }
 
-XE::FileSystem::Path XE::CoreFramework::GetModulePath() const
+std::filesystem::path XE::CoreFramework::GetModulePath() const
 {
 	return GetApplicationPath() / "modules";
 }
 
-XE::FileSystem::Path XE::CoreFramework::GetAssetsPath() const
+std::filesystem::path XE::CoreFramework::GetAssetsPath() const
 {
 	return GetApplicationPath().parent_path() / "assets";
 }
 
-XE::FileSystem::Path XE::CoreFramework::GetUserDataPath() const
+std::filesystem::path XE::CoreFramework::GetUserDataPath() const
 {
 	return GetApplicationPath().parent_path() / "data";
 }
 
-XE::FileSystem::Path XE::CoreFramework::GetApplicationPath() const
+std::filesystem::path XE::CoreFramework::GetApplicationPath() const
 {
-	return XE::FileSystem::absolute( XE::FileSystem::current_path() );
+	return std::filesystem::absolute( std::filesystem::current_path() );
 }
 
 void XE::CoreFramework::Prepare()
@@ -299,10 +299,10 @@ void XE::CoreFramework::LoadModules()
 {
 	auto path = GetModulePath();
 
-	XE::FileSystem::DirectoryIterator end;
-	for( XE::FileSystem::DirectoryIterator iter( path ); iter != end; ++iter )
+	std::filesystem::directory_iterator end;
+	for( std::filesystem::directory_iterator iter( path ); iter != end; ++iter )
 	{
-		if( XE::FileSystem::is_directory( *iter ) )
+		if( std::filesystem::is_directory( *iter ) )
 		{
 			auto module = ( *iter ).path() / ( ( *iter ).path().stem().u8string() + DLL_EXT_NAME );
 			if( Library::Open( module.u8string() ) == LibraryHandle::Invalid )
@@ -354,7 +354,7 @@ void XE::CoreFramework::Save()
 	Save( path, _p->Values );
 }
 
-void XE::CoreFramework::Save( const XE::FileSystem::Path & path, const XE::Map < XE::String, XE::String > & values ) const
+void XE::CoreFramework::Save( const std::filesystem::path & path, const XE::Map < XE::String, XE::String > & values ) const
 {
 	rapidjson::Document doc;
 	auto & allocator = doc.GetAllocator();
@@ -396,7 +396,7 @@ void XE::CoreFramework::Reload()
 	Reload( path, _p->Values );
 }
 
-void XE::CoreFramework::Reload( const XE::FileSystem::Path & path, XE::Map < XE::String, XE::String > & values ) const
+void XE::CoreFramework::Reload( const std::filesystem::path & path, XE::Map < XE::String, XE::String > & values ) const
 {
 	std::ifstream ifs( path.string() );
 	if( ifs.is_open() )

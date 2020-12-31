@@ -392,9 +392,9 @@ template<> struct XE_API ::XE_ClassID< XE::String >
 	}
 };
 
-template<> struct XE_API ::XE_ClassID< XE::FileSystem::Path >
+template<> struct XE_API ::XE_ClassID< std::filesystem::path >
 {
-	static XE::IMetaClassPtr Get( const XE::FileSystem::Path * val = nullptr )
+	static XE::IMetaClassPtr Get( const std::filesystem::path * val = nullptr )
 	{
 		static auto meta = XE::MakeShared< XE::CXXMetaClass<XE::String> >( "Path", nullptr, nullptr, GetModule() );
 		return meta;

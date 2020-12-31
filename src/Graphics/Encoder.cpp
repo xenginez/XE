@@ -60,7 +60,7 @@ void XE::Encoder::SetScissor( const XE::Rectf & scissor )
 	_p->_Draw.Scissor = scissor;
 }
 
-void XE::Encoder::SetTransform( XE::BasicMemoryView<XE::Mat4f>  transform )
+void XE::Encoder::SetTransform( XE::BasicMemoryView<XE::Mat4x4f>  transform )
 {
 	XE::uint32 start = 0;
 
@@ -390,7 +390,7 @@ void XE::Encoder::SetUniform( const XE::String & name, const XE::Vec4f & data )
 	_p->_Uniforms[name] = std::move( uniform );
 }
 
-void XE::Encoder::SetUniform( const XE::String & name, const XE::Mat3f & data )
+void XE::Encoder::SetUniform( const XE::String & name, const XE::Mat3x3f & data )
 {
 	auto view = CopyToFrame( _p->_Frame, { ( const char * )&data, sizeof( data ) } );
 	XE::PUniform uniform;
@@ -401,7 +401,7 @@ void XE::Encoder::SetUniform( const XE::String & name, const XE::Mat3f & data )
 	_p->_Uniforms[name] = std::move( uniform );
 }
 
-void XE::Encoder::SetUniform( const XE::String & name, const XE::Mat4f & data )
+void XE::Encoder::SetUniform( const XE::String & name, const XE::Mat4x4f & data )
 {
 	auto view = CopyToFrame( _p->_Frame, { ( const char * )&data, sizeof( data ) } );
 	XE::PUniform uniform;
@@ -478,9 +478,9 @@ void XE::Encoder::SetUniform( const XE::String & name, XE::BasicMemoryView<XE::V
 	_p->_Uniforms[name] = std::move( uniform );
 }
 
-void XE::Encoder::SetUniform( const XE::String & name, XE::BasicMemoryView<XE::Mat3f> data )
+void XE::Encoder::SetUniform( const XE::String & name, XE::BasicMemoryView<XE::Mat3x3f> data )
 {
-	auto view = CopyToFrame( _p->_Frame, { ( const char * )data.data(), sizeof( XE::Mat3f ) * data.size() } );
+	auto view = CopyToFrame( _p->_Frame, { ( const char * )data.data(), sizeof( XE::Mat3x3f ) * data.size() } );
 	XE::PUniform uniform;
 	uniform.Name = name;
 	uniform.Size = data.size();
@@ -489,9 +489,9 @@ void XE::Encoder::SetUniform( const XE::String & name, XE::BasicMemoryView<XE::M
 	_p->_Uniforms[name] = std::move( uniform );
 }
 
-void XE::Encoder::SetUniform( const XE::String & name, XE::BasicMemoryView<XE::Mat4f> data )
+void XE::Encoder::SetUniform( const XE::String & name, XE::BasicMemoryView<XE::Mat4x4f> data )
 {
-	auto view = CopyToFrame( _p->_Frame, { ( const char * )data.data(), sizeof( XE::Mat4f ) * data.size() } );
+	auto view = CopyToFrame( _p->_Frame, { ( const char * )data.data(), sizeof( XE::Mat4x4f ) * data.size() } );
 	XE::PUniform uniform;
 	uniform.Name = name;
 	uniform.Size = data.size();

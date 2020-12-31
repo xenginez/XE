@@ -9,8 +9,8 @@
 #ifndef __RAY_H__5874E305_1881_4FDF_B7EE_44A07BD36195
 #define __RAY_H__5874E305_1881_4FDF_B7EE_44A07BD36195
 
+#include "Mat.h"
 #include "Vec3.h"
-#include "Mat4.h"
 
 BEG_XE_NAMESPACE
 
@@ -53,9 +53,9 @@ public:
 	std::pair<bool, XE::float32> Intersect( const Vec3f& a, const Vec3f& b, const Vec3f& c, const Vec3f& normal, bool positiveSide = true, bool negativeSide = true ) const;
 
 public:
-	void Transform( const Mat4f& val );
+	void Transform( const Mat4x4f& val );
 
-	void TransformAffine( const Mat4f& val );
+	void TransformAffine( const Mat4x4f& val );
 
 };
 DECL_META_CLASS( XE_API, Ray );

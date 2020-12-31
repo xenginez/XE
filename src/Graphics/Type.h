@@ -761,9 +761,9 @@ struct XE_API ViewDesc
 	XE::Flags<ClearFlags> Flags = ClearFlags::NONE;
 	XE::Rectf ViewRect;
 	XE::Rectf ViewScissor;
-	XE::Mat4f ModelMat;
-	XE::Mat4f ViewMat;
-	XE::Mat4f ProjMat;
+	XE::Mat4x4f ModelMat;
+	XE::Mat4x4f ViewMat;
+	XE::Mat4x4f ProjMat;
 	ViewMode Mode = XE::ViewMode::DEFAULT;
 	XE::FrameBufferHandle FrameBuffer;
 };

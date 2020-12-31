@@ -268,22 +268,22 @@ void XE::GameObject::SetRelativeRotation( const Quat & val )
 	_RootSceneComponent->SetRelativeRotation( val );
 }
 
-const XE::Mat4f & XE::GameObject::GetWorldTransform() const
+const XE::Mat4x4f & XE::GameObject::GetWorldTransform() const
 {
 	return _RootSceneComponent->GetWorldTransform();
 }
 
-void XE::GameObject::SetWorldTransform( const Mat4f & val )
+void XE::GameObject::SetWorldTransform( const Mat4x4f & val )
 {
 	_RootSceneComponent->SetWorldTransform( val );
 }
 
-const XE::Mat4f & XE::GameObject::GetRelativeTransform() const
+const XE::Mat4x4f & XE::GameObject::GetRelativeTransform() const
 {
 	return _RootSceneComponent->GetRelativeTransform();
 }
 
-void XE::GameObject::SetRelativeTransform( const Mat4f & val )
+void XE::GameObject::SetRelativeTransform( const Mat4x4f & val )
 {
 	_RootSceneComponent->SetRelativeTransform( val );
 }

@@ -399,7 +399,7 @@ void XE::Gfx::SetViewFrameBuffer( XE::ViewHandle handle, FrameBufferHandle frame
 	_p->_Context->SetViewFrameBuffer( handle, frame );
 }
 
-void XE::Gfx::SetViewTransform( XE::ViewHandle handle, const XE::Mat4f & model, const XE::Mat4f & view, const XE::Mat4f & proj )
+void XE::Gfx::SetViewTransform( XE::ViewHandle handle, const XE::Mat4x4f & model, const XE::Mat4x4f & view, const XE::Mat4x4f & proj )
 {
 	XE_ASSERT( _p->_Context != nullptr );
 
@@ -413,7 +413,7 @@ void XE::Gfx::ResetView( XE::ViewHandle handle, const XE::ViewDesc & desc )
 	_p->_Context->ResetView( handle, desc );
 }
 
-void XE::Gfx::RequestScreenShot( XE::FrameBufferHandle handle, const XE::FileSystem::Path & path )
+void XE::Gfx::RequestScreenShot( XE::FrameBufferHandle handle, const std::filesystem::path & path )
 {
 	XE_ASSERT( _p->_Context != nullptr );
 
