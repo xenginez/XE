@@ -245,11 +245,6 @@ xcopy %cd%\imgui\imstb_rectpack.h %RD3_PATH%\..\modules\GUI\ /y
 xcopy %cd%\imgui\imstb_textedit.h %RD3_PATH%\..\modules\GUI\ /y
 xcopy %cd%\imgui\imstb_truetype.h %RD3_PATH%\..\modules\GUI\ /y
 
-:BUILD_SSE2NEON
-echo "copy sse2neon head file to depend"
-cd %RD3_PATH%
-xcopy %cd%\sse2neon\sse2neon.h %RD3_PATH%\..\depend\include\sse2neon\ /e /y
-
 :BUILD_STB
 echo "copy stb head file to depend"
 cd %RD3_PATH%

@@ -55,11 +55,14 @@
 #if defined(__SSE2__) || defined(_M_AMD64) || defined(_M_X64) || (_M_IX86_FP >= 2)
 #include <emmintrin.h>
 #define XE_SIMD_SSE2
+#endif
+
+#if defined(XE_SIMD_AVX2) || defined(XE_SIMD_AVX) || defined(XE_SIMD_FMA) || defined(XE_SIMD_SSE4_2) || defined(XE_SIMD_SSE4_1) || defined(XE_SIMD_SSSE3) || defined(XE_SIMD_SSE3) || defined(XE_SIMD_SSE2) || defined(XE_SIMD_SSE)
 #define XE_SIMD_SSE
 #endif
 
 #ifndef XE_SIMD_SSE
-#include <sse2neon/sse2neon.h>
+#include "sse2neon.h"
 #define XE_SIMD_SSE2
 #define XE_SIMD_SSE
 #endif // XE_SIMD_SSE
