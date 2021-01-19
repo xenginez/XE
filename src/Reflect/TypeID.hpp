@@ -19,13 +19,33 @@ template< typename T > struct XE_EnumID
 	}
 };
 
+template< typename U > struct HasMemberGetMetaClass
+{
+private:
+	template < typename Ty, const XE::IMetaClassPtr( Ty:: * )() const = &Ty::GetMetaClass > static constexpr auto check( Ty * )
+	{
+		return true;
+	};
+
+	static constexpr bool check( ... )
+	{
+		return false;
+	};
+
+public:
+	static constexpr bool value = check( static_cast< U * >( nullptr ) );
+};
+
 template< typename T > struct XE_ClassID
 {
 	static XE::IMetaClassPtr Get( const T * val = nullptr )
 	{
-		if( val )
+		if constexpr ( HasMemberGetMetaClass< T >::value )
 		{
-			return val->GetMetaClass();
+			if( val )
+			{
+				return val->GetMetaClass();
+			}
 		}
 
 		return T::GetMetaClassStatic();
@@ -36,9 +56,12 @@ template< typename T > struct ::XE_ClassID< XE::SharedPtr< T > >
 {
 	static XE::IMetaClassPtr Get( const XE::SharedPtr< T > & val = nullptr )
 	{
-		if( val )
+		if constexpr( HasMemberGetMetaClass< T >::value )
 		{
-			return val->GetMetaClass();
+			if( val )
+			{
+				return val->GetMetaClass();
+			}
 		}
 
 		return T::GetMetaClassStatic();
