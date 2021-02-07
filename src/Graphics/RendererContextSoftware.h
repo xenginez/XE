@@ -15,13 +15,13 @@ public:
 
 	~RendererContextSoftware();
 
-protected:
-	void OnRender( XE::RenderFrame * frame ) override;
-
 private:
 	void Init( XE::RenderFrame * frame );
 
 	void Shutdown( XE::RenderFrame * frame );
+
+protected:
+	void OnRender( XE::RenderFrame * frame ) override;
 
 private:
 	void BlitCall( XE::RenderFrame * frame, XE::RenderBlit * item );
@@ -29,6 +29,8 @@ private:
 	void DrawCall( XE::RenderFrame * frame, XE::RenderDraw * item, XE::RenderBind * bind );
 
 	void ComputeCall( XE::RenderFrame * frame, XE::RenderCompute * item, XE::RenderBind * bind );
+
+	void ExecCommand( XE::RenderFrame * frame, XE::Buffer * buffer );
 
 private:
 	void CreateProgram( XE::RenderFrame * frame );

@@ -234,7 +234,6 @@ bool XE::ThreadService::Startup()
 	_p->_Threads[( XE::uint64 )XE::ThreadType::WORKS] = new XEPWorkThread();
 
 	_p->_Threads[( XE::uint64 )XE::ThreadType::IO] = new XEPSpecialThread();
-	_p->_Threads[( XE::uint64 )XE::ThreadType::GFX] = new XEPSpecialThread();
 	_p->_Threads[( XE::uint64 )XE::ThreadType::RENDER] = new XEPSpecialThread();
 	_p->_Threads[( XE::uint64 )XE::ThreadType::PHYSICS] = new XEPSpecialThread();
 	_p->_Threads[( XE::uint64 )XE::ThreadType::NAVIGATION] = new XEPSpecialThread();

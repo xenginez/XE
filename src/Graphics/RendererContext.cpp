@@ -72,9 +72,10 @@ void XE::RendererContext::Init( const InitDesc & desc )
 void XE::RendererContext::Present()
 {
 	{
-		std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
-		std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
+		std::unique_lock<std::mutex> lock1( _p->_SubmitFrame->PrevCmdMutex );
 		_p->_SubmitFrame->PrevCmd.Wirte( XE::CommandType::END );
+
+		std::unique_lock<std::mutex> lock2( _p->_SubmitFrame->PostCmdMutex );
 		_p->_SubmitFrame->PostCmd.Wirte( XE::CommandType::END );
 	}
 

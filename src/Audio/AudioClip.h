@@ -9,6 +9,7 @@
 #ifndef AUDIOSOURCE_H__9AF6C834_D4EF_4967_B7BF_13DEC13A6B79
 #define AUDIOSOURCE_H__9AF6C834_D4EF_4967_B7BF_13DEC13A6B79
 
+#include "Interface/Asset.h"
 #include "Interface/Object.h"
 
 #include "Type.h"

@@ -35,13 +35,140 @@ XE::RendererContextSoftware::~RendererContextSoftware()
 	delete _p;
 }
 
+void XE::RendererContextSoftware::Init( XE::RenderFrame * frame )
+{
+	for( auto & it : _p->_Shaders ) it = nullptr;
+	for( auto & it : _p->_Textures ) it = nullptr;
+	for( auto & it : _p->_IndexBuffers ) it = nullptr;
+	for( auto & it : _p->_VertexBuffers ) it = nullptr;
+	for( auto & it : _p->_IndirectBuffers ) it = nullptr;
+	for( auto & it : _p->_DynamicIndexBuffers ) it = nullptr;
+	for( auto & it : _p->_DynamicVertexBuffers ) it = nullptr;
+
+	XE::CapsInfo caps;
+
+
+
+	SetCaps( caps );
+}
+
+void XE::RendererContextSoftware::Shutdown( XE::RenderFrame * frame )
+{
+	_p->_Occlusions.clear();
+
+	for( auto it : _p->_Shaders ) delete it;
+	for( auto it : _p->_Textures ) delete it;
+	for( auto it : _p->_IndexBuffers ) delete it;
+	for( auto it : _p->_VertexBuffers ) delete it;
+	for( auto it : _p->_IndirectBuffers ) delete it;
+	for( auto it : _p->_DynamicIndexBuffers ) delete it;
+	for( auto it : _p->_DynamicVertexBuffers ) delete it;
+}
+
 void XE::RendererContextSoftware::OnRender( XE::RenderFrame * frame )
+{
+	ExecCommand( frame, &frame->PrevCmd );
+
+	XE::Array<XE::uint64> keys( XE::MemoryResource::GetStackMemoryResource() );
+
+	keys.resize( frame->RenderItemSize );
+	for( XE::uint64 i = 0; i < keys.size(); ++i )
+	{
+		keys[i] = i;
+	};
+	std::sort( frame->RenderItemKeys.begin(), frame->RenderItemKeys.begin() + frame->RenderItemSize, [frame]( XE::uint64 left, XE::uint64 right )
+			   {
+				   return frame->RenderItemKeys[left] < frame->RenderItemKeys[right];
+			   } );
+	for( XE::uint64 i = 0; i < keys.size(); ++i )
+	{
+		if( ( keys[i] & ( XE::uint64( SortKey::DRAW_MAX_VALUE ) << ( 64 - SortKey::VIEW_NUM_BITS - SortKey::DRAW_NUM_BITS ) ) ) != 1 )
+		{
+			DrawCall( frame, ( ( XE::RenderDraw * )frame->RenderItems[keys[i]].Data ), &frame->RenderBinds[keys[i]] );
+		}
+		else
+		{
+			ComputeCall( frame, ( ( XE::RenderCompute * )frame->RenderItems[keys[i]].Data ), &frame->RenderBinds[keys[i]] );
+		}
+	}
+
+	keys.resize( frame->BlitItemSize );
+	for( XE::uint64 i = 0; i < keys.size(); ++i )
+	{
+		keys[i] = i;
+	};
+	std::sort( frame->BlitItemKeys.begin(), frame->BlitItemKeys.begin() + frame->BlitItemSize, [frame]( XE::uint64 left, XE::uint64 right )
+			   {
+				   return frame->BlitItemKeys[left] < frame->BlitItemKeys[right];
+			   } );
+	for( XE::uint64 i = 0; i < keys.size(); ++i )
+	{
+		BlitCall( frame, &frame->BlitItems[keys[i]] );
+	}
+
+	ExecCommand( frame, &frame->PostCmd );
+}
+
+void XE::RendererContextSoftware::BlitCall( XE::RenderFrame * frame, XE::RenderBlit * item )
+{
+	XE::uint8 * src = _p->_Textures[item->Src];
+	XE::uint8 * dst = _p->_Textures[item->Dst];
+
+
+}
+
+void XE::RendererContextSoftware::DrawCall( XE::RenderFrame * frame, XE::RenderDraw * item, XE::RenderBind * bind )
+{
+	// vertex data
+	XE::Array<PTriangle> triangles( XE::MemoryResource::GetStackMemoryResource() );
+
+	// iter triangle
+	tbb::parallel_for( XE::uint64( 0 ), XE::uint64( triangles.size() ), XE::uint64( 1 ), [this, frame, item, bind]( XE::uint64 i )
+					   {
+						   // vertex shader
+						   if( GetDesc( item->Program ).CS )
+						   {
+
+						   }
+
+						   // rasterization
+						   {
+
+						   }
+
+						   // mesh shader
+
+						   // fragment shader
+						   if( GetDesc( item->Program ).FS )
+						   {
+
+						   }
+
+						   // test and blend
+						   {
+
+						   }
+					   } );
+}
+
+void XE::RendererContextSoftware::ComputeCall( XE::RenderFrame * frame, XE::RenderCompute * item, XE::RenderBind * bind )
+{
+	tbb::parallel_for( XE::uint64( 0 ), XE::uint64( item->NumX * item->NumY * item->NumZ ), XE::uint64( 1 ), [this, frame, item, bind]( XE::uint64 i )
+					   {
+						   if( GetDesc( item->Program ).CS )
+						   {
+
+						   }
+					   } );
+}
+
+void XE::RendererContextSoftware::ExecCommand( XE::RenderFrame * frame, XE::Buffer * buffer )
 {
 	bool cmd_exit = false;
 	while( cmd_exit )
 	{
 		XE::CommandType cmd = XE::CommandType::END;
-		frame->PrevCmd.Read( cmd );
+		buffer->Read( cmd );
 
 		switch( cmd )
 		{
@@ -96,44 +223,6 @@ void XE::RendererContextSoftware::OnRender( XE::RenderFrame * frame )
 		case XE::CommandType::END:
 			cmd_exit = true;
 			break;
-		default:
-			break;
-		}
-	}
-
-	XE::Array<XE::uint64> keys( XE::MemoryResource::GetStackMemoryResource() );
-	keys.resize( frame->RenderItemSize );
-	for( XE::uint64 i = 0; i < keys.size(); ++i ) { keys[i] = i; };
-	std::sort( frame->RenderItemKeys.begin(), frame->RenderItemKeys.begin() + frame->RenderItemSize, [frame]( XE::uint64 left, XE::uint64 right )
-			   {
-				   return frame->RenderItemKeys[left] < frame->RenderItemKeys[right];
-			   } );
-	for( XE::uint64 i = 0; i < keys.size(); ++i )
-	{
-		switch( frame->RenderItems[keys[i]].Type )
-		{
-		case XE::RenderItem::ItemType::BLIT:
-			BlitCall( frame, ( ( XE::RenderBlit * )frame->RenderItems[keys[i]].Data ) );
-			break;
-		case XE::RenderItem::ItemType::DRAW:
-			DrawCall( frame, ( ( XE::RenderDraw * )frame->RenderItems[keys[i]].Data ), &frame->RenderBinds[keys[i]] );
-			break;
-		case XE::RenderItem::ItemType::COMPUTE:
-			ComputeCall( frame, ( ( XE::RenderCompute * )frame->RenderItems[keys[i]].Data ), &frame->RenderBinds[keys[i]] );
-			break;
-		default:
-			break;
-		}
-	}
-
-	cmd_exit = false;
-	while( cmd_exit )
-	{
-		XE::CommandType cmd = XE::CommandType::END;
-		frame->PostCmd.Read( cmd );
-
-		switch( cmd )
-		{
 		case XE::CommandType::RENDERER_SHUTDOWN:
 			Shutdown( frame );
 			break;
@@ -173,96 +262,10 @@ void XE::RendererContextSoftware::OnRender( XE::RenderFrame * frame )
 		case XE::CommandType::REQUEST_SCREEN_SHOT:
 			RequestScreenShot( frame );
 			break;
-		case XE::CommandType::END:
-			cmd_exit = true;
-			break;
 		default:
 			break;
 		}
 	}
-}
-
-void XE::RendererContextSoftware::Init( XE::RenderFrame * frame )
-{
-	for( auto & it : _p->_Shaders ) it = nullptr;
-	for( auto & it : _p->_Textures ) it = nullptr;
-	for( auto & it : _p->_IndexBuffers ) it = nullptr;
-	for( auto & it : _p->_VertexBuffers ) it = nullptr;
-	for( auto & it : _p->_IndirectBuffers ) it = nullptr;
-	for( auto & it : _p->_DynamicIndexBuffers ) it = nullptr;
-	for( auto & it : _p->_DynamicVertexBuffers ) it = nullptr;
-
-	XE::CapsInfo caps;
-
-
-
-	SetCaps( caps );
-}
-
-void XE::RendererContextSoftware::Shutdown( XE::RenderFrame * frame )
-{
-	_p->_Occlusions.clear();
-
-	for( auto it : _p->_Shaders ) delete it;
-	for( auto it : _p->_Textures ) delete it;
-	for( auto it : _p->_IndexBuffers ) delete it;
-	for( auto it : _p->_VertexBuffers ) delete it;
-	for( auto it : _p->_IndirectBuffers ) delete it;
-	for( auto it : _p->_DynamicIndexBuffers ) delete it;
-	for( auto it : _p->_DynamicVertexBuffers ) delete it;
-}
-
-void XE::RendererContextSoftware::BlitCall( XE::RenderFrame * frame, XE::RenderBlit * item )
-{
-	XE::uint8 * src = _p->_Textures[item->Src];
-	XE::uint8 * dst = _p->_Textures[item->Dst];
-
-
-}
-
-void XE::RendererContextSoftware::DrawCall( XE::RenderFrame * frame, XE::RenderDraw * item, XE::RenderBind * bind )
-{
-	// vertex data
-	XE::Array<PTriangle> triangles( XE::MemoryResource::GetStackMemoryResource() );
-
-	// iter triangle
-	tbb::parallel_for( XE::uint64( 0 ), XE::uint64( triangles.size() ), XE::uint64( 1 ), [this, frame, item, bind]( XE::uint64 i )
-					   {
-						   // vertex shader
-						   if( GetDesc( item->Program ).CS )
-						   {
-
-						   }
-
-						   // rasterization
-						   {
-
-						   }
-
-						   // mesh shader
-
-						   // fragment shader
-						   if( GetDesc( item->Program ).FS )
-						   {
-
-						   }
-
-						   // test and blend
-						   {
-
-						   }
-					   } );
-}
-
-void XE::RendererContextSoftware::ComputeCall( XE::RenderFrame * frame, XE::RenderCompute * item, XE::RenderBind * bind )
-{
-	tbb::parallel_for( XE::uint64( 0 ), XE::uint64( item->NumX * item->NumY * item->NumZ ), XE::uint64( 1 ), [this, frame, item, bind]( XE::uint64 i )
-					   {
-						   if( GetDesc( item->Program ).CS )
-						   {
-
-						   }
-					   } );
 }
 
 void XE::RendererContextSoftware::CreateProgram( XE::RenderFrame * frame )

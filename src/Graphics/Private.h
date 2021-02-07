@@ -71,17 +71,17 @@ struct SortKey
 	// |       ||  |                                                    |
 	// |  view-+|  +-group                                              |
 	// |        +-draw                                                  |
-	// |----------------------------------------------------------------| Draw - sort by program
-	// |           |ppppppppppppppppppppdddddddddddddddddddddddddddddddd|
-	// |           |                   ^                               ^|
-	// |           |                   |                               ||
-	// |           |                   +-program                 depth-+|
-	// |           |                                                    |
 	// |----------------------------------------------------------------| Draw - sort by depth
 	// |           |ddddddddddddddddddddddddddddddddpppppppppppppppppppp|
 	// |           |                               ^                   ^|
 	// |           |                               |                   ||
 	// |           |                         depth-+           program-+|
+	// |           |                                                    |
+	// |----------------------------------------------------------------| Draw - sort by program
+	// |           |ppppppppppppppppppppdddddddddddddddddddddddddddddddd|
+	// |           |                   ^                               ^|
+	// |           |                   |                               ||
+	// |           |                   +-program                 depth-+|
 	// |           |                                                    |
 	// |----------------------------------------------------------------| Compute
 	// |           |ddddddddddddddddddddddddddddddddpppppppppppppppppppp|
@@ -90,10 +90,10 @@ struct SortKey
 	// |           |                               +-depth     program-+|
 	// |           |                                                    |
 	// |----------------------------------------------------------------| Blit
-	// |           |dddddddddddddddddddddddddddddddd                    |
-	// |           |                               ^                    |
-	// |           |                               |                    |
-	// |           |                               +-depth              |
+	// |           |                    dddddddddddddddddddddddddddddddd|
+	// |           |                                                   ^|
+	// |           |                                                   ||
+	// |           |                               depth-+              |
 	// |           |                                                    |
 	// |----------------------------------------------------------------|
 	//
@@ -175,7 +175,8 @@ public:
 		key |= XE::uint64( view ) << ( 64 - VIEW_NUM_BITS );
 //		key |= XE::uint64( 0 ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS );
 //		key |= XE::uint64( 0 ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS - GROUP_NUM_BITS );
-		key |= XE::uint64( depth ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS - GROUP_NUM_BITS - DEPTH_NUM_BITS );
+//		key |= XE::uint64( 0 ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS - GROUP_NUM_BITS - PROGRAM_NUM_BITS );
+		key |= XE::uint64( depth ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS - GROUP_NUM_BITS - PROGRAM_NUM_BITS - DEPTH_NUM_BITS );
 
 		return true;
 	}
@@ -183,7 +184,7 @@ public:
 public:
 	static bool DecodeDraw( XE::uint64 key, XE::ViewHandle & view, XE::RenderGroup & group, XE::ProgramHandle & program, XE::uint32 & depth )
 	{
-		if( key & ( XE::uint64( 1 ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS ) ) != 1 )
+		if( ( key & ( XE::uint64( DRAW_MAX_VALUE ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS ) ) ) != 1 )
 		{
 			return false;
 		}
@@ -214,7 +215,8 @@ public:
 
 	static bool DecodeCompute( XE::uint64 key, XE::ViewHandle & view, XE::ProgramHandle & program, XE::uint32 & depth )
 	{
-		if( key & ( XE::uint64( 1 ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS ) ) != 0 )
+		if( ( key & ( XE::uint64( DRAW_MAX_VALUE ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS ) ) ) != 0 ||
+			( key & ( XE::uint64( GROUP_MAX_VALUE ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS - GROUP_NUM_BITS ) ) ) != 0 )
 		{
 			return false;
 		}
@@ -228,7 +230,9 @@ public:
 
 	static bool DecodeBlit( XE::uint64 key, XE::ViewHandle & view, XE::uint32 & depth )
 	{
-		if( key & ( XE::uint64( 1 ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS ) ) != 0 )
+		if( ( key & ( XE::uint64( DRAW_MAX_VALUE ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS ) ) ) != 0 ||
+			( key & ( XE::uint64( GROUP_MAX_VALUE ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS - GROUP_NUM_BITS ) ) ) != 0 ||
+			( key & ( XE::uint64( PROGRAM_MAX_VALUE ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS - GROUP_NUM_BITS - PROGRAM_NUM_BITS ) ) ) != 0 )
 		{
 			return false;
 		}

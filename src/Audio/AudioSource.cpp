@@ -120,12 +120,12 @@ void XE::AudioSource::SetMaxDistance( XE::float32 val )
 	_MaxDistance = val;
 }
 
-const XE::AssetPtr< XE::AudioClip > & XE::AudioSource::GetAudioClip() const
+const XE::AudioClipPtr & XE::AudioSource::GetAudioClip() const
 {
 	return _AudioClip;
 }
 
-void XE::AudioSource::SetAudioClip( const XE::AssetPtr< XE::AudioClip > & val )
+void XE::AudioSource::SetAudioClip( const XE::AudioClipPtr & val )
 {
 	_AudioClip = val;
 }
