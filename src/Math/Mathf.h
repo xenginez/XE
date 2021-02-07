@@ -758,11 +758,32 @@ public:
 
 public:
 	template< typename T >
-	static XE_INLINE T satsub( T a, T b )
+	static XE_INLINE T Satsub( T a, T b )
 	{
 		auto sub = a - b;
 		auto le = -( sub <= a );
 		return sub & le;
+	}
+
+public:
+	static XE_INLINE XE::int32 BitFloat2Int( XE::float32 val )
+	{
+		return *( ( XE::int32 * )( &val ) );
+	}
+
+	static XE_INLINE XE::float32 BitInt2Float( XE::int32 val )
+	{
+		return *( ( XE::float32 * )( &val ) );
+	}
+
+	static XE_INLINE XE::uint32 BitFloat2UInt( XE::float32 val )
+	{
+		return *( ( XE::uint32 * )( &val ) );
+	}
+
+	static XE_INLINE XE::float32 BitUInt2Float( XE::uint32 val )
+	{
+		return *( ( XE::float32 * )( &val ) );
 	}
 
 public:

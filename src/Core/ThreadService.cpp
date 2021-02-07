@@ -15,8 +15,6 @@ struct XEPThread
 
 	virtual void PushTask( const std::function<void()> & val ) = 0;
 
-	virtual void Notify() = 0;
-
 	virtual bool HasThreadID( const std::thread::id & val ) = 0;
 
 };
@@ -47,11 +45,6 @@ struct XEPMainThread : public XEPThread
 	void PushTask( const std::function<void()> & val ) override
 	{
 		_CurrentTasks == 0 ? _FrontTasks.push( val ) : _BackTasks.push( val );
-	}
-
-	void Notify() override
-	{
-
 	}
 
 	bool HasThreadID( const std::thread::id & val )  override
@@ -115,10 +108,7 @@ struct XEPSpecialThread : public XEPThread
 	virtual void PushTask( const std::function<void()> & val ) override
 	{
 		_Tasks.push( val );
-	}
 
-	virtual void Notify() override
-	{
 		_Variable.notify_one();
 	}
 
@@ -190,10 +180,7 @@ struct XEPWorkThread : public XEPThread
 	virtual void PushTask( const std::function<void()> & val ) override
 	{
 		_Tasks.push( val );
-	}
 
-	virtual void Notify() override
-	{
 		_Variable.notify_one();
 	}
 
@@ -242,12 +229,15 @@ bool XE::ThreadService::Startup()
 {
 	_p->_Threads.resize( ::XE_EnumID<XE::ThreadType>::Get()->GetEnumCount() );
 
-	_p->_Threads[( XE::uint64 )XE::ThreadType::IO] = new XEPSpecialThread();
 	_p->_Threads[( XE::uint64 )XE::ThreadType::GAME] = new XEPMainThread();
+
+	_p->_Threads[( XE::uint64 )XE::ThreadType::WORKS] = new XEPWorkThread();
+
+	_p->_Threads[( XE::uint64 )XE::ThreadType::IO] = new XEPSpecialThread();
+	_p->_Threads[( XE::uint64 )XE::ThreadType::GFX] = new XEPSpecialThread();
 	_p->_Threads[( XE::uint64 )XE::ThreadType::RENDER] = new XEPSpecialThread();
 	_p->_Threads[( XE::uint64 )XE::ThreadType::PHYSICS] = new XEPSpecialThread();
 	_p->_Threads[( XE::uint64 )XE::ThreadType::NAVIGATION] = new XEPSpecialThread();
-	_p->_Threads[( XE::uint64 )XE::ThreadType::WORKS] = new XEPWorkThread();
 
 	return true;
 }
@@ -285,5 +275,4 @@ XE::ThreadType XE::ThreadService::GetCurrentThreadType() const
 void XE::ThreadService::PostTask( ThreadType type, const TaskCallback & task )
 {
 	_p->_Threads[( XE::uint64 )type]->PushTask( task );
-	_p->_Threads[( XE::uint64 )type]->Notify();
 }

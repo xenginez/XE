@@ -66,6 +66,8 @@ public:
 public:
 	virtual void Exit() = 0;
 
+	virtual void WaitExit() = 0;
+
 	virtual bool IsExit() const = 0;
 
 	virtual Language GetSystemLanguage() const = 0;

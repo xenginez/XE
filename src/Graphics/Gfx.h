@@ -30,7 +30,7 @@ private:
 public:
 	const XE::CapsInfo & GetCaps();
 
-	XE::Array<XE::RendererContextType> GetSupportedContext();
+	XE::List<XE::RendererContextType> GetSupportedContext();
 
 public:
 	void Init( const XE::InitDesc & val );

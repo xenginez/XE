@@ -64,6 +64,8 @@ public:
 public:
 	void Exit() override;
 
+	void WaitExit() override;
+
 	bool IsExit() const override;
 
 	Language GetSystemLanguage() const override;

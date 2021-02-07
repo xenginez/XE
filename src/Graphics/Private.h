@@ -60,69 +60,185 @@ enum class CommandType : XE::uint8
 
 struct SortKey
 {
-	// SortKey FORMAT
-	// 64bit:
-	//   00000000    00000000  000000000000000000000000 000000000000000000000000
-	//		|           |                 |                        |
-	//  view(2^8)  group(2^8)       program(2^24)              depth(2^24)
+	// SortKey Format
+	//  view(2^8) draw(2^1) group(2^3) depth(2^32) program(2^20)
+	// |----------------------------------------------------------------|
+	// |               3               2               1               0|
+	// |----------------------------------------------------------------|
+	// |fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210| Common
+	// |vvvvvvvvdggg                                                    |
+	// |       ^^  ^                                                    |
+	// |       ||  |                                                    |
+	// |  view-+|  +-group                                              |
+	// |        +-draw                                                  |
+	// |----------------------------------------------------------------| Draw - sort by program
+	// |           |ppppppppppppppppppppdddddddddddddddddddddddddddddddd|
+	// |           |                   ^                               ^|
+	// |           |                   |                               ||
+	// |           |                   +-program                 depth-+|
+	// |           |                                                    |
+	// |----------------------------------------------------------------| Draw - sort by depth
+	// |           |ddddddddddddddddddddddddddddddddpppppppppppppppppppp|
+	// |           |                               ^                   ^|
+	// |           |                               |                   ||
+	// |           |                         depth-+           program-+|
+	// |           |                                                    |
+	// |----------------------------------------------------------------| Compute
+	// |           |ddddddddddddddddddddddddddddddddpppppppppppppppppppp|
+	// |           |                               ^                   ^|
+	// |           |                               |                   ||
+	// |           |                               +-depth     program-+|
+	// |           |                                                    |
+	// |----------------------------------------------------------------| Blit
+	// |           |dddddddddddddddddddddddddddddddd                    |
+	// |           |                               ^                    |
+	// |           |                               |                    |
+	// |           |                               +-depth              |
+	// |           |                                                    |
+	// |----------------------------------------------------------------|
+	//
 public:
-	static constexpr XE::uint64 VIEW_LEFT_SHIFT = ( 64 - 8 );
-	static constexpr XE::uint64 GROUP_LEFT_SHIFT = ( VIEW_LEFT_SHIFT - 8 );
-	static constexpr XE::uint64 PROGRAM_LEFT_SHIFT = ( GROUP_LEFT_SHIFT - 24 );
-	static constexpr XE::uint64 DEPTH_LEFT_SHIFT = 0;
+	static constexpr XE::uint64 VIEW_NUM_BITS = 8;
+	static constexpr XE::uint64 DRAW_NUM_BITS = 1;
+	static constexpr XE::uint64 GROUP_NUM_BITS = 3;
+	static constexpr XE::uint64 DEPTH_NUM_BITS = 32;
+	static constexpr XE::uint64 PROGRAM_NUM_BITS = 20;
 
-	static constexpr XE::uint64 MAX_VIEW = 255;
-	static constexpr XE::uint64 MAX_GROUP = 255;
-	static constexpr XE::uint64 MAX_PROGRAM = 16777215;
-	static constexpr XE::uint64 MAX_DEPTH = 16777215;
-
-public:
-	SortKey();
-
-	SortKey( XE::uint64 val );
-
-	SortKey( const SortKey & val );
-
-	SortKey & operator=( const SortKey & val );
+	static constexpr XE::uint64 VIEW_MAX_VALUE = ( XE::uint64( 2 ) << ( VIEW_NUM_BITS - 1 ) ) - 1;
+	static constexpr XE::uint64 DRAW_MAX_VALUE = ( XE::uint64( 2 ) << ( DRAW_NUM_BITS - 1 ) ) - 1;
+	static constexpr XE::uint64 GROUP_MAX_VALUE = ( XE::uint64( 2 ) << ( GROUP_NUM_BITS - 1 ) ) - 1;
+	static constexpr XE::uint64 DEPTH_MAX_VALUE = ( XE::uint64( 2 ) << ( DEPTH_NUM_BITS - 1 ) ) - 1;
+	static constexpr XE::uint64 PROGRAM_MAX_VALUE = ( XE::uint64( 2 ) << ( PROGRAM_NUM_BITS - 1 ) ) - 1;
 
 public:
-	bool operator <( const SortKey & val ) const;
+	static bool EncodeDraw( XE::uint64 & key, XE::ViewHandle view, XE::RenderGroup group, XE::ProgramHandle program, XE::uint32 depth )
+	{
+		if( view > VIEW_MAX_VALUE || XE::uint64( group ) > GROUP_MAX_VALUE || program > PROGRAM_MAX_VALUE || depth > DEPTH_MAX_VALUE )
+		{
+			return false;
+		}
 
-	bool operator >( const SortKey & val ) const;
+		key = 0;
 
-	bool operator <=( const SortKey & val ) const;
+		key |= XE::uint64( view ) << ( 64 - VIEW_NUM_BITS );
+		key |= XE::uint64( 1 ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS );
+		key |= XE::uint64( group ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS - GROUP_NUM_BITS );
 
-	bool operator >=( const SortKey & val ) const;
+		switch( group )
+		{
+		case XE::RenderGroup::GEOMETRY:
+		case XE::RenderGroup::GEOMETRYLAST:
+			key |= XE::uint64( program ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS - GROUP_NUM_BITS - PROGRAM_NUM_BITS );
+			key |= XE::uint64( depth ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS - GROUP_NUM_BITS - PROGRAM_NUM_BITS - DEPTH_NUM_BITS );
+			break;
+		case XE::RenderGroup::ALPHATEST:
+		case XE::RenderGroup::BACKGROUND:
+		case XE::RenderGroup::TRANSPARENT:
+		case XE::RenderGroup::OVERLAY:
+			key |= XE::uint64( depth ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS - GROUP_NUM_BITS - DEPTH_NUM_BITS );
+			key |= XE::uint64( program ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS - GROUP_NUM_BITS - DEPTH_NUM_BITS - PROGRAM_NUM_BITS );
+			break;
+		default:
+			break;
+		}
 
-	bool operator ==( const SortKey & val ) const;
+		return true;
+	}
 
-	bool operator !=( const SortKey & val ) const;
+	static bool EncodeCompute( XE::uint64 & key, XE::ViewHandle view, XE::ProgramHandle program, XE::uint32 depth )
+	{
+		if( view > VIEW_MAX_VALUE || program > PROGRAM_MAX_VALUE || depth > DEPTH_MAX_VALUE )
+		{
+			return false;
+		}
+
+		key = 0;
+
+		key |= XE::uint64( view ) << ( 64 - VIEW_NUM_BITS );
+//		key |= XE::uint64( 0 ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS );
+//		key |= XE::uint64( 0 ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS - GROUP_NUM_BITS );
+		key |= XE::uint64( depth ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS - GROUP_NUM_BITS - DEPTH_NUM_BITS );
+		key |= XE::uint64( program ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS - GROUP_NUM_BITS - DEPTH_NUM_BITS - PROGRAM_NUM_BITS );
+
+		return true;
+	}
+
+	static bool EncodeBlit( XE::uint64 & key, XE::ViewHandle view, XE::uint32 depth )
+	{
+		if( view > VIEW_MAX_VALUE || depth > DEPTH_MAX_VALUE )
+		{
+			return false;
+		}
+
+		key = 0;
+
+		key |= XE::uint64( view ) << ( 64 - VIEW_NUM_BITS );
+//		key |= XE::uint64( 0 ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS );
+//		key |= XE::uint64( 0 ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS - GROUP_NUM_BITS );
+		key |= XE::uint64( depth ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS - GROUP_NUM_BITS - DEPTH_NUM_BITS );
+
+		return true;
+	}
 
 public:
-	XE::uint8 GetView() const;
+	static bool DecodeDraw( XE::uint64 key, XE::ViewHandle & view, XE::RenderGroup & group, XE::ProgramHandle & program, XE::uint32 & depth )
+	{
+		if( key & ( XE::uint64( 1 ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS ) ) != 1 )
+		{
+			return false;
+		}
 
-	void SetView( XE::uint8 val );
+		view = key & ( XE::uint64( VIEW_MAX_VALUE ) << ( 64 - VIEW_NUM_BITS ) );
+		group = ( XE::RenderGroup )( key & ( XE::uint64( GROUP_MAX_VALUE ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS - GROUP_NUM_BITS ) ) );
 
-	XE::uint8 GetGroup() const;
+		switch( group )
+		{
+		case XE::RenderGroup::GEOMETRY:
+		case XE::RenderGroup::GEOMETRYLAST:
+			program = key & ( XE::uint64( PROGRAM_MAX_VALUE ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS - GROUP_NUM_BITS - PROGRAM_NUM_BITS ) );
+			depth = key & ( XE::uint64( DEPTH_MAX_VALUE ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS - GROUP_NUM_BITS - PROGRAM_NUM_BITS - DEPTH_NUM_BITS ) );
+			break;
+		case XE::RenderGroup::ALPHATEST:
+		case XE::RenderGroup::BACKGROUND:
+		case XE::RenderGroup::TRANSPARENT:
+		case XE::RenderGroup::OVERLAY:
+			depth = key & ( XE::uint64( DEPTH_MAX_VALUE ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS - GROUP_NUM_BITS - DEPTH_NUM_BITS ) );
+			program = key & ( XE::uint64( PROGRAM_MAX_VALUE ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS - GROUP_NUM_BITS - DEPTH_NUM_BITS - PROGRAM_NUM_BITS ) );
+			break;
+		default:
+			break;
+		}
 
-	void SetGroup( XE::uint8 val );
+		return true;
+	}
 
-	XE::uint32 GetProgram() const;
+	static bool DecodeCompute( XE::uint64 key, XE::ViewHandle & view, XE::ProgramHandle & program, XE::uint32 & depth )
+	{
+		if( key & ( XE::uint64( 1 ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS ) ) != 0 )
+		{
+			return false;
+		}
 
-	void SetProgram( XE::uint32 val );
+		view = key & ( XE::uint64( VIEW_MAX_VALUE ) << ( 64 - VIEW_NUM_BITS ) );
+		depth = key & ( XE::uint64( DEPTH_MAX_VALUE ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS - GROUP_NUM_BITS - DEPTH_NUM_BITS ) );
+		program = key & ( XE::uint64( PROGRAM_MAX_VALUE ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS - GROUP_NUM_BITS - DEPTH_NUM_BITS - PROGRAM_NUM_BITS ) );
 
-	XE::uint32 GetDepth() const;
+		return true;
+	}
 
-	void SetDepth( XE::uint32 val );
+	static bool DecodeBlit( XE::uint64 key, XE::ViewHandle & view, XE::uint32 & depth )
+	{
+		if( key & ( XE::uint64( 1 ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS ) ) != 0 )
+		{
+			return false;
+		}
 
-	XE::uint64 GetKey() const;
+		view = key & ( XE::uint64( VIEW_MAX_VALUE ) << ( 64 - VIEW_NUM_BITS ) );
+		depth = key & ( XE::uint64( DEPTH_MAX_VALUE ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS - GROUP_NUM_BITS - DEPTH_NUM_BITS ) );
 
-	void SetKey( XE::uint64 val );
-
-private:
-	XE::uint64 _Key;
+		return true;
+	}
 };
-
 
 struct GfxRefCount
 {
@@ -250,6 +366,26 @@ struct PView : public GfxRefCount
 };
 
 
+struct RenderBlit
+{
+	void Reset();
+
+	XE::uint32 SrcX = 0;
+	XE::uint32 SrcY = 0;
+	XE::uint32 SrcZ = 0;
+	XE::uint32 DstX = 0;
+	XE::uint32 DstY = 0;
+	XE::uint32 DstZ = 0;
+	XE::uint32 Width = 0;
+	XE::uint32 Height = 0;
+	XE::uint32 Depth = 0;
+	XE::uint32 SrcMip = 0;
+	XE::uint32 DstMip = 0;
+	XE::ViewHandle Handle;
+	XE::TextureHandle Src;
+	XE::TextureHandle Dst;
+};
+
 struct RenderBind
 {
 	void Reset();
@@ -317,26 +453,6 @@ struct RenderDraw
 	XE::Flags<XE::StencilFlags> BackStencilFlags = XE::StencilFlags::NONE;
 };
 
-struct RenderBlit
-{
-	void Reset();
-
-	XE::uint32 SrcX = 0;
-	XE::uint32 SrcY = 0;
-	XE::uint32 SrcZ = 0;
-	XE::uint32 DstX = 0;
-	XE::uint32 DstY = 0;
-	XE::uint32 DstZ = 0;
-	XE::uint32 Width = 0;
-	XE::uint32 Height = 0;
-	XE::uint32 Depth = 0;
-	XE::uint32 SrcMip = 0;
-	XE::uint32 DstMip = 0;
-	XE::ViewHandle Handle;
-	XE::TextureHandle Src;
-	XE::TextureHandle Dst;
-};
-
 struct RenderCompute
 {
 	void Reset();
@@ -360,15 +476,7 @@ struct RenderCompute
 
 struct RenderItem
 {
-	enum class ItemType
-	{
-		BLIT,
-		DRAW,
-		COMPUTE,
-	};
-
-	ItemType Type;
-	XE::uint8 Data[sizeof( RenderDraw )];
+	XE::uint8 Data[std::max( sizeof( RenderDraw ), sizeof( RenderCompute ) )];
 };
 
 struct RenderFrame
@@ -390,9 +498,13 @@ public:
 	std::array<XE::int32, GFX_MAX_OCCLUSION> Occlusions = {};
 
 	std::atomic<XE::uint32> RenderItemSize = 0;
-	std::array<XE::uint64, GFX_MAX_DRAW_CALLS> RenderItemKeys = {};
-	std::array<XE::RenderItem, GFX_MAX_DRAW_CALLS> RenderItems = {};
-	std::array<XE::RenderBind, GFX_MAX_DRAW_CALLS> RenderBinds = {};
+	std::array<XE::uint64, GFX_MAX_DRAWCALLS> RenderItemKeys = {};
+	std::array<XE::RenderItem, GFX_MAX_DRAWCALLS> RenderItems = {};
+	std::array<XE::RenderBind, GFX_MAX_DRAWCALLS> RenderBinds = {};
+
+	std::atomic<XE::uint32> BlitItemSize = 0;
+	std::array<XE::uint32, GFX_MAX_BLITITEMS> BlitItemKeys = {};
+	std::array<XE::RenderBlit, GFX_MAX_BLITITEMS> BlitItems = {};
 
 	XE::Buffer PostCmd;
 	std::mutex PostCmdMutex;

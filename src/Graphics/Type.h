@@ -44,7 +44,7 @@ static constexpr XE::uint32 GFX_MAX_DESTORYS = 4096;
 static constexpr XE::uint32 GFX_MAX_OCCLUSION = 256;
 static constexpr XE::uint32 GFX_MAX_TRANSFORM = 256;
 static constexpr XE::uint32 GFX_MAX_BLITITEMS = 1024;
-static constexpr XE::uint32 GFX_MAX_DRAW_CALLS = 16384;
+static constexpr XE::uint32 GFX_MAX_DRAWCALLS = 16384;
 static constexpr XE::uint32 GFX_MAX_ATTACHMENTS = 8;
 static constexpr XE::uint32 GFX_MAX_FRAME_BUFFERS = 128;
 static constexpr XE::uint32 GFX_MAX_INDEX_BUFFERS = 4096;
@@ -681,13 +681,12 @@ enum class ShaderType
 
 enum class RenderGroup : XE::uint8
 {
-	HUD = 0,				// this render group is user interface.
+	GEOMETRY = 0,			// opaque geometry uses this group.
 	BACKGROUND = 1,			// this render group is rendered before any others.
-	GEOMETRY = 2,			// opaque geometry uses this group.
-	ALPHATEST = 3,			// alpha tested geometry uses this group.
-	GEOMETRYLAST = 4,		// last render group that is considered "opaque".
-	TRANSPARENT = 5,
-	OVERLAY = 6,			// this render group is meant for overlay effects.
+	ALPHATEST = 2,			// alpha tested geometry uses this group.
+	GEOMETRYLAST = 3,		// last render group that is considered "opaque".
+	TRANSPARENT = 4,		// this render queue is rendered after Geometry and AlphaTest, in back-to-front order.
+	OVERLAY = 5,			// this render group is meant for overlay effects.
 };
 
 struct XE_API CapsInfo
@@ -700,9 +699,9 @@ public:
 
 	PciIdFlags VendorId = PciIdFlags::NONE;
 	XE::uint16 DeviceId = 0;
-	bool     homogeneousDepth = false;
-	bool     originBottomLeft = false;
-	XE::uint8  numGPUs = 0;
+	bool     HomogeneousDepth = false;
+	bool     OriginBottomLeft = false;
+	XE::uint8  NumGPUs = 0;
 
 	struct
 	{
@@ -710,7 +709,7 @@ public:
 		uint16_t DeviceId = 0;
 	} gpu[4];
 
-	XE::uint32 MaxDrawCalls = GFX_MAX_DRAW_CALLS;
+	XE::uint32 MaxDrawCalls = GFX_MAX_DRAWCALLS;
 	XE::uint32 MaxBlits = GFX_MAX_BLITITEMS;
 	XE::uint32 MaxViews = GFX_MAX_VIEW;
 	XE::uint32 MaxFrameBuffers = GFX_MAX_FRAME_BUFFERS;
@@ -727,29 +726,29 @@ public:
 struct XE_API Attachment
 {
 public:
-	TextureHandle handle;
-	XE::uint16 mip = 0;
-	XE::uint16 layer = 0;
-	bool auto_gen_mips = false;
-	Access access = Access::COUNT;
+	TextureHandle Handle;
+	XE::uint16 Mip = 0;
+	XE::uint16 Layer = 0;
+	bool AutoGenMips = false;
+	XE::Access Access = XE::Access::COUNT;
 };
 
 struct XE_API InitDesc
 {
 public:
-	RendererContextType type = RendererContextType::NONE;
+	RendererContextType Type = RendererContextType::NONE;
 
-	PciIdFlags vendorId = PciIdFlags::NONE;
-	XE::uint16 deviceId = 0;
+	PciIdFlags VendorId = PciIdFlags::NONE;
+	XE::uint16 DeviceId = 0;
 
-	WindowHandle window;
+	WindowHandle Window;
 
-	XE::uint32 width = 0;
-	XE::uint32 height = 0;
-	TextureFormat format = TextureFormat::RGBA8;
-	XE::Flags<ResetFlags> reset;
-	XE::uint8  numBackBuffers = 0;
-	XE::uint8  maxFrameLatency = 0;
+	XE::uint32 Width = 0;
+	XE::uint32 Height = 0;
+	TextureFormat Format = TextureFormat::RGBA8;
+	XE::Flags<ResetFlags> Reset;
+	XE::uint8  NumBackBuffers = 0;
+	XE::uint8  MaxFrameLatency = 0;
 };
 
 struct XE_API ViewDesc
@@ -821,11 +820,9 @@ struct XE_API FrameBufferDesc
 	XE::Flags< XE::SamplerFlags > Samplers = XE::SamplerFlags::NONE;
 };
 
-struct XE_API IndexBufferDesc
+struct XE_API IndexBufferDesc : public BufferDesc
 {
-	XE::String Name;
-	XE::uint64 Size = 0;
-	XE::Flags< XE::BufferFlags > Flags = XE::BufferFlags::NONE;
+
 };
 
 struct XE_API VertexLayoutDesc
@@ -853,11 +850,9 @@ struct XE_API UpdateTextureDesc
 	XE::uint32 Depth = 0;
 };
 
-struct XE_API IndirectBufferDesc
+struct XE_API IndirectBufferDesc : public BufferDesc
 {
-	XE::String Name;
-	XE::uint64 Size = 0;
-	XE::Flags< XE::BufferFlags > Flags = XE::BufferFlags::NONE;
+
 };
 
 struct XE_API OcclusionQueryDesc

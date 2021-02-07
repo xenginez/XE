@@ -1,5 +1,6 @@
 #include "CoreFramework.h"
 
+#include <mutex>
 #include <fstream>
 
 #include <rapidjson/document.h>
@@ -55,6 +56,7 @@ struct XE::CoreFramework::Private
 	int _Argc = 0;
 	char ** _Argv = nullptr;
 	std::atomic_bool _Exit = false;
+	std::mutex _ExitMutex;
 	Map < String, String > Values;
 	Array < IServicePtr > _Services;
 	std::function<void()> _SysEventLoop;
@@ -73,6 +75,8 @@ XE::CoreFramework::~CoreFramework()
 
 int XE::CoreFramework::Exec( int argc, char ** argv, std::function<void()> msgloop )
 {
+	std::unique_lock< std::mutex > lock( _p->_ExitMutex );
+
 	_p->_Argc = argc;
 	_p->_Argv = argv;
 	_p->_SysEventLoop = msgloop;
@@ -201,6 +205,13 @@ void XE::CoreFramework::UnregisterService( const XE::IMetaClassPtr & val )
 void XE::CoreFramework::Exit()
 {
 	_p->_Exit = true;
+}
+
+void XE::CoreFramework::WaitExit()
+{
+	Exit();
+
+	std::unique_lock< std::mutex > lock( _p->_ExitMutex );
 }
 
 bool XE::CoreFramework::IsExit() const

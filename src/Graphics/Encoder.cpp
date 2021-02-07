@@ -205,27 +205,15 @@ void XE::Encoder::Submit( ViewHandle handle, RenderGroup group, ProgramHandle pr
 	}
 	
 	XE::uint64 key = 0;
-	{
-		SortKey sort_key;
-		sort_key.SetView( handle.GetValue() );
-		sort_key.SetGroup( ( XE::uint8 )group );
-		sort_key.SetDepth( group != RenderGroup::TRANSPARENT ? depth : std::numeric_limits<XE::uint32>::max() - depth );
-		if( program )
-		{
-			sort_key.SetProgram( program.GetValue() );
-		}
 
-		key = sort_key.GetKey();
-	}
-
+	XE_ASSERT( SortKey::EncodeDraw( key, handle, group, program, depth ) );
+	
 	auto index = _p->_Frame->RenderItemSize++;
 
 	_p->_Frame->RenderItemKeys[index] = key;
 
-	auto & item = _p->_Frame->RenderItems[index];
-	item.Type = RenderItem::ItemType::DRAW;
-	std::memcpy( item.Data, &_p->_Draw, sizeof( XE::RenderDraw ) );
-	
+	std::memcpy( _p->_Frame->RenderItems[index].Data, &_p->_Draw, sizeof( XE::RenderDraw ) );
+
 	_p->_Frame->RenderBinds[index] = std::move( _p->_Bind );
 
 	Discard();
@@ -257,26 +245,14 @@ void XE::Encoder::Dispatch( ViewHandle handle, ProgramHandle program, XE::uint32
 	_p->_Compute.NumZ = std::max( numZ, 1u );
 
 	XE::uint64 key = 0;
-	{
-		SortKey sort_key;
-		sort_key.SetView( handle.GetValue() );
-		sort_key.SetGroup( SortKey::MAX_GROUP );
-		sort_key.SetDepth( SortKey::MAX_DEPTH );
-		if( program )
-		{
-			sort_key.SetProgram( program.GetValue() );
-		}
 
-		key = sort_key.GetKey();
-	}
+	XE_ASSERT( SortKey::EncodeCompute( key, handle, program, 0 ) );
 
 	auto index = _p->_Frame->RenderItemSize++;
 
 	_p->_Frame->RenderItemKeys[index] = key;
 
-	auto & item = _p->_Frame->RenderItems[index];
-	item.Type = RenderItem::ItemType::COMPUTE;
-	std::memcpy( item.Data, &_p->_Compute, sizeof( XE::RenderCompute ) );
+	std::memcpy( _p->_Frame->RenderItems[index].Data, &_p->_Compute, sizeof( XE::RenderCompute ) );
 
 	_p->_Frame->RenderBinds[index] = std::move( _p->_Bind );
 
@@ -314,15 +290,15 @@ void XE::Encoder::Blit( ViewHandle handle, TextureHandle dst, XE::uint8 dst_mip,
 
 	blit.Handle = handle;
 
-	XE::uint32 key = XE::uint32( handle.GetValue() << 24 );
+	XE::uint64 key = 0;
 
-	auto index = _p->_Frame->RenderItemSize++;
+	XE_ASSERT( SortKey::EncodeBlit( key, handle, depth ) );
+
+	auto index = _p->_Frame->BlitItemSize++;
 
 	_p->_Frame->RenderItemKeys[index] = key;
 
-	auto & item = _p->_Frame->RenderItems[index];
-	item.Type = RenderItem::ItemType::BLIT;
-	std::memcpy( item.Data, &blit, sizeof( XE::RenderBlit ) );
+	_p->_Frame->BlitItems[index] = blit;
 
 	Discard();
 }

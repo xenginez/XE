@@ -46,7 +46,7 @@ int main( int argc, char ** argv )
 
 	atexit( []()
 			{
-				XE::IFramework::GetCurrentFramework()->Exit();
+				XE::IFramework::GetCurrentFramework()->WaitExit();
 			} );
 
 	return framework.Exec( argc, argv, MessageLoop );
