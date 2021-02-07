@@ -35,36 +35,6 @@ XE::RendererContextSoftware::~RendererContextSoftware()
 	delete _p;
 }
 
-void XE::RendererContextSoftware::Init( XE::RenderFrame * frame )
-{
-	for( auto & it : _p->_Shaders ) it = nullptr;
-	for( auto & it : _p->_Textures ) it = nullptr;
-	for( auto & it : _p->_IndexBuffers ) it = nullptr;
-	for( auto & it : _p->_VertexBuffers ) it = nullptr;
-	for( auto & it : _p->_IndirectBuffers ) it = nullptr;
-	for( auto & it : _p->_DynamicIndexBuffers ) it = nullptr;
-	for( auto & it : _p->_DynamicVertexBuffers ) it = nullptr;
-
-	XE::CapsInfo caps;
-
-
-
-	SetCaps( caps );
-}
-
-void XE::RendererContextSoftware::Shutdown( XE::RenderFrame * frame )
-{
-	_p->_Occlusions.clear();
-
-	for( auto it : _p->_Shaders ) delete it;
-	for( auto it : _p->_Textures ) delete it;
-	for( auto it : _p->_IndexBuffers ) delete it;
-	for( auto it : _p->_VertexBuffers ) delete it;
-	for( auto it : _p->_IndirectBuffers ) delete it;
-	for( auto it : _p->_DynamicIndexBuffers ) delete it;
-	for( auto it : _p->_DynamicVertexBuffers ) delete it;
-}
-
 void XE::RendererContextSoftware::OnRender( XE::RenderFrame * frame )
 {
 	ExecCommand( frame, &frame->PrevCmd );
@@ -266,6 +236,36 @@ void XE::RendererContextSoftware::ExecCommand( XE::RenderFrame * frame, XE::Buff
 			break;
 		}
 	}
+}
+
+void XE::RendererContextSoftware::Init( XE::RenderFrame * frame )
+{
+	for( auto & it : _p->_Shaders ) it = nullptr;
+	for( auto & it : _p->_Textures ) it = nullptr;
+	for( auto & it : _p->_IndexBuffers ) it = nullptr;
+	for( auto & it : _p->_VertexBuffers ) it = nullptr;
+	for( auto & it : _p->_IndirectBuffers ) it = nullptr;
+	for( auto & it : _p->_DynamicIndexBuffers ) it = nullptr;
+	for( auto & it : _p->_DynamicVertexBuffers ) it = nullptr;
+
+	XE::CapsInfo caps;
+
+
+
+	SetCaps( caps );
+}
+
+void XE::RendererContextSoftware::Shutdown( XE::RenderFrame * frame )
+{
+	_p->_Occlusions.clear();
+
+	for( auto it : _p->_Shaders ) delete it;
+	for( auto it : _p->_Textures ) delete it;
+	for( auto it : _p->_IndexBuffers ) delete it;
+	for( auto it : _p->_VertexBuffers ) delete it;
+	for( auto it : _p->_IndirectBuffers ) delete it;
+	for( auto it : _p->_DynamicIndexBuffers ) delete it;
+	for( auto it : _p->_DynamicVertexBuffers ) delete it;
 }
 
 void XE::RendererContextSoftware::CreateProgram( XE::RenderFrame * frame )

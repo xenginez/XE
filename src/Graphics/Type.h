@@ -707,7 +707,7 @@ public:
 	{
 		PciIdFlags VendorId = PciIdFlags::NONE;
 		uint16_t DeviceId = 0;
-	} gpu[4];
+	} Gpu[4];
 
 	XE::uint32 MaxDrawCalls = GFX_MAX_DRAWCALLS;
 	XE::uint32 MaxBlits = GFX_MAX_BLITITEMS;

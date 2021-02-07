@@ -15,11 +15,6 @@ public:
 
 	~RendererContextSoftware();
 
-private:
-	void Init( XE::RenderFrame * frame );
-
-	void Shutdown( XE::RenderFrame * frame );
-
 protected:
 	void OnRender( XE::RenderFrame * frame ) override;
 
@@ -31,6 +26,11 @@ private:
 	void ComputeCall( XE::RenderFrame * frame, XE::RenderCompute * item, XE::RenderBind * bind );
 
 	void ExecCommand( XE::RenderFrame * frame, XE::Buffer * buffer );
+
+private:
+	void Init( XE::RenderFrame * frame );
+
+	void Shutdown( XE::RenderFrame * frame );
 
 private:
 	void CreateProgram( XE::RenderFrame * frame );
