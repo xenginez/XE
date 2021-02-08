@@ -56,7 +56,7 @@ static constexpr XE::uint32 GFX_MAX_DRAW_INDIRECT_BUFFERS = 1024;
 static constexpr XE::uint32 GFX_MAX_DYNAMIC_INDEX_BUFFERS = 1024;
 static constexpr XE::uint32 GFX_MAX_DYNAMIC_VERTEX_BUFFERS = 1024;
 
-enum class CapsFlags : XE::uint64
+enum class CapsFlag : XE::uint64
 {
 	NONE = 0X0000000000000000,
 	ALPHATOCOVERAGE = 0X0000000000000001,
@@ -89,8 +89,9 @@ enum class CapsFlags : XE::uint64
 	VERTEXID = 0X0000000008000000,
 	TEXTURECOMPAREALL = 0X0000000000300000,
 };
+DECL_FLAGS( CapsFlag, CapsFlags );
 
-enum class PciIdFlags : XE::uint64
+enum class PciIdFlag : XE::uint64
 {
 	NONE = 0X0000,
 	AMD = 0X1002,
@@ -98,8 +99,9 @@ enum class PciIdFlags : XE::uint64
 	NVIDIA = 0X10DE,
 	SOFTWARERASTERIZER = 0X0001,
 };
+DECL_FLAGS( PciIdFlag, PciIdFlags );
 
-enum class ResetFlags : XE::uint64
+enum class ResetFlag : XE::uint64
 {
 	NONE = 0X00000000,
 	MSAAX2 = 0X00000010,
@@ -123,9 +125,10 @@ enum class ResetFlags : XE::uint64
 	FULLSCREENMASK = 0X00000001,
 	RESERVEDSHIFT = 31,
 	RESERVEDMASK = 0X80000000,
-};		 
+};
+DECL_FLAGS( ResetFlag, ResetFlags );
 
-enum class StateFlags : XE::uint64
+enum class StateFlag : XE::uint64
 {
 	NONE = 0x0000000000000000,
 	WRITER = 0x0000000000000001,
@@ -191,8 +194,9 @@ enum class StateFlags : XE::uint64
 	RESERVEDSHIFT = 61,
 	RESERVEDMASK = 0xE000000000000000,
 };
+DECL_FLAGS( StateFlag, StateFlags );
 
-enum class ClearFlags : XE::uint64
+enum class ClearFlag : XE::uint64
 {
 	NONE = 0X0000,
 	COLOR = 0X0001,
@@ -212,8 +216,9 @@ enum class ClearFlags : XE::uint64
 	DISCARDCOLORMASK = 0X07F8,
 	DISCARDMASK = 0X1FF8,
 };
+DECL_FLAGS( ClearFlag, ClearFlags );
 
-enum class BufferFlags : XE::uint64
+enum class BufferFlag : XE::uint64
 {
 	NONE = 0X0000,
 	COMPUTEFORMAT8X1 = 0X0001,
@@ -239,8 +244,9 @@ enum class BufferFlags : XE::uint64
 	INDEX32 = 0X1000,
 	COMPUTEREADWRITE = 0X0300,
 };
+DECL_FLAGS( BufferFlag, BufferFlags );
 
-enum class TextureFlags : XE::uint64
+enum class TextureFlag : XE::uint64
 {
 	NONE = 0X0000000000000000,
 	MSAASAMPLE = 0X0000000800000000,
@@ -259,8 +265,9 @@ enum class TextureFlags : XE::uint64
 	RTSHIFT = 36,
 	RTMASK = 0X000000F000000000,
 };
+DECL_FLAGS( TextureFlag, TextureFlags );
 
-enum class SamplerFlags : XE::uint64
+enum class SamplerFlag : XE::uint64
 {
 	NONE = 0X00000000,
 	UMIRROR = 0X00000001,
@@ -310,8 +317,9 @@ enum class SamplerFlags : XE::uint64
 	UVWBORDER = 0X0000003F,
 	BITSMASK = 0X000F07FF,
 };
+DECL_FLAGS( SamplerFlag, SamplerFlags );
 
-enum class StencilFlags : XE::uint64
+enum class StencilFlag : XE::uint64
 {
 	NONE = 0X00000000,
 	FUNCREFSHIFT = 0,
@@ -362,8 +370,9 @@ enum class StencilFlags : XE::uint64
 	OPPASSZSHIFT = 28,
 	OPPASSZMASK = 0XF0000000,
 };
+DECL_FLAGS( StencilFlag, StencilFlags );
 
-enum class CubeMapFlags : XE::uint64
+enum class CubeMapFlag : XE::uint64
 {
 	NONE = 0X00000000,
 	POSITIVEX = 0X00000000,
@@ -373,14 +382,16 @@ enum class CubeMapFlags : XE::uint64
 	POSITIVEZ = 0X00000004,
 	NEGATIVEZ = 0X00000005,
 };
+DECL_FLAGS( CubeMapFlag, CubeMapFlags );
 
-enum class ResolveFlags : XE::uint64
+enum class ResolveFlag : XE::uint64
 {
 	NONE = 0X00000000,
 	AUTOGENMIPS = 0X00000001,
 };
+DECL_FLAGS( ResolveFlag, ResolveFlags );
 
-enum class CapsFormatFlags : XE::uint64
+enum class CapsFormatFlag : XE::uint64
 {
 	NONE = 0X0000,
 	TEXTURE2D = 0X0001,
@@ -399,8 +410,9 @@ enum class CapsFormatFlags : XE::uint64
 	TEXTUREMSAA = 0X2000,
 	TEXTUREMIPAUTOGEN = 0X4000,
 };
+DECL_FLAGS( CapsFormatFlag, CapsFormatFlags );
 
-enum class Access
+enum class AccessType
 {
 	READ,      //!< Read
 	WRITE,     //!< Write
@@ -422,7 +434,18 @@ enum class RendererContextType
 	SOFTWARE,	  // Software
 };
 
-enum class Attribute
+enum class AttributeType
+{
+	UINT8,
+	UINT10,
+	INT16,
+	HALF,
+	FLOAT,
+
+	COUNT
+};
+
+enum class AttributeName
 {
 	POSITION,  //!< a_position
 	NORMAL,    //!< a_normal
@@ -446,17 +469,6 @@ enum class Attribute
 	COUNT
 };
 
-enum class AttributeType
-{
-	UINT8,
-	UINT10,
-	INT16,
-	HALF,
-	FLOAT,
-
-	COUNT
-};
-
 enum class UniformType
 {
 	INT,
@@ -470,7 +482,7 @@ enum class UniformType
 	SAMPLER,
 };
 
-enum class Topology
+enum class TopologyType
 {
 	TRILIST,
 	TRISTRIP,
@@ -694,10 +706,10 @@ struct XE_API CapsInfo
 public:
 	RendererContextType ContextType = RendererContextType::NONE;
 
-	XE::Flags<CapsFlags> Supported;
-	XE::Flags<CapsFormatFlags> SupportFormat;
+	XE::CapsFlags Supported;
+	XE::CapsFormatFlags SupportFormat[( XE::uint64 )XE::TextureFormat::COUNT];
 
-	PciIdFlags VendorId = PciIdFlags::NONE;
+	PciIdFlag VendorId = PciIdFlag::NONE;
 	XE::uint16 DeviceId = 0;
 	bool     HomogeneousDepth = false;
 	bool     OriginBottomLeft = false;
@@ -705,22 +717,36 @@ public:
 
 	struct
 	{
-		PciIdFlags VendorId = PciIdFlags::NONE;
+		PciIdFlag VendorId = PciIdFlag::NONE;
 		uint16_t DeviceId = 0;
 	} Gpu[4];
 
-	XE::uint32 MaxDrawCalls = GFX_MAX_DRAWCALLS;
-	XE::uint32 MaxBlits = GFX_MAX_BLITITEMS;
-	XE::uint32 MaxViews = GFX_MAX_VIEW;
-	XE::uint32 MaxFrameBuffers = GFX_MAX_FRAME_BUFFERS;
-	XE::uint32 MaxAttachments = GFX_MAX_ATTACHMENTS;
-	XE::uint32 MaxPrograms = GFX_MAX_PROGRAMS;
-	XE::uint32 MaxShaders = GFX_MAX_SHADERS;
-	XE::uint32 MaxTextures = GFX_MAX_TEXTURES;
-	XE::uint32 MaxVertexLayouts = GFX_MAX_VERTEX_LAYOUTS;
-	XE::uint32 MaxIndexBuffers = GFX_MAX_INDEX_BUFFERS;
-	XE::uint32 MaxVertexBuffers = GFX_MAX_VERTEX_BUFFERS;
-	XE::uint32 MaxOcclusionQueries = GFX_MAX_OCCLUSION;
+	struct  
+	{
+		XE::uint32 MaxDrawCalls;            //!< Maximum number of draw calls.
+		XE::uint32 MaxBlits;                //!< Maximum number of blit calls.
+		XE::uint32 MaxTextureSize;          //!< Maximum texture size.
+		XE::uint32 MaxTextureLayers;        //!< Maximum texture layers.
+		XE::uint32 MaxViews;                //!< Maximum number of views.
+		XE::uint32 MaxFrameBuffers;         //!< Maximum number of frame buffer handles.
+		XE::uint32 MaxFBAttachments;        //!< Maximum number of frame buffer attachments.
+		XE::uint32 MaxPrograms;             //!< Maximum number of program handles.
+		XE::uint32 MaxShaders;              //!< Maximum number of shader handles.
+		XE::uint32 MaxTextures;             //!< Maximum number of texture handles.
+		XE::uint32 MaxTextureSamplers;      //!< Maximum number of texture samplers.
+		XE::uint32 MaxComputeBindings;      //!< Maximum number of compute bindings.
+		XE::uint32 MaxVertexLayouts;        //!< Maximum number of vertex format layouts.
+		XE::uint32 MaxVertexStreams;        //!< Maximum number of vertex streams.
+		XE::uint32 MaxIndexBuffers;         //!< Maximum number of index buffer handles.
+		XE::uint32 MaxVertexBuffers;        //!< Maximum number of vertex buffer handles.
+		XE::uint32 MaxDynamicIndexBuffers;  //!< Maximum number of dynamic index buffer handles.
+		XE::uint32 MaxDynamicVertexBuffers; //!< Maximum number of dynamic vertex buffer handles.
+		XE::uint32 MaxUniforms;             //!< Maximum number of uniform handles.
+		XE::uint32 MaxOcclusionQueries;     //!< Maximum number of occlusion query handles.
+		XE::uint32 MaxEncoders;             //!< Maximum number of encoder threads.
+		XE::uint32 TransientVbSize;         //!< Maximum transient vertex buffer size.
+		XE::uint32 TransientIbSize;         //!< Maximum transient index buffer size.
+	} Limits;
 };
 
 struct XE_API Attachment
@@ -730,7 +756,7 @@ public:
 	XE::uint16 Mip = 0;
 	XE::uint16 Layer = 0;
 	bool AutoGenMips = false;
-	XE::Access Access = XE::Access::COUNT;
+	XE::AccessType Access = XE::AccessType::COUNT;
 };
 
 struct XE_API InitDesc
@@ -738,7 +764,7 @@ struct XE_API InitDesc
 public:
 	RendererContextType Type = RendererContextType::NONE;
 
-	PciIdFlags VendorId = PciIdFlags::NONE;
+	PciIdFlag VendorId = PciIdFlag::NONE;
 	XE::uint16 DeviceId = 0;
 
 	WindowHandle Window;
@@ -746,7 +772,7 @@ public:
 	XE::uint32 Width = 0;
 	XE::uint32 Height = 0;
 	TextureFormat Format = TextureFormat::RGBA8;
-	XE::Flags<ResetFlags> Reset;
+	XE::Flags<ResetFlag> Reset;
 	XE::uint8  NumBackBuffers = 0;
 	XE::uint8  MaxFrameLatency = 0;
 };
@@ -757,7 +783,7 @@ struct XE_API ViewDesc
 	XE::Color ClearColor = XE::Color::Black;
 	XE::float32 ClearDepth = 0.0f;
 	XE::uint8 ClearStencil = 1;
-	XE::Flags<ClearFlags> Flags = ClearFlags::NONE;
+	XE::Flags<ClearFlag> Flags = ClearFlag::NONE;
 	XE::Rectf ViewRect;
 	XE::Rectf ViewScissor;
 	XE::Mat4x4f ModelMat;
@@ -777,7 +803,7 @@ struct XE_API BufferDesc
 {
 	XE::String Name;
 	XE::uint64 Size = 0;
-	XE::Flags< XE::BufferFlags > Flags = XE::BufferFlags::NONE;
+	XE::Flags< XE::BufferFlag > Flags = XE::BufferFlag::NONE;
 };
 
 struct XE_API UniformDesc
@@ -798,8 +824,8 @@ struct XE_API TextureDesc
 	bool HasMaps = false;
 	XE::uint16 Layers = 0;
 	TextureFormat Format = TextureFormat::RGBA8;
-	XE::Flags< XE::TextureFlags > Flags = XE::TextureFlags::NONE;
-	XE::Flags< XE::SamplerFlags > Samplers = XE::SamplerFlags::NONE;
+	XE::Flags< XE::TextureFlag > Flags = XE::TextureFlag::NONE;
+	XE::Flags< XE::SamplerFlag > Samplers = XE::SamplerFlag::NONE;
 };
 
 struct XE_API ProgramDesc
@@ -815,9 +841,11 @@ struct XE_API FrameBufferDesc
 	XE::uint32 Width = 0;
 	XE::uint32 Height = 0;
 	XE::WindowHandle Window;
-	Attachment Attachments[GFX_MAX_ATTACHMENTS];
-	TextureFormat DepthFormat = TextureFormat::D24S8;
-	XE::Flags< XE::SamplerFlags > Samplers = XE::SamplerFlags::NONE;
+	XE::uint32 AttachmentCount = 0;
+	XE::Attachment Attachments[GFX_MAX_ATTACHMENTS];
+	XE::TextureFormat ColorFormat = XE::TextureFormat::RGBA8;
+	XE::TextureFormat DepthFormat = XE::TextureFormat::D24S8;
+	XE::Flags< XE::SamplerFlag > Samplers = XE::SamplerFlag::NONE;
 };
 
 struct XE_API IndexBufferDesc : public BufferDesc
@@ -827,7 +855,7 @@ struct XE_API IndexBufferDesc : public BufferDesc
 
 struct XE_API VertexLayoutDesc
 {
-	Attribute Attr[GFX_MAX_VERTEX_LAYOUTS];
+	AttributeName Attr[GFX_MAX_VERTEX_LAYOUTS];
 	AttributeType Type[GFX_MAX_VERTEX_LAYOUTS];
 };
 
@@ -876,8 +904,11 @@ struct XE_API ViewClearDesc
 	XE::uint8 Stencil = 1;
 	XE::float32 Depth = 0.0f;
 	XE::Color Color = XE::Color::Black;
-	XE::Flags< XE::ClearFlags > Flags = XE::MakeFlags( XE::ClearFlags::COLOR, XE::ClearFlags::DEPTH, XE::ClearFlags::STENCIL );
+	XE::Flags< XE::ClearFlag > Flags = XE::MakeFlags( XE::ClearFlag::COLOR, XE::ClearFlag::DEPTH, XE::ClearFlag::STENCIL );
 };
+
+
+typedef void( *ScreenShotCallbackType )( const char * userdata, XE::uint32 width, XE::uint32 height, XE::uint32 pitch, const XE::uint8 * data, XE::uint64 size, bool filpy );
 
 END_XE_NAMESPACE
 

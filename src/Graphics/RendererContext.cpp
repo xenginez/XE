@@ -350,10 +350,6 @@ XE::VertexLayoutHandle XE::RendererContext::Create( const XE::VertexLayoutDesc &
 
 	_p->_VertexLayouts[handle.GetValue()].Desc = desc;
 
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
-	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_VERTEX_LAYOUT );
-	_p->_SubmitFrame->PrevCmd.Wirte( handle );
-
 	return handle;
 }
 
@@ -457,7 +453,7 @@ XE::VertexBufferHandle XE::RendererContext::Create( const XE::VertexBufferDesc &
 	return handle;
 }
 
-XE::DynamicIndexBufferHandle XE::RendererContext::Create( const XE::DynamicIndexBufferDesc & desc, XE::MemoryView Data )
+XE::DynamicIndexBufferHandle XE::RendererContext::Create( const XE::DynamicIndexBufferDesc & desc )
 {
 	auto handle = _p->_DynamicIndexBufferHandleAlloc.Alloc();
 
@@ -469,12 +465,11 @@ XE::DynamicIndexBufferHandle XE::RendererContext::Create( const XE::DynamicIndex
 
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_DYNAMIC_INDEX_BUFFER );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
-	_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( Data ) );
 
 	return handle;
 }
 
-XE::DynamicVertexBufferHandle XE::RendererContext::Create( const XE::DynamicVertexBufferDesc & desc, XE::MemoryView Data )
+XE::DynamicVertexBufferHandle XE::RendererContext::Create( const XE::DynamicVertexBufferDesc & desc )
 {
 	auto handle = _p->_DynamicVertexBufferHandleAlloc.Alloc();
 
@@ -608,11 +603,6 @@ void XE::RendererContext::Destory( XE::IndexBufferHandle handle )
 
 void XE::RendererContext::Destory( XE::VertexLayoutHandle handle )
 {
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
-
-	_p->_SubmitFrame->PostCmd.Wirte( XE::CommandType::DESTROY_VERTEX_LAYOUT );
-	_p->_SubmitFrame->PostCmd.Wirte( handle );
-
 	_p->_VertexLayoutHandleAlloc.Free( handle );
 }
 
@@ -785,13 +775,14 @@ void XE::RendererContext::ResetView( XE::ViewHandle handle, const XE::ViewDesc &
 	_p->_Views[handle.GetValue()].Mode = desc.Mode;
 }
 
-void XE::RendererContext::RequestScreenShot( XE::FrameBufferHandle handle, const std::filesystem::path & path )
+void XE::RendererContext::RequestScreenShot( XE::FrameBufferHandle handle, const std::string & userdata, ScreenShotCallbackType callback )
 {
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
 
 	_p->_SubmitFrame->PostCmd.Wirte( CommandType::REQUEST_SCREEN_SHOT );
 	_p->_SubmitFrame->PostCmd.Wirte( handle );
-	_p->_SubmitFrame->PostCmd.Wirte( path.u8string() );
+	_p->_SubmitFrame->PostCmd.Wirte( userdata );
+	_p->_SubmitFrame->PostCmd.Wirte( ( uintptr_t ) callback );
 }
 
 void XE::RendererContext::SetCaps( const XE::CapsInfo & val )

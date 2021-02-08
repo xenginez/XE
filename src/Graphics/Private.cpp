@@ -22,7 +22,7 @@ void XE::RenderBind::Reset()
 		it.Type = BindType::NONE;
 		it.Mip = 0;
 		it.Handle = std::numeric_limits<XE::uint64>::max();
-		it.Access = XE::Access::COUNT;
+		it.Access = XE::AccessType::COUNT;
 		it.SamplerFlags = 0;
 		it.Format = XE::TextureFormat::RGBA8;
 	}
@@ -46,9 +46,9 @@ void XE::RenderDraw::Reset()
 	InstanceDataBuffer = XE::VertexBufferHandle::Invalid;
 	IndirectBuffer = XE::IndirectBufferHandle::Invalid;
 	OcclusionQuery = XE::OcclusionQueryHandle::Invalid;
-	StateFlags = XE::StateFlags::NONE;
-	FrontStencilFlags = XE::StencilFlags::NONE;
-	BackStencilFlags = XE::StencilFlags::NONE;
+	StateFlags = XE::StateFlag::NONE;
+	FrontStencilFlags = XE::StencilFlag::NONE;
+	BackStencilFlags = XE::StencilFlag::NONE;
 }
 
 void XE::RenderBlit::Reset()

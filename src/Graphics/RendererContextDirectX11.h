@@ -102,7 +102,7 @@ public:
 	void DestoryDynamicVertexBuffer( XE::RenderFrame * frame );
 
 private:
-    Private * _p;
+	Private * _p = nullptr;
 };
 
 XE_INLINE XE::RendererContext * CreateRendererContextDirectX11()

@@ -119,9 +119,9 @@ public:
 
 	XE::VertexBufferHandle Create( const XE::VertexBufferDesc & desc, XE::MemoryView data );
 
-	XE::DynamicIndexBufferHandle Create( const XE::DynamicIndexBufferDesc & desc, XE::MemoryView data );
+	XE::DynamicIndexBufferHandle Create( const XE::DynamicIndexBufferDesc & desc );
 
-	XE::DynamicVertexBufferHandle Create( const XE::DynamicVertexBufferDesc & desc, XE::MemoryView data );
+	XE::DynamicVertexBufferHandle Create( const XE::DynamicVertexBufferDesc & desc );
 
 public:
 	const XE::ViewDesc & GetDesc( XE::ViewHandle handle );
@@ -207,7 +207,7 @@ public:
 	void ResetView( XE::ViewHandle handle, const XE::ViewDesc & val );
 
 public:
-	void RequestScreenShot( XE::FrameBufferHandle handle, const std::filesystem::path & path );
+	void RequestScreenShot( XE::FrameBufferHandle handle, const std::string & userdata, ScreenShotCallbackType callback );
 
 protected:
 	void SetCaps( const XE::CapsInfo & val );

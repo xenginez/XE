@@ -45,6 +45,12 @@ public:
 	}
 
 public:
+	Flags operator ~() const
+	{
+		return ~_Value;
+	}
+
+public:
 	Flags operator |( enum_type val ) const
 	{
 		return _Value | static_cast< value_type >( val );
@@ -271,6 +277,7 @@ template< typename T > bool operator !=( T left, XE::Flags< T > right )
 	return XE::MakeFlags( left ) != right;
 }
 
-#define DECL_META_FLAGS( EXPORT, TYPE, NAME ) DECL_META_ENUM( EXPORT, TYPE ); using NAME = XE::Flags< TYPE >
+#define DECL_FLAGS( TYPE, NAME ) using NAME = XE::Flags< TYPE >
+#define DECL_META_FLAGS( EXPORT, TYPE, NAME ) DECL_META_ENUM( EXPORT, TYPE ); DECL_FLAGS( TYPE, NAME )
 
 #endif // FLAGS_HPP__C8E5511D_71B9_46C1_A4BF_35B5E8ADBDF3

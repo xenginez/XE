@@ -184,14 +184,14 @@ XE::RefHandle< XE::VertexBufferHandle > XE::Gfx::Create( const XE::VertexBufferD
 	return { _p->_Context->Create( desc, data ), [this]( auto val ) { _p->_Context->Inc( val ); }, [this]( auto val ) { _p->_Context->Dec( val ); } };
 }
 
-XE::RefHandle< XE::DynamicIndexBufferHandle > XE::Gfx::Create( const XE::DynamicIndexBufferDesc & desc, XE::MemoryView data )
+XE::RefHandle< XE::DynamicIndexBufferHandle > XE::Gfx::Create( const XE::DynamicIndexBufferDesc & desc )
 {
-	return { _p->_Context->Create( desc, data ), [this]( auto val ) { _p->_Context->Inc( val ); }, [this]( auto val ) { _p->_Context->Dec( val ); } };
+	return { _p->_Context->Create( desc ), [this]( auto val ) { _p->_Context->Inc( val ); }, [this]( auto val ) { _p->_Context->Dec( val ); } };
 }
 
-XE::RefHandle< XE::DynamicVertexBufferHandle > XE::Gfx::Create( const XE::DynamicVertexBufferDesc & desc, XE::MemoryView data )
+XE::RefHandle< XE::DynamicVertexBufferHandle > XE::Gfx::Create( const XE::DynamicVertexBufferDesc & desc )
 {
-	return { _p->_Context->Create( desc, data ), [this]( auto val ) { _p->_Context->Inc( val ); }, [this]( auto val ) { _p->_Context->Dec( val ); } };
+	return { _p->_Context->Create( desc ), [this]( auto val ) { _p->_Context->Inc( val ); }, [this]( auto val ) { _p->_Context->Dec( val ); } };
 }
 
 const XE::ViewDesc & XE::Gfx::GetDesc( XE::ViewHandle handle )
@@ -329,7 +329,7 @@ void XE::Gfx::ResetView( XE::ViewHandle handle, const XE::ViewDesc & desc )
 	_p->_Context->ResetView( handle, desc );
 }
 
-void XE::Gfx::RequestScreenShot( XE::FrameBufferHandle handle, const std::filesystem::path & path )
+void XE::Gfx::RequestScreenShot( XE::FrameBufferHandle handle, const std::string & userdata, ScreenShotCallbackType callback )
 {
-	_p->_Context->RequestScreenShot( handle, path );
+	_p->_Context->RequestScreenShot( handle, userdata, callback );
 }

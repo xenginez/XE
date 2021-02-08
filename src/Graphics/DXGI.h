@@ -25,6 +25,13 @@
 #undef TRANSPARENT
 #endif // TRANSPARENT
 
+#define DX_RELEASE(_ptr ) \
+if( nullptr != ( _ptr ) ) \
+{ \
+	_ptr->Release(); \
+	_ptr = nullptr; \
+} \
+
 BEG_XE_NAMESPACE
 
 struct SwapChainDesc
@@ -61,7 +68,7 @@ public:
     ~DXGI() = default;
 
 public:
-    bool Init( CapsInfo & caps );
+	void Init( CapsInfo & caps );
 
     void Shutdown();
 
@@ -74,7 +81,7 @@ public:
 
 	HRESULT ResizeBuffers( SwapChainI * _swapChain, const SwapChainDesc & _scd, const XE::uint32 * _nodeMask = NULL, UnknownI * const * _presentQueue = NULL );
 
-private:
+public:
 	XE::LibraryHandle _DXGIDll;
 	XE::LibraryHandle _DXGIDebugDll;
 	D3D_DRIVER_TYPE   _DriverType = D3D_DRIVER_TYPE_NULL;

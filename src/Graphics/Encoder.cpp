@@ -39,7 +39,7 @@ void XE::Encoder::SetFrame( RenderFrame* val )
 	_p->_Frame = val;
 }
 
-void XE::Encoder::SetState( XE::Flags<XE::StateFlags> flags /*= XE::StateFlag::DEFAULT */ )
+void XE::Encoder::SetState( XE::Flags<XE::StateFlag> flags /*= XE::StateFlag::DEFAULT */ )
 {
 	_p->_Draw.StateFlags = flags;
 }
@@ -49,7 +49,7 @@ void XE::Encoder::SetCondition( OcclusionQueryHandle handle, bool visible )
 	_p->_Draw.OcclusionQuery = handle;
 }
 
-void XE::Encoder::SetStencil( XE::Flags<XE::StencilFlags> front, XE::Flags<XE::StencilFlags> back /*= XE::StencilFlag::NONE */ )
+void XE::Encoder::SetStencil( XE::Flags<XE::StencilFlag> front, XE::Flags<XE::StencilFlag> back /*= XE::StencilFlag::NONE */ )
 {
 	_p->_Draw.FrontStencilFlags = front;
 	_p->_Draw.BackStencilFlags = back;
@@ -120,7 +120,7 @@ void XE::Encoder::SetInstanceDataBuffer( DynamicVertexBufferHandle handle, XE::u
 	_p->_Draw.IsDynamicInstanceDataBuffer = true;
 }
 
-void XE::Encoder::SetBind( XE::uint8 stage, IndexBufferHandle handle, Access access )
+void XE::Encoder::SetBind( XE::uint8 stage, IndexBufferHandle handle, AccessType access )
 {
 	_p->_Bind.Binds[stage].Handle = handle.GetValue();
 	_p->_Bind.Binds[stage].Type = RenderBind::BindType::INDEXBUFFER;
@@ -128,7 +128,7 @@ void XE::Encoder::SetBind( XE::uint8 stage, IndexBufferHandle handle, Access acc
 	_p->_Bind.Binds[stage].Mip = 0;
 }
 
-void XE::Encoder::SetBind( XE::uint8 stage, VertexBufferHandle handle, Access access )
+void XE::Encoder::SetBind( XE::uint8 stage, VertexBufferHandle handle, AccessType access )
 {
 	_p->_Bind.Binds[stage].Handle = handle.GetValue();
 	_p->_Bind.Binds[stage].Type = RenderBind::BindType::VERTEXBUFFER;
@@ -136,7 +136,7 @@ void XE::Encoder::SetBind( XE::uint8 stage, VertexBufferHandle handle, Access ac
 	_p->_Bind.Binds[stage].Mip = 0;
 }
 
-void XE::Encoder::SetBind( XE::uint8 stage, DynamicIndexBufferHandle handle, Access access )
+void XE::Encoder::SetBind( XE::uint8 stage, DynamicIndexBufferHandle handle, AccessType access )
 {
 	_p->_Bind.Binds[stage].Handle = handle.GetValue();
 	_p->_Bind.Binds[stage].Type = RenderBind::BindType::DYNAMICINDEXBUFFER;
@@ -144,7 +144,7 @@ void XE::Encoder::SetBind( XE::uint8 stage, DynamicIndexBufferHandle handle, Acc
 	_p->_Bind.Binds[stage].Mip = 0;
 }
 
-void XE::Encoder::SetBind( XE::uint8 stage, DynamicVertexBufferHandle handle, Access access )
+void XE::Encoder::SetBind( XE::uint8 stage, DynamicVertexBufferHandle handle, AccessType access )
 {
 	_p->_Bind.Binds[stage].Handle = handle.GetValue();
 	_p->_Bind.Binds[stage].Type = RenderBind::BindType::DYNAMICVERTEXBUFFER;
@@ -152,7 +152,7 @@ void XE::Encoder::SetBind( XE::uint8 stage, DynamicVertexBufferHandle handle, Ac
 	_p->_Bind.Binds[stage].Mip = 0;
 }
 
-void XE::Encoder::SetBind( XE::uint8 stage, const XE::String & uniformname, TextureHandle handle, XE::Flags<XE::SamplerFlags> flags )
+void XE::Encoder::SetBind( XE::uint8 stage, const XE::String & uniformname, TextureHandle handle, XE::Flags<XE::SamplerFlag> flags )
 {
 	_p->_Bind.Binds[stage].Handle = handle.GetValue();
 	_p->_Bind.Binds[stage].Type = RenderBind::BindType::TEXTURE;
@@ -161,7 +161,7 @@ void XE::Encoder::SetBind( XE::uint8 stage, const XE::String & uniformname, Text
 	_p->_Uniforms[uniformname] = { uniformname, 1, ( XE::uint32 )stage, XE::UniformType::SAMPLER };
 }
 
-void XE::Encoder::SetBind( XE::uint8 stage, TextureHandle handle, XE::uint8 mip, Access access, TextureFormat format /*= TextureFormat::COUNT */ )
+void XE::Encoder::SetBind( XE::uint8 stage, TextureHandle handle, XE::uint8 mip, AccessType access, TextureFormat format /*= TextureFormat::COUNT */ )
 {
 	_p->_Bind.Binds[stage].Handle = handle.GetValue();
 	_p->_Bind.Binds[stage].Type = RenderBind::BindType::IMAGE;

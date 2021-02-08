@@ -26,11 +26,11 @@ private:
 	~Encoder();
 
 public:
-	void SetState( XE::Flags<XE::StateFlags> flags = XE::StateFlags::DEFAULT );
+	void SetState( XE::Flags<XE::StateFlag> flags = XE::StateFlag::DEFAULT );
 
 	void SetCondition( XE::OcclusionQueryHandle handle, bool visible );
 
-	void SetStencil( XE::Flags<XE::StencilFlags> front, XE::Flags<XE::StencilFlags> back = XE::StencilFlags::NONE );
+	void SetStencil( XE::Flags<XE::StencilFlag> front, XE::Flags<XE::StencilFlag> back = XE::StencilFlag::NONE );
 
 	void SetScissor( const XE::Rectf & scissor );
 
@@ -83,17 +83,17 @@ public:
 	void SetInstanceDataBuffer( XE::DynamicVertexBufferHandle handle, XE::uint32 first, XE::uint32 num );
 
 public:
-	void SetBind( XE::uint8 stage, XE::IndexBufferHandle handle, XE::Access access );
+	void SetBind( XE::uint8 stage, XE::IndexBufferHandle handle, XE::AccessType access );
 
-	void SetBind( XE::uint8 stage, XE::VertexBufferHandle handle, XE::Access access );
+	void SetBind( XE::uint8 stage, XE::VertexBufferHandle handle, XE::AccessType access );
 
-	void SetBind( XE::uint8 stage, XE::DynamicIndexBufferHandle handle, XE::Access access );
+	void SetBind( XE::uint8 stage, XE::DynamicIndexBufferHandle handle, XE::AccessType access );
 
-	void SetBind( XE::uint8 stage, XE::DynamicVertexBufferHandle handle, XE::Access access );
+	void SetBind( XE::uint8 stage, XE::DynamicVertexBufferHandle handle, XE::AccessType access );
 
-	void SetBind( XE::uint8 stage, const XE::String & uniformname, XE::TextureHandle data, XE::Flags<XE::SamplerFlags> flags );
+	void SetBind( XE::uint8 stage, const XE::String & uniformname, XE::TextureHandle data, XE::Flags<XE::SamplerFlag> flags );
 
-	void SetBind( XE::uint8 stage, XE::TextureHandle handle, XE::uint8 mip, XE::Access access, XE::TextureFormat format = XE::TextureFormat::RGBA8 );
+	void SetBind( XE::uint8 stage, XE::TextureHandle handle, XE::uint8 mip, XE::AccessType access, XE::TextureFormat format = XE::TextureFormat::RGBA8 );
 
 public:
 	void Discard();

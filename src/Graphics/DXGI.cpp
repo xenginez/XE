@@ -58,14 +58,7 @@ static const char * ColorSpaceStr[] =
 	"Custom",
 };
 
-#define DX_RELEASE(_ptr ) \
-if( nullptr != ( _ptr ) ) \
-{ \
-_ptr->Release(); \
-_ptr = nullptr; \
-} \
-
-bool XE::DXGI::Init( CapsInfo & caps )
+void XE::DXGI::Init( CapsInfo & caps )
 {
 	_DXGIDll = XE::Library::Open( "dxgi.dll" );
 	_DXGIDebugDll = XE::Library::Open( "dxgidebug.dll" );
@@ -83,7 +76,7 @@ bool XE::DXGI::Init( CapsInfo & caps )
 
 	XE_ASSERT( !FAILED( hr ) && "Init error: Unable to create DXGI factory." );
 
-	_DriverType = XE::PciIdFlags::SOFTWARERASTERIZER == caps.VendorId ? D3D_DRIVER_TYPE_WARP : D3D_DRIVER_TYPE_HARDWARE;
+	_DriverType = XE::PciIdFlag::SOFTWARERASTERIZER == caps.VendorId ? D3D_DRIVER_TYPE_WARP : D3D_DRIVER_TYPE_HARDWARE;
 
 
 	AdapterI * adapter = nullptr;
@@ -112,14 +105,14 @@ bool XE::DXGI::Init( CapsInfo & caps )
 						, desc.SharedSystemMemory
 				);
 
-				caps.Gpu[ii].VendorId = ( XE::PciIdFlags ) desc.VendorId;
+				caps.Gpu[ii].VendorId = ( XE::PciIdFlag ) desc.VendorId;
 				caps.Gpu[ii].DeviceId = ( XE::uint16 ) desc.DeviceId;
 				++caps.NumGPUs;
 
 				if( nullptr == _Adapter )
 				{
-					if( ( XE::PciIdFlags::NONE != caps.VendorId || 0 != caps.DeviceId )
-						&& ( XE::PciIdFlags::NONE == caps.VendorId || desc.VendorId == (XE::uint16)caps.VendorId )
+					if( ( XE::PciIdFlag::NONE != caps.VendorId || 0 != caps.DeviceId )
+						&& ( XE::PciIdFlag::NONE == caps.VendorId || desc.VendorId == (XE::uint16)caps.VendorId )
 						&& ( 0 == caps.DeviceId || desc.DeviceId == caps.DeviceId ) )
 					{
 						_Adapter = adapter;
@@ -186,7 +179,7 @@ bool XE::DXGI::Init( CapsInfo & caps )
 
 		if( hdr10 )
 		{
-			caps.Supported |= XE::CapsFlags::HDR10;
+			caps.Supported |= XE::CapsFlag::HDR10;
 		}
 
 		DX_RELEASE( adapter );
@@ -211,10 +204,8 @@ bool XE::DXGI::Init( CapsInfo & caps )
 
 	_Adapter->EnumOutputs( 0, &_Output );
 
-	caps.VendorId = 0 == _AdapterDesc.VendorId ? XE::PciIdFlags::SOFTWARERASTERIZER : ( XE::PciIdFlags ) _AdapterDesc.VendorId;
+	caps.VendorId = 0 == _AdapterDesc.VendorId ? XE::PciIdFlag::SOFTWARERASTERIZER : ( XE::PciIdFlag ) _AdapterDesc.VendorId;
 	caps.DeviceId = ( XE::uint16 ) _AdapterDesc.DeviceId;
-
-	return true;
 }
 
 void XE::DXGI::Shutdown()

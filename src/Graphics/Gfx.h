@@ -65,9 +65,9 @@ public:
 
 	XE::RefHandle < XE::VertexBufferHandle > Create( const XE::VertexBufferDesc & desc, XE::MemoryView data );
 
-	XE::RefHandle < XE::DynamicIndexBufferHandle > Create( const XE::DynamicIndexBufferDesc & desc, XE::MemoryView data );
+	XE::RefHandle < XE::DynamicIndexBufferHandle > Create( const XE::DynamicIndexBufferDesc & desc );
 
-	XE::RefHandle < XE::DynamicVertexBufferHandle > Create( const XE::DynamicVertexBufferDesc & desc, XE::MemoryView data );
+	XE::RefHandle < XE::DynamicVertexBufferHandle > Create( const XE::DynamicVertexBufferDesc & desc );
 
 public:
 	const XE::ViewDesc & GetDesc( XE::ViewHandle handle );
@@ -128,7 +128,7 @@ public:
 	void ResetView( XE::ViewHandle handle, const XE::ViewDesc & desc );
 
 public:
-	void RequestScreenShot( XE::FrameBufferHandle handle, const std::filesystem::path & path );
+	void RequestScreenShot( XE::FrameBufferHandle handle, const std::string & userdata, ScreenShotCallbackType callback );
 
 private:
 	Private * _p;

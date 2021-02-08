@@ -265,7 +265,7 @@ struct PShader : public GfxRefCount
 	XE::uint32 HashIn;
 	XE::uint32 HashOut;
 	XE::ShaderDesc Desc;
-	XE::Array< UniformDesc > Uniforms;
+	XE::Array< XE::UniformDesc > Uniforms;
 };
 
 struct PTexture : public GfxRefCount
@@ -273,7 +273,7 @@ struct PTexture : public GfxRefCount
 	XE::TextureDesc Desc;
 	XE::uint32 StorageSize = 0;
 	XE::uint8 BitsPerPixel = 0;
-	TextureFormat Format = TextureFormat::RGBA8;
+	XE::TextureFormat Format = XE::TextureFormat::RGBA8;
 };
 
 struct PProgram : public GfxRefCount
@@ -358,14 +358,14 @@ struct PView : public GfxRefCount
 	XE::Color ClearColor;
 	XE::float32 ClearDepth = 0.0f;
 	XE::uint8 ClearStencil = 1;
-	XE::Flags<ClearFlags> Flags = ClearFlags::NONE;
+	XE::ClearFlags Flags = ClearFlag::NONE;
 	XE::Rectf ViewRect;
 	XE::Rectf ViewScissor;
 	XE::Mat4x4f ModelMat;
 	XE::Mat4x4f ViewMat;
 	XE::Mat4x4f ProjMat;
-	ViewMode Mode = XE::ViewMode::DEFAULT;
-	FrameBufferHandle Handle;
+	XE::ViewMode Mode = XE::ViewMode::DEFAULT;
+	XE::FrameBufferHandle Handle;
 	XE::ViewDesc Desc;
 };
 
@@ -410,7 +410,7 @@ struct RenderBind
 		BindType Type;
 		XE::uint8 Mip;
 		XE::uint64 Handle;
-		XE::Access Access;
+		XE::AccessType Access;
 		XE::uint32 SamplerFlags;
 		XE::TextureFormat Format;
 	};
@@ -423,7 +423,7 @@ struct RenderDraw
 	void Reset();
 
 	bool IsDynamicIndices = false;
-	PIndexBuffer Indices = {};
+	XE::PIndexBuffer Indices = {};
 	std::array<PUniform, GFX_MAX_UNIFORMS> Uniforms = {};
 	std::array<bool, GFX_MAX_VERTEXS> IsDynamicVertices = {};
 	std::array<PVertexBuffer, GFX_MAX_VERTEXS> Vertices = {};
@@ -452,9 +452,9 @@ struct RenderDraw
 
 	XE::OcclusionQueryHandle OcclusionQuery;
 
-	XE::Flags<XE::StateFlags> StateFlags = XE::StateFlags::NONE;
-	XE::Flags<XE::StencilFlags> FrontStencilFlags = XE::StencilFlags::NONE;
-	XE::Flags<XE::StencilFlags> BackStencilFlags = XE::StencilFlags::NONE;
+	XE::StateFlags StateFlags = XE::StateFlag::NONE;
+	XE::StencilFlags FrontStencilFlags = XE::StencilFlag::NONE;
+	XE::StencilFlags BackStencilFlags = XE::StencilFlag::NONE;
 };
 
 struct RenderCompute
@@ -480,7 +480,7 @@ struct RenderCompute
 
 struct RenderItem
 {
-	XE::uint8 Data[std::max( sizeof( RenderDraw ), sizeof( RenderCompute ) )];
+	XE::uint8 Data[std::max( sizeof( XE::RenderDraw ), sizeof( XE::RenderCompute ) )];
 };
 
 struct RenderFrame
