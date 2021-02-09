@@ -45,10 +45,15 @@ public:
 
 	void Clearup();
 
+public:
+	XE::Transform & GetTransform();
+
 private:
 	String _Name;
+	XE::Transform _Transform;
 	Array< GameEntityPtr > _Entities;
 	XE::GameEntityHandleAllocator _HandleTable;
+
 };
 
 END_XE_NAMESPACE

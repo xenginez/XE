@@ -1933,8 +1933,17 @@ public:
 				  mat3[0][0], mat3[0][1], mat3[0][2], 0,
 				  mat3[1][0], mat3[1][1], mat3[1][2], 0,
 				  mat3[2][0], mat3[2][1], mat3[2][2], 0,
-				  0, 0, 0, 1
+				  0,          0,          0,          1
 		};
+	}
+
+	static XE_INLINE Quat Rotation( const Mat4x4f & val )
+	{
+		XE::Vec3f pos;
+		XE::Quat rot;
+		XE::Vec3f scale;
+		TRS( val, pos, rot, scale );
+		return rot;
 	}
 
 	static XE_INLINE Mat4x4f Scale( const Vec3f & val )
@@ -1945,6 +1954,15 @@ public:
 			0.0f,  0.0f,  val.z, 0.0f,
 			0.0f,  0.0f,  0.0f,  1.0f
 		};
+	}
+
+	static XE_INLINE Vec3f Scale( const Mat4x4f & val )
+	{
+		XE::Vec3f pos;
+		XE::Quat rot;
+		XE::Vec3f scale;
+		TRS( val, pos, rot, scale );
+		return scale;
 	}
 
 	static XE_INLINE Mat4x4f Scale( XE::float32 val )

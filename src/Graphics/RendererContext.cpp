@@ -481,7 +481,6 @@ XE::DynamicVertexBufferHandle XE::RendererContext::Create( const XE::DynamicVert
 
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_DYNAMIC_VERTEX_BUFFER );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
-	_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( Data ) );
 
 	return handle;
 }

@@ -97,71 +97,12 @@ private:
 	virtual void Clearup() override;
 
 public:
-	const AABB & GetBoundingBox();
+	XE::AABB GetBoundingBox();
 
-public:
-	Vec3f GetWorldUp();
-
-	Vec3f GetWorldRight();
-
-	Vec3f GetWorldForward();
-
-	Vec3f GetRelativeUp() const;
-
-	Vec3f GetRelativeRight() const;
-
-	Vec3f GetRelativeForward() const;
-
-public:
-	const Vec3f & GetWorldScale();
-
-	void SetWorldScale( const Vec3f & val );
-
-	const Vec3f & GetWorldPosition();
-
-	void SetWorldPosition( const Vec3f & val );
-
-	const Quat & GetWorldRotation();
-
-	void SetWorldRotation( const Quat & val );
-
-public:
-	const Vec3f & GetRelativeScale() const;
-
-	void SetRelativeScale( const Vec3f & val );
-
-	const Vec3f & GetRelativePosition() const;
-
-	void SetRelativePosition( const Vec3f & val );
-
-	const Quat & GetRelativeRotation() const;
-
-	void SetRelativeRotation( const Quat & val );
-
-public:
-	const Mat4x4f & GetWorldTransform() const;
-
-	void SetWorldTransform( const Mat4x4f & val );
-
-	const Mat4x4f & GetRelativeTransform() const;
-
-	void SetRelativeTransform( const Mat4x4f & val );
-
-protected:
-	virtual void UpdateTransform();
+	XE::Transform & GetTransform();
 
 private:
-	bool _Dirty;
-
-	XE::Vec3f _WorldScale;
-	XE::Vec3f _WorldPosition;
-	XE::Quat _WorldRotation;
-	XE::Vec3f _RelativeScale;
-	XE::Vec3f _RelativePosition;
-	XE::Quat _RelativeRotation;
-
-	XE::Mat4x4f _WorldTransform;
-	XE::Mat4x4f _RelativeTransform;
+	XE::Transform _Transform;
 
 	XE::AABB _BoundingBox;
 	XE::SceneComponentWPtr _Parent;

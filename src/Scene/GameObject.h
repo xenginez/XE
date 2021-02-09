@@ -23,60 +23,12 @@ public:
 	~GameObject();
 
 public:
-	const XE::AABB & GetBoundingBox() const;
+	XE::AABB GetBoundingBox() const;
 
 public:
 	GameObjectType GetType() const;
 
 	void SetType( GameObjectType val );
-
-public:
-	Vec3f GetWorldUp();
-
-	Vec3f GetWorldRight();
-
-	Vec3f GetWorldForward();
-
-	Vec3f GetRelativeUp() const;
-
-	Vec3f GetRelativeRight() const;
-
-	Vec3f GetRelativeForward() const;
-
-public:
-	const Vec3f & GetWorldScale();
-
-	void SetWorldScale( const Vec3f & val );
-
-	const Vec3f & GetWorldPosition();
-
-	void SetWorldPosition( const Vec3f & val );
-
-	const Quat & GetWorldRotation();
-
-	void SetWorldRotation( const Quat & val );
-
-public:
-	const Vec3f & GetRelativeScale() const;
-
-	void SetRelativeScale( const Vec3f & val );
-
-	const Vec3f & GetRelativePosition() const;
-
-	void SetRelativePosition( const Vec3f & val );
-
-	const Quat & GetRelativeRotation() const;
-
-	void SetRelativeRotation( const Quat & val );
-
-public:
-	const Mat4x4f & GetWorldTransform() const;
-
-	void SetWorldTransform( const Mat4x4f & val );
-
-	const Mat4x4f & GetRelativeTransform() const;
-
-	void SetRelativeTransform( const Mat4x4f & val );
 
 public:
 	SceneComponentPtr AddSceneComponent( IMetaClassPtr val, const SceneComponentPtr& parent );
@@ -110,7 +62,7 @@ public:
 	}
 
 public:
-	SceneComponentPtr GetRootSceneComponent() const;
+	SceneComponentPtr GetSceneComponent() const;
 
 	const XE::Array<BehaviorComponentPtr>& GetBehaviorComponents() const;
 
@@ -131,7 +83,7 @@ protected:
 
 private:
 	GameObjectType _Type;
-	SceneComponentPtr _RootSceneComponent;
+	SceneComponentPtr _SceneComponent;
 	XE::ComponentHandleAllocator _HandleTable;
 	XE::Array< BehaviorComponentPtr > _BehaviorComponents;
 };

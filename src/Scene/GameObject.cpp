@@ -8,15 +8,14 @@
 #include <Interface/IThreadService.h>
 
 BEG_META( XE::GameObject )
-type->Property( "RootSceneComponent", &GameObject::_RootSceneComponent, IMetaProperty::NoDesign );
+type->Property( "SceneComponent", &GameObject::_SceneComponent, IMetaProperty::NoDesign );
 type->Property( "BehaviorComponents", &GameObject::_BehaviorComponents, IMetaProperty::NoDesign );
 END_META()
 
 XE::GameObject::GameObject()
 	:_Type( GameObjectType::STATIC )
 {
-	_RootSceneComponent = XE::MakeShared<XE::SceneComponent>();
-	_RootSceneComponent->SetName( "Root" );
+
 }
 
 XE::GameObject::~GameObject()
@@ -24,9 +23,14 @@ XE::GameObject::~GameObject()
 
 }
 
-const XE::AABB & XE::GameObject::GetBoundingBox() const
+XE::AABB XE::GameObject::GetBoundingBox() const
 {
-	return _RootSceneComponent->GetBoundingBox();
+	if( _SceneComponent )
+	{
+		return _SceneComponent->GetBoundingBox();
+	}
+
+	return {};
 }
 
 XE::GameObjectType XE::GameObject::GetType() const
@@ -47,11 +51,22 @@ XE::SceneComponentPtr XE::GameObject::AddSceneComponent( IMetaClassPtr val, cons
 
 		if( comp )
 		{
-			comp->_GameObject = XE_THIS( GameObject );
 			comp->_Handle = _HandleTable.Alloc();
 
-			comp->_Parent = parent;
-			parent->_Children.push_back( comp );
+			comp->_World = GetWorld();
+			comp->_GameObject = XE_THIS( GameObject );
+
+			if( parent )
+			{
+				comp->_Parent = parent;
+				comp->_Transform.SetParent( &parent->GetTransform() );
+				parent->_Children.push_back( comp );
+			}
+			else
+			{
+				_SceneComponent = comp;
+				comp->_Transform.SetParent( &GetTransform() );
+			}
 
 			XE::IFramework::GetCurrentFramework()->GetThreadService()->PostTask( ThreadType::GAME, [comp]()
 																						  {
@@ -73,8 +88,10 @@ XE::BehaviorComponentPtr XE::GameObject::AddBehaviorComponent( IMetaClassPtr val
 
 		if( comp )
 		{
-			comp->_GameObject = XE_THIS( GameObject );
 			comp->_Handle = _HandleTable.Alloc();
+
+			comp->_World = GetWorld();
+			comp->_GameObject = XE_THIS( GameObject );
 
 			XE::IFramework::GetCurrentFramework()->GetThreadService()->PostTask( ThreadType::GAME, [comp]()
 																						  {
@@ -137,17 +154,22 @@ bool XE::GameObject::RemoveSceneComponent( const XE::SceneComponentPtr & val )
 		if( it != parent->_Children.end() )
 		{
 			parent->_Children.erase( it );
-
-			XE::IFramework::GetCurrentFramework()->GetThreadService()->PostTask( ThreadType::GAME, [val]()
-																						  {
-																							  val->Clearup();
-																						  } );
-
-			return true;
 		}
 	}
+	else if( val == _SceneComponent )
+	{
+		_SceneComponent = nullptr;
+	}
+	else
+	{
+		return false;
+	}
 
-	return false;
+	XE::IFramework::GetCurrentFramework()->GetThreadService()->PostTask( ThreadType::GAME, [val]()
+																		 {
+																			 val->Clearup();
+																		 } );
+	return true;
 }
 
 bool XE::GameObject::RemoveBehaviorComponet( const XE::BehaviorComponentPtr & val )
@@ -168,9 +190,9 @@ bool XE::GameObject::RemoveBehaviorComponet( const XE::BehaviorComponentPtr & va
 	return false;
 }
 
-XE::SceneComponentPtr XE::GameObject::GetRootSceneComponent() const
+XE::SceneComponentPtr XE::GameObject::GetSceneComponent() const
 {
-	return _RootSceneComponent;
+	return _SceneComponent;
 }
 
 const XE::Array<XE::BehaviorComponentPtr> & XE::GameObject::GetBehaviorComponents() const
@@ -178,119 +200,12 @@ const XE::Array<XE::BehaviorComponentPtr> & XE::GameObject::GetBehaviorComponent
 	return _BehaviorComponents;
 }
 
-XE::Vec3f XE::GameObject::GetWorldUp()
-{
-	return _RootSceneComponent->GetWorldUp();
-}
-
-XE::Vec3f XE::GameObject::GetWorldRight()
-{
-	return _RootSceneComponent->GetWorldRight();
-}
-
-XE::Vec3f XE::GameObject::GetWorldForward()
-{
-	return _RootSceneComponent->GetWorldForward();
-}
-
-XE::Vec3f XE::GameObject::GetRelativeUp() const
-{
-	return _RootSceneComponent->GetRelativeUp();
-}
-
-XE::Vec3f XE::GameObject::GetRelativeRight() const
-{
-	return _RootSceneComponent->GetRelativeRight();
-}
-
-XE::Vec3f XE::GameObject::GetRelativeForward() const
-{
-	return _RootSceneComponent->GetRelativeForward();
-}
-
-const XE::Vec3f & XE::GameObject::GetWorldScale()
-{
-	return _RootSceneComponent->GetWorldScale();
-}
-
-void XE::GameObject::SetWorldScale( const Vec3f & val )
-{
-	_RootSceneComponent->SetWorldScale( val );
-}
-
-const XE::Vec3f & XE::GameObject::GetWorldPosition()
-{
-	return _RootSceneComponent->GetWorldPosition();
-}
-
-void XE::GameObject::SetWorldPosition( const Vec3f & val )
-{
-	_RootSceneComponent->SetWorldPosition( val );
-}
-
-const XE::Quat & XE::GameObject::GetWorldRotation()
-{
-	return _RootSceneComponent->GetWorldRotation();
-}
-
-void XE::GameObject::SetWorldRotation( const Quat & val )
-{
-	_RootSceneComponent->SetWorldRotation( val );
-}
-
-const XE::Vec3f & XE::GameObject::GetRelativeScale() const
-{
-	return _RootSceneComponent->GetRelativeScale();
-}
-
-void XE::GameObject::SetRelativeScale( const Vec3f & val )
-{
-	_RootSceneComponent->SetRelativeScale( val );
-}
-
-const XE::Vec3f & XE::GameObject::GetRelativePosition() const
-{
-	return _RootSceneComponent->GetRelativePosition();
-}
-
-void XE::GameObject::SetRelativePosition( const Vec3f & val )
-{
-	_RootSceneComponent->SetRelativePosition( val );
-}
-
-const XE::Quat & XE::GameObject::GetRelativeRotation() const
-{
-	return _RootSceneComponent->GetRelativeRotation();
-}
-
-void XE::GameObject::SetRelativeRotation( const Quat & val )
-{
-	_RootSceneComponent->SetRelativeRotation( val );
-}
-
-const XE::Mat4x4f & XE::GameObject::GetWorldTransform() const
-{
-	return _RootSceneComponent->GetWorldTransform();
-}
-
-void XE::GameObject::SetWorldTransform( const Mat4x4f & val )
-{
-	_RootSceneComponent->SetWorldTransform( val );
-}
-
-const XE::Mat4x4f & XE::GameObject::GetRelativeTransform() const
-{
-	return _RootSceneComponent->GetRelativeTransform();
-}
-
-void XE::GameObject::SetRelativeTransform( const Mat4x4f & val )
-{
-	_RootSceneComponent->SetRelativeTransform( val );
-}
-
 void XE::GameObject::ProcessEvent( const EventPtr & val )
 {
-	_RootSceneComponent->ProcessEvent( val );
+	if( _SceneComponent )
+	{
+		_SceneComponent->ProcessEvent( val );
+	}
 
 	if( val->accept )
 	{
@@ -310,12 +225,18 @@ void XE::GameObject::ProcessEvent( const EventPtr & val )
 
 void XE::GameObject::Startup()
 {
-	_RootSceneComponent->_GameObject = XE_THIS( GameObject );
+	if( _SceneComponent )
+	{
+		_SceneComponent->_World = GetWorld();
+		_SceneComponent->_GameObject = XE_THIS( GameObject );
+		_SceneComponent->_Transform.SetParent( &GetTransform() );
 
-	_RootSceneComponent->Startup();
+		_SceneComponent->Startup();
+	}
 
 	for( auto it : _BehaviorComponents )
 	{
+		it->_World = GetWorld();
 		it->_GameObject = XE_THIS( GameObject );
 
 		it->Startup();
@@ -329,7 +250,10 @@ void XE::GameObject::Update( XE::float32 dt )
 		return;
 	}
 
-	_RootSceneComponent->Update( dt );
+	if( _SceneComponent )
+	{
+		_SceneComponent->Update( dt );
+	}
 
 	for( XE::uint64 i = 0; i < _BehaviorComponents.size(); i++ )
 	{
@@ -345,9 +269,12 @@ void XE::GameObject::Update( XE::float32 dt )
 
 void XE::GameObject::Clearup()
 {
-	_RootSceneComponent->Clearup();
+	if( _SceneComponent )
+	{
+		_SceneComponent->Clearup();
+	}
 
-	_RootSceneComponent = nullptr;
+	_SceneComponent = nullptr;
 
 	for( auto it : _BehaviorComponents )
 	{
@@ -359,7 +286,10 @@ void XE::GameObject::Clearup()
 
 void XE::GameObject::OnEnable()
 {
-	_RootSceneComponent->SetEnabled( GetEnable() );
+	if( _SceneComponent )
+	{
+		_SceneComponent->SetEnabled( GetEnable() );
+	}
 
 	for( auto & coms : _BehaviorComponents )
 	{
@@ -369,10 +299,13 @@ void XE::GameObject::OnEnable()
 
 void XE::GameObject::OnDisable()
 {
-	_RootSceneComponent->SetEnabled( GetEnable() );
-
-	for( auto & coms : _BehaviorComponents )
+	if( _SceneComponent )
 	{
-		coms->SetEnabled( GetEnable() );
+		_SceneComponent->SetEnabled( GetEnable() );
+	}
+
+	for( auto & comp : _BehaviorComponents )
+	{
+		comp->SetEnabled( GetEnable() );
 	}
 }

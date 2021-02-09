@@ -24,6 +24,11 @@ XE::ComponentHandle XE::Component::GetHandle() const
 	return _Handle;
 }
 
+XE::WorldPtr XE::Component::GetWorld() const
+{
+	return _World.lock();
+}
+
 XE::GameObjectPtr XE::Component::GetGameObject() const
 {
 	return _GameObject.lock();

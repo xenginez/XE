@@ -32,4 +32,6 @@
 #include "QTree.hpp"
 #include "OCTree.hpp"
 
+#include "Transform.h"
+
 #endif // MATH_H__963A8EE2_1754_4068_86FE_C37D2405EB1D

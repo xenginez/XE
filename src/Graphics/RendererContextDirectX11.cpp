@@ -1,4 +1,5 @@
 #include "RendererContextDirectX11.h"
+
 #if PLATFORM_OS & (OS_WINDOWS)
 
 #include <d3d11_4.h>
@@ -15,7 +16,14 @@
 #undef max
 #endif // max
 
-
+static const GUID WKPDID_D3DDebugObjectName = { 0x429b8c22, 0x9188, 0x4b0c, { 0x87, 0x42, 0xac, 0xb0, 0xbf, 0x85, 0xc2, 0x00 } };
+static const GUID IID_ID3D11Texture2D = { 0x6f15aaf2, 0xd208, 0x4e89, { 0x9a, 0xb4, 0x48, 0x95, 0x35, 0xd3, 0x4f, 0x9c } };
+static const GUID IID_ID3D11Device1 = { 0xa04bfb29, 0x08ef, 0x43d6, { 0xa4, 0x9c, 0xa9, 0xbd, 0xbd, 0xcb, 0xe6, 0x86 } };
+static const GUID IID_ID3D11Device2 = { 0x9d06dffa, 0xd1e5, 0x4d07, { 0x83, 0xa8, 0x1b, 0xb1, 0x23, 0xf2, 0xf8, 0x41 } };
+static const GUID IID_ID3D11Device3 = { 0xa05c8c37, 0xd2c6, 0x4732, { 0xb3, 0xa0, 0x9c, 0xe0, 0xb0, 0xdc, 0x9a, 0xe6 } };
+static const GUID IID_ID3D11InfoQueue = { 0x6543dbb6, 0x1b48, 0x42f5, { 0xab, 0x82, 0xe9, 0x7e, 0xc7, 0x43, 0x26, 0xf6 } };
+static const GUID IID_IDXGIDeviceRenderDoc = { 0xa7aa6116, 0x9c8d, 0x4bba, { 0x90, 0x83, 0xb4, 0xd8, 0x16, 0xb7, 0x1b, 0x78 } };
+static const GUID IID_ID3DUserDefinedAnnotation = { 0xb2daad8b, 0x03d4, 0x4dbf, { 0x95, 0xeb, 0x32, 0xab, 0x4b, 0x63, 0xd0, 0xab } };
 
 struct UavFormat
 {
@@ -459,7 +467,7 @@ namespace D3D11
 		Result _Result[GFX_MAX_VIEW + 1];
 
 		Query _Query[GFX_MAX_VIEW * 4];
-		bx::RingBufferControl m_control;
+		XE::RingBuffer m_control;
 	};
 
 	struct OcclusionQuery
@@ -478,7 +486,7 @@ namespace D3D11
 		};
 
 		Query _Query[GFX_MAX_OCCLUSION];
-		bx::RingBufferControl m_control;
+		XE::RingBuffer m_control;
 	};
 
 	void Buffer::Create( ID3D11Device * _device, XE::uint32 _size, void * _data, XE::BufferFlags _flags, XE::uint16 _stride /*= 0*/, bool _vertex /*= false */ )
@@ -755,7 +763,7 @@ namespace D3D11
 
 	void * Texture::Create( XE::MemoryView _mem, XE::TextureFlags _flags, XE::uint8 _skip )
 	{
-
+		return nullptr;
 	}
 
 	void Texture::Destroy()
@@ -785,12 +793,12 @@ namespace D3D11
 
 	XE::TextureHandle Texture::GetHandle() const
 	{
-
+		return {};
 	}
 
 	DXGI_FORMAT Texture::GetSRVFormat() const
 	{
-
+		return {};
 	}
 
 	void FrameBuffer::Create( XE::uint8 _num, const XE::Attachment * _attachment )
@@ -805,7 +813,7 @@ namespace D3D11
 
 	XE::uint16 FrameBuffer::Destroy()
 	{
-
+		return 0;
 	}
 
 	void FrameBuffer::PreReset( bool _force /*= false */ )
@@ -835,7 +843,7 @@ namespace D3D11
 
 	HRESULT FrameBuffer::Present( XE::uint32 _syncInterval )
 	{
-
+		return {};
 	}
 
 	void TimerQuery::PostReset()
@@ -850,7 +858,7 @@ namespace D3D11
 
 	XE::uint32 TimerQuery::Begin( XE::uint32 _resultIdx )
 	{
-
+		return 0;
 	}
 
 	void TimerQuery::End( XE::uint32 _idx )
@@ -860,7 +868,7 @@ namespace D3D11
 
 	bool TimerQuery::Update()
 	{
-
+		return false;
 	}
 
 	void OcclusionQuery::PostReset()
@@ -913,11 +921,11 @@ struct XE::RendererContextDirectX11::Private
 	std::array<D3D11::Texture, GFX_MAX_TEXTURES> _Textures;
 	std::array<D3D11::FrameBuffer, GFX_MAX_FRAME_BUFFERS> _FrameBuffers;
 
-	std::map<XE::uint64, ID3D11BlendState> _BlendStateCahce;
-	std::map<XE::uint64, ID3D11DepthStencilState> _DepthStencilStateCache;
-	std::map<XE::uint64, ID3D11InputLayout> _InputLayoutCache;
-	std::map<XE::uint64, ID3D11RasterizerState> _RasterizerStateCache;
-	std::map<XE::uint64, ID3D11SamplerState> _SamplerStateCache;
+	std::map<XE::uint64, ID3D11BlendState *> _BlendStateCahce;
+	std::map<XE::uint64, ID3D11DepthStencilState *> _DepthStencilStateCache;
+	std::map<XE::uint64, ID3D11InputLayout *> _InputLayoutCache;
+	std::map<XE::uint64, ID3D11RasterizerState *> _RasterizerStateCache;
+	std::map<XE::uint64, ID3D11SamplerState *> _SamplerStateCache;
 };
 
 XE::RendererContextDirectX11::RendererContextDirectX11()
@@ -1670,7 +1678,7 @@ void XE::RendererContextDirectX11::RequestScreenShot( XE::RenderFrame * frame )
 			{
 				_p->_DeviceCtx->ResolveSubresource( resolve, 0, backBuffer, 0, desc.Format );
 				_p->_DeviceCtx->CopyResource( texture, resolve );
-				DX_RELEASE( resolve, 0 );
+				DX_RELEASE( resolve );
 			}
 		}
 

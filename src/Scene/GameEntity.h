@@ -22,11 +22,15 @@ class XE_API GameEntity : public XE::Object
 
 private:
 	friend class World;
+	friend class GameZone;
 
 public:
 	GameEntity();
 
 	~GameEntity();
+
+public:
+	XE::WorldPtr GetWorld() const;
 
 public:
 	bool GetEnable() const;
@@ -37,12 +41,16 @@ public:
 
 	void SetName( const String & val );
 
+	XE::GameEntityHandle GetGameZone() const;
+
+	void SetGameZone( const XE::GameEntityHandle & val );
+
 protected:
-	virtual void Startup() = 0;
+	virtual void Startup();
 
-	virtual void Update( XE::float32 dt ) = 0;
+	virtual void Update( XE::float32 dt );
 
-	virtual void Clearup() = 0;
+	virtual void Clearup();
 
 protected:
 	virtual void OnEnable() = 0;
@@ -50,12 +58,25 @@ protected:
 	virtual void OnDisable() = 0;
 
 public:
+	XE::Transform & GetTransform();
+
 	XE::GameEntityHandle GetHandle() const;
+
+	XE::GameZonePtr GetGameZonePtr() const;
 
 private:
 	bool _Enable;
 	XE::String _Name;
+	XE::WorldWPtr _World;
+	XE::Transform _Transform;
 	XE::GameEntityHandle _Handle;
+
+	XE::GameEntityHandle _Zone;
+
+	XE::Vec3f _WorldScale;
+	XE::Vec3f _WorldPosition;
+	XE::Quat _WorldRotation;
+	XE::Mat4x4f _WorldTransform;
 };
 
 END_XE_NAMESPACE

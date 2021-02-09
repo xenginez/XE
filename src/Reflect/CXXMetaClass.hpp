@@ -130,6 +130,12 @@ public:
 		_RegisterProperty( prop );
 	}
 
+	template< typename GetType > void Property( const String & Name, GetType( ClassType:: * Get )( ) const, XE::uint8 Flag = IMetaProperty::Default )
+	{
+		auto prop = XE::MakeShared<CXXMetaProperty<GetType( ClassType:: * )( ) const>>( Name, Get, Flag, SP_CAST<IMetaClass>( shared_from_this() ), GetModule() );
+		_RegisterProperty( prop );
+	}
+
 	template< typename SetType > void Property( const String & Name, void( *Set )( SetType ), XE::uint8 Flag = IMetaProperty::Default )
 	{
 		auto prop = XE::MakeShared<CXXMetaProperty<void( * )( SetType )>>( Name, Set, Flag, SP_CAST<IMetaClass>( shared_from_this() ), GetModule() );

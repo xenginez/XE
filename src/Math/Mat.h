@@ -48,6 +48,14 @@ public:
 		std::memcpy( d, val.d, sizeof( value_type ) * value_size );
 	}
 
+	template< typename U > Mat( const Mat< U, R, C > & val )
+	{
+		for( int i = 0; i < value_size; ++i )
+		{
+			d[i] = static_cast< value_type >( val.d[i] );
+		}
+	}
+
 	Mat( std::initializer_list< value_type > val )
 	{
 		int i = 0;

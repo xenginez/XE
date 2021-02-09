@@ -3,11 +3,12 @@
 #include <Interface/IFramework.h>
 #include <Interface/IThreadService.h>
 
-
+#include "GameZone.h"
 
 BEG_META( XE::World )
 type->Property( "Name", &World::_Name );
 type->Property( "Entities", &World::_Entities );
+type->Property( "Transform", &World::_Transform );
 type->Property( "HandleTable", &World::_HandleTable, XE::IMetaProperty::NoDesign );
 END_META()
 
@@ -40,6 +41,10 @@ bool XE::World::AddEntity( const GameEntityPtr & val )
 	}
 
 	val->_Handle = _HandleTable.Alloc();
+
+	val->_World = XE_THIS( World );
+
+	val->_Transform.SetParent( &_Transform );
 
 	val->Startup();
 
@@ -99,6 +104,10 @@ void XE::World::Startup()
 {
 	for( auto entity : _Entities )
 	{
+		entity->_World = XE_THIS( World );
+
+		entity->_Transform.SetParent( &_Transform );
+
 		entity->Startup();
 	}
 }
@@ -125,4 +134,9 @@ void XE::World::Clearup()
 	}
 
 	_Entities.clear();
+}
+
+XE::Transform & XE::World::GetTransform()
+{
+	return _Transform;
 }

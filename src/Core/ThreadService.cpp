@@ -273,5 +273,15 @@ XE::ThreadType XE::ThreadService::GetCurrentThreadType() const
  
 void XE::ThreadService::PostTask( ThreadType type, const TaskCallback & task )
 {
-	_p->_Threads[( XE::uint64 )type]->PushTask( task );
+	if( GetCurrentThreadType() == type )
+	{
+		if( task )
+		{
+			task();
+		}
+	}
+	else
+	{
+		_p->_Threads[( XE::uint64 )type]->PushTask( task );
+	}
 }

@@ -29,6 +29,9 @@ public:
 public:
 	ComponentHandle GetHandle() const;
 
+public:
+	WorldPtr GetWorld() const;
+
 	GameObjectPtr GetGameObject() const;
 
 public:
@@ -63,6 +66,7 @@ public:
 	bool _Update;
 	bool _Enabled;
 	ComponentHandle _Handle;
+	WorldWPtr _World;
 	GameObjectWPtr _GameObject;
 };
 

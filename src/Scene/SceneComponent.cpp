@@ -1,5 +1,6 @@
 #include "SceneComponent.h"
 
+#include "World.h"
 #include "GameObject.h"
 
 #include <Interface/IFramework.h>
@@ -7,12 +8,10 @@
 
 BEG_META( XE::SceneComponent )
 type->Property( "Children", &SceneComponent::_Children, IMetaProperty::NoDesign );
-type->Property( "WorldTransform", &SceneComponent::_WorldTransform, IMetaProperty::NoDesign );
-type->Property( "RelativeTransform", &SceneComponent::_RelativeTransform, IMetaProperty::NoDesign );
+type->Property( "Transform", &SceneComponent::_Transform );
 END_META()
 
 XE::SceneComponent::SceneComponent()
-	:_Dirty( false )
 {
 
 }
@@ -140,6 +139,8 @@ void XE::SceneComponent::Startup()
 	for( auto child : _Children )
 	{
 		child->_Parent = XE_THIS( XE::SceneComponent );
+
+		child->_Transform.SetParent( &_Transform );
 	}
 
 	Super::Startup();
@@ -175,196 +176,8 @@ void XE::SceneComponent::Clearup()
 	Super::Clearup();
 }
 
-const XE::AABB & XE::SceneComponent::GetBoundingBox()
+XE::AABB XE::SceneComponent::GetBoundingBox()
 {
-	if( _Dirty )
-	{
-		UpdateTransform();
-	}
-
-	return _BoundingBox;
-}
-
-XE::Vec3f XE::SceneComponent::GetWorldUp()
-{
-	if( _Dirty )
-	{
-		UpdateTransform();
-	}
-
-	return Mathf::Rotate( _WorldRotation, Vec3f::Up );
-}
-
-XE::Vec3f XE::SceneComponent::GetWorldRight()
-{
-	if( _Dirty )
-	{
-		UpdateTransform();
-	}
-
-	return Mathf::Rotate( _WorldRotation, Vec3f::Right );
-}
-
-XE::Vec3f XE::SceneComponent::GetWorldForward()
-{
-	if( _Dirty )
-	{
-		UpdateTransform();
-	}
-
-	return Mathf::Rotate( _WorldRotation, Vec3f::Forward );
-}
-
-XE::Vec3f XE::SceneComponent::GetRelativeUp() const
-{
-	return Mathf::Rotate( _RelativeRotation, Vec3f::Up );
-}
-
-XE::Vec3f XE::SceneComponent::GetRelativeRight() const
-{
-	return Mathf::Rotate( _RelativeRotation, Vec3f::Right );
-}
-
-XE::Vec3f XE::SceneComponent::GetRelativeForward() const
-{
-	return Mathf::Rotate( _RelativeRotation, Vec3f::Forward );
-}
-
-const XE::Vec3f & XE::SceneComponent::GetWorldScale()
-{
-	if( _Dirty )
-	{
-		UpdateTransform();
-	}
-
-	return _WorldScale;
-}
-
-void XE::SceneComponent::SetWorldScale( const Vec3f & val )
-{
-	_WorldScale = val;
-	SetRelativeScale( GetParent() ? val / GetParent()->GetWorldScale() : val );
-}
-
-const XE::Vec3f & XE::SceneComponent::GetWorldPosition()
-{
-	if( _Dirty )
-	{
-		UpdateTransform();
-	}
-
-	return _WorldPosition;
-}
-
-void XE::SceneComponent::SetWorldPosition( const Vec3f & val )
-{
-	_WorldPosition = val;
-	SetRelativePosition( GetParent() ? val - GetParent()->GetWorldPosition() : val );
-}
-
-const XE::Quat & XE::SceneComponent::GetWorldRotation()
-{
-	if( _Dirty )
-	{
-		UpdateTransform();
-	}
-
-	return _WorldRotation;
-}
-
-void XE::SceneComponent::SetWorldRotation( const Quat & val )
-{
-	_WorldRotation = val;
-	SetRelativeRotation( GetParent() ? Mathf::Inverse( GetParent()->GetWorldRotation() ) * val : val );
-}
-
-const XE::Vec3f & XE::SceneComponent::GetRelativeScale() const
-{
-	return _RelativeScale;
-}
-
-void XE::SceneComponent::SetRelativeScale( const Vec3f & val )
-{
-	if( _RelativeScale != val )
-	{
-		_Dirty = true;
-
-		_RelativeScale = val;
-	}
-}
-
-const XE::Vec3f & XE::SceneComponent::GetRelativePosition() const
-{
-	return _RelativePosition;
-}
-
-void XE::SceneComponent::SetRelativePosition( const Vec3f & val )
-{
-	if( _RelativePosition != val )
-	{
-		_Dirty = true;
-
-		_RelativePosition = val;
-	}
-}
-
-const XE::Quat & XE::SceneComponent::GetRelativeRotation() const
-{
-	return _RelativeRotation;
-}
-
-void XE::SceneComponent::SetRelativeRotation( const Quat & val )
-{
-	if( _RelativeRotation != val )
-	{
-		_Dirty = true;
-
-		_RelativeRotation = val;
-	}
-}
-
-const XE::Mat4x4f & XE::SceneComponent::GetWorldTransform() const
-{
-	return _WorldTransform;
-}
-
-void XE::SceneComponent::SetWorldTransform( const Mat4x4f & val )
-{
-	_WorldTransform = val;
-
-	Mathf::TRS( _WorldTransform, _WorldPosition, _WorldRotation, _WorldScale );
-}
-
-const XE::Mat4x4f & XE::SceneComponent::GetRelativeTransform() const
-{
-	return _RelativeTransform;
-}
-
-void XE::SceneComponent::SetRelativeTransform( const Mat4x4f & val )
-{
-	_RelativeTransform = val;
-
-	Mathf::TRS( _RelativeTransform, _RelativePosition, _RelativeRotation, _RelativeScale );
-}
-
-void XE::SceneComponent::UpdateTransform()
-{
-	if( auto parent = _Parent.lock() )
-	{
-		_WorldScale = parent->GetWorldScale() * _RelativeScale;
-		_WorldPosition = parent->GetWorldPosition() + _RelativePosition;
-		_WorldRotation = parent->GetWorldRotation() * _RelativeRotation;
-	}
-	else
-	{
-		_WorldScale = _RelativeScale;
-		_WorldPosition = _RelativePosition;
-		_WorldRotation = _RelativeRotation;
-	}
-
-	_WorldTransform = Mathf::TRS( _WorldPosition, _WorldRotation, _WorldScale );
-	_RelativeTransform = Mathf::TRS( _RelativePosition, _RelativeRotation, _RelativeScale );
-
 	AABB boundbox = AABB();
 
 	for( auto & child : _Children )
@@ -372,7 +185,10 @@ void XE::SceneComponent::UpdateTransform()
 		boundbox.Merge( child->GetBoundingBox() );
 	}
 
-	_BoundingBox = boundbox;
+	return boundbox;
+}
 
-	_Dirty = false;
+XE::Transform & XE::SceneComponent::GetTransform()
+{
+	return _Transform;
 }

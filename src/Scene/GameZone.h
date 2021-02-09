@@ -22,18 +22,21 @@ public:
 
 	~GameZone();
 
-protected:
-	void Startup() override;
+public:
+	void InsertEntity( const XE::GameEntityHandle & val );
 
-	void Update( XE::float32 dt ) override;
+	void RemoveEntity( const XE::GameEntityHandle & val );
 
-	void Clearup() override;
+	const XE::Array< XE::GameEntityHandle > & GetChildren() const;
 
 protected:
 	void OnEnable() override;
 
 	void OnDisable() override;
 
+private:
+	XE::Array< bool > _ChildrenEnable;
+	XE::Array< XE::GameEntityHandle > _Children;
 };
 
 END_XE_NAMESPACE

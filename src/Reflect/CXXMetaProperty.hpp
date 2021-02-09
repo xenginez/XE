@@ -209,7 +209,35 @@ public:
 
 public:
 	CXXMetaProperty( const String & Name, GetFuncType get, XE::uint8 Flag, IMetaClassPtr Owner, IMetaModulePtr Module )
-		:IMetaProperty( Name, Flag | IMetaProperty::NoWirte, false, false, !std::is_pointer_v<ValueType> && !std::is_reference_v<ValueType> && !std::is_weak_ptr_v<ValueType> && !std::is_shared_ptr_v<ValueType>, std::is_pointer_v<ValueType>, std::is_shared_ptr_v<ValueType> || std::is_weak_ptr_v<ValueType>, std::is_reference_v<ValueType>, ::XE_TypeID<typename XE::TypeTraits<ValueType>::raw_t>::Get(), Owner, Module ), _GetFunc( get ), _SetFunc( set )
+		:IMetaProperty( Name, Flag | IMetaProperty::NoWirte, false, false, !std::is_pointer_v<ValueType> && !std::is_reference_v<ValueType> && !std::is_weak_ptr_v<ValueType> && !std::is_shared_ptr_v<ValueType>, std::is_pointer_v<ValueType>, std::is_shared_ptr_v<ValueType> || std::is_weak_ptr_v<ValueType>, std::is_reference_v<ValueType>, ::XE_TypeID<typename XE::TypeTraits<ValueType>::raw_t>::Get(), Owner, Module ), _GetFunc( get )
+	{
+
+	}
+
+public:
+	virtual Variant Get( const Variant & obj ) const override
+	{
+		return ( obj.Value<ClassType *>()->*_GetFunc )( );
+	}
+
+	virtual void Set( const Variant & obj, const Variant & val ) const override
+	{
+		XE_ASSERT( false && "is read only!" );
+	}
+
+private:
+	GetFuncType _GetFunc;
+};
+
+template< typename ClassType, typename _GetType > class CXXMetaProperty<_GetType( ClassType:: * )( ) const> : public IMetaProperty
+{
+public:
+	using ValueType = _GetType;
+	using GetFuncType = _GetType( ClassType:: * )( ) const;
+
+public:
+	CXXMetaProperty( const String & Name, GetFuncType get, XE::uint8 Flag, IMetaClassPtr Owner, IMetaModulePtr Module )
+		:IMetaProperty( Name, Flag | IMetaProperty::NoWirte, false, false, !std::is_pointer_v<ValueType> && !std::is_reference_v<ValueType> && !std::is_weak_ptr_v<ValueType> && !std::is_shared_ptr_v<ValueType>, std::is_pointer_v<ValueType>, std::is_shared_ptr_v<ValueType> || std::is_weak_ptr_v<ValueType>, std::is_reference_v<ValueType>, ::XE_TypeID<typename XE::TypeTraits<ValueType>::raw_t>::Get(), Owner, Module ), _GetFunc( get )
 	{
 
 	}
