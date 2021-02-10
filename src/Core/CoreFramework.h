@@ -26,35 +26,6 @@ public:
 	~CoreFramework();
 
 public:
-	int Exec( int argc, char ** argv, std::function<void()> msgloop = nullptr );
-
-	int GetArgc() const;
-
-	char ** GetArgv() const;
-
-public:
-	ITimerServicePtr GetTimerService() const override;
-
-	IEventServicePtr GetEventService() const override;
-
-	IInputServicePtr GetInputService() const override;
-
-	IAudioServicePtr GetAudioService() const override;
-
-	IWorldServicePtr GetWorldService() const override;
-
-	IThreadServicePtr GetThreadService() const override;
-
-	IAssetsServicePtr GetAssetsService() const override;
-
-	IRenderServicePtr GetRenderService() const override;
-
-	IPhysicsServicePtr GetPhysicsService() const override;
-
-	INavigationServicePtr GetINavigationService() const override;
-
-	ILocalizationServicePtr GetLocalizationService() const override;
-
 	IServicePtr GetService( const IMetaClassPtr & val ) const override;
 
 	bool RegisterService( const IMetaClassPtr & val ) override;
@@ -69,7 +40,7 @@ public:
 	bool IsExit() const override;
 
 	Language GetSystemLanguage() const override;
-	
+
 	std::filesystem::path GetModulePath() const override;
 
 	std::filesystem::path GetAssetsPath() const override;
@@ -77,6 +48,18 @@ public:
 	std::filesystem::path GetUserDataPath() const override;
 
 	std::filesystem::path GetApplicationPath() const override;
+
+public:
+	void Save() override;
+
+	void Reload() override;
+
+public:
+	int Exec( int argc, char ** argv, std::function<void()> msgloop = nullptr );
+
+	int GetArgc() const;
+
+	char ** GetArgv() const;
 
 protected:
 	virtual void Prepare();
@@ -88,18 +71,9 @@ protected:
 	virtual void Clearup();
 
 protected:
-	virtual void LoadModules();
+	void LoadModules();
 
-	virtual void LoadServices();
-
-	virtual void LoadFirstServices();
-
-	virtual void LoadLastServices();
-
-public:
-	void Save() override;
-
-	void Reload() override;
+	void LoadServices();
 
 protected:
 	void Save( const std::filesystem::path & path, const Map < String, String > & values ) const;

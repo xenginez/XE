@@ -84,7 +84,7 @@ void XE::RendererContext::Present()
 
 		std::swap( _p->_SubmitFrame, _p->_RenderFrame );
 
-		XE::IFramework::GetCurrentFramework()->GetThreadService()->PostTask( XE::ThreadType::RENDER, std::bind( &XE::RendererContext::Render, this ) );
+		XE::IFramework::GetCurrentFramework()->GetServiceT< XE::IThreadService >()->PostTask( XE::ThreadType::RENDER, std::bind( &XE::RendererContext::Render, this ) );
 	}
 
 	_p->_SubmitFrame->Reset();

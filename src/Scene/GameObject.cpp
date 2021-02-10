@@ -68,7 +68,7 @@ XE::SceneComponentPtr XE::GameObject::AddSceneComponent( IMetaClassPtr val, cons
 				comp->_Transform.SetParent( &GetTransform() );
 			}
 
-			XE::IFramework::GetCurrentFramework()->GetThreadService()->PostTask( ThreadType::GAME, [comp]()
+			XE::IFramework::GetCurrentFramework()->GetServiceT< XE::IThreadService >()->PostTask( ThreadType::GAME, [comp]()
 																						  {
 																							  comp->Startup();
 																						  } );
@@ -93,7 +93,7 @@ XE::BehaviorComponentPtr XE::GameObject::AddBehaviorComponent( IMetaClassPtr val
 			comp->_World = GetWorld();
 			comp->_GameObject = XE_THIS( GameObject );
 
-			XE::IFramework::GetCurrentFramework()->GetThreadService()->PostTask( ThreadType::GAME, [comp]()
+			XE::IFramework::GetCurrentFramework()->GetServiceT< XE::IThreadService >()->PostTask( ThreadType::GAME, [comp]()
 																						  {
 																							  comp->Startup();
 																						  } );
@@ -165,7 +165,7 @@ bool XE::GameObject::RemoveSceneComponent( const XE::SceneComponentPtr & val )
 		return false;
 	}
 
-	XE::IFramework::GetCurrentFramework()->GetThreadService()->PostTask( ThreadType::GAME, [val]()
+	XE::IFramework::GetCurrentFramework()->GetServiceT< XE::IThreadService >()->PostTask( ThreadType::GAME, [val]()
 																		 {
 																			 val->Clearup();
 																		 } );
@@ -179,7 +179,7 @@ bool XE::GameObject::RemoveBehaviorComponet( const XE::BehaviorComponentPtr & va
 	{
 		_BehaviorComponents.erase( it );
 
-		XE::IFramework::GetCurrentFramework()->GetThreadService()->PostTask( ThreadType::GAME, [val]()
+		XE::IFramework::GetCurrentFramework()->GetServiceT< XE::IThreadService >()->PostTask( ThreadType::GAME, [val]()
 																					  {
 																						  val->Clearup();
 																					  } );

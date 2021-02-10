@@ -1134,7 +1134,7 @@ namespace D3D11
 		scd.ndt = NULL;
 		scd.sampleDesc = s_msaa[0];
 
-		XE_ASSERT( SUCCEEDED( _rtx->_Dxgi->CreateSwapChain( _rtx->_Device, scd, &_SwapChain ) ), "Failed to create swap chain." );
+		XE_ASSERT( SUCCEEDED( _rtx->_Dxgi->CreateSwapChain( _rtx->_Device, scd, &_SwapChain ) ) && "Failed to create swap chain." );
 
 		XE_ASSERT( SUCCEEDED( _rtx->_Dxgi->_Factory->MakeWindowAssociation( ( HWND ) _nwh.GetValue(), 0 | DXGI_MWA_NO_WINDOW_CHANGES | DXGI_MWA_NO_ALT_ENTER ) ) );
 
@@ -1246,7 +1246,7 @@ namespace D3D11
 
 					if( texture._TextureFormat > TextureFormat::UNKNOWNDEPTH )
 					{
-						XE_ASSERT( NULL != _DSV, "Frame buffer already has depth-stencil attached." );
+						XE_ASSERT( NULL != _DSV && "Frame buffer already has depth-stencil attached." );
 
 						D3D11_DEPTH_STENCIL_VIEW_DESC dsvDesc;
 						dsvDesc.Format = s_textureFormat[( XE::uint64 )texture._TextureFormat].m_fmtDsv;
@@ -1497,61 +1497,61 @@ namespace D3D11
 
 	void OcclusionQuery::Begin( XE::RenderFrame * _render, OcclusionQueryHandle _handle )
 	{
-		while( 0 == m_control.reserve( 1 ) )
-		{
-			Resolve( _render, true );
-		}
-
-		ID3D11DeviceContext * deviceCtx = _rtx->_DeviceCtx;
-		Query & query = _Query[m_control.m_current];
-		deviceCtx->Begin( query._Ptr );
-		query._Handle = _handle;
+// 		while( 0 == m_control.reserve( 1 ) )
+// 		{
+// 			Resolve( _render, true );
+// 		}
+// 
+// 		ID3D11DeviceContext * deviceCtx = _rtx->_DeviceCtx;
+// 		Query & query = _Query[m_control.m_current];
+// 		deviceCtx->Begin( query._Ptr );
+// 		query._Handle = _handle;
 	}
 
 	void OcclusionQuery::End()
 	{
-		ID3D11DeviceContext * deviceCtx = _rtx->_DeviceCtx;
-		Query & query = _Query[m_control.m_current];
-		deviceCtx->End( query._Ptr );
-		m_control.commit( 1 );
+// 		ID3D11DeviceContext * deviceCtx = _rtx->_DeviceCtx;
+// 		Query & query = _Query[m_control.m_current];
+// 		deviceCtx->End( query._Ptr );
+// 		m_control.commit( 1 );
 	}
 
 	void OcclusionQuery::Resolve( XE::RenderFrame * _render, bool _wait /*= false */ )
 	{
-		ID3D11DeviceContext * deviceCtx = _rtx->_DeviceCtx;
-
-		while( 0 != m_control.available() )
-		{
-			Query & query = _Query[m_control.m_read];
-
-			if( query._Handle )
-			{
-				uint64_t result = 0;
-				HRESULT hr = deviceCtx->GetData( query._Ptr, &result, sizeof( result ), _wait ? 0 : D3D11_ASYNC_GETDATA_DONOTFLUSH );
-				if( S_FALSE == hr )
-				{
-					break;
-				}
-
-				_render->Occlusion[query._Handle] = int32_t( result );
-			}
-
-			m_control.consume( 1 );
-		}
+// 		ID3D11DeviceContext * deviceCtx = _rtx->_DeviceCtx;
+// 
+// 		while( 0 != m_control.available() )
+// 		{
+// 			Query & query = _Query[m_control.m_read];
+// 
+// 			if( query._Handle )
+// 			{
+// 				uint64_t result = 0;
+// 				HRESULT hr = deviceCtx->GetData( query._Ptr, &result, sizeof( result ), _wait ? 0 : D3D11_ASYNC_GETDATA_DONOTFLUSH );
+// 				if( S_FALSE == hr )
+// 				{
+// 					break;
+// 				}
+// 
+// 				_render->Occlusion[query._Handle] = int32_t( result );
+// 			}
+// 
+// 			m_control.consume( 1 );
+//		}
 	}
 
 	void OcclusionQuery::Invalidate( OcclusionQueryHandle _handle )
 	{
-		const uint32_t size = m_control.m_size;
-
-		for( uint32_t ii = 0, num = m_control.available(); ii < num; ++ii )
-		{
-			Query & query = _Query[( m_control.m_read + ii ) % size];
-			if( query._Handle== _handle )
-			{
-				query._Handle = OcclusionQueryHandle::Invalid;
-			}
-		}
+// 		const uint32_t size = m_control.m_size;
+// 
+// 		for( uint32_t ii = 0, num = m_control.available(); ii < num; ++ii )
+// 		{
+// 			Query & query = _Query[( m_control.m_read + ii ) % size];
+// 			if( query._Handle== _handle )
+// 			{
+// 				query._Handle = OcclusionQueryHandle::Invalid;
+// 			}
+// 		}
 	}
 }
 END_XE_NAMESPACE

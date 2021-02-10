@@ -14,28 +14,19 @@
 BEG_XE_NAMESPACE
 
 DECL_PTR( IService );
-DECL_PTR( ProfilerFrame );
 DECL_PTR( IEventService );
 DECL_PTR( ITimerService );
-DECL_PTR( IAudioService );
 DECL_PTR( IWorldService );
 DECL_PTR( IInputService );
-DECL_PTR( IPluginService );
 DECL_PTR( IAssetsService );
-DECL_PTR( IConfigService );
 DECL_PTR( IRenderService );
 DECL_PTR( IThreadService );
 DECL_PTR( IPhysicsService );
-DECL_PTR( INavigationService );
 DECL_PTR( ILocalizationService );
 class IFramework; typedef IFramework * IFrameworkPtr;
 
 DECL_PTR( Event );
 DECL_PTR( Object );
-DECL_PTR( IUserInterface );
-
-DECL_HANDLE( XE_API, NavMesh );
-DECL_HANDLE( XE_API, NavObstacle );
 
 enum class KeyCode
 {

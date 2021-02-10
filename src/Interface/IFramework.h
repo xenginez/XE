@@ -28,40 +28,17 @@ public:
 	static IFrameworkPtr GetCurrentFramework();
 
 public:
+	virtual bool RegisterService( const IMetaClassPtr & val ) = 0;
+
+	virtual void UnregisterService( const IMetaClassPtr & val ) = 0;
+
+public:
 	template< typename T > XE::SharedPtr< T > GetServiceT() const
 	{
 		return SP_CAST< T >( GetService( ::XE_ClassID< typename T >::Get() ) );
 	}
 
-public:
-	virtual ITimerServicePtr GetTimerService() const = 0;
-
-	virtual IEventServicePtr GetEventService() const = 0;
-
-	virtual IInputServicePtr GetInputService() const = 0;
-
-	virtual IAudioServicePtr GetAudioService() const = 0;
-
-	virtual IWorldServicePtr GetWorldService() const = 0;
-
-	virtual IThreadServicePtr GetThreadService() const = 0;
-
-	virtual IAssetsServicePtr GetAssetsService() const = 0;
-
-	virtual IRenderServicePtr GetRenderService() const = 0;
-
-	virtual IPhysicsServicePtr GetPhysicsService() const = 0;
-
-	virtual INavigationServicePtr GetINavigationService() const = 0;
-
-	virtual ILocalizationServicePtr GetLocalizationService() const = 0;
-
-public:
 	virtual IServicePtr GetService( const IMetaClassPtr & val ) const = 0;
-
-	virtual bool RegisterService( const IMetaClassPtr & val ) = 0;
-
-	virtual void UnregisterService( const IMetaClassPtr & val ) = 0;
 
 public:
 	virtual void Exit() = 0;
@@ -133,6 +110,10 @@ public:
 	void SetString( const String & key, const String & val );
 
 	String GetString( const String & key, const String & def = "" );
+
+	void SetStringArray( const String & key, const Array< String > & val );
+
+	Array< String > GetStringArray( const String & key, const Array< String > & def = Array< String >() );
 
 protected:
 	virtual String GetValue( const String & key ) = 0;

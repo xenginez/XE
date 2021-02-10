@@ -65,8 +65,8 @@ public:
 	String _Name;
 	bool _Update;
 	bool _Enabled;
-	ComponentHandle _Handle;
 	WorldWPtr _World;
+	ComponentHandle _Handle;
 	GameObjectWPtr _GameObject;
 };
 

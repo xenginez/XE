@@ -1,13 +1,13 @@
 /*!
- * \file	GameEntity.h
+ * \file   SceneObject.h
  *
- * \author	ZhengYuanQing
- * \date	2020/10/13
- * \email	zhengyuanqing.95@gmail.com
+ * \author ZhengYuanQing
+ * \date   2021/02/10
+ * \email  zhengyuanqing.95@gmail.com
  *
  */
-#ifndef ENTITY_H__C84CE01E_E4FF_4530_B337_D1B9F4DBEF7A
-#define ENTITY_H__C84CE01E_E4FF_4530_B337_D1B9F4DBEF7A
+#ifndef SCENEOBJECT_H__F888E5FC_E0D1_4D0D_9B2B_D42241EDFFBE
+#define SCENEOBJECT_H__F888E5FC_E0D1_4D0D_9B2B_D42241EDFFBE
 
 #include "Math/Math.h"
 #include "Interface/Object.h"
@@ -16,18 +16,18 @@
 
 BEG_XE_NAMESPACE
 
-class XE_API GameEntity : public XE::Object
+class XE_API SceneObject : public XE::Object
 {
-	OBJECT( GameEntity, Object )
+	OBJECT( SceneObject, Object )
 
 private:
 	friend class World;
 	friend class GameZone;
 
 public:
-	GameEntity();
+	SceneObject();
 
-	~GameEntity();
+	~SceneObject();
 
 public:
 	XE::WorldPtr GetWorld() const;
@@ -41,9 +41,9 @@ public:
 
 	void SetName( const String & val );
 
-	XE::GameEntityHandle GetGameZone() const;
+	XE::SceneObjectHandle GetGameZone() const;
 
-	void SetGameZone( const XE::GameEntityHandle & val );
+	void SetGameZone( const XE::SceneObjectHandle & val );
 
 protected:
 	virtual void Startup();
@@ -60,18 +60,18 @@ protected:
 public:
 	XE::Transform & GetTransform();
 
-	XE::GameEntityHandle GetHandle() const;
+	XE::SceneObjectHandle GetHandle() const;
 
-	XE::GameZonePtr GetGameZonePtr() const;
+	XE::GameZoneObjectPtr GetGameZoneObjectPtr() const;
 
 private:
 	bool _Enable;
 	XE::String _Name;
 	XE::WorldWPtr _World;
 	XE::Transform _Transform;
-	XE::GameEntityHandle _Handle;
+	XE::SceneObjectHandle _Handle;
 
-	XE::GameEntityHandle _Zone;
+	XE::SceneObjectHandle _Zone;
 
 	XE::Vec3f _WorldScale;
 	XE::Vec3f _WorldPosition;
@@ -81,4 +81,4 @@ private:
 
 END_XE_NAMESPACE
 
-#endif // ENTITY_H__C84CE01E_E4FF_4530_B337_D1B9F4DBEF7A
+#endif // SCENEOBJECT_H__F888E5FC_E0D1_4D0D_9B2B_D42241EDFFBE

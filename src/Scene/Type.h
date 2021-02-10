@@ -14,16 +14,16 @@
 BEG_XE_NAMESPACE
 
 DECL_PTR( World );
-DECL_PTR( GameZone );
 DECL_PTR( Component );
 DECL_PTR( GameObject );
-DECL_PTR( GameEntity );
+DECL_PTR( SceneObject );
+DECL_PTR( GameZoneObject );
 DECL_PTR( SceneComponent );
 DECL_PTR( RenderComponent );
 DECL_PTR( BehaviorComponent );
 
 DECL_HANDLE( XE_API, Component );
-DECL_HANDLE( XE_API, GameEntity );
+DECL_HANDLE( XE_API, SceneObject );
 
 enum class GameObjectType
 {

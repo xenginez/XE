@@ -9,7 +9,7 @@
 #ifndef WORLD_H__BEE693B5_480D_4746_BBDA_EEECB0455761
 #define WORLD_H__BEE693B5_480D_4746_BBDA_EEECB0455761
 
-#include "GameEntity.h"
+#include "SceneObject.h"
 
 BEG_XE_NAMESPACE
 
@@ -28,15 +28,15 @@ public:
 	void SetName( const String & val );
 
 public:
-	bool AddEntity( const GameEntityPtr & val );
+	bool AddObject( const SceneObjectPtr & val );
 
-	bool RemoveEntity( const GameEntityPtr & val );
+	bool RemoveObject( const SceneObjectPtr & val );
 
-	GameEntityPtr FindEntity( const String & val ) const;
+	SceneObjectPtr FindObject( const String & val ) const;
 
-	GameEntityPtr FindEntity( GameEntityHandle val ) const;
+	SceneObjectPtr FindObject( SceneObjectHandle val ) const;
 
-	const Array< GameEntityPtr > & GetEntitys() const;
+	const Array< SceneObjectPtr > & GetObjects() const;
 
 public:
 	void Startup();
@@ -51,8 +51,8 @@ public:
 private:
 	String _Name;
 	XE::Transform _Transform;
-	Array< GameEntityPtr > _Entities;
-	XE::GameEntityHandleAllocator _HandleTable;
+	Array< SceneObjectPtr > _Objects;
+	XE::SceneObjectHandleAllocator _HandleTable;
 
 };
 

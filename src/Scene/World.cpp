@@ -3,11 +3,11 @@
 #include <Interface/IFramework.h>
 #include <Interface/IThreadService.h>
 
-#include "GameZone.h"
+#include "GameZoneObject.h"
 
 BEG_META( XE::World )
 type->Property( "Name", &World::_Name );
-type->Property( "Entities", &World::_Entities );
+type->Property( "Entities", &World::_Objects );
 type->Property( "Transform", &World::_Transform );
 type->Property( "HandleTable", &World::_HandleTable, XE::IMetaProperty::NoDesign );
 END_META()
@@ -32,10 +32,10 @@ void XE::World::SetName( const String & val )
 	_Name = val;
 }
 
-bool XE::World::AddEntity( const GameEntityPtr & val )
+bool XE::World::AddObject( const SceneObjectPtr & val )
 {
-	auto it = std::find( _Entities.begin(), _Entities.end(), val );
-	if( it != _Entities.end() )
+	auto it = std::find( _Objects.begin(), _Objects.end(), val );
+	if( it != _Objects.end() )
 	{
 		return false;
 	}
@@ -48,18 +48,18 @@ bool XE::World::AddEntity( const GameEntityPtr & val )
 
 	val->Startup();
 
-	_Entities.push_back( val );
+	_Objects.push_back( val );
 
 	return true;
 }
 
-bool XE::World::RemoveEntity( const XE::GameEntityPtr & val )
+bool XE::World::RemoveObject( const XE::SceneObjectPtr & val )
 {
-	auto it = std::find( _Entities.begin(), _Entities.end(), val );
+	auto it = std::find( _Objects.begin(), _Objects.end(), val );
 
-	if( it != _Entities.end() )
+	if( it != _Objects.end() )
 	{
-		_Entities.erase( it );
+		_Objects.erase( it );
 
 		val->Clearup();
 
@@ -69,9 +69,9 @@ bool XE::World::RemoveEntity( const XE::GameEntityPtr & val )
 	return false;
 }
 
-XE::GameEntityPtr XE::World::FindEntity( const String & val ) const
+XE::SceneObjectPtr XE::World::FindObject( const String & val ) const
 {
-	for( const auto & obj : _Entities )
+	for( const auto & obj : _Objects )
 	{
 		if( obj->GetName() == val )
 		{
@@ -82,9 +82,9 @@ XE::GameEntityPtr XE::World::FindEntity( const String & val ) const
 	return nullptr;
 }
 
-XE::GameEntityPtr XE::World::FindEntity( GameEntityHandle val ) const
+XE::SceneObjectPtr XE::World::FindObject( SceneObjectHandle val ) const
 {
-	for( const auto & obj : _Entities )
+	for( const auto & obj : _Objects )
 	{
 		if( obj->GetHandle() == val )
 		{
@@ -95,14 +95,14 @@ XE::GameEntityPtr XE::World::FindEntity( GameEntityHandle val ) const
 	return nullptr;
 }
 
-const XE::Array< XE::GameEntityPtr > & XE::World::GetEntitys() const
+const XE::Array< XE::SceneObjectPtr > & XE::World::GetObjects() const
 {
-	return _Entities;
+	return _Objects;
 }
 
 void XE::World::Startup()
 {
-	for( auto entity : _Entities )
+	for( auto entity : _Objects )
 	{
 		entity->_World = XE_THIS( World );
 
@@ -114,7 +114,7 @@ void XE::World::Startup()
 
 void XE::World::Update( XE::float32 dt )
 {
-	for( auto & entity : _Entities )
+	for( auto & entity : _Objects )
 	{
 		if( entity )
 		{
@@ -128,12 +128,12 @@ void XE::World::Update( XE::float32 dt )
 
 void XE::World::Clearup()
 {
-	for( auto entity : _Entities )
+	for( auto entity : _Objects )
 	{
 		entity->Clearup();
 	}
 
-	_Entities.clear();
+	_Objects.clear();
 }
 
 XE::Transform & XE::World::GetTransform()

@@ -51,6 +51,6 @@ public:
 
 END_XE_NAMESPACE
 
-#define CHECK_THREAD(THREAD_TYPE)  XE::IFramework::GetCurrentFramework()->GetThreadService()->GetCurrentThreadType() == THREAD_TYPE
+#define CHECK_THREAD(THREAD_TYPE)  XE::IFramework::GetCurrentFramework()->GetServiceT< XE::IThreadService >()->GetCurrentThreadType() == THREAD_TYPE
 
 #endif // __ITHREADSERVICE_H__ED1E7A09_4D24_49BF_BABB_9386218A9039

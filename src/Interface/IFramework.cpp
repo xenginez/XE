@@ -165,3 +165,29 @@ void XE::IFramework::SetString( const String & key, const String & val )
 {
 	SetValue( key, val );
 }
+
+void XE::IFramework::SetStringArray( const String & key, const Array< String > & val )
+{
+	std::string str;
+	
+	for( size_t i = 0; i < val.size(); i++ )
+	{
+		str += val[i].ToStdString();
+
+		if( i < val.size() - 1 )
+		{
+			str += ",";
+		}
+	}
+
+	SetValue( key, str );
+}
+
+XE::Array< XE::String > XE::IFramework::GetStringArray( const String & key, const Array< String > & def /*= Array< String >() */ )
+{
+	String s = GetValue( key );
+
+	auto list = XE::StringUtils::Split( s.ToStdString(), "," );
+
+	return { list.begin(), list.end() };
+}

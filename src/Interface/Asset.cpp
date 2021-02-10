@@ -60,13 +60,13 @@ void XE::Asset::Swap( Asset && val )
 
 void XE::Asset::Load()
 {
-	auto obj = XE::IFramework::GetCurrentFramework()->GetAssetsService()->LoadObject( _AssetPath );
+	auto obj = XE::IFramework::GetCurrentFramework()->GetServiceT< XE::IAssetsService >()->LoadObject( _AssetPath );
 	LoadFinish( obj );
 }
 
 void XE::Asset::AsyncLoad()
 {
-	XE::IFramework::GetCurrentFramework()->GetAssetsService()->AsyncLoadObject( _AssetPath, std::bind( &XE::Asset::LoadFinish, this, std::placeholders::_1 ) );
+	XE::IFramework::GetCurrentFramework()->GetServiceT< XE::IAssetsService >()->AsyncLoadObject( _AssetPath, std::bind( &XE::Asset::LoadFinish, this, std::placeholders::_1 ) );
 }
 
 void XE::Asset::LoadFinish( const XE::ObjectPtr & val )

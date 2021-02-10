@@ -186,7 +186,7 @@ XE::MemoryView XE::AssetsService::Load( const std::filesystem::path & path )
 
 void XE::AssetsService::AsyncLoad( const std::filesystem::path & path, const LoadFinishCallback & callback )
 {
-	CHECK_THREAD( ThreadType::IO ) ? callback( Load( path ) ) : GetFramework()->GetThreadService()->PostTask( ThreadType::IO, [=]()
+	CHECK_THREAD( ThreadType::IO ) ? callback( Load( path ) ) : GetFramework()->GetServiceT< XE::IThreadService >()->PostTask( ThreadType::IO, [=]()
 																											  {
 																												  callback( Load( path ) );
 																											  } );
@@ -223,7 +223,7 @@ XE::ObjectPtr XE::AssetsService::LoadObject( const std::filesystem::path & path 
 
 void XE::AssetsService::AsyncLoadObject( const std::filesystem::path & path, const LoadObjectFinishCallback & callback )
 {
-	CHECK_THREAD( ThreadType::IO ) ? callback( LoadObject( path ) ) : GetFramework()->GetThreadService()->PostTask( ThreadType::IO, [=]()
+	CHECK_THREAD( ThreadType::IO ) ? callback( LoadObject( path ) ) : GetFramework()->GetServiceT< XE::IThreadService >()->PostTask( ThreadType::IO, [=]()
 																													{
 																														callback( LoadObject( path ) );
 																													} );

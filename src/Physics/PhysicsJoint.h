@@ -68,9 +68,9 @@ public:
 
 	void SetSecondInvInertiaScale( XE::float32 val );
 
-	XE::ConstraintFlags GetConstraintFlags() const;
+	XE::PhysicsConstraintFlags GetConstraintFlags() const;
 
-	void SetConstraintFlags( XE::ConstraintFlags val );
+	void SetConstraintFlags( XE::PhysicsConstraintFlags val );
 
 	const XE::Pair<XE::PhysicsRigidActorHandle, XE::PhysicsRigidActorHandle> & GetRigidActorHandle() const;
 

@@ -9,13 +9,13 @@
 #ifndef __GAMEOBJECT_H__ECCC67A6_5AD3_4306_8C14_915D53744BBA
 #define __GAMEOBJECT_H__ECCC67A6_5AD3_4306_8C14_915D53744BBA
 
-#include "GameEntity.h"
+#include "SceneObject.h"
 
 BEG_XE_NAMESPACE
 
-class XE_API GameObject final : public XE::GameEntity
+class XE_API GameObject final : public XE::SceneObject
 {
-	OBJECT( GameObject, GameEntity )
+	OBJECT( GameObject, SceneObject )
 
 public:
 	GameObject();

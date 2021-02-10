@@ -12,6 +12,8 @@
 #include "World.h"
 #include "Component.h"
 #include "GameObject.h"
+#include "SceneObject.h"
+#include "GameZoneObject.h"
 #include "SceneComponent.h"
 #include "BehaviorComponent.h"
 

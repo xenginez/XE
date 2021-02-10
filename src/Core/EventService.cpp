@@ -127,7 +127,7 @@ void XE::EventService::PostEvent( XE::uint64 frame, XE::EventPtr val )
 	XEPFrameEvent evt;
 	evt._Event = val;
 	evt._Frame = frame;
-	evt._StartFrame = GetFramework()->GetTimerService()->GetFrameCount();
+	evt._StartFrame = GetFramework()->GetServiceT< XE::ITimerService >()->GetFrameCount();
 
 	_p->_FrameEvents.push( std::move( evt ) );
 }
@@ -142,7 +142,7 @@ void XE::EventService::PostEvent( XE::float32 dt, XE::EventPtr val )
 	XEPTimeEvent evt;
 	evt._Event = val;
 	evt._Duration = dt;
-	evt._StartTime = GetFramework()->GetTimerService()->GetTime();
+	evt._StartTime = GetFramework()->GetServiceT< XE::ITimerService >()->GetTime();
 
 	_p->_TimeEvents.push( std::move( evt ) );
 }
@@ -179,7 +179,7 @@ void XE::EventService::UnregisterListener( XE::EventHandle handle, XE::uint64 in
 
 void XE::EventService::ProcessTimeEvent()
 {
-	XE::float32 NowTime = GetFramework()->GetTimerService()->GetTime();
+	XE::float32 NowTime = GetFramework()->GetServiceT< XE::ITimerService >()->GetTime();
 
 	XEPTimeEvent event;
 	while ( _p->_TimeEvents.try_pop( event ) )
@@ -198,7 +198,7 @@ void XE::EventService::ProcessTimeEvent()
 
 void XE::EventService::ProcessFrameEvent()
 {
-	XE::uint64 FrameCount = GetFramework()->GetTimerService()->GetFrameCount();
+	XE::uint64 FrameCount = GetFramework()->GetServiceT< XE::ITimerService >()->GetFrameCount();
 
 	XEPFrameEvent event;
 	while ( _p->_FrameEvents.try_pop( event ) )

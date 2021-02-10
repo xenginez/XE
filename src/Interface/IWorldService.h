@@ -16,8 +16,6 @@
 BEG_XE_NAMESPACE
 
 DECL_PTR( World );
-DECL_PTR( GameObject );
-using GameObjectHandle = XE::Handle<GameObject>;
 
 class XE_API IWorldService : public IService
 {

@@ -12,14 +12,6 @@
 #include "Utils/Logger.h"
 #include "Utils/Library.h"
 
-#include "TimerService.h"
-#include "EventService.h"
-#include "InputService.h"
-#include "WorldService.h"
-#include "ThreadService.h"
-#include "AssetsService.h"
-#include "LocalizationService.h"
-
 void nest_json( rapidjson::Value & parent, std::vector<std::string>::const_iterator beg, std::vector<std::string>::const_iterator end, const std::string & str, rapidjson::MemoryPoolAllocator<> & allocator )
 {
 	if( beg != end )
@@ -60,6 +52,8 @@ struct XE::CoreFramework::Private
 	Map < String, String > Values;
 	Array < IServicePtr > _Services;
 	std::function<void()> _SysEventLoop;
+
+	XE::Array< XE::uint64 > _StartServices, _UpdateServices, _ClearupServices;
 };
 
 XE::CoreFramework::CoreFramework()
@@ -93,61 +87,6 @@ int XE::CoreFramework::Exec( int argc, char ** argv, std::function<void()> msglo
 	Clearup();
 
 	return 0;
-}
-
-XE::ITimerServicePtr XE::CoreFramework::GetTimerService() const
-{
-	return GetServiceT<ITimerService>();
-}
-
-XE::IEventServicePtr XE::CoreFramework::GetEventService() const
-{
-	return GetServiceT<IEventService>();
-}
-
-XE::IInputServicePtr XE::CoreFramework::GetInputService() const
-{
-	return GetServiceT<IInputService>();
-}
-
-XE::IAudioServicePtr XE::CoreFramework::GetAudioService() const
-{
-	return GetServiceT<IAudioService>();
-}
-
-XE::IWorldServicePtr XE::CoreFramework::GetWorldService() const
-{
-	return GetServiceT<IWorldService>();
-}
-
-XE::IThreadServicePtr XE::CoreFramework::GetThreadService() const
-{
-	return GetServiceT<IThreadService>();
-}
-
-XE::IAssetsServicePtr XE::CoreFramework::GetAssetsService() const
-{
-	return GetServiceT<IAssetsService>();
-}
-
-XE::IRenderServicePtr XE::CoreFramework::GetRenderService() const
-{
-	return GetServiceT<IRenderService>();
-}
-
-XE::IPhysicsServicePtr XE::CoreFramework::GetPhysicsService() const
-{
-	return GetServiceT<IPhysicsService>();
-}
-
-XE::INavigationServicePtr XE::CoreFramework::GetINavigationService() const
-{
-	return GetServiceT<INavigationService>();
-}
-
-XE::ILocalizationServicePtr XE::CoreFramework::GetLocalizationService() const
-{
-	return GetServiceT<ILocalizationService>();
 }
 
 XE::IServicePtr XE::CoreFramework::GetService( const XE::IMetaClassPtr & val ) const
@@ -265,13 +204,16 @@ void XE::CoreFramework::Startup()
 {
 	_p->_Exit = false;
 
-	for( auto & service : _p->_Services )
+	for( auto i : _p->_StartServices )
 	{
-		if( !service->Startup() ) 
+		if (i != std::numeric_limits< XE::uint64 >::max() )
 		{
-			XE_LOG( LoggerLevel::Error, "startup %1 error!", service->GetMetaClass()->GetFullName() );
-			_p->_Exit = true; 
-			return; 
+			if( !_p->_Services[i]->Startup() )
+			{
+				XE_LOG( LoggerLevel::Error, "startup %1 error!", _p->_Services[i]->GetMetaClass()->GetFullName() );
+				_p->_Exit = true;
+				return;
+			}
 		}
 	}
 }
@@ -283,25 +225,30 @@ void XE::CoreFramework::Update()
 		_p->_SysEventLoop();
 	}
 
-	for( auto & service : _p->_Services )
+	for( auto i : _p->_UpdateServices )
 	{
-		if( service != nullptr )
+		if( i != std::numeric_limits< XE::uint64 >::max() )
 		{
-			service->Update();
+			_p->_Services[i]->Update();
 		}
 	}
 }
 
 void XE::CoreFramework::Clearup()
 {
-	for( auto it = _p->_Services.rbegin(); it != _p->_Services.rend(); ++it )
+	for( auto i : _p->_ClearupServices )
 	{
-		if( *it != nullptr )
+		if( i != std::numeric_limits< XE::uint64 >::max() )
 		{
-			( *it )->Clearup();
+			_p->_Services[i]->Clearup();
 		}
 	}
+
 	_p->_Services.clear();
+
+	_p->_StartServices.clear();
+	_p->_UpdateServices.clear();
+	_p->_ClearupServices.clear();
 
 	_p->Values.clear();
 }
@@ -326,10 +273,27 @@ void XE::CoreFramework::LoadModules()
 
 void XE::CoreFramework::LoadServices()
 {
-	LoadFirstServices();
+	XE::Set< XE::String > Services;
+	XE::Array< XE::String > StartupServices, UpdateServices, ClearupServices;
 
-	auto services = StringUtils::Split( GetString("System/Services"), "," );
-	for( auto service : services )
+	StartupServices = GetStringArray( "System/StartupServices" );
+	UpdateServices = GetStringArray( "System/StartupServices" );
+	ClearupServices = GetStringArray( "System/StartupServices" );
+
+	for( const auto & i : StartupServices )
+	{
+		Services.insert( i );
+	}
+	for( const auto & i : UpdateServices )
+	{
+		Services.insert( i );
+	}
+	for( const auto & i : ClearupServices )
+	{
+		Services.insert( i );
+	}
+
+	for( auto service : Services )
 	{
 		if( auto meta = Reflection::FindClass( service ) )
 		{
@@ -340,22 +304,54 @@ void XE::CoreFramework::LoadServices()
 		}
 	}
 
-	LoadLastServices();
-}
+	for( const auto & i : StartupServices )
+	{
+		auto it = std::find_if( _p->_Services.begin(), _p->_Services.end(), [i](const XE::IServicePtr & service )
+								{
+									return service->GetMetaClass()->GetFullName() == i;
+								} );
 
-void XE::CoreFramework::LoadFirstServices()
-{
-	_p->_Services.push_back( XE::MakeShared< XE::TimerService >() );
-	_p->_Services.push_back( XE::MakeShared< XE::EventService >() );
-	_p->_Services.push_back( XE::MakeShared< XE::ThreadService >() );
-	_p->_Services.push_back( XE::MakeShared< XE::InputService >() );
-	_p->_Services.push_back( XE::MakeShared< XE::AssetsService >() );
-	_p->_Services.push_back( XE::MakeShared< XE::LocalizationService >() );
-}
+		if( it != _p->_Services.end() )
+		{
+			_p->_StartServices.push_back( it - _p->_Services.begin() );
+		}
+		else
+		{
+			_p->_StartServices.push_back( std::numeric_limits< XE::uint64 >::max() );
+		}
+	}
+	for( const auto & i : UpdateServices )
+	{
+		auto it = std::find_if( _p->_Services.begin(), _p->_Services.end(), [i]( const XE::IServicePtr & service )
+								{
+									return service->GetMetaClass()->GetFullName() == i;
+								} );
 
-void XE::CoreFramework::LoadLastServices()
-{
-	_p->_Services.push_back( XE::MakeShared< XE::WorldService >() );
+		if( it != _p->_Services.end() )
+		{
+			_p->_UpdateServices.push_back( it - _p->_Services.begin() );
+		}
+		else
+		{
+			_p->_UpdateServices.push_back( std::numeric_limits< XE::uint64 >::max() );
+		}
+	}
+	for( const auto & i : ClearupServices )
+	{
+		auto it = std::find_if( _p->_Services.begin(), _p->_Services.end(), [i]( const XE::IServicePtr & service )
+								{
+									return service->GetMetaClass()->GetFullName() == i;
+								} );
+
+		if( it != _p->_Services.end() )
+		{
+			_p->_ClearupServices.push_back( it - _p->_Services.begin() );
+		}
+		else
+		{
+			_p->_ClearupServices.push_back( std::numeric_limits< XE::uint64 >::max() );
+		}
+	}
 }
 
 void XE::CoreFramework::Save()
