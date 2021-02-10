@@ -9,6 +9,8 @@
 #ifndef __ITHREADSERVICE_H__ED1E7A09_4D24_49BF_BABB_9386218A9039
 #define __ITHREADSERVICE_H__ED1E7A09_4D24_49BF_BABB_9386218A9039
 
+#include <future>
+
 #include "IService.h"
 
 BEG_XE_NAMESPACE
@@ -31,6 +33,20 @@ public:
 public:
 	virtual void PostTask( ThreadType type, const TaskCallback & task ) = 0;
 
+public:
+    template< typename R > std::shared_future< R > PostTask( ThreadType type, const std::function<R()> & task )
+    {
+        std::promise< R > p;
+
+        std::shared_future< R > sf = p.get_future().share();
+
+        PostTask( type, [p, task, sf]()
+                  {
+                      p.set_value( task() );
+                  } );
+
+        return sf;
+    }
 };
 
 END_XE_NAMESPACE

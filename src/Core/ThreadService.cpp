@@ -89,11 +89,6 @@ struct XEPSpecialThread : public XEPThread
 				_Variable.wait( Lock );
 			}
 
-			if( _Exit )
-			{
-				return;
-			}
-
 			std::function<void()>  task;
 			while( _Tasks.try_pop( task ) )
 			{
@@ -158,11 +153,6 @@ struct XEPWorkThread : public XEPThread
 				std::unique_lock<std::mutex> Lock( _Lock );
 
 				_Variable.wait( Lock );
-			}
-
-			if( _Exit )
-			{
-				return;
 			}
 
 			std::function<void()>  task;
@@ -248,6 +238,9 @@ void XE::ThreadService::Update()
 
 void XE::ThreadService::Clearup()
 {
+	_p->_Threads[( XE::uint64 )XE::ThreadType::GAME]->Handler();
+	_p->_Threads[( XE::uint64 )XE::ThreadType::GAME]->Handler();
+
 	for( auto p : _p->_Threads )
 	{
 		delete p;
@@ -273,15 +266,15 @@ XE::ThreadType XE::ThreadService::GetCurrentThreadType() const
  
 void XE::ThreadService::PostTask( ThreadType type, const TaskCallback & task )
 {
-	if( GetCurrentThreadType() == type )
+	if( task )
 	{
-		if( task )
+		if( GetCurrentThreadType() == type )
 		{
 			task();
 		}
-	}
-	else
-	{
-		_p->_Threads[( XE::uint64 )type]->PushTask( task );
+		else
+		{
+			_p->_Threads[( XE::uint64 )type]->PushTask( task );
+		}
 	}
 }

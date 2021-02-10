@@ -557,6 +557,8 @@ enum class TextureFormat
 	ASTC8x6,      //!< ASTC 8x6 2.67 BPP
 	ASTC10x5,     //!< ASTC 10x5 2.56 BPP
 
+	UNKNOWN,      // Compressed formats above.
+
 	R1,
 	A8,
 	R8,
@@ -606,6 +608,8 @@ enum class TextureFormat
 	RGB5A1,
 	RGB10A2,
 	RG11B10F,
+
+	UNKNOWNDEPTH, // Depth formats below.
 
 	D16,
 	D24,
@@ -822,7 +826,8 @@ struct XE_API TextureDesc
 	XE::uint32 Height = 0;
 	XE::uint32 Depth = 0;
 	bool HasMaps = false;
-	XE::uint16 Layers = 0;
+	XE::uint16 NumMips = 0;
+	XE::uint16 NumLayers = 0;
 	TextureFormat Format = TextureFormat::RGBA8;
 	XE::Flags< XE::TextureFlag > Flags = XE::TextureFlag::NONE;
 	XE::Flags< XE::SamplerFlag > Samplers = XE::SamplerFlag::NONE;
