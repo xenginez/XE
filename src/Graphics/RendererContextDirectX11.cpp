@@ -25,6 +25,15 @@ static const GUID IID_ID3D11InfoQueue = { 0x6543dbb6, 0x1b48, 0x42f5, { 0xab, 0x
 static const GUID IID_IDXGIDeviceRenderDoc = { 0xa7aa6116, 0x9c8d, 0x4bba, { 0x90, 0x83, 0xb4, 0xd8, 0x16, 0xb7, 0x1b, 0x78 } };
 static const GUID IID_ID3DUserDefinedAnnotation = { 0xb2daad8b, 0x03d4, 0x4dbf, { 0x95, 0xeb, 0x32, 0xab, 0x4b, 0x63, 0xd0, 0xab } };
 
+static DXGI_SAMPLE_DESC s_msaa[] =
+{
+	{  1, 0 },
+	{  2, 0 },
+	{  4, 0 },
+	{  8, 0 },
+	{ 16, 0 },
+};
+
 struct UavFormat
 {
 	DXGI_FORMAT format[3];
@@ -275,8 +284,8 @@ namespace D3D11
 {
 	struct Buffer
 	{
-		void Create( ID3D11Device * _device, XE::uint32 _size, void * _data, XE::BufferFlags _flags, XE::uint16 _stride = 0, bool _vertex = false );
-		void Update( ID3D11DeviceContext * _deviceCtx, XE::uint32 _offset, XE::uint32 _size, void * _data, bool _discard = false );
+		void Create( XE::uint32 _size, void * _data, XE::BufferFlags _flags, XE::uint16 _stride = 0, bool _vertex = false );
+		void Update( XE::uint32 _offset, XE::uint32 _size, void * _data, bool _discard = false );
 		void Destroy();
 
 		ID3D11Buffer * _Ptr = nullptr;
@@ -291,14 +300,14 @@ namespace D3D11
 
 	struct VertexBuffer : public Buffer
 	{
-		void Create( ID3D11Device * _device, XE::uint32 _size, void * _data, XE::VertexLayoutHandle _layoutHandle, XE::BufferFlags _flags );
+		void Create( XE::uint32 _size, void * _data, XE::VertexLayoutHandle _layoutHandle, XE::BufferFlags _flags );
 
 		XE::VertexLayoutHandle _LayoutHandle;
 	};
 
 	struct Shader
 	{
-		void Create( ID3D11Device * _device, XE::ShaderType _type, XE::MemoryView _mem );
+		void Create( XE::ShaderType _type, XE::MemoryView _mem );
 		void Destroy();
 
 		union
@@ -349,9 +358,9 @@ namespace D3D11
 
 	struct DirectAccessResource
 	{
-		void * CreateTexture2D( ID3D11DeviceContext * deviceCtx, const D3D11_TEXTURE2D_DESC * _gpuDesc, const D3D11_SUBRESOURCE_DATA * _srd, ID3D11Texture2D ** _gpuTexture2d );
-		void * CreateTexture3D( ID3D11DeviceContext * deviceCtx, const D3D11_TEXTURE3D_DESC * _gpuDesc, const D3D11_SUBRESOURCE_DATA * _srd, ID3D11Texture3D ** _gpuTexture3d );
-		void Destroy( ID3D11DeviceContext * deviceCtx );
+		void * CreateTexture2D( const D3D11_TEXTURE2D_DESC * _gpuDesc, const D3D11_SUBRESOURCE_DATA * _srd, ID3D11Texture2D ** _gpuTexture2d );
+		void * CreateTexture3D( const D3D11_TEXTURE3D_DESC * _gpuDesc, const D3D11_SUBRESOURCE_DATA * _srd, ID3D11Texture3D ** _gpuTexture3d );
+		void Destroy();
 
 		union
 		{
@@ -365,7 +374,7 @@ namespace D3D11
 
 	struct Texture
 	{
-		void * Create( XE::MemoryView _mem, XE::TextureFlags _flags, XE::uint8 _skip );
+		void * Create( XE::MemoryView _mem, const XE::TextureDesc & desc );
 		void Destroy();
 		void OverrideInternal( uintptr_t _ptr );
 		void Update( XE::uint8 _side, XE::uint8 _mip, const XE::Recti & _rect, XE::uint16 _z, XE::uint16 _depth, XE::uint16 _pitch, XE::MemoryView _mem );
@@ -396,9 +405,9 @@ namespace D3D11
 		XE::uint32 _Height = 0;
 		XE::uint32 _Depth = 0;
 		XE::uint32 _NumLayers = 0;
-		XE::uint8  _Type = 0;
+		XE::TextureType _Type = TextureType::TEXTURE_2D;
 		XE::uint8  _RequestedFormat = 0;
-		XE::uint8  _TextureFormat = 0;
+		XE::TextureFormat  _TextureFormat = TextureFormat::RGBA8;
 		XE::uint8  _NumMips = 0;
 	};
 
@@ -410,7 +419,7 @@ namespace D3D11
 		void PreReset( bool _force = false );
 		void PostReset();
 		void Resolve();
-		void Clear( const XE::ViewClearDesc & _clear, const float _palette[][4] );
+		void Clear( const XE::ViewClearDesc & _clear );
 		void Set();
 		HRESULT Present( XE::uint32 _syncInterval );
 
@@ -429,45 +438,6 @@ namespace D3D11
 		XE::uint8 _NumTh;
 		XE::uint8 _NumUav;
 		bool _NeedPresent;
-	};
-
-	struct TimerQuery
-	{
-		void PostReset();
-		void PreReset();
-		XE::uint32 Begin( XE::uint32 _resultIdx );
-		void End( XE::uint32 _idx );
-		bool Update();
-
-		struct Query
-		{
-			ID3D11Query * _Disjoint;
-			ID3D11Query * _Begin;
-			ID3D11Query * _End;
-			XE::uint32    _ResultIdx;
-			bool          _Ready;
-		};
-
-		struct Result
-		{
-			void reset()
-			{
-				_Begin = 0;
-				_End = 0;
-				_Frequency = 1;
-				_Pending = 0;
-			}
-
-			XE::uint64 _Begin;
-			XE::uint64 _End;
-			XE::uint64 _Frequency;
-			XE::uint32 _Pending;
-		};
-
-		Result _Result[GFX_MAX_VIEW + 1];
-
-		Query _Query[GFX_MAX_VIEW * 4];
-		XE::RingBuffer m_control;
 	};
 
 	struct OcclusionQuery
@@ -489,7 +459,38 @@ namespace D3D11
 		XE::RingBuffer m_control;
 	};
 
-	void Buffer::Create( ID3D11Device * _device, XE::uint32 _size, void * _data, XE::BufferFlags _flags, XE::uint16 _stride /*= 0*/, bool _vertex /*= false */ )
+	struct RenderContext
+	{
+		XE::LibraryHandle _DX11Dll;
+
+		DXGI * _Dxgi = nullptr;
+		D3D_FEATURE_LEVEL _FeatureLevel;
+		ID3D11Device * _Device = nullptr;
+		ID3D11DeviceContext * _DeviceCtx = nullptr;
+
+		ID3D11RenderTargetView * _CurrentColor = NULL;
+		ID3D11DepthStencilView * _CurrentDepthStencil = NULL;
+
+		std::array<D3D11::IndexBuffer, GFX_MAX_INDEX_BUFFERS> _IndexBuffers;
+		std::array<D3D11::VertexBuffer, GFX_MAX_VERTEX_BUFFERS> _VertexBuffers;
+		std::array<D3D11::Shader, GFX_MAX_SHADERS> _Shaders;
+		std::array<D3D11::Program, GFX_MAX_PROGRAMS> _Programs;
+		std::array<D3D11::Texture, GFX_MAX_TEXTURES> _Textures;
+		std::array<D3D11::FrameBuffer, GFX_MAX_FRAME_BUFFERS> _FrameBuffers;
+
+		std::map<XE::uint64, ID3D11BlendState *> _BlendStateCahce;
+		std::map<XE::uint64, ID3D11DepthStencilState *> _DepthStencilStateCache;
+		std::map<XE::uint64, ID3D11InputLayout *> _InputLayoutCache;
+		std::map<XE::uint64, ID3D11RasterizerState *> _RasterizerStateCache;
+		std::map<XE::uint64, ID3D11SamplerState *> _SamplerStateCache;
+	};
+};
+
+XE::D3D11::RenderContext * _rtx = nullptr;
+
+namespace D3D11
+{
+	void Buffer::Create( XE::uint32 _size, void * _data, XE::BufferFlags _flags, XE::uint16 _stride /*= 0*/, bool _vertex /*= false */ )
 	{
 		_UAV = NULL;
 		_Size = _size;
@@ -557,7 +558,7 @@ namespace D3D11
 			desc.CPUAccessFlags = 0;
 			desc.StructureByteStride = _stride;
 
-			XE_ASSERT( SUCCEEDED( _device->CreateBuffer( &desc, NULL == _data ? NULL : &srd, &_Ptr ) ) );
+			XE_ASSERT( SUCCEEDED( _rtx->_Device->CreateBuffer( &desc, NULL == _data ? NULL : &srd, &_Ptr ) ) );
 
 			D3D11_UNORDERED_ACCESS_VIEW_DESC uavd;
 			uavd.Format = format;
@@ -565,21 +566,21 @@ namespace D3D11
 			uavd.Buffer.FirstElement = 0;
 			uavd.Buffer.NumElements = _Size / stride;
 			uavd.Buffer.Flags = 0;
-			XE_ASSERT( SUCCEEDED( _device->CreateUnorderedAccessView( _Ptr, &uavd, &_UAV ) ) );
+			XE_ASSERT( SUCCEEDED( _rtx->_Device->CreateUnorderedAccessView( _Ptr, &uavd, &_UAV ) ) );
 		}
 		else if( _Dynamic )
 		{
 			desc.Usage = D3D11_USAGE_DYNAMIC;
 			desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
-			XE_ASSERT( SUCCEEDED( _device->CreateBuffer( &desc, NULL, &_Ptr ) ) );
+			XE_ASSERT( SUCCEEDED( _rtx->_Device->CreateBuffer( &desc, NULL, &_Ptr ) ) );
 		}
 		else
 		{
 			desc.Usage = D3D11_USAGE_IMMUTABLE;
 			desc.CPUAccessFlags = 0;
 
-			XE_ASSERT( SUCCEEDED( _device->CreateBuffer( &desc, &srd, &_Ptr ) ) );
+			XE_ASSERT( SUCCEEDED( _rtx->_Device->CreateBuffer( &desc, &srd, &_Ptr ) ) );
 		}
 
 		if( needSrv )
@@ -589,20 +590,20 @@ namespace D3D11
 			srvd.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
 			srvd.Buffer.FirstElement = 0;
 			srvd.Buffer.NumElements = _Size / stride;
-			XE_ASSERT( SUCCEEDED( _device->CreateShaderResourceView( _Ptr, &srvd, &_SRV ) ) );
+			XE_ASSERT( SUCCEEDED( _rtx->_Device->CreateShaderResourceView( _Ptr, &srvd, &_SRV ) ) );
 		}
 	}
 
-	void Buffer::Update( ID3D11DeviceContext * _deviceCtx, XE::uint32 _offset, XE::uint32 _size, void * _data, bool _discard /*= false */ )
+	void Buffer::Update( XE::uint32 _offset, XE::uint32 _size, void * _data, bool _discard /*= false */ )
 	{
 		XE_ASSERT( _Dynamic && "Must be dynamic!" );
 
 		if( _discard )
 		{
 			D3D11_MAPPED_SUBRESOURCE mapped;
-			XE_ASSERT( SUCCEEDED( _deviceCtx->Map( _Ptr, 0, D3D11_MAP_WRITE_DISCARD, 0, &mapped ) ) );
+			XE_ASSERT( SUCCEEDED( _rtx->_DeviceCtx->Map( _Ptr, 0, D3D11_MAP_WRITE_DISCARD, 0, &mapped ) ) );
 			std::memcpy( ( uint8_t * ) mapped.pData + _offset, _data, _size );
-			_deviceCtx->Unmap( _Ptr, 0 );
+			_rtx->_DeviceCtx->Unmap( _Ptr, 0 );
 		}
 		else
 		{
@@ -628,12 +629,12 @@ namespace D3D11
 			srcBox.back = 1;
 
 			ID3D11Device * device = nullptr;
-			_deviceCtx->GetDevice( &device );
+			_rtx->_DeviceCtx->GetDevice( &device );
 
 			ID3D11Buffer * ptr;
 			XE_ASSERT( SUCCEEDED( device->CreateBuffer( &desc, &srd, &ptr ) ) );
 
-			_deviceCtx->CopySubresourceRegion( _Ptr, 0, _offset, 0, 0, ptr, 0, &srcBox );
+			_rtx->_DeviceCtx->CopySubresourceRegion( _Ptr, 0, _offset, 0, 0, ptr, 0, &srcBox );
 
 			DX_RELEASE( device );
 			DX_RELEASE( ptr );
@@ -652,27 +653,27 @@ namespace D3D11
 		DX_RELEASE( _UAV );
 	}
 
-	void VertexBuffer::Create( ID3D11Device * _device, XE::uint32 _size, void * _data, XE::VertexLayoutHandle _layoutHandle, XE::BufferFlags _flags )
+	void VertexBuffer::Create( XE::uint32 _size, void * _data, XE::VertexLayoutHandle _layoutHandle, XE::BufferFlags _flags )
 	{
 		_LayoutHandle = _layoutHandle;
 
-		D3D11::Buffer::Create( _device, _size, _data, _flags, 0, true );
+		D3D11::Buffer::Create( _size, _data, _flags, 0, true );
 	}
 
-	void Shader::Create( ID3D11Device * _device, XE::ShaderType _type, XE::MemoryView _mem )
+	void Shader::Create( XE::ShaderType _type, XE::MemoryView _mem )
 	{
 		_Type = _type;
 
 		switch( _type )
 		{
 		case XE::ShaderType::VS:
-			XE_ASSERT( SUCCEEDED( _device->CreateVertexShader( _mem.data(), _mem.size(), nullptr, &_VertexShader ) ) );
+			XE_ASSERT( SUCCEEDED( _rtx->_Device->CreateVertexShader( _mem.data(), _mem.size(), nullptr, &_VertexShader ) ) );
 			break;
 		case XE::ShaderType::FS:
-			XE_ASSERT( SUCCEEDED( _device->CreatePixelShader( _mem.data(), _mem.size(), nullptr, &_PixelShader ) ) );
+			XE_ASSERT( SUCCEEDED( _rtx->_Device->CreatePixelShader( _mem.data(), _mem.size(), nullptr, &_PixelShader ) ) );
 			break;
 		case XE::ShaderType::CS:
-			XE_ASSERT( SUCCEEDED( _device->CreateComputeShader( _mem.data(), _mem.size(), nullptr, &_ComputeShader ) ) );
+			XE_ASSERT( SUCCEEDED( _rtx->_Device->CreateComputeShader( _mem.data(), _mem.size(), nullptr, &_ComputeShader ) ) );
 			break;
 		default:
 			break;
@@ -696,13 +697,9 @@ namespace D3D11
 		_FS = nullptr;
 	}
 
-	void * DirectAccessResource::CreateTexture2D( ID3D11DeviceContext * deviceCtx, const D3D11_TEXTURE2D_DESC * _gpuDesc, const D3D11_SUBRESOURCE_DATA * _srd, ID3D11Texture2D ** _gpuTexture2d )
+	void * DirectAccessResource::CreateTexture2D( const D3D11_TEXTURE2D_DESC * _gpuDesc, const D3D11_SUBRESOURCE_DATA * _srd, ID3D11Texture2D ** _gpuTexture2d )
 	{
-		ID3D11Device * device = nullptr;
-
-		deviceCtx->GetDevice( &device );
-
-		XE_ASSERT( SUCCEEDED( device->CreateTexture2D( _gpuDesc, _srd, _gpuTexture2d ) ) );
+		XE_ASSERT( SUCCEEDED( _rtx->_Device->CreateTexture2D( _gpuDesc, _srd, _gpuTexture2d ) ) );
 
 		D3D11_TEXTURE2D_DESC cpuDesc;
 		std::memcpy( &cpuDesc, _gpuDesc, sizeof( cpuDesc ) );
@@ -710,26 +707,20 @@ namespace D3D11
 		cpuDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ | D3D11_CPU_ACCESS_WRITE;
 		cpuDesc.Usage = D3D11_USAGE_STAGING;
 
-		XE_ASSERT( SUCCEEDED( device->CreateTexture2D( &cpuDesc, NULL, &_Texture2d ) ) );
+		XE_ASSERT( SUCCEEDED( _rtx->_Device->CreateTexture2D( &cpuDesc, NULL, &_Texture2d ) ) );
 
-		deviceCtx->CopyResource( _Texture2d, *_gpuTexture2d );
+		_rtx->_DeviceCtx->CopyResource( _Texture2d, *_gpuTexture2d );
 
 		D3D11_MAPPED_SUBRESOURCE mappedResource;
-		deviceCtx->Map( _Texture2d, 0, D3D11_MAP_WRITE, 0, &mappedResource );
+		_rtx->_DeviceCtx->Map( _Texture2d, 0, D3D11_MAP_WRITE, 0, &mappedResource );
 		_Descriptor = reinterpret_cast< IntelDirectAccessResourceDescriptor * >( mappedResource.pData );
-
-		DX_RELEASE( device );
 
 		return _Descriptor->_Ptr;
 	}
 
-	void * DirectAccessResource::CreateTexture3D( ID3D11DeviceContext * deviceCtx, const D3D11_TEXTURE3D_DESC * _gpuDesc, const D3D11_SUBRESOURCE_DATA * _srd, ID3D11Texture3D ** _gpuTexture3d )
+	void * DirectAccessResource::CreateTexture3D( const D3D11_TEXTURE3D_DESC * _gpuDesc, const D3D11_SUBRESOURCE_DATA * _srd, ID3D11Texture3D ** _gpuTexture3d )
 	{
-		ID3D11Device * device = nullptr;
-
-		deviceCtx->GetDevice( &device );
-
-		XE_ASSERT( SUCCEEDED( device->CreateTexture3D( _gpuDesc, _srd, _gpuTexture3d ) ) );
+		XE_ASSERT( SUCCEEDED( _rtx->_Device->CreateTexture3D( _gpuDesc, _srd, _gpuTexture3d ) ) );
 
 		D3D11_TEXTURE3D_DESC cpuDesc;
 		std::memcpy( &cpuDesc, _gpuDesc, sizeof( cpuDesc ) );
@@ -737,43 +728,351 @@ namespace D3D11
 		cpuDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ | D3D11_CPU_ACCESS_WRITE;
 		cpuDesc.Usage = D3D11_USAGE_STAGING;
 
-		XE_ASSERT( SUCCEEDED( device->CreateTexture3D( &cpuDesc, NULL, &_Texture3d ) ) );
+		XE_ASSERT( SUCCEEDED( _rtx->_Device->CreateTexture3D( &cpuDesc, NULL, &_Texture3d ) ) );
 
-		deviceCtx->CopyResource( _Texture3d, *_gpuTexture3d );
+		_rtx->_DeviceCtx->CopyResource( _Texture3d, *_gpuTexture3d );
 
 		D3D11_MAPPED_SUBRESOURCE mappedResource;
-		deviceCtx->Map( _Texture3d, 0, D3D11_MAP_WRITE, 0, &mappedResource );
+		_rtx->_DeviceCtx->Map( _Texture3d, 0, D3D11_MAP_WRITE, 0, &mappedResource );
 		_Descriptor = reinterpret_cast< IntelDirectAccessResourceDescriptor * >( mappedResource.pData );
-
-		DX_RELEASE( device );
 
 		return _Descriptor->_Ptr;
 	}
 
-	void DirectAccessResource::Destroy( ID3D11DeviceContext * deviceCtx )
+	void DirectAccessResource::Destroy()
 	{
 		if( _Descriptor )
 		{
-			deviceCtx->Unmap( _Ptr, 0 );
+			_rtx->_DeviceCtx->Unmap( _Ptr, 0 );
 			_Descriptor = nullptr;
 			DX_RELEASE( _Ptr );
 			_Ptr = nullptr;
 		}
 	}
 
-	void * Texture::Create( XE::MemoryView _mem, XE::TextureFlags _flags, XE::uint8 _skip )
+	void * Texture::Create( XE::MemoryView _mem, const XE::TextureDesc & desc )
 	{
-		return nullptr;
+			void * directAccessPtr = NULL;
+
+// 			bimg::ImageContainer imageContainer;
+// 
+// 			if( bimg::imageParse( imageContainer, _mem->data, _mem->size ) )
+// 			{
+// 				const uint8_t startLod = std::min<uint8_t>( _skip, imageContainer.m_numMips - 1 );
+// 
+// 				bimg::TextureInfo ti;
+// 				bimg::imageGetSize(
+// 					&ti
+// 					, uint16_t( imageContainer.m_width >> startLod )
+// 					, uint16_t( imageContainer.m_height >> startLod )
+// 					, uint16_t( imageContainer.m_depth >> startLod )
+// 					, imageContainer.m_cubeMap
+// 					, 1 < imageContainer.m_numMips
+// 					, imageContainer.m_numLayers
+// 					, imageContainer.m_format
+// 				);
+// 				ti.numMips = bx::min<uint8_t>( imageContainer.m_numMips - startLod, ti.numMips );
+// 
+// 				_Flags = desc.Flags;
+// 				_Width = desc.Width;
+// 				_Height = desc.Height;
+// 				_Depth = desc.Depth;
+// 				_NumLayers = desc.NumLayers;
+// 				_TextureFormat = desc.Format;
+// 				_Type = desc.Type;
+// 				_NumMips = desc.NumMips;
+// 
+// 				const uint16_t numSides = desc.NumLayers * ( desc.HasMaps ? 6 : 1 );
+// 				const uint32_t numSrd = numSides * desc.NumMips;
+// 				D3D11_SUBRESOURCE_DATA * srd = ( D3D11_SUBRESOURCE_DATA * ) alloca( numSrd * sizeof( D3D11_SUBRESOURCE_DATA ) );
+// 
+// 				uint32_t kk = 0;
+// 
+// 				for( uint16_t side = 0; side < numSides; ++side )
+// 				{
+// 					for( uint8_t lod = 0, num = ti.numMips; lod < num; ++lod )
+// 					{
+// 						bimg::ImageMip mip;
+// 						if( bimg::imageGetRawData( imageContainer, side, lod + startLod, _mem->data, _mem->size, mip ) )
+// 						{
+// 							srd[kk].pSysMem = mip.m_data;
+// 
+// 							if( convert )
+// 							{
+// 								uint32_t srcpitch = mip.m_width * bpp / 8;
+// 								uint8_t * temp = ( uint8_t * ) BX_ALLOC( g_allocator, srcpitch * mip.m_height );
+// 								bimg::imageDecodeToBgra8( g_allocator, temp, mip.m_data, mip.m_width, mip.m_height, srcpitch, mip.m_format );
+// 
+// 								srd[kk].pSysMem = temp;
+// 								srd[kk].SysMemPitch = srcpitch;
+// 							}
+// 							else if( compressed )
+// 							{
+// 								srd[kk].SysMemPitch = ( mip.m_width / blockInfo.blockWidth ) * mip.m_blockSize;
+// 								srd[kk].SysMemSlicePitch = ( mip.m_height / blockInfo.blockHeight ) * srd[kk].SysMemPitch;
+// 							}
+// 							else
+// 							{
+// 								srd[kk].SysMemPitch = mip.m_width * mip.m_bpp / 8;
+// 							}
+// 
+// 							srd[kk].SysMemSlicePitch = mip.m_height * srd[kk].SysMemPitch;
+// 							++kk;
+// 						}
+// 					}
+// 				}
+// 
+// 				const bool writeOnly = 0 != ( m_flags & ( BGFX_TEXTURE_RT_WRITE_ONLY | BGFX_TEXTURE_READ_BACK ) );
+// 				const bool computeWrite = 0 != ( m_flags & BGFX_TEXTURE_COMPUTE_WRITE );
+// 				const bool renderTarget = 0 != ( m_flags & BGFX_TEXTURE_RT_MASK );
+// 				const bool srgb = 0 != ( m_flags & BGFX_TEXTURE_SRGB );
+// 				const bool blit = 0 != ( m_flags & BGFX_TEXTURE_BLIT_DST );
+// 				const bool readBack = 0 != ( m_flags & BGFX_TEXTURE_READ_BACK );
+// 				const uint32_t msaaQuality = bx::uint32_satsub( ( m_flags & BGFX_TEXTURE_RT_MSAA_MASK ) >> BGFX_TEXTURE_RT_MSAA_SHIFT, 1 );
+// 				const DXGI_SAMPLE_DESC & msaa = s_msaa[msaaQuality];
+// 				const bool msaaSample = true
+// 					&& 1 < msaa.Count
+// 					&& 0 != ( m_flags & BGFX_TEXTURE_MSAA_SAMPLE )
+// 					&& !writeOnly
+// 					;
+// 				const bool needResolve = true
+// 					&& 1 < msaa.Count
+// 					&& 0 == ( m_flags & BGFX_TEXTURE_MSAA_SAMPLE )
+// 					&& !writeOnly
+// 					;
+// 
+// 				D3D11_SHADER_RESOURCE_VIEW_DESC srvd;
+// 				bx::memSet( &srvd, 0, sizeof( srvd ) );
+// 
+// 				DXGI_FORMAT format = DXGI_FORMAT_UNKNOWN;
+// 				if( swizzle )
+// 				{
+// 					format = srgb ? DXGI_FORMAT_R8G8B8A8_UNORM_SRGB : DXGI_FORMAT_R8G8B8A8_UNORM;
+// 					srvd.Format = format;
+// 				}
+// 				else if( srgb )
+// 				{
+// 					format = s_textureFormat[m_textureFormat].m_fmtSrgb;
+// 					srvd.Format = format;
+// 					BX_WARN( format != DXGI_FORMAT_UNKNOWN, "sRGB not supported for texture format %d", m_textureFormat );
+// 				}
+// 
+// 				if( format == DXGI_FORMAT_UNKNOWN )
+// 				{
+// 					// not swizzled and not sRGB, or sRGB unsupported
+// 					format = s_textureFormat[m_textureFormat].m_fmt;
+// 					srvd.Format = getSrvFormat();
+// 				}
+// 
+// 				const bool directAccess = _rtx->m_directAccessSupport
+// 					&& !renderTarget
+// 					&& !readBack
+// 					&& !blit
+// 					&& !writeOnly
+// 					;
+// 
+// 				switch( m_type )
+// 				{
+// 				case Texture2D:
+// 				case TextureCube:
+// 				{
+// 					D3D11_TEXTURE2D_DESC desc = {};
+// 					desc.Width = ti.width;
+// 					desc.Height = ti.height;
+// 					desc.MipLevels = ti.numMips;
+// 					desc.ArraySize = numSides;
+// 					desc.Format = format;
+// 					desc.SampleDesc = msaa;
+// 					desc.Usage = kk == 0 || blit ? D3D11_USAGE_DEFAULT : D3D11_USAGE_IMMUTABLE;
+// 					desc.BindFlags = writeOnly ? 0 : D3D11_BIND_SHADER_RESOURCE;
+// 					desc.CPUAccessFlags = 0;
+// 					desc.MiscFlags = 0;
+// 
+// 					if( bimg::isDepth( bimg::TextureFormat::Enum( m_textureFormat ) ) )
+// 					{
+// 						desc.BindFlags |= D3D11_BIND_DEPTH_STENCIL;
+// 						desc.Usage = D3D11_USAGE_DEFAULT;
+// 					}
+// 					else if( renderTarget )
+// 					{
+// 						desc.BindFlags |= D3D11_BIND_RENDER_TARGET;
+// 						desc.Usage = D3D11_USAGE_DEFAULT;
+// 						desc.MiscFlags |= 0
+// 							| ( 1 < ti.numMips ? D3D11_RESOURCE_MISC_GENERATE_MIPS : 0 )
+// 							;
+// 					}
+// 
+// 					if( computeWrite )
+// 					{
+// 						desc.BindFlags |= D3D11_BIND_UNORDERED_ACCESS;
+// 						desc.Usage = D3D11_USAGE_DEFAULT;
+// 					}
+// 
+// 					if( readBack )
+// 					{
+// 						desc.BindFlags = 0;
+// 						desc.Usage = D3D11_USAGE_STAGING;
+// 						desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+// 					}
+// 
+// 					if( imageContainer.m_cubeMap )
+// 					{
+// 						desc.MiscFlags |= D3D11_RESOURCE_MISC_TEXTURECUBE;
+// 						if( 1 < ti.numLayers )
+// 						{
+// 							srvd.ViewDimension = D3D11_SRV_DIMENSION_TEXTURECUBEARRAY;
+// 							srvd.TextureCubeArray.MipLevels = ti.numMips;
+// 							srvd.TextureCubeArray.NumCubes = ti.numLayers;
+// 						}
+// 						else
+// 						{
+// 							srvd.ViewDimension = D3D11_SRV_DIMENSION_TEXTURECUBE;
+// 							srvd.TextureCube.MipLevels = ti.numMips;
+// 						}
+// 					}
+// 					else
+// 					{
+// 						if( msaaSample )
+// 						{
+// 							if( 1 < ti.numLayers )
+// 							{
+// 								srvd.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2DMSARRAY;
+// 								srvd.Texture2DMSArray.ArraySize = ti.numLayers;
+// 							}
+// 							else
+// 							{
+// 								srvd.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2DMS;
+// 							}
+// 						}
+// 						else
+// 						{
+// 							if( 1 < ti.numLayers )
+// 							{
+// 								srvd.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2DARRAY;
+// 								srvd.Texture2DArray.MipLevels = ti.numMips;
+// 								srvd.Texture2DArray.ArraySize = ti.numLayers;
+// 							}
+// 							else
+// 							{
+// 								srvd.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+// 								srvd.Texture2D.MipLevels = ti.numMips;
+// 							}
+// 						}
+// 					}
+// 
+// 					if( needResolve )
+// 					{
+// 						DX_CHECK( _rtx->m_device->CreateTexture2D( &desc, NULL, &m_rt2d ) );
+// 						desc.BindFlags &= ~( D3D11_BIND_RENDER_TARGET | D3D11_BIND_DEPTH_STENCIL );
+// 						desc.SampleDesc = s_msaa[0];
+// 					}
+// 
+// 					if( directAccess )
+// 					{
+// 						directAccessPtr = m_dar.createTexture2D( &desc, kk == 0 ? NULL : srd, &m_texture2d );
+// 					}
+// 					else
+// 					{
+// 						DX_CHECK( _rtx->m_device->CreateTexture2D( &desc, kk == 0 ? NULL : srd, &m_texture2d ) );
+// 					}
+// 				}
+// 				break;
+// 
+// 				case Texture3D:
+// 				{
+// 					D3D11_TEXTURE3D_DESC desc = {};
+// 					desc.Width = ti.width;
+// 					desc.Height = ti.height;
+// 					desc.Depth = ti.depth;
+// 					desc.MipLevels = ti.numMips;
+// 					desc.Format = format;
+// 					desc.Usage = kk == 0 || blit ? D3D11_USAGE_DEFAULT : D3D11_USAGE_IMMUTABLE;
+// 					desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+// 					desc.CPUAccessFlags = 0;
+// 					desc.MiscFlags = 0;
+// 
+// 					if( renderTarget )
+// 					{
+// 						desc.BindFlags |= D3D11_BIND_RENDER_TARGET;
+// 						desc.Usage = D3D11_USAGE_DEFAULT;
+// 						desc.MiscFlags |= 0
+// 							| ( 1 < ti.numMips ? D3D11_RESOURCE_MISC_GENERATE_MIPS : 0 )
+// 							;
+// 					}
+// 
+// 					if( computeWrite )
+// 					{
+// 						desc.BindFlags |= D3D11_BIND_UNORDERED_ACCESS;
+// 						desc.Usage = D3D11_USAGE_DEFAULT;
+// 					}
+// 
+// 					if( readBack )
+// 					{
+// 						desc.BindFlags = 0;
+// 						desc.Usage = D3D11_USAGE_STAGING;
+// 						desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+// 					}
+// 
+// 					srvd.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE3D;
+// 					srvd.Texture3D.MipLevels = ti.numMips;
+// 
+// 					if( directAccess )
+// 					{
+// 						directAccessPtr = m_dar.createTexture3D( &desc, kk == 0 ? NULL : srd, &m_texture3d );
+// 					}
+// 					else
+// 					{
+// 						DX_CHECK( _rtx->m_device->CreateTexture3D( &desc, kk == 0 ? NULL : srd, &m_texture3d ) );
+// 					}
+// 				}
+// 				break;
+// 				}
+// 
+// 				if( !writeOnly )
+// 				{
+// 					DX_CHECK( _rtx->m_device->CreateShaderResourceView( m_ptr, &srvd, &m_srv ) );
+// 				}
+// 
+// 				if( computeWrite )
+// 				{
+// 					DX_CHECK( _rtx->m_device->CreateUnorderedAccessView( m_ptr, NULL, &m_uav ) );
+// 				}
+
+			return directAccessPtr;
 	}
 
 	void Texture::Destroy()
 	{
+		_DAR.Destroy();
 
+		//_rtx->m_srvUavLru.invalidateWithParent( GetHandle() );
+
+		DX_RELEASE( _RT );
+		DX_RELEASE( _SRV );
+		DX_RELEASE( _UAV );
+		DX_RELEASE( _Ptr );
 	}
 
 	void Texture::OverrideInternal( uintptr_t _ptr )
 	{
+		D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc{};
+		const bool readable = ( _SRV != NULL );
+		if( readable )
+		{
+			_SRV->GetDesc( &srvDesc );
+		}
 
+		Destroy();
+		//m_flags |= BGFX_SAMPLER_INTERNAL_SHARED;
+		_Ptr = ( ID3D11Resource * ) _ptr;
+
+		if( readable )
+		{
+			ID3D11Device * device;
+			_rtx->_DeviceCtx->GetDevice( &device );
+			device->CreateShaderResourceView( _Ptr, &srvDesc, &_SRV );
+			DX_RELEASE( device );
+		}
 	}
 
 	void Texture::Update( XE::uint8 _side, XE::uint8 _mip, const XE::Recti & _rect, XE::uint16 _z, XE::uint16 _depth, XE::uint16 _pitch, XE::MemoryView _mem )
@@ -803,141 +1102,460 @@ namespace D3D11
 
 	void FrameBuffer::Create( XE::uint8 _num, const XE::Attachment * _attachment )
 	{
+		for( uint32_t ii = 0; ii < XE::countof( _RTV ); ++ii )
+		{
+			_RTV[ii] = NULL;
+		}
 
+		for( uint32_t ii = 0; ii < XE::countof( _UAV ); ++ii )
+		{
+			_UAV[ii] = NULL;
+		}
+
+		_DSV = NULL;
+		_SwapChain = NULL;
+
+		_DenseIdx = UINT16_MAX;
+		_NumTh = _num;
+		_NeedPresent = false;
+		std::memcpy( _Attachment, _attachment, _num * sizeof( Attachment ) );
+
+		PostReset();
 	}
 
 	void FrameBuffer::Create( XE::uint16 _denseIdx, XE::WindowHandle _nwh, XE::uint32 _width, XE::uint32 _height, XE::TextureFormat _format, XE::TextureFormat _depthFormat )
 	{
+		SwapChainDesc scd;
+		//bx::memCopy( &scd, &_rtx->m_scd, sizeof( SwapChainDesc ) );
+		scd.format = TextureFormat::COUNT == _format ? scd.format : s_textureFormat[( XE::uint64 )_format].m_fmt;
+		scd.width = _width;
+		scd.height = _height;
+		scd.nwh = ( void * ) _nwh.GetValue();
+		scd.ndt = NULL;
+		scd.sampleDesc = s_msaa[0];
 
+		XE_ASSERT( SUCCEEDED( _rtx->_Dxgi->CreateSwapChain( _rtx->_Device, scd, &_SwapChain ) ), "Failed to create swap chain." );
+
+		XE_ASSERT( SUCCEEDED( _rtx->_Dxgi->_Factory->MakeWindowAssociation( ( HWND ) _nwh.GetValue(), 0 | DXGI_MWA_NO_WINDOW_CHANGES | DXGI_MWA_NO_ALT_ENTER ) ) );
+
+		ID3D11Resource * ptr;
+		XE_ASSERT( SUCCEEDED( _SwapChain->GetBuffer( 0, IID_ID3D11Texture2D, ( void ** ) &ptr ) ) );
+		XE_ASSERT( SUCCEEDED( _rtx->_Device->CreateRenderTargetView( ptr, NULL, &_RTV[0] ) ) );
+		DX_RELEASE( ptr );
+
+		DXGI_FORMAT fmtDsv = ( _depthFormat > TextureFormat::UNKNOWNDEPTH ) ? s_textureFormat[( XE::uint64 )_depthFormat].m_fmtDsv : DXGI_FORMAT_D24_UNORM_S8_UINT;
+
+		D3D11_TEXTURE2D_DESC dsd;
+		dsd.Width = scd.width;
+		dsd.Height = scd.height;
+		dsd.MipLevels = 1;
+		dsd.ArraySize = 1;
+		dsd.Format = fmtDsv;
+		dsd.SampleDesc = scd.sampleDesc;
+		dsd.Usage = D3D11_USAGE_DEFAULT;
+		dsd.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+		dsd.CPUAccessFlags = 0;
+		dsd.MiscFlags = 0;
+
+		ID3D11Texture2D * depthStencil;
+		XE_ASSERT( SUCCEEDED( _rtx->_Device->CreateTexture2D( &dsd, NULL, &depthStencil ) ) );
+		XE_ASSERT( SUCCEEDED( _rtx->_Device->CreateDepthStencilView( depthStencil, NULL, &_DSV ) ) );
+		DX_RELEASE( depthStencil );
+
+		_SRV[0] = NULL;
+		_Window = _nwh;
+		_DenseIdx = _denseIdx;
+		_Num = 1;
 	}
 
 	XE::uint16 FrameBuffer::Destroy()
 	{
-		return 0;
+		PreReset( true );
+
+		DX_RELEASE( _SwapChain );
+
+		_Num = 0;
+		_Window = XE::WindowHandle::Invalid;
+		_NumTh = 0;
+		_NeedPresent = false;
+
+		uint16_t denseIdx = _DenseIdx;
+		_DenseIdx = UINT16_MAX;
+
+		return denseIdx;
 	}
 
 	void FrameBuffer::PreReset( bool _force /*= false */ )
 	{
+		if( 0 < _NumTh || _force )
+		{
+			for( uint32_t ii = 0, num = _Num; ii < num; ++ii )
+			{
+				DX_RELEASE( _SRV[ii] );
+				DX_RELEASE( _RTV[ii] );
+			}
 
+			DX_RELEASE( _DSV );
+		}
 	}
 
 	void FrameBuffer::PostReset()
 	{
+		_Width = 0;
+		_Height = 0;
 
+		if( 0 < _NumTh )
+		{
+			_Num = 0;
+			_NumUav = 0;
+
+			for( uint32_t ii = 0; ii < _NumTh; ++ii )
+			{
+				const Attachment & at = _Attachment[ii];
+
+				if( at.Handle )
+				{
+					const D3D11::Texture & texture = _rtx->_Textures[at.Handle];
+
+					if( 0 == _Width )
+					{
+						switch( texture._Type )
+						{
+						case TextureType::TEXTURE_2D:
+						case TextureType::TEXTURE_CUBE:
+						{
+							D3D11_TEXTURE2D_DESC desc;
+							texture._Texture2d->GetDesc( &desc );
+							_Width = desc.Width;
+							_Height = desc.Height;
+						}
+							break;
+						case TextureType::TEXTURE_3D:
+						{
+							D3D11_TEXTURE3D_DESC desc;
+							texture._Texture3d->GetDesc( &desc );
+							_Width = desc.Width;
+							_Height = desc.Height;
+						}
+							break;
+						}
+					}
+
+					const uint32_t msaaQuality = XE::Mathf::Satsub< XE::uint32 >( ( texture._Flags & XE::TextureFlag::RTMSAAMASK ).GetValue() >> ( XE::uint64 )XE::TextureFlag::RTMSAASHIFT, 1 );
+					const DXGI_SAMPLE_DESC & msaa = s_msaa[msaaQuality];
+
+					if( texture._TextureFormat > TextureFormat::UNKNOWNDEPTH )
+					{
+						XE_ASSERT( NULL != _DSV, "Frame buffer already has depth-stencil attached." );
+
+						D3D11_DEPTH_STENCIL_VIEW_DESC dsvDesc;
+						dsvDesc.Format = s_textureFormat[( XE::uint64 )texture._TextureFormat].m_fmtDsv;
+						dsvDesc.Flags = 0;
+
+						switch( texture._Type )
+						{
+						case TextureType::TEXTURE_2D:
+						{
+							if( 1 < msaa.Count )
+							{
+								if( 1 < texture._NumLayers )
+								{
+									dsvDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2DMSARRAY;
+									dsvDesc.Texture2DMSArray.FirstArraySlice = at.Layer;
+									dsvDesc.Texture2DMSArray.ArraySize = 1;
+								}
+								else
+								{
+									dsvDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2DMS;
+								}
+							}
+							else
+							{
+								if( 1 < texture._NumLayers )
+								{
+									dsvDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2DARRAY;
+									dsvDesc.Texture2DArray.FirstArraySlice = at.Layer;
+									dsvDesc.Texture2DArray.ArraySize = 1;
+									dsvDesc.Texture2DArray.MipSlice = at.Mip;
+								}
+								else
+								{
+									dsvDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+									dsvDesc.Texture2D.MipSlice = at.Mip;
+								}
+							}
+
+							XE_ASSERT( SUCCEEDED( _rtx->_Device->CreateDepthStencilView( NULL == texture._RT ? texture._Ptr : texture._RT, &dsvDesc, &_DSV ) ) );
+						}
+						break;
+						case TextureType::TEXTURE_CUBE:
+						{
+							if( 1 < msaa.Count )
+							{
+								dsvDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2DMSARRAY;
+								dsvDesc.Texture2DMSArray.ArraySize = 1;
+								dsvDesc.Texture2DMSArray.FirstArraySlice = at.Layer;
+							}
+							else
+							{
+								dsvDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2DARRAY;
+								dsvDesc.Texture2DArray.ArraySize = 1;
+								dsvDesc.Texture2DArray.FirstArraySlice = at.Layer;
+								dsvDesc.Texture2DArray.MipSlice = at.Mip;
+							}
+							XE_ASSERT( SUCCEEDED( _rtx->_Device->CreateDepthStencilView( texture._Ptr, &dsvDesc, &_DSV ) ) );
+						}
+						break;
+						case TextureType::TEXTURE_3D:
+							break;
+						}
+					}
+					else if( XE::AccessType::WRITE == at.Access )
+					{
+						D3D11_RENDER_TARGET_VIEW_DESC desc;
+						desc.Format = texture.GetSRVFormat();
+						switch( texture._Type )
+						{
+						case TextureType::TEXTURE_2D:
+						{
+							if( 1 < msaa.Count )
+							{
+								if( 1 < texture._NumLayers )
+								{
+									desc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2DMSARRAY;
+									desc.Texture2DMSArray.FirstArraySlice = at.Layer;
+									desc.Texture2DMSArray.ArraySize = 1;
+								}
+								else
+								{
+									desc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2DMS;
+								}
+							}
+							else
+							{
+								if( 1 < texture._NumLayers )
+								{
+									desc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2DARRAY;
+									desc.Texture2DArray.FirstArraySlice = at.Layer;
+									desc.Texture2DArray.ArraySize = 1;
+									desc.Texture2DArray.MipSlice = at.Mip;
+								}
+								else
+								{
+									desc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+									desc.Texture2D.MipSlice = at.Mip;
+								}
+							}
+
+							XE_ASSERT( SUCCEEDED( _rtx->_Device->CreateRenderTargetView( NULL == texture._RT ? texture._Ptr : texture._RT, & desc, & _RTV[_Num] ) ) );
+						}
+						break;
+						case TextureType::TEXTURE_CUBE:
+						{
+							if( 1 < msaa.Count )
+							{
+								desc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2DMSARRAY;
+								desc.Texture2DMSArray.ArraySize = 1;
+								desc.Texture2DMSArray.FirstArraySlice = at.Layer;
+							}
+							else
+							{
+								desc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2DARRAY;
+								desc.Texture2DArray.ArraySize = 1;
+								desc.Texture2DArray.FirstArraySlice = at.Layer;
+								desc.Texture2DArray.MipSlice = at.Mip;
+							}
+
+							XE_ASSERT( SUCCEEDED( _rtx->_Device->CreateRenderTargetView( texture._Ptr, &desc, &_RTV[_Num] ) ) );
+						}
+						break;
+						case TextureType::TEXTURE_3D:
+						{
+							desc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE3D;
+							desc.Texture3D.MipSlice = at.Mip;
+							desc.Texture3D.WSize = 1;
+							desc.Texture3D.FirstWSlice = at.Layer;
+
+							XE_ASSERT( SUCCEEDED( _rtx->_Device->CreateRenderTargetView( texture._Ptr, &desc, &_RTV[_Num] ) ) );
+						}
+						break;
+						}
+
+						D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc{};
+						texture._SRV->GetDesc( &srvDesc );
+						XE_ASSERT( SUCCEEDED( _rtx->_Device->CreateShaderResourceView( texture._Ptr, &srvDesc, &_SRV[_Num] ) ) );
+						_Num++;
+					}
+					else
+					{
+						_UAV[_NumUav++] = texture._UAV;
+					}
+				}
+			}
+		}
 	}
 
 	void FrameBuffer::Resolve()
 	{
+		if( 0 < _NumTh )
+		{
+			for( uint32_t ii = 0; ii < _NumTh; ++ii )
+			{
+				const Attachment & at = _Attachment[ii];
 
+				if( at.Handle )
+				{
+					const D3D11::Texture & texture = _rtx->_Textures[at.Handle];
+					texture.Resolve( at.Resolve );
+				}
+			}
+		}
 	}
 
-	void FrameBuffer::Clear( const XE::ViewClearDesc & _clear, const float _palette[][4] )
+	void FrameBuffer::Clear( const XE::ViewClearDesc & _clear )
 	{
+		ID3D11DeviceContext * deviceCtx = _rtx->_DeviceCtx;
 
+		if( _clear.Flags && XE::ClearFlag::COLOR )
+		{
+			XE::FColor rgba( _clear.Color );
+
+			for( uint32_t ii = 0, num = _Num; ii < num; ++ii )
+			{
+				if( NULL != _RTV[ii] )
+				{
+					deviceCtx->ClearRenderTargetView( _RTV[ii], rgba.d );
+				}
+			}
+		}
+
+		if( NULL != _DSV && ( XE::MakeFlags( XE::ClearFlag::DEPTH, XE::ClearFlag::STENCIL ) && _clear.Flags ) )
+		{
+			DWORD flags = 0;
+			flags |= ( _clear.Flags && XE::ClearFlag::DEPTH ) ? D3D11_CLEAR_DEPTH : 0;
+			flags |= ( _clear.Flags && XE::ClearFlag::STENCIL ) ? D3D11_CLEAR_STENCIL : 0;
+			deviceCtx->ClearDepthStencilView( _DSV, flags, _clear.Depth, _clear.Stencil );
+		}
 	}
 
 	void FrameBuffer::Set()
 	{
+		if( 0 < _NumUav )
+		{
+			_rtx->_DeviceCtx->OMSetRenderTargetsAndUnorderedAccessViews( _Num, _RTV, _DSV, 16, _NumUav, _UAV, NULL );
+		}
+		else
+		{
+			_rtx->_DeviceCtx->OMSetRenderTargets( _Num, _RTV, _DSV );
+		}
 
+		_NeedPresent = UINT16_MAX != _DenseIdx;
+		_rtx->_CurrentColor = _RTV[0];
+		_rtx->_CurrentDepthStencil = _DSV;
 	}
 
 	HRESULT FrameBuffer::Present( XE::uint32 _syncInterval )
 	{
-		return {};
-	}
+		if( _NeedPresent )
+		{
+			HRESULT hr = _SwapChain->Present( _syncInterval, 0 );
 
-	void TimerQuery::PostReset()
-	{
+			hr = !( hr == DXGI_ERROR_DEVICE_REMOVED
+					|| hr == DXGI_ERROR_DEVICE_HUNG
+					|| hr == DXGI_ERROR_DEVICE_RESET
+					|| hr == DXGI_ERROR_DRIVER_INTERNAL_ERROR
+					|| hr == DXGI_ERROR_NOT_CURRENTLY_AVAILABLE ) ? S_OK : hr;
+			_NeedPresent = false;
+			return hr;
+		}
 
-	}
-
-	void TimerQuery::PreReset()
-	{
-
-	}
-
-	XE::uint32 TimerQuery::Begin( XE::uint32 _resultIdx )
-	{
-		return 0;
-	}
-
-	void TimerQuery::End( XE::uint32 _idx )
-	{
-
-	}
-
-	bool TimerQuery::Update()
-	{
-		return false;
+		return S_OK;
 	}
 
 	void OcclusionQuery::PostReset()
 	{
+		ID3D11Device * device = _rtx->_Device;
 
+		D3D11_QUERY_DESC desc;
+		desc.Query = D3D11_QUERY_OCCLUSION;
+		desc.MiscFlags = 0;
+		for( uint32_t ii = 0; ii < XE::countof( _Query ); ++ii )
+		{
+			Query & query = _Query[ii];
+			XE_ASSERT( SUCCEEDED( device->CreateQuery( &desc, &query._Ptr ) ) );
+		}
 	}
 
 	void OcclusionQuery::PreReset()
 	{
-
+		for( uint32_t ii = 0; ii < XE::countof( _Query ); ++ii )
+		{
+			Query & query = _Query[ii];
+			DX_RELEASE( query._Ptr );
+		}
 	}
 
 	void OcclusionQuery::Begin( XE::RenderFrame * _render, OcclusionQueryHandle _handle )
 	{
+		while( 0 == m_control.reserve( 1 ) )
+		{
+			Resolve( _render, true );
+		}
 
+		ID3D11DeviceContext * deviceCtx = _rtx->_DeviceCtx;
+		Query & query = _Query[m_control.m_current];
+		deviceCtx->Begin( query._Ptr );
+		query._Handle = _handle;
 	}
 
 	void OcclusionQuery::End()
 	{
-
+		ID3D11DeviceContext * deviceCtx = _rtx->_DeviceCtx;
+		Query & query = _Query[m_control.m_current];
+		deviceCtx->End( query._Ptr );
+		m_control.commit( 1 );
 	}
 
 	void OcclusionQuery::Resolve( XE::RenderFrame * _render, bool _wait /*= false */ )
 	{
+		ID3D11DeviceContext * deviceCtx = _rtx->_DeviceCtx;
 
+		while( 0 != m_control.available() )
+		{
+			Query & query = _Query[m_control.m_read];
+
+			if( query._Handle )
+			{
+				uint64_t result = 0;
+				HRESULT hr = deviceCtx->GetData( query._Ptr, &result, sizeof( result ), _wait ? 0 : D3D11_ASYNC_GETDATA_DONOTFLUSH );
+				if( S_FALSE == hr )
+				{
+					break;
+				}
+
+				_render->Occlusion[query._Handle] = int32_t( result );
+			}
+
+			m_control.consume( 1 );
+		}
 	}
 
 	void OcclusionQuery::Invalidate( OcclusionQueryHandle _handle )
 	{
+		const uint32_t size = m_control.m_size;
 
+		for( uint32_t ii = 0, num = m_control.available(); ii < num; ++ii )
+		{
+			Query & query = _Query[( m_control.m_read + ii ) % size];
+			if( query._Handle== _handle )
+			{
+				query._Handle = OcclusionQueryHandle::Invalid;
+			}
+		}
 	}
 }
 END_XE_NAMESPACE
 
-
-
-struct XE::RendererContextDirectX11::Private
-{
-	XE::LibraryHandle _DX11Dll;
-
-	DXGI * _Dxgi = nullptr;
-	D3D_FEATURE_LEVEL _FeatureLevel;
-	ID3D11Device * _Device = nullptr;
-	ID3D11DeviceContext * _DeviceCtx = nullptr;
-
-	std::array<D3D11::IndexBuffer, GFX_MAX_INDEX_BUFFERS> _IndexBuffers;
-	std::array<D3D11::VertexBuffer, GFX_MAX_VERTEX_BUFFERS> _VertexBuffers;
-	std::array<D3D11::Shader, GFX_MAX_SHADERS> _Shaders;
-	std::array<D3D11::Program, GFX_MAX_PROGRAMS> _Programs;
-	std::array<D3D11::Texture, GFX_MAX_TEXTURES> _Textures;
-	std::array<D3D11::FrameBuffer, GFX_MAX_FRAME_BUFFERS> _FrameBuffers;
-
-	std::map<XE::uint64, ID3D11BlendState *> _BlendStateCahce;
-	std::map<XE::uint64, ID3D11DepthStencilState *> _DepthStencilStateCache;
-	std::map<XE::uint64, ID3D11InputLayout *> _InputLayoutCache;
-	std::map<XE::uint64, ID3D11RasterizerState *> _RasterizerStateCache;
-	std::map<XE::uint64, ID3D11SamplerState *> _SamplerStateCache;
-};
-
-XE::RendererContextDirectX11::RendererContextDirectX11()
-	:_p( new Private )
-{
-
-}
-
-XE::RendererContextDirectX11::~RendererContextDirectX11()
-{
-	delete _p;
-}
 
 void XE::RendererContextDirectX11::OnRender( XE::RenderFrame * frame )
 {
@@ -1106,15 +1724,17 @@ void XE::RendererContextDirectX11::ExecCommand( XE::RenderFrame * frame, XE::Buf
 
 void XE::RendererContextDirectX11::Init( XE::RenderFrame * frame )
 {
+	_rtx = new XE::D3D11::RenderContext;
+
 	XE::CapsInfo caps = GetCaps();
 	const XE::InitDesc & init = GetInit();
 
-	_p->_DX11Dll = XE::Library::Open( "d3d11.dll" );
-	auto D3D11CreateDevice = XE::Library::SymbolT< PFN_D3D11_CREATE_DEVICE>( _p->_DX11Dll, "D3D11CreateDevice" );
+	_rtx->_DX11Dll = XE::Library::Open( "d3d11.dll" );
+	auto D3D11CreateDevice = XE::Library::SymbolT< PFN_D3D11_CREATE_DEVICE>( _rtx->_DX11Dll, "D3D11CreateDevice" );
 	XE_ASSERT( D3D11CreateDevice != nullptr && "Init error: Function D3D11CreateDevice not found." );
 
-	_p->_Dxgi = new DXGI;
-	_p->_Dxgi->Init( caps );
+	_rtx->_Dxgi = new DXGI;
+	_rtx->_Dxgi->Init( caps );
 
 
 	D3D_FEATURE_LEVEL featureLevel[] =
@@ -1134,38 +1754,38 @@ void XE::RendererContextDirectX11::Init( XE::RenderFrame * frame )
 		uint32_t flags = D3D11_CREATE_DEVICE_SINGLETHREADED | D3D11_CREATE_DEVICE_BGRA_SUPPORT;
 
 		hr = E_FAIL;
-		for( uint32_t ii = 0; ii < sizeof( featureLevel ) && FAILED( hr );)
+		for( uint32_t ii = 0; ii < XE::countof( featureLevel ) && FAILED( hr );)
 		{
-			hr = D3D11CreateDevice( _p->_Dxgi->_Adapter
-									, _p->_Dxgi->_DriverType
+			hr = D3D11CreateDevice( _rtx->_Dxgi->_Adapter
+									, _rtx->_Dxgi->_DriverType
 									, NULL
 									, flags
 									, &featureLevel[ii]
-									, sizeof( featureLevel ) - ii
+									, XE::countof( featureLevel ) - ii
 									, D3D11_SDK_VERSION
-									, &_p->_Device
-									, &_p->_FeatureLevel
-									, &_p->_DeviceCtx
+									, &_rtx->_Device
+									, &_rtx->_FeatureLevel
+									, &_rtx->_DeviceCtx
 			);
 
 			if( FAILED( hr ) )
 			{
-				XE_LOG( LoggerLevel::Warning, "Direct3D11 device feature level %1.%2.", ( _p->_FeatureLevel >> 12 ) & 0xf, ( _p->_FeatureLevel >> 8 ) & 0xf );
+				XE_LOG( LoggerLevel::Warning, "Direct3D11 device feature level %1.%2.", ( _rtx->_FeatureLevel >> 12 ) & 0xf, ( _rtx->_FeatureLevel >> 8 ) & 0xf );
 			}
 
 			++ii;
 		}
 
-		if( FAILED( hr ) && D3D_DRIVER_TYPE_WARP != _p->_Dxgi->_DriverType )
+		if( FAILED( hr ) && D3D_DRIVER_TYPE_WARP != _rtx->_Dxgi->_DriverType )
 		{
-			_p->_Dxgi->_DriverType = D3D_DRIVER_TYPE_WARP;
+			_rtx->_Dxgi->_DriverType = D3D_DRIVER_TYPE_WARP;
 			continue;
 		}
 
 		break;
 	}
 
-	_p->_Dxgi->Update( _p->_Device );
+	_rtx->_Dxgi->Update( _rtx->_Device );
 
 
 
@@ -1180,19 +1800,19 @@ void XE::RendererContextDirectX11::Init( XE::RenderFrame * frame )
 		caps.Supported |= XE::CapsFlag::DRAWINDIRECT;
 		caps.Supported |= XE::CapsFlag::TEXTUREBLIT;
 		caps.Supported |= XE::CapsFlag::TEXTUREREADBACK;
-		caps.Supported |= ( _p->_FeatureLevel >= D3D_FEATURE_LEVEL_9_2 ) ? XE::CapsFlag::OCCLUSIONQUERY : XE::CapsFlag::NONE;
+		caps.Supported |= ( _rtx->_FeatureLevel >= D3D_FEATURE_LEVEL_9_2 ) ? XE::CapsFlag::OCCLUSIONQUERY : XE::CapsFlag::NONE;
 		caps.Supported |= XE::CapsFlag::ALPHATOCOVERAGE;
 		caps.Supported |= XE::CapsFlag::TEXTURE2DARRAY;
 		caps.Supported |= XE::CapsFlag::TEXTURECUBEARRAY;
-		caps.Supported |= ( _p->_FeatureLevel >= D3D_FEATURE_LEVEL_11_1 ) ? XE::CapsFlag::FRAMEBUFFERRW : XE::CapsFlag::NONE;
+		caps.Supported |= ( _rtx->_FeatureLevel >= D3D_FEATURE_LEVEL_11_1 ) ? XE::CapsFlag::FRAMEBUFFERRW : XE::CapsFlag::NONE;
 
-		if( _p->_FeatureLevel <= D3D_FEATURE_LEVEL_9_2 )
+		if( _rtx->_FeatureLevel <= D3D_FEATURE_LEVEL_9_2 )
 		{
 			caps.Limits.MaxTextureSize = D3D_FL9_1_REQ_TEXTURE2D_U_OR_V_DIMENSION;
 			caps.Limits.MaxFBAttachments = std::min< XE::uint32 >( D3D_FL9_1_SIMULTANEOUS_RENDER_TARGET_COUNT, GFX_MAX_ATTACHMENTS );
 			caps.Limits.MaxVertexStreams = std::min< XE::uint32 >( 16, GFX_MAX_VERTEX_BUFFERS );
 		}
-		else if( _p->_FeatureLevel == D3D_FEATURE_LEVEL_9_3 )
+		else if( _rtx->_FeatureLevel == D3D_FEATURE_LEVEL_9_3 )
 		{
 			caps.Limits.MaxTextureSize = D3D_FL9_3_REQ_TEXTURE2D_U_OR_V_DIMENSION;
 			caps.Limits.MaxFBAttachments = std::min< XE::uint32 >( D3D_FL9_3_SIMULTANEOUS_RENDER_TARGET_COUNT, GFX_MAX_ATTACHMENTS );
@@ -1205,20 +1825,20 @@ void XE::RendererContextDirectX11::Init( XE::RenderFrame * frame )
 			caps.Limits.MaxTextureLayers = D3D11_REQ_TEXTURE2D_ARRAY_AXIS_DIMENSION;
 			caps.Limits.MaxFBAttachments = std::min< XE::uint32 >( D3D11_SIMULTANEOUS_RENDER_TARGET_COUNT, GFX_MAX_ATTACHMENTS );
 			caps.Limits.MaxVertexStreams = std::min< XE::uint32 >( D3D11_IA_VERTEX_INPUT_RESOURCE_SLOT_COUNT, GFX_MAX_VERTEX_BUFFERS );
-			caps.Limits.MaxComputeBindings = std::min( 16, D3D_FEATURE_LEVEL_11_1 <= _p->_FeatureLevel ? D3D11_1_UAV_SLOT_COUNT : D3D11_PS_CS_UAV_REGISTER_COUNT );
+			caps.Limits.MaxComputeBindings = std::min( 16, D3D_FEATURE_LEVEL_11_1 <= _rtx->_FeatureLevel ? D3D11_1_UAV_SLOT_COUNT : D3D11_PS_CS_UAV_REGISTER_COUNT );
 		}
 
-		if( _p->_FeatureLevel >= D3D_FEATURE_LEVEL_9_2 )
+		if( _rtx->_FeatureLevel >= D3D_FEATURE_LEVEL_9_2 )
 		{
 			caps.Supported |= XE::CapsFlag::INDEX32;
 		}
 
-		if( _p->_FeatureLevel >= D3D_FEATURE_LEVEL_10_1 )
+		if( _rtx->_FeatureLevel >= D3D_FEATURE_LEVEL_10_1 )
 		{
 			caps.Supported |= XE::CapsFlag::BLENDINDEPENDENT;
 		}
 
-		if( _p->_FeatureLevel == D3D_FEATURE_LEVEL_10_0 || _p->_FeatureLevel == D3D_FEATURE_LEVEL_10_1 )
+		if( _rtx->_FeatureLevel == D3D_FEATURE_LEVEL_10_0 || _rtx->_FeatureLevel == D3D_FEATURE_LEVEL_10_1 )
 		{
 			struct D3D11_FEATURE_DATA_D3D10_X_HARDWARE_OPTIONS
 			{
@@ -1226,18 +1846,18 @@ void XE::RendererContextDirectX11::Init( XE::RenderFrame * frame )
 			};
 
 			D3D11_FEATURE_DATA_D3D10_X_HARDWARE_OPTIONS data;
-			HRESULT hr = _p->_Device->CheckFeatureSupport( D3D11_FEATURE_D3D10_X_HARDWARE_OPTIONS, &data, sizeof( data ) );
+			HRESULT hr = _rtx->_Device->CheckFeatureSupport( D3D11_FEATURE_D3D10_X_HARDWARE_OPTIONS, &data, sizeof( data ) );
 			if( SUCCEEDED( hr ) && data.ComputeShaders_Plus_RawAndStructuredBuffers_Via_Shader_4_x )
 			{
 				caps.Supported |= XE::CapsFlag::COMPUTE;
 			}
 		}
-		else if( _p->_FeatureLevel >= D3D_FEATURE_LEVEL_11_0 )
+		else if( _rtx->_FeatureLevel >= D3D_FEATURE_LEVEL_11_0 )
 		{
 			caps.Supported |= XE::CapsFlag::COMPUTE;
 		}
 
-		if( _p->_FeatureLevel >= D3D_FEATURE_LEVEL_9_3 )
+		if( _rtx->_FeatureLevel >= D3D_FEATURE_LEVEL_9_3 )
 		{
 			caps.Supported |= XE::CapsFlag::INSTANCING;
 		}
@@ -1249,14 +1869,14 @@ void XE::RendererContextDirectX11::Init( XE::RenderFrame * frame )
 			};
 
 			D3D11_FEATURE_DATA_D3D9_SIMPLE_INSTANCING_SUPPORT data;
-			HRESULT hr = _p->_Device->CheckFeatureSupport( D3D11_FEATURE( 11 ) /*D3D11_FEATURE_D3D9_SIMPLE_INSTANCING_SUPPORT*/, &data, sizeof( data ) );
+			HRESULT hr = _rtx->_Device->CheckFeatureSupport( D3D11_FEATURE( 11 ) /*D3D11_FEATURE_D3D9_SIMPLE_INSTANCING_SUPPORT*/, &data, sizeof( data ) );
 			if( SUCCEEDED( hr ) && data.SimpleInstancingSupported )
 			{
 				caps.Supported |= XE::CapsFlag::INSTANCING;
 			}
 		}
 
-		if( _p->_FeatureLevel <= D3D_FEATURE_LEVEL_9_3 )
+		if( _rtx->_FeatureLevel <= D3D_FEATURE_LEVEL_9_3 )
 		{
 			struct D3D11_FEATURE_DATA_D3D9_SHADOW_SUPPORT
 			{
@@ -1264,7 +1884,7 @@ void XE::RendererContextDirectX11::Init( XE::RenderFrame * frame )
 			};
 
 			D3D11_FEATURE_DATA_D3D9_SHADOW_SUPPORT data;
-			HRESULT hr = _p->_Device->CheckFeatureSupport( D3D11_FEATURE( 9 ) /*D3D11_FEATURE_D3D9_SHADOW_SUPPORT*/, &data, sizeof( data ) );
+			HRESULT hr = _rtx->_Device->CheckFeatureSupport( D3D11_FEATURE( 9 ) /*D3D11_FEATURE_D3D9_SHADOW_SUPPORT*/, &data, sizeof( data ) );
 			if( SUCCEEDED( hr )
 				&& data.SupportsDepthAsTextureWithLessEqualComparisonFilter )
 			{
@@ -1292,7 +1912,7 @@ void XE::RendererContextDirectX11::Init( XE::RenderFrame * frame )
 
 				D3D11_FEATURE_DATA_FORMAT_SUPPORT data; // D3D11_FEATURE_DATA_FORMAT_SUPPORT2
 				data.InFormat = fmt;
-				HRESULT hr = _p->_Device->CheckFeatureSupport( D3D11_FEATURE_FORMAT_SUPPORT, &data, sizeof( data ) );
+				HRESULT hr = _rtx->_Device->CheckFeatureSupport( D3D11_FEATURE_FORMAT_SUPPORT, &data, sizeof( data ) );
 				if( SUCCEEDED( hr ) )
 				{
 					if( 0 != ( data.OutFormatSupport & ( D3D11_FORMAT_SUPPORT_TEXTURE2D | D3D11_FORMAT_SUPPORT_TEXTURE3D | D3D11_FORMAT_SUPPORT_TEXTURECUBE ) ) )
@@ -1350,7 +1970,7 @@ void XE::RendererContextDirectX11::Init( XE::RenderFrame * frame )
 					support &= ~XE::MakeFlags( XE::CapsFormatFlag::TEXTUREIMAGE );
 
 					data.InFormat = s_textureFormat[ii].m_fmt;
-					hr = _p->_Device->CheckFeatureSupport( D3D11_FEATURE_FORMAT_SUPPORT2, &data, sizeof( data ) );
+					hr = _rtx->_Device->CheckFeatureSupport( D3D11_FEATURE_FORMAT_SUPPORT2, &data, sizeof( data ) );
 					if( SUCCEEDED( hr ) )
 					{
 						if( 0 != ( data.OutFormatSupport & ( D3D11_FORMAT_SUPPORT2_UAV_TYPED_LOAD | D3D11_FORMAT_SUPPORT2_UAV_TYPED_STORE ) ) )
@@ -1371,7 +1991,7 @@ void XE::RendererContextDirectX11::Init( XE::RenderFrame * frame )
 
 				D3D11_FEATURE_DATA_FORMAT_SUPPORT data; // D3D11_FEATURE_DATA_FORMAT_SUPPORT2
 				data.InFormat = fmtSrgb;
-				HRESULT hr = _p->_Device->CheckFeatureSupport( D3D11_FEATURE_FORMAT_SUPPORT, &data, sizeof( data ) );
+				HRESULT hr = _rtx->_Device->CheckFeatureSupport( D3D11_FEATURE_FORMAT_SUPPORT, &data, sizeof( data ) );
 				if( SUCCEEDED( hr ) )
 				{
 					if( 0 != ( data.OutFormatSupport & ( D3D11_FORMAT_SUPPORT_TEXTURE2D ) ) )
@@ -1405,48 +2025,51 @@ void XE::RendererContextDirectX11::Init( XE::RenderFrame * frame )
 
 void XE::RendererContextDirectX11::Shutdown( XE::RenderFrame * frame )
 {
-	_p->_DeviceCtx->ClearState();
+	_rtx->_DeviceCtx->ClearState();
 
-	_p->_BlendStateCahce.clear();
-	_p->_DepthStencilStateCache.clear();
-	_p->_InputLayoutCache.clear();
-	_p->_RasterizerStateCache.clear();
-	_p->_SamplerStateCache.clear();
+	_rtx->_BlendStateCahce.clear();
+	_rtx->_DepthStencilStateCache.clear();
+	_rtx->_InputLayoutCache.clear();
+	_rtx->_RasterizerStateCache.clear();
+	_rtx->_SamplerStateCache.clear();
 
-	for( auto i : _p->_IndexBuffers )
+	for( auto i : _rtx->_IndexBuffers )
 	{
 		i.Destroy();
 	}
-	for( auto i : _p->_VertexBuffers )
+	for( auto i : _rtx->_VertexBuffers )
 	{
 		i.Destroy();
 	}
-	for( auto i : _p->_Shaders )
+	for( auto i : _rtx->_Shaders )
 	{
 		i.Destroy();
 	}
-	for( auto i : _p->_Programs )
+	for( auto i : _rtx->_Programs )
 	{
 		i.Destroy();
 	}
-	for( auto i : _p->_Textures )
+	for( auto i : _rtx->_Textures )
 	{
 		i.Destroy();
 	}
-	for( auto i : _p->_FrameBuffers )
+	for( auto i : _rtx->_FrameBuffers )
 	{
 		i.Destroy();
 	}
 
-	DX_RELEASE( _p->_DeviceCtx );
-	DX_RELEASE( _p->_Device );
+	DX_RELEASE( _rtx->_DeviceCtx );
+	DX_RELEASE( _rtx->_Device );
 
-	_p->_Dxgi->Shutdown();
-	delete _p->_Dxgi;
-	_p->_Dxgi = nullptr;
+	_rtx->_Dxgi->Shutdown();
+	delete _rtx->_Dxgi;
+	_rtx->_Dxgi = nullptr;
 
-	XE::Library::Close( _p->_DX11Dll );
-	_p->_DX11Dll = XE::LibraryHandle::Invalid;
+	XE::Library::Close( _rtx->_DX11Dll );
+	_rtx->_DX11Dll = XE::LibraryHandle::Invalid;
+
+	delete _rtx;
+	_rtx = nullptr;
 }
 
 void XE::RendererContextDirectX11::CreateProgram( XE::RenderFrame * frame )
@@ -1455,7 +2078,7 @@ void XE::RendererContextDirectX11::CreateProgram( XE::RenderFrame * frame )
 	frame->PrevCmd.Read( handle );
 	const auto & desc = GetDesc( handle );
 
-	_p->_Programs[handle].Create( &_p->_Shaders[desc.VS], &_p->_Shaders[desc.FS] );
+	_rtx->_Programs[handle].Create( &_rtx->_Shaders[desc.VS], &_rtx->_Shaders[desc.FS] );
 }
 
 void XE::RendererContextDirectX11::CreateFrameBuffer( XE::RenderFrame * frame )
@@ -1466,11 +2089,11 @@ void XE::RendererContextDirectX11::CreateFrameBuffer( XE::RenderFrame * frame )
 
 	if( desc.Window )
 	{
-		_p->_FrameBuffers[handle].Create( 0, desc.Window, desc.Width, desc.Height, desc.ColorFormat, desc.DepthFormat );
+		_rtx->_FrameBuffers[handle].Create( 0, desc.Window, desc.Width, desc.Height, desc.ColorFormat, desc.DepthFormat );
 	}
 	else
 	{
-		_p->_FrameBuffers[handle].Create( desc.AttachmentCount, desc.Attachments );
+		_rtx->_FrameBuffers[handle].Create( desc.AttachmentCount, desc.Attachments );
 	}
 }
 
@@ -1497,7 +2120,7 @@ void XE::RendererContextDirectX11::CreateShader( XE::RenderFrame * frame )
 	frame->PrevCmd.Read( view );
 	const auto & desc = GetDesc( handle );
 
-	_p->_Shaders[handle].Create( _p->_Device, desc.Type, view );
+	_rtx->_Shaders[handle].Create( desc.Type, view );
 }
 
 void XE::RendererContextDirectX11::CreateTexture( XE::RenderFrame * frame )
@@ -1508,7 +2131,7 @@ void XE::RendererContextDirectX11::CreateTexture( XE::RenderFrame * frame )
 	frame->PrevCmd.Read( view );
 	const auto & desc = GetDesc( handle );
 
-	_p->_Textures[handle].Create( view, desc.Flags, 0 );
+	_rtx->_Textures[handle].Create( view, desc );
 }
 
 void XE::RendererContextDirectX11::CreateIndexBuffer( XE::RenderFrame * frame )
@@ -1519,7 +2142,7 @@ void XE::RendererContextDirectX11::CreateIndexBuffer( XE::RenderFrame * frame )
 	frame->PrevCmd.Read( view );
 	const auto & desc = GetDesc( handle );
 
-	_p->_IndexBuffers[handle].Create( _p->_Device, view.size(), ( void * ) view.data(), desc.Flags );
+	_rtx->_IndexBuffers[handle].Create( view.size(), ( void * ) view.data(), desc.Flags );
 }
 
 void XE::RendererContextDirectX11::CreateVertexBuffer( XE::RenderFrame * frame )
@@ -1530,7 +2153,7 @@ void XE::RendererContextDirectX11::CreateVertexBuffer( XE::RenderFrame * frame )
 	frame->PrevCmd.Read( view );
 	const auto & desc = GetDesc( handle );
 
-	_p->_VertexBuffers[handle].Create( _p->_Device, view.size(), ( void * ) view.data(), desc.Layout, desc.Flags );
+	_rtx->_VertexBuffers[handle].Create( view.size(), ( void * ) view.data(), desc.Layout, desc.Flags );
 }
 
 void XE::RendererContextDirectX11::CreateDynamicIndexBuffer( XE::RenderFrame * frame )
@@ -1539,7 +2162,7 @@ void XE::RendererContextDirectX11::CreateDynamicIndexBuffer( XE::RenderFrame * f
 	frame->PrevCmd.Read( handle );
 	const auto & desc = GetDesc( handle );
 
-	_p->_IndexBuffers[handle].Create( _p->_Device, desc.Size, nullptr, desc.Flags );
+	_rtx->_IndexBuffers[handle].Create( desc.Size, nullptr, desc.Flags );
 }
 
 void XE::RendererContextDirectX11::CreateDynamicVertexBuffer( XE::RenderFrame * frame )
@@ -1548,7 +2171,7 @@ void XE::RendererContextDirectX11::CreateDynamicVertexBuffer( XE::RenderFrame * 
 	frame->PrevCmd.Read( handle );
 	const auto & desc = GetDesc( handle );
 
-	_p->_VertexBuffers[handle].Create( _p->_Device, desc.Size, nullptr, desc.Layout, desc.Flags );
+	_rtx->_VertexBuffers[handle].Create( desc.Size, nullptr, desc.Layout, desc.Flags );
 }
 
 void XE::RendererContextDirectX11::ReadTexture( XE::RenderFrame * frame )
@@ -1561,17 +2184,17 @@ void XE::RendererContextDirectX11::ReadTexture( XE::RenderFrame * frame )
 	frame->PrevCmd.Read( mip );
 
 
-	const D3D11::Texture & texture = _p->_Textures[handle];
+	const D3D11::Texture & texture = _rtx->_Textures[handle];
 	D3D11_MAPPED_SUBRESOURCE mapped;
 
-	XE_ASSERT( SUCCEEDED( _p->_DeviceCtx->Map( texture._Ptr, mip, D3D11_MAP_READ, 0, &mapped ) ) );
+	XE_ASSERT( SUCCEEDED( _rtx->_DeviceCtx->Map( texture._Ptr, mip, D3D11_MAP_READ, 0, &mapped ) ) );
 
 	uint32_t srcWidth =  std::max< XE::uint32 >( 1, texture._Width >> mip );
 	uint32_t srcHeight = std::max< XE::uint32 >( 1, texture._Height >> mip );
 	uint8_t * src = ( uint8_t * ) mapped.pData;
 	uint32_t srcPitch = mapped.RowPitch;
 
-	const uint8_t bpp = s_imageBlockInfo[texture._TextureFormat].bitsPerPixel;
+	const uint8_t bpp = s_imageBlockInfo[( XE::uint64 )texture._TextureFormat].bitsPerPixel;
 	uint8_t * dst = ( uint8_t * ) data;
 	uint32_t dstPitch = srcWidth * bpp / 8;
 
@@ -1585,7 +2208,7 @@ void XE::RendererContextDirectX11::ReadTexture( XE::RenderFrame * frame )
 		dst += dstPitch;
 	}
 
-	_p->_DeviceCtx->Unmap( texture._Ptr, mip );
+	_rtx->_DeviceCtx->Unmap( texture._Ptr, mip );
 }
 
 void XE::RendererContextDirectX11::UpdateTexture( XE::RenderFrame * frame )
@@ -1598,7 +2221,7 @@ void XE::RendererContextDirectX11::UpdateTexture( XE::RenderFrame * frame )
 	frame->PrevCmd.Read( view );
 
 	XE::Recti rect( desc.X, desc.Y, desc.Width, desc.Height );
-	_p->_Textures[handle].Update( desc.Side, desc.Mip, rect, desc.Z, desc.Depth, desc.Layer, view );
+	_rtx->_Textures[handle].Update( desc.Side, desc.Mip, rect, desc.Z, desc.Depth, desc.Layer, view );
 }
 
 void XE::RendererContextDirectX11::UpdateDynamicIndexBuffer( XE::RenderFrame * frame )
@@ -1612,7 +2235,7 @@ void XE::RendererContextDirectX11::UpdateDynamicIndexBuffer( XE::RenderFrame * f
 
 	const auto & desc = GetDesc( handle );
 
-	_p->_IndexBuffers[handle].Update( _p->_DeviceCtx, start, std::min( desc.Size, view.size() ), ( void * ) view.data() );
+	_rtx->_IndexBuffers[handle].Update( start, std::min( desc.Size, view.size() ), ( void * ) view.data() );
 }
 
 void XE::RendererContextDirectX11::UpdateDynamicVertexBuffer( XE::RenderFrame * frame )
@@ -1626,7 +2249,7 @@ void XE::RendererContextDirectX11::UpdateDynamicVertexBuffer( XE::RenderFrame * 
 
 	const auto & desc = GetDesc( handle );
 
-	_p->_VertexBuffers[handle].Update( _p->_DeviceCtx, start, std::min( desc.Size, view.size() ), ( void * ) view.data() );
+	_rtx->_VertexBuffers[handle].Update( start, std::min( desc.Size, view.size() ), ( void * ) view.data() );
 }
 
 void XE::RendererContextDirectX11::RequestScreenShot( XE::RenderFrame * frame )
@@ -1638,7 +2261,7 @@ void XE::RendererContextDirectX11::RequestScreenShot( XE::RenderFrame * frame )
 	ScreenShotCallbackType callback;
 	frame->PostCmd.Read( ( uintptr_t & ) callback );
 
-	IDXGISwapChain * swapChain = _p->_FrameBuffers[handle]._SwapChain;
+	IDXGISwapChain * swapChain = _rtx->_FrameBuffers[handle]._SwapChain;
 
 	if( NULL == swapChain )
 	{
@@ -1661,29 +2284,29 @@ void XE::RendererContextDirectX11::RequestScreenShot( XE::RenderFrame * frame )
 	desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
 
 	ID3D11Texture2D * texture;
-	HRESULT hr = _p->_Device->CreateTexture2D( &desc, NULL, &texture );
+	HRESULT hr = _rtx->_Device->CreateTexture2D( &desc, NULL, &texture );
 	if( SUCCEEDED( hr ) )
 	{
 		if( backBufferDesc.SampleDesc.Count == 1 )
 		{
-			_p->_DeviceCtx->CopyResource( texture, backBuffer );
+			_rtx->_DeviceCtx->CopyResource( texture, backBuffer );
 		}
 		else
 		{
 			desc.Usage = D3D11_USAGE_DEFAULT;
 			desc.CPUAccessFlags = 0;
 			ID3D11Texture2D * resolve;
-			hr = _p->_Device->CreateTexture2D( &desc, NULL, &resolve );
+			hr = _rtx->_Device->CreateTexture2D( &desc, NULL, &resolve );
 			if( SUCCEEDED( hr ) )
 			{
-				_p->_DeviceCtx->ResolveSubresource( resolve, 0, backBuffer, 0, desc.Format );
-				_p->_DeviceCtx->CopyResource( texture, resolve );
+				_rtx->_DeviceCtx->ResolveSubresource( resolve, 0, backBuffer, 0, desc.Format );
+				_rtx->_DeviceCtx->CopyResource( texture, resolve );
 				DX_RELEASE( resolve );
 			}
 		}
 
 		D3D11_MAPPED_SUBRESOURCE mapped;
-		XE_ASSERT( SUCCEEDED( _p->_DeviceCtx->Map( texture, 0, D3D11_MAP_READ, 0, &mapped ) ) );
+		XE_ASSERT( SUCCEEDED( _rtx->_DeviceCtx->Map( texture, 0, D3D11_MAP_READ, 0, &mapped ) ) );
 
 		// TODO: 
 // 		bimg::imageSwizzleBgra8(
@@ -1697,7 +2320,7 @@ void XE::RendererContextDirectX11::RequestScreenShot( XE::RenderFrame * frame )
 
 		callback( userdata.c_str(), backBufferDesc.Width, backBufferDesc.Height, mapped.RowPitch, ( const XE::uint8 * )mapped.pData, backBufferDesc.Height * mapped.RowPitch, false );
 
-		_p->_DeviceCtx->Unmap( texture, 0 );
+		_rtx->_DeviceCtx->Unmap( texture, 0 );
 
 		DX_RELEASE( texture );
 	}
@@ -1710,7 +2333,7 @@ void XE::RendererContextDirectX11::DestoryShader( XE::RenderFrame * frame )
 	XE::ShaderHandle handle;
 	frame->PostCmd.Read( handle );
 
-	_p->_Shaders[handle].Destroy();
+	_rtx->_Shaders[handle].Destroy();
 }
 
 void XE::RendererContextDirectX11::DestoryProgram( XE::RenderFrame * frame )
@@ -1718,7 +2341,7 @@ void XE::RendererContextDirectX11::DestoryProgram( XE::RenderFrame * frame )
 	XE::ProgramHandle handle;
 	frame->PostCmd.Read( handle );
 
-	_p->_Programs[handle].Destroy();
+	_rtx->_Programs[handle].Destroy();
 }
 
 void XE::RendererContextDirectX11::DestoryTexture( XE::RenderFrame * frame )
@@ -1726,7 +2349,7 @@ void XE::RendererContextDirectX11::DestoryTexture( XE::RenderFrame * frame )
 	XE::TextureHandle handle;
 	frame->PostCmd.Read( handle );
 
-	_p->_Textures[handle].Destroy();
+	_rtx->_Textures[handle].Destroy();
 }
 
 void XE::RendererContextDirectX11::DestoryFrameBuffer( XE::RenderFrame * frame )
@@ -1734,7 +2357,7 @@ void XE::RendererContextDirectX11::DestoryFrameBuffer( XE::RenderFrame * frame )
 	XE::FrameBufferHandle handle;
 	frame->PostCmd.Read( handle );
 
-	_p->_FrameBuffers[handle].Destroy();
+	_rtx->_FrameBuffers[handle].Destroy();
 }
 
 void XE::RendererContextDirectX11::DestoryIndexBuffer( XE::RenderFrame * frame )
@@ -1742,7 +2365,7 @@ void XE::RendererContextDirectX11::DestoryIndexBuffer( XE::RenderFrame * frame )
 	XE::IndexBufferHandle handle;
 	frame->PostCmd.Read( handle );
 
-	_p->_IndexBuffers[handle].Destroy();
+	_rtx->_IndexBuffers[handle].Destroy();
 }
 
 void XE::RendererContextDirectX11::DestoryVertexLayout( XE::RenderFrame * frame )
@@ -1755,7 +2378,7 @@ void XE::RendererContextDirectX11::DestoryVertexBuffer( XE::RenderFrame * frame 
 	XE::VertexBufferHandle handle;
 	frame->PostCmd.Read( handle );
 
-	_p->_VertexBuffers[handle].Destroy();
+	_rtx->_VertexBuffers[handle].Destroy();
 }
 
 void XE::RendererContextDirectX11::DestoryIndirectBuffer( XE::RenderFrame * frame )
@@ -1773,7 +2396,7 @@ void XE::RendererContextDirectX11::DestoryDynamicIndexBuffer( XE::RenderFrame * 
 	XE::DynamicIndexBufferHandle handle;
 	frame->PostCmd.Read( handle );
 
-	_p->_IndexBuffers[handle].Destroy();
+	_rtx->_IndexBuffers[handle].Destroy();
 }
 
 void XE::RendererContextDirectX11::DestoryDynamicVertexBuffer( XE::RenderFrame * frame )
@@ -1781,7 +2404,7 @@ void XE::RendererContextDirectX11::DestoryDynamicVertexBuffer( XE::RenderFrame *
 	XE::DynamicVertexBufferHandle handle;
 	frame->PostCmd.Read( handle );
 
-	_p->_VertexBuffers[handle].Destroy();
+	_rtx->_VertexBuffers[handle].Destroy();
 }
 
 #endif

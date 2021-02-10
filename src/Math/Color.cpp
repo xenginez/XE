@@ -155,6 +155,16 @@ XE::Color &XE::Color::operator =( const XE::Color &val )
 	return *this;
 }
 
+XE::uint8 & XE::Color::operator[]( XE::uint64 val )
+{
+	return d[val];
+}
+
+XE::uint8 XE::Color::operator[]( XE::uint64 val ) const
+{
+	return d[val];
+}
+
 XE::Color operator *( XE::uint8 a, const XE::Color &b )
 {
 	return b * a;

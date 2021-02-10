@@ -80,7 +80,7 @@ void XE::DXGI::Init( CapsInfo & caps )
 
 
 	AdapterI * adapter = nullptr;
-	for( XE::uint32 ii = 0; DXGI_ERROR_NOT_FOUND != _Factory->EnumAdapters( ii, reinterpret_cast< IDXGIAdapter ** >( &adapter ) ) && ii < sizeof( caps.Gpu ); ++ii )
+	for( XE::uint32 ii = 0; DXGI_ERROR_NOT_FOUND != _Factory->EnumAdapters( ii, reinterpret_cast< IDXGIAdapter ** >( &adapter ) ) && ii < XE::countof( caps.Gpu ); ++ii )
 	{
 		{
 			DXGI_ADAPTER_DESC desc;
@@ -90,8 +90,8 @@ void XE::DXGI::Init( CapsInfo & caps )
 			{
 				XE_LOG( LoggerLevel::Message, "Adapter %1", ii );
 
-				char description[sizeof( desc.Description )];
-				wcstombs( description, desc.Description, sizeof( desc.Description ) );
+				char description[XE::countof( desc.Description )];
+				wcstombs( description, desc.Description, XE::countof( desc.Description ) );
 				XE_LOG( LoggerLevel::Message, "\tDescription: %s", description );
 				XE_LOG( LoggerLevel::Message, "\tVendorId: %1, DeviceId: %2, SubSysId: %3, Revision: %4"
 						, desc.VendorId
@@ -134,8 +134,8 @@ void XE::DXGI::Init( CapsInfo & caps )
 			{
 				XE_LOG( LoggerLevel::Message, "\tOutput %1", jj );
 
-				char deviceName[sizeof( outputDesc.DeviceName )];
-				wcstombs( deviceName, outputDesc.DeviceName, sizeof( outputDesc.DeviceName ) );
+				char deviceName[XE::countof( outputDesc.DeviceName )];
+				wcstombs( deviceName, outputDesc.DeviceName, XE::countof( outputDesc.DeviceName ) );
 				XE_LOG( LoggerLevel::Message, "\t\tDeviceName: %1", deviceName );
 				XE_LOG( LoggerLevel::Message, "\t\tDesktopCoordinates: %1, %2, %3, %4"
 						, outputDesc.DesktopCoordinates.left
@@ -233,10 +233,10 @@ void XE::DXGI::Update( UnknownI * device )
 
 	IDXGIDevice * dxgiDevice = nullptr;
 	HRESULT hr = E_FAIL;
-	for( uint32_t ii = 0; ii < sizeof( DeviceIIDs ) && FAILED( hr ); ++ii )
+	for( uint32_t ii = 0; ii < XE::countof( DeviceIIDs ) && FAILED( hr ); ++ii )
 	{
 		hr = device->QueryInterface( DeviceIIDs[ii], ( void ** ) &dxgiDevice );
-		XE_LOG( LoggerLevel::Message, "DXGI device 11.%1, hr %2", sizeof( DeviceIIDs ) - 1 - ii, hr );
+		XE_LOG( LoggerLevel::Message, "DXGI device 11.%1, hr %2", XE::countof( DeviceIIDs ) - 1 - ii, hr );
 	}
 
 	if( nullptr == _Factory )
@@ -322,7 +322,7 @@ HRESULT XE::DXGI::CreateSwapChain( UnknownI * _device, const SwapChainDesc & _sc
 
 	if( SUCCEEDED( hr ) )
 	{
-		for( uint32_t ii = 0; ii < sizeof( SwapChainIIDs ); ++ii )
+		for( uint32_t ii = 0; ii < XE::countof( SwapChainIIDs ); ++ii )
 		{
 			IDXGISwapChain1 * swapChain;
 			hr = ( *_swapChain )->QueryInterface( SwapChainIIDs[ii], ( void ** ) &swapChain );
@@ -334,7 +334,7 @@ HRESULT XE::DXGI::CreateSwapChain( UnknownI * _device, const SwapChainDesc & _sc
 				*_swapChain = reinterpret_cast< SwapChainI * >( swapChain );
 
 				XE_LOG( LoggerLevel::Message, "Color space support:" );
-				for( uint32_t jj = 0; jj < sizeof( ColorSpace ); ++jj )
+				for( uint32_t jj = 0; jj < XE::countof( ColorSpace ); ++jj )
 				{
 					uint32_t colorSpaceSupport;
 					reinterpret_cast< IDXGISwapChain3 * >( *_swapChain )->CheckColorSpaceSupport( ColorSpace[jj], &colorSpaceSupport );

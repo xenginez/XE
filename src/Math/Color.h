@@ -70,6 +70,10 @@ public:
 
 	Color& operator -=( const Color& val );
 
+	XE::uint8 & operator[]( XE::uint64 val );
+
+	XE::uint8 operator[]( XE::uint64 val ) const;
+
 	Color operator *( XE::uint8 val ) const;
 
 	Color operator *( const Color& val ) const;

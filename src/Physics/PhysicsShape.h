@@ -17,19 +17,19 @@
 
 BEG_XE_NAMESPACE
 
-class XE_API Shape : public XE::Object
+class XE_API PhysicsShape : public XE::Object
 {
-	OBJECT( Shape, Object )
+	OBJECT( PhysicsShape, Object )
 
 public:
-	Shape();
+	PhysicsShape();
 
-	~Shape() override;
+	~PhysicsShape() override;
 
 public:
-	XE::ShapeHandle GetHandle() const;
+	XE::PhysicsShapeHandle GetHandle() const;
 
-	void SetHandle( XE::ShapeHandle val );
+	void SetHandle( XE::PhysicsShapeHandle val );
 
 public:
 	const XE::String & GetName() const;
@@ -40,9 +40,9 @@ public:
 
 	void SetLocalTransform( const XE::Mat4x4f & val );
 
-	XE::ShapeFlags GetShapeFlags() const;
+	XE::PhysicsShapeFlags GetShapeFlags() const;
 
-	void SetShapeFlags( XE::ShapeFlags val );
+	void SetShapeFlags( XE::PhysicsShapeFlags val );
 
 	XE::float32 GetRestOffset() const;
 
@@ -75,7 +75,7 @@ public:
 private:
 	XE::String _Name;
 	XE::Mat4x4f _LocalTransform;
-	XE::ShapeFlags _ShapeFlags;
+	XE::PhysicsShapeFlags _ShapeFlags;
 	XE::float32 _RestOffset;
 	XE::float32 _ContactOffset;
 	XE::Layer _QueryFilter;
@@ -84,17 +84,17 @@ private:
 	XE::float32 _MinTorsionalPatchRadius;
 	XE::Array<XE::PhysicsMaterialHandle> _PhysicsMaterials;
 
-	XE::ShapeHandle _Handle;
+	XE::PhysicsShapeHandle _Handle;
 };
 
-class XE_API BoxShape : public Shape
+class XE_API PhysicsBoxShape : public PhysicsShape
 {
-	OBJECT( BoxShape, Shape )
+	OBJECT( PhysicsBoxShape, PhysicsShape )
 
 public:
-	BoxShape();
+	PhysicsBoxShape();
 
-	~BoxShape() override;
+	~PhysicsBoxShape() override;
 
 public:
 	const XE::AABB & GetBox() const;
@@ -105,14 +105,14 @@ private:
 	XE::AABB _AABB;
 };
 
-class XE_API PlaneShape : public Shape
+class XE_API PhysicsPlaneShape : public PhysicsShape
 {
-	OBJECT( PlaneShape, Shape )
+	OBJECT( PhysicsPlaneShape, PhysicsShape )
 
 public:
-	PlaneShape();
+	PhysicsPlaneShape();
 
-	~PlaneShape() override;
+	~PhysicsPlaneShape() override;
 
 public:
 	const XE::Plane & GetPlane() const;
@@ -123,14 +123,14 @@ private:
 	XE::Plane _Plane;
 };
 
-class XE_API SphereShape : public Shape
+class XE_API PhysicsSphereShape : public PhysicsShape
 {
-	OBJECT( SphereShape, Shape )
+	OBJECT( PhysicsSphereShape, PhysicsShape )
 
 public:
-	SphereShape();
+	PhysicsSphereShape();
 
-	~SphereShape() override;
+	~PhysicsSphereShape() override;
 
 public:
 	const XE::Sphere & GetSphere() const;
@@ -141,14 +141,14 @@ private:
 	XE::Sphere _Sphere;
 };
 
-class XE_API CapsuleShape : public Shape
+class XE_API PhysicsCapsuleShape : public PhysicsShape
 {
-	OBJECT( CapsuleShape, Shape )
+	OBJECT( PhysicsCapsuleShape, PhysicsShape )
 
 public:
-	CapsuleShape();
+	PhysicsCapsuleShape();
 
-	~CapsuleShape() override;
+	~PhysicsCapsuleShape() override;
 
 public:
 	const XE::Capsule & GetCapsule() const;
@@ -159,14 +159,14 @@ private:
 	XE::Capsule _Capsule;
 };
 
-class XE_API ConvexMeshShape : public Shape
+class XE_API PhysicsConvexMeshShape : public PhysicsShape
 {
-	OBJECT( ConvexMeshShape, Shape )
+	OBJECT( PhysicsConvexMeshShape, PhysicsShape )
 
 public:
-	ConvexMeshShape();
+	PhysicsConvexMeshShape();
 
-	~ConvexMeshShape() override;
+	~PhysicsConvexMeshShape() override;
 
 public:
 	const XE::Vec3f & GetScale() const;
@@ -193,14 +193,14 @@ private:
 	XE::Array<XE::Vec3f> _VertexBuffer;
 };
 
-class XE_API HeightFieldShape : public Shape
+class XE_API PhysicsHeightFieldShape : public PhysicsShape
 {
-	OBJECT( HeightFieldShape, Shape )
+	OBJECT( PhysicsHeightFieldShape, PhysicsShape )
 
 public:
-	HeightFieldShape();
+	PhysicsHeightFieldShape();
 
-	~HeightFieldShape() override;
+	~PhysicsHeightFieldShape() override;
 
 public:
 	XE::float32 GetRowCount() const;

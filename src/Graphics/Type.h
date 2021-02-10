@@ -760,6 +760,7 @@ public:
 	XE::uint16 Mip = 0;
 	XE::uint16 Layer = 0;
 	bool AutoGenMips = false;
+	XE::uint8 Resolve = 0;
 	XE::AccessType Access = XE::AccessType::COUNT;
 };
 

@@ -1,26 +1,26 @@
 /*!
- * \file	RigidBody.h
+ * \file	PhysicsRigidBody.h
  *
  * \author	ZhengYuanQing
  * \date	2019/09/07
  * \email	zhengyuanqing.95@gmail.com
  *
  */
-#ifndef RIGIDBODY_H__F9398FC0_E3E7_4E55_99AF_8A689017D38B
-#define RIGIDBODY_H__F9398FC0_E3E7_4E55_99AF_8A689017D38B
+#ifndef PHYSICSRIGIDBODY_H__F9398FC0_E3E7_4E55_99AF_8A689017D38B
+#define PHYSICSRIGIDBODY_H__F9398FC0_E3E7_4E55_99AF_8A689017D38B
 
-#include "RigidActor.h"
+#include "PhysicsRigidActor.h"
 
 BEG_XE_NAMESPACE
 
-class XE_API RigidBody : public XE::RigidActor
+class XE_API PhysicsRigidBody : public XE::PhysicsRigidActor
 {
-	OBJECT( RigidBody, RigidActor )
+	OBJECT( PhysicsRigidBody, PhysicsRigidActor )
 
 public:
-	RigidBody();
+	PhysicsRigidBody();
 
-	~RigidBody() override;
+	~PhysicsRigidBody() override;
 
 public:
 	XE::float32 GetMass() const;
@@ -59,9 +59,9 @@ public:
 
 	void SetMaxAngularVelocity( const XE::float32 & val );
 
-	XE::RigidBodyFlags GetRigidBodyFlags() const;
+	XE::PhysicsRigidBodyFlags GetRigidBodyFlags() const;
 
-	void SetRigidBodyFlags( XE::RigidBodyFlags val );
+	void SetRigidBodyFlags( XE::PhysicsRigidBodyFlags val );
 
 	XE::float32 GetMinCCDAdvanceCoefficient() const;
 
@@ -96,7 +96,7 @@ private:
 	XE::Mat4x4f _CMassLocalPose;
 	XE::float32 _MaxLienarVelocity;
 	XE::float32 _MaxAngularVelocity;
-	XE::RigidBodyFlags _RigidBodyFlags;
+	XE::PhysicsRigidBodyFlags _RigidBodyFlags;
 	XE::float32 _MinCCDAdvanceCoefficient;
 	XE::float32 _MaxDepenetrationVelocity;
 	XE::Vec3f _MassSpaceInertiaTensor;
@@ -104,4 +104,4 @@ private:
 
 END_XE_NAMESPACE
 
-#endif // RIGIDBODY_H__F9398FC0_E3E7_4E55_99AF_8A689017D38B
+#endif // PHYSICSRIGIDBODY_H__F9398FC0_E3E7_4E55_99AF_8A689017D38B

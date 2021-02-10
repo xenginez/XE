@@ -1,13 +1,13 @@
 /*!
- * \file	Joint.h
+ * \file	PhysicsJoint.h
  *
  * \author	ZhengYuanQing
  * \date	2019/09/07
  * \email	zhengyuanqing.95@gmail.com
  *
  */
-#ifndef JOINT_H__E597880A_FE98_41A0_9AFB_C6EBEA13CCB1
-#define JOINT_H__E597880A_FE98_41A0_9AFB_C6EBEA13CCB1
+#ifndef PHYSICSJOINT_H__E597880A_FE98_41A0_9AFB_C6EBEA13CCB1
+#define PHYSICSJOINT_H__E597880A_FE98_41A0_9AFB_C6EBEA13CCB1
 
 #include "Math/Mat.h"
 #include "Math/Vec3.h"
@@ -17,27 +17,27 @@
 
 BEG_XE_NAMESPACE
 
-class XE_API Joint : public XE::Object
+class XE_API PhysicsJoint : public XE::Object
 {
-	OBJECT( Joint, Object )
+	OBJECT( PhysicsJoint, Object )
 
 public:
-	Joint();
+	PhysicsJoint();
 
-	~Joint() override;
+	~PhysicsJoint() override;
 
 public:
-	XE::JointHandle GetHandle() const;
+	XE::PhysicsJointHandle GetHandle() const;
 
-	void SetHandle( XE::JointHandle val );
-
-	XE::ConstraintHandle GetConstraintHandle() const;
-
-	void SetConstraintHandle( XE::ConstraintHandle val );
+	void SetHandle( XE::PhysicsJointHandle val );
 
 	XE::PhysicsSceneHandle GetPhysicsSceneHandle() const;
 
 	void SetPhysicsSceneHandle( XE::PhysicsSceneHandle val );
+
+	XE::PhysicsConstraintHandle GetConstraintHandle() const;
+
+	void SetConstraintHandle( XE::PhysicsConstraintHandle val );
 
 public:
 	const XE::String & GetName() const;
@@ -72,9 +72,9 @@ public:
 
 	void SetConstraintFlags( XE::ConstraintFlags val );
 
-	const XE::Pair<XE::RigidActorHandle, XE::RigidActorHandle> & GetRigidActorHandle() const;
+	const XE::Pair<XE::PhysicsRigidActorHandle, XE::PhysicsRigidActorHandle> & GetRigidActorHandle() const;
 
-	void SetRigidActorHandle( const XE::Pair<XE::RigidActorHandle, XE::RigidActorHandle> & val );
+	void SetRigidActorHandle( const XE::Pair<XE::PhysicsRigidActorHandle, XE::PhysicsRigidActorHandle> & val );
 
 public:
 	const XE::Mat4x4f & GetRelativeTransform() const;
@@ -97,18 +97,18 @@ private:
 	XE::float32 _SecondInvMassScale;
 	XE::float32 _FirstInvInertiaScale;
 	XE::float32 _SecondInvInertiaScale;
-	XE::ConstraintFlags _ConstraintFlags;
-	XE::Pair<XE::RigidActorHandle, XE::RigidActorHandle> _RigidActor;
+	XE::PhysicsConstraintFlags _ConstraintFlags;
+	XE::Pair<XE::PhysicsRigidActorHandle, XE::PhysicsRigidActorHandle> _RigidActor;
 
 	XE::Mat4x4f _RelativeTransform;
 	XE::Vec3f _RelativeLinearVelocity;
 	XE::Vec3f _RelativeAngularVelocity;
 
-	XE::JointHandle _Handle;
-	XE::ConstraintHandle _ConstraintHandle;
+	XE::PhysicsJointHandle _Handle;
 	XE::PhysicsSceneHandle _PhysicsSceneHandle;
+	XE::PhysicsConstraintHandle _ConstraintHandle;
 };
 
 END_XE_NAMESPACE
 
-#endif // JOINT_H__E597880A_FE98_41A0_9AFB_C6EBEA13CCB1
+#endif // PHYSICSJOINT_H__E597880A_FE98_41A0_9AFB_C6EBEA13CCB1

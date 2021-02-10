@@ -9,15 +9,15 @@
 #ifndef PHYSICS_H__B00CBAE6_CFD6_4654_9D6D_F89F7C62299B
 #define PHYSICS_H__B00CBAE6_CFD6_4654_9D6D_F89F7C62299B
 
-#include "Shape.h"
-#include "Joint.h"
-#include "RigidBody.h"
-#include "RigidActor.h"
-#include "Collection.h"
-#include "Constraint.h"
-#include "RigidStatic.h"
-#include "RigidDynamic.h"
 #include "PhysicsScene.h"
+#include "PhysicsShape.h"
+#include "PhysicsJoint.h"
 #include "PhysicsMaterial.h"
+#include "PhysicsRigidBody.h"
+#include "PhysicsRigidActor.h"
+#include "PhysicsConstraint.h"
+#include "PhysicsCollection.h"
+#include "PhysicsRigidStatic.h"
+#include "PhysicsRigidDynamic.h"
 
 #endif // PHYSICS_H__B00CBAE6_CFD6_4654_9D6D_F89F7C62299B

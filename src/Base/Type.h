@@ -374,6 +374,17 @@ template< typename T > struct RawPointer< const std::shared_ptr<T> >
 	}
 };
 
+template< typename T > struct ArrayCount;
+template< typename T, XE::uint64 C > struct ArrayCount< T[C] >
+{
+	static constexpr XE::uint64 Count = C;
+};
+
+template< typename T > XE::uint64 constexpr countof( T & val )
+{
+	return ArrayCount< T >::Count;
+}
+
 END_XE_NAMESPACE
 
 #endif // __TYPE_H__B9857ED9_F6EE_4A0A_8E87_0DAA433A5E40

@@ -10,15 +10,17 @@ type->Property( "Right", &XE::Transform::GetRight );
 type->Property( "Forward", &XE::Transform::GetForward );
 type->Property( "Backward", &XE::Transform::GetBackward );
 type->Property( "Parent", &XE::Transform::GetParent, &XE::Transform::SetParent );
-type->Property( "Position", &XE::Transform::GetPosition, &XE::Transform::SetPosition );
-type->Property( "Rotation", &XE::Transform::GetRotation, &XE::Transform::SetRotation );
-type->Property( "Scale", &XE::Transform::GetScale, &XE::Transform::SetScale );
-type->Property( "Transform", &XE::Transform::GetTransform, &XE::Transform::SetTransform );
+type->Property( "WorldPosition", &XE::Transform::GetWorldPosition, &XE::Transform::SetWorldPosition );
+type->Property( "WorldRotation", &XE::Transform::GetWorldRotation, &XE::Transform::SetWorldRotation );
+type->Property( "WorldScale", &XE::Transform::GetWorldScale, &XE::Transform::SetWorldScale );
+type->Property( "WorldTransform", &XE::Transform::GetWorldTransform, &XE::Transform::SetWorldTransform );
 type->Property( "RelativePosition", &XE::Transform::GetRelativePosition, &XE::Transform::SetRelativePosition );
 type->Property( "RelativeRotation", &XE::Transform::GetRelativeRotation, &XE::Transform::SetRelativeRotation );
 type->Property( "RelativeScale", &XE::Transform::GetRelativeScale, &XE::Transform::SetRelativeScale );
 type->Property( "RelativeTransform", &XE::Transform::GetRelativeTransform, &XE::Transform::SetRelativeTransform );
 END_META()
+
+XE::Transform const XE::Transform::Identity = XE::Transform();
 
 XE::Transform::Transform( Transform * parent /*= nullptr */ )
 	: _Position( XE::Vec3f::Zero )
@@ -73,78 +75,99 @@ void XE::Transform::SetParent( XE::Transform * parent )
 
 XE::Vec3f XE::Transform::GetUp() const
 {
-	return Mathf::Rotate( GetRotation(), Vec3f::Up );
+	return Mathf::Rotate( GetWorldRotation(), Vec3f::Up );
 }
 
 XE::Vec3f XE::Transform::GetDown() const
 {
-	return Mathf::Rotate( GetRotation(), -Vec3f::Up );
+	return Mathf::Rotate( GetWorldRotation(), -Vec3f::Up );
 }
 
 XE::Vec3f XE::Transform::GetLeft() const
 {
-	return Mathf::Rotate( GetRotation(), -Vec3f::Right );
+	return Mathf::Rotate( GetWorldRotation(), -Vec3f::Right );
 }
 
 XE::Vec3f XE::Transform::GetRight() const
 {
-	return Mathf::Rotate( GetRotation(), Vec3f::Right );
+	return Mathf::Rotate( GetWorldRotation(), Vec3f::Right );
 }
 
 XE::Vec3f XE::Transform::GetForward() const
 {
-	return Mathf::Rotate( GetRotation(), Vec3f::Forward );
+	return Mathf::Rotate( GetWorldRotation(), Vec3f::Forward );
 }
 
 XE::Vec3f XE::Transform::GetBackward() const
 {
-	return Mathf::Rotate( GetRotation(), -Vec3f::Forward );
+	return Mathf::Rotate( GetWorldRotation(), -Vec3f::Forward );
 }
 
-XE::Vec3d XE::Transform::GetPosition() const
+void XE::Transform::Translate( const XE::Vec3f & val )
 {
-	return _Parent ? _Parent->GetPosition() + XE::Vec3d( _Position ) : XE::Vec3d( _Position );
-}
-
-void XE::Transform::SetPosition( const XE::Vec3d & val )
-{
-	_Position = val - ( _Parent ? _Parent->GetPosition() : XE::Vec3d::Zero );
+	_Position += val;
 
 	_Transform = XE::Mathf::TRS( _Position, _Rotation, _Scale );
 }
 
-XE::Quat XE::Transform::GetRotation() const
+void XE::Transform::Rotate( const XE::Quat & val )
 {
-	return _Parent ? _Parent->GetRotation() * _Rotation : _Rotation;
-}
-
-void XE::Transform::SetRotation( const XE::Quat & val )
-{
-	_Rotation = val * ( _Parent ? XE::Mathf::Inverse( _Parent->GetRotation() ) : XE::Quat::Identity );
+	_Rotation *= val;
 
 	_Transform = XE::Mathf::TRS( _Position, _Rotation, _Scale );
 }
 
-XE::Vec3d XE::Transform::GetScale() const
+void XE::Transform::Scale( const XE::Vec3f & val )
 {
-	return _Parent ? _Parent->GetScale() * XE::Vec3d( _Scale ) : XE::Vec3d( _Scale );
-}
-
-void XE::Transform::SetScale( const XE::Vec3d & val )
-{
-	_Scale = val / ( _Parent ? _Parent->GetScale() : XE::Vec3d::One );
+	_Scale *= val;
 
 	_Transform = XE::Mathf::TRS( _Position, _Rotation, _Scale );
 }
 
-XE::Mat4x4d XE::Transform::GetTransform() const
+XE::Vec3d XE::Transform::GetWorldPosition() const
 {
-	return _Parent ? _Parent->GetTransform() * XE::Mat4x4d( _Transform ) : XE::Mat4x4d( _Transform );
+	return _Parent ? _Parent->GetWorldPosition() + XE::Vec3d( _Position ) : XE::Vec3d( _Position );
 }
 
-void XE::Transform::SetTransform( const XE::Mat4x4d & val )
+void XE::Transform::SetWorldPosition( const XE::Vec3d & val )
 {
-	_Transform = val * ( _Parent ? _Parent->GetTransform() * XE::Mathf::Inverse( _Transform ) : XE::Mat4x4d::Identity );
+	_Position = val - ( _Parent ? _Parent->GetWorldPosition() : XE::Vec3d::Zero );
+
+	_Transform = XE::Mathf::TRS( _Position, _Rotation, _Scale );
+}
+
+XE::Quat XE::Transform::GetWorldRotation() const
+{
+	return _Parent ? _Parent->GetWorldRotation() * _Rotation : _Rotation;
+}
+
+void XE::Transform::SetWorldRotation( const XE::Quat & val )
+{
+	_Rotation = val * ( _Parent ? XE::Mathf::Inverse( _Parent->GetWorldRotation() ) : XE::Quat::Identity );
+
+	_Transform = XE::Mathf::TRS( _Position, _Rotation, _Scale );
+}
+
+XE::Vec3d XE::Transform::GetWorldScale() const
+{
+	return _Parent ? _Parent->GetWorldScale() * XE::Vec3d( _Scale ) : XE::Vec3d( _Scale );
+}
+
+void XE::Transform::SetWorldScale( const XE::Vec3d & val )
+{
+	_Scale = val / ( _Parent ? _Parent->GetWorldScale() : XE::Vec3d::One );
+
+	_Transform = XE::Mathf::TRS( _Position, _Rotation, _Scale );
+}
+
+XE::Mat4x4d XE::Transform::GetWorldTransform() const
+{
+	return _Parent ? _Parent->GetWorldTransform() * XE::Mat4x4d( _Transform ) : XE::Mat4x4d( _Transform );
+}
+
+void XE::Transform::SetWorldTransform( const XE::Mat4x4d & val )
+{
+	_Transform = val * ( _Parent ? _Parent->GetWorldTransform() * XE::Mathf::Inverse( _Transform ) : XE::Mat4x4d::Identity );
 
 	XE::Mathf::TRS( _Transform, _Position, _Rotation, _Scale );
 }
@@ -199,5 +222,5 @@ void XE::Transform::SetRelativeTransform( const XE::Mat4x4f & val )
 
 XE::Transform XE::operator*( const Transform & left, const Transform & right )
 {
-	return { left.GetTransform() * right.GetTransform() };
+	return { left.GetWorldTransform() * right.GetWorldTransform() };
 }

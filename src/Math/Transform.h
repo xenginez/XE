@@ -20,6 +20,9 @@ BEG_XE_NAMESPACE
 class XE_API Transform
 {
 public:
+    static const Transform Identity;
+
+public:
     Transform( Transform * parent = nullptr );
 
     Transform( const XE::Mat4x4f & val, Transform * parent = nullptr );
@@ -49,21 +52,28 @@ public:
 	XE::Vec3f GetBackward() const;
 
 public:
-	XE::Vec3d GetPosition() const;
+    void Translate( const XE::Vec3f & val );
 
-	void SetPosition( const XE::Vec3d & val );
+    void Rotate( const XE::Quat & val );
 
-	XE::Quat GetRotation() const;
+    void Scale( const XE::Vec3f & val );
 
-	void SetRotation( const XE::Quat & val );
+public:
+	XE::Vec3d GetWorldPosition() const;
 
-	XE::Vec3d GetScale() const;
+	void SetWorldPosition( const XE::Vec3d & val );
 
-	void SetScale( const XE::Vec3d & val );
+	XE::Quat GetWorldRotation() const;
 
-	XE::Mat4x4d GetTransform() const;
+	void SetWorldRotation( const XE::Quat & val );
 
-	void SetTransform( const XE::Mat4x4d & val );
+	XE::Vec3d GetWorldScale() const;
+
+	void SetWorldScale( const XE::Vec3d & val );
+
+	XE::Mat4x4d GetWorldTransform() const;
+
+	void SetWorldTransform( const XE::Mat4x4d & val );
 
 public:
     const XE::Vec3f & GetRelativePosition() const;

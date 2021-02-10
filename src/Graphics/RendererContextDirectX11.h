@@ -18,14 +18,12 @@ BEG_XE_NAMESPACE
 class RendererContextDirectX11 : public XE::RendererContext
 {
 private:
-    struct Private;
-
     using Super = XE::RendererContext;
 
 public:
-	RendererContextDirectX11();
+	RendererContextDirectX11() = default;
 
-	~RendererContextDirectX11() override;
+	~RendererContextDirectX11() override = default;
 
 protected:
 	void OnRender( XE::RenderFrame * val ) override;
@@ -100,9 +98,6 @@ public:
 	void DestoryDynamicIndexBuffer( XE::RenderFrame * frame );
 
 	void DestoryDynamicVertexBuffer( XE::RenderFrame * frame );
-
-private:
-	Private * _p = nullptr;
 };
 
 XE_INLINE XE::RendererContext * CreateRendererContextDirectX11()

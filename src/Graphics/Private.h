@@ -510,6 +510,8 @@ public:
 	std::array<XE::uint32, GFX_MAX_BLITITEMS> BlitItemKeys = {};
 	std::array<XE::RenderBlit, GFX_MAX_BLITITEMS> BlitItems = {};
 
+	std::array< XE::uint32, GFX_MAX_OCCLUSION > Occlusion = {};
+
 	XE::Buffer PostCmd;
 	std::mutex PostCmdMutex;
 

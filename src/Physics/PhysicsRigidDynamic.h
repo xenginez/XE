@@ -1,26 +1,26 @@
 /*!
- * \file	RigidDynamic.h
+ * \file	PhysicsRigidDynamic.h
  *
  * \author	ZhengYuanQing
  * \date	2019/09/27
  * \email	zhengyuanqing.95@gmail.com
  *
  */
-#ifndef RIGIDDYNAMIC_H__EF7F30B9_F080_4C18_B0F9_D0ABD88A20CF
-#define RIGIDDYNAMIC_H__EF7F30B9_F080_4C18_B0F9_D0ABD88A20CF
+#ifndef PHYSICSRIGIDDYNAMIC_H__EF7F30B9_F080_4C18_B0F9_D0ABD88A20CF
+#define PHYSICSRIGIDDYNAMIC_H__EF7F30B9_F080_4C18_B0F9_D0ABD88A20CF
 
-#include "RigidBody.h"
+#include "PhysicsRigidBody.h"
 
 BEG_XE_NAMESPACE
 
-class XE_API RigidDynamic : public XE::RigidBody
+class XE_API PhysicsRigidDynamic : public XE::PhysicsRigidBody
 {
-	OBJECT( RigidDynamic, RigidBody )
+	OBJECT( PhysicsRigidDynamic, PhysicsRigidBody )
 
 public:
-	RigidDynamic();
+	PhysicsRigidDynamic();
 
-	~RigidDynamic() override;
+	~PhysicsRigidDynamic() override;
 
 public:
 	XE::float32 GetSleepThreshold() const;
@@ -47,9 +47,9 @@ public:
 
 	void SetKinematicTarget( const XE::Mat4x4f & val );
 
-	XE::RigidDynamicLockFlags GetRigidDynamicLockFlags() const;
+	XE::PhysicsRigidDynamicLockFlags GetRigidDynamicLockFlags() const;
 
-	void SetRigidDynamicLockFlags( XE::RigidDynamicLockFlags val );
+	void SetRigidDynamicLockFlags( XE::PhysicsRigidDynamicLockFlags val );
 
 public:
 	virtual void Sleep() = 0;
@@ -65,9 +65,9 @@ private:
 	XE::float32 _StabilizationThreshold;
 	XE::float32 _ContactReportThreshold;
 	XE::Mat4x4f _KinematicTarget;
-	XE::RigidDynamicLockFlags _RigidDynamicLockFlags;
+	XE::PhysicsRigidDynamicLockFlags _RigidDynamicLockFlags;
 };
 
 END_XE_NAMESPACE
 
-#endif // RIGIDDYNAMIC_H__EF7F30B9_F080_4C18_B0F9_D0ABD88A20CF
+#endif // PHYSICSRIGIDDYNAMIC_H__EF7F30B9_F080_4C18_B0F9_D0ABD88A20CF
