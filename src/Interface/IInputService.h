@@ -9,35 +9,12 @@
 #ifndef __IINPUTSERVICE_H__C8BF1C9C_DABC_4831_9A86_582C71F3DF2C
 #define __IINPUTSERVICE_H__C8BF1C9C_DABC_4831_9A86_582C71F3DF2C
 
+#include "Math/Vec2.h"
+#include "Utils/Follow.h"
+
 #include "IService.h"
 
 BEG_XE_NAMESPACE
-
-class XE_API IInputControl
-{
-	OBJECT( IInputControl )
-
-	friend class IInputService;
-
-public:
-	IInputControl();
-
-	virtual ~IInputControl();
-
-public:
-	virtual bool Startup() = 0;
-
-	virtual void Update() = 0;
-
-	virtual void Clearup() = 0;
-
-protected:
-	void SetValue( const String& code, const Variant& val );
-
-public:
-	IInputServicePtr _InputService;
-};
-DECL_PTR( IInputControl );
 
 class XE_API IInputService : public IService
 {
@@ -46,30 +23,49 @@ class XE_API IInputService : public IService
 	friend class IInputControl;
 
 public:
+	using ButtonChangedCallbackType = std::function< void() >;
+
+public:
 	IInputService();
 
 	~IInputService() override;
 
 public:
-	virtual XE::int32 GetPov( const String& val ) const = 0;
+	XE::float32 GetAxis( XE::KeyCode val ) const;
 
-	virtual XE::float32 GetAxis( const String& val ) const = 0;
-
-	virtual XE::int32 GetButton( const String& val ) const = 0;
-
-	virtual Variant GetValue( const String& val ) const = 0;
+	XE::float32 GetAxis( const XE::String & val ) const;
 
 public:
-	virtual XE::int32 GetPov( KeyCode val ) const = 0;
+	bool GetButton( XE::KeyCode val ) const;
 
-	virtual XE::float32 GetAxis( KeyCode val ) const = 0;
+	bool GetButton( const XE::String & val ) const;
 
-	virtual XE::int32 GetButton( KeyCode val ) const = 0;
+	bool GetButtonPressed( XE::KeyCode val ) const;
 
-	virtual Variant GetValue( KeyCode val ) const = 0;
+	bool GetButtonPressed( const XE::String & val ) const;
+
+	bool GetButtonRelease( XE::KeyCode val ) const;
+
+	bool GetButtonRelease( const XE::String & val ) const;
+
+public:
+	XE::float32 GetMouseWheel() const;
+
+	XE::Vec2i GetMousePosition() const;
+
+public:
+	virtual void ResetInputValues() = 0;
+
+public:
+	virtual XE::Follow RegisterButtonPressed( XE::KeyCode key, const ButtonChangedCallbackType & callback ) = 0;
+
+	virtual XE::Follow RegisterButtonRelease( XE::KeyCode key, const ButtonChangedCallbackType & callback ) = 0;
+
+public:
+	virtual XE::Variant GetValue( const XE::String & val ) const = 0;
 
 protected:
-	virtual void SetValue( const String& code, const Variant& val ) = 0;
+	virtual void SetValue( const XE::String & code, XE::Variant val ) = 0;
 };
 
 END_XE_NAMESPACE

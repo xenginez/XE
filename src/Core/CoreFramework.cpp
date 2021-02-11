@@ -165,17 +165,17 @@ XE::Language XE::CoreFramework::GetSystemLanguage() const
 
 std::filesystem::path XE::CoreFramework::GetModulePath() const
 {
-	return GetApplicationPath() / "modules";
+	return GetApplicationPath() / ModulesDirectory;
 }
 
 std::filesystem::path XE::CoreFramework::GetAssetsPath() const
 {
-	return GetApplicationPath().parent_path() / "assets";
+	return GetApplicationPath().parent_path() / AssetsDirectory;
 }
 
 std::filesystem::path XE::CoreFramework::GetUserDataPath() const
 {
-	return GetApplicationPath().parent_path() / "data";
+	return GetApplicationPath().parent_path() / UserDatasDirectory;
 }
 
 std::filesystem::path XE::CoreFramework::GetApplicationPath() const
@@ -276,9 +276,9 @@ void XE::CoreFramework::LoadServices()
 	XE::Set< XE::String > Services;
 	XE::Array< XE::String > StartupServices, UpdateServices, ClearupServices;
 
-	StartupServices = GetStringArray( "System/StartupServices" );
-	UpdateServices = GetStringArray( "System/StartupServices" );
-	ClearupServices = GetStringArray( "System/StartupServices" );
+	StartupServices = GetStringArray( "System/SortStartupServices" );
+	UpdateServices = GetStringArray( "System/SortUpdateServices" );
+	ClearupServices = GetStringArray( "System/SortClearupServices" );
 
 	for( const auto & i : StartupServices )
 	{
@@ -356,7 +356,7 @@ void XE::CoreFramework::LoadServices()
 
 void XE::CoreFramework::Save()
 {
-	auto path = GetUserDataPath() / "config.json";
+	auto path = GetUserDataPath() / ConfigFileName;
 
 	Save( path, _p->Values );
 }
@@ -398,7 +398,7 @@ void XE::CoreFramework::Reload()
 {
 	_p->Values.clear();
 
-	auto path = GetUserDataPath() / "config.json";
+	auto path = GetUserDataPath() / ConfigFileName;
 
 	Reload( path, _p->Values );
 }

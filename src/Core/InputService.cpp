@@ -3,40 +3,13 @@
 BEG_META( XE::InputService )
 END_META()
 
-class XEPAction
-{
-public:
-	XE::KeyCode Code = XE::KeyCode::None;
-	XE::Operation Operator = XE::Operation::EQUAL;
-	XE::Variant Operand;
-};
-DECL_META_CLASS( XE_API, XEPAction );
-
-BEG_META( XEPAction )
-type->Property( "Code", &XEPAction::Code );
-type->Property( "Operator", &XEPAction::Operand );
-type->Property( "Operator", &XEPAction::Operator );
-END_META()
-
-class XEPInputAction
-{
-public:
-	XE::String Name;
-	XE::Array<XEPAction> Keys;
-};
-DECL_META_CLASS( XE_API, XEPInputAction );
-
-BEG_META( XEPInputAction )
-type->Property( "Name", &XEPInputAction::Name );
-type->Property( "Keys", &XEPInputAction::Keys );
-END_META()
-
-
 struct XE::InputService::Private
 {
-	XE::Array<XE::IInputControlPtr> _Controls;
-	XE::Map<XE::String, XEPInputAction> _Actions;
-	XE::UnorderedMap<XE::String, XE::Variant> _ValueMaps;
+	bool _ResetInput = false;
+	XE::Array< XE::IInputControlPtr > _Controls;
+	XE::UnorderedMap< XE::String, XE::Variant > _ValueMaps;
+	XE::Map< XE::KeyCode, XE::Array< ButtonChangedCallbackType > > _ButtonPressedCallbacks;
+	XE::Map< XE::KeyCode, XE::Array< ButtonChangedCallbackType > > _ButtonReleaseCallbacks;
 };
 
 XE::InputService::InputService()
@@ -50,10 +23,13 @@ XE::InputService::~InputService()
 	delete _p;
 }
 
+void XE::InputService::Prepare()
+{
+
+}
+
 bool XE::InputService::Startup()
 {
-	// TODO: InputAction Serialization
-
 	IInputControl::GetMetaClassStatic()->VisitDerivedClass( [&]( IMetaClassPtr derived )
 		{
 			if( !derived->IsAbstract() )
@@ -78,6 +54,8 @@ void XE::InputService::Update()
 	{
 		control->Update();
 	}
+
+	_p->_ResetInput = false;
 }
 
 void XE::InputService::Clearup()
@@ -90,190 +68,153 @@ void XE::InputService::Clearup()
 	_p->_Controls.clear();
 }
 
-XE::int32 XE::InputService::GetPov( const XE::String& val ) const
+void XE::InputService::ResetInputValues()
 {
-	return GetValue( val ).Value<XE::int32>();
+	_p->_ResetInput = true;
+	_p->_ValueMaps.clear();
 }
 
-XE::int32 XE::InputService::GetPov( XE::KeyCode val ) const
+XE::Follow XE::InputService::RegisterButtonPressed( XE::KeyCode key, const ButtonChangedCallbackType & callback )
 {
-	return GetValue( val ).Value<XE::int32>();
+	if( key < KeyCode::Backspace || key > KeyCode::MouseWheel )
+	{
+		return {};
+	}
+
+	auto & callbacks = _p->_ButtonPressedCallbacks[key];
+	for( size_t i = 0; i < callbacks.size(); i++ )
+	{
+		if( callbacks[i] == nullptr )
+		{
+			callbacks[i] = callback;
+
+			return [this, key, i]()
+			{
+				auto & callbacks = _p->_ButtonPressedCallbacks[key];
+
+				if( callbacks.size() > i )
+				{
+					callbacks[i] = nullptr;
+				}
+			};
+		}
+	}
+
+	auto i = callbacks.size();
+	callbacks.push_back( callback );
+
+	return [this, key, i]()
+	{
+		auto & callbacks = _p->_ButtonPressedCallbacks[key];
+
+		if( callbacks.size() > i )
+		{
+			callbacks[i] = nullptr;
+		}
+	};
 }
 
-XE::float32 XE::InputService::GetAxis( const XE::String& val ) const
+XE::Follow XE::InputService::RegisterButtonRelease( XE::KeyCode key, const ButtonChangedCallbackType & callback )
 {
-	return GetValue( val ).Value<XE::float32>();
-}
+	if( key < KeyCode::Backspace || key > KeyCode::MouseWheel )
+	{
+		return {};
+	}
 
-XE::float32 XE::InputService::GetAxis( XE::KeyCode val ) const
-{
-	return GetValue( val ).Value<XE::float32>();
-}
+	auto & callbacks = _p->_ButtonReleaseCallbacks[key];
+	for( size_t i = 0; i < callbacks.size(); i++ )
+	{
+		if( callbacks[i] == nullptr )
+		{
+			callbacks[i] = callback;
 
-XE::int32 XE::InputService::GetButton( const XE::String& val ) const
-{
-	return GetValue( val ).Value<XE::int32>();
-}
+			return [this, key, i]()
+			{
+				auto & callbacks = _p->_ButtonReleaseCallbacks[key];
 
-XE::int32 XE::InputService::GetButton( XE::KeyCode val ) const
-{
-	return GetValue( val ).Value<XE::int32>();
+				if( callbacks.size() > i )
+				{
+					callbacks[i] = nullptr;
+				}
+			};
+		}
+	}
+
+	auto i = callbacks.size();
+	callbacks.push_back( callback );
+
+	return [this, key, i]()
+	{
+		auto & callbacks = _p->_ButtonReleaseCallbacks[key];
+
+		if( callbacks.size() > i )
+		{
+			callbacks[i] = nullptr;
+		}
+	};
 }
 
 XE::Variant XE::InputService::GetValue( const XE::String& val ) const
 {
-	{
-		auto it = _p->_ValueMaps.find( val );
-		if( it != _p->_ValueMaps.end() )
-		{
-			return it->second;
-		}
-	}
-
-	{
-		auto it = _p->_Actions.find( val );
-		if( it != _p->_Actions.end() )
-		{
-			if( it->second.Keys.size() == 1 )
-			{
-				return GetValue( it->second.Keys[0].Code );
-			}
-			else
-			{
-				for( auto k : it->second.Keys )
-				{
-					Variant v = GetValue( k.Code );
-
-					bool pass = false;
-					switch( k.Operator )
-					{
-					case Operation::EQUAL:
-						pass = CallEQUAL( v, k.Operand );
-						break;
-					case Operation::NOT_EQUAL:
-						pass = CallNOT_EQUAL( v, k.Operand );
-						break;
-					case Operation::LESS:
-						pass = CallLESS( v, k.Operand );
-						break;
-					case Operation::GREATER:
-						pass = CallGREATER( v, k.Operand );
-						break;
-					case Operation::LESS_EQUAL:
-						pass = CallLESS_EQUAL( v, k.Operand );
-						break;
-					case Operation::GREATER_EQUAL:
-						pass = CallGREATER_EQUAL( v, k.Operand );
-						break;
-					}
-
-					if( pass )
-					{
-						continue;
-					}
-
-					return false;
-				}
-
-				return true;
-			}
-		}
-	}
-
-	return nullptr;
-}
-
-XE::Variant XE::InputService::GetValue( XE::KeyCode val ) const
-{
-	auto it = _p->_ValueMaps.find( GetKeycodeString( val ) );
-
+	auto it = _p->_ValueMaps.find( val );
 	if( it != _p->_ValueMaps.end() )
 	{
 		return it->second;
 	}
 
-	return nullptr;
+	return {};
 }
 
-void XE::InputService::SetValue( const XE::String& code, const XE::Variant& val )
+void XE::InputService::SetValue( const XE::String& code, XE::Variant val )
 {
+	if( _p->_ResetInput )
+	{
+		return;
+	}
+
+	auto var = ::XE_EnumID< XE::KeyCode >::Get()->FindValue( code );
+	if( !var.IsInvalid() )
+	{
+		XE::KeyCode key = var.Value< XE::KeyCode >();
+
+		if( key >= KeyCode::Backspace && key <= KeyCode::MouseWheel )
+		{
+			XE::int32 prev = _p->_ValueMaps[code].ToInt32();
+			XE::int32 next = val.ToInt32();
+
+			if( prev != next )
+			{
+				if( prev == 0 )
+				{
+					auto it = _p->_ButtonPressedCallbacks.find( key );
+					if( it != _p->_ButtonPressedCallbacks.end() )
+					{
+						for( auto & callback : it->second )
+						{
+							if( callback )
+							{
+								callback();
+							}
+						}
+					}
+				}
+				else
+				{
+					auto it = _p->_ButtonReleaseCallbacks.find( key );
+					if( it != _p->_ButtonReleaseCallbacks.end() )
+					{
+						for( auto & callback : it->second )
+						{
+							if( callback )
+							{
+								callback();
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
 	_p->_ValueMaps[code] = val;
-}
-
-XE::String XE::InputService::GetKeycodeString( XE::KeyCode val ) const
-{
-	return ::XE_EnumID< KeyCode >::Get()->FindName( ( XE::int64 )val );
-}
-
-void XE::InputService::Prepare()
-{
-
-}
-
-bool XE::InputService::CallEQUAL( const XE::Variant& a, const XE::Variant& b ) const
-{
-	return( 
-		( a.GetType() == ::XE_TypeID<bool>::Get() && a.Value<bool>() == b.Value<bool>() ) ||
-		( a.GetType() == ::XE_TypeID<XE::int32>::Get() && a.Value<XE::int32>() == b.Value<XE::int32>() ) ||
-		( a.GetType() == ::XE_TypeID<XE::int64>::Get() && a.Value<XE::int64>() == b.Value<XE::int64>() ) ||
-		( a.GetType() == ::XE_TypeID<XE::uint32>::Get() && a.Value<XE::uint32>() == b.Value<XE::uint32>() ) ||
-		( a.GetType() == ::XE_TypeID<XE::uint64>::Get() && a.Value<XE::uint64>() == b.Value<XE::uint64>() ) ||
-		( a.GetType() == ::XE_TypeID<XE::float32>::Get() && a.Value<XE::float32>() == b.Value<XE::float32>() ) ||
-		( a.GetType() == ::XE_TypeID<XE::float64>::Get() && a.Value<XE::float64>() == b.Value<XE::float64>() ) );
-}
-
-bool XE::InputService::CallNOT_EQUAL( const XE::Variant& a, const XE::Variant& b ) const
-{
-	return(
-		( a.GetType() == ::XE_TypeID<bool>::Get() && a.Value<bool>() != b.Value<bool>() ) ||
-		( a.GetType() == ::XE_TypeID<XE::int32>::Get() && a.Value<XE::int32>() != b.Value<XE::int32>() ) ||
-		( a.GetType() == ::XE_TypeID<XE::int64>::Get() && a.Value<XE::int64>() != b.Value<XE::int64>() ) ||
-		( a.GetType() == ::XE_TypeID<XE::uint32>::Get() && a.Value<XE::uint32>() != b.Value<XE::uint32>() ) ||
-		( a.GetType() == ::XE_TypeID<XE::uint64>::Get() && a.Value<XE::uint64>() != b.Value<XE::uint64>() ) ||
-		( a.GetType() == ::XE_TypeID<XE::float32>::Get() && a.Value<XE::float32>() != b.Value<XE::float32>() ) ||
-		( a.GetType() == ::XE_TypeID<XE::float64>::Get() && a.Value<XE::float64>() != b.Value<XE::float64>() ) );
-}
-
-bool XE::InputService::CallLESS( const XE::Variant& a, const XE::Variant& b ) const
-{
-	return(
-		( a.GetType() == ::XE_TypeID<XE::int32>::Get() && a.Value<XE::int32>() < b.Value<XE::int32>() ) ||
-		( a.GetType() == ::XE_TypeID<XE::int64>::Get() && a.Value<XE::int64>() < b.Value<XE::int64>() ) ||
-		( a.GetType() == ::XE_TypeID<XE::uint32>::Get() && a.Value<XE::uint32>() < b.Value<XE::uint32>() ) ||
-		( a.GetType() == ::XE_TypeID<XE::uint64>::Get() && a.Value<XE::uint64>() < b.Value<XE::uint64>() ) ||
-		( a.GetType() == ::XE_TypeID<XE::float32>::Get() && a.Value<XE::float32>() < b.Value<XE::float32>() ) ||
-		( a.GetType() == ::XE_TypeID<XE::float64>::Get() && a.Value<XE::float64>() < b.Value<XE::float64>() ) );
-}
-
-bool XE::InputService::CallGREATER( const XE::Variant& a, const XE::Variant& b ) const
-{
-	return(
-		( a.GetType() == ::XE_TypeID<XE::int32>::Get() && a.Value<XE::int32>() > b.Value<XE::int32>() ) ||
-		( a.GetType() == ::XE_TypeID<XE::int64>::Get() && a.Value<XE::int64>() > b.Value<XE::int64>() ) ||
-		( a.GetType() == ::XE_TypeID<XE::uint32>::Get() && a.Value<XE::uint32>() > b.Value<XE::uint32>() ) ||
-		( a.GetType() == ::XE_TypeID<XE::uint64>::Get() && a.Value<XE::uint64>() > b.Value<XE::uint64>() ) ||
-		( a.GetType() == ::XE_TypeID<XE::float32>::Get() && a.Value<XE::float32>() > b.Value<XE::float32>() ) ||
-		( a.GetType() == ::XE_TypeID<XE::float64>::Get() && a.Value<XE::float64>() > b.Value<XE::float64>() ) );
-}
-
-bool XE::InputService::CallLESS_EQUAL( const XE::Variant& a, const XE::Variant& b ) const
-{
-	return(
-		( a.GetType() == ::XE_TypeID<XE::int32>::Get() && a.Value<XE::int32>() <= b.Value<XE::int32>() ) ||
-		( a.GetType() == ::XE_TypeID<XE::int64>::Get() && a.Value<XE::int64>() <= b.Value<XE::int64>() ) ||
-		( a.GetType() == ::XE_TypeID<XE::uint32>::Get() && a.Value<XE::uint32>() <= b.Value<XE::uint32>() ) ||
-		( a.GetType() == ::XE_TypeID<XE::uint64>::Get() && a.Value<XE::uint64>() <= b.Value<XE::uint64>() ) ||
-		( a.GetType() == ::XE_TypeID<XE::float32>::Get() && a.Value<XE::float32>() <= b.Value<XE::float32>() ) ||
-		( a.GetType() == ::XE_TypeID<XE::float64>::Get() && a.Value<XE::float64>() <= b.Value<XE::float64>() ) );
-}
-
-bool XE::InputService::CallGREATER_EQUAL( const XE::Variant& a, const XE::Variant& b ) const
-{
-	return(
-		( a.GetType() == ::XE_TypeID<XE::int32>::Get() && a.Value<XE::int32>() >= b.Value<XE::int32>() ) ||
-		( a.GetType() == ::XE_TypeID<XE::int64>::Get() && a.Value<XE::int64>() >= b.Value<XE::int64>() ) ||
-		( a.GetType() == ::XE_TypeID<XE::uint32>::Get() && a.Value<XE::uint32>() >= b.Value<XE::uint32>() ) ||
-		( a.GetType() == ::XE_TypeID<XE::uint64>::Get() && a.Value<XE::uint64>() >= b.Value<XE::uint64>() ) ||
-		( a.GetType() == ::XE_TypeID<XE::float32>::Get() && a.Value<XE::float32>() >= b.Value<XE::float32>() ) ||
-		( a.GetType() == ::XE_TypeID<XE::float64>::Get() && a.Value<XE::float64>() >= b.Value<XE::float64>() ) );
 }

@@ -13,6 +13,7 @@
 #include "CRC32.h"
 #include "Layer.h"
 #include "Order.h"
+#include "Follow.h"
 #include "Logger.h"
 #include "BASE64.h"
 #include "Buffer.h"

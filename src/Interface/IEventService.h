@@ -9,6 +9,7 @@
 #ifndef __IEVENTSERVICE_H__9F87BB9F_F399_497E_AECE_12A1C3D02ACE
 #define __IEVENTSERVICE_H__9F87BB9F_F399_497E_AECE_12A1C3D02ACE
 
+#include "Utils/Follow.h"
 #include "Interface/Event.h"
 
 #include "IService.h"
@@ -35,9 +36,7 @@ public:
 	virtual void PostEvent( XE::uint64 frame, EventPtr val ) = 0;
 
 public:
-	virtual XE::uint64 RegisterListener( XE::EventHandle handle, ListenerType listener ) = 0;
-
-	virtual void UnregisterListener( XE::EventHandle handle, XE::uint64 index ) = 0;
+	virtual XE::Follow RegisterListener( XE::EventHandle handle, ListenerType listener ) = 0;
 
 };
 

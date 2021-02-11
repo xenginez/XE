@@ -40,9 +40,19 @@ public:
 public:
 	template< typename T > T LoadObjectT( const std::filesystem::path & path )
 	{
-		return DP_CAST<T::value_type>( LoadObject( path ) );
+		return DP_CAST< T::element_type >( LoadObject( path ) );
 	}
 
+	template< typename T > void AsyncLoadObjectT( const std::filesystem::path & path, const std::function< void( T ) > & callback )
+	{
+		AsyncLoadObject( path, [callback]( XE::ObjectPtr obj )
+						 {
+							 if( callback )
+							 {
+								 callback( DP_CAST< T::element_type >( obj ) );
+							 }
+						 } );
+	}
 };
 
 END_XE_NAMESPACE

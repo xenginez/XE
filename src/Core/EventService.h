@@ -42,9 +42,7 @@ public:
 	void PostEvent( XE::float32 dt, EventPtr val ) override;
 
 public:
-	XE::uint64 RegisterListener( XE::EventHandle handle, ListenerType listener ) override;
-
-	void UnregisterListener( XE::EventHandle handle, XE::uint64 index ) override;
+	XE::Follow RegisterListener( XE::EventHandle handle, ListenerType listener ) override;
 
 private:
 	void ProcessTimeEvent();

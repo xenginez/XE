@@ -8,7 +8,7 @@ END_META()
 struct XE::LocalizationService::Private
 {
 	XE::Language _Language;
-	XE::UnorderedMap<XE::String, XE::String> _Maps;
+	std::array< XE::UnorderedMap<XE::String, XE::String>, ( XE::uint64 )XE::Language::UNKNOWN > _Maps;
 };
 
 XE::LocalizationService::LocalizationService()
@@ -22,21 +22,24 @@ XE::LocalizationService::~LocalizationService()
 	delete _p;
 }
 
-bool XE::LocalizationService::Startup()
+void XE::LocalizationService::Prepare()
 {
 	String LanguageName = GetFramework()->GetString( "System/Language" );
 
-	if ( LanguageName == "" )
+	if( LanguageName == "" )
 	{
 		_p->_Language = GetFramework()->GetSystemLanguage();
 	}
 	else
 	{
-		_p->_Language = (Language)( ::XE_EnumID<Language>::Get()->FindValue( LanguageName ).Value<Language>() );
+		_p->_Language = ( Language ) ( XE_EnumID< Language >::Get()->FindValue( LanguageName ).Value<Language>() );
 	}
 
-	UpdateLocalized();
+	LoadLocalized();
+}
 
+bool XE::LocalizationService::Startup()
+{
 	return true;
 }
 
@@ -47,7 +50,10 @@ void XE::LocalizationService::Update()
 
 void XE::LocalizationService::Clearup()
 {
-	_p->_Maps.clear();
+	for( auto & i : _p->_Maps )
+	{
+		i.clear();
+	}
 }
 
 XE::Language XE::LocalizationService::GetCurrentLanguage() const
@@ -60,46 +66,52 @@ void XE::LocalizationService::SetCurrentLanguage( XE::Language val )
 	_p->_Language = val;
 
 	GetFramework()->SetString( "System/Language", ::XE_EnumID<Language>::Get()->FindName( (XE::int64)_p->_Language ) );
-
-	UpdateLocalized();
 }
 
-const XE::String & XE::LocalizationService::LocalizedString( const XE::String & key, const XE::String& val ) const
+const XE::String & XE::LocalizationService::LocalizedString( const XE::String & key, const XE::String& defualt /*= ""*/ ) const
 {
-	auto it = _p->_Maps.find( key );
+	auto it = _p->_Maps[( XE::uint64 )_p->_Language].find( key );
 
-	if ( it != _p->_Maps.end() && it->second != "" )
+	if ( it != _p->_Maps[( XE::uint64 )_p->_Language].end() && it->second != "" )
 	{
 		return it->second;
 	}
 
-	return val;
+	return defualt;
 }
 
-void XE::LocalizationService::Prepare()
+void XE::LocalizationService::LoadLocalized()
 {
-
-}
-
-void XE::LocalizationService::UpdateLocalized()
-{
-	std::string path = (GetFramework()->GetUserDataPath() / "language.csv").string();
+	std::string path = ( GetFramework()->GetUserDataPath() / LanguageFileName ).u8string();
 
 	std::ifstream ifs( path );
 
-	std::string buf( 2048, 0 );
-
 	if ( ifs.is_open() )
 	{
-		ifs.getline( buf.data(), 2048 );
+		std::string buf( 2048, 0 );
 
-		while ( ifs.eof() )
+		ifs.getline( buf.data(), 2048 );
+		
+		auto title = StringUtils::Split( buf, "," );
+		title.erase( title.begin() );
+
+		XE::Array< XE::uint64 > indexs( XE::MemoryResource::GetStackMemoryResource() );
+		for( const auto & i : title )
 		{
+			indexs.push_back( ( XE::uint64 )::XE_EnumID<Language>::Get()->FindValue( i ).Value< XE::Language >() );
+		}
+
+		while ( !ifs.eof() )
+		{
+			buf[0] = 0;
 			ifs.getline( buf.data(), 2048 );
 
 			std::vector<std::string> list = StringUtils::Split( buf, "," );
 
-			_p->_Maps.insert( std::make_pair( list[0], list[( (XE::int64)_p->_Language ) + 1] ) );
+			for( int i = 1; i < list.size(); ++i )
+			{
+				_p->_Maps[indexs[i]].insert( { list[0], list[i] } );
+			}
 		}
 	}
 }

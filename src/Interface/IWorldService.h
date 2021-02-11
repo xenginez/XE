@@ -9,6 +9,8 @@
 #ifndef __IWORLDSERVICE_H__1CE0128D_8AE2_434B_BF15_97B410BA145D
 #define __IWORLDSERVICE_H__1CE0128D_8AE2_434B_BF15_97B410BA145D
 
+#include <future>
+
 #include "Math/Math.h"
 
 #include "IService.h"
@@ -27,10 +29,9 @@ public:
 	~IWorldService() override;
 
 public:
-	virtual XE::WorldPtr GetCurrentWorld() const = 0;
+	virtual XE::WorldPtr GetWorld() const = 0;
 
-	virtual void LoadWorld( const XE::String & val ) = 0;
-
+    virtual void ActiveWorld( const XE::WorldPtr & val ) = 0;
 };
 
 END_XE_NAMESPACE

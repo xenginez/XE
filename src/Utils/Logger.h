@@ -9,6 +9,8 @@
 #ifndef LOGGER_H__FABB4435_9587_4290_9EA3_18733C722EE2
 #define LOGGER_H__FABB4435_9587_4290_9EA3_18733C722EE2
 
+#include "Follow.h"
+
 #include "Type.h"
 
 BEG_XE_NAMESPACE
@@ -31,13 +33,26 @@ public:
 	void Log( XE::LoggerLevel level, const std::string & text );
 
 public:
-	XE::uint64 RegisterListener( ListenerType listener );
-
-	void UnregisterListener( XE::uint64 code );
+	XE::Follow RegisterListener( XE::LoggerLevel level, ListenerType listener );
 
 private:
 	Private * _p;
 };
+
+XE_INLINE std::string ToString( XE::LoggerLevel _Val )
+{
+	switch( _Val )
+	{
+	case XE::LoggerLevel::Error:
+		return "Error";
+	case XE::LoggerLevel::Warning:
+		return "Warning";
+	case XE::LoggerLevel::Message:
+		return "Message";
+	}
+
+	return "";
+}
 
 END_XE_NAMESPACE
 

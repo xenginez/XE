@@ -35,41 +35,17 @@ public:
 	void Clearup() override;
 
 public:
-	XE::int32 GetPov( const String& val ) const override;
-
-	XE::float32 GetAxis( const String& val ) const override;
-
-	XE::int32 GetButton( const String& val ) const override;
-
-	Variant GetValue( const String& val ) const override;
+	void ResetInputValues() override;
 
 public:
-	XE::int32 GetPov( KeyCode val ) const override;
+	XE::Follow RegisterButtonPressed( XE::KeyCode key, const ButtonChangedCallbackType & callback ) override;
 
-	XE::float32 GetAxis( KeyCode val ) const override;
-
-	XE::int32 GetButton( KeyCode val ) const override;
-
-	Variant GetValue( KeyCode val ) const override;
+	XE::Follow RegisterButtonRelease( XE::KeyCode key, const ButtonChangedCallbackType & callback ) override;
 
 protected:
-	void SetValue( const String& code, const Variant& val ) override;
+	XE::Variant GetValue( const String & val ) const override;
 
-private:
-	String GetKeycodeString( KeyCode val ) const;
-
-private:
-	bool CallEQUAL( const Variant& a, const Variant& b ) const;
-
-	bool CallNOT_EQUAL( const Variant& a, const Variant& b ) const;
-
-	bool CallLESS( const Variant& a, const Variant& b ) const;
-
-	bool CallGREATER( const Variant& a, const Variant& b ) const;
-
-	bool CallLESS_EQUAL( const Variant& a, const Variant& b ) const;
-
-	bool CallGREATER_EQUAL( const Variant& a, const Variant& b ) const;
+	void SetValue( const String & code, XE::Variant val ) override;
 
 private:
 	Private * _p;

@@ -34,23 +34,24 @@ public:
 	virtual void PostTask( ThreadType type, const TaskCallback & task ) = 0;
 
 public:
-    template< typename R > std::shared_future< R > PostTask( ThreadType type, const std::function<R()> & task )
+    template< typename R > void PostTask( ThreadType type, const std::function< R() > & task, const std::function< void( R ) > & callback )
     {
-        std::promise< R > p;
-
-        std::shared_future< R > sf = p.get_future().share();
-
-        PostTask( type, [p, task, sf]()
+        PostTask( type, [task, callback]()
                   {
-                      p.set_value( task() );
+                      if( callback )
+					  {
+						  callback( task() );
+                      }
                   } );
-
-        return sf;
     }
 };
 
 END_XE_NAMESPACE
 
-#define CHECK_THREAD(THREAD_TYPE)  XE::IFramework::GetCurrentFramework()->GetServiceT< XE::IThreadService >()->GetCurrentThreadType() == THREAD_TYPE
+#define ASSERT_THREAD( THREAD_TYPE ) \
+    XE_ASSERT( XE::IFramework::GetCurrentFramework()->GetServiceT< XE::IThreadService >()->GetCurrentThreadType() != THREAD_TYPE )
+
+#define CHECK_THREAD( THREAD_TYPE ) \
+XE::IFramework::GetCurrentFramework()->GetServiceT< XE::IThreadService >()->GetCurrentThreadType() == THREAD_TYPE
 
 #endif // __ITHREADSERVICE_H__ED1E7A09_4D24_49BF_BABB_9386218A9039

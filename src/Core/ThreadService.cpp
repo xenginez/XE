@@ -226,7 +226,6 @@ bool XE::ThreadService::Startup()
 	_p->_Threads[( XE::uint64 )XE::ThreadType::IO] = new XEPSpecialThread();
 	_p->_Threads[( XE::uint64 )XE::ThreadType::RENDER] = new XEPSpecialThread();
 	_p->_Threads[( XE::uint64 )XE::ThreadType::PHYSICS] = new XEPSpecialThread();
-	_p->_Threads[( XE::uint64 )XE::ThreadType::NAVIGATION] = new XEPSpecialThread();
 
 	return true;
 }
@@ -268,13 +267,6 @@ void XE::ThreadService::PostTask( ThreadType type, const TaskCallback & task )
 {
 	if( task )
 	{
-		if( GetCurrentThreadType() == type )
-		{
-			task();
-		}
-		else
-		{
-			_p->_Threads[( XE::uint64 )type]->PushTask( task );
-		}
+		_p->_Threads[( XE::uint64 )type]->PushTask( task );
 	}
 }

@@ -1,5 +1,10 @@
 #include "IFramework.h"
 
+#include <rapidjson/document.h>
+#include <rapidjson/rapidjson.h>
+#include <rapidjson/prettywriter.h>
+#include <rapidjson/ostreamwrapper.h>
+
 XE::IFrameworkPtr XE::IFramework::_CurrentFramework = nullptr;
 
 BEG_META( XE::IFramework )
@@ -168,26 +173,37 @@ void XE::IFramework::SetString( const String & key, const String & val )
 
 void XE::IFramework::SetStringArray( const String & key, const Array< String > & val )
 {
-	std::string str;
-	
+	rapidjson::Document doc;
+
+	rapidjson::Value & strs = doc.SetArray();
+
 	for( size_t i = 0; i < val.size(); i++ )
 	{
-		str += val[i].ToStdString();
-
-		if( i < val.size() - 1 )
-		{
-			str += ",";
-		}
+		strs.PushBack( rapidjson::StringRef( val[i].ToCString() ), doc.GetAllocator() );
 	}
 
-	SetValue( key, str );
+	std::stringstream str;
+
+	rapidjson::OStreamWrapper wrapper( str );
+	rapidjson::PrettyWriter<rapidjson::OStreamWrapper> writer( wrapper );
+	doc.Accept( writer );
+
+	SetValue( key, str.str() );
 }
 
 XE::Array< XE::String > XE::IFramework::GetStringArray( const String & key, const Array< String > & def /*= Array< String >() */ )
 {
-	String s = GetValue( key );
+	XE::Array< XE::String > res;
 
-	auto list = XE::StringUtils::Split( s.ToStdString(), "," );
+	rapidjson::Document doc;
+	doc.Parse( GetValue( key ).ToCString() );
 
-	return { list.begin(), list.end() };
+	auto strs = doc.GetArray();
+
+	for( size_t i = 0; i < strs.Size(); i++ )
+	{
+		res.push_back( strs[i].GetString() );
+	}
+
+	return res;
 }
