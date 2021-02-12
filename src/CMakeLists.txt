@@ -11,8 +11,7 @@ target_link_libraries(XE
 		tbbmalloc_proxy${XE_TBB_POSTFIX}
 		)
 
-set(INC_DIRS 
-		Audio
+set(INC_DIRS
 		Base
 		Core
 		GC

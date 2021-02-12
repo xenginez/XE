@@ -1,25 +1,21 @@
 /*!
- * \file   AudioSoundSource.h
+ * \file   Source.h
  *
  * \author ZhengYuanQing
- * \date   2020/10/02
+ * \date   2021/02/12
  * \email  zhengyuanqing.95@gmail.com
  *
  */
-#ifndef AUDIOSOUNDSOURCE_H__1D751335_F408_4FA5_9AB3_4EFEE45DF522
-#define AUDIOSOUNDSOURCE_H__1D751335_F408_4FA5_9AB3_4EFEE45DF522
+#ifndef SOURCE_H__8934EC6F_3D1F_48A3_A867_9ADF05FDC5B0
+#define SOURCE_H__8934EC6F_3D1F_48A3_A867_9ADF05FDC5B0
 
-#include "Math/Vec3.h"
-#include "Interface/Asset.h"
-#include "Interface/Object.h"
+#include "Clip.h"
 
-#include "AudioClip.h"
+BEG_AUDIO_NAMESPACE
 
-BEG_XE_NAMESPACE
-
-class XE_API AudioSource : public XE::Object
+class AUDIO_API Source : public XE::Object
 {
-    OBJECT( AudioSource, Object )
+	OBJECT( Source, Object )
 
 public:
 	virtual void Startup();
@@ -42,7 +38,7 @@ public:
 public:
 	bool GetLoop() const;
 
-    void SetLoop( bool val );
+	void SetLoop( bool val );
 
 	bool GetPlayOnStart() const;
 
@@ -72,19 +68,19 @@ public:
 
 	void SetMinDistance( XE::float32 val );
 
-    XE::float32 GetMaxDistance() const;
+	XE::float32 GetMaxDistance() const;
 
-    void SetMaxDistance( XE::float32 val );
+	void SetMaxDistance( XE::float32 val );
 
 	const XE::AudioClipPtr & GetAudioClip() const;
 
 	void SetAudioClip( const XE::AudioClipPtr & val );
 
 private:
-    bool _Loop = false;
+	bool _Loop = false;
 	bool _PlayOnStart = false;
-    XE::float32 _Gain = 0.0f;
-    XE::float32 _Pitch = 1.0f;
+	XE::float32 _Gain = 0.0f;
+	XE::float32 _Pitch = 1.0f;
 	XE::Vec3f _Position = {};
 	XE::Vec3f _Velocity = {};
 	XE::Vec3f _Direction = {};
@@ -93,6 +89,6 @@ private:
 	XE::AudioClipPtr _AudioClip = nullptr;
 };
 
-END_XE_NAMESPACE
+END_AUDIO_NAMESPACE
 
-#endif // AUDIOSOUNDSOURCE_H__1D751335_F408_4FA5_9AB3_4EFEE45DF522
+#endif // SOURCE_H__8934EC6F_3D1F_48A3_A867_9ADF05FDC5B0

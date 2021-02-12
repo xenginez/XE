@@ -9,7 +9,7 @@
 #ifndef AUDIO_H__368E33C7_D961_484C_8228_99AF2D16D6FF
 #define AUDIO_H__368E33C7_D961_484C_8228_99AF2D16D6FF
 
-#include "AudioClip.h"
-#include "AudioSource.h"
+#include "Clip.h"
+#include "Source.h"
 
 #endif // AUDIO_H__368E33C7_D961_484C_8228_99AF2D16D6FF

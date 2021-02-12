@@ -36,9 +36,9 @@ public:
 	void AsyncLoad();
 
 public:
-	const std::filesystem::path & GetAssetPath() const;
+	const XE::String & GetAssetPath() const;
 
-	void SetAssetPath( const std::filesystem::path & val );
+	void SetAssetPath( const XE::String & val );
 
 protected:
 	virtual void LoadFinish( const XE::ObjectPtr & val );

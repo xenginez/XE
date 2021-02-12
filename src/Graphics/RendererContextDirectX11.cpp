@@ -391,13 +391,6 @@ namespace D3D11
 		};
 
 		D3D11::DirectAccessResource _DAR;
-
-		union
-		{
-			ID3D11Resource * _RT = nullptr;
-			ID3D11Texture2D * _RT2d;
-		};
-
 		ID3D11ShaderResourceView * _SRV = nullptr;
 		ID3D11UnorderedAccessView * _UAV = nullptr;
 		XE::TextureFlags _Flags = 0;
@@ -1047,7 +1040,6 @@ namespace D3D11
 
 		//_rtx->m_srvUavLru.invalidateWithParent( GetHandle() );
 
-		DX_RELEASE( _RT );
 		DX_RELEASE( _SRV );
 		DX_RELEASE( _UAV );
 		DX_RELEASE( _Ptr );
@@ -1285,7 +1277,7 @@ namespace D3D11
 								}
 							}
 
-							XE_ASSERT( SUCCEEDED( _rtx->_Device->CreateDepthStencilView( NULL == texture._RT ? texture._Ptr : texture._RT, &dsvDesc, &_DSV ) ) );
+							XE_ASSERT( SUCCEEDED( _rtx->_Device->CreateDepthStencilView( texture._Ptr, &dsvDesc, &_DSV ) ) );
 						}
 						break;
 						case TextureType::TEXTURE_CUBE:
@@ -1293,14 +1285,14 @@ namespace D3D11
 							if( 1 < msaa.Count )
 							{
 								dsvDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2DMSARRAY;
-								dsvDesc.Texture2DMSArray.ArraySize = 1;
 								dsvDesc.Texture2DMSArray.FirstArraySlice = at.Layer;
+								dsvDesc.Texture2DMSArray.ArraySize = 1;
 							}
 							else
 							{
 								dsvDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2DARRAY;
-								dsvDesc.Texture2DArray.ArraySize = 1;
 								dsvDesc.Texture2DArray.FirstArraySlice = at.Layer;
+								dsvDesc.Texture2DArray.ArraySize = 1;
 								dsvDesc.Texture2DArray.MipSlice = at.Mip;
 							}
 							XE_ASSERT( SUCCEEDED( _rtx->_Device->CreateDepthStencilView( texture._Ptr, &dsvDesc, &_DSV ) ) );
@@ -1347,7 +1339,7 @@ namespace D3D11
 								}
 							}
 
-							XE_ASSERT( SUCCEEDED( _rtx->_Device->CreateRenderTargetView( NULL == texture._RT ? texture._Ptr : texture._RT, & desc, & _RTV[_Num] ) ) );
+							XE_ASSERT( SUCCEEDED( _rtx->_Device->CreateRenderTargetView( texture._Ptr, & desc, & _RTV[_Num] ) ) );
 						}
 						break;
 						case TextureType::TEXTURE_CUBE:

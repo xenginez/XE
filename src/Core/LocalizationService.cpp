@@ -104,7 +104,8 @@ void XE::LocalizationService::LoadLocalized()
 		{
 			std::string key;
 			auto col = row.begin();
-			( *col++ ).read_value( key );
+			( *col ).read_value( key );
+			++col;
 
 			for( int i = 1; col != row.end(); ++col, ++i )
 			{
