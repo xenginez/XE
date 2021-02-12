@@ -2,7 +2,7 @@
 
 #include <fstream>
 
-#include <csv-parser/parser.hpp>
+#include <csv2/csv2.hpp>
 
 BEG_META( XE::LocalizationService )
 END_META()
@@ -85,26 +85,32 @@ const XE::String & XE::LocalizationService::LocalizedString( const XE::String & 
 void XE::LocalizationService::LoadLocalized()
 {
 	std::string path = ( GetFramework()->GetUserDataPath() / LANGUAGE_FILE_NAME ).u8string();
+	
+	csv2::Reader<csv2::delimiter<','>, csv2::quote_character<'"'>, csv2::first_row_is_header<true>, csv2::trim_policy::trim_whitespace> csv;
 
-	std::ifstream ifs( path );
-
-	if ( ifs.is_open() )
+	if( csv.mmap( path ) )
 	{
-		aria::csv::CsvParser parser( ifs );
+		const auto header = csv.header();
 
 		XE::Array< XE::uint64 > indexs( XE::MemoryResource::GetStackMemoryResource() );
-		for( const auto & i : *parser.begin() )
+		for( auto col = ++header.begin(); col != header.end(); ++col )
 		{
-			indexs.push_back( ( XE::uint64 )::XE_EnumID< Language >::Get()->FindValue( i ).Value< XE::Language >() );
+			std::string cell;
+			( *col ).read_value( cell );
+			indexs.push_back( ( XE::uint64 )::XE_EnumID<Language>::Get()->FindValue( std::move( cell ) ).Value< XE::Language >() );
 		}
 
-		for( auto it = ++parser.begin(); it != parser.end(); ++it )
+		for( const auto row : csv )
 		{
-			auto list = *it;
+			std::string key;
+			auto col = row.begin();
+			( *col++ ).read_value( key );
 
-			for( int i = 1; i < list.size(); ++i )
+			for( int i = 1; col != row.end(); ++col, ++i )
 			{
-				_p->_Maps[indexs[i]].insert( { list[0], list[i] } );
+				std::string cell;
+				( *col ).read_value( cell );
+				_p->_Maps[indexs[i]].insert( { key, std::move( cell ) } );
 			}
 		}
 	}

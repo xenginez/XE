@@ -25,6 +25,6 @@
 [submodule "3rdparty/ozz-animation"]
 	path = 3rdparty/ozz-animation
 	url = https://github.com/guillaumeblanc/ozz-animation.git
-[submodule "3rdparty/csv-parser"]
-	path = 3rdparty/csv-parser
-	url = https://github.com/AriaFallah/csv-parser.git
+[submodule "3rdparty/csv2"]
+	path = 3rdparty/csv2
+	url = https://github.com/p-ranav/csv2.git
