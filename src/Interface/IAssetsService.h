@@ -28,22 +28,22 @@ public:
 	~IAssetsService() override;
 
 public:
-    virtual XE::MemoryView Load( const std::filesystem::path & path ) = 0;
+    virtual XE::MemoryView Load( const XE::String & path ) = 0;
 
-    virtual void AsyncLoad( const std::filesystem::path & path, const LoadFinishCallback & callback ) = 0;
-
-public:
-	virtual XE::ObjectPtr LoadObject( const std::filesystem::path & path ) = 0;
-
-	virtual void AsyncLoadObject( const std::filesystem::path & path, const LoadObjectFinishCallback & callback ) = 0;
+    virtual void AsyncLoad( const XE::String & path, const LoadFinishCallback & callback ) = 0;
 
 public:
-	template< typename T > T LoadObjectT( const std::filesystem::path & path )
+	virtual XE::ObjectPtr LoadObject( const XE::String & path ) = 0;
+
+	virtual void AsyncLoadObject( const XE::String & path, const LoadObjectFinishCallback & callback ) = 0;
+
+public:
+	template< typename T > T LoadObjectT( const XE::String & path )
 	{
 		return DP_CAST< T::element_type >( LoadObject( path ) );
 	}
 
-	template< typename T > void AsyncLoadObjectT( const std::filesystem::path & path, const std::function< void( T ) > & callback )
+	template< typename T > void AsyncLoadObjectT( const XE::String & path, const std::function< void( T ) > & callback )
 	{
 		AsyncLoadObject( path, [callback]( XE::ObjectPtr obj )
 						 {

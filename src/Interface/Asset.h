@@ -18,8 +18,6 @@ class XE_API Asset
 public:
 	Asset();
 
-	Asset( Asset && val );
-
 	Asset( const Asset & val );
 
 	virtual ~Asset();
@@ -30,12 +28,7 @@ public:
 public:
 	Asset & operator=( std::nullptr_t );
 
-	Asset & operator=( Asset && val );
-
 	Asset & operator=( const Asset & val );
-
-public:
-	void Swap( Asset && val );
 
 public:
 	void Load();
@@ -52,7 +45,7 @@ protected:
 
 protected:
 	XE::ObjectPtr _Ptr;
-	std::filesystem::path _AssetPath;
+	XE::String _AssetPath;
 };
 DECL_META_CLASS( XE_API, Asset );
 

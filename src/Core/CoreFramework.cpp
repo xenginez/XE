@@ -165,17 +165,17 @@ XE::Language XE::CoreFramework::GetSystemLanguage() const
 
 std::filesystem::path XE::CoreFramework::GetModulePath() const
 {
-	return GetApplicationPath() / ModulesDirectory;
+	return GetApplicationPath() / MODULES_DIRECTORY;
 }
 
 std::filesystem::path XE::CoreFramework::GetAssetsPath() const
 {
-	return GetApplicationPath().parent_path() / AssetsDirectory;
+	return GetApplicationPath().parent_path() / ASSETS_DIRECTORY;
 }
 
 std::filesystem::path XE::CoreFramework::GetUserDataPath() const
 {
-	return GetApplicationPath().parent_path() / UserDatasDirectory;
+	return GetApplicationPath().parent_path() / USERDATAS_DIRECTORY;
 }
 
 std::filesystem::path XE::CoreFramework::GetApplicationPath() const
@@ -356,7 +356,7 @@ void XE::CoreFramework::LoadServices()
 
 void XE::CoreFramework::Save()
 {
-	auto path = GetUserDataPath() / ConfigFileName;
+	auto path = GetUserDataPath() / CONFIG_FILE_NAME;
 
 	Save( path, _p->Values );
 }
@@ -398,7 +398,7 @@ void XE::CoreFramework::Reload()
 {
 	_p->Values.clear();
 
-	auto path = GetUserDataPath() / ConfigFileName;
+	auto path = GetUserDataPath() / CONFIG_FILE_NAME;
 
 	Reload( path, _p->Values );
 }

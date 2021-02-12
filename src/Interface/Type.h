@@ -13,12 +13,12 @@
 
 BEG_XE_NAMESPACE
 
-static constexpr char * ConfigFileName = "Config.json";
-static constexpr char * LanguageFileName = "Language.csv";
+static constexpr char * CONFIG_FILE_NAME = "Config.json";
+static constexpr char * LANGUAGE_FILE_NAME = "Language.csv";
 
-static constexpr char * AssetsDirectory = "Assets";
-static constexpr char * ModulesDirectory = "Modules";
-static constexpr char * UserDatasDirectory = "UserDatas";
+static constexpr char * ASSETS_DIRECTORY = "Assets";
+static constexpr char * MODULES_DIRECTORY = "Modules";
+static constexpr char * USERDATAS_DIRECTORY = "UserDatas";
 
 DECL_PTR( IService );
 DECL_PTR( IEventService );

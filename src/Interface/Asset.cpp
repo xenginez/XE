@@ -12,11 +12,6 @@ XE::Asset::Asset()
 
 }
 
-XE::Asset::Asset( Asset && val )
-{
-	Swap( std::forward< Asset >( val ) );
-}
-
 XE::Asset::Asset( const Asset & val )
 	:_AssetPath( val._AssetPath ), _Ptr( val._Ptr )
 {
@@ -39,12 +34,6 @@ XE::Asset & XE::Asset::operator=( std::nullptr_t )
 	return *this;
 }
 
-XE::Asset & XE::Asset::operator=( Asset && val )
-{
-	Swap( std::forward< Asset >( val ) );
-	return *this;
-}
-
 XE::Asset & XE::Asset::operator=( const Asset & val )
 {
 	_Ptr = val._Ptr;
@@ -52,21 +41,24 @@ XE::Asset & XE::Asset::operator=( const Asset & val )
 	return *this;
 }
 
-void XE::Asset::Swap( Asset && val )
-{
-	std::swap( _Ptr, val._Ptr );
-	std::swap( _AssetPath, val._AssetPath );
-}
-
 void XE::Asset::Load()
 {
-	auto obj = XE::IFramework::GetCurrentFramework()->GetServiceT< XE::IAssetsService >()->LoadObject( _AssetPath );
-	LoadFinish( obj );
+	if( _Ptr == nullptr )
+	{
+		auto obj = XE::IFramework::GetCurrentFramework()->GetServiceT< XE::IAssetsService >()->LoadObject( _AssetPath );
+		LoadFinish( obj );
+	}
 }
 
 void XE::Asset::AsyncLoad()
 {
-	XE::IFramework::GetCurrentFramework()->GetServiceT< XE::IAssetsService >()->AsyncLoadObject( _AssetPath, std::bind( &XE::Asset::LoadFinish, this, std::placeholders::_1 ) );
+	if( _Ptr == nullptr )
+	{
+		XE::IFramework::GetCurrentFramework()->GetServiceT< XE::IAssetsService >()->AsyncLoadObject( _AssetPath, [this]( XE::ObjectPtr obj )
+																									 {
+																										 LoadFinish( obj );
+																									 } );
+	}
 }
 
 void XE::Asset::LoadFinish( const XE::ObjectPtr & val )

@@ -82,7 +82,7 @@ const XE::String & XE::LocalizationService::LocalizedString( const XE::String & 
 
 void XE::LocalizationService::LoadLocalized()
 {
-	std::string path = ( GetFramework()->GetUserDataPath() / LanguageFileName ).u8string();
+	std::string path = ( GetFramework()->GetUserDataPath() / LANGUAGE_FILE_NAME ).u8string();
 
 	std::ifstream ifs( path );
 
