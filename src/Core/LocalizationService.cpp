@@ -2,6 +2,8 @@
 
 #include <fstream>
 
+#include <csv-parser/parser.hpp>
+
 BEG_META( XE::LocalizationService )
 END_META()
 
@@ -88,25 +90,17 @@ void XE::LocalizationService::LoadLocalized()
 
 	if ( ifs.is_open() )
 	{
-		std::string buf( 2048, 0 );
-
-		ifs.getline( buf.data(), 2048 );
-		
-		auto title = StringUtils::Split( buf, "," );
-		title.erase( title.begin() );
+		aria::csv::CsvParser parser( ifs );
 
 		XE::Array< XE::uint64 > indexs( XE::MemoryResource::GetStackMemoryResource() );
-		for( const auto & i : title )
+		for( const auto & i : *parser.begin() )
 		{
-			indexs.push_back( ( XE::uint64 )::XE_EnumID<Language>::Get()->FindValue( i ).Value< XE::Language >() );
+			indexs.push_back( ( XE::uint64 )::XE_EnumID< Language >::Get()->FindValue( i ).Value< XE::Language >() );
 		}
 
-		while ( !ifs.eof() )
+		for( auto it = ++parser.begin(); it != parser.end(); ++it )
 		{
-			buf[0] = 0;
-			ifs.getline( buf.data(), 2048 );
-
-			std::vector<std::string> list = StringUtils::Split( buf, "," );
+			auto list = *it;
 
 			for( int i = 1; i < list.size(); ++i )
 			{

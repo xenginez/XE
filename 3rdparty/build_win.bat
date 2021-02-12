@@ -261,6 +261,11 @@ cd %RD3_PATH%
 xcopy %cd%\miniaudio\miniaudio.h %RD3_PATH%\..\depend\include\miniaudio\ /y
 xcopy %cd%\miniaudio\extras\stb_vorbis.c %RD3_PATH%\..\depend\include\miniaudio\ /y
 
+:BUILD_CSV
+echo "copy csv-parser head file to depend"
+cd %RD3_PATH%
+xcopy %cd%\csv-parser\parser.hpp %RD3_PATH%\..\depend\include\csv-parser\ /e /y
+
 
 :EXIT
 pause
