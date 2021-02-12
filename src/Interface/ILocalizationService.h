@@ -28,7 +28,7 @@ public:
 	virtual void SetCurrentLanguage( Language val ) = 0;
 
 public:
-	virtual const String & LocalizedString( const String & key, const String & defualt = "" ) const = 0;
+	virtual const String & LocalizedString( const String & key ) const = 0;
 };
 
 END_XE_NAMESPACE

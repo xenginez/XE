@@ -68,7 +68,7 @@ void XE::LocalizationService::SetCurrentLanguage( XE::Language val )
 	GetFramework()->SetString( "System/Language", ::XE_EnumID<Language>::Get()->FindName( (XE::int64)_p->_Language ) );
 }
 
-const XE::String & XE::LocalizationService::LocalizedString( const XE::String & key, const XE::String& defualt /*= ""*/ ) const
+const XE::String & XE::LocalizationService::LocalizedString( const XE::String & key ) const
 {
 	auto it = _p->_Maps[( XE::uint64 )_p->_Language].find( key );
 
@@ -77,7 +77,7 @@ const XE::String & XE::LocalizationService::LocalizedString( const XE::String & 
 		return it->second;
 	}
 
-	return defualt;
+	return key;
 }
 
 void XE::LocalizationService::LoadLocalized()

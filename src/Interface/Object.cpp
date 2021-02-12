@@ -23,7 +23,7 @@ void XE::Object::AssetLoad()
 
 const XE::String & XE::Object::Tr( const XE::String & val ) const
 {
-	return XE::IFramework::GetCurrentFramework()->GetServiceT< XE::ILocalizationService >()->LocalizedString( GetMetaClass()->GetFullName() + "." + val, val );
+	return XE::IFramework::GetCurrentFramework()->GetServiceT< XE::ILocalizationService >()->LocalizedString( val );
 }
 
 void XE::Object::ProcessEvent( const XE::EventPtr & val )
