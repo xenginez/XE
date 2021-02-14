@@ -46,19 +46,19 @@ public:
 	template< typename ... ARGS > static std::string Format( const std::string & fmt, ARGS && ... args )
 	{
 		std::string str = fmt;
-		_Format( str, 1, std::move( args )... );
+		_Format( str, 1, std::forward<ARGS>( args )... );
 		return str;
 	}
 
 private:
 	template< typename T > static void _Format( std::string & fmt, XE::uint64 index, T && val )
 	{
-		std::regex regex( ( "%" + XE::ToString( index ) ).c_str() );
+		std::regex regex( ( "%" + XE::ToString( std::move( index ) ) ).c_str() );
 
 		fmt = std::regex_replace( fmt, regex, XE::ToString( val ) );
 	}
 
-	template< typename T, typename ... ARGS > static void _Format( std::string & fmt, XE::uint64 index, T val, ARGS && ... args )
+	template< typename T, typename ... ARGS > static void _Format( std::string & fmt, XE::uint64 index, T && val, ARGS && ... args )
 	{
 		_Format( fmt, index, std::forward<T>( val ) );
 		_Format( fmt, ++index, std::forward<ARGS>( args )... );

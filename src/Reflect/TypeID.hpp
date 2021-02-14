@@ -92,4 +92,23 @@ template< typename T > struct XE_TypeID< XE::SharedPtr< T > >
 
 };
 
+template< typename T > XE_INLINE std::string ToString( T _Val )
+{
+	if constexpr( std::is_enum_v< T > )
+	{
+		if( auto e = XE_EnumID< T >::Get()->FindName( _Val ) )
+		{
+			return e.ToStdString() + "(" + XE::ToString( ( XE::uint64 )_Val ) + ")";
+		}
+		else
+		{
+			return XE::ToString( ( XE::uint64 )_Val );
+		}
+	}
+	else
+	{
+		return XE_ClassID< T >::Get( &_Val )->GetFullName();
+	}
+}
+
 #endif // TYPEID_HPP__1C7147FB_7591_47E2_B804_CD182F01438A

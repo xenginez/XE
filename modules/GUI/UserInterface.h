@@ -13,9 +13,9 @@
 
 BEG_GUI_NAMESPACE
 
-class GUI_API UserInterface : public XE::IUserInterface
+class GUI_API UserInterface : public XE::Object
 {
-	OBJECT( UserInterface, IUserInterface )
+	OBJECT( UserInterface, Object )
 
 public:
 	UserInterface();
@@ -32,12 +32,12 @@ public:
 public:
 	template< typename T > WidgetHandle AddWidgetT()
 	{
-		return AddWidget( ClassID<T>::Get() );
+		return AddWidget( XE_ClassID<T>::Get() );
 	}
 
 	template< typename T > XE::SharedPtr<T> GetWidgetT() const
 	{
-		return SP_CAST<T>( GetWidget( ClassID<T>::Get() ) );
+		return SP_CAST<T>( GetWidget( XE_ClassID<T>::Get() ) );
 	}
 
 private:

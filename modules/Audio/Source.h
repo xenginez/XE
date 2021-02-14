@@ -72,9 +72,9 @@ public:
 
 	void SetMaxDistance( XE::float32 val );
 
-	const XE::AudioClipPtr & GetAudioClip() const;
+	const Audio::ClipPtr & GetAudioClip() const;
 
-	void SetAudioClip( const XE::AudioClipPtr & val );
+	void SetAudioClip( const Audio::ClipPtr & val );
 
 private:
 	bool _Loop = false;
@@ -86,7 +86,7 @@ private:
 	XE::Vec3f _Direction = {};
 	XE::float32 _MinDistance = 1.0f;
 	XE::float32 _MaxDistance = 1000.0f;
-	XE::AudioClipPtr _AudioClip = nullptr;
+	Audio::ClipPtr _AudioClip = nullptr;
 };
 
 END_AUDIO_NAMESPACE

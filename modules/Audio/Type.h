@@ -13,17 +13,17 @@
 
 BEG_AUDIO_NAMESPACE
 
-DECL_PTR( AudioClip );
-DECL_PTR( AudioSource );
-DECL_PTR( AudioMixer );
+DECL_PTR( Clip );
+DECL_PTR( Mixer );
+DECL_PTR( Source );
 
-enum class AudioFormat
+enum class Format
 {
 	PCM,
 	MP3,
 	OGG,
 };
-DECL_META_ENUM( AUDIO_API, AudioFormat );
+DECL_META_ENUM( AUDIO_API, Format );
 
 DECL_META_MODULE( AUDIO_API );
 

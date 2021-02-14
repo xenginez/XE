@@ -29,13 +29,13 @@ public:
 
 	XE::uint32 GetSampleRate() const;
 
-	XE::AudioFormat GetAudioFormat() const;
+	Audio::Format GetAudioFormat() const;
 
 private:
 	XE::uint16 _Bits;
 	XE::uint16 _Channels;
 	XE::uint32 _SampleRate;
-	XE::AudioFormat _Format;
+	Audio::Format _Format;
 
 	XE::Asset _SoundPath;
 };

@@ -20,7 +20,7 @@ void Audio::Source::Startup()
 	}
 }
 
-void Audio::Source::Update( Audio::float32 dt )
+void Audio::Source::Update( XE::float32 dt )
 {
 
 }
@@ -120,12 +120,12 @@ void Audio::Source::SetMaxDistance( XE::float32 val )
 	_MaxDistance = val;
 }
 
-const XE::AudioClipPtr & Audio::Source::GetAudioClip() const
+const Audio::ClipPtr & Audio::Source::GetAudioClip() const
 {
 	return _AudioClip;
 }
 
-void Audio::Source::SetAudioClip( const XE::AudioClipPtr & val )
+void Audio::Source::SetAudioClip( const Audio::ClipPtr & val )
 {
 	_AudioClip = val;
 }

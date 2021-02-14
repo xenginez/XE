@@ -9,7 +9,7 @@
 #ifndef MIXER_H__CB4561E0_62A1_4154_B128_2138CF778838
 #define MIXER_H__CB4561E0_62A1_4154_B128_2138CF778838
 
-#include "AudioSource.h"
+#include "Source.h"
 
 BEG_AUDIO_NAMESPACE
 
