@@ -2,10 +2,8 @@
 
 #include "RendererContextNull.h"
 #include "RendererContextMetal.h"
-#include "RendererContextOpenGL.h"
 #include "RendererContextVulkan.h"
 #include "RendererContextSoftware.h"
-#include "RendererContextDirectX11.h"
 #include "RendererContextDirectX12.h"
 
 struct XE::Gfx::Private
@@ -35,23 +33,17 @@ XE::List<XE::RendererContextType> XE::Gfx::GetSupportedContext()
 
 #if PLATFORM_OS & (OS_WINDOWS)
 	ret.push_back( XE::RendererContextType::DIRECT3D12 );
-	ret.push_back( XE::RendererContextType::DIRECT3D11 );
 	ret.push_back( XE::RendererContextType::VULKAN );
-	ret.push_back( XE::RendererContextType::OPENGL );
 #elif PLATFORM_OS & (OS_XBOX)
 	ret.push_back( XE::RendererContextType::DIRECT3D12 );
 #elif PLATFORM_OS & (OS_MAC)
 	ret.push_back( XE::RendererContextType::METAL );
-	ret.push_back( XE::RendererContextType::OPENGL );
 #elif PLATFORM_OS & (OS_IOS)
 	ret.push_back( XE::RendererContextType::METAL );
-	ret.push_back( XE::RendererContextType::OPENGL );
 #elif PLATFORM_OS & (OS_ANDROID)
 	ret.push_back( XE::RendererContextType::VULKAN );
-	ret.push_back( XE::RendererContextType::OPENGL );
 #elif PLATFORM_OS & (OS_LINUX)
 	ret.push_back( XE::RendererContextType::VULKAN );
-	ret.push_back( XE::RendererContextType::OPENGL );
 #endif
 
 	ret.push_back( XE::RendererContextType::SOFTWARE );
@@ -74,13 +66,6 @@ void XE::Gfx::Init( const XE::InitDesc & val )
 			break;
 		case XE::RendererContextType::VULKAN:
 			_p->_Context = XE::CreateRendererContextVulkan();
-			break;
-		case XE::RendererContextType::OPENGL:
-		case XE::RendererContextType::OPENGLES:
-			_p->_Context = XE::CreateRendererContextGL();
-			break;
-		case XE::RendererContextType::DIRECT3D11:
-			_p->_Context = XE::CreateRendererContextDirectX11();
 			break;
 		case XE::RendererContextType::DIRECT3D12:
 			_p->_Context = XE::CreateRendererContextDirectX12();

@@ -427,9 +427,6 @@ enum class RendererContextType
 	NIL,          // Null
 	METAL,        // Metal
 	VULKAN,       // Vulkan
-	OPENGL,       // OpenGL4.3
-	OPENGLES,     // OpenGLES3.0
-	DIRECT3D11,   // Direct3D 11.0
 	DIRECT3D12,   // Direct3D 12.0
 	SOFTWARE,	  // Software
 };
