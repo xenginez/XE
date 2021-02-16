@@ -241,6 +241,7 @@ msbuild.exe ".\INSTALL.vcxproj"  /m /nr:true ^
     /p:UseSubFolderForOutputDirDuringMultiPlatformBuild=false
 echo "copy lz4 debug file to depend"
 xcopy %cd%\install\lib\lz4.lib %RD3_PATH%\..\depend\lib\win\debug\ /e /y
+xcopy %cd%\install\lib\lz4.pdb %RD3_PATH%\..\depend\lib\win\debug\ /e /y
 del %cd%\install\ /f /s /q
 echo "build lz4 release"
 cd %RD3_PATH%

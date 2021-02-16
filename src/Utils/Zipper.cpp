@@ -240,7 +240,7 @@ bool XE::Unzipper::Open( std::istream & stream )
 	}
 
 	_p->_Stream = &stream;
-	_p->_Stream->seekg( -sizeof( XE::uint64 ), std::ios::end );
+	_p->_Stream->seekg( -int(sizeof( XE::uint64 )), std::ios::end );
 	XE::uint64 pos = 0;
 	( *_p->_Stream ) >> pos;
 	_p->_Stream->seekg( pos );
@@ -262,6 +262,8 @@ bool XE::Unzipper::Open( std::istream & stream )
 	}
 
 	_p->_Stream->seekg( 0, std::ios::beg );
+
+	return true;
 }
 
 bool XE::Unzipper::IsOpen() const
