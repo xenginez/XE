@@ -271,6 +271,11 @@ echo "copy d3dx12 head file to depend"
 cd %RD3_PATH%
 xcopy %cd%\D3DX12\d3dx12.hpp %RD3_PATH%\..\depend\include\D3DX12\ /e /y
 
+:BUILD_VULKAN
+echo "copy vulkan head file to depend"
+cd %RD3_PATH%
+xcopy %cd%\Vulkan-Headers\include\vulkan\*.* %RD3_PATH%\..\depend\include\vulkan\ /e /y
+
 
 :EXIT
 pause
