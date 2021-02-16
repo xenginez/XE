@@ -28,3 +28,6 @@
 [submodule "3rdparty/csv2"]
 	path = 3rdparty/csv2
 	url = https://github.com/p-ranav/csv2.git
+[submodule "3rdparty/D3DX12"]
+	path = 3rdparty/D3DX12
+	url = https://github.com/vilbeyli/D3DX12.git

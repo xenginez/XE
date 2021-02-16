@@ -266,6 +266,11 @@ echo "copy csv2 head file to depend"
 cd %RD3_PATH%
 xcopy %cd%\csv2\single_include\csv2\csv2.hpp %RD3_PATH%\..\depend\include\csv2\ /e /y
 
+:BUILD_D3DX12
+echo "copy d3dx12 head file to depend"
+cd %RD3_PATH%
+xcopy %cd%\D3DX12\d3dx12.hpp %RD3_PATH%\..\depend\include\D3DX12\ /e /y
+
 
 :EXIT
 pause

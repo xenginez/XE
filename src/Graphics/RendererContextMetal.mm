@@ -1,6 +1,6 @@
 #include "RendererContextMetal.h"
 
-#if PLATFORM_OS & (OS_MAC | OS_IOS)
+#if PLATFORM_OS & ( OS_MAC | OS_IOS )
 
 XE::RendererContextMetal::RendererContextMetal()
 {

@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-#if PLATFORM_OS & (OS_MAC | OS_IOS)
+#if PLATFORM_OS & ( OS_MAC | OS_IOS )
 
 class RendererContextMetal : public XE::RendererContext
 {

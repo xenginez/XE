@@ -13,7 +13,7 @@
 
 BEG_XE_NAMESPACE
 
-#if PLATFORM_OS & (OS_WINDOWS | OS_ANDROID | OS_LINUX)
+#if PLATFORM_OS & ( OS_WINDOWS | OS_ANDROID | OS_LINUX )
 
 class RendererContextVulkan : public XE::RendererContext
 {

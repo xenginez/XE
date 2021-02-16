@@ -1,6 +1,6 @@
 #include "RendererContextVulkan.h"
 
-#if PLATFORM_OS & (OS_WINDOWS | OS_ANDROID | OS_LINUX)
+#if PLATFORM_OS & ( OS_WINDOWS | OS_ANDROID | OS_LINUX )
 
 XE::RendererContextVulkan::RendererContextVulkan()
 {
