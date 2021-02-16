@@ -276,6 +276,12 @@ echo "copy vulkan head file to depend"
 cd %RD3_PATH%
 xcopy %cd%\Vulkan-Headers\include\vulkan\*.* %RD3_PATH%\..\depend\include\vulkan\ /e /y
 
+:BUILD_VOLK
+echo "copy volk head file to depend"
+cd %RD3_PATH%
+xcopy %cd%\volk\volk.h %RD3_PATH%\..\depend\include\volk\ /e /y
+xcopy %cd%\volk\volk.c %RD3_PATH%\..\depend\include\volk\ /e /y
+
 
 :EXIT
 pause

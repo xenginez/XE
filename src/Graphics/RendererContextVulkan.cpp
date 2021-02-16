@@ -23,10 +23,10 @@
 #define VK_NO_STDINT_H
 #define VK_NO_PROTOTYPES
 
-extern "C"
-{
 #include <vulkan/vulkan.h>
-}
+
+#define VOLK_IMPLEMENTATION
+#include <volk/volk.h>
 
 BEG_XE_NAMESPACE
 
