@@ -27,6 +27,8 @@ set RD3_PATH=%cd%
 echo "update git submodule"
 git submodule update --init --recursive
 
+
+
 :BUILD_OZZ
 cd %RD3_PATH%
 echo "build ozz-animation debug"
@@ -226,6 +228,34 @@ xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\ /e /y
 del %cd%\install\ /f /s /q
 
 
+:BUILD_LZ4
+echo "build lz4 debug"
+cd %RD3_PATH%
+mkdir .\lz4\build\cmake\build
+cd .\lz4\build\cmake\build
+cmake -DBUILD_SHARED_LIB=OFF -DBUILD_STATIC_LIB=ON -DLZ4_BUILD_CIL=OFF -DLZ4_BUILD_LEGACY_LZ4C=OFF -DLZ4_POSITION_INDEPENDENT_LIB=OFF -DCMAKE_INSTALL_PREFIX=.\install\ .. -G "Visual Studio 16 2019"
+msbuild.exe ".\INSTALL.vcxproj"  /m /nr:true ^
+    /p:Configuration=Debug ^
+    /p:Platform=x64 ^
+    /p:AppxBundlePlatforms=x64 ^
+    /p:UseSubFolderForOutputDirDuringMultiPlatformBuild=false
+echo "copy lz4 debug file to depend"
+xcopy %cd%\install\lib\lz4.lib %RD3_PATH%\..\depend\lib\win\debug\ /e /y
+del %cd%\install\ /f /s /q
+echo "build lz4 release"
+cd %RD3_PATH%
+cd .\lz4\build\cmake\build
+msbuild.exe ".\INSTALL.vcxproj"  /m /nr:true ^
+    /p:Configuration=Release ^
+    /p:Platform=x64 ^
+    /p:AppxBundlePlatforms=x64 ^
+    /p:UseSubFolderForOutputDirDuringMultiPlatformBuild=false
+echo "copy lz4 release file to depend"
+xcopy %cd%\install\lib\lz4.lib %RD3_PATH%\..\depend\lib\win\release\ /e /y
+xcopy %cd%\install\include\*.* %RD3_PATH%\..\depend\include\lz4\ /e /y
+del %cd%\install\ /f /s /q
+
+
 
 
 
@@ -269,7 +299,7 @@ xcopy %cd%\csv2\single_include\csv2\csv2.hpp %RD3_PATH%\..\depend\include\csv2\ 
 :BUILD_D3DX12
 echo "copy d3dx12 head file to depend"
 cd %RD3_PATH%
-xcopy %cd%\D3DX12\d3dx12.hpp %RD3_PATH%\..\depend\include\D3DX12\ /e /y
+xcopy %cd%\D3DX12\d3dx12.h %RD3_PATH%\..\depend\include\D3DX12\ /e /y
 
 :BUILD_VULKAN
 echo "copy vulkan head file to depend"
