@@ -1,6 +1,6 @@
 #include "RendererContextDirectX12.h"
 
-#if PLATFORM_OS & (OS_WINDOWS | OS_XBOX)
+#if PLATFORM_OS & ( OS_WINDOWS | OS_XBOX )
 
 #if PLATFORM_OS == OS_XBOX
 #include <d3d12_x.h>
@@ -14,37 +14,46 @@ BEG_XE_NAMESPACE
 namespace D3D12
 {
 	class ScratchBuffer
-	{ };
+	{
+	};
 	class DescriptorAllocator
-	{ };
+	{
+	};
 	class Buffer
-	{ };
+	{
+	};
 	class VertexBuffer
-	{ };
+	{
+	};
 	class Shader
-	{ };
+	{
+	};
 	class Program
-	{ };
+	{
+	};
 	class Texture
-	{ };
+	{
+	};
 	class FrameBuffer
-	{ };
+	{
+	};
 	class CommandQueue
-	{ };
+	{
+	};
 	class Batch
-	{ };
+	{
+	};
 	class TimerQuery
-	{ };
+	{
+	};
 	class OcclusionQuery
-	{ };
+	{
+	};
 	class RenderContext
-	{ };
-}
+	{
+	};
 
-XE::D3D12::RenderContext * _RTX = nullptr;
-
-namespace D3D12
-{
+	XE::D3D12::RenderContext * _RTX = nullptr;
 
 }
 
