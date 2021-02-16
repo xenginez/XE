@@ -14,6 +14,7 @@ END_META()
 
 struct XE::AssetsService::Private
 {
+	XE::Array< std::ifstream > _Streams;
 	XE::Array< XE::Unzipper > _Packages;
 	tbb::concurrent_hash_map<XE::String, XE::ObjectWPtr, StringHashCompare > _ObjectCache;
 	tbb::concurrent_lru_cache<XE::String, XE::MemoryStream> _MemoryCache = { []( XE::String )->XE::MemoryStream {return {};}, 1000 };
@@ -41,7 +42,18 @@ bool XE::AssetsService::Startup()
 	for( ; beg != end; ++beg )
 	{
 		auto path = beg->path();
-		_p->_Packages.push_back( { beg->path().u8string() } );
+		if( path.extension() == ".assets" )
+		{
+			std::ifstream ifs( path, std::ios::binary );
+			if( ifs.is_open() )
+			{
+				_p->_Packages.push_back( { _p->_Streams.emplace_back( std::move( ifs ) ) } );
+			}
+			else
+			{
+				XE_LOG( LoggerLevel::Error, "%1 open failed!", path );
+			}
+		}
 	}
 
 	return true;
@@ -60,8 +72,9 @@ void XE::AssetsService::Update()
 
 void XE::AssetsService::Clearup()
 {
-	_p->_Packages.clear();
 	_p->_ObjectCache.clear();
+	_p->_Packages.clear();
+	_p->_Streams.clear();
 }
 
 XE::MemoryView XE::AssetsService::Load( const XE::String & path )

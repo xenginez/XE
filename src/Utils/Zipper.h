@@ -21,15 +21,15 @@ private:
 public:
     Zipper();
 
-	Zipper( const std::string & zipname );
+	Zipper( std::ostream & stream );
 
     ~Zipper();
 
 public:
-	bool Add( std::istream & source, const std::string & name, const std::string & password = "" );
+	bool AddEntiy( const std::string & name, std::istream & source );
 
 public:
-    bool Open( const std::string & zipname );
+    bool Open( std::ostream & stream );
 
     bool IsOpen() const;
 
@@ -47,19 +47,19 @@ class XE_API Unzipper
 public:
 	Unzipper();
 
-	Unzipper( const std::string & zipname );
+	Unzipper( std::istream & stream );
 
 	~Unzipper();
 
 public:
-	bool GetEntries( XE::Array< std::string > & entries ) const;
+	void GetEntries( XE::Array< std::string > & entries ) const;
 
 	bool ExtractEntiy( const std::string & name );
 
-	bool GetEntryData( const std::string & name, std::ostream & stream, const std::string & password = "" );
+	bool GetEntryData( const std::string & name, std::ostream & stream );
 
 public:
-	bool Open( const std::string & zipname );
+	bool Open( std::istream & stream );
 
 	bool IsOpen() const;
 
