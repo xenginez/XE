@@ -153,7 +153,7 @@ void XE::SceneComponent::Startup()
 
 void XE::SceneComponent::Update( XE::float32 dt )
 {
-	if( _Enabled == false || _Update == false )
+	if( GetEnabled() == false )
 	{
 		return;
 	}
@@ -163,6 +163,21 @@ void XE::SceneComponent::Update( XE::float32 dt )
 	for ( auto child : _Children )
 	{
 		child->Update( dt );
+	}
+}
+
+void XE::SceneComponent::LateUpdate( XE::float32 dt )
+{
+	if( GetEnabled() == false )
+	{
+		return;
+	}
+
+	OnLateUpdate( dt );
+
+	for( auto child : _Children )
+	{
+		child->LateUpdate( dt );
 	}
 }
 

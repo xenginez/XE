@@ -36,6 +36,11 @@ void XE::SceneObject::Update( XE::float32 dt )
 
 }
 
+void XE::SceneObject::LateUpdate( XE::float32 dt )
+{
+
+}
+
 void XE::SceneObject::Clearup()
 {
 	if( _Zone )

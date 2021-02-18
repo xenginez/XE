@@ -50,6 +50,8 @@ protected:
 
 	virtual void Update( XE::float32 dt );
 
+	virtual void LateUpdate( XE::float32 dt );
+
 	virtual void Clearup();
 
 protected:

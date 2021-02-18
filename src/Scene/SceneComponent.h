@@ -90,11 +90,13 @@ public:
 	}
 
 private:
-	virtual void Startup() override;
+	void Startup() override;
 
-	virtual void Update( XE::float32 dt ) override;
+	void Update( XE::float32 dt ) override;
 
-	virtual void Clearup() override;
+	void LateUpdate( XE::float32 dt ) override;
+
+	void Clearup() override;
 
 public:
 	XE::AABB GetBoundingBox();
@@ -104,7 +106,6 @@ public:
 private:
 	XE::Transform _Transform;
 
-	XE::AABB _BoundingBox;
 	XE::SceneComponentWPtr _Parent;
 	XE::Array< SceneComponentPtr > _Children;
 };

@@ -259,10 +259,28 @@ void XE::GameObject::Update( XE::float32 dt )
 	{
 		if( _BehaviorComponents[i] )
 		{
-			if( _BehaviorComponents[i]->GetUpdate() )
-			{
-				_BehaviorComponents[i]->Update( dt );
-			}
+			_BehaviorComponents[i]->Update( dt );
+		}
+	}
+}
+
+void XE::GameObject::LateUpdate( XE::float32 dt )
+{
+	if( GetEnable() == false )
+	{
+		return;
+	}
+
+	if( _SceneComponent )
+	{
+		_SceneComponent->LateUpdate( dt );
+	}
+
+	for( XE::uint64 i = 0; i < _BehaviorComponents.size(); i++ )
+	{
+		if( _BehaviorComponents[i] )
+		{
+			_BehaviorComponents[i]->LateUpdate( dt );
 		}
 	}
 }

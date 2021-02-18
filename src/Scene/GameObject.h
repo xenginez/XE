@@ -74,6 +74,8 @@ protected:
 
 	void Update( XE::float32 dt ) override;
 
+	void LateUpdate( XE::float32 dt ) override;
+
 	void Clearup() override;
 
 protected:

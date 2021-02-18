@@ -35,10 +35,6 @@ public:
 	GameObjectPtr GetGameObject() const;
 
 public:
-	bool GetUpdate() const;
-
-	void SetUpdate( bool val );
-
 	bool GetEnabled() const;
 
 	void SetEnabled( bool val );
@@ -52,6 +48,8 @@ protected:
 
 	virtual void Update( XE::float32 dt );
 
+	virtual void LateUpdate( XE::float32 dt );
+
 	virtual void Clearup();
 
 protected:
@@ -59,11 +57,12 @@ protected:
 
 	virtual void OnUpdate( XE::float32 dt );
 
+	virtual void OnLateUpdate( XE::float32 dt );
+
 	virtual void OnClearup();
 
-public:
+private:
 	String _Name;
-	bool _Update;
 	bool _Enabled;
 	WorldWPtr _World;
 	ComponentHandle _Handle;

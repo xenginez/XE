@@ -9,7 +9,7 @@ type->Property( "Enabled", &Component::_Enabled );
 END_META()
 
 XE::Component::Component()
-	:_Update( false ), _Enabled( true ), _Name( GetMetaClass()->GetName() )
+	:_Enabled( true ), _Name( GetMetaClass()->GetName() )
 {
 
 }
@@ -32,16 +32,6 @@ XE::WorldPtr XE::Component::GetWorld() const
 XE::GameObjectPtr XE::Component::GetGameObject() const
 {
 	return _GameObject.lock();
-}
-
-bool XE::Component::GetUpdate() const
-{
-	return _Update;
-}
-
-void XE::Component::SetUpdate( bool val )
-{
-	_Update = val;
 }
 
 bool XE::Component::GetEnabled() const
@@ -71,12 +61,22 @@ void XE::Component::Startup()
 
 void XE::Component::Update( XE::float32 dt )
 {
-	if ( _Enabled == false || _Update == false )
+	if ( _Enabled == false )
 	{
 		return;
 	}
 
 	OnUpdate( dt );
+}
+
+void XE::Component::LateUpdate( XE::float32 dt )
+{
+	if( _Enabled == false )
+	{
+		return;
+	}
+
+	OnLateUpdate( dt );
 }
 
 void XE::Component::Clearup()
@@ -90,6 +90,11 @@ void XE::Component::OnStartup()
 }
 
 void XE::Component::OnUpdate( XE::float32 dt )
+{
+
+}
+
+void XE::Component::OnLateUpdate( XE::float32 dt )
 {
 
 }
