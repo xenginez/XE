@@ -55,18 +55,19 @@
 /// PLATFORM OS
 
 #define OS_WINDOWS		1 << 1
-#define OS_MAC			1 << 2
-#define OS_IOS			1 << 3
-#define OS_ANDROID		1 << 4
-#define OS_PLAY_STATION	1 << 5
+#define OS_HTML5		1 << 2
+#define OS_MAC			1 << 3
+#define OS_IOS			1 << 4
+#define OS_ANDROID		1 << 5
 #define OS_XBOX			1 << 6
 #define OS_NINTENDO		1 << 7
-#define OS_LINUX		1 << 8
-#define OS_BSD			1 << 9
-#define OS_HTML5		1 << 10
+#define OS_PLAY_STATION	1 << 8
+#define OS_LINUX		1 << 9
 
 #ifdef _WIN32
 #		define PLATFORM_OS OS_WINDOWS
+#elif __EMSCRIPTEN__
+#		define PLATFORM_OS OS_HTML5
 #elif __APPLE__
 #include "TargetConditionals.h"
 #if TARGET_IPHONE_SIMULATOR
@@ -80,10 +81,6 @@
 #		define PLATFORM_OS OS_ANDROID
 #elif __linux__
 #		define PLATFORM_OS OS_LINUX
-#elif __OpenBSD__
-#		define PLATFORM_OS OS_BSD
-#elif __EMSCRIPTEN__
-#		define PLATFORM_OS OS_HTML5
 #else
 #   error "unknown platform"
 #endif
