@@ -17,6 +17,7 @@ static constexpr char * CONFIG_FILE_NAME = "Config.json";
 static constexpr char * LANGUAGE_FILE_NAME = "Language.csv";
 
 static constexpr char * ASSETS_DIRECTORY = "Assets";
+static constexpr char * CACHES_DIRECTORY = "Caches";
 static constexpr char * MODULES_DIRECTORY = "Modules";
 static constexpr char * USERDATAS_DIRECTORY = "UserDatas";
 

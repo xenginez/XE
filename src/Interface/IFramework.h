@@ -53,6 +53,8 @@ public:
 
 	virtual std::filesystem::path GetAssetsPath() const = 0;
 
+	virtual std::filesystem::path GetCachesPath() const = 0;
+
 	virtual std::filesystem::path GetUserDataPath() const = 0;
 
 	virtual std::filesystem::path GetApplicationPath() const = 0;

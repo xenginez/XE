@@ -173,6 +173,11 @@ std::filesystem::path XE::CoreFramework::GetAssetsPath() const
 	return GetApplicationPath().parent_path() / ASSETS_DIRECTORY;
 }
 
+std::filesystem::path XE::CoreFramework::GetCachesPath() const
+{
+	return GetApplicationPath().parent_path() / CACHES_DIRECTORY;
+}
+
 std::filesystem::path XE::CoreFramework::GetUserDataPath() const
 {
 	return GetApplicationPath().parent_path() / USERDATAS_DIRECTORY;

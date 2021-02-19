@@ -45,6 +45,8 @@ public:
 
 	std::filesystem::path GetAssetsPath() const override;
 
+	std::filesystem::path GetCachesPath() const override;
+
 	std::filesystem::path GetUserDataPath() const override;
 
 	std::filesystem::path GetApplicationPath() const override;

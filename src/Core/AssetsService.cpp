@@ -87,7 +87,7 @@ XE::MemoryView XE::AssetsService::Load( const XE::String & path )
 		return handle.value().view();
 	}
 
-	auto fullpath( GetFramework()->GetAssetsPath() / list[0] );
+	auto fullpath( GetFramework()->GetCachesPath() / list[0] );
 
 	if( std::filesystem::exists( fullpath ) )
 	{
