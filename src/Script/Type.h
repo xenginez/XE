@@ -13,6 +13,12 @@
 
 BEG_XE_NAMESPACE
 
+DECL_PTR( ScriptGC );
+DECL_PTR( ScriptObject );
+DECL_PTR( ScriptModule );
+DECL_PTR( ScriptRuntime );
+DECL_PTR( ScriptExecutor );
+
 END_XE_NAMESPACE
 
 #endif // TYPE_H__58A3FB6C_2CBE_47CE_9C49_F55E95E29D1C
