@@ -23,6 +23,7 @@ set(INC_DIRS
 		Reflect
 		Render
 		Scene
+		Script
 		Utils
 )
 

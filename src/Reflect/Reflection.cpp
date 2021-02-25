@@ -20,10 +20,10 @@ template<> struct XE::MetaDataCollector<XE::Reflection>
 			auto type = Reflection::Class<VariantQueue>::Get();
 		}
 		{
-			auto type = Reflection::Class<VariantArray>::Get();
+auto type = Reflection::Class<VariantArray>::Get();
 		}
 		{
-			auto type = Reflection::Class<VariantPair>::Get();
+		auto type = Reflection::Class<VariantPair>::Get();
 		}
 		{
 			auto type = Reflection::Class<VariantSet>::Get();
@@ -109,9 +109,6 @@ void XE::Reflection::RegisterMetaInfo( IMetaInfoPtr val )
 	case MetaType::ENUM:
 		_p->Enums.insert( std::make_pair( val->GetFullName(), SP_CAST<IMetaEnum>( val ) ) );
 		break;
-	case MetaType::MODULE:
-		_p->Modules.insert( std::make_pair( val->GetFullName(), SP_CAST<IMetaModule>( val ) ) );
-		break;
 	case MetaType::METHOD:
 		_p->Methods.insert( std::make_pair( val->GetFullName(), SP_CAST<IMetaMethod>( val ) ) );
 		break;
@@ -138,6 +135,17 @@ void XE::Reflection::RegisterMetaInfo( IMetaInfoPtr val )
 								{
 									_p->Operators.insert( std::make_pair( oper->GetFullName(), oper ) );
 								} );
+		}
+		break;
+	case MetaType::MODULE:
+		if( IMetaModulePtr mod = SP_CAST<IMetaModule>( val ) )
+		{
+			_p->Modules.insert( std::make_pair( val->GetFullName(), mod ) );
+
+			mod->Visit( []( IMetaInfoPtr info )
+						{
+							Reflection::RegisterMetaInfo( info );
+						} );
 		}
 		break;
 	default:
