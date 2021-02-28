@@ -13,9 +13,37 @@
 
 BEG_XE_NAMESPACE
 
-class XE_API ScriptModule
+class XE_API ScriptModule : public XE::Object
 {
+	OBJECT( ScriptModule, Object )
 
+public:
+	ScriptModule();
+
+	~ScriptModule();
+
+public:
+	XE::IMetaModulePtr GetMetaModule() const;
+
+public:
+	static ScriptModulePtr LoadModule( const std::filesystem::path & path );
+
+private:
+	XE::String _Name;
+	XE::uint64 _Start;
+
+	XE::Array< int > _Customs;
+	XE::Array< int > _Types;
+	XE::Array< int > _Imports;
+	XE::Array< int > _Functions;
+	XE::Array< int > _Tables;
+	XE::Array< int > _Memorys;
+	XE::Array< int > _Globals;
+	XE::Array< int > _Exports;
+	XE::Array< int > _Elems;
+	XE::Array< int > _Datas;
+
+	XE::IMetaModulePtr _MetaModule;
 };
 
 END_XE_NAMESPACE

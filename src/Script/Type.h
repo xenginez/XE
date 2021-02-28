@@ -10,6 +10,7 @@
 #define TYPE_H__58A3FB6C_2CBE_47CE_9C49_F55E95E29D1C
 
 #include "GC/GC.h"
+#include "Interface/Object.h"
 
 BEG_XE_NAMESPACE
 
@@ -212,13 +213,22 @@ enum class ScriptSection : XE::uint8
 	TABLE = 4,
 	MEMORY = 5,
 	GLOBAL = 6,
-	EXPORT_ = 7,
+	EXPORT = 7,
 	START = 8,
 	ELEM = 9,
 	CODE = 10,
 	DATA = 11,
 	DATACOUNT = 12,
-	EXCEPTIONTYPE = 0X7F,
+};
+
+enum class ScriptTypeKind
+{
+	I32 = 0x7F,
+	I64 = 0x7E,
+	F32 = 0x7D,
+	F64 = 0x7C,
+	FUNC = 0x60,
+	ANY = 0x70,
 };
 
 enum class ScriptGCStatus : XE::uint8
@@ -237,6 +247,34 @@ enum class ScriptGCMarker : XE::uint8
 	WHITE1 = 1 << 2,
 	WHITE2 = 1 << 3,
 	WHITE = WHITE1 | WHITE2,
+};
+
+enum class ScriptValueType : XE::uint8
+{
+	I32,
+	I64,
+	U32,
+	U64,
+	F32,
+	F64,
+	OBJ,
+};
+
+
+struct XE_API ScriptValue
+{
+	ScriptValueType Type;
+
+	union
+	{
+		XE::int32 i32;
+		XE::int64 i64;
+		XE::uint32 u32;
+		XE::uint64 u64;
+		XE::float32 f32;
+		XE::float64 f64;
+		XE::ScriptObject * obj;
+	};
 };
 
 END_XE_NAMESPACE
