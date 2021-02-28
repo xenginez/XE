@@ -16,8 +16,8 @@ struct XE::ScriptGC::Private
 	XE::ScriptGCMarker _DefaultMark = ScriptGCMarker::WHITE1;
 	std::atomic< XE::ScriptGCStatus > _Status = ScriptGCStatus::NONE;
 
-	std::chrono::high_resolution_clock::time_point _MarkerStartTime;
-	std::chrono::high_resolution_clock::duration _MarkerDurationTime;
+	std::chrono::steady_clock::time_point _MarkerStartTime;
+	std::chrono::steady_clock::duration _MarkerDurationTime;
 
 	tbb::concurrent_queue< ScriptObject * > _MarkQueue;
 	tbb::concurrent_queue< ScriptObject * > _FinalizeQueue;
@@ -127,9 +127,9 @@ XE::ScriptGCStatus XE::ScriptGC::GetStatus() const
 	return _p->_Status;
 }
 
-bool XE::ScriptGC::Collect( const std::chrono::high_resolution_clock::duration & val /*= std::chrono::milliseconds( 6 ) */ )
+bool XE::ScriptGC::Collect( const std::chrono::steady_clock::duration & val /*= std::chrono::milliseconds( 6 ) */ )
 {
-	_p->_MarkerStartTime = std::chrono::high_resolution_clock::now();
+	_p->_MarkerStartTime = std::chrono::steady_clock::now();
 	_p->_MarkerDurationTime = val;
 
 	if( _p->_Status == ScriptGCStatus::NONE )
@@ -148,7 +148,7 @@ bool XE::ScriptGC::Collect( const std::chrono::high_resolution_clock::duration &
 
 		_p->_Status = ScriptGCStatus::PROPAGATE;
 
-		if( ( std::chrono::high_resolution_clock::now() - _p->_MarkerStartTime ) >= _p->_MarkerDurationTime )
+		if( ( std::chrono::steady_clock::now() - _p->_MarkerStartTime ) >= _p->_MarkerDurationTime )
 		{
 			return false;
 		}
@@ -180,7 +180,7 @@ bool XE::ScriptGC::Collect( const std::chrono::high_resolution_clock::duration &
 
 			obj->SetMarker( ScriptGCMarker::BLACK );
 
-			if( ( std::chrono::high_resolution_clock::now() - _p->_MarkerStartTime ) >= _p->_MarkerDurationTime )
+			if( ( std::chrono::steady_clock::now() - _p->_MarkerStartTime ) >= _p->_MarkerDurationTime )
 			{
 				return false;
 			}
@@ -225,7 +225,7 @@ bool XE::ScriptGC::Collect( const std::chrono::high_resolution_clock::duration &
 
 		_p->_Status = ScriptGCStatus::SWEEP;
 
-		if( ( std::chrono::high_resolution_clock::now() - _p->_MarkerStartTime ) >= _p->_MarkerDurationTime )
+		if( ( std::chrono::steady_clock::now() - _p->_MarkerStartTime ) >= _p->_MarkerDurationTime )
 		{
 			return false;
 		}
@@ -246,7 +246,7 @@ bool XE::ScriptGC::Collect( const std::chrono::high_resolution_clock::duration &
 
 			if( i % 10 == 0 )
 			{
-				if( ( std::chrono::high_resolution_clock::now() - _p->_MarkerStartTime ) >= _p->_MarkerDurationTime )
+				if( ( std::chrono::steady_clock::now() - _p->_MarkerStartTime ) >= _p->_MarkerDurationTime )
 				{
 					return false;
 				}
@@ -255,7 +255,7 @@ bool XE::ScriptGC::Collect( const std::chrono::high_resolution_clock::duration &
 
 		_p->_Status = ScriptGCStatus::FINALIZE;
 
-		if( ( std::chrono::high_resolution_clock::now() - _p->_MarkerStartTime ) >= _p->_MarkerDurationTime )
+		if( ( std::chrono::steady_clock::now() - _p->_MarkerStartTime ) >= _p->_MarkerDurationTime )
 		{
 			return false;
 		}
@@ -275,7 +275,7 @@ bool XE::ScriptGC::Collect( const std::chrono::high_resolution_clock::duration &
 
 			scalable_free( obj );
 
-			if( ( std::chrono::high_resolution_clock::now() - _p->_MarkerStartTime ) >= _p->_MarkerDurationTime )
+			if( ( std::chrono::steady_clock::now() - _p->_MarkerStartTime ) >= _p->_MarkerDurationTime )
 			{
 				return false;
 			}

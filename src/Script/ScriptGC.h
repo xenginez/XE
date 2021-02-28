@@ -43,7 +43,7 @@ public:
 	ScriptGCStatus GetStatus() const;
 
 public:
-	bool Collect( const std::chrono::high_resolution_clock::duration & val = std::chrono::milliseconds( 6 ) );
+	bool Collect( const std::chrono::steady_clock::duration & val = std::chrono::milliseconds( 6 ) );
 
 private:
 	Private * _p;
