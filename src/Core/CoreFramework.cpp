@@ -12,7 +12,7 @@
 #include "Utils/Logger.h"
 #include "Utils/Library.h"
 
-void nest_json( rapidjson::Value & parent, std::vector<std::string>::const_iterator beg, std::vector<std::string>::const_iterator end, const std::string & str, rapidjson::MemoryPoolAllocator<> & allocator )
+void nest_json( rapidjson::Value & parent, std::vector<XE::String>::const_iterator beg, std::vector<XE::String>::const_iterator end, const XE::String & str, rapidjson::MemoryPoolAllocator<> & allocator )
 {
 	if( beg != end )
 	{
@@ -374,7 +374,7 @@ void XE::CoreFramework::Save( const std::filesystem::path & path, const XE::Map 
 
 	for( const auto & it : values )
 	{
-		auto list = StringUtils::Split( it.first, "/" );
+		auto list = it.first.split( "/" );
 
 		auto json_it = doc.FindMember( list.front().c_str() );
 		if( json_it == doc.MemberEnd() )

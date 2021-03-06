@@ -26,7 +26,7 @@ public:
     ~Zipper();
 
 public:
-	bool AddEntiy( const std::string & name, std::istream & source );
+	bool AddEntiy( const XE::String & name, std::istream & source );
 
 public:
     bool Open( std::ostream & stream );
@@ -52,11 +52,11 @@ public:
 	~Unzipper();
 
 public:
-	void GetEntries( XE::Array< std::string > & entries ) const;
+	void GetEntries( XE::Array< XE::String > & entries ) const;
 
-	bool ExtractEntiy( const std::string & name );
+	bool ExtractEntiy( const XE::String & name );
 
-	bool GetEntryData( const std::string & name, std::ostream & stream );
+	bool GetEntryData( const XE::String & name, std::ostream & stream );
 
 public:
 	bool Open( std::istream & stream );

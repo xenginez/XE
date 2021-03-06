@@ -196,7 +196,7 @@ void XE::JsonSaveArchive::Serialize( NameValue & val )
 	else if( val.Value.GetType() == ::XE_TypeID<String>::Get() )
 	{
 		rapidjson::Value value( rapidjson::kStringType );
-		value.SetString( val.Value.Value<String>().ToCString(), _p->Doc.GetAllocator() );
+		value.SetString( val.Value.Value<String>().c_str(), _p->Doc.GetAllocator() );
 		_p->Values.top()->AddMember( rapidjson::Value( name.c_str(), _p->Doc.GetAllocator() ).Move(), value, _p->Doc.GetAllocator() );
 	}
 	else
@@ -207,7 +207,7 @@ void XE::JsonSaveArchive::Serialize( NameValue & val )
 		XE::uint32 flag = ( XE::uint32 )val.Value.GetFlag();
 
 		rapidjson::Value v_type( rapidjson::kStringType );
-		v_type.SetString( type->GetFullName().ToCString(), _p->Doc.GetAllocator() );
+		v_type.SetString( type->GetFullName().c_str(), _p->Doc.GetAllocator() );
 		value.AddMember( rapidjson::StringRef( "@type" ), v_type, _p->Doc.GetAllocator() );
 		rapidjson::Value v_flag( rapidjson::kNumberType );
 		v_flag.SetUint( flag );
@@ -222,7 +222,7 @@ void XE::JsonSaveArchive::Serialize( NameValue & val )
 		else if( auto enm = DP_CAST<IMetaEnum>( type ) )
 		{
 			rapidjson::Value v( rapidjson::kStringType );
-			v.SetString( enm->FindName( val.Value ).ToCString(), _p->Doc.GetAllocator() );
+			v.SetString( enm->FindName( val.Value ).c_str(), _p->Doc.GetAllocator() );
 			value.AddMember( rapidjson::StringRef( "@value" ), v.Move(), _p->Doc.GetAllocator() );
 		}
 		else if( auto cls = DP_CAST<IMetaClass>( type ) )
@@ -379,7 +379,7 @@ void XE::BinarySaveArchive::Serialize( NameValue & val )
 	auto type = val.Value.GetType();
 	XE::uint32 flag = ( XE::uint32 )val.Value.GetFlag();
 
-	_p->Stream << type->GetFullName().ToStdString() << flag;
+	_p->Stream << type->GetFullName().std_str() << flag;
 
 	if( type->GetType() == MetaType::ENUM )
 	{

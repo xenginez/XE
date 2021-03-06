@@ -1868,7 +1868,7 @@ XE::VariantException::~VariantException()
 
 char const * XE::VariantException::What() const
 {
-	return ( "VariantException: Variant Value Type[" + _Value.GetType()->GetFullName() + "] " + _Msg ).ToCString();
+	return ( "VariantException: Variant Value Type[" + _Value.GetType()->GetFullName() + "] " + _Msg ).c_str();
 }
 
 XE::Variant XE::VariantException::GetVariant() const

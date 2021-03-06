@@ -23,18 +23,18 @@ class XE_API Archive : public XE::NonCopyable
 public:
 	template< typename T > struct NVP
 	{
-		NVP( const std::string & name, T & val )
+		NVP( const XE::String & name, T & val )
 			:Name( name ), Value( val )
 		{ }
 
-		std::string Name;
+		XE::String Name;
 		T & Value;
 	};
 
 protected:
 	struct NameValue
 	{
-		std::string Name;
+		XE::String Name;
 		XE::Variant Value;
 	};
 

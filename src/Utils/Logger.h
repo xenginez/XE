@@ -22,7 +22,7 @@ class XE_API Logger : public XE::Singleton< Logger >
 public:
 	struct Private;
 
-	using ListenerType = std::function<void( const std::chrono::system_clock::time_point&, XE::LoggerLevel, const std::string & )>;
+	using ListenerType = std::function<void( const std::chrono::system_clock::time_point&, XE::LoggerLevel, const XE::String & )>;
 
 private:
 	Logger();
@@ -30,7 +30,7 @@ private:
 	~Logger();
 
 public:
-	void Log( XE::LoggerLevel level, const std::string & text );
+	void Log( XE::LoggerLevel level, const XE::String & text );
 
 public:
 	XE::Follow RegisterListener( XE::LoggerLevel level, ListenerType listener );

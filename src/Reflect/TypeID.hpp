@@ -98,7 +98,7 @@ template< typename T > XE_INLINE std::string ToString( T _Val )
 	{
 		if( auto e = XE_EnumID< T >::Get()->FindName( _Val ) )
 		{
-			return e.ToStdString() + "(" + XE::ToString( ( XE::uint64 )_Val ) + ")";
+			return e.std_str() + "(" + XE::ToString( ( XE::uint64 )_Val ) + ")";
 		}
 		else
 		{

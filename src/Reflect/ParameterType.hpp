@@ -55,7 +55,7 @@ XE_INLINE std::string ToString( const ParameterType & _Val )
 
 	for( int i = 0; i < _Val.size(); ++i )
 	{
-		ret += _Val[i]->GetFullName().ToStdString();
+		ret += _Val[i]->GetFullName().std_str();
 		if( i != _Val.size() - 1 )
 		{
 			ret += ", ";

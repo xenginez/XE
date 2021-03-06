@@ -164,7 +164,7 @@ XE::Language XE::Platform::GetDefaultLanguage()
 #endif
 XE::WindowHandle XE::Platform::CreateWindow( const XE::String & title, XE::uint32 x, XE::uint32 y, XE::uint32 w, XE::uint32 h )
 {
-	HWND hwnd = ::CreateWindowExA( 0, "XE", title.ToCString(), WS_OVERLAPPEDWINDOW, x, y, w, h, nullptr, nullptr, GetModuleHandle( NULL ), nullptr );
+	HWND hwnd = ::CreateWindowExA( 0, "XE", title.c_str(), WS_OVERLAPPEDWINDOW, x, y, w, h, nullptr, nullptr, GetModuleHandle( NULL ), nullptr );
 
 	if( hwnd )
 	{
@@ -230,7 +230,7 @@ bool XE::Platform::GetWindowFocus( XE::WindowHandle handle )
 
 bool XE::Platform::SetWindowTitle( XE::WindowHandle handle, const XE::String & title )
 {
-	return SetWindowText( reinterpret_cast< HWND >( handle.GetValue() ), title.ToCString() );
+	return SetWindowText( reinterpret_cast< HWND >( handle.GetValue() ), title.c_str() );
 }
 
 bool XE::Platform::SetWindowRect( XE::WindowHandle handle, XE::uint32 x, XE::uint32 y, XE::uint32 w, XE::uint32 h, bool topmost )

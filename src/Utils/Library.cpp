@@ -30,7 +30,7 @@ void XE::Library::RegisterEnvPath( const std::filesystem::path & path )
 
 XE::LibraryHandle XE::Library::Open( const String & val )
 {
-	HMODULE module = ::LoadLibrary( val.ToCString() );
+	HMODULE module = ::LoadLibrary( val.c_str() );
 	if( module != nullptr )
 	{
 		return ( XE::uint64 )( module );
@@ -38,7 +38,7 @@ XE::LibraryHandle XE::Library::Open( const String & val )
 
 	for( const auto & p : Instance()->_p->_Env )
 	{
-		HMODULE module = ::LoadLibrary( ( p / val.ToCString() ).u8string().c_str() );
+		HMODULE module = ::LoadLibrary( ( p / val.c_str() ).u8string().c_str() );
 		if( module != nullptr )
 		{
 			return ( XE::uint64 )( module );
@@ -50,7 +50,7 @@ XE::LibraryHandle XE::Library::Open( const String & val )
 
 void * XE::Library::Symbol( XE::LibraryHandle handle, const String & name )
 {
-	return ::GetProcAddress( (HMODULE )( handle.GetValue() ), name.ToCString() );
+	return ::GetProcAddress( (HMODULE )( handle.GetValue() ), name.c_str() );
 }
 
 bool XE::Library::Close( XE::LibraryHandle handle )
@@ -63,7 +63,7 @@ bool XE::Library::Close( XE::LibraryHandle handle )
 
 XE::LibraryHandle XE::Library::Open( const String & val )
 {
-	void * module = ::dlopen( val.ToCString(), RTLD_NOW );
+	void * module = ::dlopen( val.c_str(), RTLD_NOW );
 	if( module != nullptr )
 	{
 		return reinterpret_cast< XE::uint64 >( module );
@@ -71,7 +71,7 @@ XE::LibraryHandle XE::Library::Open( const String & val )
 
 	for( const auto & p : Instance()->_p->_Env )
 	{
-		HMODULE module = ::dlopen( ( p / val.ToCString() ).u8string().c_str() );
+		HMODULE module = ::dlopen( ( p / val.c_str() ).u8string().c_str() );
 		if( module != nullptr )
 		{
 			return ( XE::uint64 )( module );
@@ -83,7 +83,7 @@ XE::LibraryHandle XE::Library::Open( const String & val )
 
 void * XE::Library::Symbol( XE::LibraryHandle handle, const String & name )
 {
-	return ::dlsym( reinterpret_cast< void * >( handle.GetValue() ), val.ToCString() );
+	return ::dlsym( reinterpret_cast< void * >( handle.GetValue() ), val.c_str() );
 }
 
 bool XE::Library::Close( XE::LibraryHandle handle )

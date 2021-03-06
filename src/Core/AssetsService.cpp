@@ -16,7 +16,7 @@ struct XE::AssetsService::Private
 {
 	XE::Array< std::ifstream > _Streams;
 	XE::Array< XE::Unzipper > _Packages;
-	tbb::concurrent_hash_map<XE::String, XE::ObjectWPtr, StringHashCompare > _ObjectCache;
+	tbb::concurrent_hash_map<XE::String, XE::ObjectWPtr, StringHashCompare< XE::String > > _ObjectCache;
 	tbb::concurrent_lru_cache<XE::String, XE::MemoryStream> _MemoryCache = { []( XE::String )->XE::MemoryStream {return {};}, 1000 };
 };
 
@@ -79,7 +79,7 @@ void XE::AssetsService::Clearup()
 
 XE::MemoryView XE::AssetsService::Load( const XE::String & path )
 {
-	auto list = XE::StringUtils::Split( path, ":" );
+	auto list = path.split( ":" );
 
 	auto handle = _p->_MemoryCache[list[1]];
 	if( handle && handle.value().view() )
@@ -87,7 +87,7 @@ XE::MemoryView XE::AssetsService::Load( const XE::String & path )
 		return handle.value().view();
 	}
 
-	auto fullpath( GetFramework()->GetCachesPath() / list[0] );
+	auto fullpath( GetFramework()->GetCachesPath() / list[0].c_str() );
 
 	if( std::filesystem::exists( fullpath ) )
 	{
@@ -109,7 +109,7 @@ XE::MemoryView XE::AssetsService::Load( const XE::String & path )
 
 	for( auto & zip : _p->_Packages )
 	{
-		if( zip.ExtractEntiy( list[1] ) )
+		if( zip.ExtractEntiy( list[1].std_str() ) )
 		{
 			handle.value().clear();
 			zip.GetEntryData( path, handle.value() );
@@ -132,7 +132,7 @@ void XE::AssetsService::AsyncLoad( const XE::String & path, const LoadFinishCall
 
 XE::ObjectPtr XE::AssetsService::LoadObject( const XE::String & path )
 {
-	tbb::concurrent_hash_map<XE::String, XE::ObjectWPtr, StringHashCompare >::accessor it;
+	tbb::concurrent_hash_map<XE::String, XE::ObjectWPtr, StringHashCompare< XE::String > >::accessor it;
 	if( _p->_ObjectCache.find( it, path ) )
 	{
 		if( !it->second.expired() )

@@ -18,7 +18,7 @@ struct XE::Zipper::Private
 	std::ostream * _Stream = nullptr;
 	std::array< char, BLOCK_SIZE > _SrcBuf;
 	LZ4F_compressionContext_t  _LZ4 = nullptr;
-	XE::Map< std::string, EntryInfo > _Entries;
+	XE::Map< XE::String, EntryInfo > _Entries;
 };
 
 XE::Zipper::Zipper()
@@ -40,7 +40,7 @@ XE::Zipper::~Zipper()
 	delete _p;
 }
 
-bool XE::Zipper::AddEntiy( const std::string & name, std::istream & source )
+bool XE::Zipper::AddEntiy( const XE::String & name, std::istream & source )
 {
 	if( IsOpen() )
 	{
@@ -151,7 +151,7 @@ struct XE::Unzipper::Private
 	std::istream * _Stream = nullptr;
 	std::array< char, BLOCK_SIZE > _SrcBuf;
 	std::array< char, BLOCK_SIZE > _DstBuf;
-	XE::Map< std::string, EntryInfo > _Entries;
+	XE::Map< XE::String, EntryInfo > _Entries;
 	LZ4F_decompressionContext_t  _LZ4 = nullptr;
 };
 
@@ -174,7 +174,7 @@ XE::Unzipper::~Unzipper()
 	delete _p;
 }
 
-void XE::Unzipper::GetEntries( XE::Array< std::string > & entries ) const
+void XE::Unzipper::GetEntries( XE::Array< XE::String > & entries ) const
 {
 	for( const auto & i : _p->_Entries )
 	{
@@ -182,14 +182,14 @@ void XE::Unzipper::GetEntries( XE::Array< std::string > & entries ) const
 	}
 }
 
-bool XE::Unzipper::ExtractEntiy( const std::string & name )
+bool XE::Unzipper::ExtractEntiy( const XE::String & name )
 {
 	auto it = _p->_Entries.find( name );
 
 	return it != _p->_Entries.end();
 }
 
-bool XE::Unzipper::GetEntryData( const std::string & name, std::ostream & stream )
+bool XE::Unzipper::GetEntryData( const XE::String & name, std::ostream & stream )
 {
 	if( IsOpen() )
 	{
@@ -247,7 +247,7 @@ bool XE::Unzipper::Open( std::istream & stream )
 
 	while( !_p->_Stream->eof() )
 	{
-		std::string name;
+		XE::String name;
 		EntryInfo info;
 
 		XE::uint64 sz = 0;

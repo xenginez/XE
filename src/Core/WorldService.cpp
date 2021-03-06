@@ -33,7 +33,7 @@ bool XE::WorldService::Startup()
 
 	if( path != "" )
 	{
-		_p->_World = DP_CAST< XE::World >( GetFramework()->GetServiceT<XE::IAssetsService>()->LoadObject( path.ToStdString() ) );
+		_p->_World = DP_CAST< XE::World >( GetFramework()->GetServiceT<XE::IAssetsService>()->LoadObject( path.std_str() ) );
 	}
 
 	if( _p->_World )

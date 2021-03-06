@@ -954,7 +954,7 @@ template< typename T > struct VariantCast< std::basic_string<T> >
 {
 	static std::basic_string<T> Cast( const Variant * val )
 	{
-		return VariantCast<XE::String &>::Cast( val ).ToStdString();
+		return VariantCast<XE::String &>::Cast( val ).std_str();
 	}
 };
 
@@ -962,7 +962,7 @@ template< typename T > struct VariantCast<const std::basic_string< T > &>
 {
 	static const std::basic_string< T > & Cast( const Variant * val )
 	{
-		return VariantCast<const XE::String &>::Cast( val ).ToStdString();
+		return VariantCast<const XE::String &>::Cast( val ).std_str();
 	}
 };
 

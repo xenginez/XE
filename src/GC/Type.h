@@ -27,6 +27,8 @@ using WeakPtr = std::weak_ptr<T>;
 template< typename T >
 using SharedPtr = std::shared_ptr<T>;
 
+using String = XE::basic_string< XE::utf8_encode, std::pmr::polymorphic_allocator< XE::utf8_encode::storage_unit > >;
+
 template< typename T >
 using List = std::pmr::list<T>;
 template< typename T >

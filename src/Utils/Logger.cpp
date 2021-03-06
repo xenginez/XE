@@ -24,7 +24,7 @@ XE::Logger::~Logger()
 	delete _p;
 }
 
-void XE::Logger::Log( LoggerLevel level, const std::string & text )
+void XE::Logger::Log( LoggerLevel level, const XE::String & text )
 {
 	auto time = std::chrono::system_clock::now();
 

@@ -263,7 +263,7 @@ bool XE::Platform::SetWindowTitle( XE::WindowHandle handle, const XE::String & t
 {
 	NSWindow * window = reinterpret_cast<NSWindow*>( handle.GetValue() );
 	
-	NSString * s = [[[NSString alloc] initWithCString:title.ToCString()] autorelease];
+	NSString * s = [[[NSString alloc] initWithCString:title.c_str()] autorelease];
 	
 	[window setTitle:s];
 	
