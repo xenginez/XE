@@ -46,6 +46,7 @@ static constexpr XE::uint32 GFX_MAX_TRANSFORM = 256;
 static constexpr XE::uint32 GFX_MAX_BLITITEMS = 1024;
 static constexpr XE::uint32 GFX_MAX_DRAWCALLS = 16384;
 static constexpr XE::uint32 GFX_MAX_ATTACHMENTS = 8;
+static constexpr XE::uint32 GFX_MAX_BACK_BUFFERS = 4;
 static constexpr XE::uint32 GFX_MAX_FRAME_BUFFERS = 128;
 static constexpr XE::uint32 GFX_MAX_INDEX_BUFFERS = 4096;
 static constexpr XE::uint32 GFX_MAX_VERTEX_BUFFERS = 4096;
