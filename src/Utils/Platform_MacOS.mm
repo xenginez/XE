@@ -297,37 +297,4 @@ bool XE::Platform::HideMouse()
 	return true;
 }
 
-XE::ProcessHandle XE::Platform::CreateProcess( const std::filesystem::path & app, const std::string & cmd, bool inherit, XE::uint32 flag )
-{
-	NSTask *task;
-	task = [[NSTask alloc] init];
-	NSString * s = [[[NSString alloc] initWithCString:app.string().c_str()] autorelease];
-	[task setLaunchPath:s];
-	
-	NSArray *argHelp = [@[[NSString stringWithCString:cmd.c_str()]] autorelease];
-	[task setArguments:argHelp];
-	NSPipe *pipe;
-	pipe = [NSPipe pipe];
-	NSPipe * inputPipe = [NSPipe pipe];
-	[task setStandardOutput: pipe];
-	[task setStandardInput:inputPipe];
-	NSFileHandle *file;
-	file = [pipe fileHandleForReading];
-	NSFileHandle * InFile = [inputPipe fileHandleForWriting];
-	NSString * pDir = [NSString stringWithCString:std::filesystem::current_path().string().c_str()];
-	[task setCurrentDirectoryPath:pDir];
-	[task launch];
-	
-	return reinterpret_cast<XE::uint64>(task);
-}
-
-bool XE::Platform::DestroyProcess( XE::ProcessHandle handle, XE::uint32 code )
-{
-	NSTask *task = reinterpret_cast<NSTask*>(handle.GetValue());
-	
-	[task release];
-	
-	return true;
-}
-
 #endif

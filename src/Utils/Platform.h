@@ -51,11 +51,6 @@ public:
 
 	static bool HideMouse();
 
-public:
-	static ProcessHandle CreateProcess( const std::filesystem::path & app, const std::string & cmd, bool inherit, XE::uint32 flag );
-
-	static bool DestroyProcess( ProcessHandle handle, XE::uint32 code );
-
 };
 
 END_XE_NAMESPACE

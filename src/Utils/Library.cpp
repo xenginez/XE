@@ -30,7 +30,7 @@ void XE::Library::RegisterEnvPath( const std::filesystem::path & path )
 
 XE::LibraryHandle XE::Library::Open( const String & val )
 {
-	HMODULE module = ::LoadLibrary( val.c_str() );
+	HMODULE module = ::LoadLibrary( XE::string_convert<utf8_encode, ansi_encode>::convert( val.c_str() ).c_str() );
 	if( module != nullptr )
 	{
 		return ( XE::uint64 )( module );
@@ -38,7 +38,7 @@ XE::LibraryHandle XE::Library::Open( const String & val )
 
 	for( const auto & p : Instance()->_p->_Env )
 	{
-		HMODULE module = ::LoadLibrary( ( p / val.c_str() ).u8string().c_str() );
+		HMODULE module = ::LoadLibrary( XE::string_convert<utf8_encode, ansi_encode>::convert( ( p / val.c_str() ).u8string() ).c_str() );
 		if( module != nullptr )
 		{
 			return ( XE::uint64 )( module );

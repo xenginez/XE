@@ -164,7 +164,7 @@ XE::Language XE::Platform::GetDefaultLanguage()
 #endif
 XE::WindowHandle XE::Platform::CreateWindow( const XE::String & title, XE::uint32 x, XE::uint32 y, XE::uint32 w, XE::uint32 h )
 {
-	HWND hwnd = ::CreateWindowExA( 0, "XE", title.c_str(), WS_OVERLAPPEDWINDOW, x, y, w, h, nullptr, nullptr, GetModuleHandle( NULL ), nullptr );
+	HWND hwnd = ::CreateWindowExA( 0, "XE", XE::string_convert<utf8_encode, ansi_encode>::convert( title.c_str() ).c_str(), WS_OVERLAPPEDWINDOW, x, y, w, h, nullptr, nullptr, GetModuleHandle( NULL ), nullptr );
 
 	if( hwnd )
 	{
@@ -230,7 +230,7 @@ bool XE::Platform::GetWindowFocus( XE::WindowHandle handle )
 
 bool XE::Platform::SetWindowTitle( XE::WindowHandle handle, const XE::String & title )
 {
-	return SetWindowText( reinterpret_cast< HWND >( handle.GetValue() ), title.c_str() );
+	return SetWindowText( reinterpret_cast< HWND >( handle.GetValue() ), XE::string_convert<utf8_encode, ansi_encode>::convert( title.c_str() ).c_str() );
 }
 
 bool XE::Platform::SetWindowRect( XE::WindowHandle handle, XE::uint32 x, XE::uint32 y, XE::uint32 w, XE::uint32 h, bool topmost )
@@ -261,38 +261,6 @@ bool XE::Platform::HideMouse()
 {
 	ShowCursor( false );
 	return true;
-}
-
-#ifdef CreateProcess
-#undef CreateProcess
-#endif
-XE::ProcessHandle XE::Platform::CreateProcess( const std::filesystem::path & app, const std::string & cmd, bool inherit, XE::uint32 flag )
-{
-	STARTUPINFO startup = {};
-	PROCESS_INFORMATION * info = new PROCESS_INFORMATION();
-
-	if( ::CreateProcessA( app.string().c_str(), const_cast< char * >( cmd.c_str() ), nullptr, nullptr, inherit, flag, nullptr, nullptr, &startup, info ) )
-	{
-		return reinterpret_cast< XE::uint64 >( info );
-	}
-
-	return ProcessHandle::Invalid;
-}
-
-bool XE::Platform::DestroyProcess( XE::ProcessHandle handle, XE::uint32 code )
-{
-	if( handle != ProcessHandle::Invalid )
-	{
-		PROCESS_INFORMATION * info = reinterpret_cast< PROCESS_INFORMATION * >( handle.GetValue() );
-		if( info != nullptr )
-		{
-			::TerminateProcess( info->hProcess, code );
-			::CloseHandle( info->hThread );
-			return ::CloseHandle( info->hProcess );
-		}
-	}
-
-	return false;
 }
 
 #endif

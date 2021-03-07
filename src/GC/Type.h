@@ -28,6 +28,9 @@ template< typename T >
 using SharedPtr = std::shared_ptr<T>;
 
 using String = XE::basic_string< XE::utf8_encode, std::pmr::polymorphic_allocator< XE::utf8_encode::storage_unit > >;
+using AnsiString = XE::basic_string< XE::ansi_encode, std::pmr::polymorphic_allocator< XE::ansi_encode::storage_unit > >;
+using WideString = XE::basic_string< XE::wide_encode, std::pmr::polymorphic_allocator< XE::wide_encode::storage_unit > >;
+using UTF8String = XE::basic_string< XE::utf8_encode, std::pmr::polymorphic_allocator< XE::utf8_encode::storage_unit > >;
 
 template< typename T >
 using List = std::pmr::list<T>;
