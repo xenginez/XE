@@ -25,8 +25,6 @@ public:
 protected:
 	void OnRender( XE::RenderFrame* val ) override;
 
-private:
-
 };
 
 XE_INLINE XE::RendererContext * CreateRendererContextDirectX12()

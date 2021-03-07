@@ -196,7 +196,7 @@ public:
 
 	void SetViewScissor( XE::ViewHandle handle, const XE::Rectf & scissor );
 
-	void SetViewClear( const XE::ViewClearDesc & desc );
+	void SetViewClear( const XE::ClearDesc & desc );
 
 	void SetViewMode( XE::ViewHandle handle, XE::ViewMode mode );
 

@@ -317,6 +317,9 @@ enum class SamplerFlag : XE::uint64
 	UVWCLAMP = 0X0000002A,
 	UVWBORDER = 0X0000003F,
 	BITSMASK = 0X000F07FF,
+
+	INTERNALDEFAULT = 0X10000000,
+	INTERNALSHARED = 0x20000000,
 };
 DECL_FLAGS( SamplerFlag, SamplerFlags );
 
@@ -902,13 +905,13 @@ struct XE_API DynamicVertexBufferDesc : public XE::VertexBufferDesc
 
 };
 
-struct XE_API ViewClearDesc
+struct XE_API ClearDesc
 {
 	ViewHandle Handle;
 	XE::uint8 Stencil = 1;
 	XE::float32 Depth = 0.0f;
 	XE::Color Color = XE::Color::Black;
-	XE::Flags< XE::ClearFlag > Flags = XE::MakeFlags( XE::ClearFlag::COLOR, XE::ClearFlag::DEPTH, XE::ClearFlag::STENCIL );
+	XE::ClearFlags Flags = XE::MakeFlags( XE::ClearFlag::COLOR, XE::ClearFlag::DEPTH, XE::ClearFlag::STENCIL );
 };
 
 

@@ -15,6 +15,8 @@ BEG_XE_NAMESPACE
 
 template< typename T, typename V = XE::uint64 > class Flags
 {
+	static_assert( std::is_enum_v< T >, "must be an enum type" );
+
 public:
 	using enum_type = T;
 	using value_type = V;
@@ -257,22 +259,42 @@ template< typename T > XE::Flags< T > MakeFlags( T arg0, T arg1, T arg2, T arg3,
 
 END_XE_NAMESPACE
 
-template< typename T > bool operator ||( T left, XE::Flags< T > right )
+template< typename T > XE_INLINE XE::Flags< T > operator |( const T & left, const XE::Flags< T > & right )
+{
+	return XE::MakeFlags( left ) | right;
+}
+
+template< typename T > XE_INLINE XE::Flags< T > operator &( const T & left, const XE::Flags< T > & right )
+{
+	return XE::MakeFlags( left ) & right;
+}
+
+template< typename T > XE_INLINE XE::Flags< T > operator <<( const T & left, const XE::Flags< T > & right )
+{
+	return XE::MakeFlags( left ) << right;
+}
+
+template< typename T > XE_INLINE XE::Flags< T > operator >>( const T & left, const XE::Flags< T > & right )
+{
+	return XE::MakeFlags( left ) >> right;
+}
+
+template< typename T > XE_INLINE bool operator ||( const T & left, const XE::Flags< T > & right )
 {
 	return XE::MakeFlags( left ) || right;
 }
 
-template< typename T > bool operator &&( T left, XE::Flags< T > right )
+template< typename T > XE_INLINE bool operator &&( const T & left, const XE::Flags< T > & right )
 {
 	return XE::MakeFlags( left ) && right;
 }
 
-template< typename T > bool operator ==( T left, XE::Flags< T > right )
+template< typename T > XE_INLINE bool operator ==( const T & left, const XE::Flags< T > & right )
 {
 	return XE::MakeFlags( left ) == right;
 }
 
-template< typename T > bool operator !=( T left, XE::Flags< T > right )
+template< typename T > XE_INLINE bool operator !=( const T & left, const XE::Flags< T > & right )
 {
 	return XE::MakeFlags( left ) != right;
 }

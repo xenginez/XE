@@ -334,6 +334,9 @@ private:
 template< typename T, XE::uint64 _Max > class QueueHandleAllocator< Handle< T >, _Max >
 {
 public:
+	static constexpr XE::uint64 MAX_SIZE = _Max;
+
+public:
 	QueueHandleAllocator()
 	{
 		Reset();
@@ -365,6 +368,11 @@ public:
 		{
 			_Queue.push( i );
 		}
+	}
+
+	XE::uint64 Size() const
+	{
+		return _Queue.size();
 	}
 
 private:

@@ -289,7 +289,7 @@ void XE::Gfx::SetViewScissor( XE::ViewHandle handle, const XE::Rectf & scissor )
 	_p->_Context->SetViewScissor( handle, scissor );
 }
 
-void XE::Gfx::SetViewClear( const XE::ViewClearDesc & desc )
+void XE::Gfx::SetViewClear( const XE::ClearDesc & desc )
 {
 	_p->_Context->SetViewClear( desc );
 }

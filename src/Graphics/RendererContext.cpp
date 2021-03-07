@@ -734,7 +734,7 @@ void XE::RendererContext::SetViewScissor( XE::ViewHandle handle, const XE::Rectf
 	_p->_Views[handle.GetValue()].ViewScissor = scissor;
 }
 
-void XE::RendererContext::SetViewClear( const XE::ViewClearDesc & desc )
+void XE::RendererContext::SetViewClear( const XE::ClearDesc & desc )
 {
 	_p->_Views[desc.Handle].ClearColor = desc.Color;
 	_p->_Views[desc.Handle].ClearDepth = desc.Depth;
