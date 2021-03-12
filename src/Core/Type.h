@@ -16,7 +16,7 @@ BEG_XE_NAMESPACE
 DECL_PTR( EventService );
 DECL_PTR( TimerService );
 DECL_PTR( AudioService );
-DECL_PTR( WorldService );
+DECL_PTR( SceneService );
 DECL_PTR( InputService );
 DECL_PTR( AssetsService );
 DECL_PTR( ConfigService );

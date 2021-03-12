@@ -582,41 +582,6 @@ namespace XE::D3D12
 	}
 
 
-	class ScratchBuffer
-	{
-	public:
-		void create( XE::uint32 _size, XE::uint32 _maxDescriptors );
-
-		void destroy();
-
-		void reset( D3D12_GPU_DESCRIPTOR_HANDLE & _gpuHandle );
-
-		void  allocEmpty( D3D12_GPU_DESCRIPTOR_HANDLE & _gpuHandle );
-
-		void * allocCbv( D3D12_GPU_VIRTUAL_ADDRESS & _gpuAddress, XE::uint32 _size );
-
-		void  allocSrv( D3D12_GPU_DESCRIPTOR_HANDLE & _gpuHandle, Texture & _texture, XE::uint8 _mip = 0 );
-
-		void  allocSrv( D3D12_GPU_DESCRIPTOR_HANDLE & _gpuHandle, Buffer & _buffer );
-
-		void  allocUav( D3D12_GPU_DESCRIPTOR_HANDLE & _gpuHandle, Texture & _texture, XE::uint8 _mip = 0 );
-
-		void  allocUav( D3D12_GPU_DESCRIPTOR_HANDLE & _gpuHandle, Buffer & _buffer );
-
-		ID3D12DescriptorHeap * getHeap();
-
-	private:
-		ID3D12DescriptorHeap * m_heap;
-		ID3D12Resource * m_upload;
-		D3D12_GPU_VIRTUAL_ADDRESS m_gpuVA;
-		D3D12_CPU_DESCRIPTOR_HANDLE m_cpuHandle;
-		D3D12_GPU_DESCRIPTOR_HANDLE m_gpuHandle;
-		XE::uint32 m_incrementSize;
-		XE::uint8 * m_data;
-		XE::uint32 m_size;
-		XE::uint32 m_pos;
-	};
-
 	class DescriptorAllocator
 	{
 	public:
@@ -873,6 +838,41 @@ namespace XE::D3D12
 		//bx::RingBufferControl m_control;
 	};
 
+	class ScratchBuffer
+	{
+	public:
+		void create( XE::uint32 _size, XE::uint32 _maxDescriptors );
+
+		void destroy();
+
+		void reset( D3D12_GPU_DESCRIPTOR_HANDLE & _gpuHandle );
+
+		void  allocEmpty( D3D12_GPU_DESCRIPTOR_HANDLE & _gpuHandle );
+
+		void * allocCbv( D3D12_GPU_VIRTUAL_ADDRESS & _gpuAddress, XE::uint32 _size );
+
+		void  allocSrv( D3D12_GPU_DESCRIPTOR_HANDLE & _gpuHandle, Texture & _texture, XE::uint8 _mip = 0 );
+
+		void  allocSrv( D3D12_GPU_DESCRIPTOR_HANDLE & _gpuHandle, Buffer & _buffer );
+
+		void  allocUav( D3D12_GPU_DESCRIPTOR_HANDLE & _gpuHandle, Texture & _texture, XE::uint8 _mip = 0 );
+
+		void  allocUav( D3D12_GPU_DESCRIPTOR_HANDLE & _gpuHandle, Buffer & _buffer );
+
+		ID3D12DescriptorHeap * getHeap();
+
+	private:
+		ID3D12DescriptorHeap * m_heap;
+		ID3D12Resource * m_upload;
+		D3D12_GPU_VIRTUAL_ADDRESS m_gpuVA;
+		D3D12_CPU_DESCRIPTOR_HANDLE m_cpuHandle;
+		D3D12_GPU_DESCRIPTOR_HANDLE m_gpuHandle;
+		XE::uint32 m_incrementSize;
+		XE::uint8 * m_data;
+		XE::uint32 m_size;
+		XE::uint32 m_pos;
+	};
+
 	class RenderContext
 	{
 	public:
@@ -1047,7 +1047,7 @@ namespace XE::D3D12
 		return data;
 	}
 
-	void ScratchBuffer::allocSrv( D3D12_GPU_DESCRIPTOR_HANDLE & _gpuHandle, Texture & _texture, XE::uint8 _mip /*= 0 */ )
+	void ScratchBuffer::allocSrv( D3D12_GPU_DESCRIPTOR_HANDLE & _gpuHandle, Texture & _texture, XE::uint8 _mip )
 	{
 		ID3D12Device * device = _RTX->m_device;
 
@@ -1105,7 +1105,7 @@ namespace XE::D3D12
 		m_gpuHandle.ptr += m_incrementSize;
 	}
 
-	void ScratchBuffer::allocUav( D3D12_GPU_DESCRIPTOR_HANDLE & _gpuHandle, Texture & _texture, XE::uint8 _mip /*= 0 */ )
+	void ScratchBuffer::allocUav( D3D12_GPU_DESCRIPTOR_HANDLE & _gpuHandle, Texture & _texture, XE::uint8 _mip )
 	{
 		ID3D12Device * device = _RTX->m_device;
 
@@ -1810,6 +1810,7 @@ namespace XE::D3D12
 		// 		DX_CHECK( commandList.m_commandAllocator->Reset() );
 		// 		DX_CHECK( commandList.m_commandList->Reset( commandList.m_commandAllocator, NULL ) );
 		// 		return commandList.m_commandList;
+		return nullptr;
 	}
 
 	XE::uint64 CommandQueue::kick()
@@ -1906,7 +1907,7 @@ namespace XE::D3D12
 
 	XE::uint32 TimerQuery::begin( XE::uint32 _resultIdx )
 	{
-
+		return 0;
 	}
 
 	void TimerQuery::end( XE::uint32 _idx )

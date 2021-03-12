@@ -12,7 +12,7 @@
 #include "InputService.h"
 #include "TimerService.h"
 #include "EventService.h"
-#include "WorldService.h"
+#include "SceneService.h"
 #include "AssetsService.h"
 #include "CoreFramework.h"
 #include "ThreadService.h"

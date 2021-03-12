@@ -13,17 +13,17 @@
 
 BEG_XE_NAMESPACE
 
-class XE_API WorldService : public XE::IWorldService
+class XE_API SceneService : public XE::ISceneService
 {
-	OBJECT( WorldService, IWorldService )
+	OBJECT( SceneService, ISceneService )
 
 private:
 	struct Private;
 
 public:
-	WorldService();
+	SceneService();
 
-	~WorldService() override;
+	~SceneService() override;
 
 public:
 	void Prepare()override;

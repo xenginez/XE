@@ -1,33 +1,33 @@
-#include "WorldService.h"
+#include "SceneService.h"
 
 #include "Scene/World.h"
 #include "Utils/Logger.h"
 
-BEG_META( XE::WorldService )
+BEG_META( XE::SceneService )
 END_META()
 
-struct XE::WorldService::Private
+struct XE::SceneService::Private
 {
 	XE::WorldPtr _World;
 };
 
-XE::WorldService::WorldService()
+XE::SceneService::SceneService()
 	:_p( new Private )
 {
 
 }
 
-XE::WorldService::~WorldService()
+XE::SceneService::~SceneService()
 {
 	delete _p;
 }
 
-void XE::WorldService::Prepare()
+void XE::SceneService::Prepare()
 {
 
 }
 
-bool XE::WorldService::Startup()
+bool XE::SceneService::Startup()
 {
 	auto path = GetFramework()->GetString( "System/StartWorld" );
 
@@ -44,7 +44,7 @@ bool XE::WorldService::Startup()
 	return true;
 }
 
-void XE::WorldService::Update()
+void XE::SceneService::Update()
 {
 	if( _p->_World )
 	{
@@ -52,7 +52,7 @@ void XE::WorldService::Update()
 	}
 }
 
-void XE::WorldService::Clearup()
+void XE::SceneService::Clearup()
 {
 	if( _p->_World )
 	{
@@ -60,12 +60,12 @@ void XE::WorldService::Clearup()
 	}
 }
 
-XE::WorldPtr XE::WorldService::GetWorld() const
+XE::WorldPtr XE::SceneService::GetWorld() const
 {
 	return _p->_World;
 }
 
-void XE::WorldService::ActiveWorld( const XE::WorldPtr & val )
+void XE::SceneService::ActiveWorld( const XE::WorldPtr & val )
 {
 	GetFramework()->GetServiceT< XE::IThreadService >()->PostTask( ThreadType::GAME, [this, val]()
 																   {

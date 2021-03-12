@@ -24,7 +24,7 @@ static constexpr char * USERDATAS_DIRECTORY = "UserDatas";
 DECL_PTR( IService );
 DECL_PTR( IEventService );
 DECL_PTR( ITimerService );
-DECL_PTR( IWorldService );
+DECL_PTR( ISceneService );
 DECL_PTR( IInputService );
 DECL_PTR( IAssetsService );
 DECL_PTR( IRenderService );

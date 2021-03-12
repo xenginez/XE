@@ -12,7 +12,7 @@
 #include "IService.h"
 #include "IFramework.h"
 #include "ITimerService.h"
-#include "IWorldService.h"
+#include "ISceneService.h"
 #include "IEventService.h"
 #include "IInputService.h"
 #include "IRenderService.h"
