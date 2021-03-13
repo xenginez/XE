@@ -210,6 +210,8 @@ public:
 	void RequestScreenShot( XE::FrameBufferHandle handle, const std::string & userdata, ScreenShotCallbackType callback );
 
 protected:
+	XE::CapsInfo & GetCaps();
+
 	void SetCaps( const XE::CapsInfo & val );
 
 	void SetOcclusionQueryValue( XE::OcclusionQueryHandle handle, XE::uint32 value );

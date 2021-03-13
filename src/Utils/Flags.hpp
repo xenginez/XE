@@ -47,6 +47,12 @@ public:
 	}
 
 public:
+	operator bool() const
+	{
+		return _Value != 0;
+	}
+
+public:
 	Flags operator ~() const
 	{
 		return ~_Value;

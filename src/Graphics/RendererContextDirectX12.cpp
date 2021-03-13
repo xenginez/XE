@@ -11,9 +11,42 @@
 
 #include "DXGI.h"
 
+#include "Utils/Logger.h"
 
 namespace XE::D3D12
 {
+	class RenderContext;
+}
+
+XE::D3D12::RenderContext * _RTX = nullptr;
+
+namespace XE::D3D12
+{
+	enum Rdt
+	{
+		Sampler,
+		SRV,
+		CBV,
+		UAV,
+
+		Count
+	};
+
+	typedef struct PIXEventsThreadInfo * ( WINAPI * PFN_PIX_GET_THREAD_INFO )( );
+	typedef uint64_t( WINAPI * PFN_PIX_EVENTS_REPLACE_BLOCK )( bool _getEarliestTime );
+	typedef HANDLE( WINAPI * PFN_CREATE_EVENT_EX_A )( LPSECURITY_ATTRIBUTES _attrs, LPCSTR _name, DWORD _flags, DWORD _access );
+	typedef HRESULT( WINAPI * PFN_D3D12_ENABLE_EXPERIMENTAL_FEATURES )( uint32_t _numFeatures, const IID * _iids, void * _configurationStructs, uint32_t * _configurationStructSizes );
+
+
+	static PFN_PIX_GET_THREAD_INFO					D3D12PIXGetThreadInfo;
+	static PFN_PIX_EVENTS_REPLACE_BLOCK				D3D12PIXEventsReplaceBlock;
+	static PFN_D3D12_ENABLE_EXPERIMENTAL_FEATURES	D3D12EnableExperimentalFeatures;
+	static PFN_D3D12_CREATE_DEVICE					D3D12CreateDevice;
+	static PFN_D3D12_GET_DEBUG_INTERFACE			D3D12GetDebugInterface;
+	static PFN_D3D12_SERIALIZE_ROOT_SIGNATURE		D3D12SerializeRootSignature;
+	static PFN_CREATE_EVENT_EX_A					CreateEventExA;
+
+
 	using DescriptorHeapHandle = XE::Handle< ID3D12DescriptorHeap >;
 
 	struct HeapProperty
@@ -821,6 +854,7 @@ namespace XE::D3D12
 
 	class OcclusionQuery
 	{
+	public:
 		void init();
 
 		void shutdown();
@@ -873,43 +907,39 @@ namespace XE::D3D12
 		XE::uint32 m_pos;
 	};
 
+	class Bind
+	{
+	public:
+		D3D12_GPU_DESCRIPTOR_HANDLE m_srvHandle;
+		uint16_t m_samplerStateIdx;
+	};
+
 	class RenderContext
 	{
 	public:
-		D3D12_CPU_DESCRIPTOR_HANDLE getRtv( FrameBufferHandle _fbh )
-		{
-			D3D12::FrameBuffer & frameBuffer = m_frameBuffers[_fbh];
+		D3D12_CPU_DESCRIPTOR_HANDLE getRtv( FrameBufferHandle _fbh );
 
-			if( NULL != frameBuffer.m_swapChain )
-			{
-			#if PLATFORM_OS == OS_WINDOWS
-				uint8_t idx = uint8_t( frameBuffer.m_swapChain->GetCurrentBackBufferIndex() );
-				frameBuffer.setState( m_commandList, idx, D3D12_RESOURCE_STATE_RENDER_TARGET );
-				return getRtv( _fbh, idx );
-			#endif
-			}
+		D3D12_CPU_DESCRIPTOR_HANDLE getRtv( FrameBufferHandle _fbh, uint8_t _attachment );
 
-			return getRtv( _fbh, 0 );
-		}
+		void preReset();
 
-		D3D12_CPU_DESCRIPTOR_HANDLE getRtv( FrameBufferHandle _fbh, uint8_t _attachment )
-		{
-			D3D12_CPU_DESCRIPTOR_HANDLE rtvDescriptor = getCPUHandleHeapStart( m_rtvDescriptorHeap );
-			uint32_t rtvDescriptorSize = m_device->GetDescriptorHandleIncrementSize( D3D12_DESCRIPTOR_HEAP_TYPE_RTV );
-			D3D12_CPU_DESCRIPTOR_HANDLE result =
-			{
-				rtvDescriptor.ptr + ( XE::countof( m_backBufferColor ) + _fbh.GetValue() * GFX_MAX_ATTACHMENTS + _attachment ) * rtvDescriptorSize
-			};
-			return result;
-		}
+		void postReset();
+
+		void finishAll( bool _alloc = false );
+
+		void invalidateCache();
 
 	public:
 		DXGI m_dxgi;
 
-		void * m_kernel32Dll;
-		void * m_d3d12Dll;
-		void * m_renderDocDll;
-		void * m_winPixEvent;
+		XE::uint64 m_width;
+		XE::uint64 m_height;
+		XE::ResetFlags m_reset;
+		XE::TextureFormat m_format;
+
+		XE::LibraryHandle m_kernel32Dll;
+		XE::LibraryHandle m_d3d12Dll;
+		XE::LibraryHandle m_winPixEvent;
 
 		D3D_FEATURE_LEVEL m_featureLevel;
 
@@ -984,8 +1014,6 @@ namespace XE::D3D12
 		bool m_rtMsaa;
 		bool m_directAccessSupport;
 	};
-
-	XE::D3D12::RenderContext * _RTX = nullptr;
 
 	void ScratchBuffer::create( XE::uint32 _size, XE::uint32 _maxDescriptors )
 	{
@@ -1681,7 +1709,7 @@ namespace XE::D3D12
 		D3D12_CPU_DESCRIPTOR_HANDLE rtv = _RTX->getRtv( fbh );
 		uint32_t rtvDescriptorSize = device->GetDescriptorHandleIncrementSize( D3D12_DESCRIPTOR_HEAP_TYPE_RTV );
 
-		if( ( XE::ClearFlag::COLOR & _clear.Flags ) && 0 != m_num )
+		if( ( XE::ClearFlag::COLOR & _clear.Flags ).GetValue() && m_num != 0 )
 		{
 			float frgba[4] =
 			{
@@ -1943,6 +1971,173 @@ namespace XE::D3D12
 	void OcclusionQuery::invalidate( OcclusionQueryHandle _handle )
 	{
 
+	}
+
+	D3D12_CPU_DESCRIPTOR_HANDLE RenderContext::getRtv( FrameBufferHandle _fbh )
+	{
+		D3D12::FrameBuffer & frameBuffer = m_frameBuffers[_fbh];
+
+		if( NULL != frameBuffer.m_swapChain )
+		{
+		#if PLATFORM_OS == OS_WINDOWS
+			uint8_t idx = uint8_t( frameBuffer.m_swapChain->GetCurrentBackBufferIndex() );
+			frameBuffer.setState( m_commandList, idx, D3D12_RESOURCE_STATE_RENDER_TARGET );
+			return getRtv( _fbh, idx );
+		#endif
+		}
+
+		return getRtv( _fbh, 0 );
+	}
+
+	D3D12_CPU_DESCRIPTOR_HANDLE RenderContext::getRtv( FrameBufferHandle _fbh, uint8_t _attachment )
+	{
+		D3D12_CPU_DESCRIPTOR_HANDLE rtvDescriptor = getCPUHandleHeapStart( m_rtvDescriptorHeap );
+		uint32_t rtvDescriptorSize = m_device->GetDescriptorHandleIncrementSize( D3D12_DESCRIPTOR_HEAP_TYPE_RTV );
+		D3D12_CPU_DESCRIPTOR_HANDLE result =
+		{
+			rtvDescriptor.ptr + ( XE::countof( m_backBufferColor ) + _fbh.GetValue() * GFX_MAX_ATTACHMENTS + _attachment ) * rtvDescriptorSize
+		};
+		return result;
+	}
+
+	void RenderContext::preReset()
+	{
+		finishAll();
+
+		if( NULL != m_swapChain )
+		{
+			for( uint32_t ii = 0, num = m_scd.bufferCount; ii < num; ++ii )
+			{
+				DX_RELEASE( m_backBufferColor[ii] );
+			}
+
+			DX_RELEASE( m_backBufferDepthStencil );
+		}
+
+		for( uint32_t ii = 0; ii < XE::countof( m_frameBuffers ); ++ii )
+		{
+			m_frameBuffers[ii].preReset();
+		}
+
+		invalidateCache();
+	}
+
+	void RenderContext::postReset()
+	{
+		std::memset( m_backBufferColorFence, 0, sizeof( m_backBufferColorFence ) );
+
+		uint32_t rtvDescriptorSize = m_device->GetDescriptorHandleIncrementSize( D3D12_DESCRIPTOR_HEAP_TYPE_RTV );
+
+		if( NULL != m_swapChain )
+		{
+			for( uint32_t ii = 0, num = m_scd.bufferCount; ii < num; ++ii )
+			{
+				D3D12_CPU_DESCRIPTOR_HANDLE handle = getCPUHandleHeapStart( m_rtvDescriptorHeap );
+				handle.ptr += ii * rtvDescriptorSize;
+				DX_CHECK( m_swapChain->GetBuffer( ii
+												  , IID_ID3D12Resource
+												  , ( void ** )&m_backBufferColor[ii]
+				) );
+
+				D3D12_RENDER_TARGET_VIEW_DESC rtvDesc;
+				rtvDesc.Format = ( m_reset & XE::ResetFlag::SRGBBACKBUFFER ) ? s_textureFormat[(XE::uint64)m_format].m_fmtSrgb : s_textureFormat[(XE::uint64)m_format].m_fmt;
+
+				if( 1 < getResourceDesc( m_backBufferColor[ii] ).DepthOrArraySize )
+				{
+					rtvDesc.ViewDimension = ( NULL == m_msaaRt ) ?
+						D3D12_RTV_DIMENSION_TEXTURE2DARRAY : D3D12_RTV_DIMENSION_TEXTURE2DMSARRAY;
+					rtvDesc.Texture2DArray.FirstArraySlice = 0;
+					rtvDesc.Texture2DArray.ArraySize = getResourceDesc( m_backBufferColor[ii] ).DepthOrArraySize;
+					rtvDesc.Texture2DArray.MipSlice = 0;
+					rtvDesc.Texture2DArray.PlaneSlice = 0;
+				}
+				else
+				{
+					rtvDesc.ViewDimension = ( NULL == m_msaaRt ) ?
+						D3D12_RTV_DIMENSION_TEXTURE2D : D3D12_RTV_DIMENSION_TEXTURE2DMS;
+					rtvDesc.Texture2D.MipSlice = 0;
+					rtvDesc.Texture2D.PlaneSlice = 0;
+				}
+
+				m_device->CreateRenderTargetView(
+					NULL == m_msaaRt
+					? m_backBufferColor[ii]
+					: m_msaaRt
+					, &rtvDesc
+					, handle
+				);
+
+				if( PLATFORM_OS & OS_XBOX )
+				{
+					ID3D12Resource * resource = m_backBufferColor[ii];
+
+					XE_ASSERT( DXGI_FORMAT_R8G8B8A8_UNORM == m_scd.format && "" );
+					const uint32_t size = m_scd.width * m_scd.height * 4;
+
+					void * ptr;
+					DX_CHECK( resource->Map( 0, NULL, &ptr ) );
+					std::memset( ptr, 0, size );
+					resource->Unmap( 0, NULL );
+				}
+			}
+		}
+
+		D3D12_RESOURCE_DESC resourceDesc;
+		resourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
+		resourceDesc.Alignment = 1 < m_scd.sampleDesc.Count ? D3D12_DEFAULT_MSAA_RESOURCE_PLACEMENT_ALIGNMENT : 0;
+		resourceDesc.Width = std::max<XE::uint64>( m_width, 1 );
+		resourceDesc.Height = std::max<XE::uint64>( m_height, 1 );
+		resourceDesc.DepthOrArraySize = 1;
+		resourceDesc.MipLevels = 1;
+		resourceDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+		resourceDesc.SampleDesc = m_scd.sampleDesc;
+		resourceDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
+		resourceDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;
+
+		D3D12_CLEAR_VALUE clearValue;
+		clearValue.Format = resourceDesc.Format;
+		clearValue.DepthStencil.Depth = 1.0f;
+		clearValue.DepthStencil.Stencil = 0;
+
+		m_commandList = m_cmd.alloc();
+
+		m_backBufferDepthStencil = createCommittedResource( m_device, HeapProperty::Type::DEFAULT, &resourceDesc, &clearValue );
+		m_device->CreateDepthStencilView( m_backBufferDepthStencil, NULL, getCPUHandleHeapStart( m_dsvDescriptorHeap ) );
+
+		setResourceBarrier( m_commandList
+							, m_backBufferDepthStencil
+							, D3D12_RESOURCE_STATE_COMMON
+							, D3D12_RESOURCE_STATE_DEPTH_WRITE
+		);
+
+		for( uint32_t ii = 0; ii < XE::countof( m_frameBuffers ); ++ii )
+		{
+			m_frameBuffers[ii].postReset();
+		}
+
+		if( NULL != m_msaaRt )
+		{
+			setResourceBarrier( m_commandList
+								, m_msaaRt
+								, D3D12_RESOURCE_STATE_COMMON
+								, D3D12_RESOURCE_STATE_RESOLVE_SOURCE
+			);
+		}
+	}
+
+	void RenderContext::finishAll( bool _alloc /*= false */ )
+	{
+		uint64_t fence = m_cmd.kick();
+		m_cmd.finish( fence, true );
+		m_commandList = _alloc ? m_cmd.alloc() : NULL;
+	}
+
+	void RenderContext::invalidateCache()
+	{
+// 		m_pipelineStateCache.invalidate();
+// 		m_samplerStateCache.invalidate();
+
+		m_samplerAllocator.reset();
 	}
 
 }
@@ -2268,7 +2463,378 @@ void XE::RendererContextDirectX12::ExecCommands( XE::Buffer & buffer )
 
 void XE::RendererContextDirectX12::Init()
 {
+	_RTX->m_winPixEvent = XE::Library::Open( "WinPixEventRuntime.dll" );
+	XE_ASSERT( _RTX->m_winPixEvent && "Init error: Failed to load WinPixEventRuntime.dll." );
 
+	D3D12::D3D12PIXGetThreadInfo = XE::Library::SymbolT<D3D12::PFN_PIX_GET_THREAD_INFO>( _RTX->m_winPixEvent, "PIXGetThreadInfo" );
+	XE_ASSERT( D3D12::D3D12PIXGetThreadInfo && "Init error: Function PIXGetThreadInfo not found." );
+
+	D3D12::D3D12PIXEventsReplaceBlock = XE::Library::SymbolT<D3D12::PFN_PIX_EVENTS_REPLACE_BLOCK>( _RTX->m_winPixEvent, "PIXEventsReplaceBlock" );
+	XE_ASSERT( D3D12::D3D12PIXEventsReplaceBlock && "Init error: Function PIXEventsReplaceBlock not found." );
+
+
+	_RTX->m_kernel32Dll = XE::Library::Open( "kernel32.dll" );
+	XE_ASSERT( _RTX->m_kernel32Dll && "Init error: Failed to load kernel32.dll." );
+
+	D3D12::CreateEventExA = XE::Library::SymbolT<D3D12::PFN_CREATE_EVENT_EX_A>( _RTX->m_kernel32Dll, "CreateEventExA" );
+	XE_ASSERT( NULL == D3D12::CreateEventExA && "Init error: Function CreateEventExA not found." );
+
+
+	_RTX->m_d3d12Dll = XE::Library::Open( "d3d12.dll" );
+	XE_ASSERT( NULL == _RTX->m_d3d12Dll && "Init error: Failed to load d3d12.dll." );
+
+	D3D12::D3D12EnableExperimentalFeatures = XE::Library::SymbolT<D3D12::PFN_D3D12_ENABLE_EXPERIMENTAL_FEATURES>( _RTX->m_d3d12Dll, "D3D12EnableExperimentalFeatures" );
+	XE_ASSERT( NULL != D3D12::D3D12EnableExperimentalFeatures && "Function D3D12EnableExperimentalFeatures not found." );
+
+	D3D12::D3D12CreateDevice = XE::Library::SymbolT<PFN_D3D12_CREATE_DEVICE>( _RTX->m_d3d12Dll, "D3D12CreateDevice" );
+	XE_ASSERT( NULL != D3D12::D3D12CreateDevice && "Function D3D12CreateDevice not found." );
+
+	D3D12::D3D12GetDebugInterface = XE::Library::SymbolT<PFN_D3D12_GET_DEBUG_INTERFACE>( _RTX->m_d3d12Dll, "D3D12GetDebugInterface" );
+	XE_ASSERT( NULL != D3D12::D3D12GetDebugInterface && "Function D3D12GetDebugInterface not found." );
+
+	D3D12::D3D12SerializeRootSignature = XE::Library::SymbolT<PFN_D3D12_SERIALIZE_ROOT_SIGNATURE>( _RTX->m_d3d12Dll, "D3D12SerializeRootSignature" );
+	XE_ASSERT( NULL != D3D12::D3D12SerializeRootSignature && "Function D3D12SerializeRootSignature not found." );
+
+
+	_RTX->m_dxgi.Init( GetCaps() );
+
+
+	D3D_FEATURE_LEVEL featureLevel[] =
+	{
+		D3D_FEATURE_LEVEL_12_1,
+		D3D_FEATURE_LEVEL_12_0,
+		D3D_FEATURE_LEVEL_11_1,
+		D3D_FEATURE_LEVEL_11_0,
+	};
+
+	HRESULT hr = E_FAIL;
+	for( uint32_t ii = 0; ii < XE::countof( featureLevel ) && FAILED( hr ); ++ii )
+	{
+		hr = D3D12CreateDevice( _RTX->m_dxgi._Adapter
+								, featureLevel[ii]
+								, IID_ID3D12Device
+								, ( void ** )&_RTX->m_device
+		);
+
+		if( FAILED( hr ) )
+		{
+			XE_LOG( XE::LoggerLevel::Warning, "Direct3D12 device feature level %1.%2.", ( featureLevel[ii] >> 12 ) & 0xf, ( featureLevel[ii] >> 8 ) & 0xf );
+		}
+
+		_RTX->m_featureLevel = featureLevel[ii];
+	}
+
+	_RTX->m_dxgi.Update( _RTX->m_device );
+
+	{
+		_RTX->m_deviceInterfaceVersion = 0;
+		for( uint32_t ii = 0; ii < XE::countof( D3D12::s_d3dDeviceIIDs ); ++ii )
+		{
+			ID3D12Device * device;
+			hr = _RTX->m_device->QueryInterface( D3D12::s_d3dDeviceIIDs[ii], ( void ** )&device );
+			if( SUCCEEDED( hr ) )
+			{
+				device->Release();
+				_RTX->m_deviceInterfaceVersion = XE::countof( D3D12::s_d3dDeviceIIDs ) - ii;
+				break;
+			}
+		}
+	}
+
+	{
+		uint32_t numNodes = _RTX->m_device->GetNodeCount();
+		XE_LOG( XE::LoggerLevel::Message, "D3D12 GPU Architecture (num nodes: %1):", numNodes );
+		for( uint32_t ii = 0; ii < numNodes; ++ii )
+		{
+			D3D12_FEATURE_DATA_ARCHITECTURE architecture;
+			architecture.NodeIndex = ii;
+			DX_CHECK( _RTX->m_device->CheckFeatureSupport( D3D12_FEATURE_ARCHITECTURE, &architecture, sizeof( architecture ) ) );
+
+			XE_LOG( XE::LoggerLevel::Message, "\tNode %1: TileBasedRenderer %2, UMA %3, CacheCoherentUMA %4", ii, architecture.TileBasedRenderer, architecture.UMA, architecture.CacheCoherentUMA );
+			
+			if( 0 == ii )
+			{
+				std::memcpy( &_RTX->m_architecture, &architecture, sizeof( architecture ) );
+			}
+		}
+	}
+
+	DX_CHECK( _RTX->m_device->CheckFeatureSupport( D3D12_FEATURE_D3D12_OPTIONS, &_RTX->m_options, sizeof( _RTX->m_options ) ) );
+
+	XE_LOG( XE::LoggerLevel::Message, "D3D12 options:" );
+	XE_LOG( XE::LoggerLevel::Message, "\tTiledResourcesTier %1", _RTX->m_options.TiledResourcesTier );
+	XE_LOG( XE::LoggerLevel::Message, "\tResourceBindingTier %1", _RTX->m_options.ResourceBindingTier );
+	XE_LOG( XE::LoggerLevel::Message, "\tROVsSupported %1", _RTX->m_options.ROVsSupported );
+	XE_LOG( XE::LoggerLevel::Message, "\tConservativeRasterizationTier %1", _RTX->m_options.ConservativeRasterizationTier );
+	XE_LOG( XE::LoggerLevel::Message, "\tCrossNodeSharingTier %1", _RTX->m_options.CrossNodeSharingTier );
+	XE_LOG( XE::LoggerLevel::Message, "\tResourceHeapTier %1", _RTX->m_options.ResourceHeapTier );
+
+	D3D12::initHeapProperties( _RTX->m_device );
+
+	_RTX->m_cmd.init( _RTX->m_device );
+	_RTX->m_device->SetPrivateDataInterface( D3D12::IID_ID3D12CommandQueue, _RTX->m_cmd.m_commandQueue );
+
+
+	_RTX->m_presentElapsed = 0;
+
+
+	{
+		_RTX->m_numWindows = 0;
+
+		D3D12_DESCRIPTOR_HEAP_DESC rtvDescHeap;
+		rtvDescHeap.NumDescriptors = XE::countof( _RTX->m_backBufferColor ) + GFX_MAX_FRAME_BUFFERS * GFX_MAX_ATTACHMENTS;
+		rtvDescHeap.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
+		rtvDescHeap.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+		rtvDescHeap.NodeMask = 1;
+		DX_CHECK( _RTX->m_device->CreateDescriptorHeap( &rtvDescHeap, D3D12::IID_ID3D12DescriptorHeap, ( void ** )&_RTX->m_rtvDescriptorHeap ) );
+
+		D3D12_DESCRIPTOR_HEAP_DESC dsvDescHeap;
+		dsvDescHeap.NumDescriptors = 1 + GFX_MAX_FRAME_BUFFERS;
+		dsvDescHeap.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
+		dsvDescHeap.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+		dsvDescHeap.NodeMask = 1;
+		DX_CHECK( _RTX->m_device->CreateDescriptorHeap( &dsvDescHeap, D3D12::IID_ID3D12DescriptorHeap, ( void ** )&_RTX->m_dsvDescriptorHeap ) );
+
+		for( uint32_t ii = 0; ii < XE::countof( _RTX->m_scratchBuffer ); ++ii )
+		{
+			_RTX->m_scratchBuffer[ii].create( GFX_MAX_DRAWCALLS * 1024, GFX_MAX_TEXTURES + GFX_MAX_SHADERS + GFX_MAX_DRAWCALLS );
+		}
+		_RTX->m_samplerAllocator.create( D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER, 1024, GFX_MAX_TEXTURE_SAMPLERS );
+
+		D3D12_DESCRIPTOR_RANGE descRange[] =
+		{
+			{ D3D12_DESCRIPTOR_RANGE_TYPE_SAMPLER, GFX_MAX_TEXTURE_SAMPLERS, 0, 0, D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND },
+			{ D3D12_DESCRIPTOR_RANGE_TYPE_SRV,     GFX_MAX_TEXTURE_SAMPLERS, 0, 0, D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND },
+			{ D3D12_DESCRIPTOR_RANGE_TYPE_CBV,     1,                        0, 0, D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND },
+			{ D3D12_DESCRIPTOR_RANGE_TYPE_UAV,     GFX_MAX_TEXTURE_SAMPLERS, 0, 0, D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND },
+		};
+
+		D3D12_ROOT_PARAMETER rootParameter[] =
+		{
+			{ D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE, { { 1, &descRange[D3D12::Rdt::Sampler] } }, D3D12_SHADER_VISIBILITY_ALL },
+			{ D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE, { { 1, &descRange[D3D12::Rdt::SRV]     } }, D3D12_SHADER_VISIBILITY_ALL },
+			{ D3D12_ROOT_PARAMETER_TYPE_CBV,              { { 0, 0                               } }, D3D12_SHADER_VISIBILITY_ALL },
+			{ D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE, { { 1, &descRange[D3D12::Rdt::UAV]     } }, D3D12_SHADER_VISIBILITY_ALL },
+		};
+		rootParameter[D3D12::Rdt::CBV].Descriptor.RegisterSpace = 0;
+		rootParameter[D3D12::Rdt::CBV].Descriptor.ShaderRegister = 0;
+
+		D3D12_ROOT_SIGNATURE_DESC descRootSignature;
+		descRootSignature.NumParameters = XE::countof( rootParameter );
+		descRootSignature.pParameters = rootParameter;
+		descRootSignature.NumStaticSamplers = 0;
+		descRootSignature.pStaticSamplers = NULL;
+		descRootSignature.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
+
+		ID3DBlob * outBlob;
+		ID3DBlob * errorBlob;
+		DX_CHECK( D3D12SerializeRootSignature( &descRootSignature
+											   , D3D_ROOT_SIGNATURE_VERSION_1
+											   , &outBlob
+											   , &errorBlob
+		) );
+
+		DX_CHECK( _RTX->m_device->CreateRootSignature( 0, outBlob->GetBufferPointer(), outBlob->GetBufferSize(), D3D12::IID_ID3D12RootSignature, ( void ** )&_RTX->m_rootSignature ) );
+
+		///
+		_RTX->m_directAccessSupport = PLATFORM_OS == OS_XBOX && _RTX->m_architecture.UMA;
+
+		GetCaps().Supported |= XE::MakeFlags( XE::CapsFlag::NONE )
+			| XE::CapsFlag::TEXTURE_3D
+			| XE::CapsFlag::TEXTURE_COMPARE_ALL
+			| XE::CapsFlag::INDEX32
+			| XE::CapsFlag::INSTANCING
+			| XE::CapsFlag::DRAW_INDIRECT
+			| XE::CapsFlag::VERTEX_ATTRIB_HALF
+			| XE::CapsFlag::VERTEX_ATTRIB_UINT10
+			| XE::CapsFlag::VERTEX_ID
+			| XE::CapsFlag::FRAGMENT_DEPTH
+			| XE::CapsFlag::BLEND_INDEPENDENT
+			| XE::CapsFlag::COMPUTE
+			| ( _RTX->m_options.ROVsSupported ? XE::CapsFlag::FRAGMENT_ORDERING : XE::CapsFlag::NONE )
+			| ( _RTX->m_directAccessSupport ? XE::CapsFlag::TEXTURE_DIRECT_ACCESS : XE::CapsFlag::NONE )
+			| ( PLATFORM_OS == OS_WINDOWS ? XE::CapsFlag::SWAP_CHAIN : XE::CapsFlag::NONE )
+			| XE::CapsFlag::TEXTURE_BLIT
+			| XE::CapsFlag::TEXTURE_READ_BACK
+			| XE::CapsFlag::OCCLUSION_QUERY
+			| XE::CapsFlag::ALPHA_TO_COVERAGE
+			| XE::CapsFlag::TEXTURE_2D_ARRAY
+			| XE::CapsFlag::TEXTURE_CUBE_ARRAY
+			| XE::CapsFlag::IMAGE_RW;
+
+		GetCaps().Limits.MaxTextureSize = D3D12_REQ_TEXTURE2D_U_OR_V_DIMENSION;
+		GetCaps().Limits.MaxTextureLayers = D3D12_REQ_TEXTURE2D_ARRAY_AXIS_DIMENSION;
+		GetCaps().Limits.MaxFBAttachments = std::min<uint32_t>( 16, GFX_MAX_ATTACHMENTS );
+		GetCaps().Limits.MaxComputeBindings = std::min<uint32_t>( D3D12_UAV_SLOT_COUNT, GFX_MAX_TEXTURE_SAMPLERS );
+		GetCaps().Limits.MaxVertexStreams = 4;
+
+		for( uint32_t ii = 0; ii < ( XE::uint64 )XE::TextureFormat::COUNT; ++ii )
+		{
+			XE::CapsFormatFlags support = XE::CapsFormatFlag::NONE;
+
+			const DXGI_FORMAT fmt = ( XE::TextureFormat( ii ) > XE::TextureFormat::UNKNOWNDEPTH ) ? D3D12::s_textureFormat[ii].m_fmtDsv : D3D12::s_textureFormat[ii].m_fmt ;
+			const DXGI_FORMAT fmtSrgb = D3D12::s_textureFormat[ii].m_fmtSrgb;
+
+			if( DXGI_FORMAT_UNKNOWN != fmt )
+			{
+				D3D12_FEATURE_DATA_FORMAT_SUPPORT data;
+				data.Format = fmt;
+				hr = _RTX->m_device->CheckFeatureSupport( D3D12_FEATURE_FORMAT_SUPPORT, &data, sizeof( data ) );
+				if( SUCCEEDED( hr ) )
+				{
+					support |= 0 != ( data.Support1 & ( 0
+														| D3D12_FORMAT_SUPPORT1_TEXTURE2D
+														) )
+						? XE::CapsFormatFlag::TEXTURE_2D
+						: XE::CapsFormatFlag::NONE
+						;
+
+					support |= 0 != ( data.Support1 & ( 0
+														| D3D12_FORMAT_SUPPORT1_TEXTURE3D
+														) )
+						? XE::CapsFormatFlag::TEXTURE_3D
+						: XE::CapsFormatFlag::NONE
+						;
+
+					support |= 0 != ( data.Support1 & ( 0
+														| D3D12_FORMAT_SUPPORT1_TEXTURECUBE
+														) )
+						? XE::CapsFormatFlag::TEXTURE_CUBE
+						: XE::CapsFormatFlag::NONE
+						;
+
+					support |= 0 != ( data.Support1 & ( 0
+														| D3D12_FORMAT_SUPPORT1_BUFFER
+														| D3D12_FORMAT_SUPPORT1_IA_VERTEX_BUFFER
+														| D3D12_FORMAT_SUPPORT1_IA_INDEX_BUFFER
+														) )
+						? XE::CapsFormatFlag::TEXTURE_VERTEX
+						: XE::CapsFormatFlag::NONE
+						;
+
+					support |= 0 != ( data.Support1 & ( 0
+														| D3D12_FORMAT_SUPPORT1_SHADER_LOAD
+														) )
+						? XE::CapsFormatFlag::TEXTURE_IMAGE_READ
+						: XE::CapsFormatFlag::NONE
+						;
+
+					support |= 0 != ( data.Support1 & ( 0
+														| D3D12_FORMAT_SUPPORT1_RENDER_TARGET
+														| D3D12_FORMAT_SUPPORT1_DEPTH_STENCIL
+														) )
+						? XE::CapsFormatFlag::TEXTURE_FRAMEBUFFER
+						: XE::CapsFormatFlag::NONE
+						;
+
+					support |= 0 != ( data.Support1 & ( 0
+														| D3D12_FORMAT_SUPPORT1_MULTISAMPLE_RENDERTARGET
+														) )
+						? XE::CapsFormatFlag::TEXTURE_FRAMEBUFFER_MSAA
+						: XE::CapsFormatFlag::NONE
+						;
+
+					support |= 0 != ( data.Support1 & ( 0
+														| D3D12_FORMAT_SUPPORT1_MULTISAMPLE_LOAD
+														) )
+						? XE::CapsFormatFlag::TEXTURE_MSAA
+						: XE::CapsFormatFlag::NONE
+						;
+				}
+
+				if( ( support & XE::CapsFormatFlag::TEXTURE_IMAGE_READ ) != XE::CapsFormatFlag::NONE )
+				{
+					support &= ~XE::MakeFlags( XE::CapsFormatFlag::TEXTURE_IMAGE_READ );
+
+					data.Format = D3D12::s_textureFormat[ii].m_fmt;
+					hr = _RTX->m_device->CheckFeatureSupport( D3D12_FEATURE_FORMAT_SUPPORT, &data, sizeof( data ) );
+					if( SUCCEEDED( hr ) )
+					{
+						support |= 0 != ( data.Support2 & ( 0
+															| D3D12_FORMAT_SUPPORT2_UAV_TYPED_LOAD
+															) )
+							? XE::CapsFormatFlag::TEXTURE_IMAGE_READ
+							: XE::CapsFormatFlag::NONE
+							;
+
+						support |= 0 != ( data.Support2 & ( 0
+															| D3D12_FORMAT_SUPPORT2_UAV_TYPED_STORE
+															) )
+							? XE::CapsFormatFlag::TEXTURE_IMAGE_WRITE
+							: XE::CapsFormatFlag::NONE
+							;
+					}
+				}
+			}
+
+			if( DXGI_FORMAT_UNKNOWN != fmtSrgb )
+			{
+				struct D3D11_FEATURE_DATA_FORMAT_SUPPORT
+				{
+					DXGI_FORMAT InFormat;
+					UINT OutFormatSupport;
+				};
+
+				D3D12_FEATURE_DATA_FORMAT_SUPPORT data;
+				data.Format = fmtSrgb;
+				hr = _RTX->m_device->CheckFeatureSupport( D3D12_FEATURE_FORMAT_SUPPORT, &data, sizeof( data ) );
+				if( SUCCEEDED( hr ) )
+				{
+					support |= 0 != ( data.Support1 & ( 0
+														| D3D12_FORMAT_SUPPORT1_TEXTURE2D
+														) )
+						? XE::CapsFormatFlag::TEXTURE_2D_SRGB
+						: XE::CapsFormatFlag::NONE
+						;
+
+					support |= 0 != ( data.Support1 & ( 0
+														| D3D12_FORMAT_SUPPORT1_TEXTURE3D
+														) )
+						? XE::CapsFormatFlag::TEXTURE_3D_SRGB
+						: XE::CapsFormatFlag::NONE
+						;
+
+					support |= 0 != ( data.Support1 & ( 0
+														| D3D12_FORMAT_SUPPORT1_TEXTURECUBE
+														) )
+						? XE::CapsFormatFlag::TEXTURE_CUBE_SRGB
+						: XE::CapsFormatFlag::NONE
+						;
+				}
+			}
+
+			GetCaps().SupportFormat[ii] = support;
+		}
+
+		_RTX->postReset();
+
+// 		_RTX->m_batch.create( 4 << 10 );
+// 		_RTX->m_batch.setIndirectMode( BGFX_PCI_ID_NVIDIA != m_dxgi.m_adapterDesc.VendorId );
+
+		_RTX->m_gpuTimer.init();
+		_RTX->m_occlusionQuery.init();
+
+		{
+			D3D12_INDIRECT_ARGUMENT_TYPE argType[] =
+			{
+				D3D12_INDIRECT_ARGUMENT_TYPE_DISPATCH,
+				D3D12_INDIRECT_ARGUMENT_TYPE_DRAW,
+				D3D12_INDIRECT_ARGUMENT_TYPE_DRAW_INDEXED,
+			};
+
+			D3D12_INDIRECT_ARGUMENT_DESC argDesc;
+			std::memset( &argDesc, 0, sizeof( argDesc ) );
+
+			for( uint32_t ii = 0; ii < XE::countof( _RTX->m_commandSignature ); ++ii )
+			{
+				argDesc.Type = argType[ii];
+				D3D12_COMMAND_SIGNATURE_DESC commandSignatureDesc = { GFX_MAX_DRAW_INDIRECT_STRIDE, 1, &argDesc, 1 };
+
+				_RTX->m_commandSignature[ii] = NULL;
+				DX_CHECK( _RTX->m_device->CreateCommandSignature( &commandSignatureDesc, NULL, D3D12::IID_ID3D12CommandSignature, ( void ** )&_RTX->m_commandSignature[ii] ) );
+			}
+		}
+	}
 }
 
 void XE::RendererContextDirectX12::Shutdown()
