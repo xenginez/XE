@@ -1,4 +1,4 @@
-#include "RendererContextDirectX12.h"
+#include "RendererContextD3D12.h"
 
 #if PLATFORM_OS & ( OS_WINDOWS | OS_XBOX )
 
@@ -15,36 +15,31 @@
 
 namespace XE::D3D12
 {
-	class RenderContext;
-}
-
-XE::D3D12::RenderContext * _RTX = nullptr;
-
-namespace XE::D3D12
-{
-	enum Rdt
+	enum class Rdt
 	{
-		Sampler,
+		SAMPLER,
 		SRV,
 		CBV,
 		UAV,
 
-		Count
+		COUNT
 	};
 
-	typedef struct PIXEventsThreadInfo * ( WINAPI * PFN_PIX_GET_THREAD_INFO )( );
-	typedef uint64_t( WINAPI * PFN_PIX_EVENTS_REPLACE_BLOCK )( bool _getEarliestTime );
-	typedef HANDLE( WINAPI * PFN_CREATE_EVENT_EX_A )( LPSECURITY_ATTRIBUTES _attrs, LPCSTR _name, DWORD _flags, DWORD _access );
-	typedef HRESULT( WINAPI * PFN_D3D12_ENABLE_EXPERIMENTAL_FEATURES )( uint32_t _numFeatures, const IID * _iids, void * _configurationStructs, uint32_t * _configurationStructSizes );
+	typedef struct PIXEventsThreadInfo * ( * PFN_PIX_GET_THREAD_INFO )( );
+	typedef uint64_t( * PFN_PIX_EVENTS_REPLACE_BLOCK )( bool _getEarliestTime );
+	typedef HRESULT( * PFN_D3D12_GET_DEBUG_INTERFACE )( const IID &, void ** );
+	typedef HRESULT( * PFN_D3D12_CREATE_DEVICE )( IUnknown *, D3D_FEATURE_LEVEL, const IID &, void ** );
+	typedef HANDLE( * PFN_CREATE_EVENT_EX_A )( LPSECURITY_ATTRIBUTES _attrs, LPCSTR _name, DWORD _flags, DWORD _access );
+	typedef HRESULT( * PFN_D3D12_ENABLE_EXPERIMENTAL_FEATURES )( uint32_t _numFeatures, const IID * _iids, void * _configurationStructs, uint32_t * _configurationStructSizes );
+	typedef HRESULT( * PFN_D3D12_SERIALIZE_ROOT_SIGNATURE )( const D3D12_ROOT_SIGNATURE_DESC * pRootSignature, D3D_ROOT_SIGNATURE_VERSION Version, ID3DBlob ** ppBlob, ID3DBlob ** ppErrorBlob );
 
-
-	static PFN_PIX_GET_THREAD_INFO					D3D12PIXGetThreadInfo;
-	static PFN_PIX_EVENTS_REPLACE_BLOCK				D3D12PIXEventsReplaceBlock;
-	static PFN_D3D12_ENABLE_EXPERIMENTAL_FEATURES	D3D12EnableExperimentalFeatures;
-	static PFN_D3D12_CREATE_DEVICE					D3D12CreateDevice;
-	static PFN_D3D12_GET_DEBUG_INTERFACE			D3D12GetDebugInterface;
-	static PFN_D3D12_SERIALIZE_ROOT_SIGNATURE		D3D12SerializeRootSignature;
-	static PFN_CREATE_EVENT_EX_A					CreateEventExA;
+	XE::D3D12::PFN_CREATE_EVENT_EX_A					CreateEventExA;
+	XE::D3D12::PFN_D3D12_CREATE_DEVICE					CreateDevice;
+	XE::D3D12::PFN_PIX_GET_THREAD_INFO					PIXGetThreadInfo;
+	XE::D3D12::PFN_D3D12_GET_DEBUG_INTERFACE			GetDebugInterface;
+	XE::D3D12::PFN_PIX_EVENTS_REPLACE_BLOCK				PIXEventsReplaceBlock;
+	XE::D3D12::PFN_D3D12_SERIALIZE_ROOT_SIGNATURE		SerializeRootSignature;
+	XE::D3D12::PFN_D3D12_ENABLE_EXPERIMENTAL_FEATURES	EnableExperimentalFeatures;
 
 
 	using DescriptorHeapHandle = XE::Handle< ID3D12DescriptorHeap >;
@@ -88,32 +83,48 @@ namespace XE::D3D12
 		uint32_t    stride;
 	};
 
+	struct ImageBlockInfo
+	{
+		uint8_t bitsPerPixel;
+		uint8_t blockWidth;
+		uint8_t blockHeight;
+		uint8_t blockSize;
+		uint8_t minBlockX;
+		uint8_t minBlockY;
+		uint8_t depthBits;
+		uint8_t stencilBits;
+		uint8_t rBits;
+		uint8_t gBits;
+		uint8_t bBits;
+		uint8_t aBits;
+		uint8_t encoding;
+	};
 
-	static constexpr GUID IID_ID3D12CommandAllocator = { 0x6102dee4, 0xaf59, 0x4b09, { 0xb9, 0x99, 0xb4, 0x4d, 0x73, 0xf0, 0x9b, 0x24 } };
-	static constexpr GUID IID_ID3D12CommandQueue = { 0x0ec870a6, 0x5d7e, 0x4c22, { 0x8c, 0xfc, 0x5b, 0xaa, 0xe0, 0x76, 0x16, 0xed } };
-	static constexpr GUID IID_ID3D12CommandSignature = { 0xc36a797c, 0xec80, 0x4f0a, { 0x89, 0x85, 0xa7, 0xb2, 0x47, 0x50, 0x82, 0xd1 } };
-	static constexpr GUID IID_ID3D12Debug = { 0x344488b7, 0x6846, 0x474b, { 0xb9, 0x89, 0xf0, 0x27, 0x44, 0x82, 0x45, 0xe0 } };
-	static constexpr GUID IID_ID3D12Debug1 = { 0xaffaa4ca, 0x63fe, 0x4d8e, { 0xb8, 0xad, 0x15, 0x90, 0x00, 0xaf, 0x43, 0x04 } };
-	static constexpr GUID IID_ID3D12DescriptorHeap = { 0x8efb471d, 0x616c, 0x4f49, { 0x90, 0xf7, 0x12, 0x7b, 0xb7, 0x63, 0xfa, 0x51 } };
-	static constexpr GUID IID_ID3D12Device = { 0x189819f1, 0x1db6, 0x4b57, { 0xbe, 0x54, 0x18, 0x21, 0x33, 0x9b, 0x85, 0xf7 } };
-	static constexpr GUID IID_ID3D12Device1 = { 0x77acce80, 0x638e, 0x4e65, { 0x88, 0x95, 0xc1, 0xf2, 0x33, 0x86, 0x86, 0x3e } };
-	static constexpr GUID IID_ID3D12Device2 = { 0x30baa41e, 0xb15b, 0x475c, { 0xa0, 0xbb, 0x1a, 0xf5, 0xc5, 0xb6, 0x43, 0x28 } };
-	static constexpr GUID IID_ID3D12Device3 = { 0x81dadc15, 0x2bad, 0x4392, { 0x93, 0xc5, 0x10, 0x13, 0x45, 0xc4, 0xaa, 0x98 } };
-	static constexpr GUID IID_ID3D12Device4 = { 0xe865df17, 0xa9ee, 0x46f9, { 0xa4, 0x63, 0x30, 0x98, 0x31, 0x5a, 0xa2, 0xe5 } };
-	static constexpr GUID IID_ID3D12Device5 = { 0x8b4f173b, 0x2fea, 0x4b80, { 0x8f, 0x58, 0x43, 0x07, 0x19, 0x1a, 0xb9, 0x5d } };
-	static constexpr GUID IID_ID3D12Fence = { 0x0a753dcf, 0xc4d8, 0x4b91, { 0xad, 0xf6, 0xbe, 0x5a, 0x60, 0xd9, 0x5a, 0x76 } };
-	static constexpr GUID IID_ID3D12GraphicsCommandList = { 0x5b160d0f, 0xac1b, 0x4185, { 0x8b, 0xa8, 0xb3, 0xae, 0x42, 0xa5, 0xa4, 0x55 } };
-	static constexpr GUID IID_ID3D12GraphicsCommandList1 = { 0x553103fb, 0x1fe7, 0x4557, { 0xbb, 0x38, 0x94, 0x6d, 0x7d, 0x0e, 0x7c, 0xa7 } };
-	static constexpr GUID IID_ID3D12GraphicsCommandList2 = { 0x38C3E585, 0xFF17, 0x412C, { 0x91, 0x50, 0x4F, 0xC6, 0xF9, 0xD7, 0x2A, 0x28 } };
-	static constexpr GUID IID_ID3D12GraphicsCommandList3 = { 0x6FDA83A7, 0xB84C, 0x4E38, { 0x9A, 0xC8, 0xC7, 0xBD, 0x22, 0x01, 0x6B, 0x3D } };
-	static constexpr GUID IID_ID3D12GraphicsCommandList4 = { 0x8754318e, 0xd3a9, 0x4541, { 0x98, 0xcf, 0x64, 0x5b, 0x50, 0xdc, 0x48, 0x74 } };
-	static constexpr GUID IID_ID3D12InfoQueue = { 0x0742a90b, 0xc387, 0x483f, { 0xb9, 0x46, 0x30, 0xa7, 0xe4, 0xe6, 0x14, 0x58 } };
-	static constexpr GUID IID_ID3D12PipelineState = { 0x765a30f3, 0xf624, 0x4c6f, { 0xa8, 0x28, 0xac, 0xe9, 0x48, 0x62, 0x24, 0x45 } };
-	static constexpr GUID IID_ID3D12Resource = { 0x696442be, 0xa72e, 0x4059, { 0xbc, 0x79, 0x5b, 0x5c, 0x98, 0x04, 0x0f, 0xad } };
-	static constexpr GUID IID_ID3D12RootSignature = { 0xc54a6b66, 0x72df, 0x4ee8, { 0x8b, 0xe5, 0xa9, 0x46, 0xa1, 0x42, 0x92, 0x14 } };
-	static constexpr GUID IID_ID3D12QueryHeap = { 0x0d9658ae, 0xed45, 0x469e, { 0xa6, 0x1d, 0x97, 0x0e, 0xc5, 0x83, 0xca, 0xb4 } };
+	constexpr GUID IID_ID3D12CommandAllocator = { 0x6102dee4, 0xaf59, 0x4b09, { 0xb9, 0x99, 0xb4, 0x4d, 0x73, 0xf0, 0x9b, 0x24 } };
+	constexpr GUID IID_ID3D12CommandQueue = { 0x0ec870a6, 0x5d7e, 0x4c22, { 0x8c, 0xfc, 0x5b, 0xaa, 0xe0, 0x76, 0x16, 0xed } };
+	constexpr GUID IID_ID3D12CommandSignature = { 0xc36a797c, 0xec80, 0x4f0a, { 0x89, 0x85, 0xa7, 0xb2, 0x47, 0x50, 0x82, 0xd1 } };
+	constexpr GUID IID_ID3D12Debug = { 0x344488b7, 0x6846, 0x474b, { 0xb9, 0x89, 0xf0, 0x27, 0x44, 0x82, 0x45, 0xe0 } };
+	constexpr GUID IID_ID3D12Debug1 = { 0xaffaa4ca, 0x63fe, 0x4d8e, { 0xb8, 0xad, 0x15, 0x90, 0x00, 0xaf, 0x43, 0x04 } };
+	constexpr GUID IID_ID3D12DescriptorHeap = { 0x8efb471d, 0x616c, 0x4f49, { 0x90, 0xf7, 0x12, 0x7b, 0xb7, 0x63, 0xfa, 0x51 } };
+	constexpr GUID IID_ID3D12Device = { 0x189819f1, 0x1db6, 0x4b57, { 0xbe, 0x54, 0x18, 0x21, 0x33, 0x9b, 0x85, 0xf7 } };
+	constexpr GUID IID_ID3D12Device1 = { 0x77acce80, 0x638e, 0x4e65, { 0x88, 0x95, 0xc1, 0xf2, 0x33, 0x86, 0x86, 0x3e } };
+	constexpr GUID IID_ID3D12Device2 = { 0x30baa41e, 0xb15b, 0x475c, { 0xa0, 0xbb, 0x1a, 0xf5, 0xc5, 0xb6, 0x43, 0x28 } };
+	constexpr GUID IID_ID3D12Device3 = { 0x81dadc15, 0x2bad, 0x4392, { 0x93, 0xc5, 0x10, 0x13, 0x45, 0xc4, 0xaa, 0x98 } };
+	constexpr GUID IID_ID3D12Device4 = { 0xe865df17, 0xa9ee, 0x46f9, { 0xa4, 0x63, 0x30, 0x98, 0x31, 0x5a, 0xa2, 0xe5 } };
+	constexpr GUID IID_ID3D12Device5 = { 0x8b4f173b, 0x2fea, 0x4b80, { 0x8f, 0x58, 0x43, 0x07, 0x19, 0x1a, 0xb9, 0x5d } };
+	constexpr GUID IID_ID3D12Fence = { 0x0a753dcf, 0xc4d8, 0x4b91, { 0xad, 0xf6, 0xbe, 0x5a, 0x60, 0xd9, 0x5a, 0x76 } };
+	constexpr GUID IID_ID3D12GraphicsCommandList = { 0x5b160d0f, 0xac1b, 0x4185, { 0x8b, 0xa8, 0xb3, 0xae, 0x42, 0xa5, 0xa4, 0x55 } };
+	constexpr GUID IID_ID3D12GraphicsCommandList1 = { 0x553103fb, 0x1fe7, 0x4557, { 0xbb, 0x38, 0x94, 0x6d, 0x7d, 0x0e, 0x7c, 0xa7 } };
+	constexpr GUID IID_ID3D12GraphicsCommandList2 = { 0x38C3E585, 0xFF17, 0x412C, { 0x91, 0x50, 0x4F, 0xC6, 0xF9, 0xD7, 0x2A, 0x28 } };
+	constexpr GUID IID_ID3D12GraphicsCommandList3 = { 0x6FDA83A7, 0xB84C, 0x4E38, { 0x9A, 0xC8, 0xC7, 0xBD, 0x22, 0x01, 0x6B, 0x3D } };
+	constexpr GUID IID_ID3D12GraphicsCommandList4 = { 0x8754318e, 0xd3a9, 0x4541, { 0x98, 0xcf, 0x64, 0x5b, 0x50, 0xdc, 0x48, 0x74 } };
+	constexpr GUID IID_ID3D12InfoQueue = { 0x0742a90b, 0xc387, 0x483f, { 0xb9, 0x46, 0x30, 0xa7, 0xe4, 0xe6, 0x14, 0x58 } };
+	constexpr GUID IID_ID3D12PipelineState = { 0x765a30f3, 0xf624, 0x4c6f, { 0xa8, 0x28, 0xac, 0xe9, 0x48, 0x62, 0x24, 0x45 } };
+	constexpr GUID IID_ID3D12Resource = { 0x696442be, 0xa72e, 0x4059, { 0xbc, 0x79, 0x5b, 0x5c, 0x98, 0x04, 0x0f, 0xad } };
+	constexpr GUID IID_ID3D12RootSignature = { 0xc54a6b66, 0x72df, 0x4ee8, { 0x8b, 0xe5, 0xa9, 0x46, 0xa1, 0x42, 0x92, 0x14 } };
+	constexpr GUID IID_ID3D12QueryHeap = { 0x0d9658ae, 0xed45, 0x469e, { 0xa6, 0x1d, 0x97, 0x0e, 0xc5, 0x83, 0xca, 0xb4 } };
 
-	static HeapProperty s_heapProperties[] =
+	HeapProperty s_heapProperties[] =
 	{
 		{ { D3D12_HEAP_TYPE_DEFAULT,  D3D12_CPU_PAGE_PROPERTY_UNKNOWN, D3D12_MEMORY_POOL_UNKNOWN, 0, 0 }, D3D12_RESOURCE_STATE_COMMON       },
 		{ { D3D12_HEAP_TYPE_DEFAULT,  D3D12_CPU_PAGE_PROPERTY_UNKNOWN, D3D12_MEMORY_POOL_UNKNOWN, 0, 0 }, D3D12_RESOURCE_STATE_COMMON       },
@@ -121,7 +132,7 @@ namespace XE::D3D12
 		{ { D3D12_HEAP_TYPE_READBACK, D3D12_CPU_PAGE_PROPERTY_UNKNOWN, D3D12_MEMORY_POOL_UNKNOWN, 0, 0 }, D3D12_RESOURCE_STATE_COPY_DEST    },
 	};
 
-	static const GUID s_d3dDeviceIIDs[] =
+	const GUID s_d3dDeviceIIDs[] =
 	{
 		IID_ID3D12Device5,
 		IID_ID3D12Device4,
@@ -130,7 +141,7 @@ namespace XE::D3D12
 		IID_ID3D12Device1,
 	};
 
-	static const PrimInfo s_primInfo[] =
+	const PrimInfo s_primInfo[] =
 	{
 		{ D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST,  D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE,  3, 3, 0 },
 		{ D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP, D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE,  3, 1, 2 },
@@ -140,7 +151,7 @@ namespace XE::D3D12
 		{ D3D_PRIMITIVE_TOPOLOGY_UNDEFINED,     D3D12_PRIMITIVE_TOPOLOGY_TYPE_UNDEFINED, 0, 0, 0 },
 	};
 
-	static const uint32_t s_checkMsaa[] =
+	const uint32_t s_checkMsaa[] =
 	{
 		0,
 		2,
@@ -149,7 +160,7 @@ namespace XE::D3D12
 		16,
 	};
 
-	static DXGI_SAMPLE_DESC s_msaa[] =
+	DXGI_SAMPLE_DESC s_msaa[] =
 	{
 		{  1, 0 },
 		{  2, 0 },
@@ -158,7 +169,7 @@ namespace XE::D3D12
 		{ 16, 0 },
 	};
 
-	static const D3D12_BLEND s_blendFactor[][2] =
+	const D3D12_BLEND s_blendFactor[][2] =
 	{
 		{ D3D12_BLEND( 0 ),               D3D12_BLEND( 0 )               }, // ignored
 		{ D3D12_BLEND_ZERO,             D3D12_BLEND_ZERO             }, // ZERO
@@ -176,7 +187,7 @@ namespace XE::D3D12
 		{ D3D12_BLEND_INV_BLEND_FACTOR, D3D12_BLEND_INV_BLEND_FACTOR }, // INV_FACTOR
 	};
 
-	static const D3D12_BLEND_OP s_blendEquation[] =
+	const D3D12_BLEND_OP s_blendEquation[] =
 	{
 		D3D12_BLEND_OP_ADD,
 		D3D12_BLEND_OP_SUBTRACT,
@@ -185,7 +196,7 @@ namespace XE::D3D12
 		D3D12_BLEND_OP_MAX,
 	};
 
-	static const D3D12_COMPARISON_FUNC s_cmpFunc[] =
+	const D3D12_COMPARISON_FUNC s_cmpFunc[] =
 	{
 		D3D12_COMPARISON_FUNC( 0 ), // ignored
 		D3D12_COMPARISON_FUNC_LESS,
@@ -198,7 +209,7 @@ namespace XE::D3D12
 		D3D12_COMPARISON_FUNC_ALWAYS,
 	};
 
-	static const D3D12_STENCIL_OP s_stencilOp[] =
+	const D3D12_STENCIL_OP s_stencilOp[] =
 	{
 		D3D12_STENCIL_OP_ZERO,
 		D3D12_STENCIL_OP_KEEP,
@@ -210,14 +221,14 @@ namespace XE::D3D12
 		D3D12_STENCIL_OP_INVERT,
 	};
 
-	static const D3D12_CULL_MODE s_cullMode[] =
+	const D3D12_CULL_MODE s_cullMode[] =
 	{
 		D3D12_CULL_MODE_NONE,
 		D3D12_CULL_MODE_FRONT,
 		D3D12_CULL_MODE_BACK,
 	};
 
-	static const D3D12_TEXTURE_ADDRESS_MODE s_textureAddress[] =
+	const D3D12_TEXTURE_ADDRESS_MODE s_textureAddress[] =
 	{
 		D3D12_TEXTURE_ADDRESS_MODE_WRAP,
 		D3D12_TEXTURE_ADDRESS_MODE_MIRROR,
@@ -225,7 +236,7 @@ namespace XE::D3D12
 		D3D12_TEXTURE_ADDRESS_MODE_BORDER,
 	};
 
-	static const uint8_t s_textureFilter[3][3] =
+	const uint8_t s_textureFilter[3][3] =
 	{
 		{
 			0x10, // min linear
@@ -244,7 +255,7 @@ namespace XE::D3D12
 		},
 	};
 
-	static const TextureFormatInfo s_textureFormat[] =
+	const TextureFormatInfo s_textureFormat[] =
 	{
 		{ DXGI_FORMAT_BC1_UNORM,          DXGI_FORMAT_BC1_UNORM,             DXGI_FORMAT_UNKNOWN,           DXGI_FORMAT_BC1_UNORM_SRGB       }, // BC1
 		{ DXGI_FORMAT_BC2_UNORM,          DXGI_FORMAT_BC2_UNORM,             DXGI_FORMAT_UNKNOWN,           DXGI_FORMAT_BC2_UNORM_SRGB       }, // BC2
@@ -333,7 +344,7 @@ namespace XE::D3D12
 		{ DXGI_FORMAT_R24G8_TYPELESS,     DXGI_FORMAT_R24_UNORM_X8_TYPELESS, DXGI_FORMAT_D24_UNORM_S8_UINT, DXGI_FORMAT_UNKNOWN              }, // D0S8
 	};
 
-	static const D3D12_INPUT_ELEMENT_DESC s_attrib[] =
+	const D3D12_INPUT_ELEMENT_DESC s_attrib[] =
 	{
 		{ "POSITION",     0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
 		{ "NORMAL",       0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
@@ -355,7 +366,7 @@ namespace XE::D3D12
 		{ "TEXCOORD",     7, DXGI_FORMAT_R32G32_FLOAT,    0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
 	};
 
-	static const DXGI_FORMAT s_attribType[][4][2] =
+	const DXGI_FORMAT s_attribType[][4][2] =
 	{
 		{ // Uint8
 			{ DXGI_FORMAT_R8_UINT,            DXGI_FORMAT_R8_UNORM           },
@@ -389,7 +400,7 @@ namespace XE::D3D12
 		},
 	};
 
-	static const UavFormat s_uavFormat[] =
+	const UavFormat s_uavFormat[] =
 	{	//  BGFX_BUFFER_COMPUTE_TYPE_INT,  BGFX_BUFFER_COMPUTE_TYPE_UINT,  BGFX_BUFFER_COMPUTE_TYPE_FLOAT
 		{ { DXGI_FORMAT_UNKNOWN,           DXGI_FORMAT_UNKNOWN,            DXGI_FORMAT_UNKNOWN            },  0 }, // ignored
 		{ { DXGI_FORMAT_R8_SINT,           DXGI_FORMAT_R8_UINT,            DXGI_FORMAT_UNKNOWN            },  1 }, // BGFX_BUFFER_COMPUTE_FORMAT_8X1
@@ -403,10 +414,108 @@ namespace XE::D3D12
 		{ { DXGI_FORMAT_R32G32B32A32_SINT, DXGI_FORMAT_R32G32B32A32_UINT,  DXGI_FORMAT_R32G32B32A32_FLOAT }, 16 }, // BGFX_BUFFER_COMPUTE_FORMAT_32X4
 	};
 
+	const ImageBlockInfo s_imageBlockInfo[] =
+	{
+		//  +--------------------------------------------- bits per pixel
+		//  |   +----------------------------------------- block width
+		//  |   |  +-------------------------------------- block height
+		//  |   |  |   +---------------------------------- block size
+		//  |   |  |   |  +------------------------------- min blocks x
+		//  |   |  |   |  |  +---------------------------- min blocks y
+		//  |   |  |   |  |  |   +------------------------ depth bits
+		//  |   |  |   |  |  |   |  +--------------------- stencil bits
+		//  |   |  |   |  |  |   |  |   +---+---+---+----- r, g, b, a bits
+		//  |   |  |   |  |  |   |  |   r   g   b   a  +-- encoding type
+		//  |   |  |   |  |  |   |  |   |   |   |   |  |
+		{   4,  4, 4,  8, 1, 1,  0, 0,  0,  0,  0,  0, uint8_t( XE::EncodingType::UNORM ) }, // BC1
+		{   8,  4, 4, 16, 1, 1,  0, 0,  0,  0,  0,  0, uint8_t( XE::EncodingType::UNORM ) }, // BC2
+		{   8,  4, 4, 16, 1, 1,  0, 0,  0,  0,  0,  0, uint8_t( XE::EncodingType::UNORM ) }, // BC3
+		{   4,  4, 4,  8, 1, 1,  0, 0,  0,  0,  0,  0, uint8_t( XE::EncodingType::UNORM ) }, // BC4
+		{   8,  4, 4, 16, 1, 1,  0, 0,  0,  0,  0,  0, uint8_t( XE::EncodingType::UNORM ) }, // BC5
+		{   8,  4, 4, 16, 1, 1,  0, 0,  0,  0,  0,  0, uint8_t( XE::EncodingType::FLOAT ) }, // BC6H
+		{   8,  4, 4, 16, 1, 1,  0, 0,  0,  0,  0,  0, uint8_t( XE::EncodingType::UNORM ) }, // BC7
+		{   4,  4, 4,  8, 1, 1,  0, 0,  0,  0,  0,  0, uint8_t( XE::EncodingType::UNORM ) }, // ETC1
+		{   4,  4, 4,  8, 1, 1,  0, 0,  0,  0,  0,  0, uint8_t( XE::EncodingType::UNORM ) }, // ETC2
+		{   8,  4, 4, 16, 1, 1,  0, 0,  0,  0,  0,  0, uint8_t( XE::EncodingType::UNORM ) }, // ETC2A
+		{   4,  4, 4,  8, 1, 1,  0, 0,  0,  0,  0,  0, uint8_t( XE::EncodingType::UNORM ) }, // ETC2A1
+		{   2,  8, 4,  8, 2, 2,  0, 0,  0,  0,  0,  0, uint8_t( XE::EncodingType::UNORM ) }, // PTC12
+		{   4,  4, 4,  8, 2, 2,  0, 0,  0,  0,  0,  0, uint8_t( XE::EncodingType::UNORM ) }, // PTC14
+		{   2,  8, 4,  8, 2, 2,  0, 0,  0,  0,  0,  0, uint8_t( XE::EncodingType::UNORM ) }, // PTC12A
+		{   4,  4, 4,  8, 2, 2,  0, 0,  0,  0,  0,  0, uint8_t( XE::EncodingType::UNORM ) }, // PTC14A
+		{   2,  8, 4,  8, 2, 2,  0, 0,  0,  0,  0,  0, uint8_t( XE::EncodingType::UNORM ) }, // PTC22
+		{   4,  4, 4,  8, 2, 2,  0, 0,  0,  0,  0,  0, uint8_t( XE::EncodingType::UNORM ) }, // PTC24
+		{   4,  4, 4,  8, 1, 1,  0, 0,  0,  0,  0,  0, uint8_t( XE::EncodingType::UNORM ) }, // ATC
+		{   8,  4, 4, 16, 1, 1,  0, 0,  0,  0,  0,  0, uint8_t( XE::EncodingType::UNORM ) }, // ATCE
+		{   8,  4, 4, 16, 1, 1,  0, 0,  0,  0,  0,  0, uint8_t( XE::EncodingType::UNORM ) }, // ATCI
+		{   8,  4, 4, 16, 1, 1,  0, 0,  0,  0,  0,  0, uint8_t( XE::EncodingType::UNORM ) }, // ASTC4x4
+		{   6,  5, 5, 16, 1, 1,  0, 0,  0,  0,  0,  0, uint8_t( XE::EncodingType::UNORM ) }, // ASTC5x5
+		{   4,  6, 6, 16, 1, 1,  0, 0,  0,  0,  0,  0, uint8_t( XE::EncodingType::UNORM ) }, // ASTC6x6
+		{   4,  8, 5, 16, 1, 1,  0, 0,  0,  0,  0,  0, uint8_t( XE::EncodingType::UNORM ) }, // ASTC8x5
+		{   3,  8, 6, 16, 1, 1,  0, 0,  0,  0,  0,  0, uint8_t( XE::EncodingType::UNORM ) }, // ASTC8x6
+		{   3, 10, 5, 16, 1, 1,  0, 0,  0,  0,  0,  0, uint8_t( XE::EncodingType::UNORM ) }, // ASTC10x5
+		{   0,  0, 0,  0, 0, 0,  0, 0,  0,  0,  0,  0, uint8_t( XE::EncodingType::COUNT ) }, // Unknown
+		{   1,  8, 1,  1, 1, 1,  0, 0,  1,  0,  0,  0, uint8_t( XE::EncodingType::UNORM ) }, // R1
+		{   8,  1, 1,  1, 1, 1,  0, 0,  0,  0,  0,  8, uint8_t( XE::EncodingType::UNORM ) }, // A8
+		{   8,  1, 1,  1, 1, 1,  0, 0,  8,  0,  0,  0, uint8_t( XE::EncodingType::UNORM ) }, // R8
+		{   8,  1, 1,  1, 1, 1,  0, 0,  8,  0,  0,  0, uint8_t( XE::EncodingType::INT ) }, // R8I
+		{   8,  1, 1,  1, 1, 1,  0, 0,  8,  0,  0,  0, uint8_t( XE::EncodingType::UINT ) }, // R8U
+		{   8,  1, 1,  1, 1, 1,  0, 0,  8,  0,  0,  0, uint8_t( XE::EncodingType::SNORM ) }, // R8S
+		{  16,  1, 1,  2, 1, 1,  0, 0, 16,  0,  0,  0, uint8_t( XE::EncodingType::UNORM ) }, // R16
+		{  16,  1, 1,  2, 1, 1,  0, 0, 16,  0,  0,  0, uint8_t( XE::EncodingType::INT ) }, // R16I
+		{  16,  1, 1,  2, 1, 1,  0, 0, 16,  0,  0,  0, uint8_t( XE::EncodingType::UINT ) }, // R16U
+		{  16,  1, 1,  2, 1, 1,  0, 0, 16,  0,  0,  0, uint8_t( XE::EncodingType::FLOAT ) }, // R16F
+		{  16,  1, 1,  2, 1, 1,  0, 0, 16,  0,  0,  0, uint8_t( XE::EncodingType::SNORM ) }, // R16S
+		{  32,  1, 1,  4, 1, 1,  0, 0, 32,  0,  0,  0, uint8_t( XE::EncodingType::INT ) }, // R32I
+		{  32,  1, 1,  4, 1, 1,  0, 0, 32,  0,  0,  0, uint8_t( XE::EncodingType::UINT ) }, // R32U
+		{  32,  1, 1,  4, 1, 1,  0, 0, 32,  0,  0,  0, uint8_t( XE::EncodingType::FLOAT ) }, // R32F
+		{  16,  1, 1,  2, 1, 1,  0, 0,  8,  8,  0,  0, uint8_t( XE::EncodingType::UNORM ) }, // RG8
+		{  16,  1, 1,  2, 1, 1,  0, 0,  8,  8,  0,  0, uint8_t( XE::EncodingType::INT ) }, // RG8I
+		{  16,  1, 1,  2, 1, 1,  0, 0,  8,  8,  0,  0, uint8_t( XE::EncodingType::UINT ) }, // RG8U
+		{  16,  1, 1,  2, 1, 1,  0, 0,  8,  8,  0,  0, uint8_t( XE::EncodingType::SNORM ) }, // RG8S
+		{  32,  1, 1,  4, 1, 1,  0, 0, 16, 16,  0,  0, uint8_t( XE::EncodingType::UNORM ) }, // RG16
+		{  32,  1, 1,  4, 1, 1,  0, 0, 16, 16,  0,  0, uint8_t( XE::EncodingType::INT ) }, // RG16I
+		{  32,  1, 1,  4, 1, 1,  0, 0, 16, 16,  0,  0, uint8_t( XE::EncodingType::UINT ) }, // RG16U
+		{  32,  1, 1,  4, 1, 1,  0, 0, 16, 16,  0,  0, uint8_t( XE::EncodingType::FLOAT ) }, // RG16F
+		{  32,  1, 1,  4, 1, 1,  0, 0, 16, 16,  0,  0, uint8_t( XE::EncodingType::SNORM ) }, // RG16S
+		{  64,  1, 1,  8, 1, 1,  0, 0, 32, 32,  0,  0, uint8_t( XE::EncodingType::INT ) }, // RG32I
+		{  64,  1, 1,  8, 1, 1,  0, 0, 32, 32,  0,  0, uint8_t( XE::EncodingType::UINT ) }, // RG32U
+		{  64,  1, 1,  8, 1, 1,  0, 0, 32, 32,  0,  0, uint8_t( XE::EncodingType::FLOAT ) }, // RG32F
+		{  24,  1, 1,  3, 1, 1,  0, 0,  8,  8,  8,  0, uint8_t( XE::EncodingType::UNORM ) }, // RGB8
+		{  24,  1, 1,  3, 1, 1,  0, 0,  8,  8,  8,  0, uint8_t( XE::EncodingType::INT ) }, // RGB8I
+		{  24,  1, 1,  3, 1, 1,  0, 0,  8,  8,  8,  0, uint8_t( XE::EncodingType::UINT ) }, // RGB8U
+		{  24,  1, 1,  3, 1, 1,  0, 0,  8,  8,  8,  0, uint8_t( XE::EncodingType::SNORM ) }, // RGB8S
+		{  32,  1, 1,  4, 1, 1,  0, 0,  9,  9,  9,  5, uint8_t( XE::EncodingType::FLOAT ) }, // RGB9E5F
+		{  32,  1, 1,  4, 1, 1,  0, 0,  8,  8,  8,  8, uint8_t( XE::EncodingType::UNORM ) }, // BGRA8
+		{  32,  1, 1,  4, 1, 1,  0, 0,  8,  8,  8,  8, uint8_t( XE::EncodingType::UNORM ) }, // RGBA8
+		{  32,  1, 1,  4, 1, 1,  0, 0,  8,  8,  8,  8, uint8_t( XE::EncodingType::INT ) }, // RGBA8I
+		{  32,  1, 1,  4, 1, 1,  0, 0,  8,  8,  8,  8, uint8_t( XE::EncodingType::UINT ) }, // RGBA8U
+		{  32,  1, 1,  4, 1, 1,  0, 0,  8,  8,  8,  8, uint8_t( XE::EncodingType::SNORM ) }, // RGBA8S
+		{  64,  1, 1,  8, 1, 1,  0, 0, 16, 16, 16, 16, uint8_t( XE::EncodingType::UNORM ) }, // RGBA16
+		{  64,  1, 1,  8, 1, 1,  0, 0, 16, 16, 16, 16, uint8_t( XE::EncodingType::INT ) }, // RGBA16I
+		{  64,  1, 1,  8, 1, 1,  0, 0, 16, 16, 16, 16, uint8_t( XE::EncodingType::UINT ) }, // RGBA16U
+		{  64,  1, 1,  8, 1, 1,  0, 0, 16, 16, 16, 16, uint8_t( XE::EncodingType::FLOAT ) }, // RGBA16F
+		{  64,  1, 1,  8, 1, 1,  0, 0, 16, 16, 16, 16, uint8_t( XE::EncodingType::SNORM ) }, // RGBA16S
+		{ 128,  1, 1, 16, 1, 1,  0, 0, 32, 32, 32, 32, uint8_t( XE::EncodingType::INT ) }, // RGBA32I
+		{ 128,  1, 1, 16, 1, 1,  0, 0, 32, 32, 32, 32, uint8_t( XE::EncodingType::UINT ) }, // RGBA32U
+		{ 128,  1, 1, 16, 1, 1,  0, 0, 32, 32, 32, 32, uint8_t( XE::EncodingType::FLOAT ) }, // RGBA32F
+		{  16,  1, 1,  2, 1, 1,  0, 0,  5,  6,  5,  0, uint8_t( XE::EncodingType::UNORM ) }, // R5G6B5
+		{  16,  1, 1,  2, 1, 1,  0, 0,  4,  4,  4,  4, uint8_t( XE::EncodingType::UNORM ) }, // RGBA4
+		{  16,  1, 1,  2, 1, 1,  0, 0,  5,  5,  5,  1, uint8_t( XE::EncodingType::UNORM ) }, // RGB5A1
+		{  32,  1, 1,  4, 1, 1,  0, 0, 10, 10, 10,  2, uint8_t( XE::EncodingType::UNORM ) }, // RGB10A2
+		{  32,  1, 1,  4, 1, 1,  0, 0, 11, 11, 10,  0, uint8_t( XE::EncodingType::UNORM ) }, // RG11B10F
+		{   0,  0, 0,  0, 0, 0,  0, 0,  0,  0,  0,  0, uint8_t( XE::EncodingType::COUNT ) }, // UnknownDepth
+		{  16,  1, 1,  2, 1, 1, 16, 0,  0,  0,  0,  0, uint8_t( XE::EncodingType::UNORM ) }, // D16
+		{  24,  1, 1,  3, 1, 1, 24, 0,  0,  0,  0,  0, uint8_t( XE::EncodingType::UNORM ) }, // D24
+		{  32,  1, 1,  4, 1, 1, 24, 8,  0,  0,  0,  0, uint8_t( XE::EncodingType::UNORM ) }, // D24S8
+		{  32,  1, 1,  4, 1, 1, 32, 0,  0,  0,  0,  0, uint8_t( XE::EncodingType::UNORM ) }, // D32
+		{  16,  1, 1,  2, 1, 1, 16, 0,  0,  0,  0,  0, uint8_t( XE::EncodingType::FLOAT ) }, // D16F
+		{  24,  1, 1,  3, 1, 1, 24, 0,  0,  0,  0,  0, uint8_t( XE::EncodingType::FLOAT ) }, // D24F
+		{  32,  1, 1,  4, 1, 1, 32, 0,  0,  0,  0,  0, uint8_t( XE::EncodingType::FLOAT ) }, // D32F
+		{   8,  1, 1,  1, 1, 1,  0, 8,  0,  0,  0,  0, uint8_t( XE::EncodingType::UNORM ) }, // D0S8
+	};
 
 	D3D12_HEAP_PROPERTIES ID3D12DeviceGetCustomHeapProperties( ID3D12Device * device, UINT nodeMask, D3D12_HEAP_TYPE heapType )
 	{
-		// NOTICE: gcc trick for return struct
 		union
 		{
 			D3D12_HEAP_PROPERTIES( STDMETHODCALLTYPE ID3D12Device:: * w )( UINT, D3D12_HEAP_TYPE );
@@ -509,7 +618,7 @@ namespace XE::D3D12
 			break;
 		}
 
-		return "Unknown HRESULT?";
+		return "Unknown HRESULT";
 	}
 
 	D3D12_CPU_DESCRIPTOR_HANDLE getCPUHandleHeapStart( ID3D12DescriptorHeap * _heap )
@@ -541,7 +650,7 @@ namespace XE::D3D12
 		} conversion = { &ID3D12DescriptorHeap::GetGPUDescriptorHandleForHeapStart };
 		( _heap->*conversion.f )( &handle );
 		return handle;
-	#endif // BX_COMPILER_MSVC
+	#endif
 	}
 
 	D3D12_RESOURCE_DESC getResourceDesc( ID3D12Resource * _resource )
@@ -557,7 +666,7 @@ namespace XE::D3D12
 		} conversion = { &ID3D12Resource::GetDesc };
 		( _resource->*conversion.f )( &desc );
 		return desc;
-	#endif // BX_COMPILER_MSVC
+	#endif
 	}
 
 	D3D12_INPUT_ELEMENT_DESC * fillVertexLayout( uint8_t _stream, D3D12_INPUT_ELEMENT_DESC * _out, const VertexLayoutDesc & _layout )
@@ -614,6 +723,33 @@ namespace XE::D3D12
 			|| ( _flags & XE::SamplerFlag::WBORDER ) == XE::SamplerFlag::WBORDER;
 	}
 
+
+	class RingBufferControl
+	{
+	public:
+		RingBufferControl( uint32_t _size );
+
+		~RingBufferControl();
+
+		uint32_t available() const;
+
+		uint32_t consume( uint32_t _size );
+
+		uint32_t reserve( uint32_t _size, bool _mustSucceed = false );
+
+		uint32_t commit( uint32_t _size );
+
+		uint32_t distance( uint32_t _from, uint32_t _to ) const;
+
+		void reset();
+
+		uint32_t sels( uint32_t test, uint32_t _a, uint32_t _b ) const;
+		
+		const uint32_t m_size;
+		uint32_t m_current;
+		uint32_t m_write;
+		uint32_t m_read;
+	};
 
 	class DescriptorAllocator
 	{
@@ -776,6 +912,12 @@ namespace XE::D3D12
 	class CommandQueue
 	{
 	public:
+		CommandQueue()
+			:m_control( 256 )
+		{
+		}
+
+	public:
 		void init( ID3D12Device * _device );
 
 		void shutdown();
@@ -805,11 +947,17 @@ namespace XE::D3D12
 		ID3D12Fence * m_fence = nullptr;
 		CommandList m_commandList[256];
 		XE::Array<ID3D12Resource *> m_release[256];
-		//bx::RingBufferControl m_control;
+		RingBufferControl m_control;
 	};
 
 	class TimerQuery
 	{
+	public:
+		TimerQuery()
+			:m_control( GFX_MAX_VIEW * 4 )
+		{
+		}
+
 	public:
 		void init();
 
@@ -850,11 +998,17 @@ namespace XE::D3D12
 		ID3D12Resource * m_readback;
 		ID3D12QueryHeap * m_queryHeap;
 		XE::uint64 * m_queryResult;
-		//bx::RingBufferControl m_control;
+		RingBufferControl m_control;
 	};
 
 	class OcclusionQuery
 	{
+	public:
+		OcclusionQuery()
+			:m_control( GFX_MAX_OCCLUSION )
+		{
+		}
+
 	public:
 		void init();
 
@@ -870,7 +1024,7 @@ namespace XE::D3D12
 		ID3D12QueryHeap * m_queryHeap;
 		OcclusionQueryHandle m_handle[GFX_MAX_OCCLUSION];
 		XE::uint64 * m_result;
-		//bx::RingBufferControl m_control;
+		RingBufferControl m_control;
 	};
 
 	class ScratchBuffer
@@ -915,6 +1069,11 @@ namespace XE::D3D12
 		uint16_t m_samplerStateIdx;
 	};
 
+	class VertexLayout
+	{
+	public:
+	};
+
 	class RenderContext
 	{
 	public:
@@ -929,6 +1088,8 @@ namespace XE::D3D12
 		void finishAll( bool _alloc = false );
 
 		void invalidateCache();
+
+		void finish();
 
 	public:
 		DXGI m_dxgi;
@@ -997,7 +1158,7 @@ namespace XE::D3D12
 		D3D12::FrameBuffer m_frameBuffers[GFX_MAX_FRAME_BUFFERS];
 		void * m_uniforms[GFX_MAX_UNIFORMS];
 
-		//		XE::VertexLayout m_vertexLayouts[GFX_MAX_VERTEX_LAYOUTS];
+		D3D12::VertexLayout m_vertexLayouts[GFX_MAX_VERTEX_LAYOUTS];
 
 		// 		Matrix4 m_predefinedUniforms[PredefinedUniform::Count];
 		// 		UniformRegistry m_uniformReg;
@@ -1015,6 +1176,106 @@ namespace XE::D3D12
 		bool m_rtMsaa;
 		bool m_directAccessSupport;
 	};
+
+};
+
+XE::D3D12::RenderContext * _RTX = nullptr;
+
+namespace XE::D3D12
+{
+	RingBufferControl::RingBufferControl( uint32_t _size )
+		: m_size( _size )
+		, m_current( 0 )
+		, m_write( 0 )
+		, m_read( 0 )
+	{
+
+	}
+
+	RingBufferControl::~RingBufferControl()
+	{
+
+	}
+
+	uint32_t RingBufferControl::available() const
+	{
+		return distance( m_read, m_current );
+	}
+
+	uint32_t RingBufferControl::consume( uint32_t _size )
+	{
+		const uint32_t maxSize = distance( m_read, m_current );
+		const uint32_t sizeNoSign = _size & 0x7fffffff;
+		const uint32_t test = sizeNoSign - maxSize;
+		const uint32_t size = sels( test, _size, maxSize );
+		const uint32_t advance = m_read + size;
+		const uint32_t read = advance % m_size;
+		m_read = read;
+		return size;
+	}
+
+	uint32_t RingBufferControl::reserve( uint32_t _size, bool _mustSucceed /*= false */ )
+	{
+		const uint32_t dist = distance( m_write, m_read ) - 1;
+		const uint32_t maxSize = sels( dist, m_size - 1, dist );
+		const uint32_t sizeNoSign = _size & 0x7fffffff;
+		const uint32_t test = sizeNoSign - maxSize;
+		const uint32_t size = sels( test, _size, maxSize );
+		const uint32_t advance = m_write + size;
+		const uint32_t write = advance % m_size;
+		m_write = write;
+		return size;
+	}
+
+	uint32_t RingBufferControl::commit( uint32_t _size )
+	{
+		const uint32_t maxSize = distance( m_current, m_write );
+		const uint32_t sizeNoSign = _size & 0x7fffffff;
+		const uint32_t test = sizeNoSign - maxSize;
+		const uint32_t size = sels( test, _size, maxSize );
+		const uint32_t advance = m_current + size;
+		const uint32_t current = advance % m_size;
+
+	#if COMPILER == COMPILER_MSVC
+	#	if CPU == CPU_X86
+		_mm_mfence();
+	#	else
+		MemoryBarrier();
+	#	endif
+	#else
+		__sync_synchronize();
+	#endif
+
+		m_current = current;
+		return size;
+	}
+
+	uint32_t RingBufferControl::distance( uint32_t _from, uint32_t _to ) const
+	{
+		const uint32_t diff = _to - _from;
+		const uint32_t le = m_size + diff;
+
+		const uint32_t result = sels( diff, le, diff );
+
+		return result;
+	}
+
+	void RingBufferControl::reset()
+	{
+		m_current = 0;
+		m_write = 0;
+		m_read = 0;
+	}
+
+	uint32_t RingBufferControl::sels( uint32_t test, uint32_t _a, uint32_t _b ) const
+	{
+		const uint32_t mask = test >> 31;
+		const uint32_t sel_a = _a & mask;
+		const uint32_t sel_b = _b & ~mask;
+		const uint32_t result = sel_a | sel_b;
+
+		return result;
+	}
 
 	void ScratchBuffer::create( XE::uint32 _size, XE::uint32 _maxDescriptors )
 	{
@@ -1331,9 +1592,9 @@ namespace XE::D3D12
 
 		if( drawIndirect )
 		{
-		#if BX_PLATFORM_XBOXONE
+		#if PLATFORM_OS == OS_XBOX
 			flags |= D3D12XBOX_RESOURCE_FLAG_ALLOW_INDIRECT_BUFFER;
-		#endif // BX_PLATFORM_XBOXONE
+		#endif
 			format = DXGI_FORMAT_R32G32B32A32_UINT;
 			stride = 16;
 		}
@@ -1830,96 +2091,94 @@ namespace XE::D3D12
 
 	ID3D12GraphicsCommandList * CommandQueue::alloc()
 	{
-		// 		while( 0 == m_control.reserve( 1 ) )
-		// 		{
-		// 			consume();
-		// 		}
-		// 
-		// 		CommandList & commandList = m_commandList[m_control.m_current];
-		// 		DX_CHECK( commandList.m_commandAllocator->Reset() );
-		// 		DX_CHECK( commandList.m_commandList->Reset( commandList.m_commandAllocator, NULL ) );
-		// 		return commandList.m_commandList;
-		return nullptr;
+		while( 0 == m_control.reserve( 1 ) )
+		{
+			consume();
+		}
+
+		CommandList & commandList = m_commandList[m_control.m_current];
+		DX_CHECK( commandList.m_commandAllocator->Reset() );
+		DX_CHECK( commandList.m_commandList->Reset( commandList.m_commandAllocator, NULL ) );
+		return commandList.m_commandList;
 	}
 
 	XE::uint64 CommandQueue::kick()
 	{
-		// 		CommandList & commandList = m_commandList[m_control.m_current];
-		// 		DX_CHECK( commandList.m_commandList->Close() );
-		// 
-		// 		ID3D12CommandList * commandLists[] = { commandList.m_commandList };
-		// 		m_commandQueue->ExecuteCommandLists( XE::countof( commandLists ), commandLists );
-		// 
-		// 		commandList.m_event = CreateEventExA( NULL, NULL, 0, EVENT_ALL_ACCESS );
-		// 		const uint64_t fence = m_currentFence++;
-		// 		m_commandQueue->Signal( m_fence, fence );
-		// 		m_fence->SetEventOnCompletion( fence, commandList.m_event );
-		// 
-		// 		m_control.commit( 1 );
+		CommandList & commandList = m_commandList[m_control.m_current];
+		DX_CHECK( commandList.m_commandList->Close() );
 
-		//		return fence;
+		ID3D12CommandList * commandLists[] = { commandList.m_commandList };
+		m_commandQueue->ExecuteCommandLists( XE::countof( commandLists ), commandLists );
 
-		return 0;
+		commandList.m_event = CreateEventExA( NULL, NULL, 0, EVENT_ALL_ACCESS );
+		const uint64_t fence = m_currentFence++;
+		m_commandQueue->Signal( m_fence, fence );
+		m_fence->SetEventOnCompletion( fence, commandList.m_event );
+
+		m_control.commit( 1 );
+
+		return fence;
 	}
 
 	void CommandQueue::finish( XE::uint64 _waitFence /*= UINT64_MAX*/, bool _finishAll /*= false */ )
 	{
-		// 		while( 0 < m_control.available() )
-		// 		{
-		// 			consume();
-		// 
-		// 			if( !_finishAll
-		// 				&& _waitFence <= m_completedFence )
-		// 			{
-		// 				return;
-		// 			}
-		// 		}
-		// 
-		// 		XE_ASSERT( 0 == m_control.available(), "" );
+		while( 0 < m_control.available() )
+		{
+			consume();
+
+			if( !_finishAll
+				&& _waitFence <= m_completedFence )
+			{
+				return;
+			}
+		}
+
+		XE_ASSERT( 0 == m_control.available() && "" );
 	}
 
 	bool CommandQueue::tryFinish( XE::uint64 _waitFence )
 	{
-		// 		if( 0 < m_control.available() )
-		// 		{
-		// 			if( consume( 0 )
-		// 				&& _waitFence <= m_completedFence )
-		// 			{
-		// 				return true;
-		// 			}
-		// 		}
+		if( 0 < m_control.available() )
+		{
+			if( consume( 0 )
+				&& _waitFence <= m_completedFence )
+			{
+				return true;
+			}
+		}
 
 		return false;
 	}
 
 	void CommandQueue::release( ID3D12Resource * _ptr )
 	{
-		//m_release[m_control.m_current].push_back( _ptr );
+		m_release[m_control.m_current].push_back( _ptr );
 	}
 
 	bool CommandQueue::consume( XE::uint32 _ms /*= INFINITE */ )
 	{
-		// 		CommandList & commandList = m_commandList[m_control.m_read];
-		// 		if( WAIT_OBJECT_0 == WaitForSingleObject( commandList.m_event, _ms ) )
-		// 		{
-		// 			CloseHandle( commandList.m_event );
-		// 			commandList.m_event = NULL;
-		// 			m_completedFence = m_fence->GetCompletedValue();
-		// 			BX_WARN( UINT64_MAX != m_completedFence, "D3D12: Device lost." );
-		// 
-		// 			m_commandQueue->Wait( m_fence, m_completedFence );
-		// 
-		// 			auto & ra = m_release[m_control.m_read];
-		// 			for( auto it = ra.begin(), itEnd = ra.end(); it != itEnd; ++it )
-		// 			{
-		// 				DX_RELEASE( *it );
-		// 			}
-		// 			ra.clear();
-		// 
-		// 			m_control.consume( 1 );
-		// 
-		// 			return true;
-		// 		}
+		CommandList & commandList = m_commandList[m_control.m_read];
+		if( WAIT_OBJECT_0 == WaitForSingleObject( commandList.m_event, _ms ) )
+		{
+			CloseHandle( commandList.m_event );
+			commandList.m_event = NULL;
+			m_completedFence = m_fence->GetCompletedValue();
+			if( UINT64_MAX != m_completedFence )
+			{
+				XE_LOG( XE::LoggerLevel::Warning, "D3D12: Device lost." );
+			}
+
+			m_commandQueue->Wait( m_fence, m_completedFence );
+
+			for( auto i : m_release[m_control.m_read] )
+			{
+				DX_RELEASE( i );
+			}
+
+			m_control.consume( 1 );
+
+			return true;
+		}
 
 		return false;
 	}
@@ -2041,7 +2300,7 @@ namespace XE::D3D12
 				) );
 
 				D3D12_RENDER_TARGET_VIEW_DESC rtvDesc;
-				rtvDesc.Format = ( m_reset & XE::ResetFlag::SRGBBACKBUFFER ) ? s_textureFormat[(XE::uint64)m_format].m_fmtSrgb : s_textureFormat[(XE::uint64)m_format].m_fmt;
+				rtvDesc.Format = ( m_reset & XE::ResetFlag::SRGBBACKBUFFER ) ? s_textureFormat[( XE::uint64 )m_format].m_fmtSrgb : s_textureFormat[( XE::uint64 )m_format].m_fmt;
 
 				if( 1 < getResourceDesc( m_backBufferColor[ii] ).DepthOrArraySize )
 				{
@@ -2135,26 +2394,33 @@ namespace XE::D3D12
 
 	void RenderContext::invalidateCache()
 	{
-// 		m_pipelineStateCache.invalidate();
-// 		m_samplerStateCache.invalidate();
+		// 		m_pipelineStateCache.invalidate();
+		// 		m_samplerStateCache.invalidate();
 
 		m_samplerAllocator.reset();
+	}
+
+	void RenderContext::finish()
+	{
+		m_cmd.kick();
+		m_cmd.finish();
+		m_commandList = NULL;
 	}
 
 }
 
 
-XE::RendererContextDirectX12::RendererContextDirectX12()
+XE::RendererContextD3D12::RendererContextD3D12()
 {
 
 }
 
-XE::RendererContextDirectX12::~RendererContextDirectX12()
+XE::RendererContextD3D12::~RendererContextD3D12()
 {
 
 }
 
-void XE::RendererContextDirectX12::OnRender( XE::RenderFrame * val )
+void XE::RendererContextD3D12::OnRender( XE::RenderFrame * val )
 {
 	ExecCommands( val->PrevCmd );
 
@@ -2165,7 +2431,7 @@ void XE::RendererContextDirectX12::OnRender( XE::RenderFrame * val )
 	ExecCommands( val->PostCmd );
 }
 
-void XE::RendererContextDirectX12::ExecCommands( XE::Buffer & buffer )
+void XE::RendererContextD3D12::ExecCommands( XE::Buffer & buffer )
 {
 	while( !buffer.Eof() )
 	{
@@ -2179,12 +2445,12 @@ void XE::RendererContextDirectX12::ExecCommands( XE::Buffer & buffer )
 		{
 			Init();
 		}
-			break;
+		break;
 		case XE::CommandType::RENDERER_SHUTDOWN:
 		{
 			Shutdown();
 		}
-			break;
+		break;
 		case XE::CommandType::CREATE_SHADER:
 		{
 			XE::ShaderHandle handle;
@@ -2195,7 +2461,7 @@ void XE::RendererContextDirectX12::ExecCommands( XE::Buffer & buffer )
 
 			CreateShader( handle, data );
 		}
-			break;
+		break;
 		case XE::CommandType::CREATE_PROGRAM:
 		{
 			XE::ProgramHandle handle;
@@ -2204,7 +2470,7 @@ void XE::RendererContextDirectX12::ExecCommands( XE::Buffer & buffer )
 
 			CreateProgram( handle );
 		}
-			break;
+		break;
 		case XE::CommandType::CREATE_TEXTURE:
 		{
 			XE::TextureHandle handle;
@@ -2215,7 +2481,7 @@ void XE::RendererContextDirectX12::ExecCommands( XE::Buffer & buffer )
 
 			CreateTexture( handle, data );
 		}
-			break;
+		break;
 		case XE::CommandType::CREATE_FRAME_BUFFER:
 		{
 			XE::FrameBufferHandle handle;
@@ -2224,7 +2490,7 @@ void XE::RendererContextDirectX12::ExecCommands( XE::Buffer & buffer )
 
 			CreateFrameBuffer( handle );
 		}
-			break;
+		break;
 		case XE::CommandType::CREATE_INDEX_BUFFER:
 		{
 			XE::IndexBufferHandle handle;
@@ -2235,7 +2501,7 @@ void XE::RendererContextDirectX12::ExecCommands( XE::Buffer & buffer )
 
 			CreateIndexBuffer( handle, data );
 		}
-			break;
+		break;
 		case XE::CommandType::CREATE_VERTEX_LAYOUT:
 		{
 			XE::VertexLayoutHandle handle;
@@ -2244,7 +2510,7 @@ void XE::RendererContextDirectX12::ExecCommands( XE::Buffer & buffer )
 
 			CreateVertexLayout( handle );
 		}
-			break;
+		break;
 		case XE::CommandType::CREATE_VERTEX_BUFFER:
 		{
 			XE::VertexBufferHandle handle;
@@ -2255,7 +2521,7 @@ void XE::RendererContextDirectX12::ExecCommands( XE::Buffer & buffer )
 
 			CreateVertexBuffer( handle, data );
 		}
-			break;
+		break;
 		case XE::CommandType::CREATE_INDIRECT_BUFFER:
 		{
 			XE::IndirectBufferHandle handle;
@@ -2264,7 +2530,7 @@ void XE::RendererContextDirectX12::ExecCommands( XE::Buffer & buffer )
 
 			CreateIndirectBuffer( handle );
 		}
-			break;
+		break;
 		case XE::CommandType::CREATE_OCCLUSION_QUERY:
 		{
 			XE::OcclusionQueryHandle handle;
@@ -2273,7 +2539,7 @@ void XE::RendererContextDirectX12::ExecCommands( XE::Buffer & buffer )
 
 			CreateOcclusionQuery( handle );
 		}
-			break;
+		break;
 		case XE::CommandType::CREATE_DYNAMIC_INDEX_BUFFER:
 		{
 			XE::DynamicIndexBufferHandle handle;
@@ -2282,7 +2548,7 @@ void XE::RendererContextDirectX12::ExecCommands( XE::Buffer & buffer )
 
 			CreateDynamicIndexBuffer( handle );
 		}
-			break;
+		break;
 		case XE::CommandType::CREATE_DYNAMIC_VERTEX_BUFFER:
 		{
 			XE::DynamicVertexBufferHandle handle;
@@ -2291,7 +2557,7 @@ void XE::RendererContextDirectX12::ExecCommands( XE::Buffer & buffer )
 
 			CreateDynamicVertexBuffer( handle );
 		}
-			break;
+		break;
 		case XE::CommandType::READ_TEXTURE:
 		{
 			XE::TextureHandle handle;
@@ -2304,7 +2570,7 @@ void XE::RendererContextDirectX12::ExecCommands( XE::Buffer & buffer )
 
 			ReadTexture( handle, ( XE::uint8 * )data, mip );
 		}
-			break;
+		break;
 		case XE::CommandType::UPDATE_TEXTURE:
 		{
 			XE::UpdateTextureDesc desc;
@@ -2315,7 +2581,7 @@ void XE::RendererContextDirectX12::ExecCommands( XE::Buffer & buffer )
 
 			UpdateTexture( desc, data );
 		}
-			break;
+		break;
 		case XE::CommandType::UPDATE_DYNAMIC_INDEX_BUFFER:
 		{
 			XE::DynamicIndexBufferHandle handle;
@@ -2328,7 +2594,7 @@ void XE::RendererContextDirectX12::ExecCommands( XE::Buffer & buffer )
 
 			UpdateDynamicIndexBuffer( handle, start, mem );
 		}
-			break;
+		break;
 		case XE::CommandType::UPDATE_DYNAMIC_VERTEX_BUFFER:
 		{
 			XE::DynamicVertexBufferHandle handle;
@@ -2341,7 +2607,7 @@ void XE::RendererContextDirectX12::ExecCommands( XE::Buffer & buffer )
 
 			UpdateDynamicVertexBuffer( handle, start, mem );
 		}
-			break;
+		break;
 		case XE::CommandType::END:
 			return;
 		case XE::CommandType::DESTROY_SHADER:
@@ -2352,7 +2618,7 @@ void XE::RendererContextDirectX12::ExecCommands( XE::Buffer & buffer )
 
 			DestroyShader( handle );
 		}
-			break;
+		break;
 		case XE::CommandType::DESTROY_TEXTURE:
 		{
 			XE::TextureHandle handle;
@@ -2361,7 +2627,7 @@ void XE::RendererContextDirectX12::ExecCommands( XE::Buffer & buffer )
 
 			DestroyTexture( handle );
 		}
-			break;
+		break;
 		case XE::CommandType::DESTROY_PROGRAM:
 		{
 			XE::ProgramHandle handle;
@@ -2370,7 +2636,7 @@ void XE::RendererContextDirectX12::ExecCommands( XE::Buffer & buffer )
 
 			DestroyProgram( handle );
 		}
-			break;
+		break;
 		case XE::CommandType::DESTROY_FRAMEBUFFER:
 		{
 			XE::FrameBufferHandle handle;
@@ -2379,7 +2645,7 @@ void XE::RendererContextDirectX12::ExecCommands( XE::Buffer & buffer )
 
 			DestroyFrameBuffer( handle );
 		}
-			break;
+		break;
 		case XE::CommandType::DESTROY_INDEX_BUFFER:
 		{
 			XE::IndexBufferHandle handle;
@@ -2388,7 +2654,7 @@ void XE::RendererContextDirectX12::ExecCommands( XE::Buffer & buffer )
 
 			DestroyIndexBuffer( handle );
 		}
-			break;
+		break;
 		case XE::CommandType::DESTROY_VERTEX_LAYOUT:
 		{
 			XE::VertexLayoutHandle handle;
@@ -2397,7 +2663,7 @@ void XE::RendererContextDirectX12::ExecCommands( XE::Buffer & buffer )
 
 			DestroyVertexLayout( handle );
 		}
-			break;
+		break;
 		case XE::CommandType::DESTROY_VERTEX_BUFFER:
 		{
 			XE::VertexBufferHandle handle;
@@ -2406,7 +2672,7 @@ void XE::RendererContextDirectX12::ExecCommands( XE::Buffer & buffer )
 
 			DestroyVertexBuffer( handle );
 		}
-			break;
+		break;
 		case XE::CommandType::DESTROY_INDIRECT_BUFFER:
 		{
 			XE::IndirectBufferHandle handle;
@@ -2415,7 +2681,7 @@ void XE::RendererContextDirectX12::ExecCommands( XE::Buffer & buffer )
 
 			DestroyIndirectBuffer( handle );
 		}
-			break;
+		break;
 		case XE::CommandType::DESTROY_OCCLUSION_QUERY:
 		{
 			XE::OcclusionQueryHandle handle;
@@ -2424,7 +2690,7 @@ void XE::RendererContextDirectX12::ExecCommands( XE::Buffer & buffer )
 
 			DestroyOcclusionQuery( handle );
 		}
-			break;
+		break;
 		case XE::CommandType::DESTROY_DYNAMIC_INDEX_BUFFER:
 		{
 			XE::DynamicIndexBufferHandle handle;
@@ -2433,7 +2699,7 @@ void XE::RendererContextDirectX12::ExecCommands( XE::Buffer & buffer )
 
 			DestroyDynamicIndexBuffer( handle );
 		}
-			break;
+		break;
 		case XE::CommandType::DESTROY_DYNAMIC_VERTEX_BUFFER:
 		{
 			XE::DynamicVertexBufferHandle handle;
@@ -2442,7 +2708,7 @@ void XE::RendererContextDirectX12::ExecCommands( XE::Buffer & buffer )
 
 			DestroyDynamicVertexBuffer( handle );
 		}
-			break;
+		break;
 		case XE::CommandType::REQUEST_SCREEN_SHOT:
 		{
 			XE::FrameBufferHandle handle;
@@ -2455,49 +2721,49 @@ void XE::RendererContextDirectX12::ExecCommands( XE::Buffer & buffer )
 
 			RequestScreenShot( handle, userdata, ( ScreenShotCallbackType )callback );
 		}
-			break;
+		break;
 		default:
 			break;
 		}
 	}
 }
 
-void XE::RendererContextDirectX12::Init()
+void XE::RendererContextD3D12::Init()
 {
 	_RTX->m_winPixEvent = XE::Library::Open( "WinPixEventRuntime.dll" );
 	XE_ASSERT( _RTX->m_winPixEvent && "Init error: Failed to load WinPixEventRuntime.dll." );
 
-	D3D12::D3D12PIXGetThreadInfo = XE::Library::SymbolT<D3D12::PFN_PIX_GET_THREAD_INFO>( _RTX->m_winPixEvent, "PIXGetThreadInfo" );
-	XE_ASSERT( D3D12::D3D12PIXGetThreadInfo && "Init error: Function PIXGetThreadInfo not found." );
+	XE::D3D12::PIXGetThreadInfo = XE::Library::SymbolT<XE::D3D12::PFN_PIX_GET_THREAD_INFO>( _RTX->m_winPixEvent, "PIXGetThreadInfo" );
+	XE_ASSERT( XE::D3D12::PIXGetThreadInfo && "Init error: Function PIXGetThreadInfo not found." );
 
-	D3D12::D3D12PIXEventsReplaceBlock = XE::Library::SymbolT<D3D12::PFN_PIX_EVENTS_REPLACE_BLOCK>( _RTX->m_winPixEvent, "PIXEventsReplaceBlock" );
-	XE_ASSERT( D3D12::D3D12PIXEventsReplaceBlock && "Init error: Function PIXEventsReplaceBlock not found." );
+	XE::D3D12::PIXEventsReplaceBlock = XE::Library::SymbolT<XE::D3D12::PFN_PIX_EVENTS_REPLACE_BLOCK>( _RTX->m_winPixEvent, "PIXEventsReplaceBlock" );
+	XE_ASSERT( XE::D3D12::PIXEventsReplaceBlock && "Init error: Function PIXEventsReplaceBlock not found." );
 
 
 	_RTX->m_kernel32Dll = XE::Library::Open( "kernel32.dll" );
 	XE_ASSERT( _RTX->m_kernel32Dll && "Init error: Failed to load kernel32.dll." );
 
-	D3D12::CreateEventExA = XE::Library::SymbolT<D3D12::PFN_CREATE_EVENT_EX_A>( _RTX->m_kernel32Dll, "CreateEventExA" );
-	XE_ASSERT( NULL == D3D12::CreateEventExA && "Init error: Function CreateEventExA not found." );
+	XE::D3D12::CreateEventExA = XE::Library::SymbolT<XE::D3D12::PFN_CREATE_EVENT_EX_A>( _RTX->m_kernel32Dll, "CreateEventExA" );
+	XE_ASSERT( NULL == XE::D3D12::CreateEventExA && "Init error: Function CreateEventExA not found." );
 
 
 	_RTX->m_d3d12Dll = XE::Library::Open( "d3d12.dll" );
 	XE_ASSERT( NULL == _RTX->m_d3d12Dll && "Init error: Failed to load d3d12.dll." );
 
-	D3D12::D3D12EnableExperimentalFeatures = XE::Library::SymbolT<D3D12::PFN_D3D12_ENABLE_EXPERIMENTAL_FEATURES>( _RTX->m_d3d12Dll, "D3D12EnableExperimentalFeatures" );
-	XE_ASSERT( NULL != D3D12::D3D12EnableExperimentalFeatures && "Function D3D12EnableExperimentalFeatures not found." );
+	XE::D3D12::EnableExperimentalFeatures = XE::Library::SymbolT<XE::D3D12::PFN_D3D12_ENABLE_EXPERIMENTAL_FEATURES>( _RTX->m_d3d12Dll, "EnableExperimentalFeatures" );
+	XE_ASSERT( NULL != XE::D3D12::EnableExperimentalFeatures && "Function EnableExperimentalFeatures not found." );
 
-	D3D12::D3D12CreateDevice = XE::Library::SymbolT<PFN_D3D12_CREATE_DEVICE>( _RTX->m_d3d12Dll, "D3D12CreateDevice" );
-	XE_ASSERT( NULL != D3D12::D3D12CreateDevice && "Function D3D12CreateDevice not found." );
+	XE::D3D12::CreateDevice = XE::Library::SymbolT<XE::D3D12::PFN_D3D12_CREATE_DEVICE>( _RTX->m_d3d12Dll, "CreateDevice" );
+	XE_ASSERT( NULL != XE::D3D12::CreateDevice && "Function CreateDevice not found." );
 
-	D3D12::D3D12GetDebugInterface = XE::Library::SymbolT<PFN_D3D12_GET_DEBUG_INTERFACE>( _RTX->m_d3d12Dll, "D3D12GetDebugInterface" );
-	XE_ASSERT( NULL != D3D12::D3D12GetDebugInterface && "Function D3D12GetDebugInterface not found." );
+	XE::D3D12::GetDebugInterface = XE::Library::SymbolT<XE::D3D12::PFN_D3D12_GET_DEBUG_INTERFACE>( _RTX->m_d3d12Dll, "GetDebugInterface" );
+	XE_ASSERT( NULL != XE::D3D12::GetDebugInterface && "Function GetDebugInterface not found." );
 
-	D3D12::D3D12SerializeRootSignature = XE::Library::SymbolT<PFN_D3D12_SERIALIZE_ROOT_SIGNATURE>( _RTX->m_d3d12Dll, "D3D12SerializeRootSignature" );
-	XE_ASSERT( NULL != D3D12::D3D12SerializeRootSignature && "Function D3D12SerializeRootSignature not found." );
+	XE::D3D12::SerializeRootSignature = XE::Library::SymbolT<XE::D3D12::PFN_D3D12_SERIALIZE_ROOT_SIGNATURE>( _RTX->m_d3d12Dll, "SerializeRootSignature" );
+	XE_ASSERT( NULL != XE::D3D12::SerializeRootSignature && "Function SerializeRootSignature not found." );
 
 
-	_RTX->m_dxgi.Init( GetCaps() );
+	_RTX->m_dxgi.Init( Caps() );
 
 
 	D3D_FEATURE_LEVEL featureLevel[] =
@@ -2511,9 +2777,9 @@ void XE::RendererContextDirectX12::Init()
 	HRESULT hr = E_FAIL;
 	for( uint32_t ii = 0; ii < XE::countof( featureLevel ) && FAILED( hr ); ++ii )
 	{
-		hr = D3D12CreateDevice( _RTX->m_dxgi._Adapter
+		hr = D3D12::CreateDevice( _RTX->m_dxgi._Adapter
 								, featureLevel[ii]
-								, IID_ID3D12Device
+								, D3D12::IID_ID3D12Device
 								, ( void ** )&_RTX->m_device
 		);
 
@@ -2552,7 +2818,7 @@ void XE::RendererContextDirectX12::Init()
 			DX_CHECK( _RTX->m_device->CheckFeatureSupport( D3D12_FEATURE_ARCHITECTURE, &architecture, sizeof( architecture ) ) );
 
 			XE_LOG( XE::LoggerLevel::Message, "\tNode %1: TileBasedRenderer %2, UMA %3, CacheCoherentUMA %4", ii, architecture.TileBasedRenderer, architecture.UMA, architecture.CacheCoherentUMA );
-			
+
 			if( 0 == ii )
 			{
 				std::memcpy( &_RTX->m_architecture, &architecture, sizeof( architecture ) );
@@ -2612,13 +2878,13 @@ void XE::RendererContextDirectX12::Init()
 
 		D3D12_ROOT_PARAMETER rootParameter[] =
 		{
-			{ D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE, { { 1, &descRange[D3D12::Rdt::Sampler] } }, D3D12_SHADER_VISIBILITY_ALL },
-			{ D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE, { { 1, &descRange[D3D12::Rdt::SRV]     } }, D3D12_SHADER_VISIBILITY_ALL },
-			{ D3D12_ROOT_PARAMETER_TYPE_CBV,              { { 0, 0                               } }, D3D12_SHADER_VISIBILITY_ALL },
-			{ D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE, { { 1, &descRange[D3D12::Rdt::UAV]     } }, D3D12_SHADER_VISIBILITY_ALL },
+			{ D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE, { { 1, &descRange[( XE::uint64 )D3D12::Rdt::SAMPLER] } }, D3D12_SHADER_VISIBILITY_ALL },
+			{ D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE, { { 1, &descRange[( XE::uint64 )D3D12::Rdt::SRV]     } }, D3D12_SHADER_VISIBILITY_ALL },
+			{ D3D12_ROOT_PARAMETER_TYPE_CBV,              { { 0, 0                                             } }, D3D12_SHADER_VISIBILITY_ALL },
+			{ D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE, { { 1, &descRange[( XE::uint64 )D3D12::Rdt::UAV]     } }, D3D12_SHADER_VISIBILITY_ALL },
 		};
-		rootParameter[D3D12::Rdt::CBV].Descriptor.RegisterSpace = 0;
-		rootParameter[D3D12::Rdt::CBV].Descriptor.ShaderRegister = 0;
+		rootParameter[( XE::uint64 )D3D12::Rdt::CBV].Descriptor.RegisterSpace = 0;
+		rootParameter[( XE::uint64 )D3D12::Rdt::CBV].Descriptor.ShaderRegister = 0;
 
 		D3D12_ROOT_SIGNATURE_DESC descRootSignature;
 		descRootSignature.NumParameters = XE::countof( rootParameter );
@@ -2629,7 +2895,7 @@ void XE::RendererContextDirectX12::Init()
 
 		ID3DBlob * outBlob;
 		ID3DBlob * errorBlob;
-		DX_CHECK( D3D12SerializeRootSignature( &descRootSignature
+		DX_CHECK( D3D12::SerializeRootSignature( &descRootSignature
 											   , D3D_ROOT_SIGNATURE_VERSION_1
 											   , &outBlob
 											   , &errorBlob
@@ -2637,10 +2903,9 @@ void XE::RendererContextDirectX12::Init()
 
 		DX_CHECK( _RTX->m_device->CreateRootSignature( 0, outBlob->GetBufferPointer(), outBlob->GetBufferSize(), D3D12::IID_ID3D12RootSignature, ( void ** )&_RTX->m_rootSignature ) );
 
-		///
 		_RTX->m_directAccessSupport = PLATFORM_OS == OS_XBOX && _RTX->m_architecture.UMA;
 
-		GetCaps().Supported |= XE::MakeFlags( XE::CapsFlag::NONE )
+		Caps().Supported |= XE::MakeFlags( XE::CapsFlag::NONE )
 			| XE::CapsFlag::TEXTURE_3D
 			| XE::CapsFlag::TEXTURE_COMPARE_ALL
 			| XE::CapsFlag::INDEX32
@@ -2663,17 +2928,17 @@ void XE::RendererContextDirectX12::Init()
 			| XE::CapsFlag::TEXTURE_CUBE_ARRAY
 			| XE::CapsFlag::IMAGE_RW;
 
-		GetCaps().Limits.MaxTextureSize = D3D12_REQ_TEXTURE2D_U_OR_V_DIMENSION;
-		GetCaps().Limits.MaxTextureLayers = D3D12_REQ_TEXTURE2D_ARRAY_AXIS_DIMENSION;
-		GetCaps().Limits.MaxFBAttachments = std::min<uint32_t>( 16, GFX_MAX_ATTACHMENTS );
-		GetCaps().Limits.MaxComputeBindings = std::min<uint32_t>( D3D12_UAV_SLOT_COUNT, GFX_MAX_TEXTURE_SAMPLERS );
-		GetCaps().Limits.MaxVertexStreams = 4;
+		Caps().Limits.MaxTextureSize = D3D12_REQ_TEXTURE2D_U_OR_V_DIMENSION;
+		Caps().Limits.MaxTextureLayers = D3D12_REQ_TEXTURE2D_ARRAY_AXIS_DIMENSION;
+		Caps().Limits.MaxFBAttachments = std::min<uint32_t>( 16, GFX_MAX_ATTACHMENTS );
+		Caps().Limits.MaxComputeBindings = std::min<uint32_t>( D3D12_UAV_SLOT_COUNT, GFX_MAX_TEXTURE_SAMPLERS );
+		Caps().Limits.MaxVertexStreams = 4;
 
 		for( uint32_t ii = 0; ii < ( XE::uint64 )XE::TextureFormat::COUNT; ++ii )
 		{
 			XE::CapsFormatFlags support = XE::CapsFormatFlag::NONE;
 
-			const DXGI_FORMAT fmt = ( XE::TextureFormat( ii ) > XE::TextureFormat::UNKNOWNDEPTH ) ? D3D12::s_textureFormat[ii].m_fmtDsv : D3D12::s_textureFormat[ii].m_fmt ;
+			const DXGI_FORMAT fmt = ( XE::TextureFormat( ii ) > XE::TextureFormat::UNKNOWNDEPTH ) ? D3D12::s_textureFormat[ii].m_fmtDsv : D3D12::s_textureFormat[ii].m_fmt;
 			const DXGI_FORMAT fmtSrgb = D3D12::s_textureFormat[ii].m_fmtSrgb;
 
 			if( DXGI_FORMAT_UNKNOWN != fmt )
@@ -2804,13 +3069,10 @@ void XE::RendererContextDirectX12::Init()
 				}
 			}
 
-			GetCaps().SupportFormat[ii] = support;
+			Caps().SupportFormat[ii] = support;
 		}
 
 		_RTX->postReset();
-
-// 		_RTX->m_batch.create( 4 << 10 );
-// 		_RTX->m_batch.setIndirectMode( BGFX_PCI_ID_NVIDIA != m_dxgi.m_adapterDesc.VendorId );
 
 		_RTX->m_gpuTimer.init();
 		_RTX->m_occlusionQuery.init();
@@ -2838,10 +3100,9 @@ void XE::RendererContextDirectX12::Init()
 	}
 }
 
-void XE::RendererContextDirectX12::Shutdown()
+void XE::RendererContextD3D12::Shutdown()
 {
 	_RTX->m_cmd.finish();
-	//_RTX->m_batch.destroy();
 
 	_RTX->preReset();
 
@@ -2906,26 +3167,26 @@ void XE::RendererContextDirectX12::Shutdown()
 	_RTX->m_kernel32Dll = nullptr;
 }
 
-void XE::RendererContextDirectX12::CreateShader( XE::ShaderHandle handle, XE::MemoryView data )
+void XE::RendererContextD3D12::CreateShader( XE::ShaderHandle handle, XE::MemoryView data )
 {
 	_RTX->m_shaders[handle].create( data );
 }
 
-void XE::RendererContextDirectX12::CreateProgram( XE::ProgramHandle handle )
+void XE::RendererContextD3D12::CreateProgram( XE::ProgramHandle handle )
 {
 	_RTX->m_program[handle].create( &_RTX->m_shaders[GetDesc( handle ).CS], &_RTX->m_shaders[GetDesc( handle ).VS] );
 }
 
-void XE::RendererContextDirectX12::CreateTexture( XE::TextureHandle handle, XE::MemoryView data )
+void XE::RendererContextD3D12::CreateTexture( XE::TextureHandle handle, XE::MemoryView data )
 {
-	_RTX->m_textures[handle].create( data, GetDesc(handle).Flags, GetDesc(handle).NumMips );
+	_RTX->m_textures[handle].create( data, GetDesc( handle ).Flags, GetDesc( handle ).NumMips );
 }
 
-void XE::RendererContextDirectX12::CreateFrameBuffer( XE::FrameBufferHandle handle )
+void XE::RendererContextD3D12::CreateFrameBuffer( XE::FrameBufferHandle handle )
 {
 	const auto & desc = GetDesc( handle );
 
-	if (desc.Window)
+	if( desc.Window )
 	{
 		_RTX->m_frameBuffers[handle].create( 0, ( void * )desc.Window.GetValue(), desc.Width, desc.Height, desc.ColorFormat, desc.DepthFormat );
 	}
@@ -2935,119 +3196,231 @@ void XE::RendererContextDirectX12::CreateFrameBuffer( XE::FrameBufferHandle hand
 	}
 }
 
-void XE::RendererContextDirectX12::CreateIndexBuffer( XE::IndexBufferHandle handle, XE::MemoryView data )
+void XE::RendererContextD3D12::CreateIndexBuffer( XE::IndexBufferHandle handle, XE::MemoryView data )
 {
 	_RTX->m_indexBuffers[handle].create( data.size(), ( void * )data.data(), GetDesc( handle ).Flags, false );
 }
 
-void XE::RendererContextDirectX12::CreateVertexLayout( XE::VertexLayoutHandle handle )
+void XE::RendererContextD3D12::CreateVertexLayout( XE::VertexLayoutHandle handle )
 {
-	
+
 }
 
-void XE::RendererContextDirectX12::CreateVertexBuffer( XE::VertexBufferHandle handle, XE::MemoryView data )
+void XE::RendererContextD3D12::CreateVertexBuffer( XE::VertexBufferHandle handle, XE::MemoryView data )
 {
 	_RTX->m_vertexBuffers[handle].create( data.size(), ( void * )data.data(), GetDesc( handle ).Layout, GetDesc( handle ).Flags );
 }
 
-void XE::RendererContextDirectX12::CreateIndirectBuffer( XE::IndirectBufferHandle handle )
-{
-	
-}
-
-void XE::RendererContextDirectX12::CreateOcclusionQuery( XE::OcclusionQueryHandle handle )
+void XE::RendererContextD3D12::CreateIndirectBuffer( XE::IndirectBufferHandle handle )
 {
 
 }
 
-void XE::RendererContextDirectX12::CreateDynamicIndexBuffer( XE::DynamicIndexBufferHandle handle )
+void XE::RendererContextD3D12::CreateOcclusionQuery( XE::OcclusionQueryHandle handle )
+{
+
+}
+
+void XE::RendererContextD3D12::CreateDynamicIndexBuffer( XE::DynamicIndexBufferHandle handle )
 {
 	_RTX->m_indexBuffers[handle].create( GetDesc( handle ).Size, nullptr, GetDesc( handle ).Flags, false );
 }
 
-void XE::RendererContextDirectX12::CreateDynamicVertexBuffer( XE::DynamicVertexBufferHandle handle )
+void XE::RendererContextD3D12::CreateDynamicVertexBuffer( XE::DynamicVertexBufferHandle handle )
 {
-	_RTX->m_vertexBuffers[handle].create( GetDesc( handle ).Size, nullptr, GetDesc( handle ).Layout, GetDesc(handle).Flags );
+	_RTX->m_vertexBuffers[handle].create( GetDesc( handle ).Size, nullptr, GetDesc( handle ).Layout, GetDesc( handle ).Flags );
 }
 
-void XE::RendererContextDirectX12::ReadTexture( XE::TextureHandle handle, XE::uint8 * data, XE::uint8 mip )
+void XE::RendererContextD3D12::ReadTexture( XE::TextureHandle handle, XE::uint8 * data, XE::uint8 mip )
 {
 	_RTX->m_textures[handle].overrideInternal( ( uintptr_t )data );
+
+	const D3D12::Texture & texture = _RTX->m_textures[handle];
+
+	D3D12_RESOURCE_DESC desc = D3D12::getResourceDesc( texture.m_ptr );
+
+	D3D12_PLACED_SUBRESOURCE_FOOTPRINT layout;
+	uint32_t numRows;
+	uint64_t total;
+	_RTX->m_device->GetCopyableFootprints( &desc, mip, 1, 0, &layout, &numRows, NULL, &total );
+
+	uint32_t srcPitch = layout.Footprint.RowPitch;
+
+	ID3D12Resource * readback = D3D12::createCommittedResource( _RTX->m_device, D3D12::HeapProperty::Type::READBACK, total );
+
+	uint32_t srcWidth = std::max< uint32_t>( 1, texture.m_width >> mip );
+	uint32_t srcHeight = std::max< uint32_t>( 1, texture.m_height >> mip );
+
+	D3D12_BOX box;
+	box.left = 0;
+	box.top = 0;
+	box.right = srcWidth;
+	box.bottom = srcHeight;
+	box.front = 0;
+	box.back = 1;
+
+	D3D12_TEXTURE_COPY_LOCATION dstLocation = { readback,      D3D12_TEXTURE_COPY_TYPE_PLACED_FOOTPRINT,  { layout } };
+	D3D12_TEXTURE_COPY_LOCATION srcLocation = { texture.m_ptr, D3D12_TEXTURE_COPY_TYPE_SUBRESOURCE_INDEX, { } };
+	srcLocation.SubresourceIndex = mip;
+	_RTX->m_commandList->CopyTextureRegion( &dstLocation, 0, 0, 0, &srcLocation, &box );
+
+	_RTX->finish();
+	_RTX->m_commandList = _RTX->m_cmd.alloc();
+
+	const uint8_t bpp = D3D12::s_imageBlockInfo[( XE::uint64 )texture.m_textureFormat].bitsPerPixel;
+	uint8_t * dst = ( uint8_t * )data;
+	uint32_t dstPitch = srcWidth * bpp / 8;
+
+	uint32_t pitch = std::min< uint32_t>( srcPitch, dstPitch );
+
+	uint8_t * src;
+	readback->Map( 0, NULL, ( void ** )&src );
+
+	for( uint32_t yy = 0, height = srcHeight; yy < height; ++yy )
+	{
+		std::memcpy( dst, src, pitch );
+
+		src += srcPitch;
+		dst += dstPitch;
+	}
+
+	D3D12_RANGE writeRange = { 0, 0 };
+	readback->Unmap( 0, &writeRange );
+
+	DX_RELEASE( readback );
 }
 
-void XE::RendererContextDirectX12::UpdateTexture( const XE::UpdateTextureDesc & desc, XE::MemoryView data )
+void XE::RendererContextD3D12::UpdateTexture( const XE::UpdateTextureDesc & desc, XE::MemoryView data )
 {
 	_RTX->m_textures[desc.Handle].update( nullptr, desc.Side, desc.Mip, { desc.X, desc.Y, desc.Width, desc.Height }, desc.Z, desc.Depth, desc.Layer, data );
 }
 
-void XE::RendererContextDirectX12::UpdateDynamicIndexBuffer( XE::DynamicIndexBufferHandle handle, XE::uint64 start, XE::MemoryView mem )
+void XE::RendererContextD3D12::UpdateDynamicIndexBuffer( XE::DynamicIndexBufferHandle handle, XE::uint64 start, XE::MemoryView mem )
 {
 	_RTX->m_indexBuffers[handle].update( nullptr, start, mem.size(), ( void * )mem.data() );
 }
 
-void XE::RendererContextDirectX12::UpdateDynamicVertexBuffer( XE::DynamicVertexBufferHandle handle, XE::uint64 start, XE::MemoryView mem )
+void XE::RendererContextD3D12::UpdateDynamicVertexBuffer( XE::DynamicVertexBufferHandle handle, XE::uint64 start, XE::MemoryView mem )
 {
 	_RTX->m_indexBuffers[handle].update( nullptr, start, mem.size(), ( void * )mem.data() );
 }
 
-void XE::RendererContextDirectX12::DestroyShader( XE::ShaderHandle handle )
+void XE::RendererContextD3D12::DestroyShader( XE::ShaderHandle handle )
 {
 	_RTX->m_shaders[handle].destroy();
 }
 
-void XE::RendererContextDirectX12::DestroyTexture( XE::TextureHandle handle )
+void XE::RendererContextD3D12::DestroyTexture( XE::TextureHandle handle )
 {
 	_RTX->m_textures[handle].destroy();
 }
 
-void XE::RendererContextDirectX12::DestroyProgram( XE::ProgramHandle handle )
+void XE::RendererContextD3D12::DestroyProgram( XE::ProgramHandle handle )
 {
 	_RTX->m_program[handle].destroy();
 }
 
-void XE::RendererContextDirectX12::DestroyFrameBuffer( XE::FrameBufferHandle handle )
+void XE::RendererContextD3D12::DestroyFrameBuffer( XE::FrameBufferHandle handle )
 {
 	_RTX->m_frameBuffers[handle].destroy();
 }
 
-void XE::RendererContextDirectX12::DestroyIndexBuffer( XE::IndexBufferHandle handle )
+void XE::RendererContextD3D12::DestroyIndexBuffer( XE::IndexBufferHandle handle )
 {
 	_RTX->m_indexBuffers[handle].destroy();
 }
 
-void XE::RendererContextDirectX12::DestroyVertexLayout( XE::VertexLayoutHandle handle )
+void XE::RendererContextD3D12::DestroyVertexLayout( XE::VertexLayoutHandle handle )
 {
-	
+
 }
 
-void XE::RendererContextDirectX12::DestroyVertexBuffer( XE::VertexBufferHandle handle )
+void XE::RendererContextD3D12::DestroyVertexBuffer( XE::VertexBufferHandle handle )
 {
 	_RTX->m_vertexBuffers[handle].destroy();
 }
 
-void XE::RendererContextDirectX12::DestroyIndirectBuffer( XE::IndirectBufferHandle handle )
-{
-	
-}
-
-void XE::RendererContextDirectX12::DestroyOcclusionQuery( XE::OcclusionQueryHandle handle )
+void XE::RendererContextD3D12::DestroyIndirectBuffer( XE::IndirectBufferHandle handle )
 {
 
 }
 
-void XE::RendererContextDirectX12::DestroyDynamicIndexBuffer( XE::DynamicIndexBufferHandle handle )
+void XE::RendererContextD3D12::DestroyOcclusionQuery( XE::OcclusionQueryHandle handle )
+{
+
+}
+
+void XE::RendererContextD3D12::DestroyDynamicIndexBuffer( XE::DynamicIndexBufferHandle handle )
 {
 	_RTX->m_indexBuffers[handle].destroy();
 }
 
-void XE::RendererContextDirectX12::DestroyDynamicVertexBuffer( XE::DynamicVertexBufferHandle handle )
+void XE::RendererContextD3D12::DestroyDynamicVertexBuffer( XE::DynamicVertexBufferHandle handle )
 {
 	_RTX->m_vertexBuffers[handle].destroy();
 }
 
-void XE::RendererContextDirectX12::RequestScreenShot( XE::FrameBufferHandle handle, const std::string & userdata, ScreenShotCallbackType callback )
+void XE::RendererContextD3D12::RequestScreenShot( XE::FrameBufferHandle handle, const std::string & userdata, ScreenShotCallbackType callback )
 {
+	uint32_t idx = ( _RTX->m_backBufferColorIdx - 1 ) % _RTX->m_scd.bufferCount;
+	_RTX->m_cmd.finish( _RTX->m_backBufferColorFence[idx] );
+	ID3D12Resource * backBuffer = _RTX->m_backBufferColor[idx];
 
+	D3D12_RESOURCE_DESC desc = D3D12::getResourceDesc( backBuffer );
+
+	const uint32_t width = ( uint32_t )desc.Width;
+	const uint32_t height = ( uint32_t )desc.Height;
+
+	D3D12_PLACED_SUBRESOURCE_FOOTPRINT layout;
+	uint32_t numRows;
+	uint64_t total;
+	uint64_t pitch;
+	_RTX->m_device->GetCopyableFootprints( &desc
+									 , 0
+									 , 1
+									 , 0
+									 , &layout
+									 , &numRows
+									 , &pitch
+									 , &total
+	);
+
+	ID3D12Resource * readback = D3D12::createCommittedResource( _RTX->m_device, D3D12::HeapProperty::Type::READBACK, total );
+
+	D3D12_BOX box;
+	box.left = 0;
+	box.top = 0;
+	box.right = width;
+	box.bottom = height;
+	box.front = 0;
+	box.back = 1;
+
+	D3D12::setResourceBarrier( _RTX->m_commandList, backBuffer, D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_COPY_SOURCE );
+	D3D12_TEXTURE_COPY_LOCATION dst = { readback,   D3D12_TEXTURE_COPY_TYPE_PLACED_FOOTPRINT,  { layout } };
+	D3D12_TEXTURE_COPY_LOCATION src = { backBuffer, D3D12_TEXTURE_COPY_TYPE_SUBRESOURCE_INDEX, {} };
+	_RTX->m_commandList->CopyTextureRegion( &dst, 0, 0, 0, &src, &box );
+	D3D12::setResourceBarrier( _RTX->m_commandList, backBuffer, D3D12_RESOURCE_STATE_COPY_SOURCE, D3D12_RESOURCE_STATE_PRESENT );
+	_RTX->finish();
+	_RTX->m_commandList = _RTX->m_cmd.alloc();
+
+	void * data;
+	readback->Map( 0, NULL, ( void ** )&data );
+
+// 	bimg::imageSwizzleBgra8(
+// 		data
+// 		, layout.Footprint.RowPitch
+// 		, width
+// 		, height
+// 		, data
+// 		, layout.Footprint.RowPitch
+// 	);
+	
+	callback( userdata.c_str(), width, height, layout.Footprint.RowPitch, ( const XE::uint8 * )data, total, false );
+
+	D3D12_RANGE writeRange = { 0, 0 };
+	readback->Unmap( 0, &writeRange );
+
+	DX_RELEASE( readback );
 }
 
 #endif

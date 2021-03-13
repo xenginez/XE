@@ -1,10 +1,11 @@
 #include "Gfx.h"
 
 #include "RendererContextNull.h"
+#include "RendererContextD3D12.h"
 #include "RendererContextMetal.h"
+#include "RendererContextHTML5.h"
 #include "RendererContextVulkan.h"
 #include "RendererContextSoftware.h"
-#include "RendererContextDirectX12.h"
 
 struct XE::Gfx::Private
 {
@@ -32,10 +33,12 @@ XE::List<XE::RendererContextType> XE::Gfx::GetSupportedContext()
 	XE::List<XE::RendererContextType> ret;
 
 #if PLATFORM_OS & (OS_WINDOWS)
-	ret.push_back( XE::RendererContextType::DIRECT3D12 );
+	ret.push_back( XE::RendererContextType::D3D12 );
 	ret.push_back( XE::RendererContextType::VULKAN );
+#elif PLATFORM_OS & (OS_HTML5)
+	ret.push_back( XE::RendererContextType::HTML5 );
 #elif PLATFORM_OS & (OS_XBOX)
-	ret.push_back( XE::RendererContextType::DIRECT3D12 );
+	ret.push_back( XE::RendererContextType::D3D12 );
 #elif PLATFORM_OS & (OS_MAC)
 	ret.push_back( XE::RendererContextType::METAL );
 #elif PLATFORM_OS & (OS_IOS)
@@ -64,11 +67,14 @@ void XE::Gfx::Init( const XE::InitDesc & val )
 		case XE::RendererContextType::METAL:
 			_p->_Context = XE::CreateRendererContextMetal();
 			break;
+		case XE::RendererContextType::D3D12:
+			_p->_Context = XE::CreateRendererContextD3D12();
+			break;
+		case XE::RendererContextType::HTML5:
+			_p->_Context = XE::CreateRendererContextHTML5();
+			break;
 		case XE::RendererContextType::VULKAN:
 			_p->_Context = XE::CreateRendererContextVulkan();
-			break;
-		case XE::RendererContextType::DIRECT3D12:
-			_p->_Context = XE::CreateRendererContextDirectX12();
 			break;
 		case XE::RendererContextType::SOFTWARE:
 			_p->_Context = XE::CreateRendererContextSoftware();

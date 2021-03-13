@@ -430,10 +430,22 @@ enum class RendererContextType
 {
 	NONE,         // No rendering.
 	NIL,          // Null
+	HTML5,		  // HTML5
+	D3D12,        // D3D 12
 	METAL,        // Metal
 	VULKAN,       // Vulkan
-	DIRECT3D12,   // Direct3D 12.0
 	SOFTWARE,	  // Software
+};
+
+enum class EncodingType
+{
+	UNORM,
+	INT,
+	UINT,
+	FLOAT,
+	SNORM,
+
+	COUNT
 };
 
 enum class AttributeType

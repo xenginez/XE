@@ -248,11 +248,6 @@ void XE::RendererContextSoftware::Init( XE::RenderFrame * frame )
 	for( auto & it : _p->_DynamicIndexBuffers ) it = nullptr;
 	for( auto & it : _p->_DynamicVertexBuffers ) it = nullptr;
 
-	XE::CapsInfo caps;
-
-
-
-	SetCaps( caps );
 }
 
 void XE::RendererContextSoftware::Shutdown( XE::RenderFrame * frame )

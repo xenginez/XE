@@ -121,7 +121,7 @@ void XE::RendererContext::End( XE::Encoder * val )
 	val->SetFrame( nullptr );
 }
 
-XE::CapsInfo & XE::RendererContext::GetCaps()
+XE::CapsInfo & XE::RendererContext::Caps()
 {
 	return _p->_Caps;
 }
@@ -787,11 +787,6 @@ void XE::RendererContext::RequestScreenShot( XE::FrameBufferHandle handle, const
 	_p->_SubmitFrame->PostCmd.Wirte( handle );
 	_p->_SubmitFrame->PostCmd.Wirte( userdata );
 	_p->_SubmitFrame->PostCmd.Wirte( ( uintptr_t ) callback );
-}
-
-void XE::RendererContext::SetCaps( const XE::CapsInfo & val )
-{
-	_p->_Caps = val;
 }
 
 void XE::RendererContext::SetOcclusionQueryValue( XE::OcclusionQueryHandle handle, XE::uint32 value )

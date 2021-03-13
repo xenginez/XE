@@ -1,13 +1,13 @@
 /*!
- * \file	RendererContextDirectX12.h
+ * \file	RendererContextD3D12.h
  *
  * \author	ZhengYuanQing
- * \date	2020/04/07
+ * \date	2021/03/13
  * \email	zhengyuanqing.95@gmail.com
  *
  */
-#ifndef RENDERERCONTEXTDIRECTX12_H__F749BA89_7295_4D11_8DD4_664658D8DE3B
-#define RENDERERCONTEXTDIRECTX12_H__F749BA89_7295_4D11_8DD4_664658D8DE3B
+#ifndef RENDERERCONTEXTD3D12_H__C21A430F_17D3_43EA_9366_DEBBA3D70A71
+#define RENDERERCONTEXTD3D12_H__C21A430F_17D3_43EA_9366_DEBBA3D70A71
 
 #include "RendererContext.h"
 
@@ -15,15 +15,15 @@ BEG_XE_NAMESPACE
 
 #if PLATFORM_OS & ( OS_WINDOWS | OS_XBOX )
 
-class RendererContextDirectX12 : public XE::RendererContext
+class RendererContextD3D12 : public XE::RendererContext
 {
 public:
-	RendererContextDirectX12();
+	RendererContextD3D12();
 
-	~RendererContextDirectX12() override;
+	~RendererContextD3D12() override;
 
 protected:
-	void OnRender( XE::RenderFrame* val ) override;
+	void OnRender( XE::RenderFrame * val ) override;
 
 private:
 	void ExecCommands( XE::Buffer & buffer );
@@ -38,7 +38,7 @@ private:
 
 	void CreateProgram( XE::ProgramHandle handle );
 
-	void CreateTexture(XE::TextureHandle handle, XE::MemoryView data );
+	void CreateTexture( XE::TextureHandle handle, XE::MemoryView data );
 
 	void CreateFrameBuffer( XE::FrameBufferHandle handle );
 
@@ -92,14 +92,14 @@ private:
 	void RequestScreenShot( XE::FrameBufferHandle handle, const std::string & userdata, ScreenShotCallbackType callback );
 };
 
-XE_INLINE XE::RendererContext * CreateRendererContextDirectX12()
+XE_INLINE XE::RendererContext * CreateRendererContextD3D12()
 {
-	return new XE::RendererContextDirectX12();
+	return new XE::RendererContextD3D12();
 }
 
 #else
 
-XE_INLINE XE::RendererContext * CreateRendererContextDirectX12()
+XE_INLINE XE::RendererContext * CreateRendererContextD3D12()
 {
 	return nullptr;
 }
@@ -108,4 +108,4 @@ XE_INLINE XE::RendererContext * CreateRendererContextDirectX12()
 
 END_XE_NAMESPACE
 
-#endif // RENDERERCONTEXTDIRECTX12_H__F749BA89_7295_4D11_8DD4_664658D8DE3B
+#endif // RENDERERCONTEXTD3D12_H__C21A430F_17D3_43EA_9366_DEBBA3D70A71
