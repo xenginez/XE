@@ -40,6 +40,8 @@ public:
 	Buffer & operator=( const Buffer & _Right );
 
 public:
+	bool Eof() const;
+
 	XE::uint64 Size() const;
 
 	XE::uint64 ReadPos() const;

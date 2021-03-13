@@ -52,6 +52,11 @@ XE::Buffer & XE::Buffer::operator=( const Buffer & _Right )
 	return *this;
 }
 
+bool XE::Buffer::Eof() const
+{
+	return _ReadPos == _WirtePos;
+}
+
 XE::uint64 XE::Buffer::Size() const
 {
 	return _Data.size();

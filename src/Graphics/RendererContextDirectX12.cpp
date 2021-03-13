@@ -371,7 +371,7 @@ namespace XE::D3D12
 	};
 
 
-	static inline D3D12_HEAP_PROPERTIES ID3D12DeviceGetCustomHeapProperties( ID3D12Device * device, UINT nodeMask, D3D12_HEAP_TYPE heapType )
+	D3D12_HEAP_PROPERTIES ID3D12DeviceGetCustomHeapProperties( ID3D12Device * device, UINT nodeMask, D3D12_HEAP_TYPE heapType )
 	{
 		// NOTICE: gcc trick for return struct
 		union
@@ -384,7 +384,7 @@ namespace XE::D3D12
 		return ret;
 	}
 
-	static void initHeapProperties( ID3D12Device * _device, D3D12_HEAP_PROPERTIES & _properties )
+	void initHeapProperties( ID3D12Device * _device, D3D12_HEAP_PROPERTIES & _properties )
 	{
 		if( D3D12_HEAP_TYPE_CUSTOM != _properties.Type )
 		{
@@ -392,7 +392,7 @@ namespace XE::D3D12
 		}
 	}
 
-	static void initHeapProperties( ID3D12Device * _device )
+	void initHeapProperties( ID3D12Device * _device )
 	{
 		initHeapProperties( _device, s_heapProperties[( XE::uint64 )HeapProperty::Type::DEFAULT].m_properties );
 		initHeapProperties( _device, s_heapProperties[( XE::uint64 )HeapProperty::Type::TEXTURE].m_properties );
@@ -445,7 +445,7 @@ namespace XE::D3D12
 		return createCommittedResource( _device, _heapProperty, &resourceDesc, NULL );
 	}
 
-	inline bool isLost( HRESULT _hr )
+	bool isLost( HRESULT _hr )
 	{
 		return false
 			|| _hr == DXGI_ERROR_DEVICE_REMOVED
@@ -456,7 +456,7 @@ namespace XE::D3D12
 			;
 	}
 
-	static const char * getLostReason( HRESULT _hr )
+	const char * getLostReason( HRESULT _hr )
 	{
 		switch( _hr )
 		{
@@ -479,7 +479,7 @@ namespace XE::D3D12
 		return "Unknown HRESULT?";
 	}
 
-	XE_INLINE D3D12_CPU_DESCRIPTOR_HANDLE getCPUHandleHeapStart( ID3D12DescriptorHeap * _heap )
+	D3D12_CPU_DESCRIPTOR_HANDLE getCPUHandleHeapStart( ID3D12DescriptorHeap * _heap )
 	{
 	#if COMPILER == COMPILER_MSVC
 		return _heap->GetCPUDescriptorHandleForHeapStart();
@@ -495,7 +495,7 @@ namespace XE::D3D12
 	#endif // BX_COMPILER_MSVC
 	}
 
-	XE_INLINE D3D12_GPU_DESCRIPTOR_HANDLE getGPUHandleHeapStart( ID3D12DescriptorHeap * _heap )
+	D3D12_GPU_DESCRIPTOR_HANDLE getGPUHandleHeapStart( ID3D12DescriptorHeap * _heap )
 	{
 	#if COMPILER == COMPILER_MSVC
 		return _heap->GetGPUDescriptorHandleForHeapStart();
@@ -511,7 +511,7 @@ namespace XE::D3D12
 	#endif // BX_COMPILER_MSVC
 	}
 
-	XE_INLINE D3D12_RESOURCE_DESC getResourceDesc( ID3D12Resource * _resource )
+	D3D12_RESOURCE_DESC getResourceDesc( ID3D12Resource * _resource )
 	{
 	#if COMPILER == COMPILER_MSVC
 		return _resource->GetDesc();
@@ -527,7 +527,7 @@ namespace XE::D3D12
 	#endif // BX_COMPILER_MSVC
 	}
 
-	static D3D12_INPUT_ELEMENT_DESC * fillVertexLayout( uint8_t _stream, D3D12_INPUT_ELEMENT_DESC * _out, const VertexLayoutDesc & _layout )
+	D3D12_INPUT_ELEMENT_DESC * fillVertexLayout( uint8_t _stream, D3D12_INPUT_ELEMENT_DESC * _out, const VertexLayoutDesc & _layout )
 	{
 		D3D12_INPUT_ELEMENT_DESC * elem = _out;
 
@@ -1959,6 +1959,454 @@ XE::RendererContextDirectX12::~RendererContextDirectX12()
 }
 
 void XE::RendererContextDirectX12::OnRender( XE::RenderFrame * val )
+{
+	ExecCommands( val->PrevCmd );
+
+
+
+
+
+	ExecCommands( val->PostCmd );
+}
+
+void XE::RendererContextDirectX12::ExecCommands( XE::Buffer & buffer )
+{
+	while( !buffer.Eof() )
+	{
+		CommandType type = CommandType::END;
+
+		buffer.Read( type );
+
+		switch( type )
+		{
+		case XE::CommandType::RENDERER_INIT:
+		{
+			Init();
+		}
+			break;
+		case XE::CommandType::RENDERER_SHUTDOWN:
+		{
+			Shutdown();
+		}
+			break;
+		case XE::CommandType::CREATE_SHADER:
+		{
+			XE::ShaderHandle handle;
+			XE::MemoryView data;
+
+			buffer.Read( handle );
+			buffer.Read( data );
+
+			CreateShader( handle, data );
+		}
+			break;
+		case XE::CommandType::CREATE_PROGRAM:
+		{
+			XE::ProgramHandle handle;
+
+			buffer.Read( handle );
+
+			CreateProgram( handle );
+		}
+			break;
+		case XE::CommandType::CREATE_TEXTURE:
+		{
+			XE::TextureHandle handle;
+			XE::MemoryView data;
+
+			buffer.Read( handle );
+			buffer.Read( data );
+
+			CreateTexture( handle, data );
+		}
+			break;
+		case XE::CommandType::CREATE_FRAME_BUFFER:
+		{
+			XE::FrameBufferHandle handle;
+
+			buffer.Read( handle );
+
+			CreateFrameBuffer( handle );
+		}
+			break;
+		case XE::CommandType::CREATE_INDEX_BUFFER:
+		{
+			XE::IndexBufferHandle handle;
+			XE::MemoryView data;
+
+			buffer.Read( handle );
+			buffer.Read( data );
+
+			CreateIndexBuffer( handle, data );
+		}
+			break;
+		case XE::CommandType::CREATE_VERTEX_LAYOUT:
+		{
+			XE::VertexLayoutHandle handle;
+
+			buffer.Read( handle );
+
+			CreateVertexLayout( handle );
+		}
+			break;
+		case XE::CommandType::CREATE_VERTEX_BUFFER:
+		{
+			XE::VertexBufferHandle handle;
+			XE::MemoryView data;
+
+			buffer.Read( handle );
+			buffer.Read( data );
+
+			CreateVertexBuffer( handle, data );
+		}
+			break;
+		case XE::CommandType::CREATE_INDIRECT_BUFFER:
+		{
+			XE::IndirectBufferHandle handle;
+
+			buffer.Read( handle );
+
+			CreateIndirectBuffer( handle );
+		}
+			break;
+		case XE::CommandType::CREATE_OCCLUSION_QUERY:
+		{
+			XE::OcclusionQueryHandle handle;
+
+			buffer.Read( handle );
+
+			CreateOcclusionQuery( handle );
+		}
+			break;
+		case XE::CommandType::CREATE_DYNAMIC_INDEX_BUFFER:
+		{
+			XE::DynamicIndexBufferHandle handle;
+
+			buffer.Read( handle );
+
+			CreateDynamicIndexBuffer( handle );
+		}
+			break;
+		case XE::CommandType::CREATE_DYNAMIC_VERTEX_BUFFER:
+		{
+			XE::DynamicVertexBufferHandle handle;
+
+			buffer.Read( handle );
+
+			CreateDynamicVertexBuffer( handle );
+		}
+			break;
+		case XE::CommandType::READ_TEXTURE:
+		{
+			XE::TextureHandle handle;
+			std::uintptr_t data;
+			XE::uint8 mip;
+
+			buffer.Read( handle );
+			buffer.Read( data );
+			buffer.Read( mip );
+
+			ReadTexture( handle, ( XE::uint8 * )data, mip );
+		}
+			break;
+		case XE::CommandType::UPDATE_TEXTURE:
+		{
+			XE::UpdateTextureDesc desc;
+			XE::MemoryView data;
+
+			buffer.Read( desc );
+			buffer.Read( data );
+
+			UpdateTexture( desc, data );
+		}
+			break;
+		case XE::CommandType::UPDATE_DYNAMIC_INDEX_BUFFER:
+		{
+			XE::DynamicIndexBufferHandle handle;
+			XE::uint64 start;
+			XE::MemoryView mem;
+
+			buffer.Read( handle );
+			buffer.Read( start );
+			buffer.Read( mem );
+
+			UpdateDynamicIndexBuffer( handle, start, mem );
+		}
+			break;
+		case XE::CommandType::UPDATE_DYNAMIC_VERTEX_BUFFER:
+		{
+			XE::DynamicVertexBufferHandle handle;
+			XE::uint64 start;
+			XE::MemoryView mem;
+
+			buffer.Read( handle );
+			buffer.Read( start );
+			buffer.Read( mem );
+
+			UpdateDynamicVertexBuffer( handle, start, mem );
+		}
+			break;
+		case XE::CommandType::END:
+			return;
+		case XE::CommandType::DESTROY_SHADER:
+		{
+			XE::ShaderHandle handle;
+
+			buffer.Read( handle );
+
+			DestroyShader( handle );
+		}
+			break;
+		case XE::CommandType::DESTROY_TEXTURE:
+		{
+			XE::TextureHandle handle;
+
+			buffer.Read( handle );
+
+			DestroyTexture( handle );
+		}
+			break;
+		case XE::CommandType::DESTROY_PROGRAM:
+		{
+			XE::ProgramHandle handle;
+
+			buffer.Read( handle );
+
+			DestroyProgram( handle );
+		}
+			break;
+		case XE::CommandType::DESTROY_FRAMEBUFFER:
+		{
+			XE::FrameBufferHandle handle;
+
+			buffer.Read( handle );
+
+			DestroyFrameBuffer( handle );
+		}
+			break;
+		case XE::CommandType::DESTROY_INDEX_BUFFER:
+		{
+			XE::IndexBufferHandle handle;
+
+			buffer.Read( handle );
+
+			DestroyIndexBuffer( handle );
+		}
+			break;
+		case XE::CommandType::DESTROY_VERTEX_LAYOUT:
+		{
+			XE::VertexLayoutHandle handle;
+
+			buffer.Read( handle );
+
+			DestroyVertexLayout( handle );
+		}
+			break;
+		case XE::CommandType::DESTROY_VERTEX_BUFFER:
+		{
+			XE::VertexBufferHandle handle;
+
+			buffer.Read( handle );
+
+			DestroyVertexBuffer( handle );
+		}
+			break;
+		case XE::CommandType::DESTROY_INDIRECT_BUFFER:
+		{
+			XE::IndirectBufferHandle handle;
+
+			buffer.Read( handle );
+
+			DestroyIndirectBuffer( handle );
+		}
+			break;
+		case XE::CommandType::DESTROY_OCCLUSION_QUERY:
+		{
+			XE::OcclusionQueryHandle handle;
+
+			buffer.Read( handle );
+
+			DestroyOcclusionQuery( handle );
+		}
+			break;
+		case XE::CommandType::DESTROY_DYNAMIC_INDEX_BUFFER:
+		{
+			XE::DynamicIndexBufferHandle handle;
+
+			buffer.Read( handle );
+
+			DestroyDynamicIndexBuffer( handle );
+		}
+			break;
+		case XE::CommandType::DESTROY_DYNAMIC_VERTEX_BUFFER:
+		{
+			XE::DynamicVertexBufferHandle handle;
+
+			buffer.Read( handle );
+
+			DestroyDynamicVertexBuffer( handle );
+		}
+			break;
+		case XE::CommandType::REQUEST_SCREEN_SHOT:
+		{
+			XE::FrameBufferHandle handle;
+			std::string userdata;
+			std::uintptr_t callback;
+
+			buffer.Read( handle );
+			buffer.Read( userdata );
+			buffer.Read( callback );
+
+			RequestScreenShot( handle, userdata, ( ScreenShotCallbackType )callback );
+		}
+			break;
+		default:
+			break;
+		}
+	}
+}
+
+void XE::RendererContextDirectX12::Init()
+{
+
+}
+
+void XE::RendererContextDirectX12::Shutdown()
+{
+
+}
+
+void XE::RendererContextDirectX12::CreateShader( XE::ShaderHandle handle, XE::MemoryView data )
+{
+
+}
+
+void XE::RendererContextDirectX12::CreateProgram( XE::ProgramHandle handle )
+{
+
+}
+
+void XE::RendererContextDirectX12::CreateTexture( XE::TextureHandle handle, XE::MemoryView data )
+{
+
+}
+
+void XE::RendererContextDirectX12::CreateFrameBuffer( XE::FrameBufferHandle handle )
+{
+
+}
+
+void XE::RendererContextDirectX12::CreateIndexBuffer( XE::IndexBufferHandle handle, XE::MemoryView data )
+{
+
+}
+
+void XE::RendererContextDirectX12::CreateVertexLayout( XE::VertexLayoutHandle handle )
+{
+
+}
+
+void XE::RendererContextDirectX12::CreateVertexBuffer( XE::VertexBufferHandle handle, XE::MemoryView data )
+{
+
+}
+
+void XE::RendererContextDirectX12::CreateIndirectBuffer( XE::IndirectBufferHandle handle )
+{
+
+}
+
+void XE::RendererContextDirectX12::CreateOcclusionQuery( XE::OcclusionQueryHandle handle )
+{
+
+}
+
+void XE::RendererContextDirectX12::CreateDynamicIndexBuffer( XE::DynamicIndexBufferHandle handle )
+{
+
+}
+
+void XE::RendererContextDirectX12::CreateDynamicVertexBuffer( XE::DynamicVertexBufferHandle handle )
+{
+
+}
+
+void XE::RendererContextDirectX12::ReadTexture( XE::TextureHandle handle, XE::uint8 * data, XE::uint8 mip )
+{
+
+}
+
+void XE::RendererContextDirectX12::UpdateTexture( const XE::UpdateTextureDesc & desc, XE::MemoryView data )
+{
+
+}
+
+void XE::RendererContextDirectX12::UpdateDynamicIndexBuffer( XE::DynamicIndexBufferHandle handle, XE::uint64 start, XE::MemoryView mem )
+{
+
+}
+
+void XE::RendererContextDirectX12::UpdateDynamicVertexBuffer( XE::DynamicVertexBufferHandle handle, XE::uint64 start, XE::MemoryView mem )
+{
+
+}
+
+void XE::RendererContextDirectX12::DestroyShader( XE::ShaderHandle handle )
+{
+
+}
+
+void XE::RendererContextDirectX12::DestroyTexture( XE::TextureHandle handle )
+{
+
+}
+
+void XE::RendererContextDirectX12::DestroyProgram( XE::ProgramHandle handle )
+{
+
+}
+
+void XE::RendererContextDirectX12::DestroyFrameBuffer( XE::FrameBufferHandle handle )
+{
+
+}
+
+void XE::RendererContextDirectX12::DestroyIndexBuffer( XE::IndexBufferHandle handle )
+{
+
+}
+
+void XE::RendererContextDirectX12::DestroyVertexLayout( XE::VertexLayoutHandle handle )
+{
+
+}
+
+void XE::RendererContextDirectX12::DestroyVertexBuffer( XE::VertexBufferHandle handle )
+{
+
+}
+
+void XE::RendererContextDirectX12::DestroyIndirectBuffer( XE::IndirectBufferHandle handle )
+{
+
+}
+
+void XE::RendererContextDirectX12::DestroyOcclusionQuery( XE::OcclusionQueryHandle handle )
+{
+
+}
+
+void XE::RendererContextDirectX12::DestroyDynamicIndexBuffer( XE::DynamicIndexBufferHandle handle )
+{
+
+}
+
+void XE::RendererContextDirectX12::DestroyDynamicVertexBuffer( XE::DynamicVertexBufferHandle handle )
+{
+
+}
+
+void XE::RendererContextDirectX12::RequestScreenShot( XE::FrameBufferHandle handle, const std::string & userdata, ScreenShotCallbackType callback )
 {
 
 }
