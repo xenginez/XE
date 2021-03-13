@@ -61,6 +61,13 @@ public:
 		return *this;
 	}
 
+	Handle & operator=( std::nullptr_t )
+	{
+		_value = Invalid;
+
+		return *this;
+	}
+
 public:
 	bool operator<( XE::uint64 val ) const
 	{

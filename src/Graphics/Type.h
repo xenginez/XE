@@ -878,12 +878,12 @@ struct XE_API UpdateTextureDesc
 	XE::uint16 Layer = 0;
 	XE::uint8 Side = 0;
 	XE::uint8 Mip = 0;
-	XE::uint32 X = 0;
-	XE::uint32 Y = 0;
-	XE::uint32 Z = 0;
-	XE::uint32 Width = 0;
-	XE::uint32 Height = 0;
-	XE::uint32 Depth = 0;
+	XE::int32 X = 0;
+	XE::int32 Y = 0;
+	XE::int32 Z = 0;
+	XE::int32 Width = 0;
+	XE::int32 Height = 0;
+	XE::int32 Depth = 0;
 };
 
 struct XE_API IndirectBufferDesc : public BufferDesc

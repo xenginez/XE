@@ -666,6 +666,7 @@ namespace XE::D3D12
 
 	class VertexBuffer : public Buffer
 	{
+	public:
 		void create( XE::uint32 _size, void * _data, XE::VertexLayoutHandle _layoutHandle, XE::BufferFlags _flags );
 
 		XE::VertexLayoutHandle m_layoutHandle;
@@ -713,7 +714,7 @@ namespace XE::D3D12
 
 		void overrideInternal( uintptr_t _ptr );
 
-		void update( ID3D12GraphicsCommandList * _commandList, XE::uint8 _side, XE::uint8 _mip, const XE::Rectf & _rect, XE::uint16 _z, XE::uint16 _depth, XE::uint16 _pitch, const XE::MemoryView _mem );
+		void update( ID3D12GraphicsCommandList * _commandList, XE::uint8 _side, XE::uint8 _mip, const XE::Recti & _rect, XE::uint16 _z, XE::uint16 _depth, XE::uint16 _pitch, const XE::MemoryView _mem );
 
 		void resolve( ID3D12GraphicsCommandList * _commandList, XE::uint8 _resolve );
 
@@ -1538,7 +1539,7 @@ namespace XE::D3D12
 		m_ptr = ( ID3D12Resource * )_ptr;
 	}
 
-	void Texture::update( ID3D12GraphicsCommandList * _commandList, XE::uint8 _side, XE::uint8 _mip, const XE::Rectf & _rect, XE::uint16 _z, XE::uint16 _depth, XE::uint16 _pitch, const XE::MemoryView _mem )
+	void Texture::update( ID3D12GraphicsCommandList * _commandList, XE::uint8 _side, XE::uint8 _mip, const XE::Recti & _rect, XE::uint16 _z, XE::uint16 _depth, XE::uint16 _pitch, const XE::MemoryView _mem )
 	{
 		// TODO: 
 	}
@@ -2839,47 +2840,119 @@ void XE::RendererContextDirectX12::Init()
 
 void XE::RendererContextDirectX12::Shutdown()
 {
+	_RTX->m_cmd.finish();
+	//_RTX->m_batch.destroy();
 
+	_RTX->preReset();
+
+	_RTX->m_gpuTimer.shutdown();
+	_RTX->m_occlusionQuery.shutdown();
+
+	_RTX->m_samplerAllocator.destroy();
+
+	for( uint32_t ii = 0; ii < XE::countof( _RTX->m_scratchBuffer ); ++ii )
+	{
+		_RTX->m_scratchBuffer[ii].destroy();
+	}
+
+	//_RTX->m_pipelineStateCache.invalidate();
+
+	for( uint32_t ii = 0; ii < XE::countof( _RTX->m_indexBuffers ); ++ii )
+	{
+		_RTX->m_indexBuffers[ii].destroy();
+	}
+
+	for( uint32_t ii = 0; ii < XE::countof( _RTX->m_vertexBuffers ); ++ii )
+	{
+		_RTX->m_vertexBuffers[ii].destroy();
+	}
+
+	for( uint32_t ii = 0; ii < XE::countof( _RTX->m_shaders ); ++ii )
+	{
+		_RTX->m_shaders[ii].destroy();
+	}
+
+	for( uint32_t ii = 0; ii < XE::countof( _RTX->m_textures ); ++ii )
+	{
+		_RTX->m_textures[ii].destroy();
+	}
+
+	DX_RELEASE( _RTX->m_infoQueue );
+	DX_RELEASE( _RTX->m_rtvDescriptorHeap );
+	DX_RELEASE( _RTX->m_dsvDescriptorHeap );
+
+	for( uint32_t ii = 0; ii < XE::countof( _RTX->m_commandSignature ); ++ii )
+	{
+		DX_RELEASE( _RTX->m_commandSignature[ii] );
+	}
+
+	DX_RELEASE( _RTX->m_rootSignature );
+	DX_RELEASE( _RTX->m_msaaRt );
+	DX_RELEASE( _RTX->m_swapChain );
+
+	_RTX->m_device->SetPrivateDataInterface( D3D12::IID_ID3D12CommandQueue, NULL );
+	_RTX->m_cmd.shutdown();
+
+	DX_RELEASE( _RTX->m_device );
+
+	_RTX->m_dxgi.Shutdown();
+
+	XE::Library::Close( _RTX->m_winPixEvent );
+	XE::Library::Close( _RTX->m_d3d12Dll );
+	XE::Library::Close( _RTX->m_kernel32Dll );
+
+	_RTX->m_winPixEvent = nullptr;
+	_RTX->m_d3d12Dll = nullptr;
+	_RTX->m_kernel32Dll = nullptr;
 }
 
 void XE::RendererContextDirectX12::CreateShader( XE::ShaderHandle handle, XE::MemoryView data )
 {
-
+	_RTX->m_shaders[handle].create( data );
 }
 
 void XE::RendererContextDirectX12::CreateProgram( XE::ProgramHandle handle )
 {
-
+	_RTX->m_program[handle].create( &_RTX->m_shaders[GetDesc( handle ).CS], &_RTX->m_shaders[GetDesc( handle ).VS] );
 }
 
 void XE::RendererContextDirectX12::CreateTexture( XE::TextureHandle handle, XE::MemoryView data )
 {
-
+	_RTX->m_textures[handle].create( data, GetDesc(handle).Flags, GetDesc(handle).NumMips );
 }
 
 void XE::RendererContextDirectX12::CreateFrameBuffer( XE::FrameBufferHandle handle )
 {
+	const auto & desc = GetDesc( handle );
 
+	if (desc.Window)
+	{
+		_RTX->m_frameBuffers[handle].create( 0, ( void * )desc.Window.GetValue(), desc.Width, desc.Height, desc.ColorFormat, desc.DepthFormat );
+	}
+	else
+	{
+		_RTX->m_frameBuffers[handle].create( desc.AttachmentCount, desc.Attachments );
+	}
 }
 
 void XE::RendererContextDirectX12::CreateIndexBuffer( XE::IndexBufferHandle handle, XE::MemoryView data )
 {
-
+	_RTX->m_indexBuffers[handle].create( data.size(), ( void * )data.data(), GetDesc( handle ).Flags, false );
 }
 
 void XE::RendererContextDirectX12::CreateVertexLayout( XE::VertexLayoutHandle handle )
 {
-
+	
 }
 
 void XE::RendererContextDirectX12::CreateVertexBuffer( XE::VertexBufferHandle handle, XE::MemoryView data )
 {
-
+	_RTX->m_vertexBuffers[handle].create( data.size(), ( void * )data.data(), GetDesc( handle ).Layout, GetDesc( handle ).Flags );
 }
 
 void XE::RendererContextDirectX12::CreateIndirectBuffer( XE::IndirectBufferHandle handle )
 {
-
+	
 }
 
 void XE::RendererContextDirectX12::CreateOcclusionQuery( XE::OcclusionQueryHandle handle )
@@ -2889,72 +2962,72 @@ void XE::RendererContextDirectX12::CreateOcclusionQuery( XE::OcclusionQueryHandl
 
 void XE::RendererContextDirectX12::CreateDynamicIndexBuffer( XE::DynamicIndexBufferHandle handle )
 {
-
+	_RTX->m_indexBuffers[handle].create( GetDesc( handle ).Size, nullptr, GetDesc( handle ).Flags, false );
 }
 
 void XE::RendererContextDirectX12::CreateDynamicVertexBuffer( XE::DynamicVertexBufferHandle handle )
 {
-
+	_RTX->m_vertexBuffers[handle].create( GetDesc( handle ).Size, nullptr, GetDesc( handle ).Layout, GetDesc(handle).Flags );
 }
 
 void XE::RendererContextDirectX12::ReadTexture( XE::TextureHandle handle, XE::uint8 * data, XE::uint8 mip )
 {
-
+	_RTX->m_textures[handle].overrideInternal( ( uintptr_t )data );
 }
 
 void XE::RendererContextDirectX12::UpdateTexture( const XE::UpdateTextureDesc & desc, XE::MemoryView data )
 {
-
+	_RTX->m_textures[desc.Handle].update( nullptr, desc.Side, desc.Mip, { desc.X, desc.Y, desc.Width, desc.Height }, desc.Z, desc.Depth, desc.Layer, data );
 }
 
 void XE::RendererContextDirectX12::UpdateDynamicIndexBuffer( XE::DynamicIndexBufferHandle handle, XE::uint64 start, XE::MemoryView mem )
 {
-
+	_RTX->m_indexBuffers[handle].update( nullptr, start, mem.size(), ( void * )mem.data() );
 }
 
 void XE::RendererContextDirectX12::UpdateDynamicVertexBuffer( XE::DynamicVertexBufferHandle handle, XE::uint64 start, XE::MemoryView mem )
 {
-
+	_RTX->m_indexBuffers[handle].update( nullptr, start, mem.size(), ( void * )mem.data() );
 }
 
 void XE::RendererContextDirectX12::DestroyShader( XE::ShaderHandle handle )
 {
-
+	_RTX->m_shaders[handle].destroy();
 }
 
 void XE::RendererContextDirectX12::DestroyTexture( XE::TextureHandle handle )
 {
-
+	_RTX->m_textures[handle].destroy();
 }
 
 void XE::RendererContextDirectX12::DestroyProgram( XE::ProgramHandle handle )
 {
-
+	_RTX->m_program[handle].destroy();
 }
 
 void XE::RendererContextDirectX12::DestroyFrameBuffer( XE::FrameBufferHandle handle )
 {
-
+	_RTX->m_frameBuffers[handle].destroy();
 }
 
 void XE::RendererContextDirectX12::DestroyIndexBuffer( XE::IndexBufferHandle handle )
 {
-
+	_RTX->m_indexBuffers[handle].destroy();
 }
 
 void XE::RendererContextDirectX12::DestroyVertexLayout( XE::VertexLayoutHandle handle )
 {
-
+	
 }
 
 void XE::RendererContextDirectX12::DestroyVertexBuffer( XE::VertexBufferHandle handle )
 {
-
+	_RTX->m_vertexBuffers[handle].destroy();
 }
 
 void XE::RendererContextDirectX12::DestroyIndirectBuffer( XE::IndirectBufferHandle handle )
 {
-
+	
 }
 
 void XE::RendererContextDirectX12::DestroyOcclusionQuery( XE::OcclusionQueryHandle handle )
@@ -2964,12 +3037,12 @@ void XE::RendererContextDirectX12::DestroyOcclusionQuery( XE::OcclusionQueryHand
 
 void XE::RendererContextDirectX12::DestroyDynamicIndexBuffer( XE::DynamicIndexBufferHandle handle )
 {
-
+	_RTX->m_indexBuffers[handle].destroy();
 }
 
 void XE::RendererContextDirectX12::DestroyDynamicVertexBuffer( XE::DynamicVertexBufferHandle handle )
 {
-
+	_RTX->m_vertexBuffers[handle].destroy();
 }
 
 void XE::RendererContextDirectX12::RequestScreenShot( XE::FrameBufferHandle handle, const std::string & userdata, ScreenShotCallbackType callback )
