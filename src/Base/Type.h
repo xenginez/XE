@@ -60,16 +60,14 @@ namespace std
 
 	template <class _Kty, size_t N > struct hash< _Kty[N] >
 	{
-		typedef _Kty[N] _ARGUMENT_TYPE_NAME;
-		typedef size_t _RESULT_TYPE_NAME;
-		size_t operator()( const _Kty[N] _Keyval ) const noexcept
+		size_t operator()( const _Kty _Keyval[] ) const
 		{
 			size_t _hash = 0;
 
 			std::hash<_Kty> key_hash;
-			for( const auto & i : _Keyval )
+			for( size_t i = 0; i < N; ++i )
 			{
-				_hash ^= key_hash( i );
+				_hash ^= key_hash( _Keyval[i] );
 			}
 
 			return _hash;

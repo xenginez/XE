@@ -31,7 +31,6 @@ enum class CommandType : XE::uint8
 	CREATE_INDEX_BUFFER,
 	CREATE_VERTEX_LAYOUT,
 	CREATE_VERTEX_BUFFER,
-	CREATE_INDIRECT_BUFFER,
 	CREATE_OCCLUSION_QUERY,
 	CREATE_DYNAMIC_INDEX_BUFFER,
 	CREATE_DYNAMIC_VERTEX_BUFFER,
@@ -50,7 +49,6 @@ enum class CommandType : XE::uint8
 	DESTROY_INDEX_BUFFER,
 	DESTROY_VERTEX_LAYOUT,
 	DESTROY_VERTEX_BUFFER,
-	DESTROY_INDIRECT_BUFFER,
 	DESTROY_OCCLUSION_QUERY,
 	DESTROY_DYNAMIC_INDEX_BUFFER,
 	DESTROY_DYNAMIC_VERTEX_BUFFER,
@@ -189,14 +187,14 @@ public:
 			return false;
 		}
 
-		view = key & ( XE::uint64( VIEW_MAX_VALUE ) << ( 64 - VIEW_NUM_BITS ) );
+		view = XE::HandleCast< XE::View >( key & ( XE::uint64( VIEW_MAX_VALUE ) << ( 64 - VIEW_NUM_BITS ) ) );
 		group = ( XE::RenderGroup )( key & ( XE::uint64( GROUP_MAX_VALUE ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS - GROUP_NUM_BITS ) ) );
 
 		switch( group )
 		{
 		case XE::RenderGroup::GEOMETRY:
 		case XE::RenderGroup::GEOMETRYLAST:
-			program = key & ( XE::uint64( PROGRAM_MAX_VALUE ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS - GROUP_NUM_BITS - PROGRAM_NUM_BITS ) );
+			program = XE::HandleCast< XE::Program >( key & ( XE::uint64( PROGRAM_MAX_VALUE ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS - GROUP_NUM_BITS - PROGRAM_NUM_BITS ) ) );
 			depth = key & ( XE::uint64( DEPTH_MAX_VALUE ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS - GROUP_NUM_BITS - PROGRAM_NUM_BITS - DEPTH_NUM_BITS ) );
 			break;
 		case XE::RenderGroup::ALPHATEST:
@@ -204,7 +202,7 @@ public:
 		case XE::RenderGroup::TRANSPARENT:
 		case XE::RenderGroup::OVERLAY:
 			depth = key & ( XE::uint64( DEPTH_MAX_VALUE ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS - GROUP_NUM_BITS - DEPTH_NUM_BITS ) );
-			program = key & ( XE::uint64( PROGRAM_MAX_VALUE ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS - GROUP_NUM_BITS - DEPTH_NUM_BITS - PROGRAM_NUM_BITS ) );
+			program = XE::HandleCast< XE::Program >( key & ( XE::uint64( PROGRAM_MAX_VALUE ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS - GROUP_NUM_BITS - DEPTH_NUM_BITS - PROGRAM_NUM_BITS ) ) );
 			break;
 		default:
 			break;
@@ -221,9 +219,9 @@ public:
 			return false;
 		}
 
-		view = key & ( XE::uint64( VIEW_MAX_VALUE ) << ( 64 - VIEW_NUM_BITS ) );
+		view = XE::HandleCast< XE::View >( key & ( XE::uint64( VIEW_MAX_VALUE ) << ( 64 - VIEW_NUM_BITS ) ) );
 		depth = key & ( XE::uint64( DEPTH_MAX_VALUE ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS - GROUP_NUM_BITS - DEPTH_NUM_BITS ) );
-		program = key & ( XE::uint64( PROGRAM_MAX_VALUE ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS - GROUP_NUM_BITS - DEPTH_NUM_BITS - PROGRAM_NUM_BITS ) );
+		program = XE::HandleCast< XE::Program >( key & ( XE::uint64( PROGRAM_MAX_VALUE ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS - GROUP_NUM_BITS - DEPTH_NUM_BITS - PROGRAM_NUM_BITS ) ) );
 
 		return true;
 	}
@@ -237,7 +235,7 @@ public:
 			return false;
 		}
 
-		view = key & ( XE::uint64( VIEW_MAX_VALUE ) << ( 64 - VIEW_NUM_BITS ) );
+		view = XE::HandleCast< XE::View >( key & ( XE::uint64( VIEW_MAX_VALUE ) << ( 64 - VIEW_NUM_BITS ) ) );
 		depth = key & ( XE::uint64( DEPTH_MAX_VALUE ) << ( 64 - VIEW_NUM_BITS - DRAW_NUM_BITS - GROUP_NUM_BITS - DEPTH_NUM_BITS ) );
 
 		return true;
@@ -321,34 +319,10 @@ struct PVertexBuffer : public GfxRefCount
 	XE::VertexBufferDesc Desc;
 };
 
-struct PIndirectBuffer : public GfxRefCount
-{
-	XE::uint64 Handle;
-	XE::uint32 StartIndex;
-	XE::uint32 NumIndices;
-	XE::IndirectBufferDesc Desc;
-};
-
 struct POcclusionQuery : public GfxRefCount
 {
 	XE::OcclusionQueryDesc Desc;
 	std::optional<XE::uint32> Value;
-};
-
-struct PDynamicIndexBuffer : public GfxRefCount
-{
-	XE::uint64 Handle;
-	XE::uint32 StartIndex;
-	XE::uint32 NumIndices;
-	XE::DynamicIndexBufferDesc Desc;
-};
-
-struct PDynamicVertexBuffer : public GfxRefCount
-{
-	XE::uint64 Handle;
-	XE::uint32 StartVertex;
-	XE::uint32 NumVertices;
-	XE::DynamicVertexBufferDesc Desc;
 };
 
 
@@ -448,7 +422,7 @@ struct RenderDraw
 	bool IsDynamicInstanceDataBuffer = false;
 	XE::VertexBufferHandle InstanceDataBuffer;
 
-	XE::IndirectBufferHandle IndirectBuffer;
+	XE::DynamicVertexBufferHandle IndirectBuffer;
 
 	XE::OcclusionQueryHandle OcclusionQuery;
 
@@ -473,7 +447,7 @@ struct RenderCompute
 
 	XE::ProgramHandle Program;
 
-	XE::IndirectBufferHandle IndirectBuffer;
+	XE::DynamicVertexBufferHandle IndirectBuffer;
 
 	std::array<XE::PUniform, GFX_MAX_UNIFORMS> Uniforms = {};
 };

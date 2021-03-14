@@ -100,11 +100,11 @@ public:
 
 	void Submit( XE::ViewHandle handle, XE::RenderGroup group, XE::ProgramHandle program, XE::OcclusionQueryHandle query = XE::OcclusionQueryHandle::Invalid, XE::uint32 depth = 0 );
 
-	void Submit( XE::ViewHandle handle, XE::RenderGroup group, XE::ProgramHandle program, XE::IndirectBufferHandle indirect, XE::uint32 first, XE::uint32 num, XE::uint32 depth = 0 );
+	void Submit( XE::ViewHandle handle, XE::RenderGroup group, XE::ProgramHandle program, XE::DynamicVertexBufferHandle indirect, XE::uint32 first, XE::uint32 num, XE::uint32 depth = 0 );
 
 	void Dispatch( XE::ViewHandle handle, XE::ProgramHandle program, XE::uint32 numX = 1, XE::uint32 numY = 1, XE::uint32 numZ = 1 );
 
-	void Dispatch( XE::ViewHandle handle, XE::ProgramHandle program, XE::IndirectBufferHandle indirect, XE::uint32 first, XE::uint32 num );
+	void Dispatch( XE::ViewHandle handle, XE::ProgramHandle program, XE::DynamicVertexBufferHandle indirect, XE::uint32 first, XE::uint32 num );
 
 public:
 	void Blit( XE::ViewHandle handle,

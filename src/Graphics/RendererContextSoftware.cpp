@@ -166,9 +166,6 @@ void XE::RendererContextSoftware::ExecCommand( XE::RenderFrame * frame, XE::Buff
 		case XE::CommandType::CREATE_VERTEX_BUFFER:
 			CreateVertexBuffer( frame );
 			break;
-		case XE::CommandType::CREATE_INDIRECT_BUFFER:
-			CreateIndirectBuffer( frame );
-			break;
 		case XE::CommandType::CREATE_OCCLUSION_QUERY:
 			CreateOcclusionQuery( frame );
 			break;
@@ -216,9 +213,6 @@ void XE::RendererContextSoftware::ExecCommand( XE::RenderFrame * frame, XE::Buff
 			break;
 		case XE::CommandType::DESTROY_VERTEX_BUFFER:
 			DestoryVertexBuffer( frame );
-			break;
-		case XE::CommandType::DESTROY_INDIRECT_BUFFER:
-			DestoryIndirectBuffer( frame );
 			break;
 		case XE::CommandType::DESTROY_OCCLUSION_QUERY:
 			DestoryOcclusionQuery( frame );
@@ -292,16 +286,6 @@ void XE::RendererContextSoftware::CreateOcclusionQuery( XE::RenderFrame * frame 
 	_p->_Occlusions.push_back( handle );
 }
 
-void XE::RendererContextSoftware::CreateIndirectBuffer( XE::RenderFrame * frame )
-{
-	XE::IndirectBufferHandle handle;
-	frame->PrevCmd.Read( handle );
-
-	const XE::IndirectBufferDesc & desc = GetDesc( handle );
-
-	_p->_IndirectBuffers[handle] = new XE::uint8[desc.Size];
-}
-
 void XE::RendererContextSoftware::CreateShader( XE::RenderFrame * frame )
 {
 	XE::ShaderHandle handle;
@@ -372,7 +356,7 @@ void XE::RendererContextSoftware::CreateDynamicIndexBuffer( XE::RenderFrame * fr
 	XE::MemoryView data;
 	frame->PrevCmd.Read( data );
 
-	const XE::DynamicIndexBufferDesc & desc = GetDesc( handle );
+	const auto & desc = GetDesc( handle );
 
 	_p->_DynamicIndexBuffers[handle] = new XE::uint8[desc.Size];
 
@@ -389,7 +373,7 @@ void XE::RendererContextSoftware::CreateDynamicVertexBuffer( XE::RenderFrame * f
 	XE::MemoryView data;
 	frame->PrevCmd.Read( data );
 
-	const XE::DynamicVertexBufferDesc & desc = GetDesc( handle );
+	const auto & desc = GetDesc( handle );
 
 	_p->_DynamicVertexBuffers[handle] = new XE::uint8[desc.Size];
 
@@ -513,19 +497,6 @@ void XE::RendererContextSoftware::DestoryVertexBuffer( XE::RenderFrame * frame )
 	{
 		delete _p->_VertexBuffers[handle];
 		_p->_VertexBuffers[handle] = nullptr;
-	}
-}
-
-void XE::RendererContextSoftware::DestoryIndirectBuffer( XE::RenderFrame * frame )
-{
-	XE::IndirectBufferHandle handle;
-
-	frame->PostCmd.Read( handle );
-
-	if( _p->_IndirectBuffers[handle] )
-	{
-		delete _p->_IndirectBuffers[handle];
-		_p->_IndirectBuffers[handle] = nullptr;
 	}
 }
 

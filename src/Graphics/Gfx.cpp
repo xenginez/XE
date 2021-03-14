@@ -125,62 +125,57 @@ void XE::Gfx::Present()
 	_p->_Context->Present();
 }
 
-XE::RefHandle< XE::ViewHandle > XE::Gfx::Create( const XE::ViewDesc & desc )
+XE::RefHandle< XE::ViewHandle > XE::Gfx::CreateView( const XE::ViewDesc & desc )
 {
 	return { _p->_Context->Create( desc ), [this]( auto val ) { _p->_Context->Inc( val ); }, [this]( auto val ) { _p->_Context->Dec( val ); } };
 }
 
-XE::RefHandle< XE::ProgramHandle > XE::Gfx::Create( const XE::ProgramDesc & desc )
+XE::RefHandle< XE::ProgramHandle > XE::Gfx::CreateProgram( const XE::ProgramDesc & desc )
 {
 	return { _p->_Context->Create( desc ), [this]( auto val ) { _p->_Context->Inc( val ); }, [this]( auto val ) { _p->_Context->Dec( val ); } };
 }
 
-XE::RefHandle< XE::FrameBufferHandle > XE::Gfx::Create( const XE::FrameBufferDesc & desc )
+XE::RefHandle< XE::FrameBufferHandle > XE::Gfx::CreateFrameBuffer( const XE::FrameBufferDesc & desc )
 {
 	return { _p->_Context->Create( desc ), [this]( auto val ) { _p->_Context->Inc( val ); }, [this]( auto val ) { _p->_Context->Dec( val ); } };
 }
 
-XE::RefHandle< XE::VertexLayoutHandle > XE::Gfx::Create( const XE::VertexLayoutDesc & desc )
+XE::RefHandle< XE::VertexLayoutHandle > XE::Gfx::CreateVertexLayout( const XE::VertexLayoutDesc & desc )
 {
 	return { _p->_Context->Create( desc ), [this]( auto val ) { _p->_Context->Inc( val ); }, [this]( auto val ) { _p->_Context->Dec( val ); } };
 }
 
-XE::RefHandle< XE::OcclusionQueryHandle > XE::Gfx::Create( const OcclusionQueryDesc & desc )
+XE::RefHandle< XE::OcclusionQueryHandle > XE::Gfx::CreateOcclusionQuery( const OcclusionQueryDesc & desc )
 {
 	return { _p->_Context->Create( desc ), [this]( auto val ) { _p->_Context->Inc( val ); }, [this]( auto val ) { _p->_Context->Dec( val ); } };
 }
 
-XE::RefHandle< XE::IndirectBufferHandle > XE::Gfx::Create( const XE::IndirectBufferDesc & desc )
-{
-	return { _p->_Context->Create( desc ), [this]( auto val ) { _p->_Context->Inc( val ); }, [this]( auto val ) { _p->_Context->Dec( val ); } };
-}
-
-XE::RefHandle< XE::ShaderHandle > XE::Gfx::Create( const XE::ShaderDesc & desc, XE::MemoryView data )
+XE::RefHandle< XE::ShaderHandle > XE::Gfx::CreateShader( const XE::ShaderDesc & desc, XE::MemoryView data )
 {
 	return { _p->_Context->Create( desc, data ), [this]( auto val ) { _p->_Context->Inc( val ); }, [this]( auto val ) { _p->_Context->Dec( val ); } };
 }
 
-XE::RefHandle< XE::TextureHandle > XE::Gfx::Create( const XE::TextureDesc & desc, XE::MemoryView data )
+XE::RefHandle< XE::TextureHandle > XE::Gfx::CreateTexture( const XE::TextureDesc & desc, XE::MemoryView data )
 {
 	return { _p->_Context->Create( desc, data ), [this]( auto val ) { _p->_Context->Inc( val ); }, [this]( auto val ) { _p->_Context->Dec( val ); } };
 }
 
-XE::RefHandle< XE::IndexBufferHandle > XE::Gfx::Create( const XE::IndexBufferDesc & desc, XE::MemoryView data )
+XE::RefHandle< XE::IndexBufferHandle > XE::Gfx::CreateIndexBuffer( const XE::IndexBufferDesc & desc, XE::MemoryView data )
 {
 	return { _p->_Context->Create( desc, data ), [this]( auto val ) { _p->_Context->Inc( val ); }, [this]( auto val ) { _p->_Context->Dec( val ); } };
 }
 
-XE::RefHandle< XE::VertexBufferHandle > XE::Gfx::Create( const XE::VertexBufferDesc & desc, XE::MemoryView data )
+XE::RefHandle< XE::VertexBufferHandle > XE::Gfx::CreateVertexBuffer( const XE::VertexBufferDesc & desc, XE::MemoryView data )
 {
 	return { _p->_Context->Create( desc, data ), [this]( auto val ) { _p->_Context->Inc( val ); }, [this]( auto val ) { _p->_Context->Dec( val ); } };
 }
 
-XE::RefHandle< XE::DynamicIndexBufferHandle > XE::Gfx::Create( const XE::DynamicIndexBufferDesc & desc )
+XE::RefHandle< XE::DynamicIndexBufferHandle > XE::Gfx::CreateDynamicIndexBuffer( const XE::IndexBufferDesc & desc )
 {
 	return { _p->_Context->Create( desc ), [this]( auto val ) { _p->_Context->Inc( val ); }, [this]( auto val ) { _p->_Context->Dec( val ); } };
 }
 
-XE::RefHandle< XE::DynamicVertexBufferHandle > XE::Gfx::Create( const XE::DynamicVertexBufferDesc & desc )
+XE::RefHandle< XE::DynamicVertexBufferHandle > XE::Gfx::CreateDynamicVertexBuffer( const XE::VertexBufferDesc & desc )
 {
 	return { _p->_Context->Create( desc ), [this]( auto val ) { _p->_Context->Inc( val ); }, [this]( auto val ) { _p->_Context->Dec( val ); } };
 }
@@ -225,22 +220,17 @@ const XE::VertexBufferDesc & XE::Gfx::GetDesc( XE::VertexBufferHandle handle )
 	return _p->_Context->GetDesc( handle );
 }
 
-const XE::IndirectBufferDesc & XE::Gfx::GetDesc( XE::IndirectBufferHandle handle )
-{
-	return _p->_Context->GetDesc( handle );
-}
-
 const XE::OcclusionQueryDesc & XE::Gfx::GetDesc( XE::OcclusionQueryHandle handle )
 {
 	return _p->_Context->GetDesc( handle );
 }
 
-const XE::DynamicIndexBufferDesc & XE::Gfx::GetDesc( XE::DynamicIndexBufferHandle handle )
+const XE::IndexBufferDesc & XE::Gfx::GetDesc( XE::DynamicIndexBufferHandle handle )
 {
 	return _p->_Context->GetDesc( handle );
 }
 
-const XE::DynamicVertexBufferDesc & XE::Gfx::GetDesc( XE::DynamicVertexBufferHandle handle )
+const XE::VertexBufferDesc & XE::Gfx::GetDesc( XE::DynamicVertexBufferHandle handle )
 {
 	return _p->_Context->GetDesc( handle );
 }

@@ -29,7 +29,6 @@ DECL_HANDLE( XE_API, FrameBuffer );
 DECL_HANDLE( XE_API, IndexBuffer );
 DECL_HANDLE( XE_API, VertexBuffer );
 DECL_HANDLE( XE_API, VertexLayout );
-DECL_HANDLE( XE_API, IndirectBuffer );
 DECL_HANDLE( XE_API, OcclusionQuery );
 DECL_HANDLE( XE_API, DynamicIndexBuffer );
 DECL_HANDLE( XE_API, DynamicVertexBuffer );
@@ -899,22 +898,7 @@ struct XE_API UpdateTextureDesc
 	XE::int32 Depth = 0;
 };
 
-struct XE_API IndirectBufferDesc : public BufferDesc
-{
-
-};
-
 struct XE_API OcclusionQueryDesc
-{
-
-};
-
-struct XE_API DynamicIndexBufferDesc : public IndexBufferDesc
-{
-
-};
-
-struct XE_API DynamicVertexBufferDesc : public XE::VertexBufferDesc
 {
 
 };

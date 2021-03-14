@@ -114,7 +114,7 @@ void XE::Encoder::SetInstanceDataBuffer( VertexBufferHandle handle, XE::uint32 f
 
 void XE::Encoder::SetInstanceDataBuffer( DynamicVertexBufferHandle handle, XE::uint32 first, XE::uint32 num )
 {
-	_p->_Draw.InstanceDataBuffer = handle.GetValue();
+	_p->_Draw.InstanceDataBuffer = XE::HandleCast< VertexBuffer >( handle );
 	_p->_Draw.InstanceDataOffset = first;
 	_p->_Draw.NumInstances = num;
 	_p->_Draw.IsDynamicInstanceDataBuffer = true;
@@ -219,7 +219,7 @@ void XE::Encoder::Submit( ViewHandle handle, RenderGroup group, ProgramHandle pr
 	Discard();
 }
 
-void XE::Encoder::Submit( ViewHandle handle, RenderGroup group, ProgramHandle program, IndirectBufferHandle indirect, XE::uint32 first, XE::uint32 num, XE::uint32 depth /*= 0*/ )
+void XE::Encoder::Submit( ViewHandle handle, RenderGroup group, ProgramHandle program, DynamicVertexBufferHandle indirect, XE::uint32 first, XE::uint32 num, XE::uint32 depth /*= 0*/ )
 {
 	_p->_Draw.StartIndirect = first;
 	_p->_Draw.NumIndirect = num;
@@ -259,7 +259,7 @@ void XE::Encoder::Dispatch( ViewHandle handle, ProgramHandle program, XE::uint32
 	Discard();
 }
 
-void XE::Encoder::Dispatch( ViewHandle handle, ProgramHandle program, IndirectBufferHandle indirect, XE::uint32 first, XE::uint32 num )
+void XE::Encoder::Dispatch( ViewHandle handle, ProgramHandle program, DynamicVertexBufferHandle indirect, XE::uint32 first, XE::uint32 num )
 {
 	_p->_Compute.IndirectBuffer = indirect;
 	_p->_Compute.StartIndirect = first;

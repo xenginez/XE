@@ -16,6 +16,8 @@ BEG_XE_NAMESPACE
 template< typename T > class Handle;
 template< typename T > class RefHandle;
 template< typename T > class HandleAllocator;
+template< typename To > XE::Handle< To > HandleCast( const XE::uint64 & val );
+template< typename To, typename From > XE::Handle< To > HandleCast( const XE::Handle< From > & val );
 template< typename T, XE::uint64 _Max = std::numeric_limits<XE::uint64>::max() > class QueueHandleAllocator;
 template< typename T, XE::uint64 _Max = std::numeric_limits<XE::uint64>::max() > class ConcurrentHandleAllocator;
 
@@ -25,7 +27,13 @@ template< typename T > class Handle
 
 	template< typename T > friend class HandleAllocator;
 
-	template< typename T, XE::uint64 _Max > friend class FreeHandleAlloctor;
+	template< typename T, XE::uint64 _Max > friend class QueueHandleAllocator;
+
+	template< typename T, XE::uint64 _Max > friend class ConcurrentHandleAllocator;
+
+	template< typename To > friend XE::Handle< To > HandleCast( const XE::uint64 & val );
+
+	template< typename To, typename From > friend XE::Handle< To > HandleCast( const XE::Handle< From > & val );
 
 public:
 	using Type = T;
@@ -39,22 +47,18 @@ public:
 	{
 	}
 
-	Handle( XE::uint64 val )
-		:_value( val )
-	{
-	}
-
 	Handle( const Handle & val )
 		:_value( val._value )
 	{
 	}
 
-public:
-	operator bool() const
+private:
+	Handle( XE::uint64 val )
+		:_value( val )
 	{
-		return _value != std::numeric_limits<XE::uint64>::max();
 	}
 
+public:
 	Handle & operator=( const Handle & val )
 	{
 		_value = val._value;
@@ -66,6 +70,12 @@ public:
 		_value = Invalid;
 
 		return *this;
+	}
+
+public:
+	operator bool() const
+	{
+		return _value != std::numeric_limits<XE::uint64>::max();
 	}
 
 public:
@@ -139,6 +149,16 @@ public:
 private:
 	XE::uint64 _value;
 };
+
+
+template< typename To > XE::Handle< To > HandleCast( const XE::uint64 & val )
+{
+	return { val };
+}
+template< typename To, typename From > XE::Handle< To > HandleCast( const XE::Handle< From > & val )
+{
+	return { val.GetValue() };
+}
 
 
 template< typename T > class RefHandle< XE::Handle< T > >
@@ -274,7 +294,7 @@ template< typename T > struct VariantCast< Handle< T > >
 	{
 		if( ( val->GetFlag() == Variant::Flag::HANDLE ) && val->GetType() == ::XE_TypeID< Handle<T> >::Get() )
 		{
-			return val->_Data.u64;
+			return XE::HandleCast< T >( val->_Data.u64 );
 		}
 
 		throw VariantException( *val, "cast fail" );

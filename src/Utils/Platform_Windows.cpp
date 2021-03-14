@@ -172,7 +172,7 @@ XE::WindowHandle XE::Platform::CreateWindow( const XE::String & title, XE::uint3
 		::UpdateWindow( hwnd );
 	}
 
-	return reinterpret_cast< XE::uint64 >( hwnd );
+	return XE::HandleCast< XE::Window >( ( XE::uint64 )( hwnd ) );
 }
 
 bool XE::Platform::DestroyWindow( XE::WindowHandle handle )

@@ -42,7 +42,7 @@ DECL_META_CLASS( XE_API, Event );
 END_XE_NAMESPACE
 
 #define DECL_EVENT( NAME, DESC, ... ) \
-DLL_VAR_WEAK extern const XE::Handle<XE::Event> EVENT_##NAME = XE::Order::RegisterOrder< XE::EventGroup >( #NAME, DESC, XE_TypeID< __VA_ARGS__ >::Get() )
+DLL_VAR_WEAK extern const XE::Handle<XE::Event> EVENT_##NAME = XE::HandleCast< XE::Event >( XE::Order::RegisterOrder< XE::EventGroup >( #NAME, DESC, XE_TypeID< __VA_ARGS__ >::Get() ) )
 
 
 DECL_EVENT( WINDOW, "window events", XE::WindowEvent );

@@ -41,8 +41,6 @@ private:
 
 	void CreateOcclusionQuery( XE::RenderFrame * frame );
 
-	void CreateIndirectBuffer( XE::RenderFrame * frame );
-
 	void CreateShader( XE::RenderFrame * frame );
 
 	void CreateTexture( XE::RenderFrame * frame );
@@ -80,8 +78,6 @@ public:
 	void DestoryVertexLayout( XE::RenderFrame * frame );
 
 	void DestoryVertexBuffer( XE::RenderFrame * frame );
-
-	void DestoryIndirectBuffer( XE::RenderFrame * frame );
 
 	void DestoryOcclusionQuery( XE::RenderFrame * frame );
 

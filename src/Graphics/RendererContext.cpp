@@ -26,9 +26,6 @@ struct XE::RendererContext::Private
 	std::array<PIndexBuffer, GFX_MAX_INDEX_BUFFERS> _IndexBuffers;
 	std::array<PVertexLayout, GFX_MAX_VERTEX_LAYOUTS> _VertexLayouts;
 	std::array<PVertexBuffer, GFX_MAX_VERTEX_BUFFERS> _VertexBuffers;
-	std::array<PIndirectBuffer, GFX_MAX_DRAW_INDIRECT_BUFFERS> _IndirectBuffers;
-	std::array<PDynamicIndexBuffer, GFX_MAX_INDEX_BUFFERS> _DynamicIndexBuffers;
-	std::array<PDynamicVertexBuffer, GFX_MAX_VERTEX_BUFFERS> _DynamicVertexBuffers;
 
 	XE::ConcurrentHandleAllocator<XE::ViewHandle, GFX_MAX_VIEW> _ViewHandleAlloc;
 	XE::ConcurrentHandleAllocator<XE::ShaderHandle, GFX_MAX_SHADERS> _ShaderHandleAlloc;
@@ -39,9 +36,6 @@ struct XE::RendererContext::Private
 	XE::ConcurrentHandleAllocator<XE::IndexBufferHandle, GFX_MAX_INDEX_BUFFERS>  _IndexBufferHandleAlloc;
 	XE::ConcurrentHandleAllocator<XE::VertexLayoutHandle, GFX_MAX_VERTEX_LAYOUTS> _VertexLayoutHandleAlloc;
 	XE::ConcurrentHandleAllocator<XE::VertexBufferHandle, GFX_MAX_VERTEX_BUFFERS> _VertexBufferHandleAlloc;
-	XE::ConcurrentHandleAllocator<XE::IndirectBufferHandle, GFX_MAX_DRAW_INDIRECT_BUFFERS> _IndirectBufferHandleAlloc;
-	XE::ConcurrentHandleAllocator<XE::DynamicIndexBufferHandle, GFX_MAX_DYNAMIC_INDEX_BUFFERS>  _DynamicIndexBufferHandleAlloc;
-	XE::ConcurrentHandleAllocator<XE::DynamicVertexBufferHandle, GFX_MAX_DYNAMIC_VERTEX_BUFFERS> _DynamicVertexBufferHandleAlloc;
 };
 
 XE::RendererContext::RendererContext()
@@ -181,11 +175,6 @@ void XE::RendererContext::Inc( XE::OcclusionQueryHandle handle )
 	_p->_Occlusions[handle.GetValue()].Inc();
 }
 
-void XE::RendererContext::Inc( XE::IndirectBufferHandle handle )
-{
-	_p->_Shaders[handle.GetValue()].Inc();
-}
-
 void XE::RendererContext::Inc( XE::DynamicIndexBufferHandle handle )
 {
 	_p->_IndexBuffers[handle.GetValue()].Inc();
@@ -263,14 +252,6 @@ void XE::RendererContext::Dec( XE::VertexBufferHandle handle )
 void XE::RendererContext::Dec( XE::OcclusionQueryHandle handle )
 {
 	if( _p->_Occlusions[handle.GetValue()].Dec() <= 0 )
-	{
-		Destory( handle );
-	}
-}
-
-void XE::RendererContext::Dec( XE::IndirectBufferHandle handle )
-{
-	if( _p->_Shaders[handle.GetValue()].Dec() <= 0 )
 	{
 		Destory( handle );
 	}
@@ -374,22 +355,6 @@ XE::OcclusionQueryHandle XE::RendererContext::Create( const OcclusionQueryDesc &
 	return handle;
 }
 
-XE::IndirectBufferHandle XE::RendererContext::Create( const XE::IndirectBufferDesc & desc )
-{
-	auto handle = _p->_IndirectBufferHandleAlloc.Alloc();
-
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
-
-	_p->_IndirectBuffers[handle.GetValue()].Reset();
-
-	_p->_IndirectBuffers[handle.GetValue()].Desc = desc;
-
-	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_INDIRECT_BUFFER );
-	_p->_SubmitFrame->PrevCmd.Wirte( handle );
-
-	return handle;
-}
-
 XE::ShaderHandle XE::RendererContext::Create( const XE::ShaderDesc & desc, XE::MemoryView data )
 {
 	auto handle = _p->_ShaderHandleAlloc.Alloc();
@@ -458,36 +423,36 @@ XE::VertexBufferHandle XE::RendererContext::Create( const XE::VertexBufferDesc &
 	return handle;
 }
 
-XE::DynamicIndexBufferHandle XE::RendererContext::Create( const XE::DynamicIndexBufferDesc & desc )
+XE::DynamicIndexBufferHandle XE::RendererContext::Create( const XE::IndexBufferDesc & desc )
 {
-	auto handle = _p->_DynamicIndexBufferHandleAlloc.Alloc();
+	auto handle = _p->_IndexBufferHandleAlloc.Alloc();
 
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
 
-	_p->_DynamicIndexBuffers[handle.GetValue()].Reset();
+	_p->_IndexBuffers[handle.GetValue()].Reset();
 
-	_p->_DynamicIndexBuffers[handle.GetValue()].Desc = desc;
+	_p->_IndexBuffers[handle.GetValue()].Desc = desc;
 
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_DYNAMIC_INDEX_BUFFER );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
 
-	return handle;
+	return XE::HandleCast< DynamicIndexBuffer >( handle );
 }
 
-XE::DynamicVertexBufferHandle XE::RendererContext::Create( const XE::DynamicVertexBufferDesc & desc )
+XE::DynamicVertexBufferHandle XE::RendererContext::Create( const XE::VertexBufferDesc & desc )
 {
-	auto handle = _p->_DynamicVertexBufferHandleAlloc.Alloc();
+	auto handle = _p->_VertexBufferHandleAlloc.Alloc();
 
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
 
-	_p->_DynamicVertexBuffers[handle.GetValue()].Reset();
+	_p->_VertexBuffers[handle.GetValue()].Reset();
 
-	_p->_DynamicVertexBuffers[handle.GetValue()].Desc = desc;
+	_p->_VertexBuffers[handle.GetValue()].Desc = desc;
 
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::CREATE_DYNAMIC_VERTEX_BUFFER );
 	_p->_SubmitFrame->PrevCmd.Wirte( handle );
 
-	return handle;
+	return XE::HandleCast< DynamicVertexBuffer >( handle );
 }
 
 const XE::ViewDesc & XE::RendererContext::GetDesc( XE::ViewHandle handle )
@@ -530,24 +495,19 @@ const XE::VertexBufferDesc & XE::RendererContext::GetDesc( XE::VertexBufferHandl
 	return _p->_VertexBuffers[handle.GetValue()].Desc;
 }
 
-const XE::IndirectBufferDesc & XE::RendererContext::GetDesc( XE::IndirectBufferHandle handle )
-{
-	return _p->_IndirectBuffers[handle.GetValue()].Desc;
-}
-
 const XE::OcclusionQueryDesc & XE::RendererContext::GetDesc( XE::OcclusionQueryHandle handle )
 {
 	return _p->_Occlusions[handle.GetValue()].Desc;
 }
 
-const XE::DynamicIndexBufferDesc & XE::RendererContext::GetDesc( XE::DynamicIndexBufferHandle handle )
+const XE::IndexBufferDesc & XE::RendererContext::GetDesc( XE::DynamicIndexBufferHandle handle )
 {
-	return _p->_DynamicIndexBuffers[handle.GetValue()].Desc;
+	return _p->_IndexBuffers[handle.GetValue()].Desc;
 }
 
-const XE::DynamicVertexBufferDesc & XE::RendererContext::GetDesc( XE::DynamicVertexBufferHandle handle )
+const XE::VertexBufferDesc & XE::RendererContext::GetDesc( XE::DynamicVertexBufferHandle handle )
 {
-	return _p->_DynamicVertexBuffers[handle.GetValue()].Desc;
+	return _p->_VertexBuffers[handle.GetValue()].Desc;
 }
 
 void XE::RendererContext::Destory( XE::ViewHandle handle )
@@ -620,16 +580,6 @@ void XE::RendererContext::Destory( XE::VertexBufferHandle handle )
 	_p->_VertexBufferHandleAlloc.Free( handle );
 }
 
-void XE::RendererContext::Destory( XE::IndirectBufferHandle handle )
-{
-	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
-
-	_p->_SubmitFrame->PostCmd.Wirte( XE::CommandType::DESTROY_INDIRECT_BUFFER );
-	_p->_SubmitFrame->PostCmd.Wirte( handle );
-
-	_p->_IndirectBufferHandleAlloc.Free( handle );
-}
-
 void XE::RendererContext::Destory( XE::OcclusionQueryHandle handle )
 {
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
@@ -647,7 +597,7 @@ void XE::RendererContext::Destory( XE::DynamicIndexBufferHandle handle )
 	_p->_SubmitFrame->PostCmd.Wirte( XE::CommandType::DESTROY_DYNAMIC_INDEX_BUFFER );
 	_p->_SubmitFrame->PostCmd.Wirte( handle );
 
-	_p->_IndexBufferHandleAlloc.Free( handle.GetValue() );
+	_p->_IndexBufferHandleAlloc.Free( XE::HandleCast< IndexBuffer >( handle ) );
 }
 
 void XE::RendererContext::Destory( XE::DynamicVertexBufferHandle handle )
@@ -657,7 +607,7 @@ void XE::RendererContext::Destory( XE::DynamicVertexBufferHandle handle )
 	_p->_SubmitFrame->PostCmd.Wirte( XE::CommandType::DESTROY_DYNAMIC_VERTEX_BUFFER );
 	_p->_SubmitFrame->PostCmd.Wirte( handle );
 
-	_p->_VertexBufferHandleAlloc.Free( handle.GetValue() );
+	_p->_VertexBufferHandleAlloc.Free( XE::HandleCast< VertexBuffer >( handle ) );
 }
 
 void XE::RendererContext::Update( const XE::UpdateTextureDesc & desc, XE::MemoryView Data )

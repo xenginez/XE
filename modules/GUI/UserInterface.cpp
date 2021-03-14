@@ -28,7 +28,7 @@ GUI::WidgetHandle GUI::UserInterface::AddWidget( const XE::IMetaClassPtr & val )
 		{
 			_Widgets.push_back( widget );
 
-			return { _Widgets.size() - 1 };
+			return XE::HandleCast< GUI::Widget >( _Widgets.size() - 1 );
 		}
 	}
 

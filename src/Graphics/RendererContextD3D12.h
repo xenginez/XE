@@ -48,8 +48,6 @@ private:
 
 	void CreateVertexBuffer( XE::VertexBufferHandle handle, XE::MemoryView data );
 
-	void CreateIndirectBuffer( XE::IndirectBufferHandle handle );
-
 	void CreateOcclusionQuery( XE::OcclusionQueryHandle handle );
 
 	void CreateDynamicIndexBuffer( XE::DynamicIndexBufferHandle handle );
@@ -79,8 +77,6 @@ private:
 	void DestroyVertexLayout( XE::VertexLayoutHandle handle );
 
 	void DestroyVertexBuffer( XE::VertexBufferHandle handle );
-
-	void DestroyIndirectBuffer( XE::IndirectBufferHandle handle );
 
 	void DestroyOcclusionQuery( XE::OcclusionQueryHandle handle );
 

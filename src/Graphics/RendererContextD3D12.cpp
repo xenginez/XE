@@ -886,9 +886,9 @@ namespace XE::D3D12
 	class FrameBuffer
 	{
 	public:
-		void create( XE::uint8 _num, const Attachment * _attachment );
+		void create( FrameBufferHandle _handle, XE::uint8 _num, const Attachment * _attachment );
 
-		void create( XE::uint16 _denseIdx, void * _nwh, XE::uint32 _width, XE::uint32 _height, XE::TextureFormat _format, XE::TextureFormat _depthFormat );
+		void create( FrameBufferHandle _handle, XE::uint16 _denseIdx, void * _nwh, XE::uint32 _width, XE::uint32 _height, XE::TextureFormat _format, XE::TextureFormat _depthFormat );
 
 		XE::uint16 destroy();
 
@@ -916,6 +916,7 @@ namespace XE::D3D12
 		Attachment m_attachment[GFX_MAX_ATTACHMENTS];
 		D3D12_RESOURCE_STATES m_state;
 		bool m_needPresent;
+		FrameBufferHandle m_handle;
 	};
 
 	class CommandQueue
@@ -1514,7 +1515,7 @@ namespace XE::D3D12
 	{
 		DescriptorHeapHandle idx = m_handleAlloc.Alloc();
 
-		D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle = { m_cpuHandle.ptr + idx * m_incrementSize };
+		D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle = { m_cpuHandle.ptr + idx.GetValue() * m_incrementSize };
 
 		ID3D12Device * device = _RTX->m_device;
 		device->CreateShaderResourceView( _ptr
@@ -1527,7 +1528,7 @@ namespace XE::D3D12
 
 	DescriptorHeapHandle DescriptorAllocator::alloc( const XE::SamplerFlags * _flags, XE::uint32 _num, const float _palette[][4] )
 	{
-		uint16_t idx = m_handleAlloc.Alloc();
+		DescriptorHeapHandle idx = m_handleAlloc.Alloc();
 
 		ID3D12Device * device = _RTX->m_device;
 		uint32_t maxAnisotropy = _RTX->m_maxAnisotropy;
@@ -1574,7 +1575,7 @@ namespace XE::D3D12
 
 			D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle =
 			{
-				m_cpuHandle.ptr + ( idx * m_numDescriptorsPerBlock + ii ) * m_incrementSize
+				m_cpuHandle.ptr + ( idx.GetValue() * m_numDescriptorsPerBlock + ii ) * m_incrementSize
 			};
 
 			device->CreateSampler( &sd, cpuHandle );
@@ -1884,8 +1885,9 @@ namespace XE::D3D12
 		return _state;
 	}
 
-	void FrameBuffer::create( XE::uint8 _num, const Attachment * _attachment )
+	void FrameBuffer::create( FrameBufferHandle _handle, XE::uint8 _num, const Attachment * _attachment )
 	{
+		m_handle = _handle;
 		m_denseIdx = UINT16_MAX;
 		m_numTh = _num;
 		std::memcpy( m_attachment, _attachment, _num * sizeof( Attachment ) );
@@ -1893,9 +1895,9 @@ namespace XE::D3D12
 		postReset();
 	}
 
-	void FrameBuffer::create( XE::uint16 _denseIdx, void * _nwh, XE::uint32 _width, XE::uint32 _height, XE::TextureFormat _format, XE::TextureFormat _depthFormat )
+	void FrameBuffer::create( FrameBufferHandle _handle, XE::uint16 _denseIdx, void * _nwh, XE::uint32 _width, XE::uint32 _height, XE::TextureFormat _format, XE::TextureFormat _depthFormat )
 	{
-		( void )( _nwh, _width, _height, _depthFormat );
+		m_handle = _handle;
 
 	#if  PLATFORM_OS == OS_WINDOWS
 		SwapChainDesc scd;
@@ -1918,7 +1920,7 @@ namespace XE::D3D12
 		) );
 
 		ID3D12Device * device = _RTX->m_device;
-		FrameBufferHandle fbh = { uint16_t( this - _RTX->m_frameBuffers ) };
+		FrameBufferHandle fbh = m_handle;
 
 		for( uint32_t ii = 0, num = scd.bufferCount; ii < num; ++ii )
 		{
@@ -1998,7 +2000,7 @@ namespace XE::D3D12
 	void FrameBuffer::clear( ID3D12GraphicsCommandList * _commandList, const XE::ClearDesc & _clear, const float _palette[][4], const D3D12_RECT * _rect /*= NULL*/, XE::uint32 _num /*= 0 */ )
 	{
 		ID3D12Device * device = _RTX->m_device;
-		FrameBufferHandle fbh = { ( uint16_t )( this - _RTX->m_frameBuffers ) };
+		FrameBufferHandle fbh = m_handle;
 		D3D12_CPU_DESCRIPTOR_HANDLE rtv = _RTX->getRtv( fbh );
 		uint32_t rtvDescriptorSize = device->GetDescriptorHandleIncrementSize( D3D12_DESCRIPTOR_HEAP_TYPE_RTV );
 
@@ -2026,7 +2028,7 @@ namespace XE::D3D12
 		{
 			D3D12_CPU_DESCRIPTOR_HANDLE dsvDescriptor = getCPUHandleHeapStart( _RTX->m_dsvDescriptorHeap );
 			uint32_t dsvDescriptorSize = device->GetDescriptorHandleIncrementSize( D3D12_DESCRIPTOR_HEAP_TYPE_DSV );
-			dsvDescriptor.ptr += ( 1 + fbh ) * dsvDescriptorSize;
+			dsvDescriptor.ptr += ( 1 + fbh.GetValue() ) * dsvDescriptorSize;
 
 			DWORD flags = 0;
 			flags |= ( _clear.Flags & XE::ClearFlag::DEPTH ).GetValue() ? D3D12_CLEAR_FLAG_DEPTH : 0;
@@ -2375,7 +2377,7 @@ namespace XE::D3D12
 			OcclusionQueryHandle handle = m_handle[m_control.m_read];
 			if( handle )
 			{
-				_context->SetOcclusionQueryValue( handle, m_result[handle] );
+				_context->SetOcclusionQueryValue( handle, m_result[handle.GetValue()] );
 			}
 			m_control.consume( 1 );
 		}
@@ -2383,7 +2385,7 @@ namespace XE::D3D12
 		m_handle[m_control.m_current] = _handle;
 		_commandList->BeginQuery( m_queryHeap
 								  , D3D12_QUERY_TYPE_BINARY_OCCLUSION
-								  , _handle
+								  , _handle.GetValue()
 		);
 	}
 
@@ -2392,14 +2394,14 @@ namespace XE::D3D12
 		OcclusionQueryHandle handle = m_handle[m_control.m_current];
 		_commandList->EndQuery( m_queryHeap
 								, D3D12_QUERY_TYPE_BINARY_OCCLUSION
-								, handle
+								, handle.GetValue()
 		);
 		_commandList->ResolveQueryData( m_queryHeap
 										, D3D12_QUERY_TYPE_BINARY_OCCLUSION
-										, handle
+										, handle.GetValue()
 										, 1
 										, m_readback
-										, handle * sizeof( uint64_t )
+										, handle.GetValue() * sizeof( uint64_t )
 		);
 		m_control.commit( 1 );
 	}
@@ -2485,7 +2487,7 @@ namespace XE::D3D12
 
 	D3D12_CPU_DESCRIPTOR_HANDLE RenderContext::getRtv( FrameBufferHandle _fbh )
 	{
-		D3D12::FrameBuffer & frameBuffer = m_frameBuffers[_fbh];
+		D3D12::FrameBuffer & frameBuffer = m_frameBuffers[_fbh.GetValue()];
 
 		if( NULL != frameBuffer.m_swapChain )
 		{
@@ -2772,14 +2774,6 @@ void XE::RendererContextD3D12::ExecCommands( XE::Buffer & buffer )
 			CreateVertexBuffer( handle, data );
 		}
 		break;
-		case XE::CommandType::CREATE_INDIRECT_BUFFER:
-		{
-			XE::IndirectBufferHandle handle;
-
-			buffer.Read( handle );
-
-			CreateIndirectBuffer( handle );
-		}
 		break;
 		case XE::CommandType::CREATE_OCCLUSION_QUERY:
 		{
@@ -2923,15 +2917,6 @@ void XE::RendererContextD3D12::ExecCommands( XE::Buffer & buffer )
 			DestroyVertexBuffer( handle );
 		}
 		break;
-		case XE::CommandType::DESTROY_INDIRECT_BUFFER:
-		{
-			XE::IndirectBufferHandle handle;
-
-			buffer.Read( handle );
-
-			DestroyIndirectBuffer( handle );
-		}
-		break;
 		case XE::CommandType::DESTROY_OCCLUSION_QUERY:
 		{
 			XE::OcclusionQueryHandle handle;
@@ -2998,7 +2983,7 @@ void XE::RendererContextD3D12::Init()
 
 
 	_RTX->m_d3d12Dll = XE::Library::Open( "d3d12.dll" );
-	XE_ASSERT( NULL == _RTX->m_d3d12Dll && "Init error: Failed to load d3d12.dll." );
+	XE_ASSERT( _RTX->m_d3d12Dll && "Init error: Failed to load d3d12.dll." );
 
 	XE::D3D12::EnableExperimentalFeatures = XE::Library::SymbolT<XE::D3D12::PFN_D3D12_ENABLE_EXPERIMENTAL_FEATURES>( _RTX->m_d3d12Dll, "EnableExperimentalFeatures" );
 	XE_ASSERT( NULL != XE::D3D12::EnableExperimentalFeatures && "Function EnableExperimentalFeatures not found." );
@@ -3419,17 +3404,17 @@ void XE::RendererContextD3D12::Shutdown()
 
 void XE::RendererContextD3D12::CreateShader( XE::ShaderHandle handle, XE::MemoryView data )
 {
-	_RTX->m_shaders[handle].create( data );
+	_RTX->m_shaders[handle.GetValue()].create( data );
 }
 
 void XE::RendererContextD3D12::CreateProgram( XE::ProgramHandle handle )
 {
-	_RTX->m_program[handle].create( &_RTX->m_shaders[GetDesc( handle ).CS], &_RTX->m_shaders[GetDesc( handle ).VS] );
+	_RTX->m_program[handle.GetValue()].create( &_RTX->m_shaders[GetDesc( handle ).CS.GetValue()], &_RTX->m_shaders[GetDesc( handle ).VS.GetValue()] );
 }
 
 void XE::RendererContextD3D12::CreateTexture( XE::TextureHandle handle, XE::MemoryView data )
 {
-	_RTX->m_textures[handle].create( data, GetDesc( handle ).Flags, GetDesc( handle ).NumMips );
+	_RTX->m_textures[handle.GetValue()].create( data, GetDesc( handle ).Flags, GetDesc( handle ).NumMips );
 }
 
 void XE::RendererContextD3D12::CreateFrameBuffer( XE::FrameBufferHandle handle )
@@ -3438,39 +3423,34 @@ void XE::RendererContextD3D12::CreateFrameBuffer( XE::FrameBufferHandle handle )
 
 	if( desc.Window )
 	{
-		_RTX->m_frameBuffers[handle].create( 0, ( void * )desc.Window.GetValue(), desc.Width, desc.Height, desc.ColorFormat, desc.DepthFormat );
+		_RTX->m_frameBuffers[handle.GetValue()].create( handle, 0, ( void * )desc.Window.GetValue(), desc.Width, desc.Height, desc.ColorFormat, desc.DepthFormat );
 	}
 	else
 	{
-		_RTX->m_frameBuffers[handle].create( desc.AttachmentCount, desc.Attachments );
+		_RTX->m_frameBuffers[handle.GetValue()].create( handle, desc.AttachmentCount, desc.Attachments );
 	}
 }
 
 void XE::RendererContextD3D12::CreateIndexBuffer( XE::IndexBufferHandle handle, XE::MemoryView data )
 {
-	_RTX->m_indexBuffers[handle].create( data.size(), ( void * )data.data(), GetDesc( handle ).Flags, false );
+	_RTX->m_indexBuffers[handle.GetValue()].create( data.size(), ( void * )data.data(), GetDesc( handle ).Flags, false );
 }
 
 void XE::RendererContextD3D12::CreateVertexLayout( XE::VertexLayoutHandle handle )
 {
 	const auto & desc = GetDesc( handle );
 
-	_RTX->m_vertexLayouts[handle].begin();
-	for( int i = 0; i < desc.Size; ++i )
+	_RTX->m_vertexLayouts[handle.GetValue()].begin();
+	for( XE::uint32 i = 0; i < desc.Size; ++i )
 	{
-		_RTX->m_vertexLayouts[handle].add( desc.Attr[i], 1, desc.Type[i] );
+		_RTX->m_vertexLayouts[handle.GetValue()].add( desc.Attr[i], 1, desc.Type[i] );
 	}
-	_RTX->m_vertexLayouts[handle].end();
+	_RTX->m_vertexLayouts[handle.GetValue()].end();
 }
 
 void XE::RendererContextD3D12::CreateVertexBuffer( XE::VertexBufferHandle handle, XE::MemoryView data )
 {
-	_RTX->m_vertexBuffers[handle].create( data.size(), ( void * )data.data(), GetDesc( handle ).Layout, GetDesc( handle ).Flags );
-}
-
-void XE::RendererContextD3D12::CreateIndirectBuffer( XE::IndirectBufferHandle handle )
-{
-
+	_RTX->m_vertexBuffers[handle.GetValue()].create( data.size(), ( void * )data.data(), GetDesc( handle ).Layout, GetDesc( handle ).Flags );
 }
 
 void XE::RendererContextD3D12::CreateOcclusionQuery( XE::OcclusionQueryHandle handle )
@@ -3480,19 +3460,19 @@ void XE::RendererContextD3D12::CreateOcclusionQuery( XE::OcclusionQueryHandle ha
 
 void XE::RendererContextD3D12::CreateDynamicIndexBuffer( XE::DynamicIndexBufferHandle handle )
 {
-	_RTX->m_indexBuffers[handle].create( GetDesc( handle ).Size, nullptr, GetDesc( handle ).Flags, false );
+	_RTX->m_indexBuffers[handle.GetValue()].create( GetDesc( handle ).Size, nullptr, GetDesc( handle ).Flags, false );
 }
 
 void XE::RendererContextD3D12::CreateDynamicVertexBuffer( XE::DynamicVertexBufferHandle handle )
 {
-	_RTX->m_vertexBuffers[handle].create( GetDesc( handle ).Size, nullptr, GetDesc( handle ).Layout, GetDesc( handle ).Flags );
+	_RTX->m_vertexBuffers[handle.GetValue()].create( GetDesc( handle ).Size, nullptr, GetDesc( handle ).Layout, GetDesc( handle ).Flags );
 }
 
 void XE::RendererContextD3D12::ReadTexture( XE::TextureHandle handle, XE::uint8 * data, XE::uint8 mip )
 {
-	_RTX->m_textures[handle].overrideInternal( ( uintptr_t )data );
+	_RTX->m_textures[handle.GetValue()].overrideInternal( ( uintptr_t )data );
 
-	const D3D12::Texture & texture = _RTX->m_textures[handle];
+	const D3D12::Texture & texture = _RTX->m_textures[handle.GetValue()];
 
 	D3D12_RESOURCE_DESC desc = D3D12::getResourceDesc( texture.m_ptr );
 
@@ -3549,42 +3529,42 @@ void XE::RendererContextD3D12::ReadTexture( XE::TextureHandle handle, XE::uint8 
 
 void XE::RendererContextD3D12::UpdateTexture( const XE::UpdateTextureDesc & desc, XE::MemoryView data )
 {
-	_RTX->m_textures[desc.Handle].update( nullptr, desc.Side, desc.Mip, { desc.X, desc.Y, desc.Width, desc.Height }, desc.Z, desc.Depth, desc.Layer, data );
+	_RTX->m_textures[desc.Handle.GetValue()].update( nullptr, desc.Side, desc.Mip, { desc.X, desc.Y, desc.Width, desc.Height }, desc.Z, desc.Depth, desc.Layer, data );
 }
 
 void XE::RendererContextD3D12::UpdateDynamicIndexBuffer( XE::DynamicIndexBufferHandle handle, XE::uint64 start, XE::MemoryView mem )
 {
-	_RTX->m_indexBuffers[handle].update( nullptr, start, mem.size(), ( void * )mem.data() );
+	_RTX->m_indexBuffers[handle.GetValue()].update( nullptr, start, mem.size(), ( void * )mem.data() );
 }
 
 void XE::RendererContextD3D12::UpdateDynamicVertexBuffer( XE::DynamicVertexBufferHandle handle, XE::uint64 start, XE::MemoryView mem )
 {
-	_RTX->m_indexBuffers[handle].update( nullptr, start, mem.size(), ( void * )mem.data() );
+	_RTX->m_indexBuffers[handle.GetValue()].update( nullptr, start, mem.size(), ( void * )mem.data() );
 }
 
 void XE::RendererContextD3D12::DestroyShader( XE::ShaderHandle handle )
 {
-	_RTX->m_shaders[handle].destroy();
+	_RTX->m_shaders[handle.GetValue()].destroy();
 }
 
 void XE::RendererContextD3D12::DestroyTexture( XE::TextureHandle handle )
 {
-	_RTX->m_textures[handle].destroy();
+	_RTX->m_textures[handle.GetValue()].destroy();
 }
 
 void XE::RendererContextD3D12::DestroyProgram( XE::ProgramHandle handle )
 {
-	_RTX->m_program[handle].destroy();
+	_RTX->m_program[handle.GetValue()].destroy();
 }
 
 void XE::RendererContextD3D12::DestroyFrameBuffer( XE::FrameBufferHandle handle )
 {
-	_RTX->m_frameBuffers[handle].destroy();
+	_RTX->m_frameBuffers[handle.GetValue()].destroy();
 }
 
 void XE::RendererContextD3D12::DestroyIndexBuffer( XE::IndexBufferHandle handle )
 {
-	_RTX->m_indexBuffers[handle].destroy();
+	_RTX->m_indexBuffers[handle.GetValue()].destroy();
 }
 
 void XE::RendererContextD3D12::DestroyVertexLayout( XE::VertexLayoutHandle handle )
@@ -3594,12 +3574,7 @@ void XE::RendererContextD3D12::DestroyVertexLayout( XE::VertexLayoutHandle handl
 
 void XE::RendererContextD3D12::DestroyVertexBuffer( XE::VertexBufferHandle handle )
 {
-	_RTX->m_vertexBuffers[handle].destroy();
-}
-
-void XE::RendererContextD3D12::DestroyIndirectBuffer( XE::IndirectBufferHandle handle )
-{
-
+	_RTX->m_vertexBuffers[handle.GetValue()].destroy();
 }
 
 void XE::RendererContextD3D12::DestroyOcclusionQuery( XE::OcclusionQueryHandle handle )
@@ -3609,12 +3584,12 @@ void XE::RendererContextD3D12::DestroyOcclusionQuery( XE::OcclusionQueryHandle h
 
 void XE::RendererContextD3D12::DestroyDynamicIndexBuffer( XE::DynamicIndexBufferHandle handle )
 {
-	_RTX->m_indexBuffers[handle].destroy();
+	_RTX->m_indexBuffers[handle.GetValue()].destroy();
 }
 
 void XE::RendererContextD3D12::DestroyDynamicVertexBuffer( XE::DynamicVertexBufferHandle handle )
 {
-	_RTX->m_vertexBuffers[handle].destroy();
+	_RTX->m_vertexBuffers[handle.GetValue()].destroy();
 }
 
 void XE::RendererContextD3D12::RequestScreenShot( XE::FrameBufferHandle handle, const std::string & userdata, ScreenShotCallbackType callback )

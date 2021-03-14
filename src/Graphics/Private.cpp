@@ -44,7 +44,7 @@ void XE::RenderDraw::Reset()
 	IsDynamicInstanceDataBuffer = false;
 	Program = XE::ProgramHandle::Invalid;
 	InstanceDataBuffer = XE::VertexBufferHandle::Invalid;
-	IndirectBuffer = XE::IndirectBufferHandle::Invalid;
+	IndirectBuffer = XE::DynamicVertexBufferHandle::Invalid;
 	OcclusionQuery = XE::OcclusionQueryHandle::Invalid;
 	StateFlags = XE::StateFlag::NONE;
 	FrontStencilFlags = XE::StencilFlag::NONE;
@@ -82,7 +82,7 @@ void XE::RenderCompute::Reset()
 	NumZ = 0;
 
 	Program = XE::ProgramHandle::Invalid;
-	IndirectBuffer = XE::IndirectBufferHandle::Invalid;
+	IndirectBuffer = XE::DynamicVertexBufferHandle::Invalid;
 }
 
 void XE::RenderFrame::Reset()

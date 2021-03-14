@@ -68,8 +68,6 @@ public:
 
 	void Inc( XE::OcclusionQueryHandle handle );
 
-	void Inc( XE::IndirectBufferHandle handle );
-
 	void Inc( XE::DynamicIndexBufferHandle handle );
 
 	void Inc( XE::DynamicVertexBufferHandle handle );
@@ -92,8 +90,6 @@ public:
 
 	void Dec( XE::OcclusionQueryHandle handle );
 
-	void Dec( XE::IndirectBufferHandle handle );
-
 	void Dec( XE::DynamicIndexBufferHandle handle );
 
 	void Dec( XE::DynamicVertexBufferHandle handle );
@@ -109,8 +105,6 @@ public:
 
 	XE::OcclusionQueryHandle Create( const OcclusionQueryDesc & desc );
 
-	XE::IndirectBufferHandle Create( const XE::IndirectBufferDesc & desc );
-
 	XE::ShaderHandle Create( const XE::ShaderDesc & desc, XE::MemoryView data );
 
 	XE::TextureHandle Create( const XE::TextureDesc & desc, XE::MemoryView data );
@@ -119,9 +113,9 @@ public:
 
 	XE::VertexBufferHandle Create( const XE::VertexBufferDesc & desc, XE::MemoryView data );
 
-	XE::DynamicIndexBufferHandle Create( const XE::DynamicIndexBufferDesc & desc );
+	XE::DynamicIndexBufferHandle Create( const XE::IndexBufferDesc & desc );
 
-	XE::DynamicVertexBufferHandle Create( const XE::DynamicVertexBufferDesc & desc );
+	XE::DynamicVertexBufferHandle Create( const XE::VertexBufferDesc & desc );
 
 public:
 	const XE::ViewDesc & GetDesc( XE::ViewHandle handle );
@@ -140,13 +134,11 @@ public:
 
 	const XE::VertexBufferDesc & GetDesc( XE::VertexBufferHandle handle );
 
-	const XE::IndirectBufferDesc & GetDesc( XE::IndirectBufferHandle handle );
-
 	const XE::OcclusionQueryDesc & GetDesc( XE::OcclusionQueryHandle handle );
 
-	const XE::DynamicIndexBufferDesc & GetDesc( XE::DynamicIndexBufferHandle handle );
+	const XE::IndexBufferDesc & GetDesc( XE::DynamicIndexBufferHandle handle );
 
-	const XE::DynamicVertexBufferDesc & GetDesc( XE::DynamicVertexBufferHandle handle );
+	const XE::VertexBufferDesc & GetDesc( XE::DynamicVertexBufferHandle handle );
 
 public:
 	void Destory( XE::ViewHandle handle );
@@ -164,8 +156,6 @@ public:
 	void Destory( XE::VertexLayoutHandle handle );
 
 	void Destory( XE::VertexBufferHandle handle );
-
-	void Destory( XE::IndirectBufferHandle handle );
 
 	void Destory( XE::OcclusionQueryHandle handle );
 
