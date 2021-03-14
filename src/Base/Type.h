@@ -58,6 +58,23 @@ namespace std
 
 	template< typename T > inline constexpr bool is_shared_ptr_v = is_shared_ptr<T>::value;
 
+	template <class _Kty, size_t N > struct hash< _Kty[N] >
+	{
+		typedef _Kty[N] _ARGUMENT_TYPE_NAME;
+		typedef size_t _RESULT_TYPE_NAME;
+		size_t operator()( const _Kty[N] _Keyval ) const noexcept
+		{
+			size_t _hash = 0;
+
+			std::hash<_Kty> key_hash;
+			for( const auto & i : _Keyval )
+			{
+				_hash ^= key_hash( i );
+			}
+
+			return _hash;
+		}
+	};
 };
 
 BEG_XE_NAMESPACE

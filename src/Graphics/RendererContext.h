@@ -207,12 +207,12 @@ public:
 	void ResetView( XE::ViewHandle handle, const XE::ViewDesc & val );
 
 public:
+	void SetOcclusionQueryValue( XE::OcclusionQueryHandle handle, XE::uint32 value );
+
 	void RequestScreenShot( XE::FrameBufferHandle handle, const std::string & userdata, ScreenShotCallbackType callback );
 
 protected:
 	XE::CapsInfo & Caps();
-
-	void SetOcclusionQueryValue( XE::OcclusionQueryHandle handle, XE::uint32 value );
 
 private:
 	XE::MemoryView CopyToFrame( XE::MemoryView mem ) const;

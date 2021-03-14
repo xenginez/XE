@@ -875,6 +875,7 @@ struct XE_API IndexBufferDesc : public BufferDesc
 
 struct XE_API VertexLayoutDesc
 {
+	XE::uint32 Size = 0;
 	AttributeName Attr[GFX_MAX_VERTEX_LAYOUTS];
 	AttributeType Type[GFX_MAX_VERTEX_LAYOUTS];
 };

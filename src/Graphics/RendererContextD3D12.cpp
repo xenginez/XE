@@ -124,6 +124,15 @@ namespace XE::D3D12
 	constexpr GUID IID_ID3D12RootSignature = { 0xc54a6b66, 0x72df, 0x4ee8, { 0x8b, 0xe5, 0xa9, 0x46, 0xa1, 0x42, 0x92, 0x14 } };
 	constexpr GUID IID_ID3D12QueryHeap = { 0x0d9658ae, 0xed45, 0x469e, { 0xa6, 0x1d, 0x97, 0x0e, 0xc5, 0x83, 0xca, 0xb4 } };
 
+	static const uint8_t s_attribTypeSize[( XE::uint64 )AttributeType::COUNT][4] =
+	{
+		{  1,  2,  4,  4 }, // Uint8
+		{  4,  4,  4,  4 }, // Uint10
+		{  2,  4,  8,  8 }, // Int16
+		{  2,  4,  8,  8 }, // Half
+		{  4,  8, 12, 16 }, // Float
+	};
+
 	HeapProperty s_heapProperties[] =
 	{
 		{ { D3D12_HEAP_TYPE_DEFAULT,  D3D12_CPU_PAGE_PROPERTY_UNKNOWN, D3D12_MEMORY_POOL_UNKNOWN, 0, 0 }, D3D12_RESOURCE_STATE_COMMON       },
@@ -1014,7 +1023,7 @@ namespace XE::D3D12
 
 		void shutdown();
 
-		void begin( ID3D12GraphicsCommandList * _commandList, XE::RenderFrame * _render, OcclusionQueryHandle _handle );
+		void begin( ID3D12GraphicsCommandList * _commandList, XE::RendererContext * _context, OcclusionQueryHandle _handle );
 
 		void end( ID3D12GraphicsCommandList * _commandList );
 
@@ -1072,6 +1081,28 @@ namespace XE::D3D12
 	class VertexLayout
 	{
 	public:
+		VertexLayout & begin();
+
+		void end();
+
+		VertexLayout & add( XE::AttributeName _attrib, uint8_t _num, XE::AttributeType _type, bool _normalized = false, bool _asInt = false );
+
+		VertexLayout & skip( uint8_t _num );
+
+		void decode( XE::AttributeName _attrib, uint8_t & _num, XE::AttributeType & _type, bool & _normalized, bool & _asInt ) const;
+
+		bool has( XE::AttributeName _attrib ) const;
+
+		uint16_t getOffset( XE::AttributeName _attrib ) const;
+
+		uint16_t getStride() const;
+
+		uint32_t getSize( uint32_t _num ) const;
+
+		uint32_t m_hash = 0;
+		uint16_t m_stride = 0;
+		uint16_t m_offset[( XE::uint64 )AttributeName::COUNT];
+		uint16_t m_attributes[( XE::uint64 )AttributeName::COUNT];
 	};
 
 	class RenderContext
@@ -2185,52 +2216,271 @@ namespace XE::D3D12
 
 	void TimerQuery::init()
 	{
+		D3D12_QUERY_HEAP_DESC queryHeapDesc;
+		queryHeapDesc.Count = m_control.m_size * 2;
+		queryHeapDesc.NodeMask = 1;
+		queryHeapDesc.Type = D3D12_QUERY_HEAP_TYPE_TIMESTAMP;
+		DX_CHECK( _RTX->m_device->CreateQueryHeap( &queryHeapDesc
+															, IID_ID3D12QueryHeap
+															, ( void ** )&m_queryHeap
+		) );
 
+		const uint32_t size = queryHeapDesc.Count * sizeof( uint64_t );
+		m_readback = createCommittedResource( _RTX->m_device
+											  , HeapProperty::Type::READBACK
+											  , size
+		);
+
+		DX_CHECK( _RTX->m_cmd.m_commandQueue->GetTimestampFrequency( &m_frequency ) );
+
+		D3D12_RANGE range = { 0, size };
+		m_readback->Map( 0, &range, ( void ** )&m_queryResult );
+
+		for( uint32_t ii = 0; ii < XE::countof( m_result ); ++ii )
+		{
+			Result & result = m_result[ii];
+			result.reset();
+		}
+
+		m_control.reset();
 	}
 
 	void TimerQuery::shutdown()
 	{
+		D3D12_RANGE range = { 0, 0 };
+		m_readback->Unmap( 0, &range );
 
+		DX_RELEASE( m_queryHeap );
+		DX_RELEASE( m_readback );
 	}
 
 	XE::uint32 TimerQuery::begin( XE::uint32 _resultIdx )
 	{
-		return 0;
+		while( 0 == m_control.reserve( 1 ) )
+		{
+			m_control.consume( 1 );
+		}
+
+		Result & result = m_result[_resultIdx];
+		++result.m_pending;
+
+		const uint32_t idx = m_control.m_current;
+		Query & query = m_query[idx];
+		query.m_resultIdx = _resultIdx;
+		query.m_ready = false;
+
+		ID3D12GraphicsCommandList * commandList = _RTX->m_commandList;
+
+		uint32_t offset = idx * 2 + 0;
+		commandList->EndQuery( m_queryHeap
+							   , D3D12_QUERY_TYPE_TIMESTAMP
+							   , offset
+		);
+
+		m_control.commit( 1 );
+
+		return idx;
 	}
 
 	void TimerQuery::end( XE::uint32 _idx )
 	{
+		Query & query = m_query[_idx];
+		query.m_ready = true;
+		query.m_fence = _RTX->m_cmd.m_currentFence - 1;
+		uint32_t offset = _idx * 2;
 
+		ID3D12GraphicsCommandList * commandList = _RTX->m_commandList;
+
+		commandList->EndQuery( m_queryHeap
+							   , D3D12_QUERY_TYPE_TIMESTAMP
+							   , offset + 1
+		);
+		commandList->ResolveQueryData( m_queryHeap
+									   , D3D12_QUERY_TYPE_TIMESTAMP
+									   , offset
+									   , 2
+									   , m_readback
+									   , offset * sizeof( uint64_t )
+		);
+
+		while( update() );
 	}
 
 	bool TimerQuery::update()
 	{
+		if( 0 != m_control.available() )
+		{
+			uint32_t idx = m_control.m_read;
+			Query & query = m_query[idx];
+
+			if( !query.m_ready )
+			{
+				return false;
+			}
+
+			if( query.m_fence > _RTX->m_cmd.m_completedFence )
+			{
+				return false;
+			}
+
+			m_control.consume( 1 );
+
+			Result & result = m_result[query.m_resultIdx];
+			--result.m_pending;
+
+			uint32_t offset = idx * 2;
+			result.m_begin = m_queryResult[offset + 0];
+			result.m_end = m_queryResult[offset + 1];
+
+			return true;
+		}
+
 		return false;
 	}
 
 	void OcclusionQuery::init()
 	{
+		D3D12_QUERY_HEAP_DESC queryHeapDesc;
+		queryHeapDesc.Count = XE::countof( m_handle );
+		queryHeapDesc.NodeMask = 1;
+		queryHeapDesc.Type = D3D12_QUERY_HEAP_TYPE_OCCLUSION;
+		DX_CHECK( _RTX->m_device->CreateQueryHeap( &queryHeapDesc
+															, IID_ID3D12QueryHeap
+															, ( void ** )&m_queryHeap
+		) );
 
+		const uint32_t size = XE::countof( m_handle ) * sizeof( uint64_t );
+		m_readback = createCommittedResource( _RTX->m_device
+											  , HeapProperty::Type::READBACK
+											  , size
+		);
+
+		D3D12_RANGE range = { 0, size };
+		m_readback->Map( 0, &range, ( void ** )&m_result );
 	}
 
 	void OcclusionQuery::shutdown()
 	{
+		D3D12_RANGE range = { 0, 0 };
+		m_readback->Unmap( 0, &range );
 
+		DX_RELEASE( m_queryHeap );
+		DX_RELEASE( m_readback );
 	}
 
-	void OcclusionQuery::begin( ID3D12GraphicsCommandList * _commandList, XE::RenderFrame * _render, OcclusionQueryHandle _handle )
+	void OcclusionQuery::begin( ID3D12GraphicsCommandList * _commandList, XE::RendererContext * _context, OcclusionQueryHandle _handle )
 	{
+		while( 0 == m_control.reserve( 1 ) )
+		{
+			OcclusionQueryHandle handle = m_handle[m_control.m_read];
+			if( handle )
+			{
+				_context->SetOcclusionQueryValue( handle, m_result[handle] );
+			}
+			m_control.consume( 1 );
+		}
 
+		m_handle[m_control.m_current] = _handle;
+		_commandList->BeginQuery( m_queryHeap
+								  , D3D12_QUERY_TYPE_BINARY_OCCLUSION
+								  , _handle
+		);
 	}
 
 	void OcclusionQuery::end( ID3D12GraphicsCommandList * _commandList )
 	{
-
+		OcclusionQueryHandle handle = m_handle[m_control.m_current];
+		_commandList->EndQuery( m_queryHeap
+								, D3D12_QUERY_TYPE_BINARY_OCCLUSION
+								, handle
+		);
+		_commandList->ResolveQueryData( m_queryHeap
+										, D3D12_QUERY_TYPE_BINARY_OCCLUSION
+										, handle
+										, 1
+										, m_readback
+										, handle * sizeof( uint64_t )
+		);
+		m_control.commit( 1 );
 	}
 
 	void OcclusionQuery::invalidate( OcclusionQueryHandle _handle )
 	{
+		const uint32_t size = m_control.m_size;
 
+		for( uint32_t ii = 0, num = m_control.available(); ii < num; ++ii )
+		{
+			OcclusionQueryHandle & handle = m_handle[( m_control.m_read + ii ) % size];
+			if( handle == _handle )
+			{
+				handle = OcclusionQueryHandle::Invalid;
+			}
+		}
+	}
+
+	XE::D3D12::VertexLayout & VertexLayout::begin()
+	{
+		m_hash = 0;
+		m_stride = 0;
+		std::memset( m_attributes, 0xff, sizeof( m_attributes ) );
+		std::memset( m_offset, 0, sizeof( m_offset ) );
+
+		return *this;
+	}
+
+	void VertexLayout::end()
+	{
+		m_hash = std::hash<XE::uint16[( XE::uint64 )AttributeName::COUNT]>()( m_attributes ) ^ std::hash<XE::uint16[( XE::uint64 )AttributeName::COUNT]>()( m_offset ) ^ std::hash<XE::uint16>()( m_stride );
+	}
+
+	XE::D3D12::VertexLayout & VertexLayout::add( XE::AttributeName _attrib, uint8_t _num, XE::AttributeType _type, bool _normalized /*= false*/, bool _asInt /*= false */ )
+	{
+		const uint16_t encodedNorm = ( _normalized & 1 ) << 7;
+		const uint16_t encodedType = ( ( XE::uint64 )_type & 7 ) << 3;
+		const uint16_t encodedNum = ( _num - 1 ) & 3;
+		const uint16_t encodeAsInt = ( _asInt & ( !!"\x1\x1\x1\x0\x0"[( XE::uint64 )_type] ) ) << 8;
+		m_attributes[( XE::uint64 )_attrib] = encodedNorm | encodedType | encodedNum | encodeAsInt;
+
+		m_offset[( XE::uint64 )_attrib] = m_stride;
+		m_stride += s_attribTypeSize[( XE::uint64 )_type][_num - 1];
+
+		return *this;
+	}
+
+	XE::D3D12::VertexLayout & VertexLayout::skip( uint8_t _num )
+	{
+		m_stride += _num;
+
+		return *this;
+	}
+
+	void VertexLayout::decode( XE::AttributeName _attrib, uint8_t & _num, XE::AttributeType & _type, bool & _normalized, bool & _asInt ) const
+	{
+		uint16_t val = m_attributes[( XE::uint64 )_attrib];
+		_num = ( val & 3 ) + 1;
+		_type = XE::AttributeType( ( val >> 3 ) & 7 );
+		_normalized = !!( val & ( 1 << 7 ) );
+		_asInt = !!( val & ( 1 << 8 ) );
+	}
+
+	bool VertexLayout::has( XE::AttributeName _attrib ) const 
+	{
+		return UINT16_MAX != m_attributes[( XE::uint64 )_attrib];
+	}
+
+	uint16_t VertexLayout::getOffset( XE::AttributeName _attrib ) const 
+	{
+		return m_offset[( XE::uint64 )_attrib];
+	}
+
+	uint16_t VertexLayout::getStride() const
+	{
+		return m_stride;
+	}
+
+	uint32_t VertexLayout::getSize( uint32_t _num ) const
+	{
+		return _num * m_stride;
 	}
 
 	D3D12_CPU_DESCRIPTOR_HANDLE RenderContext::getRtv( FrameBufferHandle _fbh )
@@ -3203,7 +3453,14 @@ void XE::RendererContextD3D12::CreateIndexBuffer( XE::IndexBufferHandle handle, 
 
 void XE::RendererContextD3D12::CreateVertexLayout( XE::VertexLayoutHandle handle )
 {
+	const auto & desc = GetDesc( handle );
 
+	_RTX->m_vertexLayouts[handle].begin();
+	for( int i = 0; i < desc.Size; ++i )
+	{
+		_RTX->m_vertexLayouts[handle].add( desc.Attr[i], 1, desc.Type[i] );
+	}
+	_RTX->m_vertexLayouts[handle].end();
 }
 
 void XE::RendererContextD3D12::CreateVertexBuffer( XE::VertexBufferHandle handle, XE::MemoryView data )
@@ -3218,7 +3475,7 @@ void XE::RendererContextD3D12::CreateIndirectBuffer( XE::IndirectBufferHandle ha
 
 void XE::RendererContextD3D12::CreateOcclusionQuery( XE::OcclusionQueryHandle handle )
 {
-
+	( void )( handle );
 }
 
 void XE::RendererContextD3D12::CreateDynamicIndexBuffer( XE::DynamicIndexBufferHandle handle )
@@ -3332,7 +3589,7 @@ void XE::RendererContextD3D12::DestroyIndexBuffer( XE::IndexBufferHandle handle 
 
 void XE::RendererContextD3D12::DestroyVertexLayout( XE::VertexLayoutHandle handle )
 {
-
+	( void )( handle );
 }
 
 void XE::RendererContextD3D12::DestroyVertexBuffer( XE::VertexBufferHandle handle )
@@ -3347,7 +3604,7 @@ void XE::RendererContextD3D12::DestroyIndirectBuffer( XE::IndirectBufferHandle h
 
 void XE::RendererContextD3D12::DestroyOcclusionQuery( XE::OcclusionQueryHandle handle )
 {
-
+	_RTX->m_occlusionQuery.invalidate( handle );
 }
 
 void XE::RendererContextD3D12::DestroyDynamicIndexBuffer( XE::DynamicIndexBufferHandle handle )
