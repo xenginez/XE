@@ -1,26 +1,26 @@
 /*!
- * \file	RendererContextD3D12.h
+ * \file	GraphicsContextD3D12.h
  *
  * \author	ZhengYuanQing
- * \date	2021/03/13
+ * \date	2021/03/17
  * \email	zhengyuanqing.95@gmail.com
  *
  */
-#ifndef RENDERERCONTEXTD3D12_H__C21A430F_17D3_43EA_9366_DEBBA3D70A71
-#define RENDERERCONTEXTD3D12_H__C21A430F_17D3_43EA_9366_DEBBA3D70A71
+#ifndef GRAPHICSCONTEXTD3D12_H__62F8B330_ED82_4394_8890_3F6E301E7B03
+#define GRAPHICSCONTEXTD3D12_H__62F8B330_ED82_4394_8890_3F6E301E7B03
 
-#include "RendererContext.h"
+#include "GraphicsContext.h"
 
 BEG_XE_NAMESPACE
 
 #if PLATFORM_OS & ( OS_WINDOWS | OS_XBOX )
 
-class RendererContextD3D12 : public XE::RendererContext
+class GraphicsContextD3D12 : public XE::GraphicsContext
 {
 public:
-	RendererContextD3D12();
+	GraphicsContextD3D12();
 
-	~RendererContextD3D12() override;
+	~GraphicsContextD3D12() override;
 
 protected:
 	void OnRender( XE::RenderFrame * val ) override;
@@ -88,14 +88,14 @@ private:
 	void RequestScreenShot( XE::FrameBufferHandle handle, const std::string & userdata, ScreenShotCallbackType callback );
 };
 
-XE_INLINE XE::RendererContext * CreateRendererContextD3D12()
+XE_INLINE XE::GraphicsContext * CreateRendererContextD3D12()
 {
-	return new XE::RendererContextD3D12();
+	return new XE::GraphicsContextD3D12();
 }
 
 #else
 
-XE_INLINE XE::RendererContext * CreateRendererContextD3D12()
+XE_INLINE XE::GraphicsContext * CreateRendererContextD3D12()
 {
 	return nullptr;
 }
@@ -104,4 +104,4 @@ XE_INLINE XE::RendererContext * CreateRendererContextD3D12()
 
 END_XE_NAMESPACE
 
-#endif // RENDERERCONTEXTD3D12_H__C21A430F_17D3_43EA_9366_DEBBA3D70A71
+#endif // GRAPHICSCONTEXTD3D12_H__62F8B330_ED82_4394_8890_3F6E301E7B03

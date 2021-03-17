@@ -6,10 +6,10 @@
 #include "GameZoneObject.h"
 
 BEG_META( XE::World )
-type->Property( "Name", &World::_Name );
-type->Property( "Entities", &World::_Objects );
-type->Property( "Transform", &World::_Transform );
-type->Property( "HandleTable", &World::_HandleTable, XE::IMetaProperty::NoDesign );
+type->Property( "Name", &XE::World::_Name );
+type->Property( "Entities", &XE::World::_Objects );
+type->Property( "Transform", &XE::World::_Transform );
+type->Property( "HandleTable", &XE::World::_HandleAllocator, XE::IMetaProperty::NoDesign );
 END_META()
 
 XE::World::World()
@@ -27,12 +27,12 @@ const XE::String & XE::World::GetName() const
 	return _Name;
 }
 
-void XE::World::SetName( const String & val )
+void XE::World::SetName( const XE::String & val )
 {
 	_Name = val;
 }
 
-bool XE::World::AddObject( const SceneObjectPtr & val )
+bool XE::World::AddObject( const XE::SceneObjectPtr & val )
 {
 	auto it = std::find( _Objects.begin(), _Objects.end(), val );
 	if( it != _Objects.end() )
@@ -40,9 +40,9 @@ bool XE::World::AddObject( const SceneObjectPtr & val )
 		return false;
 	}
 
-	val->_Handle = _HandleTable.Alloc();
+	val->_Handle = _HandleAllocator.Alloc();
 
-	val->_World = XE_THIS( World );
+	val->_World = XE_THIS( XE::World );
 
 	val->_Transform.SetParent( &_Transform );
 
@@ -69,7 +69,7 @@ bool XE::World::RemoveObject( const XE::SceneObjectPtr & val )
 	return false;
 }
 
-XE::SceneObjectPtr XE::World::FindObject( const String & val ) const
+XE::SceneObjectPtr XE::World::FindObject( const XE::String & val ) const
 {
 	for( const auto & obj : _Objects )
 	{
@@ -82,7 +82,7 @@ XE::SceneObjectPtr XE::World::FindObject( const String & val ) const
 	return nullptr;
 }
 
-XE::SceneObjectPtr XE::World::FindObject( SceneObjectHandle val ) const
+XE::SceneObjectPtr XE::World::FindObject( XE::SceneObjectHandle val ) const
 {
 	for( const auto & obj : _Objects )
 	{
@@ -104,7 +104,7 @@ void XE::World::Startup()
 {
 	for( auto entity : _Objects )
 	{
-		entity->_World = XE_THIS( World );
+		entity->_World = XE_THIS( XE::World );
 
 		entity->_Transform.SetParent( &_Transform );
 

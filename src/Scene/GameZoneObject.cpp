@@ -38,14 +38,14 @@ void XE::GameZoneObject::OnDisable()
 	}
 }
 
-void XE::GameZoneObject::InsertEntity( const XE::SceneObjectHandle & val )
+void XE::GameZoneObject::InsertObject( const XE::SceneObjectHandle & val )
 {
 	_Children.push_back( val );
 
 	_ChildrenEnable.push_back( GetWorld()->FindObject( val )->GetEnable() );
 }
 
-void XE::GameZoneObject::RemoveEntity( const XE::SceneObjectHandle & val )
+void XE::GameZoneObject::RemoveObject( const XE::SceneObjectHandle & val )
 {
 	auto it = std::find( _Children.begin(), _Children.end(), val );
 	if( it != _Children.end() )

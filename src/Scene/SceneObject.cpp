@@ -6,8 +6,8 @@
 BEG_META( XE::SceneObject )
 type->Property( "Name", &XE::SceneObject::_Name );
 type->Property( "Enable", &XE::SceneObject::_Enable );
-type->Property( "Handle", &XE::SceneObject::_Handle, XE::IMetaProperty::NoDesign );
 type->Property( "Zone", &XE::SceneObject::_Zone, XE::IMetaProperty::NoDesign );
+type->Property( "Handle", &XE::SceneObject::_Handle, XE::IMetaProperty::NoDesign );
 END_META()
 
 XE::WorldPtr XE::SceneObject::GetWorld() const
@@ -45,7 +45,7 @@ void XE::SceneObject::Clearup()
 {
 	if( _Zone )
 	{
-		GetGameZoneObjectPtr()->RemoveEntity( GetHandle() );
+		GetGameZoneObjectPtr()->RemoveObject( GetHandle() );
 		_Zone = XE::SceneObjectHandle::Invalid;
 	}
 }
@@ -77,7 +77,7 @@ const XE::String & XE::SceneObject::GetName() const
 	return _Name;
 }
 
-void XE::SceneObject::SetName( const String & val )
+void XE::SceneObject::SetName( const XE::String & val )
 {
 	_Name = val;
 }
@@ -91,14 +91,14 @@ void XE::SceneObject::SetGameZone( const XE::SceneObjectHandle & val )
 {
 	if( _Zone )
 	{
-		GetGameZoneObjectPtr()->RemoveEntity( GetHandle() );
+		GetGameZoneObjectPtr()->RemoveObject( GetHandle() );
 	}
 
 	_Zone = val;
 
-	if( val )
+	if( _Zone )
 	{
-		GetGameZoneObjectPtr()->InsertEntity( GetHandle() );
+		GetGameZoneObjectPtr()->InsertObject( GetHandle() );
 	}
 }
 

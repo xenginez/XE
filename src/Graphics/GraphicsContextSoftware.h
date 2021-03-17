@@ -1,19 +1,19 @@
 #ifndef RENDERERCONTEXTSOFTWARE_H__3145856F_D79A_440A_90B3_558891CD1D3A
 #define RENDERERCONTEXTSOFTWARE_H__3145856F_D79A_440A_90B3_558891CD1D3A
 
-#include "RendererContext.h"
+#include "GraphicsContext.h"
 
 BEG_XE_NAMESPACE
 
-class RendererContextSoftware : public XE::RendererContext
+class GraphicsContextSoftware : public XE::GraphicsContext
 {
 private:
 	struct Private;
 
 public:
-	RendererContextSoftware();
+	GraphicsContextSoftware();
 
-	~RendererContextSoftware();
+	~GraphicsContextSoftware();
 
 protected:
 	void OnRender( XE::RenderFrame * frame ) override;
@@ -89,9 +89,9 @@ private:
 	Private * _p;
 };
 
-XE_INLINE XE::RendererContext * CreateRendererContextSoftware()
+XE_INLINE XE::GraphicsContext * CreateRendererContextSoftware()
 {
-	return new XE::RendererContextSoftware();
+	return new XE::GraphicsContextSoftware();
 }
 
 END_XE_NAMESPACE

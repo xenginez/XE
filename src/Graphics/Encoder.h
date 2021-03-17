@@ -15,7 +15,7 @@ BEG_XE_NAMESPACE
 
 class XE_API Encoder : public XE::NonCopyable
 {
-	friend class RendererContext;
+	friend class GraphicsContext;
 
 private:
 	struct Private;

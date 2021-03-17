@@ -34,20 +34,20 @@ public:
 	void SetPhysicsSceneHandle( XE::PhysicsSceneHandle val );
 
 public:
-	virtual void InsertRigidActor( XE::PhysicsRigidActorHandle val ) = 0;
+	virtual void InsertRigidActor( XE::PhysicsRigidBodyHandle val ) = 0;
 
-	virtual void RemoveRigidActor( XE::PhysicsRigidActorHandle val ) = 0;
+	virtual void RemoveRigidActor( XE::PhysicsRigidBodyHandle val ) = 0;
 
-	virtual void ContainsRigidActor( XE::PhysicsRigidActorHandle val ) = 0;
+	virtual void ContainsRigidActor( XE::PhysicsRigidBodyHandle val ) = 0;
 
-	virtual XE::PhysicsRigidActorHandle FindRigidActor( const XE::String & val ) = 0;
+	virtual XE::PhysicsRigidBodyHandle FindRigidActor( const XE::String & val ) = 0;
 
 public:
 	virtual XE::uint64 GetRigidActorCount() const = 0;
 
-	virtual XE::Array<XE::PhysicsRigidActorHandle> GetRigidActors() const = 0;
+	virtual XE::Array<XE::PhysicsRigidBodyHandle> GetRigidActors() const = 0;
 
-	virtual XE::PhysicsRigidActorHandle GetRigidActor( XE::uint64 val ) const = 0;
+	virtual XE::PhysicsRigidBodyHandle GetRigidActor( XE::uint64 val ) const = 0;
 
 public:
 	virtual void InsertCollection( XE::PhysicsCollectionHandle val ) = 0;

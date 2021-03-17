@@ -3,9 +3,9 @@
 #include "GameObject.h"
 
 BEG_META( XE::Component )
-type->Property( "Name", &Component::_Name );
-type->Property( "Handle", &Component::_Handle, IMetaProperty::NoDesign | IMetaProperty::NoClone );
-type->Property( "Enabled", &Component::_Enabled );
+type->Property( "Name", &XE::Component::_Name );
+type->Property( "Enabled", &XE::Component::_Enabled );
+type->Property( "Handle", &XE::Component::_Handle, XE::IMetaProperty::NoDesign | XE::IMetaProperty::NoClone );
 END_META()
 
 XE::Component::Component()

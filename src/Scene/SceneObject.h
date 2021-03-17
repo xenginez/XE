@@ -37,9 +37,9 @@ public:
 
 	void SetEnable( bool val );
 
-	const String & GetName() const;
+	const XE::String & GetName() const;
 
-	void SetName( const String & val );
+	void SetName( const XE::String & val );
 
 	XE::SceneObjectHandle GetGameZone() const;
 

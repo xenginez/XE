@@ -1,4 +1,4 @@
-#include "RendererContext.h"
+#include "GraphicsContext.h"
 
 #include <optional>
 
@@ -7,7 +7,7 @@
 
 #include "Encoder.h"
 
-struct XE::RendererContext::Private
+struct XE::GraphicsContext::Private
 {
 	XE::CapsInfo _Caps;
 	XE::InitDesc _Init;
@@ -38,18 +38,18 @@ struct XE::RendererContext::Private
 	XE::ConcurrentHandleAllocator<XE::VertexBufferHandle, GFX_MAX_VERTEX_BUFFERS> _VertexBufferHandleAlloc;
 };
 
-XE::RendererContext::RendererContext()
+XE::GraphicsContext::GraphicsContext()
 	:_p( new Private )
 {
 
 }
 
-XE::RendererContext::~RendererContext()
+XE::GraphicsContext::~GraphicsContext()
 {
 	delete _p;
 }
 
-void XE::RendererContext::Init( const InitDesc & desc )
+void XE::GraphicsContext::Init( const InitDesc & desc )
 {
 	_p->_Init = desc;
 
@@ -63,7 +63,7 @@ void XE::RendererContext::Init( const InitDesc & desc )
 	_p->_SubmitFrame->PrevCmd.Wirte( CommandType::RENDERER_INIT );
 }
 
-void XE::RendererContext::Present()
+void XE::GraphicsContext::Present()
 {
 	{
 		std::unique_lock<std::mutex> lock1( _p->_SubmitFrame->PrevCmdMutex );
@@ -78,26 +78,26 @@ void XE::RendererContext::Present()
 
 		std::swap( _p->_SubmitFrame, _p->_RenderFrame );
 
-		XE::IFramework::GetCurrentFramework()->GetServiceT< XE::IThreadService >()->PostTask( XE::ThreadType::RENDER, std::bind( &XE::RendererContext::Render, this ) );
+		XE::IFramework::GetCurrentFramework()->GetServiceT< XE::IThreadService >()->PostTask( XE::ThreadType::RENDER, std::bind( &XE::GraphicsContext::Render, this ) );
 	}
 
 	_p->_SubmitFrame->Reset();
 }
 
-void XE::RendererContext::Render()
+void XE::GraphicsContext::Render()
 {
 	std::unique_lock<std::mutex> lock( _p->_FrameMutex );
 
 	OnRender( _p->_RenderFrame );
 }
 
-void XE::RendererContext::Shutdown()
+void XE::GraphicsContext::Shutdown()
 {
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
 	_p->_SubmitFrame->PostCmd.Wirte( CommandType::RENDERER_SHUTDOWN );
 }
 
-XE::Encoder * XE::RendererContext::Begin()
+XE::Encoder * XE::GraphicsContext::Begin()
 {
 	thread_local Encoder encoder;
 
@@ -108,84 +108,84 @@ XE::Encoder * XE::RendererContext::Begin()
 	return &encoder;
 }
 
-void XE::RendererContext::End( XE::Encoder * val )
+void XE::GraphicsContext::End( XE::Encoder * val )
 {
 	val->Discard();
 
 	val->SetFrame( nullptr );
 }
 
-XE::CapsInfo & XE::RendererContext::Caps()
+XE::CapsInfo & XE::GraphicsContext::Caps()
 {
 	return _p->_Caps;
 }
 
-const XE::CapsInfo & XE::RendererContext::GetCaps() const
+const XE::CapsInfo & XE::GraphicsContext::GetCaps() const
 {
 	return _p->_Caps;
 }
 
-const XE::InitDesc & XE::RendererContext::GetInit() const
+const XE::InitDesc & XE::GraphicsContext::GetInit() const
 {
 	return _p->_Init;
 }
 
-void XE::RendererContext::Inc( XE::ViewHandle handle )
+void XE::GraphicsContext::Inc( XE::ViewHandle handle )
 {
 	_p->_Views[handle.GetValue()].Inc();
 }
 
-void XE::RendererContext::Inc( XE::ShaderHandle handle )
+void XE::GraphicsContext::Inc( XE::ShaderHandle handle )
 {
 	_p->_Shaders[handle.GetValue()].Inc();
 }
 
-void XE::RendererContext::Inc( XE::ProgramHandle handle )
+void XE::GraphicsContext::Inc( XE::ProgramHandle handle )
 {
 	_p->_Programs[handle.GetValue()].Inc();
 }
 
-void XE::RendererContext::Inc( XE::TextureHandle handle )
+void XE::GraphicsContext::Inc( XE::TextureHandle handle )
 {
 	_p->_Textures[handle.GetValue()].Inc();
 }
 
-void XE::RendererContext::Inc( XE::FrameBufferHandle handle )
+void XE::GraphicsContext::Inc( XE::FrameBufferHandle handle )
 {
 	_p->_FrameBuffers[handle.GetValue()].Inc();
 }
 
-void XE::RendererContext::Inc( XE::IndexBufferHandle handle )
+void XE::GraphicsContext::Inc( XE::IndexBufferHandle handle )
 {
 	_p->_IndexBuffers[handle.GetValue()].Inc();
 }
 
-void XE::RendererContext::Inc( XE::VertexLayoutHandle handle )
+void XE::GraphicsContext::Inc( XE::VertexLayoutHandle handle )
 {
 	_p->_Shaders[handle.GetValue()].Inc();
 }
 
-void XE::RendererContext::Inc( XE::VertexBufferHandle handle )
+void XE::GraphicsContext::Inc( XE::VertexBufferHandle handle )
 {
 	_p->_VertexBuffers[handle.GetValue()].Inc();
 }
 
-void XE::RendererContext::Inc( XE::OcclusionQueryHandle handle )
+void XE::GraphicsContext::Inc( XE::OcclusionQueryHandle handle )
 {
 	_p->_Occlusions[handle.GetValue()].Inc();
 }
 
-void XE::RendererContext::Inc( XE::DynamicIndexBufferHandle handle )
+void XE::GraphicsContext::Inc( XE::DynamicIndexBufferHandle handle )
 {
 	_p->_IndexBuffers[handle.GetValue()].Inc();
 }
 
-void XE::RendererContext::Inc( XE::DynamicVertexBufferHandle handle )
+void XE::GraphicsContext::Inc( XE::DynamicVertexBufferHandle handle )
 {
 	_p->_VertexBuffers[handle.GetValue()].Inc();
 }
 
-void XE::RendererContext::Dec( XE::ViewHandle handle )
+void XE::GraphicsContext::Dec( XE::ViewHandle handle )
 {
 	if( _p->_Views[handle.GetValue()].Dec() <= 0 )
 	{
@@ -193,7 +193,7 @@ void XE::RendererContext::Dec( XE::ViewHandle handle )
 	}
 }
 
-void XE::RendererContext::Dec( XE::ShaderHandle handle )
+void XE::GraphicsContext::Dec( XE::ShaderHandle handle )
 {
 	if( _p->_Shaders[handle.GetValue()].Dec() <= 0 )
 	{
@@ -201,7 +201,7 @@ void XE::RendererContext::Dec( XE::ShaderHandle handle )
 	}
 }
 
-void XE::RendererContext::Dec( XE::ProgramHandle handle )
+void XE::GraphicsContext::Dec( XE::ProgramHandle handle )
 {
 	if( _p->_Programs[handle.GetValue()].Dec() <= 0 )
 	{
@@ -209,7 +209,7 @@ void XE::RendererContext::Dec( XE::ProgramHandle handle )
 	}
 }
 
-void XE::RendererContext::Dec( XE::TextureHandle handle )
+void XE::GraphicsContext::Dec( XE::TextureHandle handle )
 {
 	if( _p->_Textures[handle.GetValue()].Dec() <= 0 )
 	{
@@ -217,7 +217,7 @@ void XE::RendererContext::Dec( XE::TextureHandle handle )
 	}
 }
 
-void XE::RendererContext::Dec( XE::FrameBufferHandle handle )
+void XE::GraphicsContext::Dec( XE::FrameBufferHandle handle )
 {
 	if( _p->_FrameBuffers[handle.GetValue()].Dec() <= 0 )
 	{
@@ -225,7 +225,7 @@ void XE::RendererContext::Dec( XE::FrameBufferHandle handle )
 	}
 }
 
-void XE::RendererContext::Dec( XE::IndexBufferHandle handle )
+void XE::GraphicsContext::Dec( XE::IndexBufferHandle handle )
 {
 	if( _p->_IndexBuffers[handle.GetValue()].Dec() <= 0 )
 	{
@@ -233,7 +233,7 @@ void XE::RendererContext::Dec( XE::IndexBufferHandle handle )
 	}
 }
 
-void XE::RendererContext::Dec( XE::VertexLayoutHandle handle )
+void XE::GraphicsContext::Dec( XE::VertexLayoutHandle handle )
 {
 	if( _p->_Shaders[handle.GetValue()].Dec() <= 0 )
 	{
@@ -241,7 +241,7 @@ void XE::RendererContext::Dec( XE::VertexLayoutHandle handle )
 	}
 }
 
-void XE::RendererContext::Dec( XE::VertexBufferHandle handle )
+void XE::GraphicsContext::Dec( XE::VertexBufferHandle handle )
 {
 	if( _p->_VertexBuffers[handle.GetValue()].Dec() <= 0 )
 	{
@@ -249,7 +249,7 @@ void XE::RendererContext::Dec( XE::VertexBufferHandle handle )
 	}
 }
 
-void XE::RendererContext::Dec( XE::OcclusionQueryHandle handle )
+void XE::GraphicsContext::Dec( XE::OcclusionQueryHandle handle )
 {
 	if( _p->_Occlusions[handle.GetValue()].Dec() <= 0 )
 	{
@@ -257,7 +257,7 @@ void XE::RendererContext::Dec( XE::OcclusionQueryHandle handle )
 	}
 }
 
-void XE::RendererContext::Dec( XE::DynamicIndexBufferHandle handle )
+void XE::GraphicsContext::Dec( XE::DynamicIndexBufferHandle handle )
 {
 	if( _p->_IndexBuffers[handle.GetValue()].Dec() <= 0 )
 	{
@@ -265,7 +265,7 @@ void XE::RendererContext::Dec( XE::DynamicIndexBufferHandle handle )
 	}
 }
 
-void XE::RendererContext::Dec( XE::DynamicVertexBufferHandle handle )
+void XE::GraphicsContext::Dec( XE::DynamicVertexBufferHandle handle )
 {
 	if( _p->_VertexBuffers[handle.GetValue()].Dec() <= 0 )
 	{
@@ -273,7 +273,7 @@ void XE::RendererContext::Dec( XE::DynamicVertexBufferHandle handle )
 	}
 }
 
-XE::ViewHandle XE::RendererContext::Create( const ViewDesc & desc )
+XE::ViewHandle XE::GraphicsContext::Create( const ViewDesc & desc )
 {
 	auto handle = _p->_ViewHandleAlloc.Alloc();
 
@@ -296,7 +296,7 @@ XE::ViewHandle XE::RendererContext::Create( const ViewDesc & desc )
 	return handle;
 }
 
-XE::ProgramHandle XE::RendererContext::Create( const XE::ProgramDesc & desc )
+XE::ProgramHandle XE::GraphicsContext::Create( const XE::ProgramDesc & desc )
 {
 	auto handle = _p->_ProgramHandleAlloc.Alloc();
 
@@ -312,7 +312,7 @@ XE::ProgramHandle XE::RendererContext::Create( const XE::ProgramDesc & desc )
 	return handle;
 }
 
-XE::FrameBufferHandle XE::RendererContext::Create( const XE::FrameBufferDesc & desc )
+XE::FrameBufferHandle XE::GraphicsContext::Create( const XE::FrameBufferDesc & desc )
 {
 	auto handle = _p->_FrameBufferHandleAlloc.Alloc();
 
@@ -328,7 +328,7 @@ XE::FrameBufferHandle XE::RendererContext::Create( const XE::FrameBufferDesc & d
 	return handle;
 }
 
-XE::VertexLayoutHandle XE::RendererContext::Create( const XE::VertexLayoutDesc & desc )
+XE::VertexLayoutHandle XE::GraphicsContext::Create( const XE::VertexLayoutDesc & desc )
 {
 	auto handle = _p->_VertexLayoutHandleAlloc.Alloc();
 
@@ -339,7 +339,7 @@ XE::VertexLayoutHandle XE::RendererContext::Create( const XE::VertexLayoutDesc &
 	return handle;
 }
 
-XE::OcclusionQueryHandle XE::RendererContext::Create( const OcclusionQueryDesc & desc )
+XE::OcclusionQueryHandle XE::GraphicsContext::Create( const OcclusionQueryDesc & desc )
 {
 	auto handle = _p->_OcclusionHandleAlloc.Alloc();
 
@@ -355,7 +355,7 @@ XE::OcclusionQueryHandle XE::RendererContext::Create( const OcclusionQueryDesc &
 	return handle;
 }
 
-XE::ShaderHandle XE::RendererContext::Create( const XE::ShaderDesc & desc, XE::MemoryView data )
+XE::ShaderHandle XE::GraphicsContext::Create( const XE::ShaderDesc & desc, XE::MemoryView data )
 {
 	auto handle = _p->_ShaderHandleAlloc.Alloc();
 
@@ -372,7 +372,7 @@ XE::ShaderHandle XE::RendererContext::Create( const XE::ShaderDesc & desc, XE::M
 	return handle;
 }
 
-XE::TextureHandle XE::RendererContext::Create( const XE::TextureDesc & desc, XE::MemoryView Data )
+XE::TextureHandle XE::GraphicsContext::Create( const XE::TextureDesc & desc, XE::MemoryView Data )
 {
 	auto handle = _p->_TextureHandleAlloc.Alloc();
 
@@ -389,7 +389,7 @@ XE::TextureHandle XE::RendererContext::Create( const XE::TextureDesc & desc, XE:
 	return handle;
 }
 
-XE::IndexBufferHandle XE::RendererContext::Create( const XE::IndexBufferDesc & desc, XE::MemoryView Data )
+XE::IndexBufferHandle XE::GraphicsContext::Create( const XE::IndexBufferDesc & desc, XE::MemoryView Data )
 {
 	auto handle = _p->_IndexBufferHandleAlloc.Alloc();
 
@@ -406,7 +406,7 @@ XE::IndexBufferHandle XE::RendererContext::Create( const XE::IndexBufferDesc & d
 	return handle;
 }
 
-XE::VertexBufferHandle XE::RendererContext::Create( const XE::VertexBufferDesc & desc, XE::MemoryView Data )
+XE::VertexBufferHandle XE::GraphicsContext::Create( const XE::VertexBufferDesc & desc, XE::MemoryView Data )
 {
 	auto handle = _p->_VertexBufferHandleAlloc.Alloc();
 
@@ -423,7 +423,7 @@ XE::VertexBufferHandle XE::RendererContext::Create( const XE::VertexBufferDesc &
 	return handle;
 }
 
-XE::DynamicIndexBufferHandle XE::RendererContext::Create( const XE::IndexBufferDesc & desc )
+XE::DynamicIndexBufferHandle XE::GraphicsContext::Create( const XE::IndexBufferDesc & desc )
 {
 	auto handle = _p->_IndexBufferHandleAlloc.Alloc();
 
@@ -439,7 +439,7 @@ XE::DynamicIndexBufferHandle XE::RendererContext::Create( const XE::IndexBufferD
 	return XE::HandleCast< DynamicIndexBuffer >( handle );
 }
 
-XE::DynamicVertexBufferHandle XE::RendererContext::Create( const XE::VertexBufferDesc & desc )
+XE::DynamicVertexBufferHandle XE::GraphicsContext::Create( const XE::VertexBufferDesc & desc )
 {
 	auto handle = _p->_VertexBufferHandleAlloc.Alloc();
 
@@ -455,67 +455,67 @@ XE::DynamicVertexBufferHandle XE::RendererContext::Create( const XE::VertexBuffe
 	return XE::HandleCast< DynamicVertexBuffer >( handle );
 }
 
-const XE::ViewDesc & XE::RendererContext::GetDesc( XE::ViewHandle handle )
+const XE::ViewDesc & XE::GraphicsContext::GetDesc( XE::ViewHandle handle )
 {
 	return _p->_Views[handle.GetValue()].Desc;
 }
 
-const XE::ShaderDesc & XE::RendererContext::GetDesc( XE::ShaderHandle handle )
+const XE::ShaderDesc & XE::GraphicsContext::GetDesc( XE::ShaderHandle handle )
 {
 	return _p->_Shaders[handle.GetValue()].Desc;
 }
 
-const XE::ProgramDesc & XE::RendererContext::GetDesc( XE::ProgramHandle handle )
+const XE::ProgramDesc & XE::GraphicsContext::GetDesc( XE::ProgramHandle handle )
 {
 	return _p->_Programs[handle.GetValue()].Desc;
 }
 
-const XE::TextureDesc & XE::RendererContext::GetDesc( XE::TextureHandle handle )
+const XE::TextureDesc & XE::GraphicsContext::GetDesc( XE::TextureHandle handle )
 {
 	return _p->_Textures[handle.GetValue()].Desc;
 }
 
-const XE::FrameBufferDesc & XE::RendererContext::GetDesc( XE::FrameBufferHandle handle )
+const XE::FrameBufferDesc & XE::GraphicsContext::GetDesc( XE::FrameBufferHandle handle )
 {
 	return _p->_FrameBuffers[handle.GetValue()].Desc;
 }
 
-const XE::IndexBufferDesc & XE::RendererContext::GetDesc( XE::IndexBufferHandle handle )
+const XE::IndexBufferDesc & XE::GraphicsContext::GetDesc( XE::IndexBufferHandle handle )
 {
 	return _p->_IndexBuffers[handle.GetValue()].Desc;
 }
 
-const XE::VertexLayoutDesc & XE::RendererContext::GetDesc( XE::VertexLayoutHandle handle )
+const XE::VertexLayoutDesc & XE::GraphicsContext::GetDesc( XE::VertexLayoutHandle handle )
 {
 	return _p->_VertexLayouts[handle.GetValue()].Desc;
 }
 
-const XE::VertexBufferDesc & XE::RendererContext::GetDesc( XE::VertexBufferHandle handle )
+const XE::VertexBufferDesc & XE::GraphicsContext::GetDesc( XE::VertexBufferHandle handle )
 {
 	return _p->_VertexBuffers[handle.GetValue()].Desc;
 }
 
-const XE::OcclusionQueryDesc & XE::RendererContext::GetDesc( XE::OcclusionQueryHandle handle )
+const XE::OcclusionQueryDesc & XE::GraphicsContext::GetDesc( XE::OcclusionQueryHandle handle )
 {
 	return _p->_Occlusions[handle.GetValue()].Desc;
 }
 
-const XE::IndexBufferDesc & XE::RendererContext::GetDesc( XE::DynamicIndexBufferHandle handle )
+const XE::IndexBufferDesc & XE::GraphicsContext::GetDesc( XE::DynamicIndexBufferHandle handle )
 {
 	return _p->_IndexBuffers[handle.GetValue()].Desc;
 }
 
-const XE::VertexBufferDesc & XE::RendererContext::GetDesc( XE::DynamicVertexBufferHandle handle )
+const XE::VertexBufferDesc & XE::GraphicsContext::GetDesc( XE::DynamicVertexBufferHandle handle )
 {
 	return _p->_VertexBuffers[handle.GetValue()].Desc;
 }
 
-void XE::RendererContext::Destory( XE::ViewHandle handle )
+void XE::GraphicsContext::Destory( XE::ViewHandle handle )
 {
 	_p->_ViewHandleAlloc.Free( handle );
 }
 
-void XE::RendererContext::Destory( XE::ShaderHandle handle )
+void XE::GraphicsContext::Destory( XE::ShaderHandle handle )
 {
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
 
@@ -525,7 +525,7 @@ void XE::RendererContext::Destory( XE::ShaderHandle handle )
 	_p->_ShaderHandleAlloc.Free( handle );
 }
 
-void XE::RendererContext::Destory( XE::ProgramHandle handle )
+void XE::GraphicsContext::Destory( XE::ProgramHandle handle )
 {
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
 
@@ -535,7 +535,7 @@ void XE::RendererContext::Destory( XE::ProgramHandle handle )
 	_p->_ProgramHandleAlloc.Free( handle );
 }
 
-void XE::RendererContext::Destory( XE::TextureHandle handle )
+void XE::GraphicsContext::Destory( XE::TextureHandle handle )
 {
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
 
@@ -545,7 +545,7 @@ void XE::RendererContext::Destory( XE::TextureHandle handle )
 	_p->_TextureHandleAlloc.Free( handle );
 }
 
-void XE::RendererContext::Destory( XE::FrameBufferHandle handle )
+void XE::GraphicsContext::Destory( XE::FrameBufferHandle handle )
 {
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
 
@@ -555,7 +555,7 @@ void XE::RendererContext::Destory( XE::FrameBufferHandle handle )
 	_p->_FrameBufferHandleAlloc.Free( handle );
 }
 
-void XE::RendererContext::Destory( XE::IndexBufferHandle handle )
+void XE::GraphicsContext::Destory( XE::IndexBufferHandle handle )
 {
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
 
@@ -565,12 +565,12 @@ void XE::RendererContext::Destory( XE::IndexBufferHandle handle )
 	_p->_IndexBufferHandleAlloc.Free( handle );
 }
 
-void XE::RendererContext::Destory( XE::VertexLayoutHandle handle )
+void XE::GraphicsContext::Destory( XE::VertexLayoutHandle handle )
 {
 	_p->_VertexLayoutHandleAlloc.Free( handle );
 }
 
-void XE::RendererContext::Destory( XE::VertexBufferHandle handle )
+void XE::GraphicsContext::Destory( XE::VertexBufferHandle handle )
 {
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
 
@@ -580,7 +580,7 @@ void XE::RendererContext::Destory( XE::VertexBufferHandle handle )
 	_p->_VertexBufferHandleAlloc.Free( handle );
 }
 
-void XE::RendererContext::Destory( XE::OcclusionQueryHandle handle )
+void XE::GraphicsContext::Destory( XE::OcclusionQueryHandle handle )
 {
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
 
@@ -590,7 +590,7 @@ void XE::RendererContext::Destory( XE::OcclusionQueryHandle handle )
 	_p->_OcclusionHandleAlloc.Free( handle );
 }
 
-void XE::RendererContext::Destory( XE::DynamicIndexBufferHandle handle )
+void XE::GraphicsContext::Destory( XE::DynamicIndexBufferHandle handle )
 {
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
 
@@ -600,7 +600,7 @@ void XE::RendererContext::Destory( XE::DynamicIndexBufferHandle handle )
 	_p->_IndexBufferHandleAlloc.Free( XE::HandleCast< IndexBuffer >( handle ) );
 }
 
-void XE::RendererContext::Destory( XE::DynamicVertexBufferHandle handle )
+void XE::GraphicsContext::Destory( XE::DynamicVertexBufferHandle handle )
 {
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
 
@@ -610,7 +610,7 @@ void XE::RendererContext::Destory( XE::DynamicVertexBufferHandle handle )
 	_p->_VertexBufferHandleAlloc.Free( XE::HandleCast< VertexBuffer >( handle ) );
 }
 
-void XE::RendererContext::Update( const XE::UpdateTextureDesc & desc, XE::MemoryView Data )
+void XE::GraphicsContext::Update( const XE::UpdateTextureDesc & desc, XE::MemoryView Data )
 {
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
 
@@ -619,7 +619,7 @@ void XE::RendererContext::Update( const XE::UpdateTextureDesc & desc, XE::Memory
 	_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( Data ) );
 }
 
-void XE::RendererContext::Update( XE::DynamicIndexBufferHandle handle, XE::uint64 start, XE::MemoryView mem )
+void XE::GraphicsContext::Update( XE::DynamicIndexBufferHandle handle, XE::uint64 start, XE::MemoryView mem )
 {
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
 
@@ -629,7 +629,7 @@ void XE::RendererContext::Update( XE::DynamicIndexBufferHandle handle, XE::uint6
 	_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( mem ) );
 }
 
-void XE::RendererContext::Update( XE::DynamicVertexBufferHandle handle, XE::uint64 start, XE::MemoryView mem )
+void XE::GraphicsContext::Update( XE::DynamicVertexBufferHandle handle, XE::uint64 start, XE::MemoryView mem )
 {
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
 
@@ -639,12 +639,12 @@ void XE::RendererContext::Update( XE::DynamicVertexBufferHandle handle, XE::uint
 	_p->_SubmitFrame->PrevCmd.Wirte( CopyToFrame( mem ) );
 }
 
-XE::Array<XE::UniformDesc> XE::RendererContext::GetShaderUniforms( XE::ShaderHandle handle )
+XE::Array<XE::UniformDesc> XE::GraphicsContext::GetShaderUniforms( XE::ShaderHandle handle )
 {
 	return _p->_Shaders[handle.GetValue()].Uniforms;
 }
 
-void XE::RendererContext::ReadTexture( XE::TextureHandle handle, XE::uint8 * data, XE::uint8 mip )
+void XE::GraphicsContext::ReadTexture( XE::TextureHandle handle, XE::uint8 * data, XE::uint8 mip )
 {
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PrevCmdMutex );
 
@@ -654,7 +654,7 @@ void XE::RendererContext::ReadTexture( XE::TextureHandle handle, XE::uint8 * dat
 	_p->_SubmitFrame->PrevCmd.Wirte( mip );
 }
 
-XE::TextureHandle XE::RendererContext::GetTexture( XE::FrameBufferHandle handle, XE::uint8 attachment )
+XE::TextureHandle XE::GraphicsContext::GetTexture( XE::FrameBufferHandle handle, XE::uint8 attachment )
 {
 	if( _p->_FrameBuffers[handle.GetValue()].Desc.Window )
 	{
@@ -664,7 +664,7 @@ XE::TextureHandle XE::RendererContext::GetTexture( XE::FrameBufferHandle handle,
 	return _p->_FrameBuffers[handle.GetValue()].Desc.Attachments[attachment].Handle;
 }
 
-std::optional<XE::uint32> XE::RendererContext::GetOcclusionQueryValue( XE::OcclusionQueryHandle handle )
+std::optional<XE::uint32> XE::GraphicsContext::GetOcclusionQueryValue( XE::OcclusionQueryHandle handle )
 {
 	if( _p->_Occlusions[handle.GetValue()].Value == 0 )
 	{
@@ -674,22 +674,22 @@ std::optional<XE::uint32> XE::RendererContext::GetOcclusionQueryValue( XE::Occlu
 	return _p->_Occlusions[handle.GetValue()].Value;
 }
 
-void XE::RendererContext::SetViewName( XE::ViewHandle handle, const XE::String & name )
+void XE::GraphicsContext::SetViewName( XE::ViewHandle handle, const XE::String & name )
 {
 	_p->_Views[handle.GetValue()].Name = name;
 }
 
-void XE::RendererContext::SetViewRect( XE::ViewHandle handle, const XE::Rectf & rect )
+void XE::GraphicsContext::SetViewRect( XE::ViewHandle handle, const XE::Rectf & rect )
 {
 	_p->_Views[handle.GetValue()].ViewRect = rect;
 }
 
-void XE::RendererContext::SetViewScissor( XE::ViewHandle handle, const XE::Rectf & scissor )
+void XE::GraphicsContext::SetViewScissor( XE::ViewHandle handle, const XE::Rectf & scissor )
 {
 	_p->_Views[handle.GetValue()].ViewScissor = scissor;
 }
 
-void XE::RendererContext::SetViewClear( const XE::ClearDesc & desc )
+void XE::GraphicsContext::SetViewClear( const XE::ClearDesc & desc )
 {
 	_p->_Views[desc.Handle].ClearColor = desc.Color;
 	_p->_Views[desc.Handle].ClearDepth = desc.Depth;
@@ -697,24 +697,24 @@ void XE::RendererContext::SetViewClear( const XE::ClearDesc & desc )
 	_p->_Views[desc.Handle].Flags = desc.Flags;
 }
 
-void XE::RendererContext::SetViewMode( XE::ViewHandle handle, XE::ViewMode mode )
+void XE::GraphicsContext::SetViewMode( XE::ViewHandle handle, XE::ViewMode mode )
 {
 	_p->_Views[handle.GetValue()].Mode = mode;
 }
 
-void XE::RendererContext::SetViewFrameBuffer( XE::ViewHandle handle, FrameBufferHandle frame )
+void XE::GraphicsContext::SetViewFrameBuffer( XE::ViewHandle handle, FrameBufferHandle frame )
 {
 	_p->_Views[handle.GetValue()].Handle = frame;
 }
 
-void XE::RendererContext::SetViewTransform( XE::ViewHandle handle, const XE::Mat4x4f & model, const XE::Mat4x4f & view, const XE::Mat4x4f & proj )
+void XE::GraphicsContext::SetViewTransform( XE::ViewHandle handle, const XE::Mat4x4f & model, const XE::Mat4x4f & view, const XE::Mat4x4f & proj )
 {
 	_p->_Views[handle.GetValue()].ModelMat = model;
 	_p->_Views[handle.GetValue()].ViewMat = view;
 	_p->_Views[handle.GetValue()].ProjMat = proj;
 }
 
-void XE::RendererContext::ResetView( XE::ViewHandle handle, const XE::ViewDesc & desc )
+void XE::GraphicsContext::ResetView( XE::ViewHandle handle, const XE::ViewDesc & desc )
 {
 	_p->_Views[handle.GetValue()].Name = desc.Name;
 	_p->_Views[handle.GetValue()].ClearColor = desc.ClearColor;
@@ -729,7 +729,7 @@ void XE::RendererContext::ResetView( XE::ViewHandle handle, const XE::ViewDesc &
 	_p->_Views[handle.GetValue()].Mode = desc.Mode;
 }
 
-void XE::RendererContext::RequestScreenShot( XE::FrameBufferHandle handle, const std::string & userdata, ScreenShotCallbackType callback )
+void XE::GraphicsContext::RequestScreenShot( XE::FrameBufferHandle handle, const std::string & userdata, ScreenShotCallbackType callback )
 {
 	std::unique_lock<std::mutex> lock( _p->_SubmitFrame->PostCmdMutex );
 
@@ -739,12 +739,12 @@ void XE::RendererContext::RequestScreenShot( XE::FrameBufferHandle handle, const
 	_p->_SubmitFrame->PostCmd.Wirte( ( uintptr_t ) callback );
 }
 
-void XE::RendererContext::SetOcclusionQueryValue( XE::OcclusionQueryHandle handle, XE::uint32 value )
+void XE::GraphicsContext::SetOcclusionQueryValue( XE::OcclusionQueryHandle handle, XE::uint32 value )
 {
 	_p->_Occlusions[handle.GetValue()].Value = value;
 }
 
-XE::MemoryView XE::RendererContext::CopyToFrame( XE::MemoryView mem ) const
+XE::MemoryView XE::GraphicsContext::CopyToFrame( XE::MemoryView mem ) const
 {
 	if( mem.size() == 0 )
 	{

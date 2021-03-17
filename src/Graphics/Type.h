@@ -19,7 +19,7 @@ BEG_XE_NAMESPACE
 struct RenderFrame;
 
 DECL_PTR( Encoder );
-DECL_PTR( RendererContext );
+DECL_PTR( GraphicsContext );
 
 DECL_HANDLE( XE_API, View );
 DECL_HANDLE( XE_API, Shader );
@@ -425,7 +425,7 @@ enum class AccessType
 	COUNT
 };
 
-enum class RendererContextType
+enum class GraphicsContextType
 {
 	NONE,         // No rendering.
 	NIL,          // Null
@@ -721,7 +721,7 @@ enum class RenderGroup : XE::uint8
 struct XE_API CapsInfo
 {
 public:
-	RendererContextType ContextType = RendererContextType::NONE;
+	GraphicsContextType ContextType = GraphicsContextType::NONE;
 
 	XE::CapsFlags Supported;
 	XE::CapsFormatFlags SupportFormat[( XE::uint64 )XE::TextureFormat::COUNT];
@@ -780,7 +780,7 @@ public:
 struct XE_API InitDesc
 {
 public:
-	RendererContextType Type = RendererContextType::NONE;
+	GraphicsContextType Type = GraphicsContextType::NONE;
 
 	PciIdFlag VendorId = PciIdFlag::NONE;
 	XE::uint16 DeviceId = 0;

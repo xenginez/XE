@@ -23,20 +23,20 @@ public:
 	~World() override;
 
 public:
-	const String & GetName() const;
+	const XE::String & GetName() const;
 
-	void SetName( const String & val );
+	void SetName( const XE::String & val );
 
 public:
-	bool AddObject( const SceneObjectPtr & val );
+	bool AddObject( const XE::SceneObjectPtr & val );
 
-	bool RemoveObject( const SceneObjectPtr & val );
+	bool RemoveObject( const XE::SceneObjectPtr & val );
 
-	SceneObjectPtr FindObject( const String & val ) const;
+	XE::SceneObjectPtr FindObject( const XE::String & val ) const;
 
-	SceneObjectPtr FindObject( SceneObjectHandle val ) const;
+	XE::SceneObjectPtr FindObject( XE::SceneObjectHandle val ) const;
 
-	const Array< SceneObjectPtr > & GetObjects() const;
+	const XE::Array< XE::SceneObjectPtr > & GetObjects() const;
 
 public:
 	void Startup();
@@ -49,10 +49,10 @@ public:
 	XE::Transform & GetTransform();
 
 private:
-	String _Name;
+	XE::String _Name;
 	XE::Transform _Transform;
-	Array< SceneObjectPtr > _Objects;
-	XE::SceneObjectHandleAllocator _HandleTable;
+	XE::Array< XE::SceneObjectPtr > _Objects;
+	XE::SceneObjectHandleAllocator _HandleAllocator;
 
 };
 

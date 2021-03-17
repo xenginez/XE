@@ -9,18 +9,18 @@
 #ifndef RENDERERCONTEXTHTML5_H__CF58E5EB_A7B3_4844_86FB_C2D702B30E93
 #define RENDERERCONTEXTHTML5_H__CF58E5EB_A7B3_4844_86FB_C2D702B30E93
 
-#include "RendererContext.h"
+#include "GraphicsContext.h"
 
 BEG_XE_NAMESPACE
 
 #if PLATFORM_OS & ( OS_HTML5 )
 
-class RendererContextHTML5 : public XE::RendererContext
+class GraphicsContextHTML5 : public XE::GraphicsContext
 {
 public:
-	RendererContextHTML5();
+	GraphicsContextHTML5();
 
-	~RendererContextHTML5();
+	~GraphicsContextHTML5();
 
 protected:
 	void OnRender( XE::RenderFrame * val ) override;
@@ -29,14 +29,14 @@ private:
 
 };
 
-XE_INLINE XE::RendererContext * CreateRendererContextHTML5()
+XE_INLINE XE::GraphicsContext * CreateRendererContextHTML5()
 {
-	return new XE::RendererContextHTML5();
+	return new XE::GraphicsContextHTML5();
 }
 
 #else
 
-XE_INLINE XE::RendererContext * CreateRendererContextHTML5()
+XE_INLINE XE::GraphicsContext * CreateRendererContextHTML5()
 {
 	return nullptr;
 }

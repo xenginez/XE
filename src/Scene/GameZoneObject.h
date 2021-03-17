@@ -23,9 +23,9 @@ public:
 	~GameZoneObject();
 
 public:
-	void InsertEntity( const XE::SceneObjectHandle & val );
+	void InsertObject( const XE::SceneObjectHandle & val );
 
-	void RemoveEntity( const XE::SceneObjectHandle & val );
+	void RemoveObject( const XE::SceneObjectHandle & val );
 
 	const XE::Array< XE::SceneObjectHandle > & GetChildren() const;
 

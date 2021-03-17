@@ -19,15 +19,15 @@ DECL_PTR( PhysicsScene );
 DECL_PTR( PhysicsJoint );
 DECL_PTR( PhysicsShape );
 DECL_PTR( PhysicsBoxShape );
-DECL_PTR( PhysicsMaterial );
+DECL_PTR( PhysicsMaterial ); 
+DECL_PTR( PhysicsSoftBody );
 DECL_PTR( PhysicsRigidBody );
-DECL_PTR( PhysicsRigidActor );
+DECL_PTR( PhysicsFluidBody );
+DECL_PTR( PhysicsClothBody );
 DECL_PTR( PhysicsConstraint );
 DECL_PTR( PhysicsCollection );
 DECL_PTR( PhysicsPlaneShape );
 DECL_PTR( PhysicsSphereShape );
-DECL_PTR( PhysicsRigidStatic );
-DECL_PTR( PhysicsRigidDynamic );
 DECL_PTR( PhysicsCapsuleShape );
 DECL_PTR( PhysicsConvexMeshShape );
 DECL_PTR( PhysicsHeightFieldShape );
@@ -36,12 +36,13 @@ DECL_HANDLE( XE_API, PhysicsScene );
 DECL_HANDLE( XE_API, PhysicsJoint );
 DECL_HANDLE( XE_API, PhysicsShape );
 DECL_HANDLE( XE_API, PhysicsMaterial );
-DECL_HANDLE( XE_API, PhysicsRigidActor );
+DECL_HANDLE( XE_API, PhysicsSoftBody );
+DECL_HANDLE( XE_API, PhysicsRigidBody );
+DECL_HANDLE( XE_API, PhysicsFluidBody );
+DECL_HANDLE( XE_API, PhysicsClothBody );
 DECL_HANDLE( XE_API, PhysicsConstraint );
 DECL_HANDLE( XE_API, PhysicsCollection );
 
-OBJECT_ALLOCATOR_PROXY( XE::PhysicsRigidStatic );
-OBJECT_ALLOCATOR_PROXY( XE::PhysicsRigidDynamic );
 OBJECT_ALLOCATOR_PROXY( XE::PhysicsShape );
 OBJECT_ALLOCATOR_PROXY( XE::PhysicsBoxShape );
 OBJECT_ALLOCATOR_PROXY( XE::PhysicsPlaneShape );
@@ -59,16 +60,6 @@ enum class PhysicsShapeFlag
 	VISUALIZATION = 1 << 3,
 };
 DECL_META_FLAGS( XE_API, PhysicsShapeFlag, PhysicsShapeFlags );
-
-enum class PhysicsRigidActorFlag
-{
-	NONE = 0,
-	VISUALIZATION = 1 << 0,
-	DISABLE_GRAVITY = 1 << 1,
-	SEND_SLEEP_NOTIFIES = 1 << 2,
-	DISABLE_SIMULATION = 1 << 3,
-};
-DECL_META_FLAGS( XE_API, PhysicsRigidActorFlag, PhysicsRigidActorFlags );
 
 enum class PhysicsConstraintFlag
 {
@@ -90,14 +81,18 @@ DECL_META_FLAGS( XE_API, PhysicsConstraintFlag, PhysicsConstraintFlags );
 enum class PhysicsRigidBodyFlag
 {
 	NONE = 0,
-	KINEMATIC = 1 << 0,
-	USE_KINEMATIC_TARGET_FOR_SCENE_QUERIES = 1 << 1,
-	ENABLE_CCD = 1 << 2,
-	ENABLE_CCD_FRICTION = 1 << 3,
-	ENABLE_POSE_INTEGRATION_PREVIEW = 1 << 4,
-	ENABLE_SPECULATIVE_CCD = 1 << 5,
-	ENABLE_CCD_MAX_CONTACT_IMPULSE = 1 << 6,
-	RETAIN_ACCELERATIONS = 1 << 7,
+	VISUALIZATION = 1 << 0,
+	DISABLE_GRAVITY = 1 << 1,
+	SEND_SLEEP_NOTIFIES = 1 << 2,
+	DISABLE_SIMULATION = 1 << 3,
+	KINEMATIC = 1 << 4,
+	USE_KINEMATIC_TARGET_FOR_SCENE_QUERIES = 1 << 5,
+	ENABLE_CCD = 1 << 6,
+	ENABLE_CCD_FRICTION = 1 << 7,
+	ENABLE_POSE_INTEGRATION_PREVIEW = 1 << 8,
+	ENABLE_SPECULATIVE_CCD = 1 << 9,
+	ENABLE_CCD_MAX_CONTACT_IMPULSE = 1 << 10,
+	RETAIN_ACCELERATIONS = 1 << 11,
 };
 DECL_META_FLAGS( XE_API, PhysicsRigidBodyFlag, PhysicsRigidBodyFlags );
 
@@ -139,7 +134,7 @@ enum class PhysicsMaterialFlag
 };
 DECL_META_FLAGS( XE_API, PhysicsMaterialFlag, PhysicsMaterialFlags );
 
-enum class PhysicsRigidDynamicLockFlag
+enum class PhysicsRigidBodyLockFlag
 {
 	NONE = 0,
 	LINEAR_X = 1 << 0,
@@ -149,7 +144,7 @@ enum class PhysicsRigidDynamicLockFlag
 	ANGULAR_Y = 1 << 4,
 	ANGULAR_Z = 1 << 5,
 };
-DECL_META_FLAGS( XE_API, PhysicsRigidDynamicLockFlag, PhysicsRigidDynamicLockFlags );
+DECL_META_FLAGS( XE_API, PhysicsRigidBodyLockFlag, PhysicsRigidDynamicLockFlags );
 
 enum class ForceMode
 {
@@ -190,7 +185,7 @@ struct XE_API HullPolygon
 struct XE_API QueryHitResult
 {
 	XE::PhysicsShapeHandle Shape;
-	XE::PhysicsRigidActorHandle Actor;
+	XE::PhysicsRigidBodyHandle Actor;
 
 	XE::Vec3f Position;
 	XE::Vec3f Normal;

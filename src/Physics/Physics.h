@@ -13,11 +13,11 @@
 #include "PhysicsShape.h"
 #include "PhysicsJoint.h"
 #include "PhysicsMaterial.h"
+#include "PhysicsSoftBody.h"
 #include "PhysicsRigidBody.h"
-#include "PhysicsRigidActor.h"
+#include "PhysicsFluidBody.h"
+#include "PhysicsClothBody.h"
 #include "PhysicsConstraint.h"
 #include "PhysicsCollection.h"
-#include "PhysicsRigidStatic.h"
-#include "PhysicsRigidDynamic.h"
 
 #endif // PHYSICS_H__B00CBAE6_CFD6_4654_9D6D_F89F7C62299B

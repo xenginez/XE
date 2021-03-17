@@ -1,13 +1,13 @@
 /*!
- * \file	RendererContext.h
+ * \file	GraphicsContext.h
  *
  * \author	ZhengYuanQing
- * \date	2020/04/05
+ * \date	2021/03/17
  * \email	zhengyuanqing.95@gmail.com
  *
  */
-#ifndef RENDERERCONTEXT_H__759BB776_4331_4BA8_AAB0_8AA62934A3A5
-#define RENDERERCONTEXT_H__759BB776_4331_4BA8_AAB0_8AA62934A3A5
+#ifndef GRAPHICSCONTEXT_H__9AD1DAAF_1352_4531_B141_32226BAAD703
+#define GRAPHICSCONTEXT_H__9AD1DAAF_1352_4531_B141_32226BAAD703
 
 #include <optional>
 
@@ -16,15 +16,15 @@
 
 BEG_XE_NAMESPACE
 
-class RendererContext
+class GraphicsContext
 {
 private:
 	struct Private;
 
 public:
-	RendererContext();
+	GraphicsContext();
 
-	virtual ~RendererContext();
+	virtual ~GraphicsContext();
 
 public:
 	void Init( const XE::InitDesc & val );
@@ -213,4 +213,4 @@ private:
 
 END_XE_NAMESPACE
 
-#endif // RENDERERCONTEXT_H__759BB776_4331_4BA8_AAB0_8AA62934A3A5
+#endif // GRAPHICSCONTEXT_H__9AD1DAAF_1352_4531_B141_32226BAAD703

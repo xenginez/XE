@@ -72,9 +72,9 @@ public:
 
 	void SetConstraintFlags( XE::PhysicsConstraintFlags val );
 
-	const XE::Pair<XE::PhysicsRigidActorHandle, XE::PhysicsRigidActorHandle> & GetRigidActorHandle() const;
+	const XE::Pair<XE::PhysicsRigidBodyHandle, XE::PhysicsRigidBodyHandle> & GetRigidActorHandle() const;
 
-	void SetRigidActorHandle( const XE::Pair<XE::PhysicsRigidActorHandle, XE::PhysicsRigidActorHandle> & val );
+	void SetRigidActorHandle( const XE::Pair<XE::PhysicsRigidBodyHandle, XE::PhysicsRigidBodyHandle> & val );
 
 public:
 	const XE::Mat4x4f & GetRelativeTransform() const;
@@ -98,7 +98,7 @@ private:
 	XE::float32 _FirstInvInertiaScale;
 	XE::float32 _SecondInvInertiaScale;
 	XE::PhysicsConstraintFlags _ConstraintFlags;
-	XE::Pair<XE::PhysicsRigidActorHandle, XE::PhysicsRigidActorHandle> _RigidActor;
+	XE::Pair<XE::PhysicsRigidBodyHandle, XE::PhysicsRigidBodyHandle> _RigidActor;
 
 	XE::Mat4x4f _RelativeTransform;
 	XE::Vec3f _RelativeLinearVelocity;

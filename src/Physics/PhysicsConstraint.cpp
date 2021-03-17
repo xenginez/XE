@@ -93,12 +93,12 @@ void XE::PhysicsConstraint::SetConstraintFlags( XE::PhysicsConstraintFlags val )
 	_ConstraintFlags = val;
 }
 
-const XE::Pair<XE::PhysicsRigidActorHandle, XE::PhysicsRigidActorHandle> & XE::PhysicsConstraint::GetRigidActorHandle() const
+const XE::Pair<XE::PhysicsRigidBodyHandle, XE::PhysicsRigidBodyHandle> & XE::PhysicsConstraint::GetRigidActorHandle() const
 {
 	return _RigidActor;
 }
 
-void XE::PhysicsConstraint::SetRigidActorHandle( const XE::Pair<XE::PhysicsRigidActorHandle, XE::PhysicsRigidActorHandle> & val )
+void XE::PhysicsConstraint::SetRigidActorHandle( const XE::Pair<XE::PhysicsRigidBodyHandle, XE::PhysicsRigidBodyHandle> & val )
 {
 	_RigidActor = val;
 }

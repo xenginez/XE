@@ -1,4 +1,4 @@
-#include "RendererContextMetal.h"
+#include "GraphicsContextMetal.h"
 
 #if PLATFORM_OS & ( OS_MAC | OS_IOS )
 
@@ -58,17 +58,17 @@ namespace MTL
 
 END_XE_NAMESPACE
 
-XE::RendererContextMetal::RendererContextMetal()
+XE::GraphicsContextMetal::GraphicsContextMetal()
 {
 
 }
 
-XE::RendererContextMetal::~RendererContextMetal()
+XE::GraphicsContextMetal::~GraphicsContextMetal()
 {
 
 }
 
-void XE::RendererContextMetal::OnRender( XE::Frame* val )
+void XE::GraphicsContextMetal::OnRender( XE::Frame * val )
 {
 
 }

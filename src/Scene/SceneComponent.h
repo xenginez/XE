@@ -28,65 +28,65 @@ public:
 	~SceneComponent();
 
 public:
-	SceneComponentPtr GetRoot();
+	XE::SceneComponentPtr GetRoot();
 
-	SceneComponentPtr GetParent() const;
+	XE::SceneComponentPtr GetParent() const;
 
-	const Array< SceneComponentPtr > & GetChildren() const;
-
-public:
-	template< typename T > XE::SharedPtr<T> GetRootT()
-	{
-		return DP_CAST<T>( GetRoot() );
-	}
-
-	template< typename T > XE::SharedPtr<T> GetParentT() const
-	{
-		return DP_CAST<T>( GetParent() );
-	}
+	const XE::Array< XE::SceneComponentPtr > & GetChildren() const;
 
 public:
-	SceneComponentPtr FindChild( const String& val ) const;
+	template< typename T > XE::SharedPtr< T > GetRootT()
+	{
+		return DP_CAST< T >( GetRoot() );
+	}
 
-	SceneComponentPtr FindChild( IMetaClassPtr val ) const;
-
-	SceneComponentPtr FindChild( ComponentHandle val ) const;
-
-	SceneComponentPtr FindChildFromTree( const String& val ) const;
-
-	SceneComponentPtr FindChildFromTree( IMetaClassPtr val ) const;
-
-	SceneComponentPtr FindChildFromTree( ComponentHandle val ) const;
+	template< typename T > XE::SharedPtr< T > GetParentT() const
+	{
+		return DP_CAST< T >( GetParent() );
+	}
 
 public:
-	template< typename T > XE::SharedPtr<T> FindChildT() const
+	XE::SceneComponentPtr FindChild( const XE::String& val ) const;
+
+	XE::SceneComponentPtr FindChild( XE::IMetaClassPtr val ) const;
+
+	XE::SceneComponentPtr FindChild( XE::ComponentHandle val ) const;
+
+	XE::SceneComponentPtr FindChildFromTree( const XE::String& val ) const;
+
+	XE::SceneComponentPtr FindChildFromTree( XE::IMetaClassPtr val ) const;
+
+	XE::SceneComponentPtr FindChildFromTree( XE::ComponentHandle val ) const;
+
+public:
+	template< typename T > XE::SharedPtr< T > FindChildT() const
 	{
-		return SP_CAST<T>( FindChild( ClassID<T>::Get() ) );
+		return SP_CAST< T >( FindChild( ClassID< T >::Get() ) );
 	}
 
-	template< typename T > XE::SharedPtr<T> FindChildT( const String& val ) const
+	template< typename T > XE::SharedPtr< T > FindChildT( const XE::String& val ) const
 	{
-		return DP_CAST<T>( FindChild( val ) );
+		return DP_CAST< T >( FindChild( val ) );
 	}
 
-	template< typename T > XE::SharedPtr<T> FindChildT( ComponentHandle val ) const
+	template< typename T > XE::SharedPtr< T > FindChildT( XE::ComponentHandle val ) const
 	{
-		return DP_CAST<T>( FindChild( val ) );
+		return DP_CAST< T >( FindChild( val ) );
 	}
 
-	template< typename T > XE::SharedPtr<T> FindChildFromTreeT() const
+	template< typename T > XE::SharedPtr< T > FindChildFromTreeT() const
 	{
-		return SP_CAST<T>( FindChildFromTree( ClassID<T>::Get() ) );
+		return SP_CAST< T >( FindChildFromTree( ClassID< T >::Get() ) );
 	}
 
-	template< typename T > XE::SharedPtr<T> FindChildFromTreeT( const String& val ) const
+	template< typename T > XE::SharedPtr< T > FindChildFromTreeT( const XE::String& val ) const
 	{
-		return DP_CAST<T>( FindChildFromTree( val ) );
+		return DP_CAST< T >( FindChildFromTree( val ) );
 	}
 
-	template< typename T > XE::SharedPtr<T> FindChildFromTreeT( ComponentHandle val ) const
+	template< typename T > XE::SharedPtr< T > FindChildFromTreeT( XE::ComponentHandle val ) const
 	{
-		return DP_CAST<T>( FindChildFromTree( val ) );
+		return DP_CAST< T >( FindChildFromTree( val ) );
 	}
 
 private:

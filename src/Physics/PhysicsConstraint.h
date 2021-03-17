@@ -59,9 +59,9 @@ public:
 
 	void SetConstraintFlags( XE::PhysicsConstraintFlags val );
 
-	const XE::Pair<XE::PhysicsRigidActorHandle, XE::PhysicsRigidActorHandle> & GetRigidActorHandle() const;
+	const XE::Pair<XE::PhysicsRigidBodyHandle, XE::PhysicsRigidBodyHandle> & GetRigidActorHandle() const;
 
-	void SetRigidActorHandle( const XE::Pair<XE::PhysicsRigidActorHandle, XE::PhysicsRigidActorHandle> & val );
+	void SetRigidActorHandle( const XE::Pair<XE::PhysicsRigidBodyHandle, XE::PhysicsRigidBodyHandle> & val );
 
 private:
 	XE::Vec3f _Force;
@@ -70,7 +70,7 @@ private:
 	XE::float32 _BreakTorque;
 	XE::float32 _MinResponseThreshold;
 	XE::PhysicsConstraintFlags _ConstraintFlags;
-	XE::Pair<XE::PhysicsRigidActorHandle, XE::PhysicsRigidActorHandle> _RigidActor;
+	XE::Pair<XE::PhysicsRigidBodyHandle, XE::PhysicsRigidBodyHandle> _RigidActor;
 
 	XE::PhysicsConstraintHandle _Handle;
 	XE::PhysicsSceneHandle _SceneHandle;

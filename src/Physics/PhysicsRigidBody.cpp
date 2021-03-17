@@ -13,6 +13,52 @@ XE::PhysicsRigidBody::~PhysicsRigidBody()
 
 }
 
+
+
+XE::PhysicsRigidBodyHandle XE::PhysicsRigidBody::GetHandle() const
+{
+	return _Handle;
+}
+
+void XE::PhysicsRigidBody::SetHandle( XE::PhysicsRigidBodyHandle val )
+{
+	_Handle = val;
+}
+
+XE::PhysicsSceneHandle XE::PhysicsRigidBody::GetPhysicsSceneHandle() const
+{
+	return _PhysicsSceneHandle;
+}
+
+void XE::PhysicsRigidBody::SetPhysicsSceneHandle( XE::PhysicsSceneHandle val )
+{
+	_PhysicsSceneHandle = val;
+}
+
+const XE::String & XE::PhysicsRigidBody::GetName() const
+{
+	return _Name;
+}
+
+void XE::PhysicsRigidBody::SetName( const XE::String & val )
+{
+	_Name = val;
+}
+
+const XE::Mat4x4f & XE::PhysicsRigidBody::GetWorldTransform() const
+{
+	return _WorldTransform;
+}
+
+void XE::PhysicsRigidBody::SetWorldTransform( const XE::Mat4x4f & val )
+{
+	_WorldTransform = val;
+}
+
+
+
+
+
 XE::float32 XE::PhysicsRigidBody::GetMass() const
 {
 	return _Mass;
@@ -141,4 +187,89 @@ const XE::Vec3f & XE::PhysicsRigidBody::GetMassSpaceInertiaTensor() const
 void XE::PhysicsRigidBody::SetMassSpaceInertiaTensor( const XE::Vec3f & val )
 {
 	_MassSpaceInertiaTensor = val;
+}
+
+
+
+
+bool XE::PhysicsRigidBody::GetDynamic() const
+{
+	return _IsDynamic;
+}
+
+void XE::PhysicsRigidBody::SetDynamic( bool val )
+{
+	_IsDynamic = val;
+}
+
+
+
+XE::float32 XE::PhysicsRigidBody::GetSleepThreshold() const
+{
+	return _SleepThreshold;
+}
+
+void XE::PhysicsRigidBody::SetSleepThreshold( XE::float32 val )
+{
+	_SleepThreshold = val;
+}
+
+XE::uint32 XE::PhysicsRigidBody::GetPositionIteration() const
+{
+	return _PositionIteration;
+}
+
+void XE::PhysicsRigidBody::SetPositionIteration( XE::uint32 val )
+{
+	_PositionIteration = val;
+}
+
+XE::uint32 XE::PhysicsRigidBody::GetVelocityIteration() const
+{
+	return _VelocityIteration;
+}
+
+void XE::PhysicsRigidBody::SetVelocityIteration( XE::uint32 val )
+{
+	_VelocityIteration = val;
+}
+
+XE::float32 XE::PhysicsRigidBody::GetStabilizationThreshold() const
+{
+	return _StabilizationThreshold;
+}
+
+void XE::PhysicsRigidBody::SetStabilizationThreshold( XE::float32 val )
+{
+	_StabilizationThreshold = val;
+}
+
+XE::float32 XE::PhysicsRigidBody::GetContactReportThreshold() const
+{
+	return _ContactReportThreshold;
+}
+
+void XE::PhysicsRigidBody::SetContactReportThreshold( XE::float32 val )
+{
+	_ContactReportThreshold = val;
+}
+
+const XE::Mat4x4f & XE::PhysicsRigidBody::GetKinematicTarget() const
+{
+	return _KinematicTarget;
+}
+
+void XE::PhysicsRigidBody::SetKinematicTarget( const XE::Mat4x4f & val )
+{
+	_KinematicTarget = val;
+}
+
+XE::PhysicsRigidBodyLockFlag XE::PhysicsRigidBody::GetRigidBodyLockFlags() const
+{
+	return _RigidBodyLockFlags;
+}
+
+void XE::PhysicsRigidBody::SetRigidBodyLockFlags( XE::PhysicsRigidBodyLockFlag val )
+{
+	_RigidBodyLockFlags = val;
 }

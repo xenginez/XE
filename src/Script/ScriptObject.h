@@ -43,7 +43,7 @@ public:
 	void SetMetaClass( const XE::IMetaClassPtr & val );
 
 private:
-	XE::IMetaClassPtr _MetaClass;
+	XE::IMetaClassPtr _MetaClass = nullptr;
 	FinalizeCallbackType _Finalize = nullptr;
 	XE::ScriptGCMarker _Marker = ScriptGCMarker::WHITE1;
 };

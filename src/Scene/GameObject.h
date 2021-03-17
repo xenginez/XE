@@ -26,48 +26,70 @@ public:
 	XE::AABB GetBoundingBox() const;
 
 public:
-	GameObjectType GetType() const;
+	XE::GameObjectType GetType() const;
 
-	void SetType( GameObjectType val );
+	void SetType( XE::GameObjectType val );
 
 public:
-	SceneComponentPtr AddSceneComponent( IMetaClassPtr val, const SceneComponentPtr& parent );
+	XE::SceneComponentPtr AddSceneComponent( XE::IMetaClassPtr val, const XE::SceneComponentPtr & parent );
 
-	BehaviorComponentPtr AddBehaviorComponent( IMetaClassPtr val );
+	XE::BehaviorComponentPtr AddBehaviorComponent( XE::IMetaClassPtr val );
 
 	bool RemoveSceneComponent( const XE::SceneComponentPtr & val );
 
-	bool RemoveBehaviorComponet( const BehaviorComponentPtr & val );
+	bool RemoveBehaviorComponet( const XE::BehaviorComponentPtr & val );
 
 public:
-	BehaviorComponentPtr FindBehaviorComponent( const String& val ) const;
+	XE::BehaviorComponentPtr FindBehaviorComponent( const XE::String & val ) const;
 
-	BehaviorComponentPtr FindBehaviorComponent( IMetaClassPtr val ) const;
+	XE::BehaviorComponentPtr FindBehaviorComponent( XE::IMetaClassPtr val ) const;
 
-	BehaviorComponentPtr FindBehaviorComponent( ComponentHandle val ) const;
+	XE::BehaviorComponentPtr FindBehaviorComponent( XE::ComponentHandle val ) const;
 
-	template< typename T > XE::SharedPtr<T> FindBehaviorComponentT() const
+	template< typename T > XE::SharedPtr< T > FindBehaviorComponentT() const
 	{
-		return SP_CAST<T>( FindBehaviorComponent( ClassID<T>::Get() ) );
+		return SP_CAST< T >( FindBehaviorComponent( ClassID< T >::Get() ) );
 	}
 
-	template< typename T > XE::SharedPtr<T> FindBehaviorComponentT( const String& val ) const
+	template< typename T > XE::SharedPtr< T > FindBehaviorComponentT( const XE::String & val ) const
 	{
-		return DP_CAST<T>( FindBehaviorComponent( val ) );
+		return DP_CAST< T >( FindBehaviorComponent( val ) );
 	}
 
-	template< typename T > XE::SharedPtr<T> FindBehaviorComponentT( ComponentHandle val ) const
+	template< typename T > XE::SharedPtr< T > FindBehaviorComponentT( XE::ComponentHandle val ) const
 	{
-		return DP_CAST<T>( FindBehaviorComponent( val ) );
+		return DP_CAST< T >( FindBehaviorComponent( val ) );
 	}
 
 public:
-	SceneComponentPtr GetSceneComponent() const;
+	XE::SceneComponentPtr FindSceneComponent( XE::IMetaClassPtr val ) const;
 
-	const XE::Array<BehaviorComponentPtr>& GetBehaviorComponents() const;
+	XE::SceneComponentPtr FindSceneComponent( const XE::String & val ) const;
+
+	XE::SceneComponentPtr FindSceneComponent( XE::ComponentHandle val ) const;
+
+	template< typename T > XE::SharedPtr< T > FindSceneComponentT() const
+	{
+		return DP_CAST< T >( FindSceneComponent( XE_ClassID< T >::Get() ) );
+	}
+
+	template< typename T > XE::SharedPtr< T > FindSceneComponentT( const XE::String & val ) const
+	{
+		return DP_CAST< T >( FindSceneComponent( val ) );
+	}
+
+	template< typename T > XE::SharedPtr< T > FindSceneComponentT( XE::ComponentHandle val ) const
+	{
+		return DP_CAST< T >( FindSceneComponent( val ) );
+	}
 
 public:
-	void ProcessEvent( const EventPtr & val ) override;
+	XE::SceneComponentPtr GetRootSceneComponents() const;
+
+	const XE::Array< XE::BehaviorComponentPtr > & GetBehaviorComponents() const;
+
+public:
+	void ProcessEvent( const XE::EventPtr & val ) override;
 
 protected:
 	void Startup() override;
@@ -84,31 +106,31 @@ protected:
 	void OnDisable() override;
 
 private:
-	GameObjectType _Type;
-	SceneComponentPtr _SceneComponent;
+	XE::GameObjectType _Type;
+	XE::SceneComponentPtr _SceneComponent;
 	XE::ComponentHandleAllocator _HandleTable;
-	XE::Array< BehaviorComponentPtr > _BehaviorComponents;
+	XE::Array< XE::BehaviorComponentPtr > _BehaviorComponents;
 };
 
-template<> class MakeAABB< GameObjectPtr >
+template<> class MakeAABB< XE::GameObjectPtr >
 {
 public:
-	XE::AABB operator()( const GameObjectPtr & val ) const
+	XE::AABB operator()( const XE::GameObjectPtr & val ) const
 	{
 		return val->GetBoundingBox();
 	}
 };
 
-template<> class MakeRect< GameObjectPtr >
+template<> class MakeRect< XE::GameObjectPtr >
 {
 public:
-	XE::Rectf operator()( const GameObjectPtr & val ) const
+	XE::Rectf operator()( const XE::GameObjectPtr & val ) const
 	{
-		AABB box = val->GetBoundingBox();
+		XE::AABB box = val->GetBoundingBox();
 		auto center = box.GetCenter();
 		auto size = box.GetSize();
 
-		return Rectf( center.x, center.y, size.x, size.y );
+		return XE::Rectf( center.x, center.y, size.x, size.y );
 	}
 };
 

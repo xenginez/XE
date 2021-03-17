@@ -1,4 +1,4 @@
-#include "RendererContextVulkan.h"
+#include "GraphicsContextVulkan.h"
 
 #if PLATFORM_OS & ( OS_WINDOWS | OS_ANDROID | OS_LINUX )
 
@@ -66,17 +66,17 @@ namespace VK
 
 END_XE_NAMESPACE
 
-XE::RendererContextVulkan::RendererContextVulkan()
+XE::GraphicsContextVulkan::GraphicsContextVulkan()
 {
 
 }
 
-XE::RendererContextVulkan::~RendererContextVulkan()
+XE::GraphicsContextVulkan::~GraphicsContextVulkan()
 {
 
 }
 
-void XE::RendererContextVulkan::OnRender( XE::RenderFrame* val )
+void XE::GraphicsContextVulkan::OnRender( XE::RenderFrame * val )
 {
 
 }

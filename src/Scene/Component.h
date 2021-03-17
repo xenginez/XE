@@ -27,21 +27,21 @@ public:
 	virtual ~Component();
 
 public:
-	ComponentHandle GetHandle() const;
+	XE::ComponentHandle GetHandle() const;
 
 public:
-	WorldPtr GetWorld() const;
+	XE::WorldPtr GetWorld() const;
 
-	GameObjectPtr GetGameObject() const;
+	XE::GameObjectPtr GetGameObject() const;
 
 public:
 	bool GetEnabled() const;
 
 	void SetEnabled( bool val );
 
-	const String & GetName() const;
+	const XE::String & GetName() const;
 
-	void SetName( const String & val );
+	void SetName( const XE::String & val );
 
 protected:
 	virtual void Startup();
@@ -62,11 +62,11 @@ protected:
 	virtual void OnClearup();
 
 private:
-	String _Name;
+	XE::String _Name;
 	bool _Enabled;
-	WorldWPtr _World;
-	ComponentHandle _Handle;
-	GameObjectWPtr _GameObject;
+	XE::WorldWPtr _World;
+	XE::ComponentHandle _Handle;
+	XE::GameObjectWPtr _GameObject;
 };
 
 END_XE_NAMESPACE

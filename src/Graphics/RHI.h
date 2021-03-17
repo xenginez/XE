@@ -1,13 +1,13 @@
 /*!
- * \file	Gfx.h
+ * \file	RHI.h
  *
  * \author	ZhengYuanQing
- * \date	2020/04/04
+ * \date	2021/03/17
  * \email	zhengyuanqing.95@gmail.com
  *
  */
-#ifndef GFX_H__03DAE83A_A925_4FCA_8E63_633C5869DEB0
-#define GFX_H__03DAE83A_A925_4FCA_8E63_633C5869DEB0
+#ifndef RHI_H__BDBD90B6_7696_409B_86C0_3A72EFF2B5A0
+#define RHI_H__BDBD90B6_7696_409B_86C0_3A72EFF2B5A0
 
 #include <optional>
 
@@ -15,22 +15,22 @@
 
 BEG_XE_NAMESPACE
 
-class XE_API Gfx : public XE::Singleton< Gfx >
+class XE_API RHI : public XE::Singleton< RHI >
 {
-	SINGLETON( Gfx )
+	SINGLETON( RHI )
 
 private:
 	struct Private;
 
 private:
-	Gfx();
+	RHI();
 
-	~Gfx();
+	~RHI();
 
 public:
 	const XE::CapsInfo & GetCaps();
 
-	XE::List<XE::RendererContextType> GetSupportedContext();
+	XE::List< XE::GraphicsContextType > GetSupportedContext();
 
 public:
 	void Init( const XE::InitDesc & val );
@@ -91,20 +91,20 @@ public:
 	const XE::VertexBufferDesc & GetDesc( XE::DynamicVertexBufferHandle handle );
 
 public:
-	void Update( const XE::UpdateTextureDesc & desc, XE::MemoryView data );
+	void UpdateTexture( const XE::UpdateTextureDesc & desc, XE::MemoryView data );
 
-	void Update( XE::DynamicIndexBufferHandle handle, XE::uint64 start, XE::MemoryView data );
+	void UpdateDynamicIndexBuffer( XE::DynamicIndexBufferHandle handle, XE::uint64 start, XE::MemoryView data );
 
-	void Update( XE::DynamicVertexBufferHandle handle, XE::uint64 start, XE::MemoryView data );
+	void UpdateDynamicVertexBuffer( XE::DynamicVertexBufferHandle handle, XE::uint64 start, XE::MemoryView data );
 
 public:
-	XE::Array<XE::UniformDesc> GetShaderUniforms( XE::ShaderHandle handle );
+	XE::Array< XE::UniformDesc > GetShaderUniforms( XE::ShaderHandle handle );
 
 	void ReadTexture( XE::TextureHandle handle, XE::uint8 * data, XE::uint8 mip );
 
 	XE::TextureHandle GetTexture( XE::FrameBufferHandle handle, XE::uint8 attachment );
 
-	std::optional<XE::uint32> GetOcclusionQueryValue( XE::OcclusionQueryHandle handle );
+	std::optional< XE::uint32 > GetOcclusionQueryValue( XE::OcclusionQueryHandle handle );
 
 public:
 	void SetViewName( XE::ViewHandle handle, const XE::String & name );
@@ -132,4 +132,4 @@ private:
 
 END_XE_NAMESPACE
 
-#endif // GFX_H__03DAE83A_A925_4FCA_8E63_633C5869DEB0
+#endif // RHI_H__BDBD90B6_7696_409B_86C0_3A72EFF2B5A0

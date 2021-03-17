@@ -1,4 +1,4 @@
-#include "RendererContextD3D12.h"
+#include "GraphicsContextD3D12.h"
 
 #if PLATFORM_OS & ( OS_WINDOWS | OS_XBOX )
 
@@ -1024,7 +1024,7 @@ namespace XE::D3D12
 
 		void shutdown();
 
-		void begin( ID3D12GraphicsCommandList * _commandList, XE::RendererContext * _context, OcclusionQueryHandle _handle );
+		void begin( ID3D12GraphicsCommandList * _commandList, XE::GraphicsContext * _context, OcclusionQueryHandle _handle );
 
 		void end( ID3D12GraphicsCommandList * _commandList );
 
@@ -2370,7 +2370,7 @@ namespace XE::D3D12
 		DX_RELEASE( m_readback );
 	}
 
-	void OcclusionQuery::begin( ID3D12GraphicsCommandList * _commandList, XE::RendererContext * _context, OcclusionQueryHandle _handle )
+	void OcclusionQuery::begin( ID3D12GraphicsCommandList * _commandList, XE::GraphicsContext * _context, OcclusionQueryHandle _handle )
 	{
 		while( 0 == m_control.reserve( 1 ) )
 		{
@@ -2662,17 +2662,17 @@ namespace XE::D3D12
 }
 
 
-XE::RendererContextD3D12::RendererContextD3D12()
+XE::GraphicsContextD3D12::GraphicsContextD3D12()
 {
 
 }
 
-XE::RendererContextD3D12::~RendererContextD3D12()
+XE::GraphicsContextD3D12::~GraphicsContextD3D12()
 {
 
 }
 
-void XE::RendererContextD3D12::OnRender( XE::RenderFrame * val )
+void XE::GraphicsContextD3D12::OnRender( XE::RenderFrame * val )
 {
 	ExecCommands( val->PrevCmd );
 
@@ -2683,7 +2683,7 @@ void XE::RendererContextD3D12::OnRender( XE::RenderFrame * val )
 	ExecCommands( val->PostCmd );
 }
 
-void XE::RendererContextD3D12::ExecCommands( XE::Buffer & buffer )
+void XE::GraphicsContextD3D12::ExecCommands( XE::Buffer & buffer )
 {
 	while( !buffer.Eof() )
 	{
@@ -2963,7 +2963,7 @@ void XE::RendererContextD3D12::ExecCommands( XE::Buffer & buffer )
 	}
 }
 
-void XE::RendererContextD3D12::Init()
+void XE::GraphicsContextD3D12::Init()
 {
 	_RTX->m_winPixEvent = XE::Library::Open( "WinPixEventRuntime.dll" );
 	XE_ASSERT( _RTX->m_winPixEvent && "Init error: Failed to load WinPixEventRuntime.dll." );
@@ -3335,7 +3335,7 @@ void XE::RendererContextD3D12::Init()
 	}
 }
 
-void XE::RendererContextD3D12::Shutdown()
+void XE::GraphicsContextD3D12::Shutdown()
 {
 	_RTX->m_cmd.finish();
 
@@ -3402,22 +3402,22 @@ void XE::RendererContextD3D12::Shutdown()
 	_RTX->m_kernel32Dll = nullptr;
 }
 
-void XE::RendererContextD3D12::CreateShader( XE::ShaderHandle handle, XE::MemoryView data )
+void XE::GraphicsContextD3D12::CreateShader( XE::ShaderHandle handle, XE::MemoryView data )
 {
 	_RTX->m_shaders[handle.GetValue()].create( data );
 }
 
-void XE::RendererContextD3D12::CreateProgram( XE::ProgramHandle handle )
+void XE::GraphicsContextD3D12::CreateProgram( XE::ProgramHandle handle )
 {
 	_RTX->m_program[handle.GetValue()].create( &_RTX->m_shaders[GetDesc( handle ).CS.GetValue()], &_RTX->m_shaders[GetDesc( handle ).VS.GetValue()] );
 }
 
-void XE::RendererContextD3D12::CreateTexture( XE::TextureHandle handle, XE::MemoryView data )
+void XE::GraphicsContextD3D12::CreateTexture( XE::TextureHandle handle, XE::MemoryView data )
 {
 	_RTX->m_textures[handle.GetValue()].create( data, GetDesc( handle ).Flags, GetDesc( handle ).NumMips );
 }
 
-void XE::RendererContextD3D12::CreateFrameBuffer( XE::FrameBufferHandle handle )
+void XE::GraphicsContextD3D12::CreateFrameBuffer( XE::FrameBufferHandle handle )
 {
 	const auto & desc = GetDesc( handle );
 
@@ -3431,12 +3431,12 @@ void XE::RendererContextD3D12::CreateFrameBuffer( XE::FrameBufferHandle handle )
 	}
 }
 
-void XE::RendererContextD3D12::CreateIndexBuffer( XE::IndexBufferHandle handle, XE::MemoryView data )
+void XE::GraphicsContextD3D12::CreateIndexBuffer( XE::IndexBufferHandle handle, XE::MemoryView data )
 {
 	_RTX->m_indexBuffers[handle.GetValue()].create( data.size(), ( void * )data.data(), GetDesc( handle ).Flags, false );
 }
 
-void XE::RendererContextD3D12::CreateVertexLayout( XE::VertexLayoutHandle handle )
+void XE::GraphicsContextD3D12::CreateVertexLayout( XE::VertexLayoutHandle handle )
 {
 	const auto & desc = GetDesc( handle );
 
@@ -3448,27 +3448,27 @@ void XE::RendererContextD3D12::CreateVertexLayout( XE::VertexLayoutHandle handle
 	_RTX->m_vertexLayouts[handle.GetValue()].end();
 }
 
-void XE::RendererContextD3D12::CreateVertexBuffer( XE::VertexBufferHandle handle, XE::MemoryView data )
+void XE::GraphicsContextD3D12::CreateVertexBuffer( XE::VertexBufferHandle handle, XE::MemoryView data )
 {
 	_RTX->m_vertexBuffers[handle.GetValue()].create( data.size(), ( void * )data.data(), GetDesc( handle ).Layout, GetDesc( handle ).Flags );
 }
 
-void XE::RendererContextD3D12::CreateOcclusionQuery( XE::OcclusionQueryHandle handle )
+void XE::GraphicsContextD3D12::CreateOcclusionQuery( XE::OcclusionQueryHandle handle )
 {
 	( void )( handle );
 }
 
-void XE::RendererContextD3D12::CreateDynamicIndexBuffer( XE::DynamicIndexBufferHandle handle )
+void XE::GraphicsContextD3D12::CreateDynamicIndexBuffer( XE::DynamicIndexBufferHandle handle )
 {
 	_RTX->m_indexBuffers[handle.GetValue()].create( GetDesc( handle ).Size, nullptr, GetDesc( handle ).Flags, false );
 }
 
-void XE::RendererContextD3D12::CreateDynamicVertexBuffer( XE::DynamicVertexBufferHandle handle )
+void XE::GraphicsContextD3D12::CreateDynamicVertexBuffer( XE::DynamicVertexBufferHandle handle )
 {
 	_RTX->m_vertexBuffers[handle.GetValue()].create( GetDesc( handle ).Size, nullptr, GetDesc( handle ).Layout, GetDesc( handle ).Flags );
 }
 
-void XE::RendererContextD3D12::ReadTexture( XE::TextureHandle handle, XE::uint8 * data, XE::uint8 mip )
+void XE::GraphicsContextD3D12::ReadTexture( XE::TextureHandle handle, XE::uint8 * data, XE::uint8 mip )
 {
 	_RTX->m_textures[handle.GetValue()].overrideInternal( ( uintptr_t )data );
 
@@ -3527,72 +3527,72 @@ void XE::RendererContextD3D12::ReadTexture( XE::TextureHandle handle, XE::uint8 
 	DX_RELEASE( readback );
 }
 
-void XE::RendererContextD3D12::UpdateTexture( const XE::UpdateTextureDesc & desc, XE::MemoryView data )
+void XE::GraphicsContextD3D12::UpdateTexture( const XE::UpdateTextureDesc & desc, XE::MemoryView data )
 {
 	_RTX->m_textures[desc.Handle.GetValue()].update( nullptr, desc.Side, desc.Mip, { desc.X, desc.Y, desc.Width, desc.Height }, desc.Z, desc.Depth, desc.Layer, data );
 }
 
-void XE::RendererContextD3D12::UpdateDynamicIndexBuffer( XE::DynamicIndexBufferHandle handle, XE::uint64 start, XE::MemoryView mem )
+void XE::GraphicsContextD3D12::UpdateDynamicIndexBuffer( XE::DynamicIndexBufferHandle handle, XE::uint64 start, XE::MemoryView mem )
 {
 	_RTX->m_indexBuffers[handle.GetValue()].update( nullptr, start, mem.size(), ( void * )mem.data() );
 }
 
-void XE::RendererContextD3D12::UpdateDynamicVertexBuffer( XE::DynamicVertexBufferHandle handle, XE::uint64 start, XE::MemoryView mem )
+void XE::GraphicsContextD3D12::UpdateDynamicVertexBuffer( XE::DynamicVertexBufferHandle handle, XE::uint64 start, XE::MemoryView mem )
 {
 	_RTX->m_indexBuffers[handle.GetValue()].update( nullptr, start, mem.size(), ( void * )mem.data() );
 }
 
-void XE::RendererContextD3D12::DestroyShader( XE::ShaderHandle handle )
+void XE::GraphicsContextD3D12::DestroyShader( XE::ShaderHandle handle )
 {
 	_RTX->m_shaders[handle.GetValue()].destroy();
 }
 
-void XE::RendererContextD3D12::DestroyTexture( XE::TextureHandle handle )
+void XE::GraphicsContextD3D12::DestroyTexture( XE::TextureHandle handle )
 {
 	_RTX->m_textures[handle.GetValue()].destroy();
 }
 
-void XE::RendererContextD3D12::DestroyProgram( XE::ProgramHandle handle )
+void XE::GraphicsContextD3D12::DestroyProgram( XE::ProgramHandle handle )
 {
 	_RTX->m_program[handle.GetValue()].destroy();
 }
 
-void XE::RendererContextD3D12::DestroyFrameBuffer( XE::FrameBufferHandle handle )
+void XE::GraphicsContextD3D12::DestroyFrameBuffer( XE::FrameBufferHandle handle )
 {
 	_RTX->m_frameBuffers[handle.GetValue()].destroy();
 }
 
-void XE::RendererContextD3D12::DestroyIndexBuffer( XE::IndexBufferHandle handle )
+void XE::GraphicsContextD3D12::DestroyIndexBuffer( XE::IndexBufferHandle handle )
 {
 	_RTX->m_indexBuffers[handle.GetValue()].destroy();
 }
 
-void XE::RendererContextD3D12::DestroyVertexLayout( XE::VertexLayoutHandle handle )
+void XE::GraphicsContextD3D12::DestroyVertexLayout( XE::VertexLayoutHandle handle )
 {
 	( void )( handle );
 }
 
-void XE::RendererContextD3D12::DestroyVertexBuffer( XE::VertexBufferHandle handle )
+void XE::GraphicsContextD3D12::DestroyVertexBuffer( XE::VertexBufferHandle handle )
 {
 	_RTX->m_vertexBuffers[handle.GetValue()].destroy();
 }
 
-void XE::RendererContextD3D12::DestroyOcclusionQuery( XE::OcclusionQueryHandle handle )
+void XE::GraphicsContextD3D12::DestroyOcclusionQuery( XE::OcclusionQueryHandle handle )
 {
 	_RTX->m_occlusionQuery.invalidate( handle );
 }
 
-void XE::RendererContextD3D12::DestroyDynamicIndexBuffer( XE::DynamicIndexBufferHandle handle )
+void XE::GraphicsContextD3D12::DestroyDynamicIndexBuffer( XE::DynamicIndexBufferHandle handle )
 {
 	_RTX->m_indexBuffers[handle.GetValue()].destroy();
 }
 
-void XE::RendererContextD3D12::DestroyDynamicVertexBuffer( XE::DynamicVertexBufferHandle handle )
+void XE::GraphicsContextD3D12::DestroyDynamicVertexBuffer( XE::DynamicVertexBufferHandle handle )
 {
 	_RTX->m_vertexBuffers[handle.GetValue()].destroy();
 }
 
-void XE::RendererContextD3D12::RequestScreenShot( XE::FrameBufferHandle handle, const std::string & userdata, ScreenShotCallbackType callback )
+void XE::GraphicsContextD3D12::RequestScreenShot( XE::FrameBufferHandle handle, const std::string & userdata, ScreenShotCallbackType callback )
 {
 	uint32_t idx = ( _RTX->m_backBufferColorIdx - 1 ) % _RTX->m_scd.bufferCount;
 	_RTX->m_cmd.finish( _RTX->m_backBufferColorFence[idx] );

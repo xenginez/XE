@@ -1,4 +1,4 @@
-#include "RendererContextSoftware.h"
+#include "GraphicsContextSoftware.h"
 
 #include <tbb/parallel_for.h>
 
@@ -11,7 +11,7 @@ struct PTriangle
 
 };
 
-struct XE::RendererContextSoftware::Private
+struct XE::GraphicsContextSoftware::Private
 {
 	std::array<XE::uint8 *, GFX_MAX_SHADERS> _Shaders;
 	std::array<XE::uint8 *, GFX_MAX_TEXTURES> _Textures;
@@ -24,18 +24,18 @@ struct XE::RendererContextSoftware::Private
 	XE::Array<XE::OcclusionQueryHandle> _Occlusions;
 };
 
-XE::RendererContextSoftware::RendererContextSoftware()
+XE::GraphicsContextSoftware::GraphicsContextSoftware()
 	:_p( new Private )
 {
 
 }
 
-XE::RendererContextSoftware::~RendererContextSoftware()
+XE::GraphicsContextSoftware::~GraphicsContextSoftware()
 {
 	delete _p;
 }
 
-void XE::RendererContextSoftware::OnRender( XE::RenderFrame * frame )
+void XE::GraphicsContextSoftware::OnRender( XE::RenderFrame * frame )
 {
 	ExecCommand( frame, &frame->PrevCmd );
 
@@ -79,7 +79,7 @@ void XE::RendererContextSoftware::OnRender( XE::RenderFrame * frame )
 	ExecCommand( frame, &frame->PostCmd );
 }
 
-void XE::RendererContextSoftware::BlitCall( XE::RenderFrame * frame, XE::RenderBlit * item )
+void XE::GraphicsContextSoftware::BlitCall( XE::RenderFrame * frame, XE::RenderBlit * item )
 {
 	XE::uint8 * src = _p->_Textures[item->Src];
 	XE::uint8 * dst = _p->_Textures[item->Dst];
@@ -87,7 +87,7 @@ void XE::RendererContextSoftware::BlitCall( XE::RenderFrame * frame, XE::RenderB
 
 }
 
-void XE::RendererContextSoftware::DrawCall( XE::RenderFrame * frame, XE::RenderDraw * item, XE::RenderBind * bind )
+void XE::GraphicsContextSoftware::DrawCall( XE::RenderFrame * frame, XE::RenderDraw * item, XE::RenderBind * bind )
 {
 	// vertex data
 	XE::Array<PTriangle> triangles( XE::MemoryResource::GetStackMemoryResource() );
@@ -121,7 +121,7 @@ void XE::RendererContextSoftware::DrawCall( XE::RenderFrame * frame, XE::RenderD
 					   } );
 }
 
-void XE::RendererContextSoftware::ComputeCall( XE::RenderFrame * frame, XE::RenderCompute * item, XE::RenderBind * bind )
+void XE::GraphicsContextSoftware::ComputeCall( XE::RenderFrame * frame, XE::RenderCompute * item, XE::RenderBind * bind )
 {
 	tbb::parallel_for( XE::uint64( 0 ), XE::uint64( item->NumX * item->NumY * item->NumZ ), XE::uint64( 1 ), [this, frame, item, bind]( XE::uint64 i )
 					   {
@@ -132,7 +132,7 @@ void XE::RendererContextSoftware::ComputeCall( XE::RenderFrame * frame, XE::Rend
 					   } );
 }
 
-void XE::RendererContextSoftware::ExecCommand( XE::RenderFrame * frame, XE::Buffer * buffer )
+void XE::GraphicsContextSoftware::ExecCommand( XE::RenderFrame * frame, XE::Buffer * buffer )
 {
 	bool cmd_exit = false;
 	while( cmd_exit )
@@ -232,7 +232,7 @@ void XE::RendererContextSoftware::ExecCommand( XE::RenderFrame * frame, XE::Buff
 	}
 }
 
-void XE::RendererContextSoftware::Init( XE::RenderFrame * frame )
+void XE::GraphicsContextSoftware::Init( XE::RenderFrame * frame )
 {
 	for( auto & it : _p->_Shaders ) it = nullptr;
 	for( auto & it : _p->_Textures ) it = nullptr;
@@ -244,7 +244,7 @@ void XE::RendererContextSoftware::Init( XE::RenderFrame * frame )
 
 }
 
-void XE::RendererContextSoftware::Shutdown( XE::RenderFrame * frame )
+void XE::GraphicsContextSoftware::Shutdown( XE::RenderFrame * frame )
 {
 	_p->_Occlusions.clear();
 
@@ -257,12 +257,12 @@ void XE::RendererContextSoftware::Shutdown( XE::RenderFrame * frame )
 	for( auto it : _p->_DynamicVertexBuffers ) delete it;
 }
 
-void XE::RendererContextSoftware::CreateProgram( XE::RenderFrame * frame )
+void XE::GraphicsContextSoftware::CreateProgram( XE::RenderFrame * frame )
 {
 	( void )( 0 );
 }
 
-void XE::RendererContextSoftware::CreateFrameBuffer( XE::RenderFrame * frame )
+void XE::GraphicsContextSoftware::CreateFrameBuffer( XE::RenderFrame * frame )
 {
 	XE::FrameBufferHandle handle;
 	frame->PrevCmd.Read( handle );
@@ -270,7 +270,7 @@ void XE::RendererContextSoftware::CreateFrameBuffer( XE::RenderFrame * frame )
 	( void )( handle );
 }
 
-void XE::RendererContextSoftware::CreateVertexLayout( XE::RenderFrame * frame )
+void XE::GraphicsContextSoftware::CreateVertexLayout( XE::RenderFrame * frame )
 {
 	XE::VertexLayoutHandle handle;
 	frame->PrevCmd.Read( handle );
@@ -278,7 +278,7 @@ void XE::RendererContextSoftware::CreateVertexLayout( XE::RenderFrame * frame )
 	( void )( handle );
 }
 
-void XE::RendererContextSoftware::CreateOcclusionQuery( XE::RenderFrame * frame )
+void XE::GraphicsContextSoftware::CreateOcclusionQuery( XE::RenderFrame * frame )
 {
 	XE::OcclusionQueryHandle handle;
 	frame->PrevCmd.Read( handle );
@@ -286,7 +286,7 @@ void XE::RendererContextSoftware::CreateOcclusionQuery( XE::RenderFrame * frame 
 	_p->_Occlusions.push_back( handle );
 }
 
-void XE::RendererContextSoftware::CreateShader( XE::RenderFrame * frame )
+void XE::GraphicsContextSoftware::CreateShader( XE::RenderFrame * frame )
 {
 	XE::ShaderHandle handle;
 	frame->PrevCmd.Read( handle );
@@ -298,7 +298,7 @@ void XE::RendererContextSoftware::CreateShader( XE::RenderFrame * frame )
 	std::memcpy( _p->_Shaders[handle], data.data(), data.size() );
 }
 
-void XE::RendererContextSoftware::CreateTexture( XE::RenderFrame * frame )
+void XE::GraphicsContextSoftware::CreateTexture( XE::RenderFrame * frame )
 {
 	XE::TextureHandle handle;
 	frame->PrevCmd.Read( handle );
@@ -315,7 +315,7 @@ void XE::RendererContextSoftware::CreateTexture( XE::RenderFrame * frame )
 	}
 }
 
-void XE::RendererContextSoftware::CreateIndexBuffer( XE::RenderFrame * frame )
+void XE::GraphicsContextSoftware::CreateIndexBuffer( XE::RenderFrame * frame )
 {
 	XE::IndexBufferHandle handle;
 	frame->PrevCmd.Read( handle );
@@ -332,7 +332,7 @@ void XE::RendererContextSoftware::CreateIndexBuffer( XE::RenderFrame * frame )
 	}
 }
 
-void XE::RendererContextSoftware::CreateVertexBuffer( XE::RenderFrame * frame )
+void XE::GraphicsContextSoftware::CreateVertexBuffer( XE::RenderFrame * frame )
 {
 	XE::VertexBufferHandle handle;
 	frame->PrevCmd.Read( handle );
@@ -349,7 +349,7 @@ void XE::RendererContextSoftware::CreateVertexBuffer( XE::RenderFrame * frame )
 	}
 }
 
-void XE::RendererContextSoftware::CreateDynamicIndexBuffer( XE::RenderFrame * frame )
+void XE::GraphicsContextSoftware::CreateDynamicIndexBuffer( XE::RenderFrame * frame )
 {
 	XE::DynamicIndexBufferHandle handle;
 	frame->PrevCmd.Read( handle );
@@ -366,7 +366,7 @@ void XE::RendererContextSoftware::CreateDynamicIndexBuffer( XE::RenderFrame * fr
 	}
 }
 
-void XE::RendererContextSoftware::CreateDynamicVertexBuffer( XE::RenderFrame * frame )
+void XE::GraphicsContextSoftware::CreateDynamicVertexBuffer( XE::RenderFrame * frame )
 {
 	XE::DynamicVertexBufferHandle handle;
 	frame->PrevCmd.Read( handle );
@@ -383,7 +383,7 @@ void XE::RendererContextSoftware::CreateDynamicVertexBuffer( XE::RenderFrame * f
 	}
 }
 
-void XE::RendererContextSoftware::ReadTexture( XE::RenderFrame * frame )
+void XE::GraphicsContextSoftware::ReadTexture( XE::RenderFrame * frame )
 {
 	XE::TextureHandle handle;
 	std::uintptr_t data;
@@ -398,7 +398,7 @@ void XE::RendererContextSoftware::ReadTexture( XE::RenderFrame * frame )
 	std::memcpy( p, _p->_Textures[handle], GetDesc( handle ).Width * GetDesc( handle ).Height * GetDesc( handle ).Depth );
 }
 
-void XE::RendererContextSoftware::UpdateTexture( XE::RenderFrame * frame )
+void XE::GraphicsContextSoftware::UpdateTexture( XE::RenderFrame * frame )
 {
 	XE::TextureHandle handle;
 	XE::UpdateTextureDesc desc;
@@ -411,7 +411,7 @@ void XE::RendererContextSoftware::UpdateTexture( XE::RenderFrame * frame )
 	std::memcpy( _p->_Textures[handle], data.data(), data.size() );
 }
 
-void XE::RendererContextSoftware::RequestScreenShot( XE::RenderFrame * frame )
+void XE::GraphicsContextSoftware::RequestScreenShot( XE::RenderFrame * frame )
 {
 	XE::TextureHandle handle;
 	std::string path;
@@ -422,7 +422,7 @@ void XE::RendererContextSoftware::RequestScreenShot( XE::RenderFrame * frame )
 	stbi_write_png( path.c_str(), GetDesc( handle ).Width, GetDesc( handle ).Height, 4, _p->_Textures[handle], 0 );
 }
 
-void XE::RendererContextSoftware::UpdateDynamicIndexBuffer( XE::RenderFrame * frame )
+void XE::GraphicsContextSoftware::UpdateDynamicIndexBuffer( XE::RenderFrame * frame )
 {
 	XE::DynamicIndexBufferHandle handle;
 	XE::uint64 start;
@@ -435,7 +435,7 @@ void XE::RendererContextSoftware::UpdateDynamicIndexBuffer( XE::RenderFrame * fr
 	std::memcpy( _p->_DynamicIndexBuffers[handle], data.data() + start, GetDesc( handle ).Size );
 }
 
-void XE::RendererContextSoftware::UpdateDynamicVertexBuffer( XE::RenderFrame * frame )
+void XE::GraphicsContextSoftware::UpdateDynamicVertexBuffer( XE::RenderFrame * frame )
 {
 	XE::DynamicVertexBufferHandle handle;
 	XE::uint64 start;
@@ -448,7 +448,7 @@ void XE::RendererContextSoftware::UpdateDynamicVertexBuffer( XE::RenderFrame * f
 	std::memcpy( _p->_DynamicVertexBuffers[handle], data.data() + start, GetDesc( handle ).Size );
 }
 
-void XE::RendererContextSoftware::DestoryShader( XE::RenderFrame * frame )
+void XE::GraphicsContextSoftware::DestoryShader( XE::RenderFrame * frame )
 {
 	XE::ShaderHandle handle;
 
@@ -461,7 +461,7 @@ void XE::RendererContextSoftware::DestoryShader( XE::RenderFrame * frame )
 	}
 }
 
-void XE::RendererContextSoftware::DestoryTexture( XE::RenderFrame * frame )
+void XE::GraphicsContextSoftware::DestoryTexture( XE::RenderFrame * frame )
 {
 	XE::TextureHandle handle;
 
@@ -474,7 +474,7 @@ void XE::RendererContextSoftware::DestoryTexture( XE::RenderFrame * frame )
 	}
 }
 
-void XE::RendererContextSoftware::DestoryIndexBuffer( XE::RenderFrame * frame )
+void XE::GraphicsContextSoftware::DestoryIndexBuffer( XE::RenderFrame * frame )
 {
 	XE::IndexBufferHandle handle;
 
@@ -487,7 +487,7 @@ void XE::RendererContextSoftware::DestoryIndexBuffer( XE::RenderFrame * frame )
 	}
 }
 
-void XE::RendererContextSoftware::DestoryVertexBuffer( XE::RenderFrame * frame )
+void XE::GraphicsContextSoftware::DestoryVertexBuffer( XE::RenderFrame * frame )
 {
 	XE::VertexBufferHandle handle;
 
@@ -500,7 +500,7 @@ void XE::RendererContextSoftware::DestoryVertexBuffer( XE::RenderFrame * frame )
 	}
 }
 
-void XE::RendererContextSoftware::DestoryDynamicIndexBuffer( XE::RenderFrame * frame )
+void XE::GraphicsContextSoftware::DestoryDynamicIndexBuffer( XE::RenderFrame * frame )
 {
 	XE::DynamicIndexBufferHandle handle;
 
@@ -513,7 +513,7 @@ void XE::RendererContextSoftware::DestoryDynamicIndexBuffer( XE::RenderFrame * f
 	}
 }
 
-void XE::RendererContextSoftware::DestoryDynamicVertexBuffer( XE::RenderFrame * frame )
+void XE::GraphicsContextSoftware::DestoryDynamicVertexBuffer( XE::RenderFrame * frame )
 {
 	XE::DynamicVertexBufferHandle handle;
 
@@ -526,22 +526,22 @@ void XE::RendererContextSoftware::DestoryDynamicVertexBuffer( XE::RenderFrame * 
 	}
 }
 
-void XE::RendererContextSoftware::DestoryProgram( XE::RenderFrame * frame )
+void XE::GraphicsContextSoftware::DestoryProgram( XE::RenderFrame * frame )
 {
 	( void )( frame );
 }
 
-void XE::RendererContextSoftware::DestoryFrameBuffer( XE::RenderFrame * frame )
+void XE::GraphicsContextSoftware::DestoryFrameBuffer( XE::RenderFrame * frame )
 {
 	( void )( frame );
 }
 
-void XE::RendererContextSoftware::DestoryVertexLayout( XE::RenderFrame * frame )
+void XE::GraphicsContextSoftware::DestoryVertexLayout( XE::RenderFrame * frame )
 {
 	( void )( frame );
 }
 
-void XE::RendererContextSoftware::DestoryOcclusionQuery( XE::RenderFrame * frame )
+void XE::GraphicsContextSoftware::DestoryOcclusionQuery( XE::RenderFrame * frame )
 {
 	( void )( frame );
 }

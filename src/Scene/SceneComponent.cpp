@@ -7,8 +7,8 @@
 #include <Interface/IThreadService.h>
 
 BEG_META( XE::SceneComponent )
-type->Property( "Children", &SceneComponent::_Children, IMetaProperty::NoDesign );
-type->Property( "Transform", &SceneComponent::_Transform );
+type->Property( "Children", &XE::SceneComponent::_Children, XE::IMetaProperty::NoDesign );
+type->Property( "Transform", &XE::SceneComponent::_Transform );
 END_META()
 
 XE::SceneComponent::SceneComponent()
@@ -28,7 +28,7 @@ XE::SceneComponentPtr XE::SceneComponent::GetRoot()
 		return parent->GetRoot();
 	}
 
-	return XE_THIS( SceneComponent );
+	return XE_THIS( XE::SceneComponent );
 }
 
 XE::SceneComponentPtr XE::SceneComponent::GetParent() const
@@ -41,7 +41,7 @@ const XE::Array< XE::SceneComponentPtr > & XE::SceneComponent::GetChildren() con
 	return _Children;
 }
 
-XE::SceneComponentPtr XE::SceneComponent::FindChild( const String& val ) const
+XE::SceneComponentPtr XE::SceneComponent::FindChild( const XE::String& val ) const
 {
 	for( auto child : _Children )
 	{
@@ -54,7 +54,7 @@ XE::SceneComponentPtr XE::SceneComponent::FindChild( const String& val ) const
 	return nullptr;
 }
 
-XE::SceneComponentPtr XE::SceneComponent::FindChild( IMetaClassPtr val ) const
+XE::SceneComponentPtr XE::SceneComponent::FindChild( XE::IMetaClassPtr val ) const
 {
 	for( auto child : _Children )
 	{
@@ -67,7 +67,7 @@ XE::SceneComponentPtr XE::SceneComponent::FindChild( IMetaClassPtr val ) const
 	return nullptr;
 }
 
-XE::SceneComponentPtr XE::SceneComponent::FindChild( ComponentHandle val ) const
+XE::SceneComponentPtr XE::SceneComponent::FindChild( XE::ComponentHandle val ) const
 {
 	for( auto child : _Children )
 	{
@@ -80,7 +80,7 @@ XE::SceneComponentPtr XE::SceneComponent::FindChild( ComponentHandle val ) const
 	return nullptr;
 }
 
-XE::SceneComponentPtr XE::SceneComponent::FindChildFromTree( const String& val ) const
+XE::SceneComponentPtr XE::SceneComponent::FindChildFromTree( const XE::String& val ) const
 {
 	if( auto child = FindChild( val ) )
 	{
@@ -98,7 +98,7 @@ XE::SceneComponentPtr XE::SceneComponent::FindChildFromTree( const String& val )
 	return nullptr;
 }
 
-XE::SceneComponentPtr XE::SceneComponent::FindChildFromTree( IMetaClassPtr val ) const
+XE::SceneComponentPtr XE::SceneComponent::FindChildFromTree( XE::IMetaClassPtr val ) const
 {
 	if( auto child = FindChild( val ) )
 	{
@@ -116,7 +116,7 @@ XE::SceneComponentPtr XE::SceneComponent::FindChildFromTree( IMetaClassPtr val )
 	return nullptr;
 }
 
-XE::SceneComponentPtr XE::SceneComponent::FindChildFromTree( ComponentHandle val ) const
+XE::SceneComponentPtr XE::SceneComponent::FindChildFromTree( XE::ComponentHandle val ) const
 {
 	if( auto child = FindChild( val ) )
 	{
